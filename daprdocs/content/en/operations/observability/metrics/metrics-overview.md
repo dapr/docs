@@ -198,6 +198,49 @@ dapr_http_server_request_count{app_id="order-service",method="",path="/orders",s
 
 In this example, the HTTP method is excluded from the metrics, resulting in a single metric for all requests to the `/orders` endpoint.
 
+### Configuring Custom Latency Buckets
+
+By default, Dapr employs predefined latency buckets for histogram metrics, listed below in milliseconds:
+
+```
+1, 2, 3, 4, 5, 6, 8, 10, 13, 16, 20, 25, 30, 40, 50, 65, 80, 100, 130, 160, 200, 250, 300, 400, 500, 650, 800, 1_000, 2_000, 5_000, 10_000, 20_000, 50_000, 100_000
+```
+
+These buckets provide detailed granularity for latency metrics but can result in high cardinality for certain values,
+where a simpler estimate might be adequate.
+
+To tailor the latency buckets according to your specific needs, modify the `spec.metrics.latencyDistributionBuckets`
+field within the Dapr Configuration resource that pertains to your application(s).
+
+The following example shows how to set custom latency buckets:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: custom-metrics
+spec:
+    metrics:
+        enabled: true
+        latencyDistributionBuckets:
+        - 10
+        - 30
+        - 40
+        - 50
+        - 70
+        - 100
+        - 150
+        - 200
+        - 500 
+        - 1000 # 1sec
+```
+
+Depending on your specific requirements, you may find that you need either more or fewer buckets, or
+buckets with different values. The example provided illustrates a custom configuration consisting of 10 buckets with more
+detail in the lower range of values.
+
+Adjusting the number of buckets can help decrease the cardinality of the metrics, which in turn reduces memory usage
+both in the sidecar and within your monitoring system.
 
 
 ## Transform metrics with regular expressions
