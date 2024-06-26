@@ -15,7 +15,7 @@ description: "List of current alpha and beta APIs"
 | Bulk Publish    | [Bulk publish proto](https://github.com/dapr/dapr/blob/5aba3c9aa4ea9b3f388df125f9c66495b43c5c9e/dapr/proto/runtime/v1/dapr.proto#L59)     | `v1.0-alpha1/publish/bulk` | The bulk publish API allows you to publish multiple messages to a topic in a single request. | [Bulk Publish and Subscribe API]({{< ref "pubsub-bulk.md" >}}) | v1.10 |
 | Bulk Subscribe   | [Bulk subscribe proto](https://github.com/dapr/dapr/blob/5aba3c9aa4ea9b3f388df125f9c66495b43c5c9e/dapr/proto/runtime/v1/appcallback.proto#L57)     | N/A | The bulk subscribe application callback receives multiple messages from a topic in a single call. | [Bulk Publish and Subscribe API]({{< ref "pubsub-bulk.md" >}}) | v1.10 |
 | Cryptography    |  [Crypto proto](https://github.com/dapr/dapr/blob/5aba3c9aa4ea9b3f388df125f9c66495b43c5c9e/dapr/proto/runtime/v1/dapr.proto#L118)    | `v1.0-alpha1/crypto` | The cryptography API enables you to perform **high level** cryptography operations for encrypting and decrypting messages. | [Cryptography API]({{< ref "cryptography-overview.md" >}}) | v1.11 |
-| Jobs    |  [Jobs proto](todo)    | `v1.0-alpha1/jobs` | The jobs API enables you to schedule and orchestrate jobs. | [Jobs API]({{< ref "jobs-overview.md" >}}) | v1.14 |
+| Jobs    |  [Jobs proto](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto#L198-L204)    | `v1.0-alpha1/jobs` | The jobs API enables you to schedule and orchestrate jobs. | [Jobs API]({{< ref "jobs-overview.md" >}}) | v1.14 |
 
 ## Beta APIs
 
