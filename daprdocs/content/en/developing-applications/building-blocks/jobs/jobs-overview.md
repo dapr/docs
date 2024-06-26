@@ -8,7 +8,7 @@ description: "Overview of the jobs API building block"
 
 Many applications require job scheduling, the need to take an action in the future. The jobs API is an orchestrator for scheduling these jobs in the future, either at a specific time or a specific interval. 
 Some typically example scenarios include;
-- **Automated Database Backups**: Ensure its database is backed up daily to prevent data loss. Schedule a backup script to run every night at 2 AM, which will create a backup of the database and store it in a secure location.
+- **Automated Database Backups**: Ensure a database is backed up daily to prevent data loss. Schedule a backup script to run every night at 2 AM, which will create a backup of the database and store it in a secure location.
 - **Regular Data Processing and ETL (Extract, Transform, Load)**: Process and transform raw data from various sources and load it into a data warehouse. Schedule ETL jobs to run at specific times (e.g., hourly, daily) to fetch new data, process it, and update the data warehouse with the latest information.
 **Email Notifications and Reports**: Receive daily sales reports and weekly performance summaries via email. Schedule a job that generates the required reports and sends them via email at 6 AM every day for daily reports and 8 AM every Monday for weekly summaries.
 **Maintenance Tasks and System Updates**: Perform regular maintenance tasks such as clearing temporary files, updating software, and checking system health. Schedule various maintenance scripts to run at off-peak hours, such as weekends or late nights, to minimize disruption to users.
