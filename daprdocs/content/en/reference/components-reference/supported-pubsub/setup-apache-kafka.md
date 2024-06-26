@@ -45,6 +45,10 @@ spec:
     value: 1024
   - name: consumeRetryInterval # Optional.
     value: 200ms
+  - name: heartbeatInterval # Optional.
+    value: 5s
+  - name: sessionTimeout # Optional.
+    value: 15s
   - name: version # Optional.
     value: 2.0.0
   - name: disableTls # Optional. Disable TLS. This is not safe for production!! You should read the `Mutual TLS` section for how to use TLS.
@@ -106,8 +110,8 @@ spec:
 | clientConnectionTopicMetadataRefreshInterval | N | The interval for the client connection's topic metadata to be refreshed with the broker as a Go duration. Defaults to `9m`. | `"4m"` |
 | clientConnectionKeepAliveInterval | N | The maximum time for the client connection to be kept alive with the broker, as a Go duration, before closing the connection. A zero value (default) means keeping alive indefinitely. | `"4m"` |
 | consumerFetchDefault | N | The default number of message bytes to fetch from the broker in each request. Default is `"1048576"` bytes. | `"2097152"` |
-| heartbeatInterval | N | The interval between heartbeats to the consumer coordinator for the client connection. Default is `"3s"`. | `"5s"` |
-| sessionTimeout | N | The maximum time between heartbeats before the consumer is considered inactive and will timeout. Default is `"10s"`. | `"20s"` |
+| heartbeatInterval | N | The interval between heartbeats to the consumer coordinator. At most, the value should be set to a 1/3 of the `sessionTimeout` value. Defaults to "3s". | `"5s"` |
+| sessionTimeout | N | The timeout used to detect client failures when using Kafka’s group management facility. If the broker fails to receive any heartbeats from the consumer before the expiration of this session timeout, then the consumer is removed and initiates a rebalance. Defaults to "10s". | `"20s"` |
 
 The `secretKeyRef` above is referencing  a [kubernetes secrets store]({{< ref kubernetes-secret-store.md >}}) to access the tls information. Visit [here]({{< ref setup-secret-store.md >}}) to learn more about how to configure a secret store component.
 
@@ -155,6 +159,10 @@ spec:
     value: 1024
   - name: consumeRetryInterval # Optional.
     value: 200ms
+  - name: heartbeatInterval # Optional.
+    value: 5s
+  - name: sessionTimeout # Optional.
+    value: 15s
   - name: version # Optional.
     value: 0.10.2.0
   - name: disableTls
@@ -194,6 +202,10 @@ spec:
     value: 1024
   - name: consumeRetryInterval # Optional.
     value: 200ms
+  - name: heartbeatInterval # Optional.
+    value: 5s
+  - name: sessionTimeout # Optional.
+    value: 15s
   - name: version # Optional.
     value: 0.10.2.0
   - name: caCert
@@ -241,6 +253,10 @@ spec:
     value: 1024
   - name: consumeRetryInterval # Optional.
     value: 200ms
+  - name: heartbeatInterval # Optional.
+    value: 5s
+  - name: sessionTimeout # Optional.
+    value: 15s
   - name: version # Optional.
     value: 0.10.2.0
 ```
@@ -293,6 +309,10 @@ spec:
     value: 1024
   - name: consumeRetryInterval # Optional.
     value: 200ms
+  - name: heartbeatInterval # Optional.
+    value: 5s
+  - name: sessionTimeout # Optional.
+    value: 15s
   - name: version # Optional.
     value: 0.10.2.0
 ```
@@ -362,6 +382,10 @@ spec:
     value: "certificate"
   - name: consumeRetryInterval # Optional.
     value: 200ms
+  - name: heartbeatInterval # Optional.
+    value: 5s
+  - name: sessionTimeout # Optional.
+    value: 15s
   - name: version # Optional.
     value: 0.10.2.0
   - name: maxMessageBytes # Optional.
