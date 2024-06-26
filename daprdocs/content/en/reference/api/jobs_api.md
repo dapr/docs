@@ -105,7 +105,6 @@ $ curl -X GET http://localhost:3500/v1.0-alpha1/jobs/jobforjabba -H "Content-Typ
   "dueTime":"30s",
   "data": {
      "@type":"type.googleapis.com/google.type.Expr",
-     "expression":"expression1"
    }
 }                                    
 ```
