@@ -210,7 +210,7 @@ These buckets provide detailed granularity for latency metrics but can result in
 where a simpler estimate might be adequate.
 
 To tailor the latency buckets according to your specific needs, modify the `spec.metrics.latencyDistributionBuckets`
-field within the Dapr Configuration resource that pertains to your application(s).
+field within the Dapr configuration resource for your application(s).
 
 The following example shows how to set custom latency buckets:
 
