@@ -62,7 +62,6 @@ $ curl -X POST \
         "job": {
             "data": {
                 "@type": "type.googleapis.com/google.type.Expr",
-                "expression": "expression1"
             },
             "dueTime": "30s"
         }
