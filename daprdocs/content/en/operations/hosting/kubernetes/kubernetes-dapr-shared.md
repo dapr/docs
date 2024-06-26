@@ -11,7 +11,7 @@ Dapr automatically injects a sidecar to enable the Dapr APIs for your applicatio
 
 Dapr Shared enables two alternative deployment strategies to create Dapr applications using a Kubernetes `Daemonset` for a per-node deployment or a `Deployment` for a per-cluster deployment. 
 
-- **`DaemonSet`:** When specifying to run Dapr as a Kubernetes `DaemonSet` resource, the daprd container runs on each Kubernetes node. This can reduce network hops between the applications and Dapr. 
+- **`DaemonSet`:** When running Dapr Shared as a Kubernetes `DaemonSet` resource, the daprd container runs on each Kubernetes node in the cluster. This can reduce network hops between the applications and Dapr. 
 - **`Deployment`:** When running Dapr Shared as a Kubernetes `Deployment`, the Kubernetes scheduler decides in which node the Dapr Shared instance will run.
 
 {{% alert title="Dapr Shared deployments" color="primary" %}}
