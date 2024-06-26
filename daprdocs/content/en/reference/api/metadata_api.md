@@ -29,7 +29,7 @@ Binding        | INPUT_BINDING, OUTPUT_BINDING
 Each loaded `HttpEndpoint` provides a name to easily identify the Dapr resource associated with the runtime.
 
 ### Subscriptions
-The metadata API returns a list of pub/sub subscriptions that the app has registered with the Dapr runtime. This includes the pub/sub name, topic, routes, dead letter topic, the Subscription type, and the metadata associated with the subscription.
+The metadata API returns a list of pub/sub subscriptions that the app has registered with the Dapr runtime. This includes the pub/sub name, topic, routes, dead letter topic, the subscription type, and the metadata associated with the subscription.
 
 ### Enabled features
 A list of features enabled via Configuration spec (including build-time overrides).
