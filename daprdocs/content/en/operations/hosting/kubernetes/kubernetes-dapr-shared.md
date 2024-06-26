@@ -15,7 +15,7 @@ Dapr Shared enables two alternative deployment strategies to create Dapr applica
 - **`Deployment`:** When running Dapr Shared as a Kubernetes `Deployment`, the Kubernetes scheduler decides in which node the Dapr Shared instance will run.
 
 {{% alert title="Dapr Shared deployments" color="primary" %}}
-For each Dapr application, you need to deploy the Dapr Shared chart using different `shared.appId`s.
+For each Dapr application you deploy, you need to deploy the Dapr Shared Helm chart using different `shared.appId`s.
 {{% /alert %}}
 
 
