@@ -61,7 +61,7 @@ $ curl -X POST \
   -d '{
         "job": {
             "data": {
-                "@type": "type.googleapis.com/google.type.Expr",
+                "HanSolo": "Running spice"
             },
             "dueTime": "30s"
         }
