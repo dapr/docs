@@ -29,7 +29,7 @@ Jobs consist of:
 - The jobs API building block
 - [The Scheduler control plane service]({{< ref "concepts/dapr-services/scheduler.md" >}})
 
-<img src="/images/scheduler/scheduler-architecture.png" alt="Diagram showing basics of the Scheduler control plane and the Scheduler API">
+<img src="/images/scheduler/scheduler-architecture.png" alt="Diagram showing the Scheduler control plane service and the jobs API">
 
 ## How it works
 
