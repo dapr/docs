@@ -198,21 +198,40 @@ dapr_http_server_request_count{app_id="order-service",method="",path="/orders",s
 
 In this example, the HTTP method is excluded from the metrics, resulting in a single metric for all requests to the `/orders` endpoint.
 
-### Configuring Custom Latency Buckets
+### Configuring Custom Latency Histogram Buckets
 
-By default, Dapr employs predefined latency buckets for histogram metrics, listed below in milliseconds:
+Dapr use cumulative histogram metrics to group latency values into buckets. By default, Dapr uses the following buckets to group latency values:
 
 ```
-1, 2, 3, 4, 5, 6, 8, 10, 13, 16, 20, 25, 30, 40, 50, 65, 80, 100, 130, 160, 200, 250, 300, 400, 500, 650, 800, 1_000, 2_000, 5_000, 10_000, 20_000, 50_000, 100_000
+1, 2, 3, 4, 5, 6, 8, 10, 13, 16, 20, 25, 30, 40, 50, 65, 80, 100, 130, 160, 200, 250, 300, 400, 500, 650, 800, 1000, 2000, 5000, 10000, 20000, 50000, 100000
 ```
 
-These buckets provide detailed granularity for latency metrics but can result in high cardinality for certain values,
-where a simpler estimate might be adequate.
+These values are used to group latency values into the different bins (buckets) in cumulative fashion. 
+For example is a request takes 3ms, it will be counted in the 3ms bucket, the 4ms bucket, the 5ms bucket, and so on.
+And if a request takes 10ms, it will be counted in the 10ms bucket, the 13ms bucket, the 16ms bucket, and so on.
+After these two requests, the 10ms bucket will have a count of 2, and the 3ms bucket will have a count of 1.
+
+After these two requests the bins will have the following values:
+
+|1|2|3|4|5|6|8|10|13|16|20|25|30|40|50|65|80|100|130|160| ..... | 100000 |
+|-|-|-|-|-|-|-|--|--|--|--|--|--|--|--|--|--|---|---|---|-------|--------|
+|0|0|1|1|1|1|1| 2| 2| 2| 2| 2| 2| 2| 2| 2| 2| 2 | 2 | 2 | ..... | 2      |
+
+
+They are perfect to do quick calculation of percentiles, but they can be adjusted to better fit your needs, and also the
+current default number of values (34) results in high cardinality as each latency metric will create 34 different metrics.
+The more bins you define, the more accurate the percentiles will be, but the more memory will be used to store the metrics, 
+that will also impact your monitoring system. The idea is to define the areas where you want to have more detail, and 
+where you can have less accuracy.
 
 To tailor the latency buckets according to your specific needs, modify the `spec.metrics.latencyDistributionBuckets`
 field within the Dapr configuration resource for your application(s).
 
-The following example shows how to set custom latency buckets:
+The following example shows how to set custom latency buckets.  For example if we are not too interested in very 
+low latency values details (1-10 milliseconds), we can group them in a single bucket 10 ms, and we can also group the higher values in a single bucket, while we can have more detail
+in the middle range of values that we are most interested in.
+
+We will replace the 34 buckets with a set of 11 buckets to group latency values with more accuracy in the middle range of values:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -222,26 +241,13 @@ metadata:
 spec:
     metrics:
         enabled: true
-        latencyDistributionBuckets:
-        - 10
-        - 30
-        - 40
-        - 50
-        - 70
-        - 100
-        - 150
-        - 200
-        - 500 
-        - 1000 # 1sec
+        latencyDistributionBuckets: [10, 25, 40, 50, 70, 100, 150, 200, 500, 1000, 5000]
 ```
 
-Depending on your specific requirements, you may find that you need either more or fewer buckets, or
-buckets with different values. The example provided illustrates a custom configuration consisting of 10 buckets with more
-detail in the lower range of values.
+The current default provides a good accuracy for the percentiles, but you can adjust the buckets to better fit your 
+needs and reduce the cardinality of the metrics.
 
-Adjusting the number of buckets can help decrease the cardinality of the metrics, which in turn reduces memory usage
-both in the sidecar and within your monitoring system.
-
+It is important to take note of your current latency values provided by the more detail Dapr default buckets and adjust the buckets accordingly.
 
 ## Transform metrics with regular expressions
 
