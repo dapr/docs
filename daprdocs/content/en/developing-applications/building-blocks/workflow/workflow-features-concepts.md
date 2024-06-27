@@ -47,7 +47,7 @@ The following example demonstrates the default behavior, erroring out the workfl
 
 1. The workflow calls a single activity with orchestration ID reuse policy.
 1. The reuse ID policy specifies the action `IGNORE_IF_RUNNING_OR_COMPLETED` and the target statuses of `RUNNING`, `COMPLETED`, `PENDING`. 
-1. The second call to create a workflow with the same instance ID is expected to be ignored if the first workflow instance is one of the target statuses.
+1. The second call to create a workflow with the same instance ID throws an error when trying to reuse the workflow ID.
 
 ```go
 func main() {
@@ -86,7 +86,7 @@ func main() {
 	}
 	// Wait for orchestration to start...
 	client.WaitForOrchestrationStart(ctx, id)
-	// Schedule the workflow again using the same id. However it will ignore creating the new orchestration, since the id is already in use.
+	// Schedule the workflow again using the same id. However it will error out since it already exists. 
 	id, err = client.ScheduleNewOrchestration(ctx, "SingleActivity", api.WithInput("World"), api.WithInstanceID(id), api.WithOrchestrationIdReusePolicy(reuseIDPolicy))
 	if err != nil {
 		fmt.Println(err)
