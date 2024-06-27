@@ -153,12 +153,13 @@ scopes:
 
 ## Subscribe to topics
 
-Dapr provides two methods by which you can subscribe to topics:
+Dapr provides three methods by which you can subscribe to topics:
 
 - **Declaratively**, where subscriptions are defined in an external file.
+- **Streaming**, where subscriptions are defined in user code.
 - **Programmatically**, where subscriptions are defined in user code.
 
-Learn more in the [declarative and programmatic subscriptions doc]({{< ref subscription-methods.md >}}). This example demonstrates a **declarative** subscription.
+Learn more in the [declarative, streaming, and programmatic subscriptions doc]({{< ref subscription-methods.md >}}). This example demonstrates a **declarative** subscription.
 
 Create a file named `subscription.yaml` and paste the following:
 

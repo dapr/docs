@@ -75,14 +75,15 @@ In principle, Dapr considers a message successfully delivered once the subscribe
 
 ### Receiving messages with topic subscriptions
 
-Dapr applications can subscribe to published topics via two methods that support the same features: declarative and programmatic.
+Dapr applications can subscribe to published topics via three subscription types that support the same features: declarative, streaming and programmatic.
 
-| Subscription method | Description |
+| Subscription type | Description |
 | ------------------- | ----------- |
-| **Declarative** | Subscription is defined in an **external file**. The declarative approach removes the Dapr dependency from your code and allows for existing applications to subscribe to topics, without having to change code. |
-| **Programmatic** | Subscription is defined in the **user code**. The programmatic approach implements the subscription in your code. |
+| **Declarative** | The subscription is defined in an **external file**. The declarative approach removes the Dapr dependency from your code and allows for existing applications to subscribe to topics, without having to change code. |
+| **Streaming** | The subscription is defined in the **user code**. Streaming subscriptions are dynamic, meaning they allow for adding or removing subscriptions at runtime. They do not require a subscription endpoint in your application (that is required by both programmatic and declarative subscriptions), making them easy to configure in code. Streaming subscriptions also do not require an app to be configured with the sidecar to receive messages. With streaming subscriptions, since messages are sent to a message handler code, there is no concept of routes or bulk subscriptions.  |
+| **Programmatic** | Subscription is defined in the **user code**. The programmatic approach implements the static subscription and requires an endpoint in your code. |
 
-For more information, read [about the subscriptions in Subscription Methods]({{< ref subscription-methods.md >}}).
+For more information, read [about the subscriptions in Subscription Types]({{< ref subscription-methods.md >}}).
 
 ### Reloading topic subscriptions
 
