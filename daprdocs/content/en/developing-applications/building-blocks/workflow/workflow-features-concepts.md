@@ -34,7 +34,69 @@ Each workflow you define has a type name, and individual executions of a workflo
 
 If a workflow instance completes or fails, its ID can be reused by a new workflow instance. The new workflow instance effectively replaces the old one in the configured state store.
 
+You can use the following policies to reuse workflow IDs:
+
+| Policies | Description | 
+| -------- | ----------- |
+| `api.REUSE_ID_ACTION_IGNORE` | Ignores the a new workflow being created with the same ID as an existing workflow if the existing workflow is `RUNNING`, `COMPLETED`, or `PENDING`. |
+| `api.REUSE_ID_ACTION_TERMINATE` | Terminates a new workflow created with the same ID as an existing workflow if the existing workflow is `RUNNING`, `COMPLETED`, or `PENDING`. |
+
 **Example 1**
+
+The following example demonstrates the default behavior, erroring out the workflow when reusing the workflow ID. In the example:
+
+1. The workflow calls a single activity with orchestration ID reuse policy.
+1. The reuse ID policy specifies the action `IGNORE_IF_RUNNING_OR_COMPLETED` and the target statuses of `RUNNING`, `COMPLETED`, `PENDING`. 
+1. The second call to create a workflow with the same instance ID is expected to be ignored if the first workflow instance is one of the target statuses.
+
+```go
+func main() {
+	r := task.NewTaskRegistry()
+	r.AddOrchestratorN("SingleActivity", func(ctx *task.OrchestrationContext) (any, error) {
+		var input string
+		if err := ctx.GetInput(&input); err != nil {
+			return nil, err
+		}
+		var output string
+		err := ctx.CallActivity("SayHello", task.WithActivityInput(input)).Await(&output)
+		return output, err
+	})
+	r.AddActivityN("SayHello", func(ctx task.ActivityContext) (any, error) {
+		var name string
+		if err := ctx.GetInput(&name); err != nil {
+			return nil, err
+		}
+		return fmt.Sprintf("Hello, %s!", name), nil
+	})
+
+	ctx := context.Background()
+	client, engine := startEngine(ctx, r)
+
+	instanceID := api.InstanceID("IGNORE_IF_RUNNING_OR_COMPLETED")
+	reuseIDPolicy := &api.OrchestrationIdReusePolicy{
+		Action:          api.REUSE_ID_ACTION_IGNORE,
+		OperationStatus: []api.OrchestrationStatus{api.RUNTIME_STATUS_RUNNING, api.RUNTIME_STATUS_COMPLETED, api.RUNTIME_STATUS_PENDING},
+	}
+
+	// Run the orchestration.
+	id, err := client.ScheduleNewOrchestration(ctx, "SingleActivity", api.WithInput("World"), api.WithInstanceID(instanceID))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	// Wait for orchestration to start...
+	client.WaitForOrchestrationStart(ctx, id)
+	// Schedule the workflow again using the same id. However it will ignore creating the new orchestration, since the id is already in use.
+	id, err = client.ScheduleNewOrchestration(ctx, "SingleActivity", api.WithInput("World"), api.WithInstanceID(id), api.WithOrchestrationIdReusePolicy(reuseIDPolicy))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+}
+```
+
+
+**Example 2**
 
 The following example demonstrates `main` executing a workflow twice. In the example:
 1. The workflow calls a single activity with orchestration ID reuse policy.
@@ -70,15 +132,15 @@ func main() {
 		OperationStatus: []api.OrchestrationStatus{api.RUNTIME_STATUS_RUNNING, api.RUNTIME_STATUS_COMPLETED, api.RUNTIME_STATUS_PENDING},
 	}
 
-	// Run the orchestration
+	// Run the orchestration.
 	id, err := client.ScheduleNewOrchestration(ctx, "SingleActivity", api.WithInput("World"), api.WithInstanceID(instanceID))
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	// Wait for orchestration to start
+	// Wait for orchestration to start...
 	client.WaitForOrchestrationStart(ctx, id)
-	// Schedule again, it should ignore creating the new orchestration
+	// Schedule the workflow again using the same id. However it will ignore creating the new orchestration, since the id is already in use.
 	id, err = client.ScheduleNewOrchestration(ctx, "SingleActivity", api.WithInput("World"), api.WithInstanceID(id), api.WithOrchestrationIdReusePolicy(reuseIDPolicy))
 	if err != nil {
 		fmt.Println(err)
@@ -87,7 +149,7 @@ func main() {
 }
 ```
 
-**Example 2**
+**Example 3**
 
 In the following example:
 1. The workflow calls a single activity with the orchestration ID reuse policy. 
@@ -131,7 +193,7 @@ func main() {
 	}
 	// Wait for orchestration to start
 	client.WaitForOrchestrationStart(ctx, id)
-	// Schedule again, it should ignore creating the new orchestration
+	// Schedule again. This time, the workflow is successfully started (not ignored), since the policy terminates the existing workflow with the id and starts a new one
 	id, err = client.ScheduleNewOrchestration(ctx, "SingleActivity", api.WithInput("World"), api.WithInstanceID(id), api.WithOrchestrationIdReusePolicy(reuseIDPolicy))
 	if err != nil {
 		fmt.Println(err)
