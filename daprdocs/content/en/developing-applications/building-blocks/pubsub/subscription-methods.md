@@ -305,6 +305,12 @@ func eventHandler(e *common.TopicEvent) common.SubscriptionResponseStatus {
 
 {{< /tabs >}}
 
+## Demo
+
+Watch [this video for an overview on streaming subscriptions](https://youtu.be/57l-QDwgI-Y?t=841):
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/57l-QDwgI-Y?si=EJj3uo306vBUvl3Y&amp;start=841" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 ### Programmatic subscriptions
 
 The dynamic programmatic approach returns the `routes` JSON structure within the code, unlike the declarative approach's `route` YAML structure. 
