@@ -72,7 +72,7 @@ spec:
 
 ## Optimizing HTTP metrics reporting with path matching
 
-When invoking Dapr using HTTP metrics are created for each requested method by default. This can result in a high number of metrics, known as high cardinality, which can impact memory usage and CPU.
+When invoking Dapr using HTTP, metrics are created for each requested method by default. This can result in a high number of metrics, known as high cardinality, which can impact memory usage and CPU.
 
 Path matching allows you to manage and control the cardinality of HTTP metrics in Dapr. This is an aggregation of metrics, so rather than having a metric for each event, you can reduce the number of metrics events and report an overall number.  For details on how to set the cardinality in configuration see ({{< ref "configuration-overview.md#metrics" >}})  
 
@@ -82,9 +82,9 @@ When `spec.metrics.http.pathMatching` is combined with the `increasedCardinality
 
 ### Examples of Path Matching in HTTP Metrics
 
-Here are some examples demonstrating how to use the Path Matching API in Dapr for managing HTTP metrics. On each example we have the metrics collected from 5 HTTP requests to the `/orders` endpoint with different order IDs. By adjusting cardinality and utilizing path matching, you can fine-tune metric granularity to balance detail and resource efficiency.
+The following examples demonstrate how to use the Path Matching API in Dapr for managing HTTP metrics. On each example, the metrics are collected from 5 HTTP requests to the `/orders` endpoint with different order IDs. By adjusting cardinality and utilizing path matching, you can fine-tune metric granularity to balance detail and resource efficiency.
 
-These examples illustrate the cardinality of the metrics, highlighting that high cardinality configurations result in many entries, which correspond to higher memory usage for handling metrics. For simplicity, we will focus on a single metric: `dapr_http_server_request_count`. 
+These examples illustrate the cardinality of the metrics, highlighting that high cardinality configurations result in many entries, which correspond to higher memory usage for handling metrics. For simplicity, the following example focuses on a single metric: `dapr_http_server_request_count`. 
 
 #### Low cardinality with path matching (Recommendation)
 
@@ -104,7 +104,7 @@ dapr_http_server_request_count{app_id="order-service",method="GET",path="/orders
 dapr_http_server_request_count{app_id="order-service",method="GET",path="",status="200"} 1
 ```
 
-With low cardinality and path matching configured, we get the best of both worlds by grouping the metrics for the important endpoints without compromising the cardinality. This approach helps avoid high memory usage and potential security issues.
+With low cardinality and path matching configured, you get the best of both worlds by grouping the metrics for the important endpoints without compromising the cardinality. This approach helps avoid high memory usage and potential security issues.
 
 #### Low cardinality without path matching
 
@@ -137,7 +137,7 @@ Metrics generated:
 dapr_http_server_request_count{app_id="order-service",method="GET",path="/orders/{orderID}",status="200"} 5
 ```
 
-This example results from the same HTTP requests as the example above, but with path matching configured for the path `/orders/{orderID}`. By using path matching, we achieve reduced cardinality by grouping the metrics based on the matched path.
+This example results from the same HTTP requests as the example above, but with path matching configured for the path `/orders/{orderID}`. By using path matching, you achieve reduced cardinality by grouping the metrics based on the matched path.
 
 #### High Cardinality without path matching
 
@@ -165,7 +165,7 @@ The `excludeVerbs` option allows you to exclude specific HTTP verbs from being r
 
 ### Examples of excluding HTTP verbs in metrics
 
-Here are some examples demonstrating how to exclude HTTP verbs in Dapr for managing HTTP metrics.
+The following examples demonstrate how to exclude HTTP verbs in Dapr for managing HTTP metrics.
 
 #### Default - Include HTTP verbs
 
