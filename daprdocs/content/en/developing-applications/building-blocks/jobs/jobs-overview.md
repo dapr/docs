@@ -8,7 +8,7 @@ description: "Overview of the jobs API building block"
 
 Many applications require job scheduling, or the need to take an action in the future. The jobs API is an orchestrator for scheduling these future jobs, either at a specific time or for a specific interval. 
 
-Not only does the jobs API help you with scheduling jobs, but internally, Dapr uses the scheduler serviceit is also used by Dapr to schedule actor reminders.  
+Not only does the jobs API help you with scheduling jobs, but internally, Dapr uses the scheduler service to schedule actor reminders.  
 
 Jobs in Dapr consist of:
 - The jobs API building block
