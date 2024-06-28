@@ -6,23 +6,25 @@ weight: 2000
 description: "Learn how to use the jobs API to schedule jobs"
 ---
 
-Now that you've learned what the [jobs building block]({{< ref jobs-overview.md >}}) provides, let's look at an example of how to use the API. The code example below describes an application that schedules and orchestrates ***TBD***.
+Now that you've learned what the [jobs building block]({{< ref jobs-overview.md >}}) provides, let's look at an example of how to use the API. The code example below describes an application that schedules and orchestrates jobs for a **TBD** application.
 
 <!-- 
 Include a diagram or image, if possible. 
 -->
 
-<!-- 
-Make sure the how-to includes examples for multiple programming languages, OS, or deployment targets, if applicable. 
--->
-
-## Configure jobs
 
 
-<!-- 
-Each H2 step should start with a verb/action word.
--->
+## Set up the Scheduler service
 
+When you run `dapr init` in either self-hosted mode or on Kubernetes, the Dapr scheduler service is started. 
+
+## Run the Dapr sidecar 
+
+Run the Dapr sidecar alongside your application. 
+
+```bash
+dapr run --app-id=distributed-scheduler --app-port 50070 --app-protocol grpc --log-level debug -- go run main.go
+```
 
 ## Next steps
 
