@@ -182,7 +182,7 @@ When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to
 Follow the instructions [here](https://learn.microsoft.com/azure/service-bus-messaging/service-bus-quickstart-portal) on setting up Azure Service Bus Queues.
 
 {{% alert title="Note" color="primary" %}}
-Your queue must have the same name as the Topic you are publishing to with Dapr. E.g. if you are publishing to the pubsb "myPubsub" on the topic "orders" your queue must be named "orders".
+Your queue must have the same name as the topic you are publishing to with Dapr. For example, if you are publishing to the pub/sub `"myPubsub"` on the topic `"orders"`, your queue must be named `"orders"`.
 If you are using a shared access policy to connect to the queue, that policy must be able to "manage" the queue. To work with a dead-letter queue, the policy must live on the Service Bus Namespace that contains both the main queue and the dead-letter queue.
 {{% /alert %}}
 
