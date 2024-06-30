@@ -183,7 +183,7 @@ Follow the instructions [here](https://learn.microsoft.com/azure/service-bus-mes
 
 {{% alert title="Note" color="primary" %}}
 Your queue must have the same name as the Topic you are publishing to with Dapr. E.g. if you are publishing to the pubsb "myPubsub" on the topic "orders" your queue must be named "orders".
-If you are using a Shared access policy to connect to the queue that policy must have the ability to "Manage" the queue. To work with a dead-letter queue the policy must live on the Service Bus Namespace that contains both the main queue and the dead-letter queue.
+If you are using a shared access policy to connect to the queue, that policy must be able to "manage" the queue. To work with a dead-letter queue, the policy must live on the Service Bus Namespace that contains both the main queue and the dead-letter queue.
 {{% /alert %}}
 
 ### Retry policy and dead-letter queues
