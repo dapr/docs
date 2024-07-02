@@ -21,9 +21,10 @@ Dapr initialization includes:
 1. Running a **Zipkin container instance** for observability.
 1. Creating a **default components folder** with component definitions for the above.
 1. Running a **Dapr placement service container instance** for local actor support.
+1. Running a **Dapr scheduler service container instance** for job scheduling.
 
 {{% alert title="Kubernetes Development Environment" color="primary" %}}
-To initialize Dapr in your local or remote **Kubernetes** cluster for development (including the Redis and Zipkin containers listed above), see [how to initialize Dapr for development on Kubernetes]({{<ref "kubernetes-deploy.md#install-dapr-from-the-official-dapr-helm-chart-with-development-flag">}})
+To initialize Dapr in your local or remote **Kubernetes** cluster for development (including the Redis and Zipkin containers listed above), see [how to initialize Dapr for development on Kubernetes]({{<ref "kubernetes-deploy.md#install-dapr-from-the-official-dapr-helm-chart-with-development-flag" >}})
 {{% /alert %}}
 
 {{% alert title="Docker" color="primary" %}}
@@ -68,7 +69,13 @@ Install the latest Dapr runtime binaries:
 dapr init
 ```
 
-**If you are installing on Mac OS Silicon with Docker,** you may need to perform the following workaround to enable `dapr init` to talk to Docker without using Kubernetes.
+If you run your Docker cmds with sudo, you need to use:
+
+```bash
+sudo dapr init
+```
+
+If you are installing on **Mac OS Silicon** with Docker, you may need to perform the following workaround to enable `dapr init` to talk to Docker without using Kubernetes.
 1. Navigate to **Docker Desktop** > **Settings** > **Advanced**.
 1. Select the **Allow the default Docker socket to be used (requires password)** checkbox.
 
@@ -86,7 +93,29 @@ dapr init
 
 {{< /tabs >}}
 
+**Expected output:**
+
+```
+⌛  Making the jump to hyperspace...
+✅  Downloaded binaries and completed components set up.
+ℹ️  daprd binary has been installed to  $HOME/.dapr/bin.
+ℹ️  dapr_placement container is running.
+ℹ️  dapr_scheduler container is running.
+ℹ️  dapr_redis container is running.
+ℹ️  dapr_zipkin container is running.
+ℹ️  Use `docker ps` to check running containers.
+✅  Success! Dapr is up and running. To get started, go here: https://aka.ms/dapr-getting-started
+```
+
 [See the troubleshooting guide if you encounter any error messages regarding Docker not being installed or running.]({{< ref "common_issues.md#dapr-cant-connect-to-docker-when-installing-the-dapr-cli" >}})
+
+#### Slim init
+
+To install the CLI without any default configuration files or Docker containers, use the `--slim` flag. [Learn more about the `init` command and its flags.]({{< ref dapr-init.md >}})
+
+```bash
+dapr init --slim
+```
 
 ### Step 3: Verify Dapr version
 

@@ -29,7 +29,7 @@ Binding        | INPUT_BINDING, OUTPUT_BINDING
 Each loaded `HttpEndpoint` provides a name to easily identify the Dapr resource associated with the runtime.
 
 ### Subscriptions
-The metadata API returns a list of pub/sub subscriptions that the app has registered with the Dapr runtime. This includes the pub/sub name, topic, routes, dead letter topic, and the metadata associated with the subscription.
+The metadata API returns a list of pub/sub subscriptions that the app has registered with the Dapr runtime. This includes the pub/sub name, topic, routes, dead letter topic, the subscription type, and the metadata associated with the subscription.
 
 ### Enabled features
 A list of features enabled via Configuration spec (including build-time overrides).
@@ -114,6 +114,7 @@ topic           | string | Topic name.
 metadata        | object | Metadata associated with the subscription.
 rules           | [Metadata API Response Subscription Rules](#metadataapiresponsesubscriptionrules)[] | List of rules associated with the subscription.
 deadLetterTopic | string | Dead letter topic name.
+type            | string | Type of the subscription, either `DECLARATIVE`, `STREAMING` or `PROGRAMMATIC`.
 
 <a id="metadataapiresponsesubscriptionrules"></a>**Metadata API Response Subscription Rules**
 
@@ -184,6 +185,7 @@ curl http://localhost:3500/v1.0/metadata
   ],
   "subscriptions": [
     {
+      "type": "DECLARATIVE",
       "pubsubname": "pubsub",
       "topic": "orders",
       "deadLetterTopic": "",
@@ -305,6 +307,7 @@ Get the metadata information to confirm your custom attribute was added:
   ],
   "subscriptions": [
     {
+      "type": "PROGRAMMATIC",
       "pubsubname": "pubsub",
       "topic": "orders",
       "deadLetterTopic": "",
