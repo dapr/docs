@@ -200,38 +200,36 @@ In this example, the HTTP method is excluded from the metrics, resulting in a si
 
 ### Configuring Custom Latency Histogram Buckets
 
-Dapr use cumulative histogram metrics to group latency values into buckets. By default, Dapr uses the following buckets to group latency values:
+Dapr use cumulative histogram metrics to group latency values into buckets, where each bucket contains a count of the number of requests that had that latency plus all the requests with lower latency.
+
+By default, Dapr groups request latency metrics into the following buckets:
 
 ```
 1, 2, 3, 4, 5, 6, 8, 10, 13, 16, 20, 25, 30, 40, 50, 65, 80, 100, 130, 160, 200, 250, 300, 400, 500, 650, 800, 1000, 2000, 5000, 10000, 20000, 50000, 100000
 ```
 
-These values are used to group latency values into the different bins (buckets) in cumulative fashion. 
-For example is a request takes 3ms, it will be counted in the 3ms bucket, the 4ms bucket, the 5ms bucket, and so on.
-And if a request takes 10ms, it will be counted in the 10ms bucket, the 13ms bucket, the 16ms bucket, and so on.
-After these two requests, the 10ms bucket will have a count of 2, and the 3ms bucket will have a count of 1.
+Grouping latency values in a cumulative fashion allows buckets to be used or dropped as needed for increased or decreased granularity of data.
+For example if a request takes 3ms, it will be counted in the 3ms bucket, the 4ms bucket, the 5ms bucket, and so on.
+Similarly, if a request takes 10ms, it will be counted in the 10ms bucket, the 13ms bucket, the 16ms bucket, and so on.
+After these two requests have completed, the 3ms bucket will have a count of 1 and the 10ms bucket will have a count of 2, since both the 3ms and 10ms requests are included here. 
 
-After these two requests the bins will have the following values:
+This will show up as follows:
 
 |1|2|3|4|5|6|8|10|13|16|20|25|30|40|50|65|80|100|130|160| ..... | 100000 |
 |-|-|-|-|-|-|-|--|--|--|--|--|--|--|--|--|--|---|---|---|-------|--------|
 |0|0|1|1|1|1|1| 2| 2| 2| 2| 2| 2| 2| 2| 2| 2| 2 | 2 | 2 | ..... | 2      |
 
 
-They are perfect to do quick calculation of percentiles, but they can be adjusted to better fit your needs, and also the
-current default number of values (34) results in high cardinality as each latency metric will create 34 different metrics.
-The more bins you define, the more accurate the percentiles will be, but the more memory will be used to store the metrics, 
-that will also impact your monitoring system. The idea is to define the areas where you want to have more detail, and 
-where you can have less accuracy.
+The default number of buckets works well for most use cases, but can be adjusted as needed. Each request will create 34 different metrics, leaving this value to grow considerably for a large number of applications.
+More accurate latency percentiles can be achieved by increasing the number of buckets. However, a higher number of buckets increases the amount of memory used to store the metrics, potentially negatively impacting your monitoring system. 
 
-To tailor the latency buckets according to your specific needs, modify the `spec.metrics.latencyDistributionBuckets`
-field within the Dapr configuration resource for your application(s).
+It is recommended to keep the number of latency buckets set to the default value, unless you are seeing unwanted memory pressure in your monitoring system. Configuring the number of buckets allows you to choose applications where you want to see more detail with a higher number of buckets, and where broader values are sufficient by reducing the buckets. Take note of the default latency values your applications are producing before configuring the number buckets as described below.
 
-The following example shows how to set custom latency buckets.  For example if we are not too interested in very 
-low latency values details (1-10 milliseconds), we can group them in a single bucket 10 ms, and we can also group the higher values in a single bucket, while we can have more detail
-in the middle range of values that we are most interested in.
+Tailor the latency buckets to your needs, by modifying the `spec.metrics.latencyDistributionBuckets` field in the Dapr configuration spec for your application(s).
 
-We will replace the 34 buckets with a set of 11 buckets to group latency values with more accuracy in the middle range of values:
+For example, in the case where you are not interested in extremely low latency values (1-10ms), you can group them in a single 10ms bucket. Similarly, you can group the high values in a single bucket (1000-5000 ms), while keeping more detail in the middle range of values that you are most interested in.
+
+The following Configuration spec replaces the default 34 buckets with 11 buckets giving a higher level of granularity in the middle range of values:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -244,10 +242,7 @@ spec:
         latencyDistributionBuckets: [10, 25, 40, 50, 70, 100, 150, 200, 500, 1000, 5000]
 ```
 
-The current default provides a good accuracy for the percentiles, but you can adjust the buckets to better fit your 
-needs and reduce the cardinality of the metrics.
 
-It is important to take note of your current latency values provided by the more detail Dapr default buckets and adjust the buckets accordingly.
 
 ## Transform metrics with regular expressions
 
