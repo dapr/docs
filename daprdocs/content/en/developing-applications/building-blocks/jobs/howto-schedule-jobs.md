@@ -23,7 +23,7 @@ When you run `dapr init` in either self-hosted mode or on Kubernetes, the Dapr s
 Run the Dapr sidecar alongside your application. 
 
 ```bash
-dapr run --app-id=distributed-scheduler --app-port 50070 --app-protocol grpc --log-level debug -- go run main.go
+dapr run --app-id=jobs --app-port 50070 --app-protocol grpc --log-level debug -- go run main.go
 ```
 
 ## Next steps
