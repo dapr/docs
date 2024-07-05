@@ -36,7 +36,7 @@ dapr init [flags]
 | `--runtime-version`   |                      | `latest`      | The version of the Dapr runtime to install, for example: `1.0.0`                     |
 | `--image-variant`   |                      |                 | The image variant to use for the Dapr runtime, for example: `mariner`               |
 | `--set`               |                      |               | Configure options on the command line to be passed to the Dapr Helm chart and the Kubernetes cluster upon install. Can specify multiple values in a comma-separated list, for example: `key1=val1,key2=val2`                     |
-| `--slim`, `-s`        |                      | `false`       | Exclude placement service, Redis and Zipkin containers from self-hosted installation |
+| `--slim`, `-s`        |                      | `false`       | Exclude placement service, scheduler service, and the Redis and Zipkin containers from self-hosted installation |
 | `--timeout`           |                      | `300`         | The wait timeout for the Kubernetes installation                                     |
 | `--wait`              |                      | `false`       | Wait for Kubernetes initialization to complete                                       |
 |        N/A            |DAPR_DEFAULT_IMAGE_REGISTRY|          | It is used to specify the default container registry to pull images from. When its value is set to `GHCR` or `ghcr` it pulls the required images from Github container registry. To default to Docker hub, unset the environment variable or leave it blank|
@@ -55,7 +55,7 @@ dapr init [flags]
 
 **Install**
 
-Install Dapr by pulling container images for Placement, Redis, and Zipkin. By default, these images are pulled from Docker Hub. 
+Install Dapr by pulling container images for Placement, Scheduler, Redis, and Zipkin. By default, these images are pulled from Docker Hub. 
 
 ```bash
 dapr init
@@ -187,7 +187,7 @@ Use the `--set` flag to configure a set of [Helm Chart values](https://github.co
 dapr init -k --set global.tag=1.0.0 --set dapr_operator.logLevel=error
 ```
 
-You can also specify a private registry to pull container images from. As of now `dapr init -k` does not use specific images for sentry, operator, placement and sidecar. It relies on only Dapr runtime container image `dapr` for all these images.
+You can also specify a private registry to pull container images from. As of now `dapr init -k` does not use specific images for sentry, operator, placement, scheduler, and sidecar. It relies on only Dapr runtime container image `dapr` for all these images.
 
 Scenario 1 : dapr image hosted directly under root folder in private registry - 
 ```bash
