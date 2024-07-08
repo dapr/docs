@@ -2,7 +2,7 @@
 type: docs
 title: "How-to: Mount Pod volumes to the Dapr sidecar"
 linkTitle: "How-to: Mount Pod volumes"
-weight: 80000
+weight: 90000
 description: "Configure the Dapr sidecar to mount Pod Volumes"
 ---
 
