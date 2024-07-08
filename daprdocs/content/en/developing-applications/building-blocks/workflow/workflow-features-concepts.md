@@ -248,7 +248,7 @@ You can use the following two techniques to write workflows that may need to sch
 
 Because workflows are long-running and durable, updating workflow code must be done with extreme care. As discussed in the [workflow determinism]({{< ref "#workflow-determinism-and-code-restraints" >}}) limitation section, workflow code must be deterministic. Updates to workflow code must preserve this determinism if there are any non-completed workflow instances in the system. Otherwise, updates to workflow code can result in runtime failures the next time those workflows execute.
 
-[See known limitations]({{< ref "workflow-features-concepts.md#workflow-determinism-and-code-restraints" >}})
+[See known limitations]({{< ref "#limitations" >}})
 
 ## Workflow activities
 
