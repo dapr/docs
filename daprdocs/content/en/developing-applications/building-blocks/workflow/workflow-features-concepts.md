@@ -43,7 +43,7 @@ You can use the following policies to reuse workflow IDs:
 
 **Example 1**
 
-The following example demonstrates the default behavior, erroring out the workflow when reusing the workflow ID. In the example:
+The following example demonstrates the default behavior, erroring out the workflow when reusing the workflow ID. In the following test:
 
 1. The workflow calls a single activity with orchestration ID reuse policy.
 1. The reuse ID policy specifies the action `IGNORE_IF_RUNNING_OR_COMPLETED` and the target statuses of `RUNNING`, `COMPLETED`, `PENDING`. 
@@ -98,7 +98,8 @@ func main() {
 
 **Example 2**
 
-The following example demonstrates `main` executing a workflow twice. In the example:
+Let's say you want to start an orchestration when not in `RUNNING` state. In the following test:
+
 1. The workflow calls a single activity with orchestration ID reuse policy.
 1. The reuse ID policy specifies the action `IGNORE_IF_RUNNING_OR_COMPLETED` and the target statuses of `RUNNING`, `COMPLETED`, `PENDING`. 
 1. The second call to create a workflow with the same instance ID is expected to be ignored if the first workflow instance is one of the target statuses.
