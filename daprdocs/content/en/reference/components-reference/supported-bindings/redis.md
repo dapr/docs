@@ -24,6 +24,8 @@ spec:
     value: "<address>:6379"
   - name: redisPassword
     value: "**************"
+  - name: useEntraID
+    value: "true"
   - name: enableTLS
     value: "<bool>"
 ```
@@ -39,6 +41,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `redisHost` | Y | Output |  The Redis host address | `"localhost:6379"` |
 | `redisPassword` | Y | Output | The Redis password | `"password"` |
 | `redisUsername` | N | Output | Username for Redis host. Defaults to empty. Make sure your redis server version is 6 or above, and have created acl rule correctly. | `"username"` |
+| `useEntraID` | N | Output | Implements EntraID support for Azure Cache for Redis. Before enabling this: <ul><li>The `redisHost` name must be specified in the form of `"server:port"`</li><li>TLS must be enabled</li></ul> Learn more about this setting under [Create a Redis instance > Azure Cache for Redis]({{< ref "#create-a-redis-instance" >}}) | `"true"`, `"false"` |
 | `enableTLS` | N | Output |  If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS. Defaults to `"false"` | `"true"`, `"false"` |
 | `failover`           | N | Output         | Property to enabled failover configuration. Needs sentinalMasterName to be set. Defaults to `"false"` | `"true"`, `"false"`
 | `sentinelMasterName` | N | Output         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/reference/sentinel-clients/) | `""`,  `"127.0.0.1:6379"`
@@ -160,7 +163,7 @@ Dapr can use any Redis instance - containerized, running on your local dev machi
 
 *Note: Dapr does not support Redis >= 7. It is recommended to use Redis 6*
 
-{{< tabs "Self-Hosted" "Kubernetes" "AWS" "GCP" "Azure">}}
+{{< tabs "Self-Hosted" "Kubernetes" "AWS" "GCP" "Azure Cache for Redis">}}
 
 {{% codetab %}}
 The Dapr CLI will automatically create and setup a Redis Streams instance for you.
@@ -207,7 +210,27 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 {{% /codetab %}}
 
 {{% codetab %}}
-[Azure Redis](https://docs.microsoft.com/azure/azure-cache-for-redis/quickstart-create-redis)
+[Create an Azure Cache for Redis instance using the official Microsoft documentation.](https://docs.microsoft.com/azure/azure-cache-for-redis/quickstart-create-redis)
+
+In your Redis component, you can implement EntraID support for Azure Cache for Redis with the following metadata settings:
+
+```yml
+metadata:
+  - name: redisHost
+    value: MYHOSTNAME.redis.cache.windows.net:6380
+  - name: useEntraID
+    value: "true"
+  - name: enableTLS
+    value: "true"
+```
+
+In order to use EntraID:
+
+- The `redisHost` name must be specified in the form of `"server:port"`
+- TLS must be enabled
+
+`useEntraID` assumes that either your UserPrincipal (via AzureCLICredential) or the SystemAssigned managed identity have the RedisDataOwner role permission. If a user-assigned identity is used, [you need to specify the `azureClientID` property]({{< ref "howto-mi.md#set-up-identities-in-your-component" >}}).
+
 {{% /codetab %}}
 
 {{< /tabs >}}
