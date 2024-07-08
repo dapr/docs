@@ -65,7 +65,7 @@ scopes:
 
 You can override this file with another [pubsub component]({{< ref setup-pubsub >}}) by creating a components directory (in this example, `myComponents`) containing the file and using the flag `--resources-path` with the `dapr run` CLI command.
 
-{{< tabs Dotnet Java Python Go Javascript >}}
+{{< tabs ".NET" Java Python Go JavaScript >}}
 
 {{% codetab %}}
 
@@ -194,7 +194,7 @@ To prevent reprocessing or loss of unprocessed messages, in-flight messages betw
 
 Below are code examples that leverage Dapr SDKs to subscribe to the topic you defined in `subscription.yaml`.
 
-{{< tabs Dotnet Java Python Go JavaScript>}}
+{{< tabs ".NET" Java Python Go JavaScript>}}
 
 {{% codetab %}}
 
@@ -430,7 +430,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"orderId"
 
 Below are code examples that leverage Dapr SDKs to publish a topic.
 
-{{< tabs Dotnet Java Python Go Javascript>}}
+{{< tabs ".NET" Java Python Go JavaScript>}}
 
 {{% codetab %}}
 
