@@ -41,7 +41,7 @@ spec:
 
 ### Acquire lock
 
-{{< tabs HTTP Dotnet Go >}}
+{{< tabs HTTP ".NET" Go >}}
 
 {{% codetab %}}
 
@@ -122,7 +122,7 @@ func main() {
 
 ### Unlock existing lock
 
-{{< tabs HTTP Dotnet Go >}}
+{{< tabs HTTP ".NET" Go >}}
 
 {{% codetab %}}
 
