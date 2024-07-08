@@ -210,26 +210,31 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 {{% /codetab %}}
 
 {{% codetab %}}
-[Create an Azure Cache for Redis instance using the official Microsoft documentation.](https://docs.microsoft.com/azure/azure-cache-for-redis/quickstart-create-redis)
+1. [Create an Azure Cache for Redis instance using the official Microsoft documentation.](https://docs.microsoft.com/azure/azure-cache-for-redis/quickstart-create-redis)
 
-In your Redis component, you can implement EntraID support for Azure Cache for Redis with the following metadata settings:
+1. Once your instance is created, grab the Host name (FQDN) and your access key from the Azure portal. 
+   - For the Host name: 
+     - Navigate to the resource's **Overview** page.
+     - Copy the **Host name** value.
+   - For your access key: 
+     - Navigate to **Settings** > **Access Keys**. 
+     - Copy and save your key.
 
-```yml
-metadata:
-  - name: redisHost
-    value: MYHOSTNAME.redis.cache.windows.net:6380
-  - name: useEntraID
-    value: "true"
-  - name: enableTLS
-    value: "true"
-```
+1. Add your key and your host name to a `redis.yaml` file that Dapr can apply to your cluster. 
+   - If you're running a sample, add the host and key to the provided `redis.yaml`. 
+   - If you're creating a project from the ground up, create a `redis.yaml` file as specified in [the Component format section](#component-format). 
+   
+1. Set the `redisHost` key to `[HOST NAME FROM PREVIOUS STEP]:6379` and the `redisPassword` key to the key you saved earlier. 
+   
+   **Note:** In a production-grade application, follow [secret management]({{< ref component-secrets.md >}}) instructions to securely manage your secrets.
 
-In order to use EntraID:
+1. Enable EntraID support:
+   - Enable Entra ID authentication on your Azure Redis server. This may takes a few minutes.
+   - Set `useEntraID` to `"true"` to implement EntraID support for Azure Cache for Redis.
 
-- The `redisHost` name must be specified in the form of `"server:port"`
-- TLS must be enabled
+1. Set `enableTLS` to `"true"` to support TLS. 
 
-`useEntraID` assumes that either your UserPrincipal (via AzureCLICredential) or the SystemAssigned managed identity have the RedisDataOwner role permission. If a user-assigned identity is used, [you need to specify the `azureClientID` property]({{< ref "howto-mi.md#set-up-identities-in-your-component" >}}).
+> **Note:**`useEntraID` assumes that either your UserPrincipal (via AzureCLICredential) or the SystemAssigned managed identity have the RedisDataOwner role permission. If a user-assigned identity is used, [you need to specify the `azureClientID` property]({{< ref "howto-mi.md#set-up-identities-in-your-component" >}}).
 
 {{% /codetab %}}
 
