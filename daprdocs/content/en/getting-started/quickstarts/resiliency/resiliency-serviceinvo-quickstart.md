@@ -55,7 +55,7 @@ pip3 install -r requirements.txt
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-port 8001 --app-id order-processor  --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- python3 app.py
+dapr run --app-port 8001 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- python3 app.py
 ```
 
 ### Step 3: Run the `checkout` service application 
@@ -75,7 +75,7 @@ pip3 install -r requirements.txt
 Run the `checkout` service alongside a Dapr sidecar. 
 
 ```bash
-dapr run  --app-id checkout --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- python3 app.py
+dapr run --app-id checkout --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- python3 app.py
 ```
 
 The Dapr sidecar then loads the resiliency spec located in the resources directory:
@@ -262,7 +262,7 @@ npm install
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-port 5001 --app-id order-processor  --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- npm start
+dapr run --app-port 5001 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- npm start
 ```
 
 ### Step 3: Run the `checkout` service application 
@@ -283,7 +283,7 @@ npm install
 Run the `checkout` service alongside a Dapr sidecar. 
 
 ```bash
-dapr run --app-id checkout  --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- npm start
+dapr run --app-id checkout --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- npm start
 ```
 
 The Dapr sidecar then loads the resiliency spec located in the resources directory:
@@ -426,7 +426,7 @@ Once you restart the `order-processor` service, the application will recover sea
 In the `order-processor` service terminal, restart the application:
 
 ```bash
-dapr run --app-port 5001 --app-id order-processor  --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- npm start
+dapr run --app-port 5001 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- npm start
 ```
 
 `checkout` service output:
@@ -494,7 +494,7 @@ dotnet build
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-port 7001 --app-id order-processor  --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- dotnet run
+dapr run --app-port 7001 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- dotnet run
 ```
 
 ### Step 3: Run the `checkout` service application 
@@ -516,7 +516,7 @@ dotnet build
 Run the `checkout` service alongside a Dapr sidecar. 
 
 ```bash
-dapr run  --app-id checkout  --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- dotnet run
+dapr run --app-id checkout --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- dotnet run
 ```
 
 The Dapr sidecar then loads the resiliency spec located in the resources directory:
@@ -727,7 +727,7 @@ mvn clean install
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor  --resources-path ../../../resources/ --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+dapr run --app-id order-processor --resources-path ../../../resources/ --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
 ### Step 3: Run the `checkout` service application 
@@ -748,7 +748,7 @@ mvn clean install
 Run the `checkout` service alongside a Dapr sidecar. 
 
 ```bash
-dapr run --app-id checkout  --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
+dapr run --app-id checkout --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
 ```
 
 The Dapr sidecar then loads the resiliency spec located in the resources directory:
@@ -891,7 +891,7 @@ Once you restart the `order-processor` service, the application will recover sea
 In the `order-processor` service terminal, restart the application:
 
 ```bash
-dapr run --app-id order-processor  --resources-path ../../../resources/ --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+dapr run --app-id order-processor --resources-path ../../../resources/ --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
 `checkout` service output:
@@ -957,7 +957,7 @@ go build .
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-port 6001 --app-id order-processor  --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- go run .
+dapr run --app-port 6001 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- go run .
 ```
 
 ### Step 3: Run the `checkout` service application 
@@ -978,7 +978,7 @@ go build .
 Run the `checkout` service alongside a Dapr sidecar. 
 
 ```bash
-dapr run  --app-id checkout  --resources-path ../../../resources/  --app-protocol http --dapr-http-port 3500 -- go run .
+dapr run --app-id checkout --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- go run .
 ```
 
 The Dapr sidecar then loads the resiliency spec located in the resources directory:
@@ -1121,7 +1121,7 @@ Once you restart the `order-processor` service, the application will recover sea
 In the `order-processor` service terminal, restart the application:
 
 ```bash
-dapr run --app-port 6001 --app-id order-processor  --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- go run .
+dapr run --app-port 6001 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- go run .
 ```
 
 `checkout` service output:

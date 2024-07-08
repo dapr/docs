@@ -24,7 +24,7 @@ Dapr allows you to assign a global, unique ID for your app. This ID encapsulates
 {{% codetab %}}
 
 ```bash
-dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- python3 checkout/app.py
+dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- python3 checkout/app.py
 
 dapr run --app-id order-processor --app-port 8001  --app-protocol http --dapr-http-port 3501 -- python3 order-processor/app.py
 ```
@@ -32,7 +32,7 @@ dapr run --app-id order-processor --app-port 8001  --app-protocol http --dapr-ht
 If your app uses a TLS, you can tell Dapr to invoke your app over a TLS connection by setting `--app-protocol https`:
 
 ```bash
-dapr run  --app-id checkout --app-protocol https --dapr-http-port 3500 -- python3 checkout/app.py
+dapr run --app-id checkout --app-protocol https --dapr-http-port 3500 -- python3 checkout/app.py
 
 dapr run --app-id order-processor --app-port 8001 --app-protocol https --dapr-http-port 3501 -- python3 order-processor/app.py
 ```
@@ -42,7 +42,7 @@ dapr run --app-id order-processor --app-port 8001 --app-protocol https --dapr-ht
 {{% codetab %}}
 
 ```bash
-dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm start
+dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm start
 
 dapr run --app-id order-processor --app-port 5001  --app-protocol http --dapr-http-port 3501 -- npm start
 ```
@@ -50,7 +50,7 @@ dapr run --app-id order-processor --app-port 5001  --app-protocol http --dapr-ht
 If your app uses a TLS, you can tell Dapr to invoke your app over a TLS connection by setting `--app-protocol https`:
 
 ```bash
-dapr run  --app-id checkout --dapr-http-port 3500 --app-protocol https -- npm start
+dapr run --app-id checkout --dapr-http-port 3500 --app-protocol https -- npm start
 
 dapr run --app-id order-processor --app-port 5001 --dapr-http-port 3501 --app-protocol https -- npm start
 ```
@@ -60,7 +60,7 @@ dapr run --app-id order-processor --app-port 5001 --dapr-http-port 3501 --app-pr
 {{% codetab %}}
 
 ```bash
-dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- dotnet run
+dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- dotnet run
 
 dapr run --app-id order-processor --app-port 7001 --app-protocol http --dapr-http-port 3501 -- dotnet run
 ```
@@ -68,7 +68,7 @@ dapr run --app-id order-processor --app-port 7001 --app-protocol http --dapr-htt
 If your app uses a TLS, you can tell Dapr to invoke your app over a TLS connection by setting `--app-protocol https`:
 
 ```bash
-dapr run  --app-id checkout --dapr-http-port 3500 --app-protocol https -- dotnet run
+dapr run --app-id checkout --dapr-http-port 3500 --app-protocol https -- dotnet run
 
 dapr run --app-id order-processor --app-port 7001 --dapr-http-port 3501 --app-protocol https -- dotnet run
 ```
@@ -247,7 +247,9 @@ namespace EventService
                var content = new StringContent(orderJson, Encoding.UTF8, "application/json");
 
                var httpClient = DaprClient.CreateInvokeHttpClient();
-               await httpClient.PostAsJsonAsync($"http://order-processor/orders", content);               
+               var response = await httpClient.PostAsJsonAsync("http://order-processor/orders", content);               
+               var result = await response.Content.ReadAsStringAsync();
+               
                Console.WriteLine("Order requested: " + orderId);
                Console.WriteLine("Result: " + result);
    	    }
@@ -406,6 +408,14 @@ Using CLI:
 
 ```bash
 dapr invoke --app-id checkout --method checkout/100
+```
+
+#### Including a query string in the URL
+
+You can also append a query string or a fragment to the end of the URL and Dapr will pass it through unchanged. This means that if you need to pass some additional arguments in your service invocation that aren't part of a payload or the path, you can do so by appending a `?` to the end of the URL, followed by the key/value pairs separated by `=` signs and delimited by `&`. For example:
+
+```bash
+curl 'http://dapr-app-id:checkout@localhost:3602/checkout/100?basket=1234&key=abc` -X POST
 ```
 
 ### Namespaces

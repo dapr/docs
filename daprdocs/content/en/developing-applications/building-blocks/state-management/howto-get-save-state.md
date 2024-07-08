@@ -68,7 +68,7 @@ Set an `app-id`, as the state keys are prefixed with this value. If you don't se
 
 The following example shows how to save and retrieve a single key/value pair using the Dapr state management API.
 
-{{< tabs Dotnet Java Python Go Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+{{< tabs ".NET" Java Python Go JavaScript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
 {{% codetab %}}
 
@@ -356,7 +356,7 @@ Restart your sidecar and try retrieving state again to observe that state persis
 
 Below are code examples that leverage Dapr SDKs for deleting the state.
 
-{{< tabs Dotnet Java Python Go Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+{{< tabs ".NET" Java Python Go JavaScript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
 {{% codetab %}}
 
@@ -537,7 +537,7 @@ Try getting state again. Note that no value is returned.
 
 Below are code examples that leverage Dapr SDKs for saving and retrieving multiple states.
 
-{{< tabs Dotnet Java Python Go Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+{{< tabs ".NET" Java Python Go JavaScript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
 {{% codetab %}}
 
@@ -788,7 +788,7 @@ State transactions require a state store that supports multi-item transactions. 
 
 Below are code examples that leverage Dapr SDKs for performing state transactions.
 
-{{< tabs Dotnet Java Python Go Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+{{< tabs ".NET" Java Python Go JavaScript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
 {{% codetab %}}
 
