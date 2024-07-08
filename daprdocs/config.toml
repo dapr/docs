@@ -1,5 +1,5 @@
 # Site Configuration
-baseURL = "https://docs.dapr.io"
+baseURL = "https://v1-13.docs.dapr.io"
 title = "Dapr Docs"
 theme = "docsy"
 disableFastRender = true
@@ -191,17 +191,20 @@ github_subdir = "daprdocs"
 github_branch = "v1.13"
 
 # Versioning
-version_menu = "v1.13 (latest)"
+version_menu = "v1.13"
 version = "v1.13"
-archived_version = false
+archived_version = true
 url_latest_version = "https://docs.dapr.io"
 
 [[params.versions]]
-  version = "v1.14 (preview)"
-  url = "https://v1-14.docs.dapr.io"
+  version = "v1.15 (preview)"
+  url = "https://v1-15.docs.dapr.io"
 [[params.versions]]
-  version = "v1.13 (latest)"
+  version = "v1.14 (latest)"
   url = "#"
+[[params.versions]]
+  version = "v1.13"
+  url = "https://v1-13.docs.dapr.io"
 [[params.versions]]
   version = "v1.12"
   url = "https://v1-12.docs.dapr.io"
