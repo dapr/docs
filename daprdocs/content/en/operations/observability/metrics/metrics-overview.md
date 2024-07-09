@@ -198,7 +198,7 @@ dapr_http_server_request_count{app_id="order-service",method="",path="/orders",s
 
 In this example, the HTTP method is excluded from the metrics, resulting in a single metric for all requests to the `/orders` endpoint.
 
-### Configuring Custom Latency Histogram Buckets
+## Configuring custom latency histogram buckets
 
 Dapr uses cumulative histogram metrics to group latency values into buckets, where each bucket contains:
 - A count of the number of requests with that latency
