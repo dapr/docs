@@ -237,7 +237,7 @@ Tailor the latency buckets to your needs, by modifying the `spec.metrics.latency
 
 For example, if you aren't interested in extremely low latency values (1-10ms), you can group them in a single 10ms bucket. Similarly, you can group the high values in a single bucket (1000-5000ms), while keeping more detail in the middle range of values that you are most interested in.
 
-The following Configuration spec replaces the default 34 buckets with 11 buckets giving a higher level of granularity in the middle range of values:
+The following Configuration spec example replaces the default 34 buckets with 11 buckets, giving a higher level of granularity in the middle range of values:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
