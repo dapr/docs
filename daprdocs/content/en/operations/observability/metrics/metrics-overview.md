@@ -235,7 +235,7 @@ Take note of the default latency values your applications are producing before c
 
 Tailor the latency buckets to your needs, by modifying the `spec.metrics.latencyDistributionBuckets` field in the [Dapr configuration spec]({{< ref configuration-schema.md >}}) for your application(s).
 
-For example, in the case where you are not interested in extremely low latency values (1-10ms), you can group them in a single 10ms bucket. Similarly, you can group the high values in a single bucket (1000-5000 ms), while keeping more detail in the middle range of values that you are most interested in.
+For example, if you aren't interested in extremely low latency values (1-10ms), you can group them in a single 10ms bucket. Similarly, you can group the high values in a single bucket (1000-5000ms), while keeping more detail in the middle range of values that you are most interested in.
 
 The following Configuration spec replaces the default 34 buckets with 11 buckets giving a higher level of granularity in the middle range of values:
 
