@@ -200,7 +200,9 @@ In this example, the HTTP method is excluded from the metrics, resulting in a si
 
 ### Configuring Custom Latency Histogram Buckets
 
-Dapr use cumulative histogram metrics to group latency values into buckets, where each bucket contains a count of the number of requests that had that latency plus all the requests with lower latency.
+Dapr uses cumulative histogram metrics to group latency values into buckets, where each bucket contains:
+- A count of the number of requests with that latency
+- All the requests with lower latency
 
 By default, Dapr groups request latency metrics into the following buckets:
 
