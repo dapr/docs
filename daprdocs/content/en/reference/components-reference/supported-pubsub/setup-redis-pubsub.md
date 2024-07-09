@@ -72,7 +72,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service, provided the version of Redis is 5.x or 6.x.
 
-{{< tabs "Self-Hosted" "Kubernetes" "AWS" "GCP" "Azure Cache for Redis">}}
+{{< tabs "Self-Hosted" "Kubernetes" "AWS" "Azure" "GCP" >}}
 
 {{% codetab %}}
 The Dapr CLI will automatically create and setup a Redis Streams instance for you.
@@ -115,10 +115,6 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 {{% /codetab %}}
 
 {{% codetab %}}
-[GCP Cloud MemoryStore](https://cloud.google.com/memorystore/)
-{{% /codetab %}}
-
-{{% codetab %}}
 1. [Create an Azure Cache for Redis instance using the official Microsoft documentation.](https://docs.microsoft.com/azure/azure-cache-for-redis/quickstart-create-redis)
 
 1. Once your instance is created, grab the Host name (FQDN) and your access key from the Azure portal. 
@@ -145,6 +141,10 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 
 > **Note:**`useEntraID` assumes that either your UserPrincipal (via AzureCLICredential) or the SystemAssigned managed identity have the RedisDataOwner role permission. If a user-assigned identity is used, [you need to specify the `azureClientID` property]({{< ref "howto-mi.md#set-up-identities-in-your-component" >}}).
 
+{{% /codetab %}}
+
+{{% codetab %}}
+[GCP Cloud MemoryStore](https://cloud.google.com/memorystore/)
 {{% /codetab %}}
 
 {{< /tabs >}}
