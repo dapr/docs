@@ -212,7 +212,7 @@ By default, Dapr groups request latency metrics into the following buckets:
 
 Grouping latency values in a cumulative fashion allows buckets to be used or dropped as needed for increased or decreased granularity of data.
 For example, if a request takes 3ms, it's counted in the 3ms bucket, the 4ms bucket, the 5ms bucket, and so on.
-Similarly, if a request takes 10ms, it will be counted in the 10ms bucket, the 13ms bucket, the 16ms bucket, and so on.
+Similarly, if a request takes 10ms, it's counted in the 10ms bucket, the 13ms bucket, the 16ms bucket, and so on.
 After these two requests have completed, the 3ms bucket has a count of 1 and the 10ms bucket has a count of 2, since both the 3ms and 10ms requests are included here. 
 
 This shows up as follows:
