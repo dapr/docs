@@ -746,10 +746,10 @@ The `order-processor` console app starts and manages the lifecycle of an order p
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- Java JDK 11 (or greater):
-    - [Microsoft JDK 11](https://docs.microsoft.com/java/openjdk/download#openjdk-11)
-    - [Oracle JDK 11](https://www.oracle.com/technetwork/java/javase/downloads/index.html#JDK11)
-    - [OpenJDK 11](https://jdk.java.net/11/)
+- Java JDK 17 (or greater):
+    - [Microsoft JDK 17](https://docs.microsoft.com/java/openjdk/download#openjdk-17)
+    - [Oracle JDK 17](https://www.oracle.com/technetwork/java/javase/downloads/index.html#JDK17)
+    - [OpenJDK 17](https://jdk.java.net/17/)
 - [Apache Maven](https://maven.apache.org/install.html) version 3.x.
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
