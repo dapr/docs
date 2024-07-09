@@ -27,7 +27,7 @@ Select your [preferred language below]({{< ref "#sdk-languages" >}}) to learn mo
 | [Java]({{< ref java >}}) | Stable | ✔ | Spring Boot  <br /> Quarkus| ✔ | ✔ |
 | [Go]({{< ref go >}}) | Stable | ✔ | ✔ | ✔ | ✔ |
 | [PHP]({{< ref php >}}) | Stable | ✔ | ✔ | ✔ | |
-| [Javascript]({{< ref js >}}) | Stable| ✔ | | ✔ | ✔  |
+| [JavaScript]({{< ref js >}}) | Stable| ✔ | | ✔ | ✔  |
 | [C++](https://github.com/dapr/cpp-sdk) | In development | ✔ | | |
 | [Rust]({{< ref rust >}}) | In development | ✔ | | ✔ | |
 
