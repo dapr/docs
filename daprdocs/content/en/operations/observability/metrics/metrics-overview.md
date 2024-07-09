@@ -225,7 +225,11 @@ This shows up as follows:
 The default number of buckets works well for most use cases, but can be adjusted as needed. Each request creates 34 different metrics, leaving this value to grow considerably for a large number of applications.
 More accurate latency percentiles can be achieved by increasing the number of buckets. However, a higher number of buckets increases the amount of memory used to store the metrics, potentially negatively impacting your monitoring system. 
 
-It is recommended to keep the number of latency buckets set to the default value, unless you are seeing unwanted memory pressure in your monitoring system. Configuring the number of buckets allows you to choose applications where you want to see more detail with a higher number of buckets, and where broader values are sufficient by reducing the buckets. Take note of the default latency values your applications are producing before configuring the number buckets as described below.
+It is recommended to keep the number of latency buckets set to the default value, unless you are seeing unwanted memory pressure in your monitoring system. Configuring the number of buckets allows you to choose applications where:
+- You want to see more detail with a higher number of buckets
+- Broader values are sufficient by reducing the buckets
+
+Take note of the default latency values your applications are producing before configuring the number buckets.
 
 Tailor the latency buckets to your needs, by modifying the `spec.metrics.latencyDistributionBuckets` field in the Dapr configuration spec for your application(s).
 
