@@ -38,10 +38,6 @@ spec:
             regex: {}
     http:
       increasedCardinality: <TRUE-OR-FALSE>
-      pathMatching: 
-        - <PATH-A>
-        - <PATH-B>
-      excludeVerbs: <TRUE-OR-FALSE>
   httpPipeline: # for incoming http calls
     handlers:
       - name: <HANDLER-NAME>
