@@ -233,7 +233,7 @@ It is recommended to keep the number of latency buckets set to the default value
 Take note of the default latency values your applications are producing before configuring the number buckets.
 ### Customizing latency buckets to your scenario
 
-Tailor the latency buckets to your needs, by modifying the `spec.metrics.latencyDistributionBuckets` field in the Dapr configuration spec for your application(s).
+Tailor the latency buckets to your needs, by modifying the `spec.metrics.latencyDistributionBuckets` field in the [Dapr configuration spec]({{< ref configuration-schema.md >}}) for your application(s).
 
 For example, in the case where you are not interested in extremely low latency values (1-10ms), you can group them in a single 10ms bucket. Similarly, you can group the high values in a single bucket (1000-5000 ms), while keeping more detail in the middle range of values that you are most interested in.
 
