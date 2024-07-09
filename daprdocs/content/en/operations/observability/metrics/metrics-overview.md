@@ -215,7 +215,7 @@ For example, if a request takes 3ms, it's counted in the 3ms bucket, the 4ms buc
 Similarly, if a request takes 10ms, it will be counted in the 10ms bucket, the 13ms bucket, the 16ms bucket, and so on.
 After these two requests have completed, the 3ms bucket has a count of 1 and the 10ms bucket has a count of 2, since both the 3ms and 10ms requests are included here. 
 
-This will show up as follows:
+This shows up as follows:
 
 |1|2|3|4|5|6|8|10|13|16|20|25|30|40|50|65|80|100|130|160| ..... | 100000 |
 |-|-|-|-|-|-|-|--|--|--|--|--|--|--|--|--|--|---|---|---|-------|--------|
