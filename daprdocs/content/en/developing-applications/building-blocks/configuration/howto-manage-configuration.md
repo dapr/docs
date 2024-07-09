@@ -71,7 +71,7 @@ spec:
 
 The following example shows how to get a saved configuration item using the Dapr Configuration API.
 
-{{< tabs ".NET" Java Python Go Javascript "HTTP API (BASH)" "HTTP API (Powershell)">}}
+{{< tabs ".NET" Java Python Go JavaScript "HTTP API (BASH)" "HTTP API (Powershell)">}}
 
 {{% codetab %}}
 
@@ -252,7 +252,7 @@ Invoke-RestMethod -Uri 'http://localhost:3601/v1.0/configuration/configstore?key
 
 Below are code examples that leverage SDKs to subscribe to keys `[orderId1, orderId2]` using `configstore` store component.
 
-{{< tabs ".NET" "ASP.NET Core" Java Python Go Javascript>}}
+{{< tabs ".NET" "ASP.NET Core" Java Python Go JavaScript>}}
 
 {{% codetab %}}
 
@@ -521,7 +521,7 @@ After you've subscribed to watch configuration items, you will receive updates f
 
 Following are the code examples showing how you can unsubscribe to configuration updates using unsubscribe API.
 
-{{< tabs ".NET" Java Python Go Javascript "HTTP API (BASH)" "HTTP API (Powershell)">}}
+{{< tabs ".NET" Java Python Go JavaScript "HTTP API (BASH)" "HTTP API (Powershell)">}}
 
 {{% codetab %}}
 ```csharp
