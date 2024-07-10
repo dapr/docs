@@ -8,19 +8,22 @@ description: "Learn how to use the jobs API to schedule jobs"
 
 Now that you've learned what the [jobs building block]({{< ref jobs-overview.md >}}) provides, let's look at an example of how to use the API. The code example below describes an application that schedules jobs for a **TBD** application.
 
-<!-- 
-Include a diagram or image, if possible. 
+<!--
+Include a diagram or image, if possible.
 -->
-
-
 
 ## Set up the Scheduler service
 
-When you run `dapr init` in either self-hosted mode or on Kubernetes, the Dapr scheduler service is started. 
+{{% alert title="Warning" color="warning" %}}
+By default, Job data is not resilient to [Scheduler]({{< ref scheduler.md >}}) service restarts.
+A persistent volume must be provided to Scheduler to ensure job data is not lost in either [Kubernetes]({{< ref kubernetes-persisting-scheduler.md >}}) or Self-Hosted (TODO) mode.
+{{% /alert %}}
 
-## Run the Dapr sidecar 
+When you run `dapr init` in either self-hosted mode or on Kubernetes, the Dapr scheduler service is started.
 
-Run the Dapr sidecar alongside your application. 
+## Run the Dapr sidecar
+
+Run the Dapr sidecar alongside your application.
 
 ```bash
 dapr run --app-id=jobs --app-port 50070 --app-protocol grpc --log-level debug -- go run main.go
