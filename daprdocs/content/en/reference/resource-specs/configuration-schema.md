@@ -36,6 +36,9 @@ spec:
         labels:
           - name: <LABEL-NAME>
             regex: {}
+    latencyDistributionBuckets:
+      - <BUCKET-VALUE-MS-0>
+      - <BUCKET-VALUE-MS-1>
     http:
       increasedCardinality: <TRUE-OR-FALSE>
       pathMatching: 
