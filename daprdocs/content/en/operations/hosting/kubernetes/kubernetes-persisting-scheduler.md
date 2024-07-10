@@ -17,11 +17,11 @@ Some Kubernetes providers recommend using a [CSI driver](https://kubernetes.io/d
 Below are a list of useful links to the relevant documentation for creating a persistent disk for the major cloud providers:
 - [Google Cloud Persistent Disk](https://cloud.google.com/compute/docs/disks)
 - [Amazon EBS Volumes](https://aws.amazon.com/blogs/storage/persistent-storage-for-kubernetes/)
-- [Azure AKS Storage Options](https://learn.microsoft.com/en-us/azure/aks/concepts-storage)
+- [Azure AKS Storage Options](https://learn.microsoft.com/azure/aks/concepts-storage)
 - [Digital Ocean Block Storage](https://www.digitalocean.com/docs/kubernetes/how-to/add-volumes/)
-- [VMWare vSphere Storage](https://docs.vmware.com/en/VMware-vSphere/7.0/vmware-vsphere-with-tanzu/GUID-A19F6480-40DC-4343-A5A9-A5D3BFC0742E.html)
+- [VMWare vSphere Storage](https://docs.vmware.com/VMware-vSphere/7.0/vmware-vsphere-with-tanzu/GUID-A19F6480-40DC-4343-A5A9-A5D3BFC0742E.html)
 - [OpenShift Persistent Storage](https://docs.openshift.com/container-platform/4.6/storage/persistent_storage/persistent-storage-aws-efs.html)
-- [Alibaba Cloud Disk Storage](https://www.alibabacloud.com/help/en/ack/ack-managed-and-ack-dedicated/user-guide/create-a-pvc)
+- [Alibaba Cloud Disk Storage](https://www.alibabacloud.com/help/ack/ack-managed-and-ack-dedicated/user-guide/create-a-pvc)
 
 
 Once the persistent volume class has been made available, Dapr can be installed with the following command with Scheduler configured to use the persistent volume class (replace `my-storage-class` with the name of the storage class):
