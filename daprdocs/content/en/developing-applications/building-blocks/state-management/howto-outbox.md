@@ -34,7 +34,7 @@ The outbox feature can be used with using any [transactional state store]({{< re
 Message brokers that work with the competing consumer pattern (for example, [Apache Kafka]({{< ref setup-apache-kafka>}})) are encouraged to reduce the chances of duplicate events.
 {{% /alert %}}
 
-## Usage
+## Enable the outbox pattern
 
 To enable the outbox feature, add the following required and optional fields on a state store component:
 
@@ -67,6 +67,8 @@ spec:
 | outboxPublishTopic  | Yes         | N/A           | Sets the topic that receives the state changes on the pub/sub configured with `outboxPublishPubsub`. The message body will be a state transaction item for an `insert` or `update` operation
 | outboxPubsub        | No          | `outboxPublishPubsub`           | Sets the pub/sub component used by Dapr to coordinate the state and pub/sub transactions. If not set, the pub/sub component configured with `outboxPublishPubsub` is used. This is useful if you want to separate the pub/sub component used to send the notification state changes from the one used to coordinate the transaction
 | outboxDiscardWhenMissingState  | No         | `false`           | By setting `outboxDiscardWhenMissingState` to `true`, Dapr discards the transaction if it cannot find the state in the database and does not retry. This setting can be useful if the state store data has been deleted for any reason before Dapr was able to deliver the message and you would like Dapr to drop the items from the pub/sub and stop retrying to fetch the state
+
+## Additional configurations
 
 ### Combining outbox and non-outbox messages on the same state store
 
@@ -105,6 +107,40 @@ spec:
   - name: outboxPublishTopic # Required
     value: "newOrder"
 ```
+
+### Shape the outbox pattern message
+
+You can override the outbox pattern message saved to the database during the transaction by setting a different message. This is done via a projected transaction payload, which is ignored in the database, but used as the outbox pattern message published to the user topic.
+
+In the following Go example of a state transaction, the value of `"2"` is saved to the database, but the value of `"3"` is published to the end-user topic.
+
+```go
+_, err = runtimev1pb.NewDaprClient(conn).ExecuteStateTransaction(ctx, &runtimev1pb.ExecuteStateTransactionRequest{
+		StoreName: "mystore",
+		Operations: []*runtimev1pb.TransactionalStateOperation{
+			{
+				OperationType: "upsert",
+				Request: &common.StateItem{
+					Key:   "1",
+					Value: []byte("2"),
+				},
+			},
+			{
+				OperationType: "upsert",
+				Request: &common.StateItem{
+					Key:   "1",
+					Value: []byte("3"),
+          // Override the data payload saved to the database 
+					Metadata: map[string]string{
+						"outbox.projection": "true",
+					},
+				},
+			},
+		},
+	})
+```
+
+By setting the metadata item `"outbox.projection"`  to `"true"`, the transaction value saved to the database is ignored, while the second value is published to the configured pub/sub topic. 
 
 ## Demo
 
