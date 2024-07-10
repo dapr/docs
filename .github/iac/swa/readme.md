@@ -34,16 +34,17 @@ This assumes you have an existing [user-assigned managed identity](https://learn
 
 2) Deploy using the Azure Dev CLI
 
-The first time, and any updates to this environment
-
-```bash
-azd up
-```
-
-For subsequent environments/sites, create a side-by-side environment like this:
+Start by creating a create a side-by-side azd environment:
 
 ```bash
 azd env new
+```
+
+Use a unique, but easily spotted name, like `dapr-docs-v1-15`.
+
+Now, deploy the Dapr docs SWA in the new azd environment using the following command:
+
+```bash
 azd up
 ```
 
