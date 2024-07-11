@@ -451,6 +451,28 @@ You can set a time-to-live (TTL) value at either the message or component level.
 If you set both component-level and message-level TTL, the default component-level TTL is ignored in favor of the message-level TTL.
 {{% /alert %}}
 
+## Single Active Consumer
+
+Enable RabbitMQ [Single Active Consumer](https://www.rabbitmq.com/docs/consumers#single-active-consumer) parameter on queues.
+
+```yml
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: pubsub
+spec:
+  topic: orders
+  routes:
+    default: /orders
+  pubsubname: order-pub-sub
+  metadata:
+    singleActiveConsumer: "true"
+```
+
+{{% alert title="Note" color="primary" %}}
+The Dapr runtime acts as the single active consumer from RabbitMQ's perspective. To allow another application instance to take over in case of failure, Dapr must [probe the application's health]({{< ref "app-health.md" >}}) and unsubscribe from pub/sub component.
+{{% /alert %}}
+
 ## Related links
 
 - [Basic schema for a Dapr component]({{< ref component-schema >}}) in the Related links section
