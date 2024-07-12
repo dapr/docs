@@ -12,7 +12,7 @@ The jobs API is currently in alpha.
 
 {{% alert title="Warning" color="warning" %}}
 By default, Job data is not resilient to [Scheduler]({{< ref scheduler.md >}}) service restarts.
-A persistent volume must be provided to Scheduler to ensure job data is not lost in either [Kubernetes]({{< ref kubernetes-persisting-scheduler.md >}}) or Self-Hosted (TODO) mode.
+A persistent volume must be provided to Scheduler to ensure job data is not lost in either [Kubernetes]({{< ref kubernetes-persisting-scheduler.md >}}) or [Self-Hosted]({{< ref self-hosted-persisting-scheduler.md >}}) mode.
 {{% /alert %}}
 
 With the jobs API, you can schedule jobs and tasks in the future.

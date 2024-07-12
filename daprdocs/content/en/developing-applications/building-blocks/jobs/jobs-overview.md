@@ -18,7 +18,7 @@ Jobs in Dapr consist of:
 
 {{% alert title="Warning" color="warning" %}}
 By default, Job data is not resilient to [Scheduler]({{< ref scheduler.md >}}) service restarts.
-A persistent volume must be provided to Scheduler to ensure job data is not lost in either [Kubernetes]({{< ref kubernetes-persisting-scheduler.md >}}) or Self-Hosted (TODO) mode.
+A persistent volume must be provided to Scheduler to ensure job data is not lost in either [Kubernetes]({{< ref kubernetes-persisting-scheduler.md >}}) or [Self-hosted]({{< ref self-hosted-persisting-scheduler.md >}}) mode.
 {{% /alert %}}
 
 <img src="/images/scheduler/scheduler-architecture.png" alt="Diagram showing the Scheduler control plane service and the jobs API">
