@@ -115,29 +115,29 @@ You can override the outbox pattern message saved to the database during the tra
 In the following Go example of a state transaction, the value of `"2"` is saved to the database, but the value of `"3"` is published to the end-user topic.
 
 ```go
-_, err = runtimev1pb.NewDaprClient(conn).ExecuteStateTransaction(ctx, &runtimev1pb.ExecuteStateTransactionRequest{
-		StoreName: "mystore",
-		Operations: []*runtimev1pb.TransactionalStateOperation{
-			{
-				OperationType: "upsert",
-				Request: &common.StateItem{
-					Key:   "1",
-					Value: []byte("2"),
-				},
-			},
-			{
-				OperationType: "upsert",
-				Request: &common.StateItem{
-					Key:   "1",
-					Value: []byte("3"),
-          // Override the data payload saved to the database 
-					Metadata: map[string]string{
-						"outbox.projection": "true",
-					},
-				},
-			},
-		},
-	})
+ops := make([]*dapr.StateOperation, 0)
+
+op1 := &dapr.StateOperation{
+    Type: dapr.StateOperationTypeUpsert,
+    Item: &dapr.SetStateItem{
+        Key:   "key1",
+        Value: []byte("2"),
+    },
+}
+op2 := &dapr.StateOperation{
+    Type: dapr.StateOperationTypeUpsert,
+    Item: &dapr.SetStateItem{
+        Key:   "key1",
+				Value: []byte("3"),
+         // Override the data payload saved to the database 
+				Metadata: map[string]string{
+					"outbox.projection": "true",
+        },
+    },
+}
+ops = append(ops, op1, op2)
+meta := map[string]string{}
+err := testClient.ExecuteStateTransaction(ctx, store, meta, ops)
 ```
 
 By setting the metadata item `"outbox.projection"`  to `"true"`, the transaction value saved to the database is ignored, while the second value is published to the configured pub/sub topic. 
