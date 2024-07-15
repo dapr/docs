@@ -7,11 +7,9 @@ description: "Configure Scheduler to persist its database to make it resilient t
 ---
 
 The [Scheduler]({{< ref scheduler.md >}}) service is responsible for writing Jobs to its embedded database and scheduling them for execution.
-By default, the Scheduler service database writes this data to an in-memory ephemeral tempfs volume, meaning that this **data is not persisted across restarts**.
-**Job data will be lost during these events**.
+By default, the Scheduler service database writes this data to the local volume `dapr_scheduler`, meaning that this **data is persisted across restarts**.
 
-To make the Scheduler data resilient to restarts, a persistent volume must be mounted to the Scheduler container.
-This volume may already exist, else a new local volume will be created instead.
+The Scheduler persistent volume can be modified with a custom volume that is pre-existing, or will be created by Dapr.
 
 > If Dapr is already installed, the control plane will need to be completely [uninstalled]({{< ref dapr-uninstall.md >}}) in order for the Scheduler container to be recreated with the new persistent volume.
 
