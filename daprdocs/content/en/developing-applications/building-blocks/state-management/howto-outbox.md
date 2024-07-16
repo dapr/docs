@@ -146,7 +146,7 @@ meta := map[string]string{}
 err := testClient.ExecuteStateTransaction(ctx, store, meta, ops)
 ```
 
-By setting the metadata item `"outbox.projection"`  to `"true"`, the first transaction value published to the broker is ignored, while the second value is published to the configured pub/sub topic. 
+By setting the metadata item `"outbox.projection"` to `"true"`, the first transaction value published to the broker is ignored, while the second value is published to the configured pub/sub topic. 
 
 {{% /codetab %}}
 
