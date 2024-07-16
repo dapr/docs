@@ -9,6 +9,8 @@ description: "Configure Scheduler to persist its database to make it resilient t
 The [Scheduler]({{< ref scheduler.md >}}) service is responsible for writing jobs to its embedded database and scheduling them for execution.
 By default, the Scheduler service database writes this data to the local volume `dapr_scheduler`, meaning that **this data is persisted across restarts**.
 
+The host file location for this local volume will typically be located at either `/var/lib/docker/volumes/dapr_scheduler/_data` or `~/.local/share/containers/storage/volumes/dapr_scheduler/_data`, depending on your container runtime.
+
 The Scheduler persistent volume can be modified with a custom volume that is pre-existing, or will be created by Dapr.
 
 {{% alert title="Note" color="primary" %}}
