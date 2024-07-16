@@ -110,9 +110,15 @@ spec:
 
 ### Shape the outbox pattern message
 
-You can override the outbox pattern message saved to the database during the transaction by setting a different message. This is done via a projected transaction payload, which is ignored in the database, but used as the outbox pattern message published to the user topic.
+You can override the outbox pattern message published to the pub/sub broker by setting a different message. This is done via a projected transaction payload, which is ignored, but used as the outbox pattern message published to the user topic.
 
-In the following Go example of a state transaction, the value of `"2"` is saved to the database, but the value of `"3"` is published to the end-user topic.
+{{< tabs "Go SDK" HTTP >}}
+
+{{% codetab %}}
+
+<!--go-->
+
+In the following Go SDK example of a state transaction, the value of `"2"` is saved to the database, but the value of `"3"` is published to the end-user topic.
 
 ```go
 ops := make([]*dapr.StateOperation, 0)
@@ -140,11 +146,57 @@ meta := map[string]string{}
 err := testClient.ExecuteStateTransaction(ctx, store, meta, ops)
 ```
 
-By setting the metadata item `"outbox.projection"`  to `"true"`, the transaction value saved to the database is ignored, while the second value is published to the configured pub/sub topic. 
+By setting the metadata item `"outbox.projection"`  to `"true"`, the first transaction value published to the broker is ignored, while the second value is published to the configured pub/sub topic. 
 
-### Override Dapr-generated cloudevent fields
+{{% /codetab %}}
 
-You can also override the [Dapr-generated cloudevent fields]({{< ref "pubsub-cloudevents.md#dapr-generated-cloudevents-example" >}}) on the published outbox event with custom cloudevent metadata.
+{{% codetab %}}
+
+<!--http-->
+
+You can pass the message override using the following HTTP request:
+
+```bash
+curl -X POST http://localhost:3500/v1.0/state/starwars/transaction \
+  -H "Content-Type: application/json" \
+  -d '{
+        "operations": [
+          {
+            "operation": "upsert",
+            "request": {
+              "key": "key1",
+              "value": "2"
+            }
+          },
+          {
+            "operation": "upsert",
+            "request": {
+              "key": "key1"
+              "value: "3"
+              "metadata": {
+                 "outboxProjection": "true"
+              }
+            }
+          }
+        ],
+      }'
+```
+
+By setting the metadata item `"outboxProjection"`  to `"true"`, the first transaction value published to the broker is ignored, while the second value is published to the configured pub/sub topic. 
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+### Override Dapr-generated CloudEvent fields
+
+You can also override the [Dapr-generated CloudEvent fields]({{< ref "pubsub-cloudevents.md#dapr-generated-cloudevents-example" >}}) on the published outbox event with custom CloudEvent metadata.
+
+{{< tabs "Go SDK" HTTP >}}
+
+{{% codetab %}}
+
+<!--go-->
 
 ```go
 ops := make([]*dapr.StateOperation, 0)
@@ -156,12 +208,11 @@ op1 := &dapr.StateOperation{
         Value: []byte("2"),
         // Override the data payload saved to the database 
         Metadata: map[string]string{
-            "outbox.projection": "true",
-            "outbox.cloudevent.id": "unique-business-process-id",
-            "outbox.cloudevent.source": "CustomersApp",
-            "outbox.cloudevent.type": "CustomerCreated",
-            "outbox.cloudevent.subject": "123",
-            "outbox.cloudevent.my-custom-ce-field": "abc",
+            "id": "unique-business-process-id",
+            "source": "CustomersApp",
+            "type": "CustomerCreated",
+            "subject": "123",
+            "my-custom-ce-field": "abc",
         },
     },
 }
@@ -169,9 +220,42 @@ ops = append(ops, op1, op2)
 meta := map[string]string{}
 err := testClient.ExecuteStateTransaction(ctx, store, meta, ops)
 ```
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--http-->
+
+```bash
+curl -X POST http://localhost:3500/v1.0/state/starwars/transaction \
+  -H "Content-Type: application/json" \
+  -d '{
+        "operations": [
+          {
+            "operation": "upsert",
+            "request": {
+              "key": "key1",
+              "value": "2"
+            }
+          },
+        ],
+        "metadata": {
+          "id": "unique-business-process-id",
+          "source": "CustomersApp",
+          "type": "CustomerCreated",
+          "subject": "123",
+          "my-custom-ce-field": "abc",
+        }
+      }'
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
 
 {{% alert title="Note" color="primary" %}}
-The `outbox.cloudevent.data` metadata is reserved for Dapr's use only, and is non-customizable.
+The `data` CloudEvent field is reserved for Dapr's use only, and is non-customizable.
 
 {{% /alert %}}
 
