@@ -142,6 +142,39 @@ err := testClient.ExecuteStateTransaction(ctx, store, meta, ops)
 
 By setting the metadata item `"outbox.projection"`  to `"true"`, the transaction value saved to the database is ignored, while the second value is published to the configured pub/sub topic. 
 
+### Override Dapr-generated cloudevent fields
+
+You can also override the [Dapr-generated cloudevent fields]({{< ref "pubsub-cloudevents.md#dapr-generated-cloudevents-example" >}}) on the published outbox event with custom cloudevent metadata.
+
+```go
+ops := make([]*dapr.StateOperation, 0)
+
+op1 := &dapr.StateOperation{
+    Type: dapr.StateOperationTypeUpsert,
+    Item: &dapr.SetStateItem{
+        Key:   "key1",
+        Value: []byte("2"),
+        // Override the data payload saved to the database 
+        Metadata: map[string]string{
+            "outbox.projection": "true",
+            "outbox.cloudevent.id": "unique-business-process-id",
+            "outbox.cloudevent.source": "CustomersApp",
+            "outbox.cloudevent.type": "CustomerCreated",
+            "outbox.cloudevent.subject": "123",
+            "outbox.cloudevent.my-custom-ce-field": "abc",
+        },
+    },
+}
+ops = append(ops, op1, op2)
+meta := map[string]string{}
+err := testClient.ExecuteStateTransaction(ctx, store, meta, ops)
+```
+
+{{% alert title="Note" color="primary" %}}
+The `outbox.cloudevent.data` metadata is reserved for Dapr's use only, and is non-customizable.
+
+{{% /alert %}}
+
 ## Demo
 
 Watch [this video for an overview of the outbox pattern](https://youtu.be/rTovKpG0rhY?t=1338):
