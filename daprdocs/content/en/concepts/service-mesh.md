@@ -7,7 +7,7 @@ description: >
   How Dapr compares to and works with service meshes
 ---
 
-Dapr uses a sidecar architecture, running as a separate process alongside the application and includes features such as service invocation, network security, and distributed tracing. This often raises the question: how does Dapr compare to service mesh solutions such as [Linkerd](https://linkerd.io/), [Istio](https://istio.io/) and [Open Service Mesh](https://openservicemesh.io/) among others?
+Dapr uses a sidecar architecture, running as a separate process alongside the application and includes features such as service invocation, network security, and [distributed tracing](https://middleware.io/blog/what-is-distributed-tracing/). This often raises the question: how does Dapr compare to service mesh solutions such as [Linkerd](https://linkerd.io/), [Istio](https://istio.io/) and [Open Service Mesh](https://openservicemesh.io/) among others?
 
 ## How Dapr and service meshes compare
 While Dapr and service meshes do offer some overlapping capabilities, **Dapr is not a service mesh**, where a service mesh is defined as a *networking* service mesh. Unlike a service mesh which is focused on networking concerns, Dapr is focused on providing building blocks that make it easier for developers to build applications as microservices. Dapr is developer-centric, versus service meshes which are infrastructure-centric.
