@@ -6,13 +6,12 @@ weight: 50000
 description: "Configure Scheduler to persist its database to make it resilient to restarts"
 ---
 
-The [Scheduler]({{< ref scheduler.md >}}) service is responsible for writing Jobs to its embedded database and scheduling them for execution.
-By default, the Scheduler service database writes this data to an in-memory ephemeral tempfs volume, meaning that this **data is not persisted across restarts**.
-**Job data will be lost during these events**.
+The [Scheduler]({{< ref scheduler.md >}}) service is responsible for writing jobs to its embedded database and scheduling them for execution.
+By default, the Scheduler service database writes this data to an in-memory ephemeral tempfs volume, meaning that **this data is not persisted across restarts**. Job data will be lost during these events.
 
-To make the Scheduler data resilient to restarts, a persistent volume must be mounted to the Scheduler StatefulSet.
+To make the Scheduler data resilient to restarts, a persistent volume must be mounted to the Scheduler `StatefulSet`.
 This persistent volume is backed by a real disk that is provided by the hosted Cloud Provider or Kubernetes infrastructure platform.
-The size this disk should be is determined by how many jobs are expected to be persisted at once however, 64Gb should be more than sufficient for most use cases.
+Disk size is determined by how many jobs are expected to be persisted at once; however, 64Gb should be more than sufficient for most use cases.
 Some Kubernetes providers recommend using a [CSI driver](https://kubernetes.io/docs/concepts/storage/volumes/#csi) to provision the underlying disks.
 Below are a list of useful links to the relevant documentation for creating a persistent disk for the major cloud providers:
 - [Google Cloud Persistent Disk](https://cloud.google.com/compute/docs/disks)
@@ -24,16 +23,18 @@ Below are a list of useful links to the relevant documentation for creating a pe
 - [Alibaba Cloud Disk Storage](https://www.alibabacloud.com/help/ack/ack-managed-and-ack-dedicated/user-guide/create-a-pvc)
 
 
-Once the persistent volume class has been made available, Dapr can be installed with the following command with Scheduler configured to use the persistent volume class (replace `my-storage-class` with the name of the storage class):
+Once the persistent volume class is available, you can install Dapr using the following command, with Scheduler configured to use the persistent volume class (replace `my-storage-class` with the name of the storage class):
 
-> If Dapr is already installed, the control plane will need to be completely [uninstalled]({{< ref dapr-uninstall.md >}}) in order for the Scheduler StatefulSet to be recreated with the new persistent volume.
+{{% alert title="Note" color="primary" %}}
+If Dapr is already installed, the control plane needs to be completely [uninstalled]({{< ref dapr-uninstall.md >}}) in order for the Scheduler `StatefulSet` to be recreated with the new persistent volume.
+{{% /alert %}}
 
 {{< tabs "Dapr CLI" "Helm" >}}
  <!-- Dapr CLI -->
 {{% codetab %}}
 
 ```bash
-    dapr init -k --set dapr_scheduler.cluster.storageClassName=my-storage-class
+dapr init -k --set dapr_scheduler.cluster.storageClassName=my-storage-class
 ```
 
 {{% /codetab %}}
@@ -42,12 +43,12 @@ Once the persistent volume class has been made available, Dapr can be installed 
 {{% codetab %}}
 
 ```bash
-    helm upgrade --install dapr dapr/dapr \
-    --version={{% dapr-latest-version short="true" %}} \
-    --namespace dapr-system \
-    --create-namespace \
-    --set dapr_scheduler.cluster.storageClassName=my-storage-class \
-    --wait
+helm upgrade --install dapr dapr/dapr \
+--version={{% dapr-latest-version short="true" %}} \
+--namespace dapr-system \
+--create-namespace \
+--set dapr_scheduler.cluster.storageClassName=my-storage-class \
+--wait
 ```
 
 {{% /codetab %}}

@@ -17,7 +17,7 @@ Jobs in Dapr consist of:
 [See example scenarios.]({{< ref "#scenarios" >}})
 
 {{% alert title="Warning" color="warning" %}}
-By default, Job data is not resilient to [Scheduler]({{< ref scheduler.md >}}) service restarts.
+By default, job data is not resilient to [Scheduler]({{< ref scheduler.md >}}) service restarts.
 A persistent volume must be provided to Scheduler to ensure job data is not lost in either [Kubernetes]({{< ref kubernetes-persisting-scheduler.md >}}) or [Self-hosted]({{< ref self-hosted-persisting-scheduler.md >}}) mode.
 {{% /alert %}}
 

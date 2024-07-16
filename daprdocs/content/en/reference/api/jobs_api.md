@@ -11,7 +11,7 @@ The jobs API is currently in alpha.
 {{% /alert %}}
 
 {{% alert title="Warning" color="warning" %}}
-By default, Job data is not resilient to [Scheduler]({{< ref scheduler.md >}}) service restarts.
+By default, job data is not resilient to [Scheduler]({{< ref scheduler.md >}}) service restarts.
 A persistent volume must be provided to Scheduler to ensure job data is not lost in either [Kubernetes]({{< ref kubernetes-persisting-scheduler.md >}}) or [Self-Hosted]({{< ref self-hosted-persisting-scheduler.md >}}) mode.
 {{% /alert %}}
 
@@ -30,19 +30,21 @@ POST http://localhost:3500/v1.0-alpha1/jobs/<name>
 
 ### URL parameters
 
-> **At least one of `schedule` or `dueTime` must be provided, but they can also be provided together**.
+{{% alert title="Note" color="primary" %}}
+At least one of `schedule` or `dueTime` must be provided, but they can also be provided together.
+{{% /alert %}}
 
 Parameter | Description
 --------- | -----------
 `name` | Name of the job you're scheduling
-`data` | A protobuf message `@type` `value` pair. `@type` must be of a [well-known type](https://protobuf.dev/reference/protobuf/google.protobuf). Value is the serialized data.
-`schedule` | schedule is an optional schedule at which the job is to be run. Details of the format are below.
-`dueTime` | dueTime is the optional time at which the job should be active, or the "one shot" time if other scheduling type fields are not provided. Accepts a "point in time" string in the format of RFC3339, Go duration string (calculated from creation time), or non-repeating ISO8601.
-`repeats` | repeats is the optional number of times in which the job should be triggered. If not set, the job will run indefinitely or until expiration.
-`ttl` | ttl is the optional time to live or expiration of the job. Accepts a "point in time" string in the format of RFC3339, Go duration string (calculated from job creation time), or non-repeating ISO8601.
+`data` | A protobuf message `@type`/`value` pair. `@type` must be of a [well-known type](https://protobuf.dev/reference/protobuf/google.protobuf). `value` is the serialized data.
+`schedule` | An optional schedule at which the job is to be run. Details of the format are below.
+`dueTime` | An optional time at which the job should be active, or the "one shot" time, if other scheduling type fields are not provided. Accepts a "point in time" string in the format of RFC3339, Go duration string (calculated from creation time), or non-repeating ISO8601.
+`repeats` | An optional number of times in which the job should be triggered. If not set, the job runs indefinitely or until expiration.
+`ttl` | An optional time to live or expiration of the job. Accepts a "point in time" string in the format of RFC3339, Go duration string (calculated from job creation time), or non-repeating ISO8601.
 
 #### schedule
-`schedule` accepts both systemd timer style cron expressions, as well as human readable '@' prefixed period strings as defined below.
+`schedule` accepts both systemd timer-style cron expressions, as well as human readable '@' prefixed period strings, as defined below.
 
 Systemd timer style cron accepts 6 fields:
 seconds | minutes | hours | day of month | month        | day of week
