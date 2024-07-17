@@ -34,7 +34,7 @@ The outbox feature can be used with using any [transactional state store]({{< re
 Message brokers that work with the competing consumer pattern (for example, [Apache Kafka]({{< ref setup-apache-kafka>}})) are encouraged to reduce the chances of duplicate events.
 {{% /alert %}}
 
-## Usage
+## Enable the outbox pattern
 
 To enable the outbox feature, add the following required and optional fields on a state store component:
 
@@ -67,6 +67,8 @@ spec:
 | outboxPublishTopic  | Yes         | N/A           | Sets the topic that receives the state changes on the pub/sub configured with `outboxPublishPubsub`. The message body will be a state transaction item for an `insert` or `update` operation
 | outboxPubsub        | No          | `outboxPublishPubsub`           | Sets the pub/sub component used by Dapr to coordinate the state and pub/sub transactions. If not set, the pub/sub component configured with `outboxPublishPubsub` is used. This is useful if you want to separate the pub/sub component used to send the notification state changes from the one used to coordinate the transaction
 | outboxDiscardWhenMissingState  | No         | `false`           | By setting `outboxDiscardWhenMissingState` to `true`, Dapr discards the transaction if it cannot find the state in the database and does not retry. This setting can be useful if the state store data has been deleted for any reason before Dapr was able to deliver the message and you would like Dapr to drop the items from the pub/sub and stop retrying to fetch the state
+
+## Additional configurations
 
 ### Combining outbox and non-outbox messages on the same state store
 
@@ -105,6 +107,157 @@ spec:
   - name: outboxPublishTopic # Required
     value: "newOrder"
 ```
+
+### Shape the outbox pattern message
+
+You can override the outbox pattern message published to the pub/sub broker by setting a different message. This is done via a projected transaction payload, which is ignored, but used as the outbox pattern message published to the user topic.
+
+{{< tabs "Go SDK" HTTP >}}
+
+{{% codetab %}}
+
+<!--go-->
+
+In the following Go SDK example of a state transaction, the value of `"2"` is saved to the database, but the value of `"3"` is published to the end-user topic.
+
+```go
+ops := make([]*dapr.StateOperation, 0)
+
+op1 := &dapr.StateOperation{
+    Type: dapr.StateOperationTypeUpsert,
+    Item: &dapr.SetStateItem{
+        Key:   "key1",
+        Value: []byte("2"),
+    },
+}
+op2 := &dapr.StateOperation{
+    Type: dapr.StateOperationTypeUpsert,
+    Item: &dapr.SetStateItem{
+        Key:   "key1",
+				Value: []byte("3"),
+         // Override the data payload saved to the database 
+				Metadata: map[string]string{
+					"outbox.projection": "true",
+        },
+    },
+}
+ops = append(ops, op1, op2)
+meta := map[string]string{}
+err := testClient.ExecuteStateTransaction(ctx, store, meta, ops)
+```
+
+By setting the metadata item `"outbox.projection"` to `"true"`, the first transaction value published to the broker is ignored, while the second value is published to the configured pub/sub topic. 
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--http-->
+
+You can pass the message override using the following HTTP request:
+
+```bash
+curl -X POST http://localhost:3500/v1.0/state/starwars/transaction \
+  -H "Content-Type: application/json" \
+  -d '{
+        "operations": [
+          {
+            "operation": "upsert",
+            "request": {
+              "key": "key1",
+              "value": "2"
+            }
+          },
+          {
+            "operation": "upsert",
+            "request": {
+              "key": "key1"
+              "value: "3"
+              "metadata": {
+                 "outboxProjection": "true"
+              }
+            }
+          }
+        ],
+      }'
+```
+
+By setting the metadata item `"outboxProjection"`  to `"true"`, the first transaction value published to the broker is ignored, while the second value is published to the configured pub/sub topic. 
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+### Override Dapr-generated CloudEvent fields
+
+You can also override the [Dapr-generated CloudEvent fields]({{< ref "pubsub-cloudevents.md#dapr-generated-cloudevents-example" >}}) on the published outbox event with custom CloudEvent metadata.
+
+{{< tabs "Go SDK" HTTP >}}
+
+{{% codetab %}}
+
+<!--go-->
+
+```go
+ops := make([]*dapr.StateOperation, 0)
+
+op1 := &dapr.StateOperation{
+    Type: dapr.StateOperationTypeUpsert,
+    Item: &dapr.SetStateItem{
+        Key:   "key1",
+        Value: []byte("2"),
+        // Override the data payload saved to the database 
+        Metadata: map[string]string{
+            "id": "unique-business-process-id",
+            "source": "CustomersApp",
+            "type": "CustomerCreated",
+            "subject": "123",
+            "my-custom-ce-field": "abc",
+        },
+    },
+}
+ops = append(ops, op1, op2)
+meta := map[string]string{}
+err := testClient.ExecuteStateTransaction(ctx, store, meta, ops)
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--http-->
+
+```bash
+curl -X POST http://localhost:3500/v1.0/state/starwars/transaction \
+  -H "Content-Type: application/json" \
+  -d '{
+        "operations": [
+          {
+            "operation": "upsert",
+            "request": {
+              "key": "key1",
+              "value": "2"
+            }
+          },
+        ],
+        "metadata": {
+          "id": "unique-business-process-id",
+          "source": "CustomersApp",
+          "type": "CustomerCreated",
+          "subject": "123",
+          "my-custom-ce-field": "abc",
+        }
+      }'
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+
+{{% alert title="Note" color="primary" %}}
+The `data` CloudEvent field is reserved for Dapr's use only, and is non-customizable.
+
+{{% /alert %}}
 
 ## Demo
 
