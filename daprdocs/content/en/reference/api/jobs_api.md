@@ -100,7 +100,7 @@ $ curl -X POST \
 	            "@type": "type.googleapis.com/google.protobuf.StringValue",
 	            "value": "Running spice"
             },
-            "scheudle": "@every 1m",
+            "schedule": "@every 1m",
             "repeats": 5
         }
     }'
