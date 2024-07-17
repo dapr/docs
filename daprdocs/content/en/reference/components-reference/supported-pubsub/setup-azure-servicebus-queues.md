@@ -71,7 +71,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | `connectionString`   | Y  | Shared access policy connection string for the Service Bus. Required unless using Microsoft Entra ID authentication. | See example above
-| `consumerID`       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | `"channel1"`
+| `consumerID`       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{< ref "component-schema.md#templated-metadata-values" >}})
 | `namespaceName`| N | Parameter to set the address of the Service Bus namespace, as a fully-qualified domain name. Required if using Microsoft Entra ID authentication. | `"namespace.servicebus.windows.net"` |
 | `timeoutInSec`       | N  | Timeout for sending messages and for management operations. Default: `60` |`30`
 | `handlerTimeoutInSec`| N  |  Timeout for invoking the app's handler. Default: `60` | `30`
@@ -180,6 +180,23 @@ When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to
 ## Create an Azure Service Bus broker for queues
 
 Follow the instructions [here](https://learn.microsoft.com/azure/service-bus-messaging/service-bus-quickstart-portal) on setting up Azure Service Bus Queues.
+
+{{% alert title="Note" color="primary" %}}
+Your queue must have the same name as the topic you are publishing to with Dapr. For example, if you are publishing to the pub/sub `"myPubsub"` on the topic `"orders"`, your queue must be named `"orders"`.
+If you are using a shared access policy to connect to the queue, that policy must be able to "manage" the queue. To work with a dead-letter queue, the policy must live on the Service Bus Namespace that contains both the main queue and the dead-letter queue.
+{{% /alert %}}
+
+### Retry policy and dead-letter queues
+
+By default, an Azure Service Bus Queue has a dead-letter queue. The messages are retried the amount given for `maxDeliveryCount`. The default `maxDeliveryCount` value defaults to 10, but can be set up to 2000. These retries happen very rapidly and the message is put in the dead-letter queue if no success is returned.
+
+Dapr Pub/sub offers its own dead-letter queue concept that lets you control the retry policy and subscribe to the dead-letter queue through Dapr. 
+1. Set up a separate queue as that dead-letter queue in the Azure Service Bus namespace, and a resilience policy that defines how to retry. 
+1. Subscribe to the topic to get the failed messages and deal with them. 
+
+For example, setting up a dead-letter queue `orders-dlq` in the subscription and a resiliency policy lets you subscribe to the topic `orders-dlq` to handle failed messages.
+
+For more details on setting up dead-letter queues, see the [dead-letter article]({{< ref pubsub-deadletter >}}).
 
 ## Related links
 
