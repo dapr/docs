@@ -11,7 +11,7 @@ By default, the Scheduler service database writes this data to the local volume 
 
 The host file location for this local volume will typically be located at either `/var/lib/docker/volumes/dapr_scheduler/_data` or `~/.local/share/containers/storage/volumes/dapr_scheduler/_data`, depending on your container runtime.
 
-The Scheduler persistent volume can be modified with a custom volume that is pre-existing, or will be created by Dapr.
+The Scheduler persistent volume can be modified with a custom volume that is pre-existing, or is created by Dapr.
 
 {{% alert title="Note" color="primary" %}}
 If Dapr is already installed, the control plane needs to be completely [uninstalled]({{< ref dapr-uninstall.md >}}) in order for the Scheduler container to be recreated with the new persistent volume.
