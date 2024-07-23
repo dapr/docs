@@ -111,15 +111,6 @@ metrics:
   latencyDistributionBuckets: []
   http:
     increasedCardinality: true
-    pathMatching:
-      - /items
-      - /orders/{orderID}
-      - /orders/{orderID}/items/{itemID}
-      - /payments/{paymentID}
-      - /payments/{paymentID}/status
-      - /payments/{paymentID}/refund
-      - /payments/{paymentID}/details
-    excludeVerbs: false
 ```
 
 In the examples above this path filter `/orders/{orderID}/items/{itemID}` would return a single metric count matching all the orderIDs and all the itemIDs rather than multiple metrics for each itemID. For more information see [HTTP metrics path matching]({{< ref "metrics-overview.md#http-metrics-path-matching" >}})
@@ -135,7 +126,7 @@ The following table lists the properties for metrics:
 | `http.pathMatching`          | array   | Array of paths for path matching, allowing users to define matching paths to manage cardinality.                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `http.excludeVerbs`          | boolean | When set to true (default is false), the Dapr HTTP server ignores each request HTTP verb when building the method metric label.                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
-To further help managing cardinality, path matching allows specified paths matched according to defined patterns, reducing the number of unique metrics paths and thus controlling metric cardinality. This feature is particularly useful for applications with dynamic URLs, ensuring that metrics remain meaningful and manageable without excessive memory consumption. 
+To mitigate high memory usage and egress costs associated with [high cardinality metrics]({{< ref "metrics-overview.md#high-cardinality-metrics" >}}) with the HTTP server, you should set the `metrics.http.increasedCardinality` property to `false`.
 
 Using rules, you can set regular expressions for every metric exposed by the Dapr sidecar. For example:
 
