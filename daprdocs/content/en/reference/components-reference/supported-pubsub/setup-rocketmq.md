@@ -26,7 +26,7 @@ spec:
     - name: producerGroup 
       value: dapr-rocketmq-test-g-p
     - name: consumerID
-      value: topic
+      value: channel1
     - name: nameSpace
       value: dapr-test
     - name: nameServer
@@ -49,7 +49,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | instanceName                          |    N     | Instance name                                                | `time.Now().String()`                                       | `dapr-rocketmq-test`                                         |
 | consumerGroup                         |    N     | Consumer group name. Recommend. If `producerGroup` is `null`，`groupName` is used. |                                                             | `dapr-rocketmq-test-g-c `                                    |
 | producerGroup (consumerID)            |    N     | Producer group name. Recommended. If `producerGroup` is `null`，`consumerID` is used. If `consumerID` also is null, `groupName` is used. |                                                             | `dapr-rocketmq-test-g-p`                                     |
-| consumerID        |    N     | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | `"channel1"`
+| consumerID        |    N     | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{< ref "component-schema.md#templated-metadata-values" >}})
 | groupName                             |    N     | Consumer/Producer group name. **Depreciated**.               |                                                             | `dapr-rocketmq-test-g`                                       |
 | nameSpace                             |    N     | RocketMQ namespace                                           |                                                             | `dapr-rocketmq`                                              |
 | nameServerDomain                      |    N     | RocketMQ name server domain                                  |                                                             | `https://my-app.net:8080/nsaddr`                             |

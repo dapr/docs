@@ -45,15 +45,16 @@ Each of these building block APIs is independent, meaning that you can use any n
 | Building Block | Description |
 |----------------|-------------|
 | [**Service-to-service invocation**]({{< ref "service-invocation-overview.md" >}})  | Resilient service-to-service invocation enables method calls, including retries, on remote services, wherever they are located in the supported hosting environment.
-|  [**State management**]({{< ref "state-management-overview.md" >}}) | With state management for storing and querying key/value pairs, long-running, highly available, stateful services can be easily written alongside stateless services in your application. The state store is pluggable and examples include AWS DynamoDB, Azure Cosmos DB, Azure SQL Server, GCP Firebase, PostgreSQL or Redis, among others.
 | [**Publish and subscribe**]({{< ref "pubsub-overview.md" >}}) | Publishing events and subscribing to topics between services enables event-driven architectures to simplify horizontal scalability and make them resilient to failure. Dapr provides at-least-once message delivery guarantee, message TTL, consumer groups and other advance features.
+| [**Workflows**]({{< ref "workflow-overview.md" >}}) | The workflow API can be combined with other Dapr building blocks to define long running, persistent processes or data flows that span multiple microservices using Dapr workflows or workflow components. 
+| [**State management**]({{< ref "state-management-overview.md" >}}) | With state management for storing and querying key/value pairs, long-running, highly available, stateful services can be easily written alongside stateless services in your application. The state store is pluggable and examples include AWS DynamoDB, Azure Cosmos DB, Azure SQL Server, GCP Firebase, PostgreSQL or Redis, among others.
 | [**Resource bindings**]({{< ref "bindings-overview.md" >}}) | Resource bindings with triggers builds further on event-driven architectures for scale and resiliency by receiving and sending events to and from any external source such as databases, queues, file systems, etc.
 | [**Actors**]({{< ref "actors-overview.md" >}}) | A pattern for stateful and stateless objects that makes concurrency simple, with method and state encapsulation. Dapr provides many capabilities in its actor runtime, including concurrency, state, and life-cycle management for actor activation/deactivation, and timers and reminders to wake up actors.
 | [**Secrets**]({{< ref "secrets-overview.md" >}}) | The secrets management API integrates with public cloud and local secret stores to retrieve the secrets for use in application code.
 | [**Configuration**]({{< ref "configuration-api-overview.md" >}})  | The configuration API enables you to retrieve and subscribe to application configuration items from configuration stores. 
 | [**Distributed lock**]({{< ref "distributed-lock-api-overview.md" >}})  | The distributed lock API enables your application to acquire a lock for any resource that gives it exclusive access until either the lock is released by the application, or a lease timeout occurs. 
-| [**Workflows**]({{< ref "workflow-overview.md" >}}) | The workflow API can be combined with other Dapr building blocks to define long running, persistent processes or data flows that span multiple microservices using Dapr workflows or workflow components. 
 | [**Cryptography**]({{< ref "cryptography-overview.md" >}}) | The cryptography API provides an abstraction layer on top of security infrastructure such as key vaults. It contains APIs that allow you to perform cryptographic operations, such as encrypting and decrypting messages, without exposing keys to your applications.
+| [**Jobs**]({{< ref "jobs-overview.md" >}}) | The jobs API enables you to schedule jobs at specific times or intervals.
 
 ### Cross-cutting APIs
 
@@ -138,7 +139,7 @@ Dapr can be used from any developer framework. Here are some that have been inte
 | [.NET]({{< ref dotnet >}}) | [ASP.NET Core](https://github.com/dapr/dotnet-sdk/tree/master/examples/AspNetCore) | Brings stateful routing controllers that respond to pub/sub events from other services. Can also take advantage of [ASP.NET Core gRPC Services](https://docs.microsoft.com/aspnet/core/grpc/).
 | [Java]({{< ref java >}}) | [Spring Boot](https://spring.io/) | Build Spring boot applications with Dapr APIs
 | [Python]({{< ref python >}}) | [Flask]({{< ref python-flask.md >}}) | Build Flask applications with Dapr APIs
-| [Javascript](https://github.com/dapr/js-sdk) | [Express](http://expressjs.com/) | Build Express applications with Dapr APIs
+| [JavaScript](https://github.com/dapr/js-sdk) | [Express](http://expressjs.com/) | Build Express applications with Dapr APIs
 | [PHP]({{< ref php >}}) | | You can serve with Apache, Nginx, or Caddyserver.
 
 #### Integrations and extensions

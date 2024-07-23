@@ -31,7 +31,7 @@ spec:
   - name: password
     value: password  
   - name: consumerID
-    value: myapp
+    value: channel1
   - name: durable
     value: false
   - name: deletedWhenUnused
@@ -81,7 +81,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | hostname | N* | The RabbitMQ hostname. *Mutally exclusive with connectionString field | `localhost` |
 | username | N* | The RabbitMQ username. *Mutally exclusive with connectionString field | `username` |
 | password | N* | The RabbitMQ password. *Mutally exclusive with connectionString field | `password` |
-| consumerID         | N        | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. |
+| consumerID         | N        | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{< ref "component-schema.md#templated-metadata-values" >}})
 | durable            | N        | Whether or not to use [durable](https://www.rabbitmq.com/queues.html#durability) queues. Defaults to `"false"`  | `"true"`, `"false"`
 | deletedWhenUnused  | N        | Whether or not the queue should be configured to [auto-delete](https://www.rabbitmq.com/queues.html) Defaults to `"true"` | `"true"`, `"false"`
 | autoAck  | N        | Whether or not the queue consumer should [auto-ack](https://www.rabbitmq.com/confirms.html) messages. Defaults to `"false"` | `"true"`, `"false"`
@@ -450,6 +450,30 @@ You can set a time-to-live (TTL) value at either the message or component level.
 {{% alert title="Note" color="primary" %}}
 If you set both component-level and message-level TTL, the default component-level TTL is ignored in favor of the message-level TTL.
 {{% /alert %}}
+
+## Single Active Consumer
+
+The RabbitMQ [Single Active Consumer](https://www.rabbitmq.com/docs/consumers#single-active-consumer) setup ensures that only one consumer at a time processes messages from a queue and switches to another registered consumer if the active one is canceled or fails. This approach might be required when it is crucial for messages to be consumed in the exact order they arrive in the queue and if distributed processing with multiple instances is not supported.
+When this option is enabled on a queue by Dapr, an instance of the Dapr runtime will be the single active consumer. To allow another application instance to take over in case of failure, Dapr runtime must [probe the application's health]({{< ref "app-health.md" >}}) and unsubscribe from the pub/sub component.
+
+{{% alert title="Note" color="primary" %}}
+This pattern will prevent the application to scale as only one instance can process the load. While it might be interesting for Dapr integration with legacy or sensible applications, you should consider a design allowing distributed processing if you need scalability.
+{{% /alert %}}
+
+
+```yml
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: pubsub
+spec:
+  topic: orders
+  routes:
+    default: /orders
+  pubsubname: order-pub-sub
+  metadata:
+    singleActiveConsumer: "true"
+```
 
 ## Related links
 

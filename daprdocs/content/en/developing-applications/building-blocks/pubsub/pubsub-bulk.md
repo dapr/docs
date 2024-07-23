@@ -22,7 +22,7 @@ The bulk publish operation also does not guarantee any ordering of messages.
 
 ### Example
 
-{{< tabs Java Javascript Dotnet Python Go "HTTP API (Bash)" "HTTP API (PowerShell)" >}}
+{{< tabs Java JavaScript ".NET" Python Go "HTTP API (Bash)" "HTTP API (PowerShell)" >}}
 
 {{% codetab %}}
 
@@ -272,10 +272,11 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Uri 'http://loca
 ## Subscribing messages in bulk
 
 The bulk subscribe API allows you to subscribe multiple messages from a topic in a single request.
-As we know from [How to: Publish & Subscribe to topics]({{< ref howto-publish-subscribe.md >}}), there are two ways to subscribe to topic(s):
+As we know from [How to: Publish & Subscribe to topics]({{< ref howto-publish-subscribe.md >}}), there are three ways to subscribe to topic(s):
 
 - **Declaratively** - subscriptions are defined in an external file.
 - **Programmatically** - subscriptions are defined in code.
+- **Streaming** - *Not supported* for bulk subscribe as messages are sent to handler code.
 
 To Bulk Subscribe to topic(s), we just need to use `bulkSubscribe` spec attribute, something like following:
 

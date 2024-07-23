@@ -49,7 +49,7 @@ The CustomResourceDefinition "configurations.dapr.io" is invalid: spec.preserveU
 1. Run the following command to upgrade the `CustomResourceDefinition` to a compatible version:
 
     ```sh
-    kubectl replace -f https://raw.githubusercontent.com/dapr/dapr/5a15b3e0f093d2d0938b12f144c7047474a290fe/charts/dapr/crds/configuration.yaml
+    kubectl replace -f https://raw.githubusercontent.com/dapr/dapr/release-{{% dapr-latest-version short="true" %}}/charts/dapr/crds/configuration.yaml
     ```
 
 1. Proceed with the `dapr upgrade --runtime-version {{% dapr-latest-version long="true" %}} -k` command.

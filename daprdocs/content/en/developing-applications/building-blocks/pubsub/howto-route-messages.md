@@ -10,7 +10,7 @@ Pub/sub routing is an implementation of [content-based routing](https://www.ente
 
 While routing can be implemented with code, keeping routing rules external from the application can improve portability.
 
-This feature is available to both the [declarative and programmatic subscription approaches]({{< ref subscription-methods.md >}}).
+This feature is available to both the [declarative and programmatic subscription approaches]({{< ref subscription-methods.md >}}), however does not apply to streaming subscriptions.
 
 ## Declarative subscription
 
@@ -40,7 +40,7 @@ scopes:
 
 In the programmatic approach, the `routes` structure is returned instead of `route`. The JSON structure matches the declarative YAML:
 
-{{< tabs Python Node "C#" Go PHP>}}
+{{< tabs Python JavaScript ".NET" Go PHP>}}
 
 {{% codetab %}}
 ```python

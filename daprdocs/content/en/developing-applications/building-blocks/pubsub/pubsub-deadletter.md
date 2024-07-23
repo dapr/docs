@@ -39,6 +39,17 @@ scopes:
 - checkout
 ```
 
+## Configuring a dead letter topic with a streaming subscription
+
+```go
+	var deadLetterTopic = "poisonMessages"
+	sub, err := cl.Subscribe(context.Background(), client.SubscriptionOptions{
+		PubsubName:      "pubsub",
+		Topic:           "orders",
+		DeadLetterTopic: &deadLetterTopic,
+	})
+```
+
 ## Configuring a dead letter topic with programmatic subscription
 
 The JSON returned from the `/subscribe` endpoint shows how to configure a dead letter topic named `poisonMessages` for messages consumed from the `orders` topic.
@@ -93,7 +104,7 @@ metadata:
   name: deadlettertopics
 spec:
   topic: poisonMessages
-  routes: 
+  routes:
     rules:
       - match:
         path: /failedMessages
@@ -112,4 +123,4 @@ Watch [this video for an overview of the dead letter topics](https://youtu.be/wL
 ## Next steps
 
 - For more information on resiliency policies, read [Resiliency overview]({{< ref resiliency-overview.md >}}).
-- For more information on topic subscriptions, read [Declarative and programmatic subscription methods]({{< ref "pubsub-overview.md#message-subscription" >}}).
+- For more information on topic subscriptions, read [Declarative, streaming, and programmatic subscription methods]({{< ref "pubsub-overview.md#message-subscription" >}}).
