@@ -59,7 +59,9 @@ From the root of the Quickstarts directory, navigate into the jobs directory:
 cd jobs/go/sdk
 ```
 
-Run the quickstart with one command:
+### Step 3: Schedule jobs
+
+Run the application and schedule jobs with one command:
 
 ```bash
 dapr run -f .
