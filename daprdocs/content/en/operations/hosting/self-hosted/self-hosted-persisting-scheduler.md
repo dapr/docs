@@ -14,7 +14,7 @@ The host file location for this local volume is typically located at either `/va
 The Scheduler persistent volume can be modified with a custom volume that is pre-existing, or is created by Dapr.
 
 {{% alert title="Note" color="primary" %}}
-By default `dapr init` creates a local persistent volume on your drive. If Dapr is already installed, the control plane needs to be completely [uninstalled]({{< ref dapr-uninstall.md >}}) in order for the Scheduler container to be recreated with the new persistent volume.
+By default `dapr init` creates a local persistent volume on your drive called `dapr_scheduler`. If Dapr is already installed, the control plane needs to be completely [uninstalled]({{< ref dapr-uninstall.md >}}) in order for the Scheduler container to be recreated with the new persistent volume.
 {{% /alert %}}
 
 ```bash
