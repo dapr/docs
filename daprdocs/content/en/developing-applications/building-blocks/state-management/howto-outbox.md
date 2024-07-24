@@ -110,9 +110,215 @@ spec:
 
 ### Shape the outbox pattern message
 
-You can override the outbox pattern message published to the pub/sub broker by setting a different message. This is done via a projected transaction payload, which is ignored, but used as the outbox pattern message published to the user topic.
+You can override the outbox pattern message published to the pub/sub broker by setting a different message. This is done via a projected transaction payload, called `outboxProjections`, which is ignored when the state is written and is used as the outbox pattern message published to the user topic.
 
-{{< tabs "Go SDK" HTTP >}}
+To set the `outboxProjections` to `true`, the `key` values must match between the operation on the state store and the message projection. If the keys do not match, the whole transaction fails.
+
+If you have two or more `outboxProjections` for the same key, the first one defined is used and the others are ignored. 
+
+[Learn more about default and custom CloudEvent messages.]({{< ref pubsub-cloudevents.md >}})
+
+{{< tabs Python JavaScript ".NET" Java Go HTTP >}}
+
+{{% codetab %}}
+
+<!--python-->
+
+In the following Python SDK example of a state transaction, the value of `"2"` is saved to the database, but the value of `"3"` is published to the end-user topic.
+
+```python
+DAPR_STORE_NAME = "statestore"
+
+async def main():
+    client = DaprClient()
+
+    # Define the first state operation to save the value "2"
+    op1 = StateItem(
+        key="key1",
+        value=b"2"
+    )
+
+    # Define the second state operation to publish the value "3" with metadata
+    op2 = StateItem(
+        key="key1",
+        value=b"3",
+        options=StateOptions(
+            metadata={
+                "outbox.projection": "true"
+            }
+        )
+    )
+
+    # Create the list of state operations
+    ops = [op1, op2]
+
+    # Execute the state transaction
+    await client.state.transaction(DAPR_STORE_NAME, operations=ops)
+    print("State transaction executed.")
+```
+
+By setting the metadata item `"outbox.projection"` to `"true"` and making sure the `key` values match (`key1`):
+- The first operation is written to the state store and no message is written to the message broker.
+- The second operation value is published to the configured pub/sub topic.   
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--javascript-->
+
+In the following JavaScript SDK example of a state transaction, the value of `"2"` is saved to the database, but the value of `"3"` is published to the end-user topic.
+
+```javascript
+const { DaprClient, StateOperationType } = require('@dapr/dapr');
+
+const DAPR_STORE_NAME = "statestore";
+
+async function main() {
+  const client = new DaprClient();
+
+  // Define the first state operation to save the value "2"
+  const op1 = {
+    operation: StateOperationType.UPSERT,
+    request: {
+      key: "key1",
+      value: "2"
+    }
+  };
+
+  // Define the second state operation to publish the value "3" with metadata
+  const op2 = {
+    operation: StateOperationType.UPSERT,
+    request: {
+      key: "key1",
+      value: "3",
+      metadata: {
+        "outbox.projection": "true"
+      }
+    }
+  };
+
+  // Create the list of state operations
+  const ops = [op1, op2];
+
+  // Execute the state transaction
+  await client.state.transaction(DAPR_STORE_NAME, ops);
+  console.log("State transaction executed.");
+}
+
+main().catch(err => {
+  console.error(err);
+});
+```
+
+By setting the metadata item `"outbox.projection"` to `"true"` and making sure the `key` values match (`key1`):
+- The first operation is written to the state store and no message is written to the message broker.
+- The second operation value is published to the configured pub/sub topic.   
+
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--dotnet-->
+
+In the following .NET SDK example of a state transaction, the value of `"2"` is saved to the database, but the value of `"3"` is published to the end-user topic.
+
+```csharp
+public class Program
+{
+    private const string DAPR_STORE_NAME = "statestore";
+
+    public static async Task Main(string[] args)
+    {
+        var client = new DaprClientBuilder().Build();
+
+        // Define the first state operation to save the value "2"
+        var op1 = new StateTransactionRequest(
+            key: "key1",
+            value: Encoding.UTF8.GetBytes("2"),
+            operationType: StateOperationType.Upsert
+        );
+
+        // Define the second state operation to publish the value "3" with metadata
+        var metadata = new Dictionary<string, string>
+        {
+            { "outbox.projection", "true" }
+        };
+        var op2 = new StateTransactionRequest(
+            key: "key1",
+            value: Encoding.UTF8.GetBytes("3"),
+            operationType: StateOperationType.Upsert,
+            metadata: metadata
+        );
+
+        // Create the list of state operations
+        var ops = new List<StateTransactionRequest> { op1, op2 };
+
+        // Execute the state transaction
+        await client.ExecuteStateTransactionAsync(DAPR_STORE_NAME, ops);
+        Console.WriteLine("State transaction executed.");
+    }
+}
+```
+
+By setting the metadata item `"outbox.projection"` to `"true"` and making sure the `key` values match (`key1`):
+- The first operation is written to the state store and no message is written to the message broker.
+- The second operation value is published to the configured pub/sub topic.    
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--java-->
+
+In the following Java SDK example of a state transaction, the value of `"2"` is saved to the database, but the value of `"3"` is published to the end-user topic.
+
+```java
+public class Main {
+    private static final String DAPR_STORE_NAME = "statestore";
+
+    public static void main(String[] args) {
+        try (DaprClient client = new DaprClientBuilder().build()) {
+            // Define the first state operation to save the value "2"
+            StateOperation<String> op1 = new StateOperation<>(
+                    StateOperationType.UPSERT,
+                    "key1",
+                    "2"
+            );
+
+            // Define the second state operation to publish the value "3" with metadata
+            Map<String, String> metadata = new HashMap<>();
+            metadata.put("outbox.projection", "true");
+
+            StateOperation<String> op2 = new StateOperation<>(
+                    StateOperationType.UPSERT,
+                    "key1",
+                    "3",
+                    metadata
+            );
+
+            // Create the list of state operations
+            List<StateOperation<?>> ops = new ArrayList<>();
+            ops.add(op1);
+            ops.add(op2);
+
+            // Execute the state transaction
+            client.executeStateTransaction(DAPR_STORE_NAME, ops).block();
+            System.out.println("State transaction executed.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+By setting the metadata item `"outbox.projection"` to `"true"` and making sure the `key` values match (`key1`):
+- The first operation is written to the state store and no message is written to the message broker.
+- The second operation value is published to the configured pub/sub topic.   
+
+
+{{% /codetab %}}
 
 {{% codetab %}}
 
@@ -146,7 +352,9 @@ meta := map[string]string{}
 err := testClient.ExecuteStateTransaction(ctx, store, meta, ops)
 ```
 
-By setting the metadata item `"outbox.projection"` to `"true"`, the first transaction value published to the broker is ignored, while the second value is published to the configured pub/sub topic. 
+By setting the metadata item `"outbox.projection"` to `"true"` and making sure the `key` values match (`key1`):
+- The first operation is written to the state store and no message is written to the message broker.
+- The second operation value is published to the configured pub/sub topic.   
 
 {{% /codetab %}}
 
@@ -182,7 +390,9 @@ curl -X POST http://localhost:3500/v1.0/state/starwars/transaction \
       }'
 ```
 
-By setting the metadata item `"outboxProjection"`  to `"true"`, the first transaction value published to the broker is ignored, while the second value is published to the configured pub/sub topic. 
+By setting the metadata item `"outbox.projection"` to `"true"` and making sure the `key` values match (`key1`):
+- The first operation is written to the state store and no message is written to the message broker.
+- The second operation value is published to the configured pub/sub topic.   
 
 {{% /codetab %}}
 
@@ -190,35 +400,236 @@ By setting the metadata item `"outboxProjection"`  to `"true"`, the first transa
 
 ### Override Dapr-generated CloudEvent fields
 
-You can also override the [Dapr-generated CloudEvent fields]({{< ref "pubsub-cloudevents.md#dapr-generated-cloudevents-example" >}}) on the published outbox event with custom CloudEvent metadata.
+You can override the [Dapr-generated CloudEvent fields]({{< ref "pubsub-cloudevents.md#dapr-generated-cloudevents-example" >}}) on the published outbox event with custom CloudEvent metadata.
 
-{{< tabs "Go SDK" HTTP >}}
+{{< tabs Python JavaScript ".NET" Java Go HTTP >}}
+
+{{% codetab %}}
+
+<!--python-->
+
+```python
+async def execute_state_transaction():
+    async with DaprClient() as client:
+        # Define state operations
+        ops = []
+
+        op1 = {
+            'operation': 'upsert',
+            'request': {
+                'key': 'key1',
+                'value': b'2',  # Convert string to byte array
+                'metadata': {
+                    'cloudevent.id': 'unique-business-process-id',
+                    'cloudevent.source': 'CustomersApp',
+                    'cloudevent.type': 'CustomerCreated',
+                    'cloudevent.subject': '123',
+                    'my-custom-ce-field': 'abc'
+                }
+            }
+        }
+
+        ops.append(op1)
+
+        # Execute state transaction
+        store_name = 'your-state-store-name'
+        try:
+            await client.execute_state_transaction(store_name, ops)
+            print('State transaction executed.')
+        except Exception as e:
+            print('Error executing state transaction:', e)
+
+# Run the async function
+if __name__ == "__main__":
+    asyncio.run(execute_state_transaction())
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--javascript-->
+
+```javascript
+const { DaprClient } = require('dapr-client');
+
+async function executeStateTransaction() {
+    // Initialize Dapr client
+    const daprClient = new DaprClient();
+
+    // Define state operations
+    const ops = [];
+
+    const op1 = {
+        operationType: 'upsert',
+        request: {
+            key: 'key1',
+            value: Buffer.from('2'),
+            metadata: {
+                'id': 'unique-business-process-id',
+                'source': 'CustomersApp',
+                'type': 'CustomerCreated',
+                'subject': '123',
+                'my-custom-ce-field': 'abc'
+            }
+        }
+    };
+
+    ops.push(op1);
+
+    // Execute state transaction
+    const storeName = 'your-state-store-name';
+    const metadata = {};
+}
+
+executeStateTransaction();
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--csharp-->
+
+```csharp
+public class StateOperationExample
+{
+    public async Task ExecuteStateTransactionAsync()
+    {
+        var daprClient = new DaprClientBuilder().Build();
+
+        // Define the value "2" as a string and serialize it to a byte array
+        var value = "2";
+        var valueBytes = JsonSerializer.SerializeToUtf8Bytes(value);
+
+        // Define the first state operation to save the value "2" with metadata
+       // Override Cloudevent metadata
+        var metadata = new Dictionary<string, string>
+        {
+            { "cloudevent.id", "unique-business-process-id" },
+            { "cloudevent.source", "CustomersApp" },
+            { "cloudevent.type", "CustomerCreated" },
+            { "cloudevent.subject", "123" },
+            { "my-custom-ce-field", "abc" }
+        };
+
+        var op1 = new StateTransactionRequest(
+            key: "key1",
+            value: valueBytes,
+            operationType: StateOperationType.Upsert,
+            metadata: metadata
+        );
+
+        // Create the list of state operations
+        var ops = new List<StateTransactionRequest> { op1 };
+
+        // Execute the state transaction
+        var storeName = "your-state-store-name";
+        await daprClient.ExecuteStateTransactionAsync(storeName, ops);
+        Console.WriteLine("State transaction executed.");
+    }
+
+    public static async Task Main(string[] args)
+    {
+        var example = new StateOperationExample();
+        await example.ExecuteStateTransactionAsync();
+    }
+}
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--java-->
+
+```java
+public class StateOperationExample {
+
+    public static void main(String[] args) {
+        executeStateTransaction();
+    }
+
+    public static void executeStateTransaction() {
+        // Build Dapr client
+        try (DaprClient daprClient = new DaprClientBuilder().build()) {
+
+            // Define the value "2"
+            String value = "2";
+
+            // Override CloudEvent metadata
+            Map<String, String> metadata = new HashMap<>();
+            metadata.put("cloudevent.id", "unique-business-process-id");
+            metadata.put("cloudevent.source", "CustomersApp");
+            metadata.put("cloudevent.type", "CustomerCreated");
+            metadata.put("cloudevent.subject", "123");
+            metadata.put("my-custom-ce-field", "abc");
+
+            // Define state operations
+            List<StateOperation<?>> ops = new ArrayList<>();
+            StateOperation<String> op1 = new StateOperation<>(
+                    StateOperationType.UPSERT,
+                    "key1",
+                    value,
+                    metadata
+            );
+            ops.add(op1);
+
+            // Execute state transaction
+            String storeName = "your-state-store-name";
+            daprClient.executeStateTransaction(storeName, ops).block();
+            System.out.println("State transaction executed.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+{{% /codetab %}}
 
 {{% codetab %}}
 
 <!--go-->
 
 ```go
-ops := make([]*dapr.StateOperation, 0)
+func main() {
+	// Create a Dapr client
+	client, err := dapr.NewClient()
+	if err != nil {
+		log.Fatalf("failed to create Dapr client: %v", err)
+	}
+	defer client.Close()
 
-op1 := &dapr.StateOperation{
-    Type: dapr.StateOperationTypeUpsert,
-    Item: &dapr.SetStateItem{
-        Key:   "key1",
-        Value: []byte("2"),
-        // Override the data payload saved to the database 
-        Metadata: map[string]string{
-            "id": "unique-business-process-id",
-            "source": "CustomersApp",
-            "type": "CustomerCreated",
-            "subject": "123",
-            "my-custom-ce-field": "abc",
-        },
-    },
+	ctx := context.Background()
+	store := "your-state-store-name"
+
+	// Define state operations
+	ops := make([]*dapr.StateOperation, 0)
+	op1 := &dapr.StateOperation{
+		Type: dapr.StateOperationTypeUpsert,
+		Item: &dapr.SetStateItem{
+			Key:   "key1",
+			Value: []byte("2"),
+			// Override Cloudevent metadata
+			Metadata: map[string]string{
+				"cloudevent.id":                "unique-business-process-id",
+				"cloudevent.source":            "CustomersApp",
+				"cloudevent.type":              "CustomerCreated",
+				"cloudevent.subject":           "123",
+				"my-custom-ce-field":           "abc",
+			},
+		},
+	}
+	ops = append(ops, op1)
+
+	// Metadata for the transaction (if any)
+	meta := map[string]string{}
+
+	// Execute state transaction
+	err = client.ExecuteStateTransaction(ctx, store, meta, ops)
+	if err != nil {
+		log.Fatalf("failed to execute state transaction: %v", err)
+	}
+
+	log.Println("State transaction executed.")
 }
-ops = append(ops, op1, op2)
-meta := map[string]string{}
-err := testClient.ExecuteStateTransaction(ctx, store, meta, ops)
 ```
 {{% /codetab %}}
 
