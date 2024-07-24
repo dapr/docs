@@ -117,7 +117,7 @@ dapr stop -f .
 When you ran `dapr init` during Dapr install:
 
 - The `dapr_scheduler` control plane was started alongside other Dapr services.
-- [The `dapr.yaml` Multi-App Run template file]({{< ref #dapryaml-multi-app-run-template-filer >}}) was generated in the `.dapr/components` directory.
+- [The `dapr.yaml` Multi-App Run template file]({{< ref "#dapryaml-multi-app-run-template-file" >}}) was generated in the `.dapr/components` directory.
 
 Running `dapr run -f .` in this Quickstart started both the `job-scheduler` and the `job-service`. 
 
