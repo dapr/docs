@@ -114,6 +114,318 @@ dapr stop -f .
 
 ### What happened?
 
+When you ran `dapr init` during Dapr install:
+
+- The `dapr_scheduler` control plane was started alongside other Dapr services.
+- [The `dapr.yaml` Multi-App Run template file]({{< ref #dapryaml-multi-app-run-template-filer >}}) was generated in the `.dapr/components` directory.
+
+Running `dapr run -f .` in this Quickstart started both the `job-scheduler` and the `job-service`. 
+
+#### `dapr.yaml` Multi-App Run template file
+
+Running the [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
+
+```yml
+version: 1
+apps:
+  - appDirPath: ./job-service/
+    appID: job-service
+    appPort: 6200
+    daprGRPCPort: 6281
+    appProtocol: grpc
+    command: ["go", "run", "."]
+  - appDirPath: ./job-scheduler/
+    appID: job-scheduler
+    appPort: 6300
+    command: ["go", "run", "."]
+```
+
+#### `job-service` app
+
+The `job-service` application creates handlers for the job service. 
+
+```go
+if err := server.AddServiceInvocationHandler("scheduleJob", scheduleJob); err != nil {
+	log.Fatalf("error adding invocation handler: %v", err)
+}
+
+if err := server.AddServiceInvocationHandler("getJob", getJob); err != nil {
+	log.Fatalf("error adding invocation handler: %v", err)
+}
+
+if err := server.AddServiceInvocationHandler("deleteJob", deleteJob); err != nil {
+	log.Fatalf("error adding invocation handler: %v", err)
+}
+```
+
+Next, the jobs event handler is registered:
+
+```go
+for _, jobName := range jobNames {
+	if err := server.AddJobEventHandler(jobName, handleJob); err != nil {
+		log.Fatalf("failed to register job event handler: %v", err)
+	}
+	fmt.Println("Registered job handler for: ", jobName)
+}
+
+fmt.Println("Starting server on port: " + appPort)
+if err = server.Start(); err != nil {
+	log.Fatalf("failed to start server: %v", err)
+}
+```
+
+The `job-service` then codes the functions that handle scheduling, getting, and deleting jobs, and handles job events. 
+
+```go
+// Handler that schedules a DroidJob
+func scheduleJob(ctx context.Context, in *common.InvocationEvent) (out *common.Content, err error) {
+
+	if in == nil {
+		err = errors.New("no invocation parameter")
+		return
+	}
+
+	droidJob := DroidJob{}
+	err = json.Unmarshal(in.Data, &droidJob)
+	if err != nil {
+		fmt.Println("failed to unmarshal job: ", err)
+		return nil, err
+	}
+
+	jobData := JobData{
+		Droid: droidJob.Name,
+		Task:  droidJob.Job,
+	}
+
+	content, err := json.Marshal(jobData)
+	if err != nil {
+		fmt.Printf("Error marshalling job content")
+		return nil, err
+	}
+
+	// schedule job
+	job := daprc.Job{
+		Name:    droidJob.Name,
+		DueTime: droidJob.DueTime,
+		Data: &anypb.Any{
+			Value: content,
+		},
+	}
+
+	err = app.daprClient.ScheduleJobAlpha1(ctx, &job)
+	if err != nil {
+		fmt.Println("failed to schedule job. err: ", err)
+		return nil, err
+	}
+
+	fmt.Println("Job scheduled: ", droidJob.Name)
+
+	out = &common.Content{
+		Data:        in.Data,
+		ContentType: in.ContentType,
+		DataTypeURL: in.DataTypeURL,
+	}
+
+	return out, err
+
+}
+
+// Handler that gets a job by name
+func getJob(ctx context.Context, in *common.InvocationEvent) (out *common.Content, err error) {
+
+	if in == nil {
+		err = errors.New("no invocation parameter")
+		return nil, err
+	}
+
+	job, err := app.daprClient.GetJobAlpha1(ctx, string(in.Data))
+	if err != nil {
+		fmt.Println("failed to get job. err: ", err)
+	}
+
+	out = &common.Content{
+		Data:        job.Data.Value,
+		ContentType: in.ContentType,
+		DataTypeURL: in.DataTypeURL,
+	}
+
+	return out, err
+}
+
+// Handler that deletes a job by name
+func deleteJob(ctx context.Context, in *common.InvocationEvent) (out *common.Content, err error) {
+	if in == nil {
+		err = errors.New("no invocation parameter")
+		return nil, err
+	}
+
+	err = app.daprClient.DeleteJobAlpha1(ctx, string(in.Data))
+	if err != nil {
+		fmt.Println("failed to delete job. err: ", err)
+	}
+
+	out = &common.Content{
+		Data:        in.Data,
+		ContentType: in.ContentType,
+		DataTypeURL: in.DataTypeURL,
+	}
+
+	return out, err
+}
+
+// Handler that handles job events
+func handleJob(ctx context.Context, job *common.JobEvent) error {
+	var jobData common.Job
+	if err := json.Unmarshal(job.Data, &jobData); err != nil {
+		return fmt.Errorf("failed to unmarshal job: %v", err)
+	}
+	decodedPayload, err := base64.StdEncoding.DecodeString(jobData.Value)
+	if err != nil {
+		return fmt.Errorf("failed to decode job payload: %v", err)
+	}
+	var jobPayload JobData
+	if err := json.Unmarshal(decodedPayload, &jobPayload); err != nil {
+		return fmt.Errorf("failed to unmarshal payload: %v", err)
+	}
+
+	fmt.Println("Starting droid:", jobPayload.Droid)
+	fmt.Println("Executing maintenance job:", jobPayload.Task)
+
+	return nil
+}
+```
+
+#### `job-scheduler` app
+
+In the `job-scheduler` application, the R2D2, C3PO, and BB8 jobs are first defined as `[]DroidJob`:
+
+```go
+droidJobs := []DroidJob{
+	{Name: "R2-D2", Job: "Oil Change", DueTime: "5s"},
+	{Name: "C-3PO", Job: "Memory Wipe", DueTime: "15s"},
+	{Name: "BB-8", Job: "Internal Gyroscope Check", DueTime: "30s"},
+}
+```
+
+
+The jobs are then scheduled, retrieved, and deleted using the jobs API. As you can see from the terminal output, first the R2D2 job is scheduled:
+
+```go
+// Schedule R2D2 job
+err = schedule(droidJobs[0])
+if err != nil {
+	log.Fatalln("Error scheduling job: ", err)
+}
+
+time.Sleep(3 * time.Second)
+```
+
+Then, the C3PO job is scheduled, and returns job data:
+
+```go
+// Schedule C-3PO job
+err = schedule(droidJobs[1])
+if err != nil {
+	log.Fatalln("Error scheduling job: ", err)
+}
+time.Sleep(5 * time.Second)
+
+// Get C-3PO job
+resp, err := get(droidJobs[1])
+if err != nil {
+	log.Fatalln("Error retrieving job: ", err)
+}
+fmt.Println("Get job response: ", resp)
+```
+
+The BB8 job is then scheduled, retrieved, and deleted:
+
+```go
+// Schedule BB-8 job
+err = schedule(droidJobs[2])
+if err != nil {
+	log.Fatalln("Error scheduling job: ", err)
+}
+
+time.Sleep(5 * time.Second)
+
+// Get BB-8 job
+resp, err = get(droidJobs[2])
+if err != nil {
+	log.Fatalln("Error retrieving job: ", err)
+}
+fmt.Println("Get job response: ", resp)
+
+time.Sleep(5 * time.Second)
+
+// Delete BB-8 job
+err = delete(droidJobs[2])
+if err != nil {
+	log.Fatalln("Error deleting job: ", err)
+}
+fmt.Println("Job deleted: ", droidJobs[2].Name)
+```
+
+The `job-scheduler.go` also defines the `schedule`, `get`, and `delete` functions, calling from `job-service.go`.
+
+```go
+// Schedules a job by invoking grpc service from job-service passing a DroidJob as an argument
+func schedule(droidJob DroidJob) error {
+	jobData, err := json.Marshal(droidJob)
+	if err != nil {
+		fmt.Println("Error marshalling job content")
+		return err
+	}
+
+	content := &daprc.DataContent{
+		ContentType: "application/json",
+		Data:        []byte(jobData),
+	}
+
+	// Schedule Job
+	_, err = app.daprClient.InvokeMethodWithContent(context.Background(), "job-service", "scheduleJob", "POST", content)
+	if err != nil {
+		fmt.Println("Error invoking method: ", err)
+		return err
+	}
+
+	return nil
+}
+
+// Gets a job by invoking grpc service from job-service passing a job name as an argument
+func get(droidJob DroidJob) (string, error) {
+	content := &daprc.DataContent{
+		ContentType: "text/plain",
+		Data:        []byte(droidJob.Name),
+	}
+
+	//get job
+	resp, err := app.daprClient.InvokeMethodWithContent(context.Background(), "job-service", "getJob", "GET", content)
+	if err != nil {
+		fmt.Println("Error invoking method: ", err)
+		return "", err
+	}
+
+	return string(resp), nil
+}
+
+// Deletes a job by invoking grpc service from job-service passing a job name as an argument
+func delete(droidJob DroidJob) error {
+	content := &daprc.DataContent{
+		ContentType: "text/plain",
+		Data:        []byte(droidJob.Name),
+	}
+
+	_, err := app.daprClient.InvokeMethodWithContent(context.Background(), "job-service", "deleteJob", "DELETE", content)
+	if err != nil {
+		fmt.Println("Error invoking method: ", err)
+		return err
+	}
+
+	return nil
+}
+```
+
 {{% /codetab %}}
 
 {{< /tabs >}}
@@ -201,12 +513,16 @@ Return to the `job-service` app terminal window. The output should be:
 == APP == Executing maintenance job: Memory Wipe
 ```
 
-### What happened?
-
-
 {{% /codetab %}}
 
 {{< /tabs >}}
+
+
+## Watch the demo
+
+See the jobs API in action using a Go HTTP example, recorded during the [Dapr Community Call #107(https://www.youtube.com/live/WHGOc7Ec_YQ?si=JlOlcJKkhRuhf5R1&t=849)].
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/WHGOc7Ec_YQ?si=JlOlcJKkhRuhf5R1&amp;start=849" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Tell us what you think!
 
@@ -216,8 +532,9 @@ Join the discussion in our [discord channel](https://discord.com/channels/778680
 
 ## Next steps
 
-- Walk through [more examples of scheduling and orchestrating jobs using the jobs API](link)
-- Learn more about [the jobs building block](link)
-- Learn more about [the scheduler control plane](link)
+- HTTP samples of this quickstart:
+  - [Go](todo)
+- Learn more about [the jobs building block]({{< ref jobs-overview.md >}})
+- Learn more about [the scheduler control plane]({{< ref scheduler.md >}})
 
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}
