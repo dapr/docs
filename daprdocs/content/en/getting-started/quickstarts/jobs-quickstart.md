@@ -59,20 +59,11 @@ From the root of the Quickstarts directory, navigate into the jobs directory:
 cd jobs/go/sdk
 ```
 
+Run the quickstart with one command:
+
 ```bash
 dapr run -f .
 ```
-
-In the terminal output, you can see the following jobs being scheduled, retrieved, and deleted.
-
-- The `R2-D2` job is being scheduled.
-- The `C-3PO` job is being scheduled.
-- The `C-3PO` job is being retrieved.
-- The `BB-8` job is being scheduled.
-- The `BB-8` job is being retrieved.
-- The `BB-8` job is being deleted.
-- The `R2-D2` job is being executed after 5 seconds.
-- The `R2-D2` job is being executed after 10 seconds.
 
 **Expected output**
 
@@ -119,7 +110,16 @@ When you ran `dapr init` during Dapr install:
 - The `dapr_scheduler` control plane was started alongside other Dapr services.
 - [The `dapr.yaml` Multi-App Run template file]({{< ref "#dapryaml-multi-app-run-template-file" >}}) was generated in the `.dapr/components` directory.
 
-Running `dapr run -f .` in this Quickstart started both the `job-scheduler` and the `job-service`. 
+Running `dapr run -f .` in this Quickstart started both the `job-scheduler` and the `job-service`. In the terminal output, you can see the following jobs being scheduled, retrieved, and deleted.
+
+- The `R2-D2` job is being scheduled.
+- The `C-3PO` job is being scheduled.
+- The `C-3PO` job is being retrieved.
+- The `BB-8` job is being scheduled.
+- The `BB-8` job is being retrieved.
+- The `BB-8` job is being deleted.
+- The `R2-D2` job is being executed after 5 seconds.
+- The `R2-D2` job is being executed after 10 seconds.
 
 #### `dapr.yaml` Multi-App Run template file
 
