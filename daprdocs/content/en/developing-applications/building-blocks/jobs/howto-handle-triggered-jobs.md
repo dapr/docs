@@ -6,7 +6,9 @@ weight: 2000
 description: "Learn how to use the jobs API to schedule jobs and handle triggered jobs"
 ---
 
-Now that you've learned what the [jobs building block]({{< ref jobs-overview.md >}}) provides, let's look at an example of how to use the API. The code examples below describe an application that schedules jobs for droid maintenance and another application to handle the triggered jobs that are sent back to the app at their dueTime.
+Now that you've learned what the [jobs building block]({{< ref jobs-overview.md >}}) provides, let's look at an example of how to use the API. This guide follows an example that uses two applications to set up the jobs API:
+- `job-scheduler` application: schedules jobs for droid maintenance.
+- `job-service` application: handles the triggered jobs that are sent back to the app at their `dueTime`.
 
 <!-- 
 Include a diagram or image, if possible. 
@@ -18,22 +20,17 @@ When you [run `dapr init` in either self-hosted mode or on Kubernetes]({{< ref i
 
 ## Set up the Jobs API
 
-In your code, set up and schedule jobs within your application.
+### Schedule jobs
 
-{{< tabs ".NET" "Go" >}}
+In your code, start by setting up and scheduling jobs your project. In the first application, create a new job, including its `name`, `data`, and `dueTime` values.
 
-{{% codetab %}}
-
-<!--.net-->
-
-
-{{% /codetab %}}
+{{< tabs "Go" >}}
 
 {{% codetab %}}
 
 <!--go-->
 
-The Go SDK schedules the job named `R2-D2`. For example, the following is application code to schedule jobs.
+For example, the following `job-scheduler` application code uses Go HTTP client to schedule a job named `R2-D2` with a `"value"` of `"R2-D2:Oil Change"` and a `dueTime` of `"2s"`. 
 
 ```go
 package main
@@ -100,7 +97,11 @@ func main() {
 }	
 ```
 
-The following is application code to handle the triggered jobs that are sent back to the application at their dueTime.
+### Create a job handler
+
+Next, in a second application, you need to create a job handler that handles the triggered jobs that are sent back to the application. 
+
+For example, the following `job-service` application code has a job handler called `handleJob` to deal with the triggered R2D2 job from earlier, at its `"dueTime": "2s"`.
 
 ```go
 package main
@@ -192,17 +193,29 @@ func setDroidJob(decodedValue string) DroidJob {
 
 ## Run the Dapr sidecar
 
-Once you've set up the Jobs API in your application, run the Dapr sidecar.
+Once you've set up the Jobs API in your application, run the Dapr sidecar. In a terminal window, run the following Dapr command for the `job-service` application.
 
 ```bash
 // service to handle the triggered jobs
 // run locally to the directory where the job handler service lives
 dapr run --app-id job-service --app-port 6200 --dapr-http-port 6280 -- go run .
+```
 
+In a second terminal window, run the following Dapr command to start the `job-scheduler` application.
+
+```bash
 // service to schedule a job to be sent back at some point in the future
 // run locally to the directory where the job scheduler service lives
 dapr run --app-id job-scheduler --app-port 6300 --dapr-http-port 6380 -- go run .
 ```
+
+**Expected output**
+
+```text
+
+```
+
+
 
 ## Next steps
 

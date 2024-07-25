@@ -20,14 +20,7 @@ When you [run `dapr init` in either self-hosted mode or on Kubernetes]({{< ref i
 
 In your code, set up and schedule jobs within your application.
 
-{{< tabs ".NET" "Go" >}}
-
-{{% codetab %}}
-
-<!--.net-->
-
-
-{{% /codetab %}}
+{{< tabs "Go" >}}
 
 {{% codetab %}}
 
