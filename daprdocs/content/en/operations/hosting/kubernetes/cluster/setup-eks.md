@@ -16,6 +16,7 @@ This guide walks you through installing an Elastic Kubernetes Service (EKS) clus
    - [kubectl](https://kubernetes.io/docs/tasks/tools/)
    - [AWS CLI](https://aws.amazon.com/cli/)
    - [eksctl](https://eksctl.io/)
+   - [An existing VPC and subnets](https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html)
 
 ## Deploy an EKS cluster
 
@@ -27,11 +28,19 @@ This guide walks you through installing an Elastic Kubernetes Service (EKS) clus
 
 1. Create an EKS cluster. To use a specific version of Kubernetes, use `--version` (1.13.x or newer version required).
 
+Change the values for vpc-private-subnets to meet your requirements. You can also add additional IDs. You must specify at least two subnet IDs. If you'd rather specify public subnets, you can change --vpc-private-subnets to --vpc-public-subnets.
+
    ```bash
-   eksctl create cluster --name [your_eks_cluster_name] --region [your_aws_region] --node-type t3.medium --nodes 3 --nodes-min 2 --nodes-max 4 --managed
+   eksctl create cluster --name [your_eks_cluster_name] --region [your_aws_region] --version [kubernetes_version] --vpc-private-subnets [subnet_list_seprated_by_comma] --without-nodegroup
    ```
 
-1. Configure kubectl
+1. Verify kubectl context:
+
+   ```bash
+   kubectl config current-context
+   ```
+
+1. If required, configured kubectl:
 
    ```bash
    aws eks --region [your_aws_region] update-kubeconfig --name [your_eks_cluster_name]
