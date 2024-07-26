@@ -10,7 +10,7 @@ The [Scheduler]({{< ref scheduler.md >}}) service is responsible for writing job
 By default, the Scheduler service database writes this data to the local volume `dapr_scheduler`, meaning that **this data is persisted across restarts**.
 
 The host file location for this local volume is typically located at either `/var/lib/docker/volumes/dapr_scheduler/_data` or `~/.local/share/containers/storage/volumes/dapr_scheduler/_data`, depending on your container runtime.
-Note that if using Docker Desktop, this volume will be located in the Docker Desktop VM's filesystem, which can be accessed using:
+Note that if you are using Docker Desktop, this volume is located in the Docker Desktop VM's filesystem, which can be accessed using:
 
 ```bash
 docker run -it --privileged --pid=host debian nsenter -t 1 -m -u -n -i sh
