@@ -1,12 +1,12 @@
 ---
 type: docs
-title: "How-To: Schedule jobs"
-linkTitle: "How-To: Schedule jobs"
+title: "How-To: Schedule and handle triggered jobs"
+linkTitle: "How-To: Schedule and handle triggered jobs"
 weight: 2000
-description: "Learn how to use the jobs API to schedule jobs"
+description: "Learn how to use the jobs API to schedule and handle triggered jobs"
 ---
 
-Now that you've learned what the [jobs building block]({{< ref jobs-overview.md >}}) provides, let's look at an example of how to use the API. The code example below describes an application that schedules jobs for a database backup application.
+Now that you've learned what the [jobs building block]({{< ref jobs-overview.md >}}) provides, let's look at an example of how to use the API. The code example below describes an application that schedules jobs for a database backup application and handles them at trigger time, also known as the time the job was sent back to the application because it reached it's dueTime.
 
 <!-- 
 Include a diagram or image, if possible. 
@@ -26,7 +26,11 @@ In your code, set up and schedule jobs within your application.
 
 <!--go-->
 
-The Go SDK schedules the job named `prod-db-backup`. Job data is housed in a backup database (`"my-prod-db"`) and are called with `ScheduleJobAlpha1`. For example:
+The following Go SDK code sample schedules the job named `prod-db-backup`. Job data is housed in a backup database (`"my-prod-db"`) and is scheduled with `ScheduleJobAlpha1`, 
+providing the job `data` which is the backup `task` name and `metadata` including the location and database name. The job is scheduled with a `schedule` set and the amount of `repeats`
+desired, meaning there is a max amount of times the job should be triggered and sent back to the app. At trigger time, so `@every 1s` according to the `schedule`, this job will be 
+triggered and sent back to the application up to the max repeats set which is `10`. At the trigger time, the `prodDBBackupHandler` function is called executing the 
+desired business logic for this job at trigger time. For example:
 
 ```go
 package main
@@ -41,13 +45,9 @@ import (
 )
 
 func main() {
-
     // Initialize the server
 	server, err := daprs.NewService(":50070")
-
-	if err != nil {
-		log.Fatalf("failed to start the server: %v", err)
-	}
+    // ...
 
 	if err = server.AddJobEventHandler("prod-db-backup", prodDBBackupHandler); err != nil {
 		log.Fatalf("failed to register job event handler: %v", err)
@@ -59,11 +59,7 @@ func main() {
 			log.Fatalf("failed to start server: %v", err)
 		}
 	}()
-
-	// Brief intermission to allow for the server to initialize.
-	time.Sleep(10 * time.Second)
-	
-	ctx := context.Background()
+    // ...
 
     // Set up backup location
 	jobData, err := json.Marshal(&api.DBBackup{
@@ -74,10 +70,7 @@ func main() {
 		},
 	},
 	)
-
-	if err != nil {
-		panic(err)
-	}
+	// ...
 	
     // Set up the job
 	job := daprc.Job{
@@ -91,36 +84,25 @@ func main() {
 
 	// Create the client
 	client, err := daprc.NewClient()
-	if err != nil {
-		panic(err)
-	}
+	// ...
+
 	defer client.Close()
 
     // Schedule job
 	err = client.ScheduleJobAlpha1(ctx, &job)
-	if err != nil {
-		panic(err)
-	}
-
-
-	fmt.Println("schedulejob - success")
-
-	time.Sleep(3 * time.Second)
+	// ...
+	fmt.Println("schedule job - success")
 
 	// Get job
 	resp, err := client.GetJobAlpha1(ctx, "prod-db-backup")
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("getjob - resp: %v\n", resp) // parse
-	
+	// ...
+	fmt.Printf("get job - resp: %v\n", resp) // parse
+
+	// Let test run and then cleanup the job
+	time.Sleep(20 * time.Second)
     // Delete job
 	err = client.DeleteJobAlpha1(ctx, "prod-db-backup")
-	if err != nil {
-		fmt.Printf("job deletion error: %v\n", err)
-	} else {
-		fmt.Println("deletejob - success")
-	}
+	// ...
 
 	if err = server.Stop(); err != nil {
 		log.Fatalf("failed to stop server: %v\n", err)
@@ -129,19 +111,18 @@ func main() {
 
 var jobCount = 0
 
-
+// at job trigger time this function is called
 func prodDBBackupHandler(ctx context.Context, job *common.JobEvent) error {
 	var jobData common.Job
 	if err := json.Unmarshal(job.Data, &jobData); err != nil {
-		return fmt.Errorf("failed to unmarshal job: %v", err)
+		// ...
 	}
 	decodedPayload, err := base64.StdEncoding.DecodeString(jobData.Value)
-	if err != nil {
-		return fmt.Errorf("failed to decode job payload: %v", err)
-	}
+	// ...
+
 	var jobPayload api.DBBackup
 	if err := json.Unmarshal(decodedPayload, &jobPayload); err != nil {
-		return fmt.Errorf("failed to unmarshal payload: %v", err)
+		// ...
 	}
 	fmt.Printf("job %d received:\n type: %v \n typeurl: %v\n value: %v\n extracted payload: %v\n", jobCount, job.JobType, jobData.TypeURL, jobData.Value, jobPayload)
 	jobCount++
@@ -157,10 +138,16 @@ func prodDBBackupHandler(ctx context.Context, job *common.JobEvent) error {
 
 ## Run the Dapr sidecar 
 
-Once you've set up the Jobs API in your application, run the Dapr sidecar. 
+Once you've set up the Jobs API in your application, in a terminal window run the Dapr sidecar with the following command. 
 
 ```bash
-dapr run --app-id=distributed-scheduler --metrics-port=9091 --dapr-grpc-port 50001 --app-port 50070 --app-protocol grpc --log-level debug go run ./main.go
+dapr run --app-id=distributed-scheduler \
+                --metrics-port=9091 \
+                --dapr-grpc-port 50001 \
+                --app-port 50070 \
+                --app-protocol grpc \
+                --log-level debug \
+                go run ./main.go
 ```
 
 ## Next steps
