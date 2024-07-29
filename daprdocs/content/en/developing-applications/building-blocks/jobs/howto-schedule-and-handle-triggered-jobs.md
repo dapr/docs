@@ -124,6 +124,10 @@ func prodDBBackupHandler(ctx context.Context, job *common.JobEvent) error {
 
 Once you've set up the Jobs API in your application, in a terminal window run the Dapr sidecar with the following command. 
 
+{{< tabs "Go" >}}
+
+{{% codetab %}}
+
 ```bash
 dapr run --app-id=distributed-scheduler \
                 --metrics-port=9091 \
@@ -133,6 +137,11 @@ dapr run --app-id=distributed-scheduler \
                 --log-level debug \
                 go run ./main.go
 ```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
 
 ## Next steps
 
