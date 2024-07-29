@@ -45,6 +45,7 @@ dapr init [flags]
 |        N/A            | DAPR_HELM_REPO_PASSWORD | A password for a private Helm chart  |The password required to access the private Dapr Helm chart. If it can be accessed publicly, this env variable does not need to be set| |
 |  `--container-runtime`  |              |    `docker`      | Used to pass in a different container runtime other than Docker. Supported container runtimes are: `docker`, `podman` |
 |  `--dev`  |              |          | Creates Redis and Zipkin deployments when run in Kubernetes. |
+|  `--scheduler-volume`  |              |          | Self-hosted only. Optionally, you can specify a volume for the scheduler service data directory. By default, without this flag, scheduler data is not persisted and not resilient to restarts. |
 
 
 ### Examples
@@ -55,7 +56,9 @@ dapr init [flags]
 
 **Install**
 
-Install Dapr by pulling container images for Placement, Scheduler, Redis, and Zipkin. By default, these images are pulled from Docker Hub. 
+Install Dapr by pulling container images for Placement, Scheduler, Redis, and Zipkin. By default, these images are pulled from Docker Hub.
+
+> By default, a `dapr_scheduler` local volume is created for Scheduler service to be used as the database directory. The host file location for this volume is likely located at `/var/lib/docker/volumes/dapr_scheduler/_data` or `~/.local/share/containers/storage/volumes/dapr_scheduler/_data`, depending on your container runtime.
 
 ```bash
 dapr init
