@@ -172,7 +172,7 @@ if err = server.Start(); err != nil {
 }
 ```
 
-The `job-service` then codes the functions that handle scheduling, getting, deleting, and handling job events. 
+The `job-service` then call functions that handle scheduling, getting, deleting, and handling job events. 
 
 ```go
 // Handler that schedules a DroidJob
