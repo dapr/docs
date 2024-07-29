@@ -65,10 +65,10 @@ Actors have actor reminders, but present some limitations involving scalability 
 
 ## Try out the jobs API
 
-You can try out the jobs API in your application. After [Dapr is installed]({{< ref install-dapr-cli.md >}}), you can begin using the jobs API, starting with [the How-to: Schedule jobs guide]({{< ref howto-schedule-jobs.md >}}).
+You can try out the jobs API in your application. After [Dapr is installed]({{< ref install-dapr-cli.md >}}), you can begin using the jobs API, starting with [the How-to: Schedule jobs guide]({{< ref howto-schedule-and-handle-triggered-jobs.md >}}).
 
 ## Next steps
 
-- [Learn how to use the jobs API]({{< ref howto-schedule-jobs.md >}})
+- [Learn how to use the jobs API]({{< ref howto-schedule-and-handle-triggered-jobs.md >}})
 - [Learn more about the Scheduler control plane service]({{< ref "concepts/dapr-services/scheduler.md" >}})
 - [Jobs API reference]({{< ref jobs_api.md >}})

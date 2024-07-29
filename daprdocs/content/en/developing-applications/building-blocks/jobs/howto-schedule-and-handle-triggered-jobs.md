@@ -26,11 +26,12 @@ In your code, set up and schedule jobs within your application.
 
 <!--go-->
 
-The following Go SDK code sample schedules the job named `prod-db-backup`. Job data is housed in a backup database (`"my-prod-db"`) and is scheduled with `ScheduleJobAlpha1`, 
-providing the job `data` which is the backup `task` name and `metadata` including the location and database name. The job is scheduled with a `schedule` set and the amount of `repeats`
-desired, meaning there is a max amount of times the job should be triggered and sent back to the app. At trigger time, so `@every 1s` according to the `schedule`, this job will be 
-triggered and sent back to the application up to the max repeats set which is `10`. At the trigger time, the `prodDBBackupHandler` function is called executing the 
-desired business logic for this job at trigger time. For example:
+The following Go SDK code sample schedules the job named `prod-db-backup`. Job data is housed in a backup database (`"my-prod-db"`) and is scheduled with `ScheduleJobAlpha1`. This provides the `jobData`, which includes:
+- The backup `Task` name
+- The backup task's `Metadata`, including:
+  - The database name (`DBName`)
+  - The database location (`BackupLocation`)
+
 
 ```go
 package main
@@ -71,7 +72,15 @@ func main() {
 	},
 	)
 	// ...
-	
+}
+```
+
+The job is scheduled with a `Schedule` set and the amount of `Repeats` desired. These settings determine a max amount of times the job should be triggered and sent back to the app. 
+
+In this example, at trigger time, which is `@every 1s` according to the `Schedule`, this job is triggered and sent back to the application up to the max `Repeats` (`10`). 
+
+```go	
+    // ...
     // Set up the job
 	job := daprc.Job{
 		Name:     "prod-db-backup",
@@ -81,37 +90,14 @@ func main() {
 			Value: jobData,
 		},
 	}
+```
 
-	// Create the client
-	client, err := daprc.NewClient()
-	// ...
+At the trigger time, the `prodDBBackupHandler` function is called, executing the desired business logic for this job at trigger time. For example:
 
-	defer client.Close()
+```go
+// ...
 
-    // Schedule job
-	err = client.ScheduleJobAlpha1(ctx, &job)
-	// ...
-	fmt.Println("schedule job - success")
-
-	// Get job
-	resp, err := client.GetJobAlpha1(ctx, "prod-db-backup")
-	// ...
-	fmt.Printf("get job - resp: %v\n", resp) // parse
-
-	// Let test run and then cleanup the job
-	time.Sleep(20 * time.Second)
-    // Delete job
-	err = client.DeleteJobAlpha1(ctx, "prod-db-backup")
-	// ...
-
-	if err = server.Stop(); err != nil {
-		log.Fatalf("failed to stop server: %v\n", err)
-	}
-}
-
-var jobCount = 0
-
-// at job trigger time this function is called
+// At job trigger time this function is called
 func prodDBBackupHandler(ctx context.Context, job *common.JobEvent) error {
 	var jobData common.Job
 	if err := json.Unmarshal(job.Data, &jobData); err != nil {
@@ -128,11 +114,9 @@ func prodDBBackupHandler(ctx context.Context, job *common.JobEvent) error {
 	jobCount++
 	return nil
 }
-
 ```
 
 {{% /codetab %}}
-
 
 {{< /tabs >}}
 
