@@ -61,27 +61,28 @@ Run the `order-processor` service alongside a Dapr sidecar. The Dapr sidecar the
    metadata:
      name: myresiliency
    scopes:
-     - checkout
-   
+     - order-processor
+
    spec:
      policies:
        retries:
          retryForever:
            policy: constant
-           maxInterval: 5s
-           maxRetries: -1 
-   
+           duration: 5s
+           maxRetries: -1
+
        circuitBreakers:
          simpleCB:
            maxRequests: 1
-           timeout: 5s 
+           timeout: 5s
            trip: consecutiveFailures >= 5
-   
+
      targets:
-       apps:
-         order-processor:
-           retry: retryForever
-           circuitBreaker: simpleCB
+       components:
+         statestore:
+           outbound:
+             retry: retryForever
+             circuitBreaker: simpleCB
    ```
 
 
@@ -533,7 +534,7 @@ INFO[0036] Recovered processing operation component[statestore] output.
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- Java JDK 11 (or greater):
+- Java JDK 17 (or greater):
   - [Oracle JDK](https://www.oracle.com/java/technologies/downloads), or
   - OpenJDK
 - [Apache Maven](https://maven.apache.org/install.html), version 3.x.
