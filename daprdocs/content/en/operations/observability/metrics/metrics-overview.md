@@ -74,7 +74,7 @@ spec:
 
 When invoking Dapr using HTTP, metrics are created for each requested method by default. This can result in a high number of metrics, known as high cardinality, which can impact memory usage and CPU.
 
-Path matching allows you to manage and control the cardinality of HTTP metrics in Dapr. This is an aggregation of metrics, so rather than having a metric for each event, you can reduce the number of metrics events and report an overall number.  For details on how to set the cardinality in configuration see ({{< ref "configuration-overview.md#metrics" >}})  
+Path matching allows you to manage and control the cardinality of HTTP metrics in Dapr. This is an aggregation of metrics, so rather than having a metric for each event, you can reduce the number of metrics events and report an overall number. [Learn more about how to set the cardinality in configuration]({{< ref "configuration-overview.md#metrics" >}}).  
 
 This configuration is opt-in and is enabled via the Dapr configuration `spec.metrics.http.pathMatching`. When defined, it enables path matching, which standardizes specified paths for both metrics paths. This reduces the number of unique metrics paths, making metrics more manageable and reducing resource consumption in a controlled way.  
 
