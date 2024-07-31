@@ -110,11 +110,11 @@ spec:
 
 ### Shape the outbox pattern message
 
-You can override the outbox pattern message published to the pub/sub broker by setting a different message. This is done via a projected transaction payload, called `outboxProjections`, which is ignored when the state is written and is used as the outbox pattern message published to the user topic.
+You can override the outbox pattern message published to the pub/sub broker by setting another transaction that will not be saved to the database and is explicitly mentioned as a projection. This transaction is added a metadata key named `outbox.projection` with a value set to `true`. When added to the state array saved in a transaction, this payload will be ignored when the state is written and the data will be used as the payload sent to the upstream subscriber.
 
-To set the `outboxProjections` to `true`, the `key` values must match between the operation on the state store and the message projection. If the keys do not match, the whole transaction fails.
+To use correctly, the `key` values must match between the operation on the state store and the message projection. If the keys do not match, the whole transaction fails.
 
-If you have two or more `outboxProjections` for the same key, the first one defined is used and the others are ignored. 
+If you have two or more `outbox.projection` enabled state items for the same key, the first one defined is used and the others are ignored. 
 
 [Learn more about default and custom CloudEvent messages.]({{< ref pubsub-cloudevents.md >}})
 
