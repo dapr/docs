@@ -368,26 +368,33 @@ You can pass the message override using the following HTTP request:
 curl -X POST http://localhost:3500/v1.0/state/starwars/transaction \
   -H "Content-Type: application/json" \
   -d '{
-        "operations": [
-          {
-            "operation": "upsert",
-            "request": {
-              "key": "key1",
-              "value": "2"
-            }
-          },
-          {
-            "operation": "upsert",
-            "request": {
-              "key": "key1"
-              "value: "3"
-              "metadata": {
-                 "outboxProjection": "true"
-              }
-            }
-          }
-        ],
-      }'
+  "operations": [
+    {
+      "operation": "upsert",
+      "request": {
+        "key": "order1",
+        "value": {
+            "orderId": "7hf8374s",
+            "type": "book",
+            "name": "The name of the wind"
+        }
+      }
+    },
+    {
+      "operation": "upsert",
+      "request": {
+        "key": "order1",
+        "value": {
+            "orderId": "7hf8374s"
+        },
+        "metadata": {
+           "outbox.projection": "true"
+        },
+        "contentType": "application/json"
+      }
+    }
+  ]
+}'
 ```
 
 By setting the metadata item `"outbox.projection"` to `"true"` and making sure the `key` values match (`key1`):
