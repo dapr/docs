@@ -110,7 +110,7 @@ spec:
 
 ### Shape the outbox pattern message
 
-You can override the outbox pattern message published to the pub/sub broker by setting another transaction that will not be saved to the database and is explicitly mentioned as a projection. This transaction is added a metadata key named `outbox.projection` with a value set to `true`. When added to the state array saved in a transaction, this payload will be ignored when the state is written and the data will be used as the payload sent to the upstream subscriber.
+You can override the outbox pattern message published to the pub/sub broker by setting another transaction that is not be saved to the database and is explicitly mentioned as a projection. This transaction is added a metadata key named `outbox.projection` with a value set to `true`. When added to the state array saved in a transaction, this payload is ignored when the state is written and the data is used as the payload sent to the upstream subscriber.
 
 To use correctly, the `key` values must match between the operation on the state store and the message projection. If the keys do not match, the whole transaction fails.
 
