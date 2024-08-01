@@ -299,7 +299,7 @@ Next, create a new website for the future Dapr release. To do this, you'll need 
 - Docs maintainer status in the `dapr/docs` repo.
 - Access to the active Dapr Azure Subscription with Contributor or Owner access to create resources.
 - [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd?tabs=winget-windows%2Cbrew-mac%2Cscript-linux&pivots=os-windows) installed on your machine.
-- Your own fork of the [`dapr/docs` repo]() cloned to your machine.
+- Your own fork of the [`dapr/docs` repo](https://github.com/dapr/docs) cloned to your machine.
 
 #### Deploy Azure Static Web App
 
