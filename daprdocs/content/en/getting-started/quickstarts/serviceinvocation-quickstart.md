@@ -36,7 +36,7 @@ For this example, you will need:
 
 ### Step 2: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation/python/http).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -182,7 +182,7 @@ For this example, you will need:
 
 ### Step 2: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation/javascript/http).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -322,7 +322,7 @@ For this example, you will need:
 
 ### Step 2: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation/csharp/http).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -468,7 +468,7 @@ For this example, you will need:
 
 ### Step 2: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation/java/http).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -606,7 +606,7 @@ For this example, you will need:
 
 ### Step 2: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation/go/http).
 
 
 ```bash

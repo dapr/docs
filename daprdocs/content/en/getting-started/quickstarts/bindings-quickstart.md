@@ -33,7 +33,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/bindings).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/bindings/python/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -244,7 +244,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/bindings).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/bindings/javascript/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -450,7 +450,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/bindings).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/bindings/csharp/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -661,7 +661,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/bindings).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/bindings/java/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -872,7 +872,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/bindings).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/bindings/go/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git

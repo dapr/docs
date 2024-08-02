@@ -35,7 +35,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/configuration).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/configuration/python/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -151,14 +151,14 @@ if unsubscribed == True:
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [Python 3.7+ installed](https://www.python.org/downloads/).
-<!-- IGNORE_LINKS --> 
+- [Latest Node.js installed](https://nodejs.org/download/).
+<!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/configuration).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/configuration/javascript/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -279,7 +279,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/configuration).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/configuration/csharp/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -399,7 +399,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/configuration).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/configuration/java/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -514,7 +514,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/configuration).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/configuration/go/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
