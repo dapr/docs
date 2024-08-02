@@ -48,7 +48,7 @@ For this example, you will need:
 
 ### Step 2: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/workflows).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/workflows/python/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -290,7 +290,7 @@ For this example, you will need:
 
 ### Step 2: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/workflows).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/workflows/javascript/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -509,7 +509,7 @@ For this example, you will need:
 
 ### Step 2: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/workflows).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/workflows/csharp/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -761,7 +761,7 @@ For this example, you will need:
 
 ### Step 2: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/workflows).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/workflows/java/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -1100,7 +1100,7 @@ For this example, you will need:
 
 ### Step 2: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/workflows).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/workflows/go/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
