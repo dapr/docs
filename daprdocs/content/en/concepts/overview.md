@@ -139,7 +139,7 @@ Dapr can be used from any developer framework. Here are some that have been inte
 | [.NET]({{< ref dotnet >}}) | [ASP.NET Core](https://github.com/dapr/dotnet-sdk/tree/master/examples/AspNetCore) | Brings stateful routing controllers that respond to pub/sub events from other services. Can also take advantage of [ASP.NET Core gRPC Services](https://docs.microsoft.com/aspnet/core/grpc/).
 | [Java]({{< ref java >}}) | [Spring Boot](https://spring.io/) | Build Spring boot applications with Dapr APIs
 | [Python]({{< ref python >}}) | [Flask]({{< ref python-flask.md >}}) | Build Flask applications with Dapr APIs
-| [JavaScript](https://github.com/dapr/js-sdk) | [Express](http://expressjs.com/) | Build Express applications with Dapr APIs
+| [JavaScript](https://github.com/dapr/js-sdk) | [Express](https://expressjs.com/) | Build Express applications with Dapr APIs
 | [PHP]({{< ref php >}}) | | You can serve with Apache, Nginx, or Caddyserver.
 
 #### Integrations and extensions
