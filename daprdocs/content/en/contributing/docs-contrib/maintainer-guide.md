@@ -83,6 +83,7 @@ After upmerge, prepare the docs branches for the release. In two separate PRs, y
 
 - Archive the latest release.
 - Bring the preview/release branch as the current, live version of the docs.
+- Create a new preview branch.
 
 #### Latest release
 
@@ -193,79 +194,24 @@ These steps will prepare the upcoming release branch for promotion to latest rel
 | [v1.2](https://github.com/dapr/docs/tree/v1.2) (pre-release) | https://v1-2.docs.dapr.io/ | Pre-release documentation. Doc updates that are only applicable to v1.2+ go here.                |
 ```
 
-1. In VS Code, search for any `v1.0` references and replace them with `v1.1` as applicable.
+1. Update the `dapr-latest-version.html` shortcode partial to the new minor/patch version (in this example, `1.1.0` and `1.1`).
 1. Commit the staged changes and push to your branch (`release_v1.1`).
 1. Open a PR from `release/v1.1` to `v1.1`.
 1. Have a docs maintainer or approver review. Wait to merge the PR until release.
 
-### Create new website for future release
+#### Future preview branch
 
-Next, create a new website for the future Dapr release, which you point to from the latest website. To do this, you'll need to:
+##### Create preview branch
 
-- Deploy an Azure Static Web App.
-- Configure DNS via request from CNCF.
+1. In GitHub UI, select the branch drop-down menu and select **View all branches**. 
+1. Click **New branch**.
+1. In **New branch name**, enter the preview branch version number. In this example, it would be `v1.2`.
+1. Select **v1.1** as the source.
+1. Click **Create new branch**.
 
-These steps require authentication.
+##### Configure preview branch
 
-#### Deploy Azure Static Web App
-
-Deploy a new Azure Static Web App for the future Dapr release. For this example, we use v1.2 as the future release.
-
-{{% alert title="Important" color="primary" %}}
-You need Microsoft employee access to create a new Azure Static Web App.
-{{% /alert %}}
-
-1. Use Azure PIM to [elevate into the Owner role](https://eng.ms/docs/cloud-ai-platform/devdiv/devdiv-azure-service-dmitryr/azure-devex-philon/dapr/dapr/assets/azure) for the Dapr Prod subscription.
-1. Navigate to the [docs-website](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/38875a89-0178-4f27-a141-dc6fc01f183d/resourceGroups/docs-website/overview) resource group.
-1. Select **+ Create** and search for **Static Web App**. Select **Create**.
-1. Enter in the following information:
-   - Subscription: `Dapr Prod`
-   - Resource Group: `docs-website`
-   - Name: `daprdocs-v1-2`
-   - Hosting Plan: `Free`
-   - Region: `West US 2`
-   - Source: `Other`
-1. Select **Review + create**, and then deploy the static web app.
-1. Wait for deployment, and navigate to the new static web app resource.
-1. Select **Manage deployment token** and copy the value.
-1. Navigate to the docs repo **Secrets management** page under **Settings** and create a new secret named `AZURE_STATIC_WEB_APPS_V1_2`, and provide the value of the deployment token.
-
-#### Configure DNS
-
-{{% alert title="Important" color="primary" %}}
- This section can only be completed on a Secure Admin Workstation (SAW). If you do not have a SAW device, ask a team member with one to assist.
-
-{{% /alert %}}
-
-1. Ensure you are a member of the `DMAdaprweb` security group in IDWeb.
-1. Navigate to [https://prod.msftdomains.com/dns/form?environment=0](https://prod.msftdomains.com/dns/form?environment=0) on a SAW
-1. Enter the following details in the left-hand pane:
-   - Team Owning Alias: `DMAdaprweb`
-   - Business Justification/Notes: `Configuring DNS for new Dapr docs website`
-   - Environment: `Internet/Public-facing`
-   - Zone: `dapr.io`
-   - Action: `Add`
-   - Incident ID: Leave blank
-
-1. Back in the new static web app you just deployed, navigate to the **Custom domains** blade and select **+ Add**
-1. Enter `v1-2.docs.dapr.io` under **Domain name**. Click **Next**.
-1. Keep **Hostname record type** as `CNAME`, and copy the value of **Value**.
-1. Back in the domain portal, enter the following information in the main pane:
-   - Name: `v1-2.docs`
-   - Type: `CNAME`
-   - Data: Value you just copied from the static web app
-
-1. Click **Submit** in the top right corner.
-1. Wait for two emails:
-   - One saying your request was received.
-   - One saying the request was completed.
-1. Back in the Azure Portal, click **Add**. You may need to click a couple times to account for DNS delay.
-1. A TLS certificate is now generated for you and the DNS record is saved. This may take 2-3 minutes.
-1. Navigate to `https://v1-2.docs.dapr.io` and verify a blank website loads correctly.
-
-### Configure future website branch
-
-1. Open VS Code to the Dapr docs repo.
+1. In a terminal window, navigate to the `docs` repo.
 1. Switch to the upcoming release branch (`v1.1`) and synchronize changes:
 
    ```bash
@@ -339,15 +285,94 @@ You need Microsoft employee access to create a new Azure Static Web App.
      url = "https://v1-0.docs.dapr.io"
    ```
 
-1. Commit the staged changes and push to the v1.2 branch.
-1. Navigate to the [docs Actions page](https://github.com/dapr/docs/actions) and make sure the build & release successfully completed.
-1. Navigate to the new `https://v1-2.docs.dapr.io` website and verify that the new version is displayed.
+1. Commit the staged changes and push to a new PR against the v1.2 branch.
+1. Hold on merging the PR until after release and the other `v1.0` and `v1.1` PRs have been merged.
+
+### Create new website for future release
+
+Next, create a new website for the future Dapr release. To do this, you'll need to:
+
+- Deploy an Azure Static Web App.
+- Configure DNS via request from CNCF.
+
+#### Prerequisites
+- Docs maintainer status in the `dapr/docs` repo.
+- Access to the active Dapr Azure Subscription with Contributor or Owner access to create resources.
+- [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd?tabs=winget-windows%2Cbrew-mac%2Cscript-linux&pivots=os-windows) installed on your machine.
+- Your own fork of the [`dapr/docs` repo](https://github.com/dapr/docs) cloned to your machine.
+
+#### Deploy Azure Static Web App
+
+Deploy a new Azure Static Web App for the future Dapr release. For this example, we use v1.1 as the future release.
+
+1. In a terminal window, navigate to the `iac/swa` folder in the `dapr/docs` directory.
+
+   ```bash
+   cd .github/iac/swa
+   ```
+   
+1. Log into Azure Developer CLI (`azd`) using the Dapr Azure subscription.
+
+   ```bash
+   azd login
+   ```
+
+1. In the browser prompt, verify you're logging in as Dapr and complete the login.
+
+1. In a new terminal, replace the following values with the website values you prefer.
+
+   ```bash
+   export AZURE_RESOURCE_GROUP=rg-dapr-docs-test
+   export IDENTITY_RESOURCE_GROUP=rg-my-identities
+   export AZURE_STATICWEBSITE_NAME=daprdocs-latest
+   ```
+   
+1. Create a new [`azd` environment](https://learn.microsoft.com/azure/developer/azure-developer-cli/faq#what-is-an-environment-name).
+ 
+   ```bash
+   azd env new
+   ```
+
+1. When prompted, enter a new environment name. For this example, you'd name the environment something like: `dapr-docs-v1-1`. 
+
+1. Once the environment is created, deploy the Dapr docs SWA into the new environment using the following command:
+
+   ```bash
+   azd up
+   ```
+   
+1. When prompted, select an Azure subscription and location. Match these to the Dapr Azure subscription.
+
+#### Configure the SWA in the Azure portal
+
+Head over to the Dapr subscription in the [Azure portal](https://portal.azure.com) and verify that your new Dapr docs site has been deployed. 
+
+Optionally, grant the correct minimal permissions for inbound publishing and outbound access to dependencies using the **Static Web App** > **Access control (IAM)** blade in the portal.
+
+#### Configure DNS
+
+1. In the Azure portal, from the new SWA you just created, naviage to **Custom domains** from the left side menu. 
+1. Copy the "CNAME" value of the web app.
+1. Using your own account, [submit a CNCF ticket](https://jira.linuxfoundation.org/secure/Dashboard.jspa) to create a new domain name mapped to the CNAME value you copied. For this example, to create a new domain for Dapr v1.1, you'd request to map to `v1-1.docs.dapr.io`. 
+
+   Request resolution may take some time.
+
+1. Once the new domain has been confirmed, return to the static web app in the portal.
+1. Navigate to the **Custom domains** blade and select **+ Add**.
+1. Select **Custom domain on other DNS**. 
+1. Enter `v1-1.docs.dapr.io` under **Domain name**. Click **Next**.
+1. Keep **Hostname record type** as `CNAME`, and copy the value of **Value**.
+1. Click **Add**.
+1. Navigate to `https://v1-1.docs.dapr.io` and verify a blank website loads correctly.
+
+You can repeat these steps for any preview versions.
 
 ### On the new Dapr release date
 
 1. Wait for all code/containers/Helm charts to be published.
-1. Merge the the PR from `release_v1.0` to `v1.0`. Delete the release/v1.0 branch.
-1. Merge the the PR from `release_v1.1` to `v1.1`. Delete the release/v1.1 branch.
+1. Merge the PR from `release_v1.0` to `v1.0`. Delete the release/v1.0 branch.
+1. Merge the PR from `release_v1.1` to `v1.1`. Delete the release/v1.1 branch.
+1. Merge the PR from `release_v1.2` to `v1.2`. Delete the release/v1.2 branch.
 
 Congrats on the new docs release! 🚀 🎉 🎈
 

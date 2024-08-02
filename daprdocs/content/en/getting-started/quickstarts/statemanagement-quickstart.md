@@ -34,7 +34,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management/python/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -163,7 +163,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management/javascript/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -295,7 +295,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management/csharp/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -419,7 +419,7 @@ In the YAML file:
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- Java JDK 11 (or greater):
+- Java JDK 17 (or greater):
   - [Oracle JDK](https://www.oracle.com/java/technologies/downloads), or
   - OpenJDK
 - [Apache Maven](https://maven.apache.org/install.html), version 3.x.
@@ -429,7 +429,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management/java/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -562,7 +562,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
+Clone the [sample provided in the Quickstarts repo](hhttps://github.com/dapr/quickstarts/tree/master/state_management/go/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -702,7 +702,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management/python/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -818,7 +818,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management/javascript/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -940,7 +940,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management/csharp/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -1050,7 +1050,7 @@ In the YAML file:
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- Java JDK 11 (or greater):
+- Java JDK 17 (or greater):
   - [Oracle JDK](https://www.oracle.com/java/technologies/downloads), or
   - OpenJDK
 - [Apache Maven](https://maven.apache.org/install.html), version 3.x.
@@ -1060,7 +1060,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management/java/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -1179,7 +1179,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management/go/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git

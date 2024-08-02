@@ -32,7 +32,7 @@ The jobs API is a job scheduler, not the executor which runs the job. The design
 All job details and user-associated data for scheduled jobs are stored in an embedded Etcd database in the Scheduler service. 
 You can use jobs to:
 
-- **Delay your [pub/sub messaging]({<< ref pubsub-overview.md >>}).** You can publish a message in a future specific time (for example: a week from today, or a specific UTC date/time).
+- **Delay your [pub/sub messaging]({{< ref pubsub-overview.md >}}).** You can publish a message in a future specific time (for example: a week from today, or a specific UTC date/time).
 - **Schedule [service invocation]({{< ref service-invocation-overview.md >}}) method calls between applications.**
 
 ## Scenarios

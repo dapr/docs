@@ -43,7 +43,7 @@ For this example, you will need:
 
 ### Step 2: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/jobs).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/jobs/go/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
