@@ -39,7 +39,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | redisHost | Y | Output |  The Redis host address | `"localhost:6379"` |
-| redisPassword | Y | Output | The Redis password | `"password"` |
+| redisPassword | N | Output | The Redis password | `"password"` |
 | redisUsername | N | Output | Username for Redis host. Defaults to empty. Make sure your Redis server version is 6 or above, and have created acl rule correctly. | `"username"` |
 | enableTLS | N | Output |  If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS. Defaults to `"false"` | `"true"`, `"false"` |
 | failover           | N | Output         | Property to enabled failover configuration. Needs sentinelMasterName to be set. Defaults to `"false"` | `"true"`, `"false"`

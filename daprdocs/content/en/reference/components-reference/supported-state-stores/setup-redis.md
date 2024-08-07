@@ -26,7 +26,7 @@ spec:
   metadata:
   - name: redisHost
     value: <HOST>
-  - name: redisPassword
+  - name: redisPassword # Optional.
     value: <PASSWORD>
   - name: enableTLS
     value: <bool> # Optional. Allowed: true, false.
@@ -96,7 +96,7 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | redisHost          | Y        | Connection-string for the redis host  | `localhost:6379`, `redis-master.default.svc.cluster.local:6379`
-| redisPassword      | Y        | Password for Redis host. No Default. Can be `secretKeyRef` to use a secret reference  | `""`, `"KeFg23!"`
+| redisPassword      | N        | Password for Redis host. No Default. Can be `secretKeyRef` to use a secret reference  | `""`, `"KeFg23!"`
 | redisUsername      | N        | Username for Redis host. Defaults to empty. Make sure your redis server version is 6 or above, and have created acl rule correctly. | `""`, `"default"`
 | enableTLS          | N         | If the Redis instance supports TLS with public certificates, can be configured to be enabled or disabled. Defaults to `"false"` | `"true"`, `"false"`
 | maxRetries         | N         | Maximum number of retries before giving up. Defaults to `3` | `5`, `10`
