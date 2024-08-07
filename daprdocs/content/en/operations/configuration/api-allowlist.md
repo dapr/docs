@@ -114,7 +114,7 @@ The `name` field takes the name of the Dapr API you would like to enable.
 
 See this list of values corresponding to the different Dapr APIs:
 
-| API group | HTTP API | [gRPC API](https://github.com/dapr/dapr/blob/master/pkg/grpc/endpoints.go) |
+| API group | HTTP API | [gRPC API](https://github.com/dapr/dapr/tree/master/pkg/api/grpc) |
 | ----- | ----- | ----- |
 | [Service Invocation]({{< ref service_invocation_api.md >}}) | `invoke` (`v1.0`) | `invoke` (`v1`) |
 | [State]({{< ref state_api.md>}})| `state` (`v1.0` and `v1.0-alpha1`) | `state` (`v1` and `v1alpha1`) |
