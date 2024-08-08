@@ -114,12 +114,13 @@ The `name` field takes the name of the Dapr API you would like to enable.
 
 See this list of values corresponding to the different Dapr APIs:
 
-| API group | HTTP API | [gRPC API](https://github.com/dapr/dapr/blob/master/pkg/grpc/endpoints.go) |
+| API group | HTTP API | [gRPC API](https://github.com/dapr/dapr/tree/master/pkg/api/grpc) |
 | ----- | ----- | ----- |
 | [Service Invocation]({{< ref service_invocation_api.md >}}) | `invoke` (`v1.0`) | `invoke` (`v1`) |
 | [State]({{< ref state_api.md>}})| `state` (`v1.0` and `v1.0-alpha1`) | `state` (`v1` and `v1alpha1`) |
 | [Pub/Sub]({{< ref pubsub.md >}}) | `publish` (`v1.0` and `v1.0-alpha1`) | `publish` (`v1` and `v1alpha1`) |
 | [Output Bindings]({{< ref bindings_api.md >}})  | `bindings` (`v1.0`) |`bindings` (`v1`) |
+| Subscribe | n/a | `subscribe` (`v1alpha1`) |
 | [Secrets]({{< ref secrets_api.md >}})| `secrets` (`v1.0`) | `secrets` (`v1`) |
 | [Actors]({{< ref actors_api.md >}}) | `actors`  (`v1.0`) |`actors` (`v1`) |
 | [Metadata]({{< ref metadata_api.md >}}) | `metadata` (`v1.0`) |`metadata` (`v1`) |
