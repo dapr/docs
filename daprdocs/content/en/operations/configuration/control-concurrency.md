@@ -19,7 +19,7 @@ See [Rate limit middleware]({{< ref middleware-rate-limit.md >}}) for more infor
 
 ## Demo
 
-Watch this [video](https://youtu.be/yRI5g6o_jp8?t=1710) on how to control concurrency and rate limiting ".
+Watch this [video](https://youtu.be/yRI5g6o_jp8?t=1710) on how to control concurrency and rate limiting.
 
 <div class="embed-responsive embed-responsive-16by9">
 <iframe width="764" height="430" src="https://www.youtube-nocookie.com/embed/yRI5g6o_jp8?t=1710" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
