@@ -8,6 +8,8 @@ description: "Learn how to control how many requests and events can invoke your 
 
 Typically, in distributed computing, you may only want to allow for a given number of requests to execute concurrently. Using Dapr's `app-max-concurrency`, you can control how many requests and events can invoke your application simultaneously.
 
+Default `app-max-concurreny` is set to `-1`, meaning no rate limits are set.
+
 ## Different approaches
 
 While this guide focuses on `app-max-concurrency`, you can also limit request rate per second using the **`middleware.http.ratelimit`** middleware. However, it's important to understand the difference between the two approaches:
