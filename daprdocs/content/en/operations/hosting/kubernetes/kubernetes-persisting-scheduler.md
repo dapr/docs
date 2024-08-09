@@ -6,11 +6,11 @@ weight: 50000
 description: "Configure Scheduler to persist its database to make it resilient to restarts"
 ---
 
-The [Scheduler]({{< ref scheduler.md >}}) service is responsible for writing jobs to its embedded database and scheduling them for execution.
-By default, the Scheduler service database writes this data to an in-memory ephemeral tempfs volume, meaning that **this data is not persisted across restarts**. Job data will be lost during these events.
-
-To make the Scheduler data resilient to restarts, a persistent volume must be mounted to the Scheduler `StatefulSet`.
+The [Scheduler]({{< ref scheduler.md >}}) service is responsible for writing jobs to its embedded database and scheduling them for execution. On installation, a Persistent Volume Claim (PVC) is automatically created on the default storage class, providing durable storage for the Scheduler database and making it resilient to restarts or cluster failure. 
 This persistent volume is backed by a real disk that is provided by the hosted Cloud Provider or Kubernetes infrastructure platform.
+
+You can create the persistent volume on a different storage class by specifying the `dapr_scheduler.cluster.storageClassName` parameter during installation.
+
 Disk size is determined by how many jobs are expected to be persisted at once; however, 64Gb should be more than sufficient for most use cases.
 Some Kubernetes providers recommend using a [CSI driver](https://kubernetes.io/docs/concepts/storage/volumes/#csi) to provision the underlying disks.
 Below are a list of useful links to the relevant documentation for creating a persistent disk for the major cloud providers:
