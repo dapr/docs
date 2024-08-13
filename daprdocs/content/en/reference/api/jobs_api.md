@@ -10,11 +10,6 @@ weight: 1300
 The jobs API is currently in alpha.
 {{% /alert %}}
 
-{{% alert title="Warning" color="warning" %}}
-By default, job data is not resilient to [Scheduler]({{< ref scheduler.md >}}) service restarts.
-A persistent volume must be provided to Scheduler to ensure job data is not lost in either [Kubernetes]({{< ref kubernetes-persisting-scheduler.md >}}) or [Self-Hosted]({{< ref self-hosted-persisting-scheduler.md >}}) mode.
-{{% /alert %}}
-
 With the jobs API, you can schedule jobs and tasks in the future.
 
 > The HTTP APIs are intended for development and testing only. For production scenarios, the use of the SDKs is strongly
