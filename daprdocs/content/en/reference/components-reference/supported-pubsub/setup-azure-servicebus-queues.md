@@ -80,7 +80,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `maxConcurrentHandlers` | N  | Defines the maximum number of concurrent message handlers. Default: `0` (unlimited) | `10`
 | `disableEntityManagement` | N  | When set to true, queues and subscriptions do not get created automatically. Default: `"false"` | `"true"`, `"false"`
 | `defaultMessageTimeToLiveInSec` | N  | Default message time to live, in seconds. Used during subscription creation only. | `10`
-| `autoDeleteOnIdleInSec` | N  | Time in seconds to wait before auto deleting idle subscriptions. Used during subscription creation only. Default: `0` (disabled) | `3600`
+| `autoDeleteOnIdleInSec` | N  | Time in seconds to wait before auto deleting idle subscriptions. Used during subscription creation only. Must be 300s or greater. Default: `0` (disabled) | `3600`
 | `maxDeliveryCount`      | N  | Defines the number of attempts the server will make to deliver a message. Used during subscription creation only. Default set by server. | `10`
 | `lockDurationInSec`     | N  | Defines the length in seconds that a message will be locked for before expiring. Used during subscription creation only. Default set by server. | `30`
 | `minConnectionRecoveryInSec` | N | Minimum interval (in seconds) to wait before attempting to reconnect to Azure Service Bus in case of a connection failure. Default: `2` | `5`
@@ -151,7 +151,9 @@ In addition to the [settable metadata listed above](#sending-a-message-with-meta
 - `metadata.EnqueuedTimeUtc`
 - `metadata.SequenceNumber`
 
-To find out more details on the purpose of any of these metadata properties, please refer to [the official Azure Service Bus documentation](https://docs.microsoft.com/rest/api/servicebus/message-headers-and-properties#message-headers).
+To find out more details on the purpose of any of these metadata properties refer to [the official Azure Service Bus documentation](https://docs.microsoft.com/rest/api/servicebus/message-headers-and-properties#message-headers).
+
+In addition, all entries of `ApplicationProperties` from the original Azure Service Bus message are appended as `metadata.<application property's name>`.
 
 {{% alert title="Note" color="primary" %}}
 All times are populated by the server and are not adjusted for clock skews.
