@@ -84,7 +84,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `disableEntityManagement` | N  | When set to true, queues and subscriptions do not get created automatically. Default: `"false"` | `"true"`, `"false"`
 | `defaultMessageTimeToLiveInSec` | N  | Default message time to live, in seconds. Used during subscription creation only. | `10`
 | `autoDeleteOnIdleInSec` | N  | Time in seconds to wait before auto deleting idle subscriptions. Used during subscription creation only. Default: `0` (disabled) | `3600`
-| `maxDeliveryCount`      | N  | Defines the number of attempts the server will make to deliver a message. Used during subscription creation only. Default set by server. | `10`
+| `maxDeliveryCount`      | N  | Defines the number of attempts the server will make to deliver a message. Used during subscription creation only. Must be 300s or greater. Default set by server. | `10`
 | `lockDurationInSec`     | N  | Defines the length in seconds that a message will be locked for before expiring. Used during subscription creation only. Default set by server. | `30`
 | `minConnectionRecoveryInSec` | N | Minimum interval (in seconds) to wait before attempting to reconnect to Azure Service Bus in case of a connection failure. Default: `2` | `5`
 | `maxConnectionRecoveryInSec` | N | Maximum interval (in seconds) to wait before attempting to reconnect to Azure Service Bus in case of a connection failure. After each attempt, the component waits a random number of seconds, increasing every time, between the minimum and the maximum. Default: `300` (5 minutes) | `600`
