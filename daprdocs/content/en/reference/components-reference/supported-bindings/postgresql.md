@@ -56,14 +56,14 @@ Authenticating with Microsoft Entra ID is supported with Azure Database for Post
 ### Authenticate using AWS IAM
 
 Authenticating with AWS IAM is supported with all versions of PostgreSQL type components.
-The user specified in the connection string must be an AWS IAM enabled user granted the `rds_iam` database role.
+The user specified in the connection string must be an already existing user in the DB, and an AWS IAM enabled user granted the `rds_iam` database role.
 Authentication is based on the AWS authentication configuration file, or the AccessKey/SecretKey provided.
 The AWS authentication token will be dynamically rotated before it's expiration time with AWS.
 
 | Field  | Required | Details | Example |
 |--------|:--------:|---------|---------|
 | `useAWSIAM` | Y | Must be set to `true` to enable the component to retrieve access tokens from AWS IAM. This authentication method only works with AWS Relational Database Service for PostgreSQL databases. | `"true"` |
-| `connectionString` | Y | The connection string for the PostgreSQL database.<br>This must contain the user, which corresponds to the name of the user created inside PostgreSQL that maps to the AWS IAM policy. This connection string should not contain any password. Note that the database name field is denoted by dbname with AWS. | `"host=mydb.postgres.database.aws.com user=myapplication port=5432 dbname=dapr_test sslmode=require"`|
+| `connectionString` | Y | The connection string for the PostgreSQL database.<br>This must contain an already existing user, which corresponds to the name of the user created inside PostgreSQL that maps to the AWS IAM policy. This connection string should not contain any password. Note that the database name field is denoted by dbname with AWS. | `"host=mydb.postgres.database.aws.com user=myapplication port=5432 dbname=my_db sslmode=require"`|
 | `awsRegion` | Y | The AWS Region where the AWS Relational Database Service is deployed to. | `"us-east-1"` |
 | `awsAccessKey` | Y | AWS access key associated with an IAM account | `"AKIAIOSFODNN7EXAMPLE"` |
 | `awsSecretKey` | Y | The secret key associated with the access key | `"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"` |
