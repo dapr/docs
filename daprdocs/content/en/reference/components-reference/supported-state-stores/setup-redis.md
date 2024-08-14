@@ -210,8 +210,6 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 
 {{< /tabs >}}
 
-## Mutual TLS (mTLS) for Redis
-
 
 ## Querying JSON objects (optional)
 
