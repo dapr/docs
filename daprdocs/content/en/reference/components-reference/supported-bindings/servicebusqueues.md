@@ -73,7 +73,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `namespaceName`| N | Input/Output | Parameter to set the address of the Service Bus namespace, as a fully-qualified domain name. Required if using Microsoft Entra ID authentication. | `"namespace.servicebus.windows.net"` |
 | `disableEntityManagement` | N | Input/Output | When set to true, queues and subscriptions do not get created automatically. Default: `"false"` | `"true"`, `"false"`
 | `lockDurationInSec`     | N | Input/Output | Defines the length in seconds that a message will be locked for before expiring. Used during subscription creation only. Default set by server. | `"30"`
-| `autoDeleteOnIdleInSec` | N  | Input/Output | Time in seconds to wait before auto deleting idle subscriptions. Used during subscription creation only. Default: `"0"` (disabled) | `"3600"`
+| `autoDeleteOnIdleInSec` | N  | Input/Output | Time in seconds to wait before auto deleting idle subscriptions. Used during subscription creation only. Must be 300s or greater. Default: `"0"` (disabled) | `"3600"`
 | `defaultMessageTimeToLiveInSec` | N | Input/Output | Default message time to live, in seconds. Used during subscription creation only. | `"10"`
 | `maxDeliveryCount`      | N | Input/Output | Defines the number of attempts the server will make to deliver a message. Used during subscription creation only. Default set by server. | `"10"`
 | `minConnectionRecoveryInSec` | N | Input/Output | Minimum interval (in seconds) to wait before attempting to reconnect to Azure Service Bus in case of a connection failure. Default: `"2"` | `"5"`
