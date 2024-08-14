@@ -151,7 +151,9 @@ In addition to the [settable metadata listed above](#sending-a-message-with-meta
 - `metadata.EnqueuedTimeUtc`
 - `metadata.SequenceNumber`
 
-To find out more details on the purpose of any of these metadata properties, please refer to [the official Azure Service Bus documentation](https://docs.microsoft.com/rest/api/servicebus/message-headers-and-properties#message-headers).
+To find out more details on the purpose of any of these metadata properties refer to [the official Azure Service Bus documentation](https://docs.microsoft.com/rest/api/servicebus/message-headers-and-properties#message-headers).
+
+In addition, all entries of `ApplicationProperties` from the original Azure Service Bus message are appended as `metadata.<application property's name>`.
 
 {{% alert title="Note" color="primary" %}}
 All times are populated by the server and are not adjusted for clock skews.
