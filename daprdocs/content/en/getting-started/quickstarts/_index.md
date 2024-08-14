@@ -32,3 +32,5 @@ Hit the ground running with our Dapr quickstarts, complete with code samples aim
 | [Configuration]({{< ref configuration-quickstart.md >}}) | Get configuration items and subscribe for configuration updates. |
 | [Resiliency]({{< ref resiliency >}}) | Define and apply fault-tolerance policies to your Dapr API requests. |
 | [Cryptography]({{< ref cryptography-quickstart.md >}}) | Encrypt and decrypt data using Dapr's cryptographic APIs. |
+| [Jobs]({{< ref jobs-quickstart.md >}}) | Schedule, retrieve, and delete jobs using Dapr's jobs APIs. |
+

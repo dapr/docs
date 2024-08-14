@@ -242,12 +242,10 @@ namespace EventService
                var orderId = random.Next(1,1000);
 
                //Using Dapr SDK to invoke a method
-               var order = new Order("1");
-               var orderJson = JsonSerializer.Serialize<Order>(order);
-               var content = new StringContent(orderJson, Encoding.UTF8, "application/json");
+               var order = new Order(orderId.ToString());
 
                var httpClient = DaprClient.CreateInvokeHttpClient();
-               var response = await httpClient.PostAsJsonAsync("http://order-processor/orders", content);               
+               var response = await httpClient.PostAsJsonAsync("http://order-processor/orders", order);               
                var result = await response.Content.ReadAsStringAsync();
                
                Console.WriteLine("Order requested: " + orderId);

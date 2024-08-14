@@ -43,7 +43,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/cryptography)
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/cryptography/javascript/sdk)
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -245,7 +245,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/cryptography)
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/cryptography/go/sdk)
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
