@@ -37,7 +37,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/actors).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/actors/csharp/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git

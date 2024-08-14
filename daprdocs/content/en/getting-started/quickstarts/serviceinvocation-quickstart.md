@@ -36,7 +36,7 @@ For this example, you will need:
 
 ### Step 2: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation/python/http).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -182,7 +182,7 @@ For this example, you will need:
 
 ### Step 2: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation/javascript/http).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -322,7 +322,7 @@ For this example, you will need:
 
 ### Step 2: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation/csharp/http).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -458,7 +458,7 @@ var response = await client.PostAsync($"{baseURL}/orders", content);
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- Java JDK 11 (or greater):
+- Java JDK 17 (or greater):
   - [Oracle JDK](https://www.oracle.com/java/technologies/downloads), or
   - OpenJDK
 - [Apache Maven](https://maven.apache.org/install.html), version 3.x.
@@ -468,7 +468,7 @@ For this example, you will need:
 
 ### Step 2: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation/java/http).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -606,7 +606,7 @@ For this example, you will need:
 
 ### Step 2: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation/go/http).
 
 
 ```bash
@@ -1156,7 +1156,7 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- Java JDK 11 (or greater):
+- Java JDK 17 (or greater):
   - [Oracle JDK](https://www.oracle.com/java/technologies/downloads), or
   - OpenJDK
 - [Apache Maven](https://maven.apache.org/install.html), version 3.x.
