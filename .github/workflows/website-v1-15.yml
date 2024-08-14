@@ -1,4 +1,4 @@
-name: Azure Static Web App v1.14
+name: Azure Static Web App v1.15
 
 on:
   workflow_dispatch:
