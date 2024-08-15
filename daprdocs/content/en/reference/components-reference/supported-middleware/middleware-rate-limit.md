@@ -24,13 +24,19 @@ spec:
   metadata:
   - name: maxRequestsPerSecond
     value: 10
+  - name: pipelineType
+    value: httpPipeline
+  - name: priority
+    value: 1
 ```
 
 ## Spec metadata fields
 
-| Field | Details | Example |
-|-------|---------|---------|
-| `maxRequestsPerSecond` | The maximum requests per second by remote IP.<br>The component looks at the `X-Forwarded-For` and `X-Real-IP` headers to determine the caller's IP. | `10`
+| Field | Required? | Details | Example |
+|-------|-----------|---------|---------|
+| `maxRequestsPerSecond` |  | The maximum requests per second by remote IP.<br>The component looks at the `X-Forwarded-For` and `X-Real-IP` headers to determine the caller's IP. | `10`
+| `pipelineType` | Y | For configuring middleware pipelines. One of the two types of middleware pipeline so you can configure your middleware for either sidecar-to-sidecar communication (`appHttpPipeline`) or sidecar-to-app communication (`httpPipeline`). | `"httpPipeline"`, `"appHttpPipeline"`
+| `priority` | N | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) are executed. Integer from -MaxInt32 to +MaxInt32.  | `"1"`
 
 Once the limit is reached, the requests will fail with HTTP Status code *429: Too Many Requests*.
 
@@ -40,21 +46,12 @@ The rate limit is enforced independently in each Dapr sidecar, and not cluster-w
 
 Alternatively, the [max concurrency setting]({{< ref control-concurrency.md >}}) can be used to rate-limit applications and applies to all traffic, regardless of remote IP, protocol, or path.
 
-## Dapr configuration
+## Configure
 
-To be applied, the middleware must be referenced in [configuration]({{< ref configuration-concept.md >}}). See [middleware pipelines]({{< ref "middleware.md#customize-processing-pipeline">}}).
+You can configure middleware using the following methods:
 
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: appconfig
-spec:
-  httpPipeline:
-    handlers:
-    - name: ratelimit
-      type: middleware.http.ratelimit
-```
+- **Recommended:** Using [the middleware component]({{< ref "middleware.md#using-middleware-components" >}}), just like any other [component]({{< ref components-concept.md >}}), with a YAML file placed into the application resources folder.
+- Using a [configuration file]({{< ref "middleware.md#using-middleware-components-with-configuration" >}}).
 
 ## Related links
 

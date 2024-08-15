@@ -21,25 +21,25 @@ metadata:
 spec:
   type: middleware.http.uppercase
   version: v1
+  - name: pipelineType
+    value: "httpPipeline"
+  - name: priority
+    value: "1"
 ```
 
-This component has no `metadata` to configure.
+## Spec metadata fields
 
-## Dapr configuration
+| Field | Required? | Details | Example |
+|-------|-----------|---------|---------|
+| `pipelineType` | Y | For configuring middleware pipelines. One of the two types of middleware pipeline so you can configure your middleware for either sidecar-to-sidecar communication (`appHttpPipeline`) or sidecar-to-app communication (`httpPipeline`). | `"httpPipeline"`, `"appHttpPipeline"`
+| `priority` | N | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) are executed. Integer from -MaxInt32 to +MaxInt32. | `"1"`
 
-To be applied, the middleware must be referenced in [configuration]({{< ref configuration-concept.md >}}). See [middleware pipelines]({{< ref "middleware.md#customize-processing-pipeline">}}).
+## Configure
 
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: appconfig
-spec:
-  httpPipeline:
-    handlers:
-    - name: uppercase
-      type: middleware.http.uppercase
-```
+You can configure middleware using the following methods:
+
+- **Recommended:** Using [the middleware component]({{< ref "middleware.md#using-middleware-components" >}}), just like any other [component]({{< ref components-concept.md >}}), with a YAML file placed into the application resources folder.
+- Using a [configuration file]({{< ref "middleware.md#using-middleware-components-with-configuration" >}}).
 
 ## Related links
 
