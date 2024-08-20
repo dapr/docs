@@ -213,7 +213,7 @@ To view the Prometheus dashboard and check service discovery:
 kubectl port-forward svc/dapr-prom-prometheus-server 9090:80 -n dapr-monitoring
 ```
 
-Open a browser and visit `http://localhost:9090`. Navigate to `Status -> Service Discovery` to verify that the Dapr targets are discovered correctly.
+Open a browser and visit `http://localhost:9090`. Navigate to **Status** > **Service Discovery** to verify that the Dapr targets are discovered correctly.
 
 <img src="/images/prometheus-web-ui.png" alt="Prometheus Web UI" width="1200">
 
