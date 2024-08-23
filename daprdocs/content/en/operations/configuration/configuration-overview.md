@@ -58,7 +58,7 @@ A Dapr sidecar can apply a specific configuration by using a `dapr.io/config` an
 
 {{< /tabs >}}
 
-### Sidecar configuration settings
+### Application configuration settings
 
 The following menu includes all of the configuration settings you can set on the sidecar. 
 
