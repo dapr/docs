@@ -12,7 +12,7 @@ With Dapr configuration, you can set options for the sidecar or control plane.
 
 ### Set up application configuration
 
-You can set up sidecar configuration either in self-hosted or Kubernetes mode.
+You can set up application configuration either in self-hosted or Kubernetes mode.
 
 {{< tabs "Self-hosted" Kubernetes >}}
 
