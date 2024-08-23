@@ -23,7 +23,7 @@ In self hosted mode, the Dapr configuration is a [configuration file]({{< ref co
 - Linux/MacOs: `$HOME/.dapr/config.yaml`
 - Windows: `%USERPROFILE%\.dapr\config.yaml`
 
-A Dapr sidecar can also apply a configuration by using a `--config` flag to the file path with `dapr run` CLI command.
+An application can also apply a configuration by using a `--config` flag to the file path with `dapr run` CLI command.
 
 {{% /codetab %}}
 
