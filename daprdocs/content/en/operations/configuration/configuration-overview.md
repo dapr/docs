@@ -8,7 +8,7 @@ description: "Overview of Dapr configuration"
 
 With Dapr configuration, you can set options for the sidecar or control plane. 
 
-## Sidecar configuration
+## Application configuration
 
 ### Set up sidecar configuration
 
