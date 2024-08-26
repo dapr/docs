@@ -6,7 +6,9 @@ weight: 100
 description: "Overview of Dapr configuration"
 ---
 
-With Dapr configuration, you can set options for the sidecar or control plane. 
+Dapr configurations are settings and policies that enable you to change both the behavior of individual Dapr applications, or the global behavior of the Dapr control plane system services. 
+
+[for more information, read the configuration concept.]({{< ref configuration-concept.md >}})
 
 ## Sidecar configuration
 
