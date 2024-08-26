@@ -99,6 +99,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | maxOutstandingMessages | N | Maximum number of outstanding messages a given [streaming-pull](https://cloud.google.com/pubsub/docs/pull#streamingpull_api) connection can have. Default: `1000` | `50`
 | maxOutstandingBytes | N | Maximum number of outstanding bytes a given [streaming-pull](https://cloud.google.com/pubsub/docs/pull#streamingpull_api) connection can have. Default: `1000000000` | `1000000000`
 | maxConcurrentConnections | N | Maximum number of concurrent [streaming-pull](https://cloud.google.com/pubsub/docs/pull#streamingpull_api) connections to be maintained. Default: `10` | `2`
+| ackDeadline | N |  Message acknowledgement duration deadline. Default: `20s` | `1m`
 
 
 

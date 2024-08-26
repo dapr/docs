@@ -10,11 +10,11 @@ Dapr configurations are settings and policies that enable you to change both the
 
 [for more information, read the configuration concept.]({{< ref configuration-concept.md >}})
 
-## Sidecar configuration
+## Application configuration
 
-### Set up sidecar configuration
+### Set up application configuration
 
-You can set up sidecar configuration either in self-hosted or Kubernetes mode.
+You can set up application configuration either in self-hosted or Kubernetes mode.
 
 {{< tabs "Self-hosted" Kubernetes >}}
 
@@ -25,7 +25,7 @@ In self hosted mode, the Dapr configuration is a [configuration file]({{< ref co
 - Linux/MacOs: `$HOME/.dapr/config.yaml`
 - Windows: `%USERPROFILE%\.dapr\config.yaml`
 
-A Dapr sidecar can also apply a configuration by using a `--config` flag to the file path with `dapr run` CLI command.
+An application can also apply a configuration by using a `--config` flag to the file path with `dapr run` CLI command.
 
 {{% /codetab %}}
 
@@ -60,7 +60,7 @@ A Dapr sidecar can apply a specific configuration by using a `dapr.io/config` an
 
 {{< /tabs >}}
 
-### Sidecar configuration settings
+### Application configuration settings
 
 The following menu includes all of the configuration settings you can set on the sidecar. 
 

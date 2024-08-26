@@ -66,12 +66,18 @@ Install the Dapr Python SDK package:
 pip3 install -r requirements.txt
 ```
 
-### Step 3: Run the order processor app
-
-In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}):
+Return to the `python/sdk` directory:
 
 ```bash
-cd workflows/python/sdk
+cd ..
+```
+
+
+### Step 3: Run the order processor app
+
+In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}). From the `python/sdk` directory, run the following command:
+
+```bash
 dapr run -f .
 ```
 
@@ -308,12 +314,11 @@ Install the dependencies:
 cd ./javascript/sdk
 npm install
 npm run build
-cd ..
 ```
 
 ### Step 3: Run the order processor app
 
-In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}):
+In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}). From the `javascript/sdk` directory, run the following command:
 
 ```bash
 dapr run -f .
@@ -515,15 +520,28 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-In a new terminal window, navigate to the `sdk` directory:
+In a new terminal window, navigate to the `order-processor` directory:
 
 ```bash
-cd workflows/csharp/sdk
+cd workflows/csharp/sdk/order-processor
+```
+
+Install the dependencies:
+
+```bash
+dotnet restore
+dotnet build
+```
+
+Return to the `csharp/sdk` directory:
+
+```bash
+cd ..
 ```
 
 ### Step 3: Run the order processor app
 
-In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}):
+In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}). From the `csharp/sdk` directory, run the following command:
 
 ```bash
 dapr run -f .
@@ -779,9 +797,15 @@ Install the dependencies:
 mvn clean install
 ```
 
+Return to the `java/sdk` directory:
+
+```bash
+cd ..
+```
+
 ### Step 3: Run the order processor app
 
-In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}):
+In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}). From the `java/sdk` directory, run the following command:
 
 ```bash
 cd workflows/java/sdk
@@ -1114,7 +1138,7 @@ cd workflows/go/sdk
 
 ### Step 3: Run the order processor app
 
-In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}):
+In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}). From the `go/sdk` directory, run the following command:
 
 ```bash
 dapr run -f .
