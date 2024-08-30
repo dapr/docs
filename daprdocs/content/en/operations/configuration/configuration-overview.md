@@ -38,7 +38,7 @@ In Kubernetes mode, the Dapr configuration is a Configuration resource, that is 
 kubectl apply -f myappconfig.yaml
 ```
 
-You can use the Dapr CLI to list the Configuration resources.
+You can use the Dapr CLI to list the Configuration resources for applications.
 
 ```bash
 dapr configurations -k

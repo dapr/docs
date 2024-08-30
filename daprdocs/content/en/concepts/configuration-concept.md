@@ -10,7 +10,7 @@ With Dapr configurations, you use settings and policies to change:
 - The behavior of individual Dapr applications
 - The global behavior of the Dapr control plane system services
 
-For example, set an ACL policy on the application sidecar configuration to indicate which methods can be called from another application. If you set an ACL policy on the Dapr control plane configuration, you can change the certificate renewal period for all certificates that are deployed to application sidecar instances.
+For example, set a sampling rate policy on the application sidecar configuration to indicate which methods can be called from another application. If you set a policy on the Dapr control plane configuration, you can change the certificate renewal period for all certificates that are deployed to application sidecar instances.
 
 Configurations are defined and deployed as a YAML file. In the following application configuration example, a tracing endpoint is set for where to send the metrics information, capturing all the sample traces.
 
@@ -45,6 +45,8 @@ spec:
     workloadCertTTL: "24h"
     allowedClockSkew: "15m"
 ```
+
+By default, there is a single configuration file called `daprsystem` installed with the Dapr control plane system services. This configuration file applies global control plane settings and is set up when Dapr is deployed to Kubernetes.
 
 [Learn more about configuration options.]({{< ref "configuration-overview.md" >}})
 
