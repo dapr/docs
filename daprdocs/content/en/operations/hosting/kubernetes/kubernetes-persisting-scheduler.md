@@ -9,6 +9,10 @@ description: "Configure Scheduler to persist its database to make it resilient t
 The [Scheduler]({{< ref scheduler.md >}}) service is responsible for writing jobs to its embedded Etcd database and scheduling them for execution.
 By default, the Scheduler service database writes this data to a Persistent Volume Claim of 1Gb of size using the cluster's default [storage class](https://kubernetes.io/docs/concepts/storage/storage-classes/). This means that there is no additional parameter required to run the scheduler service reliably on most Kubernetes deployments, although you will need additional configuration in some deployments or for a production environment.
 
+{{% alert title="Note" color="primary" %}}
++The Scheduler will delete all Jobs in a Kubernetes Namespace (including [Actor Reminders]({{< ref actors-timers-reminders.md >}}) if the [`SchedulerReminders`]({{< ref support-preview-features.md >}}) feature is enabled) when that Namespace is deleted.
+{{% /alert %}}
+
 ## Production Setup
 
 In case your Kubernetes deployment does not have a default storage class or you are configuring a production cluster, defining a storage class is required.

@@ -19,6 +19,10 @@ The Scheduler service Docker container is started automatically as part of `dapr
 
 The Scheduler service is deployed as part of `dapr init -k`, or via the Dapr Helm charts. For more information on running Dapr on Kubernetes, visit the [Kubernetes hosting page]({{< ref kubernetes >}}).
 
++{{% alert title="Note" color="primary" %}}
++The Scheduler will delete all Jobs in a Kubernetes Namespace (including [Actor Reminders]({{< ref actors-timers-reminders.md >}}) if the [`SchedulerReminders`]({{< ref support-preview-features.md >}}) feature is enabled) when that Namespace is deleted.
++{{% /alert %}}
+
 ## Related links
 
 [Learn more about the Jobs API.]({{< ref jobs_api.md >}})
