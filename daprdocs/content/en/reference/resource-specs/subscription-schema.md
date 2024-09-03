@@ -23,15 +23,15 @@ metadata:
 spec:
   topic: <REPLACE-WITH-TOPIC-NAME> # Required
   routes: # Required
-  - rules:
-    - match: <REPLACE-WITH-CEL-FILTER>
-      path: <REPLACE-WITH-PATH>
+    rules:
+      - match: <REPLACE-WITH-CEL-FILTER>
+        path: <REPLACE-WITH-PATH>
   pubsubname: <REPLACE-WITH-PUBSUB-NAME> # Required
   deadLetterTopic: <REPLACE-WITH-DEADLETTERTOPIC-NAME> # Optional
   bulkSubscribe: # Optional
-  - enabled: <REPLACE-WITH-BOOLEAN-VALUE>
-  - maxMessagesCount: <REPLACE-WITH-VALUE>
-  - maxAwaitDurationMs: <REPLACE-WITH-VALUE>
+    enabled: <REPLACE-WITH-BOOLEAN-VALUE>
+    maxMessagesCount: <REPLACE-WITH-VALUE>
+    maxAwaitDurationMs: <REPLACE-WITH-VALUE>
 scopes:
 - <REPLACE-WITH-SCOPED-APPIDS>
 ```
