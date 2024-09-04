@@ -1,30 +1,44 @@
 ---
 type: docs
-title: "Overview of Dapr configuration options"
+title: "Dapr configuration"
 linkTitle: "Overview"
 weight: 100
-description: "Information on Dapr configuration and how to set options for your application"
+description: "Overview of Dapr configuration"
 ---
 
-## Sidecar configuration
+Dapr configurations are settings and policies that enable you to change both the behavior of individual Dapr applications, or the global behavior of the Dapr control plane system services. 
 
-### Setup sidecar configuration
+[for more information, read the configuration concept.]({{< ref configuration-concept.md >}})
 
-#### Self-hosted sidecar
+## Application configuration
 
-In self hosted mode the Dapr configuration is a configuration file, for example `config.yaml`. By default the Dapr sidecar looks in the default Dapr folder for the runtime configuration eg: `$HOME/.dapr/config.yaml` in Linux/MacOS and `%USERPROFILE%\.dapr\config.yaml` in Windows.
+### Set up application configuration
 
-A Dapr sidecar can also apply a configuration by using a `--config` flag to the file path with `dapr run` CLI command.
+You can set up application configuration either in self-hosted or Kubernetes mode.
 
-#### Kubernetes sidecar
+{{< tabs "Self-hosted" Kubernetes >}}
 
-In Kubernetes mode the Dapr configuration is a Configuration resource, that is applied to the cluster. For example:
+ <!-- Self hosted -->
+{{% codetab %}}
+
+In self hosted mode, the Dapr configuration is a [configuration file]({{< ref configuration-schema.md >}}) - for example, `config.yaml`. By default, the Dapr sidecar looks in the default Dapr folder for the runtime configuration:
+- Linux/MacOs: `$HOME/.dapr/config.yaml`
+- Windows: `%USERPROFILE%\.dapr\config.yaml`
+
+An application can also apply a configuration by using a `--config` flag to the file path with `dapr run` CLI command.
+
+{{% /codetab %}}
+
+ <!-- Kubernetes -->
+{{% codetab %}}
+
+In Kubernetes mode, the Dapr configuration is a Configuration resource, that is applied to the cluster. For example:
 
 ```bash
 kubectl apply -f myappconfig.yaml
 ```
 
-You can use the Dapr CLI to list the Configuration resources
+You can use the Dapr CLI to list the Configuration resources for applications.
 
 ```bash
 dapr configurations -k
@@ -40,11 +54,15 @@ A Dapr sidecar can apply a specific configuration by using a `dapr.io/config` an
     dapr.io/config: "myappconfig"
 ```
 
-Note: There are more [Kubernetes annotations]({{< ref "arguments-annotations-overview.md" >}}) available to configure the Dapr sidecar on activation by sidecar Injector system service.
+> **Note:** [See all Kubernetes annotations]({{< ref "arguments-annotations-overview.md" >}}) available to configure the Dapr sidecar on activation by sidecar Injector system service.
 
-### Sidecar configuration settings
+{{% /codetab %}}
 
-The following configuration settings can be applied to Dapr application sidecars:
+{{< /tabs >}}
+
+### Application configuration settings
+
+The following menu includes all of the configuration settings you can set on the sidecar. 
 
 - [Tracing](#tracing)
 - [Metrics](#metrics)
@@ -84,10 +102,17 @@ The following table lists the properties for tracing:
 | `otel.protocol` | string | Set to `http` or `grpc` protocol
 | `zipkin.endpointAddress` | string | Set the Zipkin server address to send traces to
 
-`samplingRate` is used to enable or disable the tracing. To disable the sampling rate ,
-set `samplingRate : "0"` in the configuration. The valid range of samplingRate is between 0 and 1 inclusive. The sampling rate determines whether a trace span should be sampled or not based on value. `samplingRate : "1"` samples all traces. By default, the sampling rate is (0.0001) or 1 in 10,000 traces.
+##### `samplingRate`
 
-The OpenTelemetry (otel) endpoint can also be configured via an environment variables. The presence of the OTEL_EXPORTER_OTLP_ENDPOINT environment variable
+`samplingRate` is used to enable or disable the tracing. The valid range of `samplingRate` is between `0` and `1` inclusive. The sampling rate determines whether a trace span should be sampled or not based on value. 
+
+`samplingRate : "1"` samples all traces. By default, the sampling rate is (0.0001), or 1 in 10,000 traces.
+
+To disable the sampling rate, set `samplingRate : "0"` in the configuration.
+
+##### `otel`
+
+The OpenTelemetry (`otel`) endpoint can also be configured via an environment variable. The presence of the `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable
 turns on tracing for the sidecar.
 
 | Environment Variable | Description |
@@ -100,9 +125,9 @@ See [Observability distributed tracing]({{< ref "tracing-overview.md" >}}) for m
 
 #### Metrics
 
-The metrics section can be used to enable or disable metrics for an application.
+The `metrics` section under the `Configuration` spec can be used to enable or disable metrics for an application.
 
-The `metrics` section under the `Configuration` spec contains the following properties:
+The `metrics` section contains the following properties:
 
 ```yml
 metrics:
@@ -122,7 +147,7 @@ metrics:
     excludeVerbs: false
 ```
 
-In the examples above this path filter `/orders/{orderID}/items/{itemID}` would return a single metric count matching all the orderIDs and all the itemIDs rather than multiple metrics for each itemID. For more information see [HTTP metrics path matching]({{< ref "metrics-overview.md#http-metrics-path-matching" >}})
+In the examples above, the path filter `/orders/{orderID}/items/{itemID}` would return _a single metric count_ matching all the `orderID`s and all the `itemID`s, rather than multiple metrics for each `itemID`. For more information, see [HTTP metrics path matching]({{< ref "metrics-overview.md#http-metrics-path-matching" >}})
 
 The following table lists the properties for metrics:
 
@@ -135,7 +160,7 @@ The following table lists the properties for metrics:
 | `http.pathMatching`          | array   | Array of paths for path matching, allowing users to define matching paths to manage cardinality.                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `http.excludeVerbs`          | boolean | When set to true (default is false), the Dapr HTTP server ignores each request HTTP verb when building the method metric label.                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
-To further help managing cardinality, path matching allows specified paths matched according to defined patterns, reducing the number of unique metrics paths and thus controlling metric cardinality. This feature is particularly useful for applications with dynamic URLs, ensuring that metrics remain meaningful and manageable without excessive memory consumption. 
+To further help manage cardinality, path matching allows you to match specified paths according to defined patterns, reducing the number of unique metrics paths and thus controlling metric cardinality. This feature is particularly useful for applications with dynamic URLs, ensuring that metrics remain meaningful and manageable without excessive memory consumption. 
 
 Using rules, you can set regular expressions for every metric exposed by the Dapr sidecar. For example:
 
@@ -154,9 +179,9 @@ See [metrics documentation]({{< ref "metrics-overview.md" >}}) for more informat
 
 #### Logging
 
-The logging section can be used to configure how logging works in the Dapr Runtime.
+The `logging` section under the `Configuration` spec is used to configure how logging works in the Dapr Runtime.
 
-The `logging` section under the `Configuration` spec contains the following properties:
+The `logging` section contains the following properties:
 
 ```yml
 logging:
@@ -178,8 +203,7 @@ See [logging documentation]({{< ref "logs.md" >}}) for more information.
 
 #### Middleware
 
-Middleware configuration set named HTTP pipeline middleware handlers
-The `httpPipeline` and the `appHttpPipeline` section under the `Configuration` spec contains the following properties:
+Middleware configuration sets named HTTP pipeline middleware handlers. The `httpPipeline` and the `appHttpPipeline` section under the `Configuration` spec contain the following properties:
 
 ```yml
 httpPipeline: # for incoming http calls
@@ -203,13 +227,13 @@ The following table lists the properties for HTTP handlers:
 | `name`     | string | Name of the middleware component
 | `type`     | string | Type of middleware component
 
-See [Middleware pipelines]({{< ref "middleware.md" >}}) for more information
+See [Middleware pipelines]({{< ref "middleware.md" >}}) for more information.
 
 #### Name resolution component
 
-You can set name resolution component to use within the configuration YAML. For example, to set the `spec.nameResolution.component` property to `"sqlite"`, pass configuration options in the `spec.nameResolution.configuration` dictionary as shown below.
+You can set name resolution components to use within the configuration file. For example, to set the `spec.nameResolution.component` property to `"sqlite"`, pass configuration options in the `spec.nameResolution.configuration` dictionary as shown below.
 
-This is the basic example of a configuration resource:
+This is a basic example of a configuration resource:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -226,7 +250,7 @@ spec:
 
 For more information, see:
 - [The name resolution component documentation]({{< ref supported-name-resolution >}}) for more examples.
-- - [The Configuration YAML documentation]({{< ref configuration-schema.md >}}) to learn more about how to configure name resolution per component.
+- [The Configuration file documentation]({{< ref configuration-schema.md >}}) to learn more about how to configure name resolution per component.
 
 #### Scope secret store access
 
@@ -234,11 +258,11 @@ See the [Scoping secrets]({{< ref "secret-scope.md" >}}) guide for information a
 
 #### Access Control allow lists for building block APIs
 
-See the [selectively enable Dapr APIs on the Dapr sidecar]({{< ref "api-allowlist.md" >}}) guide for information and examples on how to set ACLs on the building block APIs lists.
+See the guide for [selectively enabling Dapr APIs on the Dapr sidecar]({{< ref "api-allowlist.md" >}}) for information and examples on how to set access control allow lists (ACLs) on the building block APIs lists.
 
 #### Access Control allow lists for service invocation API
 
-See the [Allow lists for service invocation]({{< ref "invoke-allowlist.md" >}}) guide for information and examples on how to set allow lists with ACLs which using service invocation API.
+See the [Allow lists for service invocation]({{< ref "invoke-allowlist.md" >}}) guide for information and examples on how to set allow lists with ACLs which use the service invocation API.
 
 #### Disallow usage of certain component types
 
@@ -258,13 +282,23 @@ spec:
       - secretstores.local.file
 ```
 
-You can optionally specify a version to disallow by adding it at the end of the component name. For example, `state.in-memory/v1` disables initializing components of type `state.in-memory` and version `v1`, but does not disable a (hypothetical) `v2` version of the component.
+Optionally, you can specify a version to disallow by adding it at the end of the component name. For example, `state.in-memory/v1` disables initializing components of type `state.in-memory` and version `v1`, but does not disable a (hypothetical) `v2` version of the component.
 
-> Note: One special note applies to the component type `secretstores.kubernetes`. When you add that component to the denylist, Dapr forbids the creation of _additional_ components of type `secretstores.kubernetes`. However, it does not disable the built-in Kubernetes secret store, which is created by Dapr automatically and is used to store secrets specified in Components specs. If you want to disable the built-in Kubernetes secret store, you need to use the `dapr.io/disable-builtin-k8s-secret-store` [annotation]({{< ref arguments-annotations-overview.md >}}).
+{{% alert title="Note" color="primary" %}}
+ When you add the component type `secretstores.kubernetes` to the denylist, Dapr forbids the creation of _additional_ components of type `secretstores.kubernetes`. 
+
+ However, it does not disable the built-in Kubernetes secret store, which is:
+ - Created by Dapr automatically
+ - Used to store secrets specified in Components specs
+ 
+ If you want to disable the built-in Kubernetes secret store, you need to use the `dapr.io/disable-builtin-k8s-secret-store` [annotation]({{< ref arguments-annotations-overview.md >}}).
+{{% /alert %}} 
 
 #### Turning on preview features
 
-See the [preview features]({{< ref "preview-features.md" >}}) guide for information and examples on how to opt-in to preview features for a release. Preview feature enable new capabilities to be added that still need more time until they become generally available (GA) in the runtime.
+See the [preview features]({{< ref "preview-features.md" >}}) guide for information and examples on how to opt-in to preview features for a release. 
+
+Enabling preview features unlock new capabilities to be added for dev/test, since they still need more time before becoming generally available (GA) in the runtime.
 
 ### Example sidecar configuration
 
@@ -316,7 +350,9 @@ spec:
 
 ## Control plane configuration
 
-There is a single configuration file called `daprsystem` installed with the Dapr control plane system services that applies global settings. This is only set up when Dapr is deployed to Kubernetes.
+A single configuration file called `daprsystem` is installed with the Dapr control plane system services that applies global settings. 
+
+> **This is only set up when Dapr is deployed to Kubernetes.**
 
 ### Control plane configuration settings
 
@@ -353,3 +389,7 @@ spec:
     allowedClockSkew: 15m
     workloadCertTTL: 24h
 ```
+
+## Next steps
+
+{{< button text="Learn about concurrency and rate limits" page="control-concurrency" >}}
