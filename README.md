@@ -1,6 +1,6 @@
 # Dapr documentation
 
-[![GitHub License](https://img.shields.io/github/license/dapr/docs?style=flat&label=License&logo=github)](https://github.com/dapr/docs/blob/v1.13/LICENSE) [![GitHub issue custom search in repo](https://img.shields.io/github/issues-search/dapr/docs?query=type%3Aissue%20is%3Aopen%20label%3A%22good%20first%20issue%22&label=Good%20first%20issues&style=flat&logo=github)](https://github.com/dapr/docs/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) [![Discord](https://img.shields.io/discord/778680217417809931?label=Discord&style=flat&logo=discord)](http://bit.ly/dapr-discord) [![YouTube Channel Views](https://img.shields.io/youtube/channel/views/UCtpSQ9BLB_3EXdWAUQYwnRA?style=flat&label=YouTube%20views&logo=youtube)](https://youtube.com/@daprdev) [![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/daprdev?logo=x&style=flat)](https://twitter.com/daprdev)
+[![GitHub License](https://img.shields.io/github/license/dapr/docs?style=flat&label=License&logo=github)](https://github.com/dapr/docs/blob/v1.13/LICENSE) [![GitHub issue custom search in repo](https://img.shields.io/github/issues-search/dapr/docs?query=type%3Aissue%20is%3Aopen%20label%3A%22good%20first%20issue%22&label=Good%20first%20issues&style=flat&logo=github)](https://github.com/dapr/docs/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) [![Discord](https://img.shields.io/discord/778680217417809931?label=Discord&style=flat&logo=discord)](https://bit.ly/dapr-discord) [![YouTube Channel Views](https://img.shields.io/youtube/channel/views/UCtpSQ9BLB_3EXdWAUQYwnRA?style=flat&label=YouTube%20views&logo=youtube)](https://youtube.com/@daprdev) [![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/daprdev?logo=x&style=flat)](https://twitter.com/daprdev)
 
 If you are looking to explore the Dapr documentation, please go to the documentation website:
 
@@ -16,14 +16,14 @@ The following branches are currently maintained:
 
 | Branch                                                       | Website                    | Description                                                                                      |
 | ------------------------------------------------------------ | -------------------------- | ------------------------------------------------------------------------------------------------ |
-| [v1.13](https://github.com/dapr/docs) (primary)               | https://docs.dapr.io       | Latest Dapr release documentation. Typo fixes, clarifications, and most documentation goes here. |
-| [v1.14](https://github.com/dapr/docs/tree/v1.14) (pre-release) | https://v1-14.docs.dapr.io/ | Pre-release documentation. Doc updates that are only applicable to v1.14+ go here.                |
+| [v1.14](https://github.com/dapr/docs) (primary)               | https://docs.dapr.io       | Latest Dapr release documentation. Typo fixes, clarifications, and most documentation goes here. |
+| [v1.15](https://github.com/dapr/docs/tree/v1.15) (pre-release) | https://v1-15.docs.dapr.io/ | Pre-release documentation. Doc updates that are only applicable to v1.15+ go here.                |
 
 For more information visit the [Dapr branch structure](https://docs.dapr.io/contributing/docs-contrib/contributing-docs/#branch-guidance) document.
 
 ## Contribution guidelines
 
-Before making your first contribution, make sure to review the [contributing section](http://docs.dapr.io/contributing/) in the docs.
+Before making your first contribution, make sure to review the [contributing section](https://docs.dapr.io/contributing/) in the docs.
 
 ## Overview
 

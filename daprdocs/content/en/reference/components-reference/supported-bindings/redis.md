@@ -39,7 +39,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | `redisHost` | Y | Output |  The Redis host address | `"localhost:6379"` |
-| `redisPassword` | Y | Output | The Redis password | `"password"` |
+| `redisPassword` | N | Output | The Redis password | `"password"` |
 | `redisUsername` | N | Output | Username for Redis host. Defaults to empty. Make sure your redis server version is 6 or above, and have created acl rule correctly. | `"username"` |
 | `useEntraID` | N | Output | Implements EntraID support for Azure Cache for Redis. Before enabling this: <ul><li>The `redisHost` name must be specified in the form of `"server:port"`</li><li>TLS must be enabled</li></ul> Learn more about this setting under [Create a Redis instance > Azure Cache for Redis]({{< ref "#create-a-redis-instance" >}}) | `"true"`, `"false"` |
 | `enableTLS` | N | Output |  If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS. Defaults to `"false"` | `"true"`, `"false"` |
