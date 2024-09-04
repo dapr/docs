@@ -114,7 +114,7 @@ spec:
 | consumerFetchDefault | N | The default number of message bytes to fetch from the broker in each request. Default is `"1048576"` bytes. | `"2097152"` |
 | heartbeatInterval | N | The interval between heartbeats to the consumer coordinator. At most, the value should be set to a 1/3 of the `sessionTimeout` value. Defaults to "3s". | `"5s"` |
 | sessionTimeout | N | The timeout used to detect client failures when using Kafka’s group management facility. If the broker fails to receive any heartbeats from the consumer before the expiration of this session timeout, then the consumer is removed and initiates a rebalance. Defaults to "10s". | `"20s"` |
-| escapeHeaders | N | Enables URL escaping of the message header values received by the consumer. It allows receiving content with special characters that are usually not allowed in HTTP headers. Default is `false` | `true` |
+| escapeHeaders | N | Enables URL escaping of the message header values received by the consumer. Allows receiving content with special characters that are usually not allowed in HTTP headers. Default is `false`. | `true` |
 
 The `secretKeyRef` above is referencing  a [kubernetes secrets store]({{< ref kubernetes-secret-store.md >}}) to access the tls information. Visit [here]({{< ref setup-secret-store.md >}}) to learn more about how to configure a secret store component.
 
@@ -491,12 +491,15 @@ curl -X POST http://localhost:3500/v1.0/publish/myKafka/myTopic?metadata.correla
 ## Receiving message headers with special characters
 
 The consumer application may be required to receive message headers that include special characters, which may cause HTTP protocol validation errors. 
-HTTP header values must follow specifications and some characters are not allowed, see [here](https://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2).
-In this case, you can enable `escapeHeaders` configuration setting which will use URL escaping to encode header values on the consumer side.
+HTTP header values must follow specifications, making some characters not allowed. [Learn more about the protocols](https://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2).
+In this case, you can enable `escapeHeaders` configuration setting, which uses URL escaping to encode header values on the consumer side.
 
-**Note**: When using this setting, the received message headers will be URL escaped, and you will need to URL unescape it to get the original value.
+{{% alert title="Note" color="primary" %}}
+When using this setting, the received message headers are URL escaped, and you need to URL "un-escape" it to get the original value.
+{{% /alert %}}
 
-Setting `escapeHeaders` to `true`
+Set `escapeHeaders` to `true` to URL escape.
+
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
