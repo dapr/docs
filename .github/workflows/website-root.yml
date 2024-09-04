@@ -97,7 +97,7 @@ jobs:
         with:
           submodules: false
       - name: Download Hugo artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: hugo_build
           path: site/
