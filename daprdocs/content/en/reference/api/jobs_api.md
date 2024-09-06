@@ -63,13 +63,11 @@ Entry                  | Description                                | Equivalent
 
 ```json
 {
-  "job": {
-    "data": {
+  "data": {
 	  "@type": "type.googleapis.com/google.protobuf.StringValue",
 	  "value": "\"someData\""
     },
     "dueTime": "30s"
-  }
 }
 ```
 
@@ -90,14 +88,12 @@ $ curl -X POST \
   http://localhost:3500/v1.0-alpha1/jobs/jobforjabba \
   -H "Content-Type: application/json"
   -d '{
-        "job": {
-            "data": {
+        "data": {
 	            "@type": "type.googleapis.com/google.protobuf.StringValue",
 	            "value": "Running spice"
             },
-            "schedule": "@every 1m",
-            "repeats": 5
-        }
+        "schedule": "@every 1m",
+        "repeats": 5
     }'
 ```
 
