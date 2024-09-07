@@ -52,7 +52,7 @@ The people who should have access to read your security report are listed in [`m
    code which allows the issue to be reproduced. Explain why you believe this
    to be a security issue in Dapr.
 2. Put that information into an email. Use a descriptive title.
-3. Send the email to [Dapr Maintainers (dapr@dapr.io)](mailto:dapr@dapr.io?subject=[Security%20Disclosure]:%20ISSUE%20TITLE)
+3. Send the email to [Security (security@dapr.io)](mailto:security@dapr.io?subject=[Security%20Disclosure]:%20ISSUE%20TITLE)
 
 ## Response
 
