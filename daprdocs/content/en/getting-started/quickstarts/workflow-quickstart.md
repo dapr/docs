@@ -646,25 +646,24 @@ OrderPayload orderInfo = new OrderPayload(itemToPurchase, 15000, ammountToPurcha
 // Start the workflow
 Console.WriteLine("Starting workflow {0} purchasing {1} {2}", orderId, ammountToPurchase, itemToPurchase);
 
-await daprClient.StartWorkflowAsync(
-    workflowComponent: DaprWorkflowComponent,
-    workflowName: nameof(OrderProcessingWorkflow),
+await daprWorkflowClient.ScheduleNewWorkflowAsync(
+    name: nameof(OrderProcessingWorkflow),
     input: orderInfo,
     instanceId: orderId);
 
 // Wait for the workflow to start and confirm the input
-GetWorkflowResponse state = await daprClient.WaitForWorkflowStartAsync(
-    instanceId: orderId,
-    workflowComponent: DaprWorkflowComponent);
+WorkflowState state = await daprWorkflowClient.WaitForWorkflowStartAsync(
+    instanceId: orderId);
 
-Console.WriteLine("Your workflow has started. Here is the status of the workflow: {0}", state.RuntimeStatus);
+Console.WriteLine($"{nameof(OrderProcessingWorkflow)} (ID = {orderId}) started successfully with {state.ReadInputAs<OrderPayload>()}");
 
 // Wait for the workflow to complete
+using var ctx = new CancellationTokenSource(TimeSpan.FromSeconds(5));
 state = await daprClient.WaitForWorkflowCompletionAsync(
     instanceId: orderId,
-    workflowComponent: DaprWorkflowComponent);
+    cancellation: ctx.Token);
 
-Console.WriteLine("Workflow Status: {0}", state.RuntimeStatus);
+Console.WriteLine("Workflow Status: {0}", state.ReadCustomStatusAs<string>());
 ```
 
 #### `order-processor/Workflows/OrderProcessingWorkflow.cs`
@@ -715,7 +714,7 @@ class OrderProcessingWorkflow : Workflow<OrderPayload, OrderResult>
                     nameof(UpdateInventoryActivity),
                     new PaymentRequest(RequestId: orderId, order.Name, order.Quantity, order.TotalCost));                
             }
-            catch (TaskFailedException)
+            catch (WorkflowTaskFailedException)
             {
                 // Let them know their payment was processed
                 await context.CallActivityAsync(
