@@ -65,7 +65,7 @@ Entry                  | Description                                | Equivalent
 {
   "data": {
 	  "@type": "type.googleapis.com/google.protobuf.StringValue",
-	  "value": "\"someData\""
+	  "value": "someData"
     },
     "dueTime": "30s"
 }
