@@ -32,7 +32,7 @@ At least one of `schedule` or `dueTime` must be provided, but they can also be p
 Parameter | Description
 --------- | -----------
 `name` | Name of the job you're scheduling
-`data` | A protobuf message `@type`/`value` pair. `@type` must be of a [well-known type](https://protobuf.dev/reference/protobuf/google.protobuf). `value` is the serialized data.
+`data` | A JSON serialized value or object.
 `schedule` | An optional schedule at which the job is to be run. Details of the format are below.
 `dueTime` | An optional time at which the job should be active, or the "one shot" time, if other scheduling type fields are not provided. Accepts a "point in time" string in the format of RFC3339, Go duration string (calculated from creation time), or non-repeating ISO8601.
 `repeats` | An optional number of times in which the job should be triggered. If not set, the job runs indefinitely or until expiration.
@@ -63,11 +63,8 @@ Entry                  | Description                                | Equivalent
 
 ```json
 {
-  "data": {
-	  "@type": "type.googleapis.com/google.protobuf.StringValue",
-	  "value": "someData"
-    },
-    "dueTime": "30s"
+  "data": "some data",
+  "dueTime": "30s"
 }
 ```
 
@@ -86,17 +83,13 @@ The following example curl command creates a job, naming the job `jobforjabba` a
 ```bash
 $ curl -X POST \
   http://localhost:3500/v1.0-alpha1/jobs/jobforjabba \
-  -H "Content-Type: application/json"
+  -H "Content-Type: application/json" \
   -d '{
-        "data": {
-	            "@type": "type.googleapis.com/google.protobuf.StringValue",
-	            "value": "Running spice"
-            },
+        "data": "{\"value\":\"Running spice\"}",
         "schedule": "@every 1m",
         "repeats": 5
     }'
 ```
-
 
 ## Get job data
 
@@ -133,10 +126,7 @@ $ curl -X GET http://localhost:3500/v1.0-alpha1/jobs/jobforjabba -H "Content-Typ
   "name": "jobforjabba",
   "schedule": "@every 1m",
   "repeats": 5,
-  "data": {
-    "@type": "type.googleapis.com/google.protobuf.StringValue",
-    "value": "Running spice"
-  }
+  "data": 123
 }
 ```
 ## Delete a job
