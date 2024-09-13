@@ -88,7 +88,7 @@ tracing:
   otel: 
     endpointAddress: "otelcollector.observability.svc.cluster.local:4317"
   zipkin:
-    endpointAddress: "zipkin.default.svc.cluster.local:9411/api/v2/spans"
+    endpointAddress: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
 ```
 
 The following table lists the properties for tracing:
@@ -100,7 +100,7 @@ The following table lists the properties for tracing:
 | `otel.endpointAddress` | string | Set the Open Telemetry (OTEL) server address to send traces to. This may or may not require the https:// or http:// depending on your OTEL provider.
 | `otel.isSecure` | bool | Is the connection to the endpoint address encrypted
 | `otel.protocol` | string | Set to `http` or `grpc` protocol
-| `zipkin.endpointAddress` | string | Set the Zipkin server address to send traces to. This may or may not require the https:// or http:// depending on your Zipkin provider.
+| `zipkin.endpointAddress` | string | Set the Zipkin server address to send traces to. This should include the protocol (http:// or https://) on the endpoint.
 
 ##### `samplingRate`
 
