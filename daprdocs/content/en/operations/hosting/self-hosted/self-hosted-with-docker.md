@@ -138,6 +138,18 @@ services:
     command: ["./placement", "--port", "50006"]
     ports:
       - "50006:50006"
+
+  scheduler:
+    image: "daprio/dapr"
+    command: ["./scheduler", "--port", "50007"]
+    ports:
+      - "50007:50007"
+    # WARNING - This is a tmpfs volume, your state will not be persisted across restarts
+    volumes:
+    - type: tmpfs
+      target: /data
+      tmpfs:
+        size: "10000"
   
   networks:
     hello-dapr: null
@@ -146,6 +158,8 @@ services:
 > For those running the Docker daemon on a Linux host, you can also use `network_mode: host` to leverage host networking if needed.
 
 To further learn how to run Dapr with Docker Compose, see the [Docker-Compose Sample](https://github.com/dapr/samples/tree/master/hello-docker-compose).
+
+The above example also includes a scheduler definition that uses a non-persistent data store for testing and development purposes.
 
 ## Run on Kubernetes
 
