@@ -204,7 +204,47 @@ As messages are sent to the given message handler code, there is no concept of r
 
 The example below shows the different ways to stream subscribe to a topic.
 
-{{< tabs Go>}}
+{{< tabs ".NET" Go>}}
+
+{{% codetab %}}
+
+```csharp
+using Dapr.Messaging.PublishSubscribe;
+
+var clientBuilder = new DaprPublishSubscribeClientBuilder();
+var daprMessagingClient = clientBuilder.Build();
+
+async Task<TopicResponseAction> HandleMessage(TopicMessage message, CancellationToken cancellationToken = default)
+{
+    try
+    {
+        //Do something with the message
+		Console.WriteLine(Encoding.UTF8.GetString(message.Data.Span));
+
+        return await Task.FromResult(TopicResponseAction.Success);
+    }
+    catch
+    {
+        return await Task.FromResult(TopicResponseAction.Retry);
+    }
+}
+
+//Create a dynamic streaming subscription
+var subscription = daprMessagingClient.Register("pubsub", "myTopic",
+    new DaprSubscriptionOptions(new MessageHandlingPolicy(TimeSpan.FromSeconds(15), TopicResponseAction.Retry)),
+    HandleMessage, CancellationToken.None);
+
+//Subscribe to messages on it with a timeout of 30 seconds
+var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+await subscription.SubscribeAsync(cancellationTokenSource.Token);
+
+await Task.Delay(TimeSpan.FromMinutes(1));
+
+//When you're done with the subscription, simply dispose of it
+await subscription.DisposeAsync();
+```
+
+{{% /codetab %}}
 
 {{% codetab %}}
 
