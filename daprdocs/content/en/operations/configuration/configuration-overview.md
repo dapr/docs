@@ -86,7 +86,7 @@ The `tracing` section under the `Configuration` spec contains the following prop
 tracing:
   samplingRate: "1"
   otel: 
-    endpointAddress: "https://..."
+    endpointAddress: "otelcollector.observability.svc.cluster.local:4317"
   zipkin:
     endpointAddress: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
 ```
@@ -97,10 +97,10 @@ The following table lists the properties for tracing:
 |--------------|--------|-------------|
 | `samplingRate` | string | Set sampling rate for tracing to be enabled or disabled.
 | `stdout` | bool | True write more verbose information to the traces
-| `otel.endpointAddress` | string | Set the Open Telemetry (OTEL) server address to send traces to
+| `otel.endpointAddress` | string | Set the Open Telemetry (OTEL) server address to send traces to. This may or may not require the https:// or http:// depending on your OTEL provider.
 | `otel.isSecure` | bool | Is the connection to the endpoint address encrypted
 | `otel.protocol` | string | Set to `http` or `grpc` protocol
-| `zipkin.endpointAddress` | string | Set the Zipkin server address to send traces to
+| `zipkin.endpointAddress` | string | Set the Zipkin server address to send traces to. This should include the protocol (http:// or https://) on the endpoint.
 
 ##### `samplingRate`
 
