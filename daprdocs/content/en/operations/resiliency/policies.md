@@ -49,6 +49,15 @@ The following retry options are configurable:
 | `duration` | Determines the time interval between retries. Only applies to the `constant` policy.<br/>Valid values are of the form `200ms`, `15s`, `2m`, etc.<br/> Defaults to `5s`.|
 | `maxInterval` | Determines the maximum interval between retries to which the `exponential` back-off policy can grow.<br/>Additional retries always occur after a duration of `maxInterval`. Defaults to `60s`. Valid values are of the form `5s`, `1m`, `1m30s`, etc |
 | `maxRetries` | The maximum number of retries to attempt. <br/>`-1` denotes an unlimited number of retries, while `0` means the request will not be retried (essentially behaving as if the retry policy were not set).<br/>Defaults to `-1`. |
+| `matching.httpStatusCodes` | Optional: a comma-separated string of HTTP status codes or code ranges to retry. Status codes not listed are not retried.<br/>Valid values: 100-599, [Reference](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)<br/>Format: `<code>` or range `<start>-<end>`<br/>Example: "429,501-503"<br/>Default, the empty string `""` or field not set, will retry on all HTTP errors. |
+| `matching.gRPCStatusCodes` | Optional: a comma-separated string of gRPC status codes or code ranges to retry. Status codes not listed are not retried.<br/>Valid values: 0-16, [Reference](https://grpc.io/docs/guides/status-codes/)<br/>Format: `<code>` or range `<start>-<end>`<br/>Example: "1,501-503"<br/>Default, the empty string `""` or field not set, will retry on all gRPC errors. |
+
+
+{{% alert title="httpStatusCodes and gRPCStatusCodes format" color="warning" %}}
+The field values should follow the format as specified in the field description or in the "Example 2" below.
+Incorrectly formatted field value will cause the failure to load the policy and intentional failure to start `daprd`.
+{{% /alert %}}
+
 
 The exponential back-off window uses the following formula:
 
@@ -77,7 +86,20 @@ spec:
         maxRetries: -1 # Retry indefinitely
 ```
 
+Example 2:
 
+```yaml
+spec:
+  policies:
+    retries:
+      retry5xxOnly:
+        policy: constant
+        duration: 5s
+        maxRetries: 3
+        matches:
+          httpStatusCodes: "429,500-599" # retry HTTP status codes in range, the rest will not be retried
+          gRPCStatusCodes: "1-4,8-11,13,14" # retry specific gRPC status codes, in ranges and separate single code.
+```
 
 ## Circuit Breakers
 
