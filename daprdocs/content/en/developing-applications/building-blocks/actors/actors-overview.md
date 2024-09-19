@@ -104,7 +104,7 @@ The Dapr actor runtime provides a simple turn-based access model for accessing a
 
 ### State
 
-Transactional state stores can be used to store actor state. Regardless of whether you intend to use stateful or stateless actors, you must specify a value for property `actorStateStore` as `true` in the state store component's metadata section. Actors state is stored with a specific scheme in transactional state stores, allowing for consistent querying. Only a single state store component can be used as the state store for all actors. Read the [state API reference]({{< ref state_api.md >}}) and the [actors API reference]({{< ref actors_api.md >}}) to learn more about state stores for actors.
+Transactional state stores can be used to store actor state. Regardless of whether you intend to store any state in your actor, you must specify a value for property `actorStateStore` as `true` in the state store component's metadata section. Actors state is stored with a specific scheme in transactional state stores, allowing for consistent querying. Only a single state store component can be used as the state store for all actors. Read the [state API reference]({{< ref state_api.md >}}) and the [actors API reference]({{< ref actors_api.md >}}) to learn more about state stores for actors.
 
 ### Actor timers and reminders
 
