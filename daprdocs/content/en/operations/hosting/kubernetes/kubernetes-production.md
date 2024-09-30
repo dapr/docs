@@ -260,6 +260,20 @@ Verify your production-ready deployment includes the following settings:
 
 1. Dapr supports and is enabled to **scope components for certain applications**. This is not a required practice. [Learn more about component scopes]({{< ref "component-scopes.md" >}}).
 
+## Recommended Placement service configuration
+
+The [Placement service]({{< ref "placement.md" >}}) is a critical component in Dapr, responsible for actor placement table dissemination. It's recommended to configure the Placement service with the following values:
+
+1. **High availability**. Ensure that the Placement service is highly available and can survive individual node failures. Helm chart value: `dapr_placement.ha=true`
+2. **In memory logs**. Use in-memory Raft log store for faster writes. The tradeoff is more disseminations (and thus, network traffic) in an eventual Placement service pod failure. Helm chart value: `dapr_placement.cluster.forceInMemoryLog=true`
+3. **No metadata endpoint**. Disable the unauthenticated `/placement/state` endpoint which exposes placement table information for the Placement service. Helm chart value: `dapr_placement.metadataEnabled=false`
+4. **Timeouts** Control the sensitivity of network connectivity between the Placement service and the sidecars using the below timeout values. You can adjust these values based on your network conditions as needed.
+   1. `dapr_placement.keepAliveTime` sets the interval at which the Placement service sends [keep alive](https://grpc.io/docs/guides/keepalive/) pings to daprd on the gRPC stream to check if the connection is still alive. Lower values will lead to shorter actor rebalancing time in case of pod loss/restart, but higher network traffic during normal operation. Accepts values between `1s` and `10s`. Default is `2s`.
+   2. `dapr_placement.keepAliveTimeout` sets the timeout period for daprd to respond to the Placement service's [keep alive](https://grpc.io/docs/guides/keepalive/) pings before the Placement service closes the connection. Lower values will lead to shorter actor rebalancing time in case of pod loss/restart, but higher network traffic during normal operation. Accepts values between `1s` and `10s`. Default is `3s`.
+   3. `dapr_placement.disseminateTimeout` sets the timeout period for dissemination to be delayed after actor membership change (usually related to pod restarts) so as to avoid excessive dissemination during multiple pod restarts. Higher values will reduce the frequency of dissemination, but delay the table dissemination. Accepts values between `1s` and `5s`. Default is `2s`.
+
+
+
 ## Service account tokens
 
 By default, Kubernetes mounts a volume containing a [Service Account token](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/) in each container. Applications can use this token, whose permissions vary depending on the configuration of the cluster and namespace, among other things, to perform API calls against the Kubernetes control plane.
