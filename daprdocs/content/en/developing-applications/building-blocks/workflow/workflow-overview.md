@@ -106,8 +106,25 @@ Want to skip the quickstarts? Not a problem. You can try out the workflow buildi
 
 ## Limitations
 
-- **State stores:** As of the 1.12.0 beta release of Dapr Workflow, using the NoSQL databases as a state store results in limitations around storing internal states. For example, CosmosDB has a maximum single operation item limit of only 100 states in a single request.
-- **Horizontal scaling:** As of the 1.12.0 beta release of Dapr Workflow, if you scale out Dapr sidecars or your application pods to more than 2, then the concurrency of the workflow execution drops. It is recommended to test with 1 or 2 instances, and no more than 2.
+- **State stores:** Due to underlying limitations in some database choices, more commonly NoSQL databases, you might run into limitations around storing internal states. For example, CosmosDB has a maximum single operation item limit of only 100 states in a single request.
+- **Horizontal scaling:** As of the 1.12.0 beta release of Dapr Workflow, it is recommended to use a maximum of two instances of Dapr per workflow application. This limiation is resolved in Dapr 1.14.x when enabling the scehduler service.
+
+To enable the scheduler service to work for Dapr Workflows, make sure you're using Dapr 1.14.x or later and assign the following configuration to your app:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: schedulerconfig
+spec:
+  tracing:
+    samplingRate: "1"
+  features:
+    - name: SchedulerReminders
+      enabled: true
+```
+
+See more info about how to enable preview features [Here]({{<ref preview-features>}}).
 
 ## Watch the demo
 
