@@ -124,7 +124,7 @@ spec:
       enabled: true
 ```
 
-See more info about how to enable preview features [Here]({{<ref preview-features>}}).
+See more info about [enabling preview features]({{<ref preview-features>}}).
 
 ## Watch the demo
 
