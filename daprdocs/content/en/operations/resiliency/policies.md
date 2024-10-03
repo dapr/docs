@@ -98,7 +98,7 @@ spec:
         maxRetries: 3
         matches:
           httpStatusCodes: "429,500-599" # retry HTTP status codes in range, the rest will not be retried
-          gRPCStatusCodes: "1-4,8-11,13,14" # retry specific gRPC status codes, in ranges and separate single code.
+          gRPCStatusCodes: "1-4,8-11,13,14" # retry gRPC status codes in these ranges and separate single codes.
 ```
 
 ## Circuit Breakers
