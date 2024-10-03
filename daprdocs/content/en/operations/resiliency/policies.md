@@ -55,7 +55,7 @@ The following retry options are configurable:
 
 {{% alert title="httpStatusCodes and gRPCStatusCodes format" color="warning" %}}
 The field values should follow the format as specified in the field description or in the "Example 2" below.
-Incorrectly formatted field value will cause the failure to load the policy and intentional failure to start `daprd`.
+Incorrectly formatted field values cause the failure to load the policy and intentional failure to start `daprd`.
 {{% /alert %}}
 
 
