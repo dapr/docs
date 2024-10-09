@@ -103,11 +103,9 @@ func prodDBBackupHandler(ctx context.Context, job *common.JobEvent) error {
 	if err := json.Unmarshal(job.Data, &jobData); err != nil {
 		// ...
 	}
-	decodedPayload, err := base64.StdEncoding.DecodeString(jobData.Value)
-	// ...
 
 	var jobPayload api.DBBackup
-	if err := json.Unmarshal(decodedPayload, &jobPayload); err != nil {
+	if err := json.Unmarshal(job.Data, &jobPayload); err != nil {
 		// ...
 	}
 	fmt.Printf("job %d received:\n type: %v \n typeurl: %v\n value: %v\n extracted payload: %v\n", jobCount, job.JobType, jobData.TypeURL, jobData.Value, jobPayload)
