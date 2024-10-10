@@ -96,6 +96,10 @@ At the trigger time, the `prodDBBackupHandler` function is called, executing the
 
 ### Triggered Job Handling Assumptions
 
+Note: The following information applies to **all programming languages**, not just the Go examples provided in this 
+documentation. As of Dapr release v1.14, the Jobs API is only supported in the Go SDK, but support for additional SDKs 
+and languages will be added in future releases.
+
 #### HTTP
 
 When you create a job using Dapr's Jobs API, Dapr will automatically assume there is an endpoint available at 
