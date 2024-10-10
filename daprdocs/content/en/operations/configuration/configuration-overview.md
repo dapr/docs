@@ -12,7 +12,7 @@ description: "Information on Dapr configuration and how to set options for your 
 
 #### Self-hosted sidecar
 
-In self hosted mode the Dapr configuration is a configuration file, for example `config.yaml`. By default the Dapr sidecar looks in the default Dapr folder for the runtime configuration eg: `$HOME/.dapr/config.yaml` in Linux/MacOS and `%USERPROFILE%\.dapr\config.yaml` in Windows.
+In self hosted mode the Dapr configuration is a configuration file, for example `config.yaml`. By default, the Dapr sidecar looks in the default Dapr folder for the runtime configuration eg: `$HOME/.dapr/config.yaml` in Linux/MacOS and `%USERPROFILE%\.dapr\config.yaml` in Windows.
 
 A Dapr sidecar can also apply a configuration by using a `--config` flag to the file path with `dapr run` CLI command.
 

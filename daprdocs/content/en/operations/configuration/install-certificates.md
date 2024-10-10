@@ -16,8 +16,8 @@ When the sidecar is not running inside a container, certificates must be directl
 
 When the sidecar is running as a container:
 1. Certificates must be available to the sidecar container. This can be configured using volume mounts.
-1. The environment variable `SSL_CERT_DIR` must be set in the sidecar container, pointing to the directory containing the certificates.
-1. For Windows containers, the container needs to run with administrator privileges to be able to install the certificates.
+2. The environment variable `SSL_CERT_DIR` must be set in the sidecar container, pointing to the directory containing the certificates.
+3. For Windows containers, the container needs to run with administrator privileges to be able to install the certificates.
 
 Below is an example that uses Docker Compose to install certificates (present locally in the `./certificates` directory) in the sidecar container:
 ```yaml
@@ -46,7 +46,7 @@ services:
 
 On Kubernetes:
 1. Certificates must be available to the sidecar container using a volume mount.
-1. The environment variable `SSL_CERT_DIR` must be set in the sidecar container, pointing to the directory containing the certificates.
+2. The environment variable `SSL_CERT_DIR` must be set in the sidecar container, pointing to the directory containing the certificates.
 
 The YAML below is an example of a deployment that attaches a pod volume to the sidecar, and sets `SSL_CERT_DIR` to install the certificates.
 ```yaml
@@ -91,7 +91,7 @@ spec:
 All the certificates in the directory pointed by `SSL_CERT_DIR` are installed.
 
 1. On Linux containers, all the certificate extensions supported by OpenSSL are supported. For more information, see https://www.openssl.org/docs/man1.1.1/man1/openssl-rehash.html
-1. On Windows container, all the certificate extensions supported by certoc.exe are supported. For more information, see certoc.exe present in [Windows Server Core](https://hub.docker.com/_/microsoft-windows-servercore)
+2. On Windows container, all the certificate extensions supported by certoc.exe are supported. For more information, see certoc.exe present in [Windows Server Core](https://hub.docker.com/_/microsoft-windows-servercore)
 
 ## Example
 

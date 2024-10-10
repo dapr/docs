@@ -6,7 +6,7 @@ weight: 6000
 description: "Configure http requests that are bigger than 4 MB"
 ---
 
-By default Dapr has a limit for the request body size which is set to 4 MB, however you can change this by defining `dapr.io/http-max-request-size` annotation or `--dapr-http-max-request-size` flag.
+By default, Dapr has a limit for the request body size which is set to 4 MB, however you can change this by defining `dapr.io/http-max-request-size` annotation or `--dapr-http-max-request-size` flag.
 
 
 

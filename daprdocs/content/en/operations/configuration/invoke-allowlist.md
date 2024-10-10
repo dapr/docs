@@ -111,7 +111,7 @@ spec:
 
 <font size=5>Scenario 3: Deny access to all apps except when a specific verb for HTTP and operation for GRPC is matched</font>
 
-With this configuration, the only scenarios below are allowed access and and all other method requests from all other apps, including other methods on app1 or app2, are denied
+With this configuration, the only scenarios below are allowed access and all other method requests from all other apps, including other methods on app1 or app2, are denied
 * trustDomain = public, namespace = default, appID = app1, operation = op1, http verb = POST/PUT
 * trustDomain = "myDomain", namespace = "ns1", appID = app2, operation = op2 and application protocol is GRPC
 , only HTTP verbs POST/PUT on method op1 from appId = app1 are allowed and all other method requests from all other apps, including other methods on app1, are denied
