@@ -119,8 +119,6 @@ func specificJob(w http.ResponseWriter, r *http.Request) {
 func handleJob(w http.ResponseWriter, r *http.Request) {
     // Handle the triggered jobs
 }
-
-
 ```
 
 #### gRPC
