@@ -94,18 +94,14 @@ In this example, at trigger time, which is `@every 1s` according to the `Schedul
 
 At the trigger time, the `prodDBBackupHandler` function is called, executing the desired business logic for this job at trigger time. For example:
 
-### Triggered Job Handling Assumptions
-
-Note: The following information applies to **all programming languages**, not just the Go examples provided in this 
-documentation. As of Dapr release v1.14, the Jobs API is only supported in the Go SDK, but support for additional SDKs 
-and languages will be added in future releases.
-
 #### HTTP
 
 When you create a job using Dapr's Jobs API, Dapr will automatically assume there is an endpoint available at 
 `/job/<job-name>`. For instance, if you schedule a job named `test`, Dapr expects your application to listen for job 
 events at `/job/test`. Ensure your application has a handler set up for this endpoint to process the job when it is 
 triggered. For example:
+
+*Note: The following example is in Go but applies to any programming language.*
 
 ```go
 
@@ -129,6 +125,8 @@ func handleJob(w http.ResponseWriter, r *http.Request) {
 
 When a job reaches its scheduled trigger time, the triggered job is sent back to the application via the following 
 callback function:
+
+*Note: The following example is in Go but applies to any programming language with gRPC support.*
 
 ```go
 import rtv1 "github.com/dapr/dapr/pkg/proto/runtime/v1"
