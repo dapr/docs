@@ -24,7 +24,7 @@ A supported release means:
 
 From the 1.8.0 release onwards three (3) versions of Dapr are supported; the current and previous two (2) versions. Typically these are `MINOR`release updates. This means that there is a rolling window that moves forward for supported releases and it is your operational responsibility to remain up to date with these supported versions. If you have an older version of Dapr you may have to do intermediate upgrades to get to a supported version.
 
-There will be at least 13 weeks (3 months) between major.minor version releases giving users at least a 9 month rolling window for upgrading from a non-supported version. For more details on the releaase process read [release cycle and cadence](https://github.com/dapr/community/blob/master/release-process.md)
+There will be at least 13 weeks (3 months) between major.minor version releases giving users at least a 9 month rolling window for upgrading from a non-supported version. For more details on the release process read [release cycle and cadence](https://github.com/dapr/community/blob/master/release-process.md)
 
 Patch support is for supported versions (current and previous).
 
