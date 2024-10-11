@@ -20,13 +20,107 @@ When you [run `dapr init` in either self-hosted mode or on Kubernetes]({{< ref i
 
 In your code, set up and schedule jobs within your application.
 
-{{< tabs "Go" >}}
+{{< tabs ".NET" "Go" >}}
+
+{{% codetab %}}
+
+<!-- .net -->
+
+The following .NET SDK code sample schedules the job named `prod-db-backup`. Job data is housed in a backup database (`"my-prod-db"`) and is schedueled with `ScheduleJobAsync` from the Dapr Jobs client.  This provides the `jobData` which includes:
+- The backup `Task` name
+- The backup tasks's `Metadata` including:
+  - The database name (`DBName`)
+  - The database location (`BackupLocation`)
+
+```csharp
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Dapr.Jobs;
+using Dapr.Jobs.Extensions;
+using Dapr.Jobs.Models;
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDaprJobsClient();
+var app = builder.Build();
+
+// In practice, this would likely be in another service, but for completeness, we'll put this sample in a single file
+var DoProdDbBackupHandler = (DbBackupJobPayload? payload) => {
+	//Do something
+};
+
+// Set a handler for incoming jobs
+var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+app.MapDaprScheduledJobHandler((string? jobName, DaprJobDetails? jobDetails, CancellationToken cancellationToken) => {
+	switch (jobName)
+	{
+		case "prod-db-backup":
+			var deserializedPayload = JsonSerializer.Deserialize<DbBackupJobPayload>(jobDetails?.Payload) ?? null;
+			DoProdDbBackupHandler(deserializedPayload);
+			break;
+		default:
+			break;
+	}
+	return Task.CompletedTask;
+}, cancellationTokenSource.Token);
+app.Run();
+
+//Typically you'd just inject DaprJobsClient into a service/controller, 
+await using var scope = app.Services.CreateAsyncScope();
+var daprJobsClient = scope.ServiceProvider.GetRequiredService<DaprJobsClient>();
+
+//Set up the job payload
+var jobPayload = new DbBackupJobPayload("db-backup", new("my-prod-db", "/backup-dir"));
+var payloadBytes = JsonSerializer.SerializeToUtf8Bytes(jobPayload);
+
+//Schedule the job
+await daprJobsClient.ScheduleJobAsync("prod-db-backup", DaprJobSchedule.FromExpression("@every 1s"), payloadBytes, repeats: 10);
+
+//Specify the records and their JSON property names comprising the sample job payload
+sealed record DbBackupJobPayload(
+	[property: JsonPropertyName("Task")] string Task, 
+	[property: JsonPropertyName("Metadata")] DatabaseMetadata Metadata);
+sealed record DatabaseMetadata(
+	[property: JsonPropertyName("DBName")] string Name, 
+	[property: JsonPropertyName("BackupLocation")] string BackupLocation);
+```
+
+The job is using the free-form `@every` expressions to let the developer indicate that the job should be triggered `@every 1s` and sets the optional `repeats` argument to indicate the maximum number of times the job should be triggered and sent back to the app; in this scenario, we set a value of 10 indicating that the job should be triggered a maximum of ten times.
+
+At the trigger time, the registered handler will be invoked and will execute the desired business logic for the job. In this sample, we apply a switch statement with a value known at compile-time, but in a real-world app, this would very well perform a more dynamic service lookup in order to determine how any given job name should be handled.
+
+The `MapDaprScheduledJobHandler` accepts a delegate that works much like the ASP.NET Core minimal API parameter binding logic. The first parameter will always contain the name of the job, the second will reflect the job details provided in the callback and the last parameter must be a cancellation token. Otherwise, the developer is free to provide any additional services registered via dependency injection before the cancellation token argument and they will be injected at runtime.
+
+#### HTTP
+When you create a job using Dapr's Jobs API, Dapr will automatically assume there is an endpoint available at `/job/<job-name>`. For instance, if you schedule a job named `test`, Dapr expects you application to listen for job events at `job/test`. Ensure your application has a handler set up for this endpoint to process the job when it is triggered. For example:
+
+```csharp
+
+[ApiController]
+public JobsController : ControllerBase
+{
+	[HttpPost("/job/{jobName}"]
+	public async Task HandleJobsAsync(string jobName, DeserializableDaprJobDetails jobDetails)
+	{
+		//...
+	}
+
+	[HttpPost("/job/prod-db-backup")]
+	public async Task HandleSpecificJobAsync(DeserializableDaprJobDetails jobDetails)
+	{
+		//...
+	}
+}
+
+```
+
+{{% /codetab %}}
 
 {{% codetab %}}
 
 <!--go-->
 
-The following Go SDK code sample schedules the job named `prod-db-backup`. Job data is housed in a backup database (`"my-prod-db"`) and is scheduled with `ScheduleJobAlpha1`. This provides the `jobData`, which includes:
+The following Go SDK code sample schedules the job named `prod-db-backup`. Job data is housed in a backup database (`"my-prod-db"`) and is scheduled with `ScheduleJobAlpha1`. This provides the `jobData` which includes:
 - The backup `Task` name
 - The backup task's `Metadata`, including:
   - The database name (`DBName`)
@@ -92,7 +186,7 @@ In this example, at trigger time, which is `@every 1s` according to the `Schedul
 	}
 ```
 
-At the trigger time, the `prodDBBackupHandler` function is called, executing the desired business logic for this job at trigger time. For example:
+At the trigger time, the `prodDBBackupHandler` function is called, executing the desired business logic for this job at trigger time.
 
 #### HTTP
 
