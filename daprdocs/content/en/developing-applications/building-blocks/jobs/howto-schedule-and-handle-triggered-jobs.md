@@ -92,7 +92,7 @@ At the trigger time, the registered handler will be invoked and will execute the
 The `MapDaprScheduledJobHandler` accepts a delegate that works much like the ASP.NET Core minimal API parameter binding logic. The first parameter will always contain the name of the job, the second will reflect the job details provided in the callback and the last parameter must be a cancellation token. Otherwise, the developer is free to provide any additional services registered via dependency injection before the cancellation token argument and they will be injected at runtime.
 
 #### HTTP
-When you create a job using Dapr's Jobs API, Dapr will automatically assume there is an endpoint available at `/job/<job-name>`. For instance, if you schedule a job named `test`, Dapr expects you application to listen for job events at `job/test`. Ensure your application has a handler set up for this endpoint to process the job when it is triggered. For example:
+When you create a job using Jobs API, Dapr assumes there is an endpoint available at `/job/<job-name>`. For example, if you schedule a job named `test`, Dapr expects your application to listen for job events at `job/test`. Ensure your application has a handler set up for this endpoint to process the job when it is triggered. For example:
 
 ```csharp
 
