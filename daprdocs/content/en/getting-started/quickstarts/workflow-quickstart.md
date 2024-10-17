@@ -66,12 +66,18 @@ Install the Dapr Python SDK package:
 pip3 install -r requirements.txt
 ```
 
-### Step 3: Run the order processor app
-
-In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}):
+Return to the `python/sdk` directory:
 
 ```bash
-cd workflows/python/sdk
+cd ..
+```
+
+
+### Step 3: Run the order processor app
+
+In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}). From the `python/sdk` directory, run the following command:
+
+```bash
 dapr run -f .
 ```
 
@@ -308,12 +314,11 @@ Install the dependencies:
 cd ./javascript/sdk
 npm install
 npm run build
-cd ..
 ```
 
 ### Step 3: Run the order processor app
 
-In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}):
+In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}). From the `javascript/sdk` directory, run the following command:
 
 ```bash
 dapr run -f .
@@ -515,15 +520,28 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-In a new terminal window, navigate to the `sdk` directory:
+In a new terminal window, navigate to the `order-processor` directory:
 
 ```bash
-cd workflows/csharp/sdk
+cd workflows/csharp/sdk/order-processor
+```
+
+Install the dependencies:
+
+```bash
+dotnet restore
+dotnet build
+```
+
+Return to the `csharp/sdk` directory:
+
+```bash
+cd ..
 ```
 
 ### Step 3: Run the order processor app
 
-In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}):
+In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}). From the `csharp/sdk` directory, run the following command:
 
 ```bash
 dapr run -f .
@@ -628,25 +646,24 @@ OrderPayload orderInfo = new OrderPayload(itemToPurchase, 15000, ammountToPurcha
 // Start the workflow
 Console.WriteLine("Starting workflow {0} purchasing {1} {2}", orderId, ammountToPurchase, itemToPurchase);
 
-await daprClient.StartWorkflowAsync(
-    workflowComponent: DaprWorkflowComponent,
-    workflowName: nameof(OrderProcessingWorkflow),
+await daprWorkflowClient.ScheduleNewWorkflowAsync(
+    name: nameof(OrderProcessingWorkflow),
     input: orderInfo,
     instanceId: orderId);
 
 // Wait for the workflow to start and confirm the input
-GetWorkflowResponse state = await daprClient.WaitForWorkflowStartAsync(
-    instanceId: orderId,
-    workflowComponent: DaprWorkflowComponent);
+WorkflowState state = await daprWorkflowClient.WaitForWorkflowStartAsync(
+    instanceId: orderId);
 
-Console.WriteLine("Your workflow has started. Here is the status of the workflow: {0}", state.RuntimeStatus);
+Console.WriteLine($"{nameof(OrderProcessingWorkflow)} (ID = {orderId}) started successfully with {state.ReadInputAs<OrderPayload>()}");
 
 // Wait for the workflow to complete
+using var ctx = new CancellationTokenSource(TimeSpan.FromSeconds(5));
 state = await daprClient.WaitForWorkflowCompletionAsync(
     instanceId: orderId,
-    workflowComponent: DaprWorkflowComponent);
+    cancellation: ctx.Token);
 
-Console.WriteLine("Workflow Status: {0}", state.RuntimeStatus);
+Console.WriteLine("Workflow Status: {0}", state.ReadCustomStatusAs<string>());
 ```
 
 #### `order-processor/Workflows/OrderProcessingWorkflow.cs`
@@ -697,7 +714,7 @@ class OrderProcessingWorkflow : Workflow<OrderPayload, OrderResult>
                     nameof(UpdateInventoryActivity),
                     new PaymentRequest(RequestId: orderId, order.Name, order.Quantity, order.TotalCost));                
             }
-            catch (TaskFailedException)
+            catch (WorkflowTaskFailedException)
             {
                 // Let them know their payment was processed
                 await context.CallActivityAsync(
@@ -779,9 +796,15 @@ Install the dependencies:
 mvn clean install
 ```
 
+Return to the `java/sdk` directory:
+
+```bash
+cd ..
+```
+
 ### Step 3: Run the order processor app
 
-In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}):
+In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}). From the `java/sdk` directory, run the following command:
 
 ```bash
 cd workflows/java/sdk
@@ -1114,7 +1137,7 @@ cd workflows/go/sdk
 
 ### Step 3: Run the order processor app
 
-In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}):
+In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}). From the `go/sdk` directory, run the following command:
 
 ```bash
 dapr run -f .

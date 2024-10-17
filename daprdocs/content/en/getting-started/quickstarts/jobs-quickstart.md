@@ -273,23 +273,20 @@ func deleteJob(ctx context.Context, in *common.InvocationEvent) (out *common.Con
 
 // Handler that handles job events
 func handleJob(ctx context.Context, job *common.JobEvent) error {
-	var jobData common.Job
-	if err := json.Unmarshal(job.Data, &jobData); err != nil {
-		return fmt.Errorf("failed to unmarshal job: %v", err)
-	}
-	decodedPayload, err := base64.StdEncoding.DecodeString(jobData.Value)
-	if err != nil {
-		return fmt.Errorf("failed to decode job payload: %v", err)
-	}
-	var jobPayload JobData
-	if err := json.Unmarshal(decodedPayload, &jobPayload); err != nil {
-		return fmt.Errorf("failed to unmarshal payload: %v", err)
-	}
+    var jobData common.Job
+    if err := json.Unmarshal(job.Data, &jobData); err != nil {
+        return fmt.Errorf("failed to unmarshal job: %v", err)
+    }
 
-	fmt.Println("Starting droid:", jobPayload.Droid)
-	fmt.Println("Executing maintenance job:", jobPayload.Task)
+    var jobPayload JobData
+    if err := json.Unmarshal(job.Data, &jobPayload); err != nil {
+        return fmt.Errorf("failed to unmarshal payload: %v", err)
+    }
 
-	return nil
+    fmt.Println("Starting droid:", jobPayload.Droid)
+    fmt.Println("Executing maintenance job:", jobPayload.Task)
+
+    return nil
 }
 ```
 
