@@ -87,6 +87,13 @@ you tackle the challenges that come with building microservices and keeps your c
       <a href="{{< ref contributing >}}" class="stretched-link"></a>
     </div>
   </div>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title"><b>Roadmap</b></h5>
+      <p class="card-text">Learn about Dapr's roadmap and change process.</p>
+      <a href="{{< ref roadmap.md >}}" class="stretched-link"></a>
+    </div>
+  </div>
 </div>
 
 

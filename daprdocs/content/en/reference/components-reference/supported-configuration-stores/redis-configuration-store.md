@@ -43,6 +43,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | redisPassword | N | Output | The Redis password | `"password"` |
 | redisUsername | N | Output | Username for Redis host. Defaults to empty. Make sure your Redis server version is 6 or above, and have created acl rule correctly. | `"username"` |
 | enableTLS | N | Output |  If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS. Defaults to `"false"` | `"true"`, `"false"` |
+| clientCert        | N | Output        | The content of the client certificate, used for Redis instances that require client-side certificates. Must be used with `clientKey` and `enableTLS` must be set to true. It is recommended to use a secret store as described [here]({{< ref component-secrets.md >}})  | `"----BEGIN CERTIFICATE-----\nMIIC..."` |
+| clientKey        | N | Output        | The content of the client private key, used in conjunction with `clientCert` for authentication. It is recommended to use a secret store as described [here]({{< ref component-secrets.md >}})  | `"----BEGIN PRIVATE KEY-----\nMIIE..."` |
 | failover           | N | Output         | Property to enabled failover configuration. Needs sentinelMasterName to be set. Defaults to `"false"` | `"true"`, `"false"`
 | sentinelMasterName | N | Output         | The Sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/reference/sentinel-clients/) | `""`,  `"127.0.0.1:6379"`
 | redisType        | N | Output        | The type of Redis. There are two valid values, one is `"node"` for single node mode, the other is `"cluster"` for Redis cluster mode. Defaults to `"node"`. | `"cluster"`
