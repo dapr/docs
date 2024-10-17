@@ -26,6 +26,4 @@ By studying past resource behavior, recommend application resource optimization 
 
 The application graph facilitates collaboration between dev and ops by providing a dynamic overview of your services and infrastructure components.
 
-Try out [Conductor Free](https://www.diagrid.io/pricing), ideal for individual developers building and testing Dapr applications on Kubernetes.
-
 {{< button text="Learn more about Diagrid Conductor" link="https://www.diagrid.io/conductor" >}}

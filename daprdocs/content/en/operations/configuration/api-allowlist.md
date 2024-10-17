@@ -6,17 +6,17 @@ weight: 4500
 description: "Choose which Dapr sidecar APIs are available to the app"
 ---
 
-In certain scenarios, such as zero trust networks or when exposing the Dapr sidecar to external traffic through a frontend, it's recommended to only enable the Dapr sidecar APIs that are being used by the app. Doing so reduces the attack surface and helps keep the Dapr APIs scoped to the actual needs of the application.
+In scenarios such as zero trust networks or when exposing the Dapr sidecar to external traffic through a frontend, it's recommended to only enable the Dapr sidecar APIs being used by the app. Doing so reduces the attack surface and helps keep the Dapr APIs scoped to the actual needs of the application.
 
-Dapr allows developers to control which APIs are accessible to the application by setting an API allowlist or denylist using a [Dapr Configuration]({{<ref "configuration-overview.md">}}).
+Dapr allows you to control which APIs are accessible to the application by setting an API allowlist or denylist using a [Dapr Configuration]({{< ref "configuration-schema.md" >}}).
 
 ### Default behavior
 
 If no API allowlist or denylist is specified, the default behavior is to allow access to all Dapr APIs.
 
-- If only a denylist is defined, all Dapr APIs are allowed except those defined in the denylist
-- If only an allowlist is defined, only the Dapr APIs listed in the allowlist are allowed
-- If both an allowlist and a denylist are defined, the allowed APIs are those defined in the allowlist, unless they are also included in the denylist. In other words, the denylist overrides the allowlist for APIs that are defined in both.
+- If you've only defined a denylist, all Dapr APIs are allowed except those defined in the denylist
+- If you've only defined an allowlist, only the Dapr APIs listed in the allowlist are allowed
+- If you've defined both an allowlist and a denylist, the denylist overrides the allowlist for APIs that are defined in both.
 - If neither is defined, all APIs are allowed.
 
 For example, the following configuration enables all APIs for both HTTP and gRPC:
@@ -119,14 +119,18 @@ See this list of values corresponding to the different Dapr APIs:
 | [Service Invocation]({{< ref service_invocation_api.md >}}) | `invoke` (`v1.0`) | `invoke` (`v1`) |
 | [State]({{< ref state_api.md>}})| `state` (`v1.0` and `v1.0-alpha1`) | `state` (`v1` and `v1alpha1`) |
 | [Pub/Sub]({{< ref pubsub.md >}}) | `publish` (`v1.0` and `v1.0-alpha1`) | `publish` (`v1` and `v1alpha1`) |
+| [Output Bindings]({{< ref bindings_api.md >}})  | `bindings` (`v1.0`) |`bindings` (`v1`) |
 | Subscribe | n/a | `subscribe` (`v1alpha1`) |
-| [(Output) Bindings]({{< ref bindings_api.md >}})  | `bindings` (`v1.0`) |`bindings` (`v1`) |
 | [Secrets]({{< ref secrets_api.md >}})| `secrets` (`v1.0`) | `secrets` (`v1`) |
 | [Actors]({{< ref actors_api.md >}}) | `actors`  (`v1.0`) |`actors` (`v1`) |
 | [Metadata]({{< ref metadata_api.md >}}) | `metadata` (`v1.0`) |`metadata` (`v1`) |
 | [Configuration]({{< ref configuration_api.md >}}) | `configuration` (`v1.0` and `v1.0-alpha1`) | `configuration` (`v1` and `v1alpha1`) |
 | [Distributed Lock]({{< ref distributed_lock_api.md >}}) | `lock` (`v1.0-alpha1`)<br/>`unlock` (`v1.0-alpha1`) | `lock` (`v1alpha1`)<br/>`unlock` (`v1alpha1`) |
-| Cryptography | `crypto` (`v1.0-alpha1`) | `crypto` (`v1alpha1`) |
+| [Cryptography]({{< ref cryptography_api.md >}}) | `crypto` (`v1.0-alpha1`) | `crypto` (`v1alpha1`) |
 | [Workflow]({{< ref workflow_api.md >}}) | `workflows` (`v1.0-alpha1`) |`workflows` (`v1alpha1`) |
 | [Health]({{< ref health_api.md >}}) | `healthz`  (`v1.0`) | n/a |
 | Shutdown | `shutdown` (`v1.0`) | `shutdown` (`v1`) |
+
+## Next steps
+
+{{< button text="Configure Dapr to use gRPC" page="grpc" >}}

@@ -32,6 +32,10 @@ spec:
     value: <bool> # Optional. Allowed: true, false.
   - name: enableTLS
     value: <bool> # Optional. Allowed: true, false.
+  - name: clientCert
+    value: # Optional
+  - name: clientKey
+    value: # Optional    
   - name: maxRetries
     value: # Optional
   - name: maxRetryBackoff
@@ -102,6 +106,8 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 | redisUsername      | N        | Username for Redis host. Defaults to empty. Make sure your redis server version is 6 or above, and have created acl rule correctly. | `""`, `"default"`
 | useEntraID | N | Implements EntraID support for Azure Cache for Redis. Before enabling this: <ul><li>The `redisHost` name must be specified in the form of `"server:port"`</li><li>TLS must be enabled</li></ul> Learn more about this setting under [Create a Redis instance > Azure Cache for Redis]({{< ref "#setup-redis" >}}) | `"true"`, `"false"` |
 | enableTLS          | N         | If the Redis instance supports TLS with public certificates, can be configured to be enabled or disabled. Defaults to `"false"` | `"true"`, `"false"`
+| clientCert         | N         | The content of the client certificate, used for Redis instances that require client-side certificates. Must be used with `clientKey` and `enableTLS` must be set to true. It is recommended to use a secret store as described [here]({{< ref component-secrets.md >}})   | `"----BEGIN CERTIFICATE-----\nMIIC..."` |
+| clientKey          | N         | The content of the client private key, used in conjunction with `clientCert` for authentication. It is recommended to use a secret store as described [here]({{< ref component-secrets.md >}}) | `"----BEGIN PRIVATE KEY-----\nMIIE..."` |
 | maxRetries         | N         | Maximum number of retries before giving up. Defaults to `3` | `5`, `10`
 | maxRetryBackoff    | N         | Maximum backoff between each retry. Defaults to `2` seconds; `"-1"` disables backoff. | `3000000000`
 | failover           | N         | Property to enabled failover configuration. Needs sentinelMasterName to be set. The redisHost should be the sentinel host address. See [Redis Sentinel Documentation](https://redis.io/docs/manual/sentinel/). Defaults to `"false"` | `"true"`, `"false"`

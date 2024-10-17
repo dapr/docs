@@ -749,7 +749,7 @@ def status_monitor_workflow(ctx: wf.DaprWorkflowContext, job: JobStatus):
             ctx.call_activity(send_alert, input=f"Job '{job.job_id}' is unhealthy!")
         next_sleep_interval = 5  # check more frequently when unhealthy
 
-    yield ctx.create_timer(fire_at=ctx.current_utc_datetime + timedelta(seconds=next_sleep_interval))
+    yield ctx.create_timer(fire_at=ctx.current_utc_datetime + timedelta(minutes=next_sleep_interval))
 
     # restart from the beginning with a new JobStatus input
     ctx.continue_as_new(job)
@@ -896,7 +896,7 @@ func StatusMonitorWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 	}
 	if status == "healthy" {
 		job.IsHealthy = true
-		sleepInterval = time.Second * 60
+		sleepInterval = time.Minutes * 60
 	} else {
 		if job.IsHealthy {
 			job.IsHealthy = false
@@ -905,7 +905,7 @@ func StatusMonitorWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 				return "", err
 			}
 		}
-		sleepInterval = time.Second * 5
+		sleepInterval = time.Minutes * 5
 	}
 	if err := ctx.CreateTimer(sleepInterval).Await(nil); err != nil {
 		return "", err
