@@ -38,7 +38,7 @@ When an `allowedSecrets` list is present with at least one element, only those s
 
 ## Permission priority
 
-The `allowedSecrets` and `deniedSecrets` list values take priorty over the `defaultAccess`.
+The `allowedSecrets` and `deniedSecrets` list values take priority over the `defaultAccess`.
 
 | Scenarios | defaultAccess | allowedSecrets | deniedSecrets | permission
 |----- | ------- | -----------| ----------| ------------
