@@ -63,7 +63,7 @@ You must propagate the headers from `service A` to `service B`. For example: `In
 
 ##### Pub/sub messages
 
-Dapr generates the trace headers in the published message topic. These trace headers are propagated to any services listening on that topic.
+Dapr generates the trace headers in the published message topic. For `rawPayload` messages, it is possible to specify the `traceparent` header to propagate the tracing information. These trace headers are propagated to any services listening on that topic.
 
 #### Propagating multiple different service calls
 
