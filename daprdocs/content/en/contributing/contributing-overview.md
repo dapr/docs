@@ -18,7 +18,7 @@ See the [Dapr community repository](https://github.com/dapr/community) for more 
 
 1. **Docs**: This [repository](https://github.com/dapr/docs) contains the documentation for Dapr. You can contribute by updating existing documentation, fixing errors, or adding new content to improve user experience and clarity. Please see the specific guidelines for [docs contributions]({{< ref contributing-docs >}}).
 
-2. **Quickstarts**: The Quickstarts [repository](https://github.com/dapr/quickstarts) provides simple, step-by-step guides to help users get started with Dapr quickly. Contributions in this repository involve creating new quickstarts, improving existing ones, or ensuring they stay up-to-date with the latest features.
+2. **Quickstarts**: The Quickstarts [repository](https://github.com/dapr/quickstarts) provides simple, step-by-step guides to help users get started with Dapr quickly. [Contributions in this repository](https://github.com/dapr/quickstarts/blob/master/CONTRIBUTING.md) involve creating new quickstarts, improving existing ones, or ensuring they stay up-to-date with the latest features.
 
 3. **Runtime**: The Dapr runtime [repository](https://github.com/dapr/dapr) houses the core runtime components. Here, you can contribute by fixing bugs, optimizing performance, implementing new features, or enhancing existing ones.
 
