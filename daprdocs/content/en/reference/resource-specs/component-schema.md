@@ -8,27 +8,33 @@ description: "The basic spec for a Dapr component"
 
 Dapr defines and registers components using a [resource specifications](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/). All components are defined as a resource and can be applied to any hosting environment where Dapr is running, not just Kubernetes.
 
+Typically, components are restricted to a particular [namepsace]({{< ref isolation-concept.md >}}) and restricted access through scopes to any particular set of applications. The namespace is either explicit on the component manifest itself, or set by the API server, which derives the namespace through context with applying to Kubernetes. 
+
+{{% alert title="Note" color="primary" %}}
+The exception to this rule is in self-hosted mode, where daprd ingests component resources when the namespace field is omitted. However, the security profile is mute, as daprd has access to the manifest anyway, unlike in Kubernetes.
+{{% /alert %}}
+
 ## Format
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 auth: 
- secretstore: [SECRET-STORE-NAME]
+ secretstore: <REPLACE-WITH-SECRET-STORE-NAME>
 metadata:
-  name: [COMPONENT-NAME]
-  namespace: [COMPONENT-NAMESPACE]
+  name: <REPLACE-WITH-COMPONENT-NAME>
+  namespace: <REPLACE-WITH-COMPONENT-NAMESPACE>
 spec:
-  type: [COMPONENT-TYPE]
+  type: <REPLACE-WITH-COMPONENT-TYPE>
   version: v1
-  initTimeout: [TIMEOUT-DURATION]
-  ignoreErrors: [BOOLEAN]
+  initTimeout: <REPLACE-WITH-TIMEOUT-DURATION>
+  ignoreErrors: <REPLACE-WITH-BOOLEAN>
   metadata:
-  - name: [METADATA-NAME]
-    value: [METADATA-VALUE]
+  - name: <REPLACE-WITH-METADATA-NAME>
+    value: <REPLACE-WITH-METADATA-VALUE>
 scopes:
-  - [APPID]
-  - [APPID]
+  - <REPLACE-WITH-APPID>
+  - <REPLACE-WITH-APPID>
 ```
 
 ## Spec fields

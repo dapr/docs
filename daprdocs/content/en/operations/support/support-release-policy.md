@@ -24,7 +24,7 @@ A supported release means:
 
 From the 1.8.0 release onwards three (3) versions of Dapr are supported; the current and previous two (2) versions. Typically these are `MINOR`release updates. This means that there is a rolling window that moves forward for supported releases and it is your operational responsibility to remain up to date with these supported versions. If you have an older version of Dapr you may have to do intermediate upgrades to get to a supported version.
 
-There will be at least 6 weeks between major.minor version releases giving users a 12 week (3 month) rolling window for upgrading.
+There will be at least 13 weeks (3 months) between major.minor version releases giving users at least a 9 month rolling window for upgrading from a non-supported version. For more details on the release process read [release cycle and cadence](https://github.com/dapr/community/blob/master/release-process.md)
 
 Patch support is for supported versions (current and previous).
 
@@ -45,6 +45,10 @@ The table below shows the versions of Dapr releases that have been tested togeth
 
 | Release date | Runtime     | CLI  | SDKs  | Dashboard  | Status | Release notes |
 |--------------------|:--------:|:--------|---------|---------|---------|------------|
+| September 16th 2024 | 1.14.4</br>  | 1.14.1 | Java 1.12.0 </br>Go 1.11.0 </br>PHP 1.2.0 </br>Python 1.14.0 </br>.NET 1.14.0 </br>JS 3.3.1 | 0.15.0 | Supported (current) | [v1.14.4 release notes](https://github.com/dapr/dapr/releases/tag/v1.14.4) |
+| September 13th 2024 | 1.14.3</br>  | 1.14.1 | Java 1.12.0 </br>Go 1.11.0 </br>PHP 1.2.0 </br>Python 1.14.0 </br>.NET 1.14.0 </br>JS 3.3.1 | 0.15.0 | ⚠️ Recalled | [v1.14.3 release notes](https://github.com/dapr/dapr/releases/tag/v1.14.3) |
+| September 6th 2024 | 1.14.2</br>  | 1.14.1 | Java 1.12.0 </br>Go 1.11.0 </br>PHP 1.2.0 </br>Python 1.14.0 </br>.NET 1.14.0 </br>JS 3.3.1 | 0.15.0 | Supported (current) | [v1.14.2 release notes](https://github.com/dapr/dapr/releases/tag/v1.14.2) |
+| August 14th 2024 | 1.14.1</br>  | 1.14.1 | Java 1.12.0 </br>Go 1.11.0 </br>PHP 1.2.0 </br>Python 1.14.0 </br>.NET 1.14.0 </br>JS 3.3.1 | 0.15.0 | Supported (current) | [v1.14.1 release notes](https://github.com/dapr/dapr/releases/tag/v1.14.1) |
 | August 14th 2024 | 1.14.0</br>  | 1.14.0 | Java 1.12.0 </br>Go 1.11.0 </br>PHP 1.2.0 </br>Python 1.14.0 </br>.NET 1.14.0 </br>JS 3.3.1 | 0.15.0 | Supported (current) | [v1.14.0 release notes](https://github.com/dapr/dapr/releases/tag/v1.14.0) |
 | May 29th 2024 | 1.13.4</br>  | 1.13.0 | Java 1.11.0 </br>Go 1.10.0 </br>PHP 1.2.0 </br>Python 1.13.0 </br>.NET 1.13.0 </br>JS 3.3.0 | 0.14.0 | Supported  | [v1.13.4 release notes](https://github.com/dapr/dapr/releases/tag/v1.13.4) |
 | May 21st 2024 | 1.13.3</br>  | 1.13.0 | Java 1.11.0 </br>Go 1.10.0 </br>PHP 1.2.0 </br>Python 1.13.0 </br>.NET 1.13.0 </br>JS 3.3.0 | 0.14.0 | Supported | [v1.13.3 release notes](https://github.com/dapr/dapr/releases/tag/v1.13.3) |
@@ -134,13 +138,12 @@ General guidance on upgrading can be found for [self hosted mode]({{< ref self-h
 |                          |                 1.8.6 |                    1.9.6 |
 |                          |                 1.9.6 |                   1.10.7 |
 | 1.8.0 to 1.8.6           |                   N/A |                    1.9.6 |
-| 1.9.0                    |                   N/A |                    1.9.6 |
-| 1.10.0                   |                   N/A |                   1.10.8 |
-| 1.11.0                   |                   N/A |                   1.11.4 |
-| 1.12.0                   |                   N/A |                   1.12.4 |
-| 1.12.0 to 1.13.0         |                   N/A |                   1.13.4 |
-| 1.13.0                   |                   N/A |                   1.13.4 |
-| 1.13.0 to 1.14.0         |                   N/A |                   1.14.0 |
+| 1.9.0 to 1.9.6           |                   N/A |                   1.10.8 |
+| 1.10.0 to 1.10.8         |                   N/A |                   1.11.4 |
+| 1.11.0 to 1.11.4         |                   N/A |                   1.12.4 |
+| 1.12.0 to 1.12.4         |                   N/A |                   1.13.5 |
+| 1.13.0 to 1.13.5         |                   N/A |                   1.14.0 |
+| 1.14.0 to 1.14.2         |                   N/A |                   1.14.2 |
 
 ## Upgrade on Hosting platforms
 
