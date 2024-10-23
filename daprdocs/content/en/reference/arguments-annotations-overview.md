@@ -19,12 +19,12 @@ This table is meant to help users understand the equivalent options for running 
 | `--resources-path`  | `--resources-path` | `-d` | not supported | Path for components directory. If empty, components will not be loaded. |
 | `--config`  | `--config` | `-c` | `dapr.io/config` | Tells Dapr which Configuration resource to use |
 | `--control-plane-address` | not supported | | not supported | Address for a Dapr control plane |
-| `--dapr-grpc-port` | `--dapr-grpc-port` | | not supported | gRPC port for the Dapr API to listen on (default "50001") |
-| `--dapr-http-port` | `--dapr-http-port` | | not supported | The HTTP port for the Dapr API |
-| `--dapr-http-max-request-size` | --dapr-http-max-request-size | | `dapr.io/http-max-request-size` | Increasing max size of request body http and grpc servers parameter in MB to handle uploading of big files. Default is `4` MB |
-| `--dapr-http-read-buffer-size` | --dapr-http-read-buffer-size | | `dapr.io/http-read-buffer-size` | Increasing max size of http header read buffer in KB to handle when sending multi-KB headers. The default 4 KB.  When sending bigger than default 4KB http headers, you should set this to a larger value, for example 16 (for 16KB) |
+| `--dapr-grpc-port` | `--dapr-grpc-port` | | `dapr.io/grpc-port` | gRPC port for the Dapr API to listen on (default `50001`) |
+| `--dapr-http-port` | `--dapr-http-port` | | not supported | HTTP port for the Dapr API to listen on (default `3500`) |
+| `--dapr-http-max-request-size` | `--dapr-http-max-request-size` | | `dapr.io/http-max-request-size` | Increasing max size of request body http and grpc servers parameter in MB to handle uploading of big files. Default is `4` MB |
+| `--dapr-http-read-buffer-size` | `--dapr-http-read-buffer-size` | | `dapr.io/http-read-buffer-size` | Increasing max size of http header read buffer in KB to handle when sending multi-KB headers. The default 4 KB.  When sending bigger than default 4KB http headers, you should set this to a larger value, for example 16 (for 16KB) |
 | not supported | `--image` | | `dapr.io/sidecar-image` | Dapr sidecar image. Default is daprio/daprd:latest. The Dapr sidecar uses this image instead of the latest default image. Use this when building your own custom image of Dapr and or [using an alternative stable Dapr image]({{< ref "support-release-policy.md#build-variations" >}}) |
-| `--internal-grpc-port` | not supported | | not supported | gRPC port for the Dapr Internal API to listen on |
+| `--internal-grpc-port` | not supported | | `dapr.io/internal-grpc-port` | gRPC port for the Dapr Internal API to listen on (default `50002`) |
 | `--enable-metrics` | not supported | | configuration spec | Enable [prometheus metric]({{< ref prometheus >}}) (default true) |
 | `--enable-mtls` | not supported | | configuration spec | Enables automatic mTLS for daprd to daprd communication channels |
 | `--enable-profiling` | `--enable-profiling` | | `dapr.io/enable-profiling` | [Enable profiling]({{< ref profiling-debugging >}}) |
