@@ -10,8 +10,6 @@ State management is one of the most common needs of any new, legacy, monolith, o
 
 In this guide, you'll learn the basics of using the key/value state API to allow an application to save, get, and delete state.
 
-## Example
-
 The code example below _loosely_ describes an application that processes orders with an order processing service which has a Dapr sidecar. The order processing service uses Dapr to store state in a Redis state store.
 
 <img src="/images/building-block-state-management-example.png" width=1000 alt="Diagram showing state management of example service">
@@ -554,7 +552,7 @@ namespace EventService
             string DAPR_STORE_NAME = "statestore";
             //Using Dapr SDK to retrieve multiple states
             using var client = new DaprClientBuilder().Build();
-            IReadOnlyList<BulkStateItem> mulitpleStateResult = await client.GetBulkStateAsync(DAPR_STORE_NAME, new List<string> { "order_1", "order_2" }, parallelism: 1);
+            IReadOnlyList<BulkStateItem> multipleStateResult = await client.GetBulkStateAsync(DAPR_STORE_NAME, new List<string> { "order_1", "order_2" }, parallelism: 1);
         }
     }
 }
