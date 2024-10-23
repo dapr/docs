@@ -41,15 +41,18 @@ Style and tone conventions should be followed throughout all Dapr documentation 
 
 ## Diagrams and images
 
-Diagrams and images are invaluable visual aids for documentation pages. Diagrams are kept in a [Dapr Diagrams Deck](https://github.com/dapr/docs/tree/v1.11/daprdocs/static/presentations), which includes guidance on style and icons. 
+Diagrams and images are invaluable visual aids for documentation pages. Use the diagram style and icons in the [Dapr Diagrams template deck](https://github.com/dapr/docs/tree/v1.14/daprdocs/static/presentations). 
 
-As you create diagrams for your documentation:
+The process for creating diagrams for your documentation:
 
-- Save them as high-res PNG files into the [images folder](https://github.com/dapr/docs/tree/v1.11/daprdocs/static/images).
-- Name your PNG files using the convention of a concept or building block so that they are grouped.
+1. Download the [Dapr Diagrams template deck](https://github.com/dapr/docs/tree/v1.14/daprdocs/static/presentations) to use the icons and colors.
+1. Add a new slide and create your diagram. 
+1. Screen capture the diagram as high-res PNG file and save in the [images folder](https://github.com/dapr/docs/tree/v1.14/daprdocs/static/images).
+1. Name your PNG files using the convention of a concept or building block so that they are grouped.
   - For example: `service-invocation-overview.png`. 
   - For more information on calling out images using shortcode, see the [Images guidance](#images) section below.
-- Add the diagram to the correct section in the `Dapr-Diagrams.pptx` deck so that they can be amended and updated during routine refresh.
+1. Add the diagram to the appropriate section in your documentation using the HTML `<image>` tag.
+1. In your PR, comment the diagram slide (not the screen capture) so it can be reviewed and added to the diagram deck by maintainers.
 
 ## Contributing a new docs page
 
