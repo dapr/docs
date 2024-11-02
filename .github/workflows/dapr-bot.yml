@@ -8,7 +8,60 @@ jobs:
     name: bot-processor
     runs-on: ubuntu-latest
     steps:
-      - name: Comment analyzer
+      - name: Check if user is part of any of the maintainers teams
+        id: checkIfUserIsMaintainer
+        uses: tspascoal/get-user-teams-membership@v3
+        with:
+          username: ${{ github.actor }}
+          organization: ${{ github.repository_owner }}
+          team: 'maintainers-blog,maintainers-cli,maintainers-community,maintainers-components-contrib,maintainers-cpp-sdk,maintainers-dapr,maintainers-dapr-shared,maintainers-dart-sdk,maintainers-dashboard,maintainers-docs,maintainers-docs-zh,maintainers-dotnet-sdk,maintainers-go-sdk,maintainers-java-sdk,maintainers-js-sdk,maintainers-kit,Maintainers-kubernetes-operator,maintainers-php-sdk,maintainers-python-sdk,maintainers-quickstarts,maintainers-rust-sdk,maintainers-samples,maintainers-sig-api,maintainers-sig-sdk-spec,maintainers-test-infra,maintainers-workflows'
+          GITHUB_TOKEN: ${{secrets.DAPR_BOT_TOKEN}}
+      - name: Allow maintainer actions from comments
+        uses: actions/github-script@v1
+        if: ${{ steps.checkUserMember.outputs.isTeamMember == 'true' }}
+        with:
+          github-token: ${{secrets.DAPR_BOT_TOKEN}}
+          script: |
+            // Returns a boolean based on whether the specified label already exists on the issue/PR
+            async function labelExists(labelName) {
+              const issueLabels = await github.issues.listLabelsOnIssue({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number
+              });
+              return issueLabels.data.some(label => label.name == labelName);
+            }
+
+            // Adds the indicated label to the issue/PR if it doesn't already exist
+            async function addLabel(labelName) {
+              if (!(await labelExists(labelName))) {
+                await github.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  labels: [labelName]
+                });
+              }
+            }
+
+            // Maps the comments to their associated labels
+            const labelsMap = {
+              "/do-not-merge": "do-not-merge",
+              "/waiting-on-pr": "waiting-on-code-pr",
+              "/missing-docs": "feature-in-release-no-docs",
+              "/required": "release-requirement"
+            };
+
+            // If coming from a pull request, evaluate the comment against the mapping and if a match, apply the indicated label
+            const commentBody = context.payload.comment.body;
+            if (!!context.payload.pull_request && commentBody) {
+              for (const [key, value] of Object.entries(labelsMap)) {
+                if (commentBody.indexOf(key) == 0) {
+                  await addLabel(value);
+                }
+              }
+            }            
+      - name: Allow assignments from everyone in comments
         uses: actions/github-script@v1
         with:
           github-token: ${{secrets.DAPR_BOT_TOKEN}}
