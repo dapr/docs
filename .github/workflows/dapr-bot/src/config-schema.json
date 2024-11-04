@@ -1,0 +1,44 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "labels": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "roles": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 0
+            },
+            "commands": {
+              "type": "object",
+              "patternProperties": {
+                "^/.*$": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "types": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["issue", "pr"]
+              },
+              "minItems": 1
+            }
+          },
+          "required": ["types"],
+          "additionalProperties": false
+        },
+        "minItems": 0
+      }
+    },
+    "required": ["labels"],
+    "additionalProperties": false
+  }
+  

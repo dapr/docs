@@ -1,0 +1,17 @@
+labels:
+  - roles:
+      - maintainers
+      - contributors
+    commands:
+      "/waiting-on-pr": "waiting-on-code-pr"  
+      "/do-not-merge": "do-not-merge"
+    types:
+      - pr
+  - roles:
+      - maintainers
+    commands:
+      "/missing-docs": "feature-in-release-no-docs",
+      "/requirement": "release-requirement"
+    types:
+      - issue
+      - pr

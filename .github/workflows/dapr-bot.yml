@@ -20,7 +20,8 @@ jobs:
         uses: actions/github-script@v1
         if: ${{ steps.checkIfUserIsMaintainer.outputs.isTeamMember == 'true' }}
         with:
-          github-token: ${{secrets.DAPR_BOT_TOKEN}}
+          github-actor: ${{ github.actor }}
+          github-token: ${{ secrets.DAPR_BOT_TOKEN }}
           script: |
             // Returns a boolean based on whether the specified label already exists on the issue/PR
             async function labelExists(labelName) {
