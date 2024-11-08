@@ -51,15 +51,15 @@ This guide walks you through installing an Elastic Kubernetes Service (EKS) clus
         privateNetworking: true
     
     addons:
-      - name: vpc-cni # no version is specified so it deploys the default version
+      - name: vpc-cni 
         attachPolicyARNs:
           - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
       - name: coredns
-        version: latest # auto discovers the latest available
+        version: latest 
       - name: kube-proxy
         version: latest
       - name: aws-ebs-csi-driver
-        wellKnownPolicies: # add IAM and service account
+        wellKnownPolicies: 
           ebsCSIController: true
     ```
 
