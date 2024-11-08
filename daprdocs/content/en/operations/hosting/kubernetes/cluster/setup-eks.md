@@ -75,7 +75,7 @@ This guide walks you through installing an Elastic Kubernetes Service (EKS) clus
    kubectl config current-context
    ```
 
-## Implement Dapr requirements
+## Add Dapr requirements for sidecar access and default storage class:
 
 1. Update the security group rule to allow the EKS cluster to communicate with the Dapr Sidecar by creating an inbound rule for port 4000.
 
@@ -89,9 +89,9 @@ This guide walks you through installing an Elastic Kubernetes Service (EKS) clus
 
 2. Dapr 1.14 Scheduler service requires a default storage class to be set. If you don't have one, patch your cluster with the command below: 
 
-```bash
-kubectl patch storageclass gp2 -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
-```
+  ```bash
+  kubectl patch storageclass gp2 -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+  ```
 
 ## Install Dapr
 
