@@ -87,7 +87,7 @@ This guide walks you through installing an Elastic Kubernetes Service (EKS) clus
    --source-group [your_security_group]
    ```
 
-2. Dapr 1.14 Scheduler service requires a default storage class to be set. If you don't have one, patch your cluster with the command below: 
+2. Add a default storage class if you don't have one: 
 
   ```bash
   kubectl patch storageclass gp2 -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
