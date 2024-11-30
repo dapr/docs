@@ -2,7 +2,7 @@ import { Configuration } from "../configuration";
 import { getOctokit } from "@actions/github";
 
 /**
- * Performs actions based on GitHub labels.
+ * Performs actions related to GitHub labels.
  */
 export class LabelActions {
     // The following are each of the labels in dapr/docs keyed to the values expected in a comment

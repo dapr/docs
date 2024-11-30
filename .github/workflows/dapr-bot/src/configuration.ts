@@ -19,7 +19,6 @@ export class Configuration {
     public static getInstance() : Configuration {
         if (!Configuration.instance) {
             Configuration.instance = new Configuration();
-
         }
         return Configuration.instance;
     }
@@ -28,7 +27,7 @@ export class Configuration {
      * The API token used to access the GitHub API by the bot.
      * @returns 
      */
-    public static ApiToken(): string {
+    public ApiToken(): string {
         return process.env['github-token'] || '';
     };
 
@@ -36,7 +35,7 @@ export class Configuration {
      * The username responsible for triggering the action.
      * @returns 
      */
-    public static UserName(): string {
+    public UserName(): string {
         return process.env['github-actor'] || '';
     }
 
@@ -46,7 +45,7 @@ export class Configuration {
      */
     public Organization(): string {
         return context.repo.owner;
-    } 
+    }
 
     /**
      * The name of the Dapr repository on GitHub.

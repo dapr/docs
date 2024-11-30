@@ -1,7 +1,7 @@
-import { getOctokit } from '@actions/github'
-import { Configuration } from '../configuration';
+import { getOctokit } from "@actions/github";
+import { Configuration } from "../configuration";
 
-export class Teams {
+export class TeamOperations {
     // The various high-level teams across Dapr at https://github.com/orgs/dapr/teams
     private readonly roles = {
         '*': new TeamIdentifier('*'),
@@ -27,7 +27,7 @@ export class Teams {
     private async init() {
         this.roles['this-repo'] = await this.getTeamsOnOrgRepo();
     }
-    
+
     /**
      * Determines if the specified user is a member of any of the Dapr teams encompassed in the various
      * roles indicated on this class.
@@ -75,7 +75,8 @@ export class Teams {
      * @returns An array of the teams the user is associated with in the organization.
      */
     private async getUserTeamsInOrg(username: string): Promise<string[]> {
-        const octokit = getOctokit(Configuration.ApiToken());
+        const config = Configuration.getInstance();
+        const octokit = getOctokit(config.ApiToken());
         const org = Configuration.getInstance().Organization;
         const {data: teams} = await octokit.rest.teams.listForAuthenticatedUser({
             org
@@ -91,8 +92,8 @@ export class Teams {
      * @returns The list of team names.
      */
     private async getTeamsOnOrgRepo(): Promise<string[]> {
-        const octokit = getOctokit(Configuration.ApiToken());
         const config = Configuration.getInstance();
+        const octokit = getOctokit(config.ApiToken());
         const org = config.Organization();
 
         const {data: teams} = await octokit.rest.teams.list({
