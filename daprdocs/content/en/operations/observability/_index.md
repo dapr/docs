@@ -6,7 +6,7 @@ weight: 60
 description: See and measure the message calls to components and between networked services
 ---
 
-[The following overview video and demo](https://www.youtube.com/live/0y7ne6teHT4?si=3bmNSSyIEIVSF-Ej&t=9931) demonstrates how observability in Dapr works. 
+[The following overview video and demo](https://www.youtube.com/watch?v=0y7ne6teHT4&t=12652s) demonstrates how observability in Dapr works. 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/0y7ne6teHT4?si=iURnLk57t2zN-7zP&amp;start=12653" title="YouTube video player" style="padding-bottom:25px;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 

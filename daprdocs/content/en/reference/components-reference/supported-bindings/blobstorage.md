@@ -63,6 +63,10 @@ This component supports **output binding** with the following operations:
 - `delete` : [Delete blob](#delete-blob)
 - `list`: [List blobs](#list-blobs)
 
+The Blob storage component's **input binding** triggers and pushes events using [Azure Event Grid]({{< ref eventgrid.md >}}). 
+ 
+Refer to the [Reacting to Blob storage events](https://learn.microsoft.com/azure/storage/blobs/storage-blob-event-overview) guide for more set up and more information.
+
 ### Create blob
 
 To perform a create blob operation, invoke the Azure Blob Storage binding with a `POST` method and the following JSON body:

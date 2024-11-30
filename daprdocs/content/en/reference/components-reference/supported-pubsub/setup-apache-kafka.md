@@ -53,6 +53,12 @@ spec:
     value: 2.0.0
   - name: disableTls # Optional. Disable TLS. This is not safe for production!! You should read the `Mutual TLS` section for how to use TLS.
     value: "true"
+  - name: consumerFetchMin # Optional. Advanced setting. The minimum number of message bytes to fetch in a request - the broker will wait until at least this many are available.
+    value: 1
+  - name: consumerFetchDefault # Optional. Advanced setting. The default number of message bytes to fetch from the broker in each request.
+    value: 2097152
+  - name: channelBufferSize # Optional. Advanced setting. The number of events to buffer in internal and external channels.
+    value: 512
   - name: schemaRegistryURL # Optional. When using Schema Registry Avro serialization/deserialization. The Schema Registry URL.
     value: http://localhost:8081
   - name: schemaRegistryAPIKey # Optional. When using Schema Registry Avro serialization/deserialization. The Schema Registry API Key.
@@ -111,7 +117,9 @@ spec:
 | schemaLatestVersionCacheTTL | N | When using Schema Registry Avro serialization/deserialization. The TTL for schema caching when publishing a message with latest schema available. Default is 5 min | `5m` |
 | clientConnectionTopicMetadataRefreshInterval | N | The interval for the client connection's topic metadata to be refreshed with the broker as a Go duration. Defaults to `9m`. | `"4m"` |
 | clientConnectionKeepAliveInterval | N | The maximum time for the client connection to be kept alive with the broker, as a Go duration, before closing the connection. A zero value (default) means keeping alive indefinitely. | `"4m"` |
+| consumerFetchMin | N | The minimum number of message bytes to fetch in a request - the broker will wait until at least this many are available. The default is `1`, as `0` causes the consumer to spin when no messages are available. Equivalent to the JVM's `fetch.min.bytes`. | `"2"` |
 | consumerFetchDefault | N | The default number of message bytes to fetch from the broker in each request. Default is `"1048576"` bytes. | `"2097152"` |
+| channelBufferSize | N | The number of events to buffer in internal and external channels. This permits the producer and consumer to continue processing some messages in the background while user code is working, greatly improving throughput. Defaults to `256`. | `"512"` |
 | heartbeatInterval | N | The interval between heartbeats to the consumer coordinator. At most, the value should be set to a 1/3 of the `sessionTimeout` value. Defaults to "3s". | `"5s"` |
 | sessionTimeout | N | The timeout used to detect client failures when using Kafka’s group management facility. If the broker fails to receive any heartbeats from the consumer before the expiration of this session timeout, then the consumer is removed and initiates a rebalance. Defaults to "10s". | `"20s"` |
 | escapeHeaders | N | Enables URL escaping of the message header values received by the consumer. Allows receiving content with special characters that are usually not allowed in HTTP headers. Default is `false`. | `true` |
@@ -460,7 +468,7 @@ Apache Kafka supports the following bulk metadata options:
 
 When invoking the Kafka pub/sub, its possible to provide an optional partition key by using the `metadata` query param in the request url.
 
-The param name is `partitionKey`.
+The param name can either be `partitionKey` or `__key` 
 
 Example:
 
@@ -476,7 +484,7 @@ curl -X POST http://localhost:3500/v1.0/publish/myKafka/myTopic?metadata.partiti
 
 ### Message headers
 
-All other metadata key/value pairs (that are not `partitionKey`) are set as headers in the Kafka message. Here is an example setting a `correlationId` for the message.
+All other metadata key/value pairs (that are not `partitionKey` or `__key`) are set as headers in the Kafka message. Here is an example setting a `correlationId` for the message.
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/publish/myKafka/myTopic?metadata.correlationId=myCorrelationID&metadata.partitionKey=key1 \
@@ -487,7 +495,51 @@ curl -X POST http://localhost:3500/v1.0/publish/myKafka/myTopic?metadata.correla
         }
       }'
 ```
+### Kafka Pubsub special message headers received on consumer side
 
+When consuming messages, special message metadata are being automatically passed as headers. These are:
+- `__key`: the message key if available
+- `__topic`: the topic for the message
+- `__partition`: the partition number for the message
+- `__offset`: the offset of the message in the partition
+- `__timestamp`: the timestamp for the message
+
+You can access them within the consumer endpoint as follows:
+{{< tabs "Python (FastAPI)" >}}
+
+{{% codetab %}}
+
+```python
+from fastapi import APIRouter, Body, Response, status
+import json
+import sys
+
+app = FastAPI()
+
+router = APIRouter()
+
+
+@router.get('/dapr/subscribe')
+def subscribe():
+    subscriptions = [{'pubsubname': 'pubsub',
+                      'topic': 'my-topic',
+                      'route': 'my_topic_subscriber',
+                      }]
+    return subscriptions
+
+@router.post('/my_topic_subscriber')
+def my_topic_subscriber(
+      key: Annotated[str, Header(alias="__key")],
+      offset: Annotated[int, Header(alias="__offset")],
+      event_data=Body()):
+    print(f"key={key} - offset={offset} - data={event_data}", flush=True)
+      return Response(status_code=status.HTTP_200_OK)
+
+app.include_router(router)
+
+```
+
+{{% /codetab %}}
 ## Receiving message headers with special characters
 
 The consumer application may be required to receive message headers that include special characters, which may cause HTTP protocol validation errors. 
