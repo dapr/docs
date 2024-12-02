@@ -33,6 +33,8 @@ spec:
       value: "channel1"
     - name: enableEntityManagement
       value: "false"
+    - name: enableInOrderMessageDelivery
+      value: "false"
     # The following four properties are needed only if enableEntityManagement is set to true
     - name: resourceGroupName
       value: "test-rg"
@@ -65,11 +67,12 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `connectionString`    | Y*  | Connection string for the Event Hub or the Event Hub namespace.<br>* Mutally exclusive with `eventHubNamespace` field.<br>* Required when not using [Microsoft Entra ID Authentication]({{< ref "authenticating-azure.md" >}}) | `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}"` or `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key}"`
 | `eventHubNamespace` | Y* | The Event Hub Namespace name.<br>* Mutally exclusive with `connectionString` field.<br>* Required when using [Microsoft Entra ID Authentication]({{< ref "authenticating-azure.md" >}}) | `"namespace"` 
 | `consumerID`       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{< ref "component-schema.md#templated-metadata-values" >}})
+| `enableEntityManagement` | N | Boolean value to allow management of the EventHub namespace and storage account. Default: `false` | `"true", "false"`
+| `enableInOrderMessageDelivery` | N | Input/Output | Boolean value to allow messages to be delivered in the order in which they were posted. This assumes `partitionKey` is set when publishing or posting to ensure ordering across partitions. Default: `false` | `"true"`, `"false"`
 | `storageAccountName`  | Y  | Storage account name to use for the checkpoint store. |`"myeventhubstorage"`
 | `storageAccountKey`   | Y*  | Storage account key for the checkpoint store account.<br>* When using Microsoft Entra ID, it's possible to omit this if the service principal has access to the storage account too. | `"112233445566778899"`
 | `storageConnectionString`   | Y*  | Connection string for the checkpoint store, alternative to specifying `storageAccountKey` | `"DefaultEndpointsProtocol=https;AccountName=myeventhubstorage;AccountKey=<account-key>"`
 | `storageContainerName` | Y | Storage container name for the storage account name.  | `"myeventhubstoragecontainer"`
-| `enableEntityManagement` | N | Boolean value to allow management of the EventHub namespace and storage account. Default: `false` | `"true", "false"`
 | `resourceGroupName` | N | Name of the resource group the Event Hub namespace is part of. Required when entity management is enabled | `"test-rg"`
 | `subscriptionID` | N | Azure subscription ID value. Required when entity management is enabled | `"azure subscription id"`
 | `partitionCount` | N | Number of partitions for the new Event Hub namespace. Used only when entity management is enabled. Default: `"1"` | `"2"`
