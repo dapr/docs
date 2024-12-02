@@ -6,10 +6,6 @@ weight: 80
 description: Get started with the Dapr jobs building block
 ---
 
-{{% alert title="Alpha" color="warning" %}}
-The jobs building block is currently in **alpha**. 
-{{% /alert %}}
-
 Let's take a look at the [Dapr jobs building block]({{< ref jobs-overview.md >}}), which schedules and runs jobs at a specific time or interval. In this Quickstart, you'll schedule, get, and delete a job using Dapr's Job API.
 
 You can try out this jobs quickstart by either:
