@@ -358,10 +358,18 @@ console.log("Published data: " + JSON.stringify(order));
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [.NET SDK or .NET 6 SDK installed](https://dotnet.microsoft.com/download).
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
+- [.NET 6](https://dotnet.microsoft.com/download), [.NET 8](https://dotnet.microsoft.com/download) or [.NET 9](https://dotnet.microsoft.com/download) installed
+
+{{% alert title="Note" color="primary" %}}
+
+Note that while .NET 6 is generally supported as the minimum .NET requirement across the Dapr .NET SDK packages
+and .NET 7 is the minimally supported version of .NET by Dapr.Workflows in Dapr v1.15, only .NET 8 and .NET 9 wil
+continue to be supported by Dapr in v1.16 and later.
+
+{{% /alert %}}
 
 ### Step 2: Set up the environment
 
