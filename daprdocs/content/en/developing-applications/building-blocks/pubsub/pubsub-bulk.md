@@ -336,14 +336,13 @@ Status | Description
 `RETRY` | Message to be retried by Dapr
 `DROP` | Warning is logged and message is dropped
 
-Please refer [Expected HTTP Response for Bulk Subscribe]({{< ref pubsub_api.md >}}) for further insights on response.
+Refer to [Expected HTTP Response for Bulk Subscribe]({{< ref pubsub_api.md >}}) for further insights on response.
 
 ### Example
 
-Please refer following code samples for how to use Bulk Subscribe:
+The following code examples demonstrate how to use Bulk Subscribe.
 
-{{< tabs "Java" "JavaScript" ".NET" >}}
-
+{{< tabs "Java" "JavaScript" ".NET" "Python" >}}
 {{% codetab %}}
 
 ```java
@@ -471,7 +470,50 @@ public class BulkMessageController : ControllerBase
 
 {{% /codetab %}}
 
+{{% codetab %}}
+Currently, you can only bulk subscribe in Python using an HTTP client. 
+
+```python
+import json
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+@app.route('/dapr/subscribe', methods=['GET'])
+def subscribe():
+    # Define the bulk subscribe configuration
+    subscriptions = [{
+        "pubsubname": "pubsub",
+        "topic": "TOPIC_A",
+        "route": "/checkout",
+        "bulkSubscribe": {
+            "enabled": True,
+            "maxMessagesCount": 3,
+            "maxAwaitDurationMs": 40
+        }
+    }]
+    print('Dapr pub/sub is subscribed to: ' + json.dumps(subscriptions))
+    return jsonify(subscriptions)
+
+
+# Define the endpoint to handle incoming messages
+@app.route('/checkout', methods=['POST'])
+def checkout():
+    messages = request.json
+    print(messages)
+    for message in messages:
+        print(f"Received message: {message}")
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+if __name__ == '__main__':
+    app.run(port=5000)
+
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
+
 ## How components handle publishing and subscribing to bulk messages
 
 For event publish/subscribe, two kinds of network transfers are involved.
