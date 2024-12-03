@@ -127,7 +127,7 @@ See this list of values corresponding to the different Dapr APIs:
 | [Configuration]({{< ref configuration_api.md >}}) | `configuration` (`v1.0` and `v1.0-alpha1`) | `configuration` (`v1` and `v1alpha1`) |
 | [Distributed Lock]({{< ref distributed_lock_api.md >}}) | `lock` (`v1.0-alpha1`)<br/>`unlock` (`v1.0-alpha1`) | `lock` (`v1alpha1`)<br/>`unlock` (`v1alpha1`) |
 | [Cryptography]({{< ref cryptography_api.md >}}) | `crypto` (`v1.0-alpha1`) | `crypto` (`v1alpha1`) |
-| [Workflow]({{< ref workflow_api.md >}}) | `workflows` (`v1.0-alpha1`) |`workflows` (`v1alpha1`) |
+| [Workflow]({{< ref workflow_api.md >}}) | `workflows` (`v1.0`) |`workflows` (`v1`) |
 | [Health]({{< ref health_api.md >}}) | `healthz`  (`v1.0`) | n/a |
 | Shutdown | `shutdown` (`v1.0`) | `shutdown` (`v1`) |
 

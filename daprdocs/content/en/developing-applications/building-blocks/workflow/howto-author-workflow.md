@@ -821,7 +821,7 @@ func main() {
 	ctx := context.Background()
 
 	// Start workflow test
-	respStart, err := daprClient.StartWorkflowBeta1(ctx, &client.StartWorkflowRequest{
+	respStart, err := daprClient.StartWorkflow(ctx, &client.StartWorkflowRequest{
 		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
 		WorkflowComponent: workflowComponent,
 		WorkflowName:      "TestWorkflow",
@@ -835,7 +835,7 @@ func main() {
 	fmt.Printf("workflow started with id: %v\n", respStart.InstanceID)
 
 	// Pause workflow test
-	err = daprClient.PauseWorkflowBeta1(ctx, &client.PauseWorkflowRequest{
+	err = daprClient.PauseWorkflow(ctx, &client.PauseWorkflowRequest{
 		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
 		WorkflowComponent: workflowComponent,
 	})
@@ -844,7 +844,7 @@ func main() {
 		log.Fatalf("failed to pause workflow: %v", err)
 	}
 
-	respGet, err := daprClient.GetWorkflowBeta1(ctx, &client.GetWorkflowRequest{
+	respGet, err := daprClient.GetWorkflow(ctx, &client.GetWorkflowRequest{
 		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
 		WorkflowComponent: workflowComponent,
 	})
@@ -859,7 +859,7 @@ func main() {
 	fmt.Printf("workflow paused\n")
 
 	// Resume workflow test
-	err = daprClient.ResumeWorkflowBeta1(ctx, &client.ResumeWorkflowRequest{
+	err = daprClient.ResumeWorkflow(ctx, &client.ResumeWorkflowRequest{
 		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
 		WorkflowComponent: workflowComponent,
 	})
@@ -868,7 +868,7 @@ func main() {
 		log.Fatalf("failed to resume workflow: %v", err)
 	}
 
-	respGet, err = daprClient.GetWorkflowBeta1(ctx, &client.GetWorkflowRequest{
+	respGet, err = daprClient.GetWorkflow(ctx, &client.GetWorkflowRequest{
 		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
 		WorkflowComponent: workflowComponent,
 	})
@@ -886,7 +886,7 @@ func main() {
 
 	// Raise Event Test
 
-	err = daprClient.RaiseEventWorkflowBeta1(ctx, &client.RaiseEventWorkflowRequest{
+	err = daprClient.RaiseEventWorkflow(ctx, &client.RaiseEventWorkflowRequest{
 		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
 		WorkflowComponent: workflowComponent,
 		EventName:         "testEvent",
@@ -904,7 +904,7 @@ func main() {
 
 	fmt.Printf("stage: %d\n", stage)
 
-	respGet, err = daprClient.GetWorkflowBeta1(ctx, &client.GetWorkflowRequest{
+	respGet, err = daprClient.GetWorkflow(ctx, &client.GetWorkflowRequest{
 		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
 		WorkflowComponent: workflowComponent,
 	})
@@ -915,7 +915,7 @@ func main() {
 	fmt.Printf("workflow status: %v\n", respGet.RuntimeStatus)
 
 	// Purge workflow test
-	err = daprClient.PurgeWorkflowBeta1(ctx, &client.PurgeWorkflowRequest{
+	err = daprClient.PurgeWorkflow(ctx, &client.PurgeWorkflowRequest{
 		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
 		WorkflowComponent: workflowComponent,
 	})
@@ -923,7 +923,7 @@ func main() {
 		log.Fatalf("failed to purge workflow: %v", err)
 	}
 
-	respGet, err = daprClient.GetWorkflowBeta1(ctx, &client.GetWorkflowRequest{
+	respGet, err = daprClient.GetWorkflow(ctx, &client.GetWorkflowRequest{
 		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
 		WorkflowComponent: workflowComponent,
 	})
@@ -936,7 +936,7 @@ func main() {
 	fmt.Printf("stage: %d\n", stage)
 
 	// Terminate workflow test
-	respStart, err = daprClient.StartWorkflowBeta1(ctx, &client.StartWorkflowRequest{
+	respStart, err = daprClient.StartWorkflow(ctx, &client.StartWorkflowRequest{
 		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
 		WorkflowComponent: workflowComponent,
 		WorkflowName:      "TestWorkflow",
@@ -950,7 +950,7 @@ func main() {
 
 	fmt.Printf("workflow started with id: %s\n", respStart.InstanceID)
 
-	err = daprClient.TerminateWorkflowBeta1(ctx, &client.TerminateWorkflowRequest{
+	err = daprClient.TerminateWorkflow(ctx, &client.TerminateWorkflowRequest{
 		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
 		WorkflowComponent: workflowComponent,
 	})
@@ -958,7 +958,7 @@ func main() {
 		log.Fatalf("failed to terminate workflow: %v", err)
 	}
 
-	respGet, err = daprClient.GetWorkflowBeta1(ctx, &client.GetWorkflowRequest{
+	respGet, err = daprClient.GetWorkflow(ctx, &client.GetWorkflowRequest{
 		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
 		WorkflowComponent: workflowComponent,
 	})
@@ -971,12 +971,12 @@ func main() {
 
 	fmt.Println("workflow terminated")
 
-	err = daprClient.PurgeWorkflowBeta1(ctx, &client.PurgeWorkflowRequest{
+	err = daprClient.PurgeWorkflow(ctx, &client.PurgeWorkflowRequest{
 		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
 		WorkflowComponent: workflowComponent,
 	})
 
-	respGet, err = daprClient.GetWorkflowBeta1(ctx, &client.GetWorkflowRequest{
+	respGet, err = daprClient.GetWorkflow(ctx, &client.GetWorkflowRequest{
 		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
 		WorkflowComponent: workflowComponent,
 	})

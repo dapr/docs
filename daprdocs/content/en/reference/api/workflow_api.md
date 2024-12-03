@@ -17,7 +17,7 @@ Dapr provides users with the ability to interact with workflows and comes with a
 Start a workflow instance with the given name and optionally, an instance ID.
 
 ```
-POST http://localhost:3500/v1.0-beta1/workflows/<workflowComponentName>/<workflowName>/start[?instanceID=<instanceID>]
+POST http://localhost:3500/v1.0/workflows/<workflowComponentName>/<workflowName>/start[?instanceID=<instanceID>]
 ```
 
 Note that workflow instance IDs can only contain alphanumeric characters, underscores, and dashes.
@@ -57,7 +57,7 @@ The API call will provide a response similar to this:
 Terminate a running workflow instance with the given name and instance ID.
 
 ```
-POST http://localhost:3500/v1.0-beta1/workflows/<workflowComponentName>/<instanceId>/terminate
+POST http://localhost:3500/v1.0/workflows/<workflowComponentName>/<instanceId>/terminate
 ```
 
 {{% alert title="Note" color="primary" %}}
@@ -91,7 +91,7 @@ This API does not return any content.
 For workflow components that support subscribing to external events, such as the Dapr Workflow engine, you can use the following "raise event" API to deliver a named event to a specific workflow instance.
 
 ```
-POST http://localhost:3500/v1.0-beta1/workflows/<workflowComponentName>/<instanceID>/raiseEvent/<eventName>
+POST http://localhost:3500/v1.0/workflows/<workflowComponentName>/<instanceID>/raiseEvent/<eventName>
 ```
 
 {{% alert title="Note" color="primary" %}}
@@ -124,7 +124,7 @@ None.
 Pause a running workflow instance.
 
 ```
-POST http://localhost:3500/v1.0-beta1/workflows/<workflowComponentName>/<instanceId>/pause
+POST http://localhost:3500/v1.0/workflows/<workflowComponentName>/<instanceId>/pause
 ```
 
 ### URL parameters
@@ -151,7 +151,7 @@ None.
 Resume a paused workflow instance.
 
 ```
-POST http://localhost:3500/v1.0-beta1/workflows/<workflowComponentName>/<instanceId>/resume
+POST http://localhost:3500/v1.0/workflows/<workflowComponentName>/<instanceId>/resume
 ```
 
 ### URL parameters
@@ -178,7 +178,7 @@ None.
 Purge the workflow state from your state store with the workflow's instance ID.
 
 ```
-POST http://localhost:3500/v1.0-beta1/workflows/<workflowComponentName>/<instanceId>/purge
+POST http://localhost:3500/v1.0/workflows/<workflowComponentName>/<instanceId>/purge
 ```
 
 {{% alert title="Note" color="primary" %}}
@@ -209,7 +209,7 @@ None.
 Get information about a given workflow instance.
 
 ```
-GET http://localhost:3500/v1.0-beta1/workflows/<workflowComponentName>/<instanceId>
+GET http://localhost:3500/v1.0/workflows/<workflowComponentName>/<instanceId>
 ```
 
 ### URL parameters

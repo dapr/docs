@@ -647,7 +647,7 @@ The Dapr workflow HTTP API supports the asynchronous request-reply pattern out-o
 The following `curl` commands illustrate how the workflow APIs support this pattern.
 
 ```bash
-curl -X POST http://localhost:3500/v1.0-beta1/workflows/dapr/OrderProcessingWorkflow/start?instanceID=12345678 -d '{"Name":"Paperclips","Quantity":1,"TotalCost":9.95}'
+curl -X POST http://localhost:3500/v1.0/workflows/dapr/OrderProcessingWorkflow/start?instanceID=12345678 -d '{"Name":"Paperclips","Quantity":1,"TotalCost":9.95}'
 ```
 
 The previous command will result in the following response JSON:
@@ -659,7 +659,7 @@ The previous command will result in the following response JSON:
 The HTTP client can then construct the status query URL using the workflow instance ID and poll it repeatedly until it sees the "COMPLETE", "FAILURE", or "TERMINATED" status in the payload.
 
 ```bash
-curl http://localhost:3500/v1.0-beta1/workflows/dapr/12345678
+curl http://localhost:3500/v1.0/workflows/dapr/12345678
 ```
 
 The following is an example of what an in-progress workflow status might look like.
@@ -1365,7 +1365,7 @@ func raiseEvent() {
   if err != nil {
     log.Fatalf("failed to initialize the client")
   }
-  err = daprClient.RaiseEventWorkflowBeta1(context.Background(), &client.RaiseEventWorkflowRequest{
+  err = daprClient.RaiseEventWorkflow(context.Background(), &client.RaiseEventWorkflowRequest{
     InstanceID: "instance_id",
     WorkflowComponent: "dapr",
     EventName: "approval_received",
