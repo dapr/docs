@@ -68,7 +68,8 @@ spec:
     #   value: 5
     # - name: concurrencyMode # Optional
     #   value: "single"
-
+    # - name: concurrencyLimit # Optional
+    #   value: "0"
 
 ```
 
