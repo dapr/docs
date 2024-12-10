@@ -20,7 +20,7 @@ This endpoint lets you encrypt a value provided as a byte array using a specifie
 ### HTTP Request
 
 ```
-PUT http://localhost:<daprPort>/v1.0/crypto/<crypto-store-name>/encrypt
+PUT http://localhost:<daprPort>/v1.0-alpha1/crypto/<crypto-store-name>/encrypt
 ```
 
 #### URL Parameters
@@ -59,7 +59,7 @@ returns an array of bytes with the encrypted payload.
 
 ### Examples
 ```shell
-curl http://localhost:3500/v1.0/crypto/myAzureKeyVault/encrypt \
+curl http://localhost:3500/v1.0-alpha1/crypto/myAzureKeyVault/encrypt \
     -X PUT \
     -H "dapr-key-name: myCryptoKey" \
     -H "dapr-key-wrap-algorithm: aes-gcm" \ 
@@ -81,7 +81,7 @@ This endpoint lets you decrypt a value provided as a byte array using a specifie
 #### HTTP Request
 
 ```
-PUT curl http://localhost:3500/v1.0/crypto/<crypto-store-name>/decrypt
+PUT curl http://localhost:3500/v1.0-alpha1/crypto/<crypto-store-name>/decrypt
 ```
 
 #### URL Parameters
@@ -116,7 +116,7 @@ returns an array of bytes representing the decrypted payload.
 
 ### Examples
 ```bash
-curl http://localhost:3500/v1.0/crypto/myAzureKeyVault/decrypt \
+curl http://localhost:3500/v1.0-alpha1/crypto/myAzureKeyVault/decrypt \
     -X PUT
     -H "dapr-key-name: myCryptoKey"\
     -H "Content-Type: application/octet-stream" \
