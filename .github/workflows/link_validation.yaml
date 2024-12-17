@@ -13,7 +13,7 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     env: 
-      PYTHON_VER: 3.7
+      PYTHON_VER: 3.12
     steps:
       - uses: actions/checkout@v2
       - name: Check Microsoft URLs do not pin localized versions
@@ -27,7 +27,7 @@ jobs:
             exit 1
           fi
       - name: Set up Python ${{ env.PYTHON_VER }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VER }}
       - name: Install dependencies
