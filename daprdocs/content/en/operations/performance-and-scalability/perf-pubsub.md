@@ -2,7 +2,7 @@
 type: docs
 title: "Pub/sub performance"
 linkTitle: "Pub/sub performance"
-weight: 20000
+weight: 30000
 description: ""
 ---
 This article provides pub/sub API performance benchmarks and resource utilization in Dapr on Kubernetes.
