@@ -79,6 +79,7 @@ In the test setup, requests went through the Dapr sidecar both on the client sid
 mTLS and telemetry (tracing with a sampling rate of 0.1) and metrics were enabled on the Dapr test, and disabled for the baseline test.
 
 The Dapr sidecar uses 0.45 vCPU and 38Mb per 1000 requests per second.
+
 End-to-end, the Dapr sidecars (client and server) add ~1.20 ms to the 90th percentile latency, and ~2.50 ms to the 99th percentile latency. End-to-end here is a call from one app to another app receiving a response. This is shown by steps 1-7 in [this diagram]({{< ref service-invocation-overview.md >}}).
 
 This performance is on par or better than commonly used service meshes.
