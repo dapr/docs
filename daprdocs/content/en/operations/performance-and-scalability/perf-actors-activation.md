@@ -21,7 +21,7 @@ For applications using actors in Dapr there are two aspects to be considered. Fi
 
 ## Performance summary for Dapr v1.12
 
-The actors API in Dapr sidecar will identify which hosts are registered for a given actor type and route the request to the appropriate host for a given actor ID. The host runs an instance of the application and uses the Dapr SDK (.Net, Java, Python or PHP) to handle actors requests via HTTP.
+The actors API in Dapr sidecar identifies which hosts are registered for a given actor type and routes the request to the appropriate host for a given actor ID. The host runs an instance of the application and uses the Dapr SDK (.Net, Java, Python, Go) to handle actors requests via HTTP.
 
 This test uses invokes actors via Dapr's HTTP API directly.
 
