@@ -2,7 +2,7 @@
 type: docs
 title: "State performance"
 linkTitle: "State performance"
-weight: 20000
+weight: 40000
 description: ""
 ---
 This article provides state API performance benchmarks and resource utilization in Dapr on Kubernetes.
