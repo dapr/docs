@@ -75,10 +75,10 @@ powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master
 
 ##### Installing a specific CLI version
 
-The following example shows how to install CLI version `{{% dapr-latest-version cli="true" %}}`. You can also install release candidates by specifying the version (for example, `1.10.0-rc.3`).
+The following example shows how to install CLI version `{{% dapr-latest-version cli="true" %}}`. You can also install release candidates by specifying the version (for example, `1.15.0-rc.3`).
 
 ```powershell
-powershell -Command "$script=iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1; $block=[ScriptBlock]::Create($script); invoke-command -ScriptBlock $block -ArgumentList {{% dapr-latest-version cli="true" %}}"
+powershell -Command "$script=(iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1).Content; $block=[ScriptBlock]::Create($script); invoke-command -ScriptBlock $block -ArgumentList {{% dapr-latest-version cli="true" %}}"
 ```
 
 #### Install without administrative rights
@@ -87,16 +87,16 @@ If you do not have admin rights, you can install Dapr to an alternate directory 
 
 ```powershell
 $Env:DAPR_INSTALL_DIR = "<your_alt_install_dir_path>"
-$script=iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1; $block=[ScriptBlock]::Create($script); invoke-command -ScriptBlock $block -ArgumentList "", "$Env:DAPR_INSTALL_DIR"
+$script=(iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1).Content; $block=[ScriptBlock]::Create($script); invoke-command -ScriptBlock $block -ArgumentList "", "$Env:DAPR_INSTALL_DIR"
 ```
 
 #### Installing a specific CLI version without administrative rights
 
-The following example shows how to install CLI version `{{% dapr-latest-version cli="true" %}}`. You can also install release candidates by specifying the version (for example, `1.10.0-rc.3`).
+The following example shows how to install CLI version `{{% dapr-latest-version cli="true" %}}`. You can also install release candidates by specifying the version (for example, `1.15.0-rc.3`).
 
 ```powershell
 $Env:DAPR_INSTALL_DIR = "<your_alt_install_dir_path>"
-$script=iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1; $block=[ScriptBlock]::Create($script); invoke-command -ScriptBlock $block -ArgumentList "{{% dapr-latest-version cli="true" %}}", "$Env:DAPR_INSTALL_DIR"
+$script=(iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1).Content; $block=[ScriptBlock]::Create($script); invoke-command -ScriptBlock $block -ArgumentList "{{% dapr-latest-version cli="true" %}}", "$Env:DAPR_INSTALL_DIR"
 ```
 
 #### Install using winget
