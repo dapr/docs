@@ -6,25 +6,32 @@ weight: 100
 description: "Configure Dapr retries, timeouts, and circuit breakers"
 ---
 
-Dapr provides a capability for defining and applying fault tolerance resiliency policies via a [resiliency spec]({{< ref "resiliency-overview.md#complete-example-policy" >}}). Resiliency specs are saved in the same location as components specs and are applied when the Dapr sidecar starts. The sidecar determines how to apply resiliency policies to your Dapr API calls. In self-hosted mode, the resiliency spec must be named `resiliency.yaml`. In Kubernetes Dapr finds the named resiliency specs used by your application. Within the resiliency spec, you can define policies for popular resiliency patterns, such as:
+Dapr provides the capability for defining and applying fault tolerance resiliency policies via a [resiliency spec]({{< ref "resiliency-overview.md#complete-example-policy" >}}). Resiliency specs are saved in the same location as components specs and are applied when the Dapr sidecar starts. The sidecar determines how to apply resiliency policies to your Dapr API calls. 
+- **In self-hosted mode:** The resiliency spec must be named `resiliency.yaml`. 
+- **In Kubernetes:** Dapr finds the named resiliency specs used by your application. 
 
-- [Timeouts]({{< ref "policies.md#timeouts" >}})
-- [Retries/back-offs]({{< ref "policies.md#retries" >}})
-- [Circuit breakers]({{< ref "policies.md#circuit-breakers" >}})
+## Policies
 
-Policies can then be applied to [targets]({{< ref "targets.md" >}}), which include:
+You can configure Dapr resiliency policies with the following parts: 
+- Metadata defining where the policy applies (like namespace and scope)
+- Policies specifying the resiliency name and behaviors, like:
+  - [Timeouts]({{< ref timeouts.md >}})
+  - [Retries]({{< ref retries-overview.md >}})
+  - [Circuit breakers]({{< ref circuit-breakers.md >}})
+- Targets determining which interactions these policies act on, including: 
+  - [Apps]({{< ref "targets.md#apps" >}}) via service invocation
+  - [Components]({{< ref "targets.md#components" >}})
+  - [Actors]({{< ref "targets.md#actors" >}})
 
-- [Apps]({{< ref "targets.md#apps" >}}) via service invocation
-- [Components]({{< ref "targets.md#components" >}})
-- [Actors]({{< ref "targets.md#actors" >}})
+Once defined, you can apply this configuration to your local Dapr components directory, or to your Kubernetes cluster using:
 
-Additionally, resiliency policies can be [scoped to specific apps]({{< ref "component-scopes.md#application-access-to-components-with-scopes" >}}).
+```bash
+kubectl apply -f <resiliency-spec-name>.yaml
+```
 
-## Demo video
+Additionally, you can scope resiliency policies [to specific apps]({{< ref "component-scopes.md#application-access-to-components-with-scopes" >}}).
 
-Learn more about [how to write resilient microservices with Dapr](https://youtu.be/uC-4Q5KFq98?si=JSUlCtcUNZLBM9rW).
-
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/uC-4Q5KFq98?si=JSUlCtcUNZLBM9rW" title="YouTube video player" style="padding-bottom:25px;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+> See [known limitations](#limitations).
 
 ## Resiliency policy structure
 
@@ -166,7 +173,11 @@ spec:
           circuitBreaker: pubsubCB
 ```
 
-## Related links
+## Limitations
+
+- **Service invocation via gRPC:** Currently, resiliency policies are not supported for service invocation via gRPC.
+
+## Demos
 
 Watch this video for how to use [resiliency](https://www.youtube.com/watch?t=184&v=7D6HOU3Ms6g&feature=youtu.be):
 
@@ -174,11 +185,20 @@ Watch this video for how to use [resiliency](https://www.youtube.com/watch?t=184
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/7D6HOU3Ms6g?start=184" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </div>
 
+Learn more about [how to write resilient microservices with Dapr](https://youtu.be/uC-4Q5KFq98?si=JSUlCtcUNZLBM9rW).
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/uC-4Q5KFq98?si=JSUlCtcUNZLBM9rW" title="YouTube video player" style="padding-bottom:25px;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ## Next steps
 Learn more about resiliency policies and targets:
- - [Policies]({{< ref "policies.md" >}})
+ - Policies
+   - [Timeouts]({{< ref "timeouts.md" >}})
+   - [Retries]({{< ref "retries-overview.md" >}})
+   - [Circuit breakers]({{< ref circuit-breakers.md >}})
  - [Targets]({{< ref "targets.md" >}})
+
+## Related links
 Try out one of the Resiliency quickstarts:
 - [Resiliency: Service-to-service]({{< ref resiliency-serviceinvo-quickstart.md >}})
 - [Resiliency: State Management]({{< ref resiliency-state-quickstart.md >}})

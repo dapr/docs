@@ -309,6 +309,8 @@ context.AddMetadata("dapr-stream", "true");
 
 ### Streaming gRPCs and Resiliency
 
+> Currently, resiliency policies are not supported for service invocation via gRPC.
+
 When proxying streaming gRPCs, due to their long-lived nature, [resiliency]({{< ref "resiliency-overview.md" >}}) policies are applied on the "initial handshake" only. As a consequence:
 
 - If the stream is interrupted after the initial handshake, it will not be automatically re-established by Dapr. Your application will be notified that the stream has ended, and will need to recreate it.
