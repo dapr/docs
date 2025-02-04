@@ -63,7 +63,7 @@ jobs:
           skip_app_build: true
           skip_deploy_on_missing_secrets: true
       - name: Upload Hugo artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: hugo_build
           path: ./daprdocs/public/

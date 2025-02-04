@@ -109,7 +109,7 @@ id = "G-60C6Q1ETC1"
     lang = "en"
   [[module.mounts]]
     source = "../sdkdocs/rust/daprdocs/content/en/rust-sdk-contributing"
-    target = "content/contributing/sdks-contrib"
+    target = "content/contributing/sdk-contrib/"
     lang = "en"
 
   [[module.mounts]]

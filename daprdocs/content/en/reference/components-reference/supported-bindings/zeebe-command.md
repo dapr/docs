@@ -675,7 +675,12 @@ To perform a `throw-error` operation, invoke the Zeebe command binding with a `P
   "data": {
     "jobKey": 2251799813686172,
     "errorCode": "product-fetch-error",
-    "errorMessage": "The product could not be fetched"
+    "errorMessage": "The product could not be fetched",
+    "variables": {
+      "productId": "some-product-id",
+      "productName": "some-product-name",
+      "productKey": "some-product-key"
+    }
   },
   "operation": "throw-error"
 }
@@ -686,6 +691,11 @@ The data parameters are:
 - `jobKey` - the unique job identifier, as obtained when activating the job
 - `errorCode` - the error code that will be matched with an error catch event
 - `errorMessage` - (optional) an error message that provides additional context
+- `variables` - (optional) JSON document that will instantiate the variables at the local scope of the
+	job's associated task; it must be a JSON object, as variables will be mapped in a
+	key-value fashion. e.g. { "a": 1, "b": 2 } will create two variables, named "a" and
+	"b" respectively, with their associated values. [{ "a": 1, "b": 2 }] would not be a
+	valid argument, as the root of the JSON document is an array and not an object.
 
 ##### Response
 

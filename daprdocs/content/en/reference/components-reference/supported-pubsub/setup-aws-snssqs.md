@@ -68,7 +68,8 @@ spec:
     #   value: 5
     # - name: concurrencyMode # Optional
     #   value: "single"
-
+    # - name: concurrencyLimit # Optional
+    #   value: "0"
 
 ```
 
@@ -98,6 +99,7 @@ The above example uses secrets as plain strings. It is recommended to use [a sec
 | disableDeleteOnRetryLimit | N  | When set to true, after retrying and failing of `messageRetryLimit` times processing a message, reset the message visibility timeout so that other consumers can try processing, instead of deleting the message from SQS (the default behvior). Default: `"false"` | `"true"`, `"false"`
 | assetsManagementTimeoutSeconds | N  | Amount of time in seconds, for an AWS asset management operation, before it times out and cancelled. Asset management operations are any operations performed on STS, SNS and SQS, except message publish and consume operations that implement the default Dapr component retry behavior. The value can be set to any non-negative float/integer. Default: `5` | `0.5`, `10`
 | concurrencyMode | N  | When messages are received in bulk from SQS, call the subscriber sequentially (“single” message at a time), or concurrently (in “parallel”). Default: `"parallel"` | `"single"`, `"parallel"`
+| concurrencyLimit | N | Defines the maximum number of concurrent workers handling messages. This value is ignored when concurrencyMode is set to `"single"`. To avoid limiting the number of concurrent workers, set this to `0`. Default: `0` | `100`
 
 ### Additional info
 

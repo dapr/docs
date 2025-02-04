@@ -52,7 +52,7 @@ spec:
     # Controls the default mode for executing queries. (optional)
     #- name: queryExecMode
     #  value: ""
-    # Uncomment this if you wish to use PostgreSQL as a state store for actors (optional)
+    # Uncomment this if you wish to use PostgreSQL as a state store for actors or workflows (optional)
     #- name: actorStateStore
     #  value: "true"
 ```

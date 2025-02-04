@@ -34,9 +34,15 @@ In production scenarios, it is recommended to use a solution such as:
 
 If running on AWS EKS, you can [link an IAM role to a Kubernetes service account](https://docs.aws.amazon.com/eks/latest/userguide/create-service-account-iam-policy-and-role.html), which your pod can use.
 
-All of these solutions solve the same problem: They allow the Dapr runtime process (or sidecar) to retrive credentials dynamically, so that explicit credentials aren't needed. This provides several benefits, such as automated key rotation, and avoiding having to manage secrets.
+All of these solutions solve the same problem: They allow the Dapr runtime process (or sidecar) to retrieve credentials dynamically, so that explicit credentials aren't needed. This provides several benefits, such as automated key rotation, and avoiding having to manage secrets.
 
 Both Kiam and Kube2IAM work by intercepting calls to the [instance metadata service](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html).
+
+### Setting Up Dapr with AWS EKS Pod Identity
+
+EKS Pod Identities provide the ability to manage credentials for your applications, similar to the way that Amazon EC2 instance profiles provide credentials to Amazon EC2 instances. Instead of creating and distributing your AWS credentials to the containers or using the Amazon EC2 instance’s role, you associate an IAM role with a Kubernetes service account and configure your Pods to use the service account.
+
+To see a comprehensive example on how to authorize pod access to AWS Secrets Manager from EKS using AWS EKS Pod Identity, [follow the sample in this repository](https://github.com/dapr/samples/tree/master/dapr-eks-podidentity).
 
 ### Use an instance profile when running in stand-alone mode on AWS EC2
 
@@ -84,7 +90,6 @@ On Windows, the environment variable needs to be set before starting the `dapr` 
 
 {{< /tabs >}}
 
-
 ### Authenticate to AWS if using AWS SSO based profiles
 
 If you authenticate to AWS using [AWS SSO](https://aws.amazon.com/single-sign-on/), some AWS SDKs (including the Go SDK) don't yet support this natively. There are several utilities you can use to "bridge the gap" between AWS SSO-based credentials and "legacy" credentials, such as:
@@ -111,7 +116,7 @@ AWS_PROFILE=myprofile awshelper daprd...
  <!-- windows -->
 {{% codetab %}}
 
-On Windows, the environment variable needs to be set before starting the `awshelper` command, doing it inline (like in Linxu/MacOS) is not supported.
+On Windows, the environment variable needs to be set before starting the `awshelper` command; doing it inline (like in Linux/MacOS) is not supported.
 
 {{% /codetab %}}
 
@@ -123,4 +128,7 @@ On Windows, the environment variable needs to be set before starting the `awshel
 
 ## Related links
 
-For more information, see [how the AWS SDK (which Dapr uses) handles credentials](https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials).
+- For more information, see [how the AWS SDK (which Dapr uses) handles credentials](https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials).
+- [EKS Pod Identity Documentation](https://docs.aws.amazon.com/eks/latest/userguide/pod-identities.html)
+- [AWS SDK Credentials Configuration](https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials)
+- [Set up an Elastic Kubernetes Service (EKS) cluster](https://docs.dapr.io/operations/hosting/kubernetes/cluster/setup-eks/)

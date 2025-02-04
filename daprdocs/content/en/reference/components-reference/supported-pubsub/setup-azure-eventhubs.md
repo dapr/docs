@@ -195,6 +195,44 @@ Entity management is only possible when using [Microsoft Entra ID Authentication
 
 > Dapr passes the name of the consumer group to the Event Hub, so this is not supplied in the metadata.
 
+## Receiving custom properties
+
+By default, Dapr does not forward [custom properties](https://learn.microsoft.com/azure/event-hubs/add-custom-data-event). However, by setting the subscription metadata `requireAllProperties` to `"true"`, you can receive custom properties as HTTP headers.
+
+```yaml
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: order-pub-sub
+spec:
+  topic: orders
+  routes: 
+    default: /checkout
+  pubsubname: order-pub-sub
+  metadata:
+    requireAllProperties: "true"
+```
+
+The same can be achieved using the Dapr SDK:
+
+{{< tabs ".NET" >}}
+
+{{% codetab %}}
+
+```csharp
+[Topic("order-pub-sub", "orders")]
+[TopicMetadata("requireAllProperties", "true")]
+[HttpPost("checkout")]
+public ActionResult Checkout(Order order, [FromHeader] int priority)
+{
+    return Ok();
+}
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
 ## Subscribing to Azure IoT Hub Events
 
 Azure IoT Hub provides an [endpoint that is compatible with Event Hubs](https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messages-read-builtin#read-from-the-built-in-endpoint), so the Azure Event Hubs pubsub component can also be used to subscribe to Azure IoT Hub events.
