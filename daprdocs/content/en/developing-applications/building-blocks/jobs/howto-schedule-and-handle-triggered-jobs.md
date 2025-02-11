@@ -78,13 +78,13 @@ var app = builder.Build();
 
 //Registers an endpoint to receive and process triggered jobs
 var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(5));
-app.MapDaprScheduledJobHandler((string jobName, DaprJobDetails jobDetails, ILogger logger, CancellationToken cancellationToken) => {
+app.MapDaprScheduledJobHandler((string jobName, ReadOnlyMemory<byte> jobPayload, ILogger logger, CancellationToken cancellationToken) => {
   logger?.LogInformation("Received trigger invocation for job '{jobName}'", jobName);
   switch (jobName)
   {
     case "prod-db-backup":
       // Deserialize the job payload metadata
-      var jobData = JsonSerializer.Deserialize<BackupJobData>(jobDetails.Payload);
+      var jobData = JsonSerializer.Deserialize<BackupJobData>(jobPayload);
       
       // Process the backup operation - we assume this is implemented elsewhere in your code
       await BackupDatabaseAsync(jobData, cancellationToken);
