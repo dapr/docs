@@ -124,6 +124,7 @@ apps:
     appDirPath: ./nodeapp/
     appPort: 3000
     containerImage: ghcr.io/dapr/samples/hello-k8s-node:latest
+    containerImagePullPolicy: Always
     createService: true
     env:
       APP_PORT: 3000
