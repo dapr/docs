@@ -203,6 +203,7 @@ apps:
     appLogDestination: file # (optional), can be file, console or fileAndConsole. default is fileAndConsole.
     daprdLogDestination: file # (optional), can be file, console or fileAndConsole. default is file.
     containerImage: ghcr.io/dapr/samples/hello-k8s-node:latest # (optional) URI of the container image to be used when deploying to Kubernetes dev/test environment.
+    containerImagePullPolicy: IfNotPresent # (optional), the container image is downloaded if one is not present locally, otherwise the local one is used.
     createService: true # (optional) Create a Kubernetes service for the application when deploying to dev/test environment.
   - appID: backend # optional
     appDirPath: .dapr/backend/ # REQUIRED
