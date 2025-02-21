@@ -30,40 +30,34 @@ POST http://localhost:<daprPort>/v1.0-alpha1/conversation/<llm-name>/converse
 
 | Field | Description |
 | --------- | ----------- |
-| `conversationContext` | The ID of an existing chat room (like in ChatGPT). |
-| `inputs` | Inputs for the conversation. Multiple inputs at one time are supported. |
-| `metadata` | [Metadata](#metadata) passed to conversation components. |
+| `inputs` | Inputs for the conversation. Multiple inputs at one time are supported. Required |
+| `cacheTTL` | A time-to-live value for a prompt cache to expire. Uses Golang duration format. Optional |
+| `scrubPII` | A boolean value to enable obfuscation of sensitive information returning from the LLM. Optional |
+| `temperature` | A float value to control the temperature of the model. Used to optimize for consistency and creativity. Optional |
+| `metadata` | [Metadata](#metadata) passed to conversation components. Optional |
 
-#### Metadata
+#### Input body
 
-Metadata can be sent in the request’s URL. It must be prefixed with `metadata.`, as shown in the table below.
-
-| Parameter | Description |
+| Field | Description |
 | --------- | ----------- |
-| `metadata.key` | The API key for the component. `key` is not applicable to the [AWS Bedrock component]({{< ref "aws-bedrock.md#authenticating-aws" >}}). |
-| `metadata.model` | The Large Language Model you're using. Value depends on which conversation component you're using. `model` is not applicable to the [DeepSeek component]({{< ref deepseek.md >}}). |
-| `metadata.cacheTTL` | A time-to-live value for a prompt cache to expire. Uses Golang duration format. |
+| `content` | The message content to send to the LLM. Required |
+| `role` | The role for the LLM to assume. Possible values: 'user', 'tool', 'assistant' |
+| `scrubPII` | A boolean value to enable obfuscation of sensitive information present in the content field. Optional |
 
-For example, to call for [Anthropic]({{< ref anthropic.md >}}):
-
-```bash
-curl POST http://localhost:3500/v1.0-alpha1/conversation/anthropic/converse?metadata.key=key1&metadata.model=claude-3-5-sonnet-20240620&metadata.cacheTTL=10m
-```
-
-{{% alert title="Note" color="primary" %}}
-The metadata parameters available depend on the conversation component you use. [See all the supported components for the conversation API.]({{< ref supported-conversation >}})
-{{% /alert %}}
-
-### Request content
+### Request content example
 
 ```json
 REQUEST = {
-  "inputs": ["what is Dapr", "Why use Dapr"],
-  "metadata": {
-    "model": "model-type-based-on-component-used",
-    "key": "authKey",
-    "cacheTTL": "10m",
-  }
+  "inputs": [
+    {
+      "content": "What is Dapr?",
+      "role": "user", // Optional
+      "scrubPII": "true", // Optional. Will obfuscate any sensitive information found in the content field
+    },
+  ],
+  "cacheTTL": "10m", // Optional
+  "scrubPII": "true", // Optional. Will obfuscate any sensitive information returning from the LLM
+  "temperature": 0.5 // Optional. Optimizes for consistency (0) or creativity (1)
 }
 ```
 

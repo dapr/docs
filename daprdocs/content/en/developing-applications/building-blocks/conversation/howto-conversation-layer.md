@@ -52,8 +52,6 @@ spec:
     value: <REPLACE_WITH_YOUR_KEY>
   - name: model
     value: gpt-4-turbo
-  - name: cacheTTL
-    value: 10m
 ```
 
 ## Connect the conversation client
@@ -114,12 +112,12 @@ func main() {
 	}
 
 	input := dapr.ConversationInput{
-		Message: "Please write a witty haiku about the Dapr distributed programming framework at dapr.io",
-		// Role:     nil, // Optional
-		// ScrubPII: nil, // Optional
+		Content: "Please write a witty haiku about the Dapr distributed programming framework at dapr.io",
+		// Role:     "", // Optional
+		// ScrubPII: false, // Optional
 	}
 
-	fmt.Printf("conversation input: %s\n", input.Message)
+	fmt.Printf("conversation input: %s\n", input.Content)
 
 	var conversationComponent = "echo"
 
@@ -163,7 +161,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let request =
         ConversationRequestBuilder::new(conversation_component, vec![input.clone()]).build();
 
-    println!("conversation input: {:?}", input.message);
+    println!("conversation input: {:?}", input.content);
 
     let response = client.converse_alpha1(request).await?;
 
@@ -223,6 +221,16 @@ dapr run --app-id=conversation --resources-path ./config --dapr-grpc-port 3500 -
 {{% /codetab %}}
 
 {{< /tabs >}}
+
+## Advanced features
+
+The conversation API supports the following features:
+
+1. Prompt caching - Allows developers to cache prompts in Dapr, leading to much faster response times and saving costs on egress and associated costs of inserting the prompt into the LLM provider's cache.
+
+2. PII scrub - Allows for the obfuscation of data going in and out of the LLM.
+
+To learn more on how to enable these features, see the API reference({{< ref conversation_api.md >}}) page.
 
 ## Related links
 
