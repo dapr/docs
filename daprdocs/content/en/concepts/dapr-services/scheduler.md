@@ -83,7 +83,7 @@ To perform backup and restore operations, you'll need to access the embedded etc
 
 #### Kubernetes Example
 
-Here's how to port forward your etcd instance to be able to connect to it
+Here's how to port forward and connect to the etcd instance:
 
 ```shell
 kubectl port-forward svc/dapr-scheduler-server 2379:2379 -n dapr-system
