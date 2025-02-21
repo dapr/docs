@@ -65,11 +65,11 @@ For non-client side errors, for example, when a job cannot be sent to an availab
 
 The Scheduler service Docker container is started automatically as part of `dapr init`. It can also be run manually as a process if you are running in [slim-init mode]({{< ref self-hosted-no-docker.md >}}).
 
+The Scheduler can be run in both high availability (HA) and non-HA modes in self-hosted deployments. However, non-HA mode is not recommended for production use. If switching between non-HA and HA modes, the existing data directory must be removed, which results in loss of jobs and actor reminders. [Run a back-up]({{< ref "#back-up-and-restore-scheduler-data" >}}) before making this change to avoid losing data.
+
 ## Kubernetes mode
 
-The Scheduler service is deployed as part of `dapr init -k`, or via the Dapr Helm charts. When running in Kubernetes mode, the Scheduler service is configured to run with exactly 3 replicas to ensure data integrity. 
-
-You can run Scheduler in high availability (HA) mode. [Learn more about setting HA mode in your Kubernetes service.]({{< ref "kubernetes-production.md#individual-service-ha-helm-configuration" >}})
+The Scheduler service is deployed as part of `dapr init -k`, or via the Dapr Helm charts. Scheduler always runs in high availability (HA) mode in Kubernetes deployments. Scaling the Scheduler service replicas up or down is not possible without incurring data loss due to the nature of the embedded data store. [Learn more about setting HA mode in your Kubernetes service.]({{< ref "kubernetes-production.md#individual-service-ha-helm-configuration" >}})
 
 When a Kubernetes namespace is deleted, all the Job and Actor Reminders corresponding to that namespace are deleted.
 
