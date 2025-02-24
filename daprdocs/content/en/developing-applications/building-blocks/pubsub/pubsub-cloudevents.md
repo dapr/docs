@@ -108,6 +108,26 @@ with DaprClient() as client:
         topic_name='orders',
         publish_metadata={'cloudevent.id': 'd99b228f-6c73-4e78-8c4d-3f80a043d317', 'cloudevent.source': 'payment'}
     )
+
+    # or
+
+    cloud_event = {
+        'specversion': '1.0',
+        'type': 'com.example.event',
+        'source': 'payment',
+        'id': 'd99b228f-6c73-4e78-8c4d-3f80a043d317',
+        'data': {'orderId': i},
+        'datacontenttype': 'application/json',
+        ...
+    }
+
+    # Set the data content type to 'application/cloudevents+json'
+    result = client.publish_event(
+        pubsub_name='order_pub_sub',
+        topic_name='orders',
+        data=json.dumps(cloud_event),
+        data_content_type='application/cloudevents+json',
+    )
 ```
 
 {{% /codetab %}}
