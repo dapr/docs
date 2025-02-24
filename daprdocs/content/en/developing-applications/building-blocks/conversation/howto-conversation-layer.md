@@ -226,7 +226,7 @@ dapr run --app-id=conversation --resources-path ./config --dapr-grpc-port 3500 -
 
 The conversation API supports the following features:
 
-1. Prompt caching - Allows developers to cache prompts in Dapr, leading to much faster response times and saving costs on egress and associated costs of inserting the prompt into the LLM provider's cache.
+1. **Prompt caching:** Allows developers to cache prompts in Dapr, leading to much faster response times and reducing costs on egress and on inserting the prompt into the LLM provider's cache.
 
 1. **PII scrubbing:** Allows for the obfuscation of data going in and out of the LLM.
 
