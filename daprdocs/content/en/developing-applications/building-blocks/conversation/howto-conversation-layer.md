@@ -230,7 +230,7 @@ The conversation API supports the following features:
 
 2. PII scrub - Allows for the obfuscation of data going in and out of the LLM.
 
-To learn more on how to enable these features, see the API reference({{< ref conversation_api.md >}}) page.
+To learn how to enable these features, see the [conversation API reference guide]({{< ref conversation_api.md >}}).
 
 ## Related links
 
