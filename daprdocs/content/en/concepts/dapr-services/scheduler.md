@@ -81,6 +81,14 @@ In production environments, it's recommended to perform periodic backups of this
 
 To perform backup and restore operations, you'll need to access the embedded etcd instance. This requires port forwarding to expose the etcd ports (port 2379).
 
+#### Kubernetes Example
+
+Here's how to port forward and connect to the etcd instance:
+
+```shell
+kubectl port-forward svc/dapr-scheduler-server 2379:2379 -n dapr-system
+```
+
 #### Docker Compose Example
 
 Here's how to expose the etcd ports in a Docker Compose configuration for standalone mode:
@@ -110,6 +118,16 @@ When running in HA mode, you only need to expose the ports for one scheduler ins
 ### Performing Backup and Restore
 
 Once you have access to the etcd ports, you can follow the [official etcd backup and restore documentation](https://etcd.io/docs/v3.5/op-guide/recovery/) to perform backup and restore operations. The process involves using standard etcd commands to create snapshots and restore from them.
+
+## Monitoring Scheduler's etcd Metrics
+
+Port forward the Scheduler instance and view etcd's metrics with the following:
+
+```shell
+curl -s http://localhost:2379/metrics
+```
+
+Fine tune the embedded etcd to your needs by [reviewing and configuring the Scheduler's etcd flags as needed](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md#dapr-scheduler-options).
 
 ## Disabling the Scheduler service
 
