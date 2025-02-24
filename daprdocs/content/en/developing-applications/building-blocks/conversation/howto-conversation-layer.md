@@ -228,7 +228,7 @@ The conversation API supports the following features:
 
 1. Prompt caching - Allows developers to cache prompts in Dapr, leading to much faster response times and saving costs on egress and associated costs of inserting the prompt into the LLM provider's cache.
 
-2. PII scrub - Allows for the obfuscation of data going in and out of the LLM.
+1. **PII scrubbing:** Allows for the obfuscation of data going in and out of the LLM.
 
 To learn how to enable these features, see the [conversation API reference guide]({{< ref conversation_api.md >}}).
 
