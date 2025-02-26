@@ -149,7 +149,7 @@ services:
     - type: tmpfs
       target: /data
       tmpfs:
-        size: "10000"
+        size: "64m"
   
   networks:
     hello-dapr: null
