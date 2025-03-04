@@ -20,7 +20,7 @@ With the jobs API, you can schedule jobs and tasks in the future.
 Schedule a job with a name. Jobs are scheduled based on the clock of the server where the Scheduler service is running. The timestamp is not converted to UTC. You can provide the timezone with the timestamp in RFC3339 format to specify which timezone you'd like the job to adhere to. If no timezone is provided, the server's local time is used.
 
 ```
-POST http://localhost:3500/v1.0-alpha1/jobs/<name>
+POST http://localhost:<daprPort>/v1.0-alpha1/jobs/<name>
 ```
 
 ### URL parameters
@@ -100,7 +100,7 @@ $ curl -X POST \
 Get a job from its name.
 
 ```
-GET http://localhost:3500/v1.0-alpha1/jobs/<name>
+GET http://localhost:<daprPort>/v1.0-alpha1/jobs/<name>
 ```
 
 ### URL parameters
@@ -138,7 +138,7 @@ $ curl -X GET http://localhost:3500/v1.0-alpha1/jobs/jobforjabba -H "Content-Typ
 Delete a named job.
 
 ```
-DELETE http://localhost:3500/v1.0-alpha1/jobs/<name>
+DELETE http://localhost:<daprPort>/v1.0-alpha1/jobs/<name>
 ```
 
 ### URL parameters
