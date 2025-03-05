@@ -41,7 +41,7 @@ This means the actual disk usage of Scheduler will be higher than the current ob
 ### Setting the Storage Size on Installation
 
 If you need to increase an **existing** Scheduler storage size, see the [Increase Scheduler Storage Size](#increase-existing-scheduler-storage-size) section below.
-To increase the storage size (in this example- `16Gi`) for a **fresh** Dapr instalation, you can use the following command:
+To increase the storage size (in this example- `16Gi`) for a **fresh** Dapr installation, you can use the following command:
 
 {{< tabs "Dapr CLI" "Helm" >}}
  <!-- Dapr CLI -->
@@ -68,6 +68,14 @@ helm upgrade --install dapr dapr/dapr \
 
 {{% /codetab %}}
 {{< /tabs >}}
+
+{{% alert title="Note" color="primary" %}}
+For storage providers that do NOT support dynamic volume expansion: If Dapr has ever been installed on the cluster before, the Scheduler's Persistent Volume Claims must be manually uninstalled in order for new ones with increased storage size to be created.
+```bash
+kubectl delete pvc -n dapr-system dapr-scheduler-data-dir-dapr-scheduler-server-0 dapr-scheduler-data-dir-dapr-scheduler-server-1 dapr-scheduler-data-dir-dapr-scheduler-server-2
+```
+Persistent Volume Claims are not deleted automatically with an [uninstall]({{< ref dapr-uninstall.md >}}). This is a deliberate safety measure to prevent accidental data loss.
+{{% /alert %}}
 
 #### Increase existing Scheduler Storage Size
 
