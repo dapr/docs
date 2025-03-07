@@ -263,7 +263,7 @@ using System.Threading.Tasks;
 using Dapr.Client;
 
 const string DAPR_CONFIGURATION_STORE = "configstore";
-var CONFIGURATION_KEYS = new List<string> { "orderId1", "orderId2" };
+var CONFIGURATION_ITEMS = new List<string> { "orderId1", "orderId2" };
 var client = new DaprClientBuilder().Build();
 
 // Subscribe for configuration changes
