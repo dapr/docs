@@ -44,7 +44,7 @@ spec:
     value: false
   - name: prefetchCount
     value: 0
-  - name: reconnectWait
+  - name: reconnectWaitSeconds
     value: 0
   - name: concurrencyMode
     value: parallel
@@ -89,7 +89,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | requeueInFailure  | N        | Whether or not to requeue when sending a [negative acknowledgement](https://www.rabbitmq.com/nack.html) in case of a failure. Defaults to `"false"` | `"true"`, `"false"`
 | prefetchCount  | N        | Number of messages to [prefetch](https://www.rabbitmq.com/consumer-prefetch.html). Consider changing this to a non-zero value for production environments. Defaults to `"0"`, which means that all available messages will be pre-fetched. | `"2"`
 | publisherConfirm  | N        | If enabled, client waits for [publisher confirms](https://www.rabbitmq.com/confirms.html#publisher-confirms) after publishing a message. Defaults to `"false"` | `"true"`, `"false"`
-| reconnectWait  | N        | How long to wait (in seconds) before reconnecting if a connection failure occurs | `"0"`
+| reconnectWaitSeconds  | N        | How long to wait (in seconds) before reconnecting if a connection failure occurs | `"3"`
 | concurrencyMode | N        | `parallel` is the default, and allows processing multiple messages in parallel (limited by the `app-max-concurrency` annotation, if configured). Set to `single` to disable parallel processing. In most situations there's no reason to change this. | `parallel`, `single`
 | enableDeadLetter      | N        | Enable forwarding Messages that cannot be handled to a dead-letter topic. Defaults to `"false"` | `"true"`, `"false"` |
 | maxLen      | N        | The maximum number of messages of a queue and its dead letter queue (if dead letter enabled). If both `maxLen` and `maxLenBytes` are set then both will apply; whichever limit is hit first will be enforced.  Defaults to no limit. | `"1000"` |
@@ -133,7 +133,7 @@ spec:
     value: false
   - name: prefetchCount
     value: 0
-  - name: reconnectWait
+  - name: reconnectWaitSeconds
     value: 0
   - name: concurrencyMode
     value: parallel
