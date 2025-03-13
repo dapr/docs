@@ -9,7 +9,7 @@ aliases:
 ---
 
 {{% alert title="Warning" color="warning" %}}
-This feature is only relevant when using State Store Actor reminders, no longer enabled by default.
+This feature is only relevant when using state store actor reminders, no longer enabled by default.
 As of v1.15, Dapr uses the far more performant [Scheduler Actor Reminders]({{< ref "scheduler.md#actor-reminders" >}}) by default.
 This page is only relevant if you are using the legacy State Store Actor reminders, enabled via setting the [`SchedulerReminders` feature flag]({{< ref "support-preview-features.md#current-preview-features" >}}) to false.
 It is highly recommended you continue using the Scheduler Actor Reminders feature.
