@@ -71,7 +71,8 @@ spec:
     value: 5m
   - name: escapeHeaders # Optional.
     value: false
-  
+  - name: compression # Optional. Enable compression for messages. There are five types of compression available: none, gzip, snappy, lz4, and zstd.
+    value: none
 ```
 
 > For details on using `secretKeyRef`, see the guide on [how to reference secrets in components]({{< ref component-secrets.md >}}).
@@ -123,6 +124,7 @@ spec:
 | heartbeatInterval | N | The interval between heartbeats to the consumer coordinator. At most, the value should be set to a 1/3 of the `sessionTimeout` value. Defaults to "3s". | `"5s"` |
 | sessionTimeout | N | The timeout used to detect client failures when using Kafka’s group management facility. If the broker fails to receive any heartbeats from the consumer before the expiration of this session timeout, then the consumer is removed and initiates a rebalance. Defaults to "10s". | `"20s"` |
 | escapeHeaders | N | Enables URL escaping of the message header values received by the consumer. Allows receiving content with special characters that are usually not allowed in HTTP headers. Default is `false`. | `true` |
+| `compression` | N | Input | Enable compression for messages. There are five types of compression available: none, gzip, snappy, lz4, and zstd. Default is `none`. | `gzip` |
 
 The `secretKeyRef` above is referencing  a [kubernetes secrets store]({{< ref kubernetes-secret-store.md >}}) to access the tls information. Visit [here]({{< ref setup-secret-store.md >}}) to learn more about how to configure a secret store component.
 
