@@ -10,7 +10,7 @@ description: Get started with the Dapr conversation building block
 The conversation building block is currently in **alpha**. 
 {{% /alert %}}
 
-Let's take a look at how the [Dapr conversation building block]({{< ref conversation-overview.md >}}) makes interacting with Large Language Models (LLMs) easier. In this quickstart, you use the echo component to communicate with the mock LLM and ask it for a poem about Dapr. 
+Let's take a look at how the [Dapr conversation building block]({{< ref conversation-overview.md >}}) makes interacting with Large Language Models (LLMs) easier. In this quickstart, you use the echo component to communicate with the mock LLM and ask it to define Dapr. 
 
 You can try out this conversation quickstart by either:
 
@@ -18,7 +18,7 @@ You can try out this conversation quickstart by either:
 - [Running the application without the template]({{< ref "#run-the-app-without-the-template" >}})
 
 {{% alert title="Note" color="primary" %}}
-Currently, only the HTTP quickstart sample is available in Python and JavaScript.  
+Currently, you can only use JavaScript for the quickstart sample using HTTP, not the JavaScript SDK.  
 {{% /alert %}}
 
 ## Run the app with the template file
@@ -50,7 +50,7 @@ git clone https://github.com/dapr/quickstarts.git
 From the root of the Quickstarts directory, navigate into the conversation directory:
 
 ```bash
-cd conversation/python/http/conversation
+cd conversation/python/sdk/conversation
 ```
 
 Install the dependencies:
@@ -61,7 +61,7 @@ pip3 install -r requirements.txt
 
 ### Step 3: Launch the conversation service
 
-Navigate back to the `http` directory and start the conversation service with the following command:
+Navigate back to the `sdk` directory and start the conversation service with the following command:
 
 ```bash
 dapr run -f .
@@ -117,37 +117,28 @@ In the application code:
 - The mock LLM echoes "What is dapr?". 
 
 ```python
-import logging
-import requests
-import os
+from dapr.clients import DaprClient
+from dapr.clients.grpc._request import ConversationInput
 
-logging.basicConfig(level=logging.INFO)
+with DaprClient() as d:
+    inputs = [
+        ConversationInput(content="What is dapr?", role='user', scrub_pii=True),
+    ]
 
-base_url = os.getenv('BASE_URL', 'http://localhost') + ':' + os.getenv(
-                    'DAPR_HTTP_PORT', '3500')
-
-CONVERSATION_COMPONENT_NAME = 'echo'
-
-input = {
-		'name': 'echo',
-		'inputs': [{'message':'What is dapr?'}],
-		'parameters': {},
-		'metadata': {}
+    metadata = {
+        'model': 'modelname',
+        'key': 'authKey',
+        'cacheTTL': '10m',
     }
 
-# Send input to conversation endpoint
-result = requests.post(
-	url='%s/v1.0-alpha1/conversation/%s/converse' % (base_url, CONVERSATION_COMPONENT_NAME),
-	json=input
-)
+    print('Input sent: What is dapr?')
 
-logging.info('Input sent: What is dapr?')
+    response = d.converse_alpha1(
+        name='echo', inputs=inputs, temperature=0.7, context_id='chat-123', metadata=metadata
+    )
 
-# Parse conversation output
-data = result.json()
-output = data["outputs"][0]["result"]
-
-logging.info('Output response: ' + output)
+    for output in response.outputs:
+        print(f'Output response: {output.result}')
 ```
 
 {{% /codetab %}}
@@ -575,7 +566,7 @@ git clone https://github.com/dapr/quickstarts.git
 From the root of the Quickstarts directory, navigate into the conversation directory:
 
 ```bash
-cd conversation/python/http/conversation
+cd conversation/python/sdk/conversation
 ```
 
 Install the dependencies:
@@ -586,7 +577,7 @@ pip3 install -r requirements.txt
 
 ### Step 3: Launch the conversation service
 
-Navigate back to the `http` directory and start the conversation service with the following command:
+Navigate back to the `sdk` directory and start the conversation service with the following command:
 
 ```bash
 dapr run --app-id conversation --resources-path ../../../components -- python3 app.py
