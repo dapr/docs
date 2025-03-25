@@ -123,6 +123,7 @@ services:
      "--app-id", "nodeapp",
      "--app-port", "3000",
      "--placement-host-address", "placement:50006", # Dapr's placement service can be reach via the docker DNS entry
+     "--scheduler-host-address", "scheduler:50007", # Dapr's scheduler service can be reach via the docker DNS entry
      "--resources-path", "./components"
      ]
     volumes:
