@@ -135,13 +135,13 @@ services:
   ... # Deploy other daprized services and components (i.e. Redis)
 
   placement:
-    image: "daprio/dapr"
+    image: "daprio/placement"
     command: ["./placement", "--port", "50006"]
     ports:
       - "50006:50006"
 
   scheduler:
-    image: "daprio/dapr"
+    image: "daprio/scheduler"
     command: ["./scheduler", "--port", "50007", "--etcd-data-dir", "/data"]
     ports:
       - "50007:50007"
