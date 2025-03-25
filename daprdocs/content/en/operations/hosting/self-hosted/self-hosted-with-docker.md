@@ -141,15 +141,12 @@ services:
 
   scheduler:
     image: "daprio/dapr"
-    command: ["./scheduler", "--port", "50007"]
+    command: ["./scheduler", "--port", "50007", "--etcd-data-dir", "/data"]
     ports:
       - "50007:50007"
-    # WARNING - This is a tmpfs volume, your state will not be persisted across restarts
+    user: root
     volumes:
-    - type: tmpfs
-      target: /data
-      tmpfs:
-        size: "64m"
+    - "./dapr-etcd-data/:/data"
   
   networks:
     hello-dapr: null
