@@ -123,6 +123,7 @@ services:
      "--app-id", "nodeapp",
      "--app-port", "3000",
      "--placement-host-address", "placement:50006", # Dapr's placement service can be reach via the docker DNS entry
+     "--scheduler-host-address", "scheduler:50007", # Dapr's scheduler service can be reach via the docker DNS entry
      "--resources-path", "./components"
      ]
     volumes:
@@ -134,22 +135,19 @@ services:
   ... # Deploy other daprized services and components (i.e. Redis)
 
   placement:
-    image: "daprio/dapr"
+    image: "daprio/placement"
     command: ["./placement", "--port", "50006"]
     ports:
       - "50006:50006"
 
   scheduler:
-    image: "daprio/dapr"
-    command: ["./scheduler", "--port", "50007"]
+    image: "daprio/scheduler"
+    command: ["./scheduler", "--port", "50007", "--etcd-data-dir", "/data"]
     ports:
       - "50007:50007"
-    # WARNING - This is a tmpfs volume, your state will not be persisted across restarts
+    user: root
     volumes:
-    - type: tmpfs
-      target: /data
-      tmpfs:
-        size: "64m"
+    - "./dapr-etcd-data/:/data"
   
   networks:
     hello-dapr: null
