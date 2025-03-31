@@ -18,13 +18,13 @@ kind: Component
 metadata:
   name: <NAME>
 spec:
-  type: state.ravendb
+  type: state.ravendb 
   version: v1
   metadata:
-  - name: databaseName
-    value: <REPLACE-WITH-DATABASE-NAME> # Optional. default: "daprStore"
   - name: serverURL
     value: <REPLACE-WITH-SERVER-URL> #Required Example: "server.example.com"
+  - name: databaseName
+    value: <REPLACE-WITH-DATABASE-NAME> # Optional. default: "daprStore"
   - name: certPath
     value: <REPLACE-WITH-CERT-PATH> # Required unless server is insecure.
   - name: KeyPath
@@ -32,7 +32,7 @@ spec:
   - name: EnableTTL
     value: <REPLACE-WITH-ENABLE-TTL> # Optional. default: "true"
   - name: TTLFrequency
-    value: <REPLACE-WITH-TTL:-FREQUENCY> # Optional. Example: "15"
+    value: <REPLACE-WITH-TTL:-FREQUENCY> # Optional. Example: "15". Default: "60"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -45,10 +45,10 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|---------|---------|
 | databaseName       | N        | The name of the database to use. Defaults to `"daprStore"` | `"daprStore"`
 | serverURL          | Y        | Url to RavenDB instance | `"http://localhost:8080"`
-| certPath           | N<sup>1</sup> | Path to certificate file | `"majority"`
-| keyPath            | N<sup>1</sup> | Path to key file  | `"majority"`, `"local"`,`"available"`, `"linearizable"`, `"snapshot"`
-| EnableTTL          | N        | Boolean value to enable TTL capability. Defaults to `"true"` | `"5s"`
-| TTLFrequency       | N | Additional parameters to use | `"?authSource=daprStore&ssl=true"`
+| certPath           | N<sup>1</sup> | Path to certificate file | `"/path/to/client.certificate.crt"`
+| keyPath            | N<sup>1</sup> | Path to key file  | `"/path/to/certificate.key"`
+| EnableTTL          | N        | Boolean value to enable TTL capability. Defaults to `"true"` | `"true"`
+| TTLFrequency       | N | Additional parameters to use | `"5s"`
 
 > <sup>[1]</sup> The `certPath` and `keyPath` fields are not mandatory if server url is http, however if server url is https and no certPath and keyPath is present dapr returns an error.
 
