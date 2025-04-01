@@ -31,7 +31,7 @@ error running scheduler: etcdserver: mvcc: database space exceeded
 
 Knowing the safe upper bound for your storage size is not an exact science, and relies heavily on the number, persistence, and the data payload size of your application jobs.
 The [Job API]({{< ref jobs_api.md >}}) and [Actor Reminders]({{< ref actors-timers-reminders.md >}}) transparently maps one to one to the usage of your applications.
-Workflows preview feature is enabled) create a large number of jobs as Actor Reminders, however these jobs are short lived- matching the lifecycle of each workflow execution.
+Workflows create a large number of jobs as Actor Reminders, however these jobs are short lived- matching the lifecycle of each workflow execution.
 The data payload of jobs created by Workflows is typically empty or small.
 
 The Scheduler uses Etcd as its storage backend database.
