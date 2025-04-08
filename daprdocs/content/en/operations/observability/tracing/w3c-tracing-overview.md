@@ -73,6 +73,18 @@ tracestate: congo=t61rcWkgMzE
 
 [Learn more about the tracestate fields details](https://www.w3.org/TR/trace-context/#tracestate-header).
 
+**Baggage header**
+
+Dapr supports [W3C Baggage](https://www.w3.org/TR/baggage/) for propagating key-value pairs alongside trace context. The baggage header allows you to attach metadata to trace context that needs to be propagated throughout your distributed system, such as user IDs, tenant information, or environment details.
+
+The header value follows the W3C Baggage specification format:
+
+```
+baggage: userId=alice,serverNode=DF%2028,isVIP=true
+```
+
+Multiple baggage headers are supported and will be combined according to the W3C specification. Dapr automatically propagates baggage headers across service calls.
+
 {{% /codetab %}}
 
 
@@ -80,6 +92,18 @@ tracestate: congo=t61rcWkgMzE
 {{% codetab %}}
 
 In the gRPC API calls, trace context is passed through `grpc-trace-bin` header.
+
+**Baggage metadata**
+
+Dapr supports [W3C Baggage](https://www.w3.org/TR/baggage/) for propagating key-value pairs alongside trace context. The baggage metadata allows you to attach metadata to trace context that needs to be propagated throughout your distributed system, such as user IDs, tenant information, or environment details.
+
+The metadata value follows the W3C Baggage specification format:
+
+```
+baggage: userId=alice,serverNode=DF%2028,isVIP=true
+```
+
+Multiple baggage metadata entries are supported and will be combined according to the W3C specification. Dapr automatically propagates baggage metadata across service calls.
 
 {{% /codetab %}}
 

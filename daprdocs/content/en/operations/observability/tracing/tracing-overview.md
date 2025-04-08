@@ -110,6 +110,44 @@ If you decide to generate trace headers yourself, there are three ways this can 
    
    Read [the trace context overview]({{< ref w3c-tracing-overview >}}) for more background and examples on W3C trace context and headers.
 
+### Baggage Support
+
+Dapr supports propagating W3C Baggage alongside trace context. For details on the W3C Baggage specification, format, and how it works, see the [W3C Trace Context Overview]({{< ref "w3c-tracing-overview.md#w3c-baggage" >}}).
+
+#### Using Baggage with Dapr
+
+You can add baggage from your application by setting the appropriate HTTP header or gRPC metadata when calling Dapr. Dapr automatically propagates this baggage across subsequent service calls.
+
+**Setting Baggage**
+
+Set the `baggage` header (HTTP) or metadata (gRPC) in your requests to Dapr:
+   - For HTTP: Add the `baggage` header to your request.
+   - For gRPC: Add `baggage` key-value pairs to the outgoing context metadata.
+
+*HTTP Example:*
+```http
+POST /v1.0/invoke/serviceB/method/hello HTTP/1.1
+Content-Type: application/json
+baggage: key1=value1,key2=value2
+
+{
+    "message": "Hello service B"
+}
+```
+
+*gRPC Example (Go):*
+```go
+ctx = grpcMetadata.AppendToOutgoingContext(ctx,
+			"baggage", "key1=value1,key2=value2",
+		)
+```
+
+#### Common Use Cases
+
+Baggage is useful for:
+- Propagating user IDs or correlation IDs across services
+- Passing tenant or environment information
+
 ## Related Links
 
 - [Observability concepts]({{< ref observability-concept.md >}})
