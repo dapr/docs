@@ -160,7 +160,7 @@ await daprWorkflowClient.SuspendWorkflowAsync(orderId);
 await daprWorkflowClient.ResumeWorkflowAsync(orderId);
 
 // Purge the workflow, removing all inbox and history information from associated instance
-await daprWorkflowClient.PurgeWorkflowAsync(orderId);
+await daprWorkflowClient.PurgeInstanceAsync(orderId);
 ```
 
 {{% /codetab %}}
