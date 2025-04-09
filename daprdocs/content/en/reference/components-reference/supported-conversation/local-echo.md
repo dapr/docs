@@ -20,7 +20,7 @@ spec:
 ```
 
 {{% alert title="Information" color="warning" %}}
-This component is only meant for local validation and testing of a Conversation implementation and does not
+This component is only meant for local validation and testing of a Conversation component implementation. It does not actually send the data to any LLM but rather echos the input back directly.
 actually send the data to any LLM endpoints to perform evaluation.
 {{% /alert %}}
 
