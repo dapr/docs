@@ -20,8 +20,7 @@ data:
       debug:
         verbosity: basic
       azuremonitor:
-        endpoint: "https://dc.services.visualstudio.com/v2/track"
-        instrumentation_key: "<INSTRUMENTATION-KEY>"
+        connection_string: "<CONNECTION_STRING>"
         # maxbatchsize is the maximum number of items that can be
         # queued before calling to the configured endpoint
         maxbatchsize: 100
