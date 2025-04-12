@@ -11,7 +11,7 @@ Dapr integrates with [OpenTelemetry (OTEL) Collector](https://github.com/open-te
 ## Prerequisites
 
 - [Install Dapr on Kubernetes]({{< ref kubernetes >}})
-- [Set up an App Insights resource](https://docs.microsoft.com/azure/azure-monitor/app/create-new-resource) and make note of your App Insights instrumentation key.
+- [Set up an App Insights resource](https://docs.microsoft.com/azure/azure-monitor/app/create-new-resource) and make note of your App Insights connection string.
 
 ## Set up OTEL Collector to push to your App Insights instance
 
@@ -19,7 +19,7 @@ To push events to your App Insights instance, install the OTEL Collector to your
 
 1. Check out the [`open-telemetry-collector-appinsights.yaml`](/docs/open-telemetry-collector/open-telemetry-collector-appinsights.yaml) file. 
 
-1. Replace the `<INSTRUMENTATION-KEY>` placeholder with your App Insights instrumentation key.
+1. Replace the `<CONNECTION_STRING>` placeholder with your App Insights connection string.
 
 1. Apply the configuration with: 
 

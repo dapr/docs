@@ -93,7 +93,7 @@ For a new Dapr deployment, HA mode can be set with both:
 - The [Dapr CLI]({{< ref "kubernetes-deploy.md#install-in-highly-available-mode" >}}), and
 - [Helm charts]({{< ref "kubernetes-deploy.md#add-and-install-dapr-helm-chart" >}})
 
-For an existing Dapr deployment, [you can enable HA mode in a few extra steps]({{< ref "#enabling-high-availability-in-an-existing-dapr-deployment" >}}).
+For an existing Dapr deployment, [you can enable HA mode in a few extra steps]({{< ref "#enable-high-availability-in-an-existing-dapr-deployment" >}}).
 
 ### Individual service HA Helm configuration
 
