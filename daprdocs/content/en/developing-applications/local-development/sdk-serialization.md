@@ -8,14 +8,12 @@ aliases:
   - '/developing-applications/sdks/serialization/'
 ---
 
-An SDK for Dapr should provide serialization for two use cases. First, for API objects sent through request and 
-response payloads. Second, for objects to be persisted. For both these use cases, a default serialization is provided. 
-In the Java SDK, it is the [DefaultObjectSerializer](https://dapr.github.io/java-sdk/io/dapr/serializer/DefaultObjectSerializer.html) class, providing JSON serialization.
+An SDK for Dapr should provide serialization for two use cases. First, for API objects sent through request and response payloads. Second, for objects to be persisted. For both these use cases, a default serialization is provided. 
 
-| Language                     | Default Serializer                                                                                         |
+| Language SDK                 | Default Serializer                                                                                         |
 |------------------------------|------------------------------------------------------------------------------------------------------------|
-| [.NET]({{< ref dotnet >}}) | DataContracts for remoted actors, System.Text.Json otherwise |                                              |
-| [Java]({{< ref java >}}) | [DefaultObjectSerializer](https://dapr.github.io/java-sdk/io/dapr/serializer/DefaultObjectSerializer.html) |
+| [.NET]({{< ref dotnet >}}) | DataContracts for remoted actors, System.Text.Json otherwise |                                               |
+| [Java]({{< ref java >}})   | [DefaultObjectSerializer](https://dapr.github.io/java-sdk/io/dapr/serializer/DefaultObjectSerializer.html) for JSON serialization|
 | [JavaScript]({{< ref js >}}) | JSON                                                                                                       | 
 
 ## Service invocation
@@ -42,7 +40,7 @@ In the Java SDK, it is the [DefaultObjectSerializer](https://dapr.github.io/java
 
 {{% /codetab %}}
 
-In the example above, the app will receive a `POST` request for the `saySomething` method with the request payload as 
+In the example above, the app receives a `POST` request for the `saySomething` method with the request payload as 
 `"My Message"` - quoted since the serializer will serialize the input String to JSON.
 
 ```text
@@ -83,7 +81,7 @@ Content-Length: 12
 
 {{% /codetab %}}
 
-In this example, `My Message` will be saved. It is not quoted because Dapr's API will internally parse the JSON request 
+In this example, `My Message` is saved. It is not quoted because Dapr's API internally parse the JSON request 
 object before saving it.
 
 ```JSON
@@ -107,14 +105,12 @@ object before saving it.
     await client.PublishEventAsync("MyPubSubName", "TopicName", "My Message");
 ```
 
-The event is published and the content is serialized to `byte[]` and sent to Dapr sidecar. The subscriber will receive 
-it as a [CloudEvent](https://github.com/cloudevents/spec). Cloud event defines `data` as String. Dapr SDK also provides a built-in deserializer for 
-`CloudEvent` object. 
+The event is published and the content is serialized to `byte[]` and sent to Dapr sidecar. The subscriber receives it as a [CloudEvent](https://github.com/cloudevents/spec). Cloud event defines `data` as String. The Dapr SDK also provides a built-in deserializer for `CloudEvent` object. 
 
 ```csharp
 public async Task<IActionResult> HandleMessage(string message) 
 {
-  //ASP.NET Core will automatically deserialize the UTF-8 encoded bytes to a string
+  //ASP.NET Core automatically deserialize the UTF-8 encoded bytes to a string
   return new Ok();
 }
 ```
@@ -137,9 +133,7 @@ app.MapPost("/TopicName", [Topic("MyPubSubName", "TopicName")] (string message) 
   client.publishEvent("TopicName", "My Message").block();
 ```
 
-The event is published and the content is serialized to `byte[]` and sent to Dapr sidecar. The subscriber will receive 
-it as a [CloudEvent](https://github.com/cloudevents/spec). Cloud event defines `data` as String. Dapr SDK also provides a built-in deserializer for 
-`CloudEvent` object.
+The event is published and the content is serialized to `byte[]` and sent to Dapr sidecar. The subscriber receives it as a [CloudEvent](https://github.com/cloudevents/spec). Cloud event defines `data` as String. Dapr SDK also provides a built-in deserializer for `CloudEvent` object.
 
 ```java
   @PostMapping(path = "/TopicName")
@@ -153,8 +147,7 @@ it as a [CloudEvent](https://github.com/cloudevents/spec). Cloud event defines `
 
 ## Bindings
 
-In this case, the object is serialized to `byte[]` as well and the input binding receives the raw `byte[]` as-is and 
-deserializes it to the expected object type.
+In this case, the object is serialized to `byte[]` as well and the input binding receives the raw `byte[]` as-is and deserializes it to the expected object type.
 
 {{< tabs ".NET" "Java" >}}
 
