@@ -291,3 +291,21 @@ kubectl config get-users
 ```
 
 You may learn more about webhooks [here](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/).
+
+## Ports not available during `dapr init`
+You might encounter the following error on Windows after attempting to execute `dapr init`:
+
+> PS C:\Users\You> dapr init
+Making the jump to hyperspace...
+Container images will be pulled from Docker Hub
+Installing runtime version 1.14.4
+Downloading binaries and setting up components...
+docker: Error response from daemon: Ports are not available: exposing port TCP 0.0.0.0:52379 -> 0.0.0.0:0: listen tcp4 0.0.0.0:52379: bind: An attempt was made to access a socket in a way forbidden by its access permissions.
+
+To resolve this error, open a command prompt in an elevated terminal and run:
+
+```bash
+nat stop winnat
+dapr init
+net start winnat
+```
