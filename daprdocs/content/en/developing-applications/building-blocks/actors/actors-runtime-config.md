@@ -195,10 +195,6 @@ func configHandler(w http.ResponseWriter, r *http.Request) {
 
 {{< /tabs >}}
 
-## Next steps
-
-{{< button text="Enable actor reminder partitioning >>" page="howto-actors-partitioning.md" >}}
-
 ## Related links
 
 - Refer to the [Dapr SDK documentation and examples]({{< ref "developing-applications/sdks/#sdk-languages" >}}).
