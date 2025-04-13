@@ -14,13 +14,13 @@ Now that you've [authored the workflow and its activities in your application]({
 {{% codetab %}}
 
 Manage your workflow within your code. In the workflow example from the [Author a workflow]({{< ref "howto-author-workflow.md#write-the-application" >}}) guide, the workflow is registered in the code using the following APIs:
-- **start_workflow**: Start an instance of a workflow
-- **get_workflow**: Get information on the status of the workflow
+- **schedule_new_workflow**: Start an instance of a workflow
+- **get_workflow_state**: Get information on the status of the workflow
 - **pause_workflow**: Pauses or suspends a workflow instance that can later be resumed
 - **resume_workflow**: Resumes a paused workflow instance
 - **raise_workflow_event**: Raise an event on a workflow
 - **purge_workflow**: Removes all metadata related to a specific workflow instance
-- **terminate_workflow**: Terminate or stop a particular instance of a workflow
+- **wait_for_workflow_completion**: Complete a particular instance of a workflow
 
 ```python
 from dapr.ext.workflow import WorkflowRuntime, DaprWorkflowContext, WorkflowActivityContext
@@ -34,27 +34,28 @@ eventName = "event1"
 eventData = "eventData"
 
 # Start the workflow
-start_resp = d.start_workflow(instance_id=instanceId, workflow_component=workflowComponent,
-                        workflow_name=workflowName, input=inputData, workflow_options=workflowOptions)
+wf_client.schedule_new_workflow(
+        workflow=hello_world_wf, input=input_data, instance_id=instance_id
+    )
 
 # Get info on the workflow
-getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+wf_client.get_workflow_state(instance_id=instance_id)
 
 # Pause the workflow
-d.pause_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+wf_client.pause_workflow(instance_id=instance_id)
+    metadata = wf_client.get_workflow_state(instance_id=instance_id)
 
 # Resume the workflow
-d.resume_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+wf_client.resume_workflow(instance_id=instance_id)
 
 # Raise an event on the workflow. 
- d.raise_workflow_event(instance_id=instanceId, workflow_component=workflowComponent,
-                    event_name=eventName, event_data=eventData)
+wf_client.raise_workflow_event(instance_id=instance_id, event_name=event_name, data=event_data)
 
 # Purge the workflow
-d.purge_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+wf_client.purge_workflow(instance_id=instance_id)
 
-# Terminate the workflow
-d.terminate_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+# Wait for workflow completion
+wf_client.wait_for_workflow_completion(instance_id, timeout_in_seconds=30)
 ```
 
 {{% /codetab %}}
@@ -137,31 +138,29 @@ Manage your workflow within your code. In the `OrderProcessingWorkflow` example 
 
 ```csharp
 string orderId = "exampleOrderId";
-string workflowComponent = "dapr";
-string workflowName = "OrderProcessingWorkflow";
 OrderPayload input = new OrderPayload("Paperclips", 99.95);
 Dictionary<string, string> workflowOptions; // This is an optional parameter
 
-// Start the workflow. This returns back a "StartWorkflowResponse" which contains the instance ID for the particular workflow instance.
-StartWorkflowResponse startResponse = await daprClient.StartWorkflowAsync(orderId, workflowComponent, workflowName, input, workflowOptions);
+// Start the workflow using the orderId as our workflow ID. This returns a string containing the instance ID for the particular workflow instance, whether we provide it ourselves or not.
+await daprWorkflowClient.ScheduleNewWorkflowAsync(nameof(OrderProcessingWorkflow), orderId, input, workflowOptions);
 
 // Get information on the workflow. This response contains information such as the status of the workflow, when it started, and more!
-GetWorkflowResponse getResponse = await daprClient.GetWorkflowAsync(orderId, workflowComponent, eventName);
+WorkflowState currentState = await daprWorkflowClient.GetWorkflowStateAsync(orderId, orderId);
 
 // Terminate the workflow
-await daprClient.TerminateWorkflowAsync(orderId, workflowComponent);
+await daprWorkflowClient.TerminateWorkflowAsync(orderId);
 
-// Raise an event (an incoming purchase order) that your workflow will wait for. This returns the item waiting to be purchased.
-await daprClient.RaiseWorkflowEventAsync(orderId, workflowComponent, workflowName, input);
+// Raise an event (an incoming purchase order) that your workflow will wait for
+await daprWorkflowClient.RaiseEventAsync(orderId, "incoming-purchase-order", input);
 
 // Pause
-await daprClient.PauseWorkflowAsync(orderId, workflowComponent);
+await daprWorkflowClient.SuspendWorkflowAsync(orderId);
 
 // Resume
-await daprClient.ResumeWorkflowAsync(orderId, workflowComponent);
+await daprWorkflowClient.ResumeWorkflowAsync(orderId);
 
 // Purge the workflow, removing all inbox and history information from associated instance
-await daprClient.PurgeWorkflowAsync(orderId, workflowComponent);
+await daprWorkflowClient.PurgeInstanceAsync(orderId);
 ```
 
 {{% /codetab %}}
