@@ -23,3 +23,8 @@
   state: Alpha
   version: v1
   since: "1.15"
+- component: Local echo
+  link: local-echo
+  state: Stable
+  version: v1
+  since: "1.15"
