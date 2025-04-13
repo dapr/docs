@@ -50,16 +50,22 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 
 | Field              | Required | Details                        | Example             |
 |--------------------|:--------:|--------------------------------|---------------------|
-| type               | Y        | The type of the account.   | `"service_account"` |
-| project_id         | Y        | The project ID associated with this component. | `"project_id"` |
-| private_key_id     | N        | The private key ID  | `"privatekey"` |
-| client_email       | Y        | The client email address | `"client@example.com"` |
-| client_id          | N        | The ID of the client     | `"11111111"` |
-| auth_uri           | N        | The authentication URI   | `"https://accounts.google.com/o/oauth2/auth"` |
-| token_uri          | N        | The authentication token URI | `"https://oauth2.googleapis.com/token"` |
-| auth_provider_x509_cert_url | N | The certificate URL for the auth provider | `"https://www.googleapis.com/oauth2/v1/certs"` |
-| client_x509_cert_url | N | The certificate URL for the client | `"https://www.googleapis.com/robot/v1/metadata/x509/<project-name>.iam.gserviceaccount.com"`|
-| private_key | Y | The private key for authentication | `"privateKey"` |
+| `project_id`         | Y        | The project ID associated with this component. | `"project_id"` |
+| `type`              | N        | The type of the account.   | `"service_account"` |
+| `private_key_id` | N | If using explicit credentials, this field should contain the `private_key_id` field from the service account json document | `"privateKeyId"`|
+| `private_key`    | N | If using explicit credentials, this field should contain the `private_key` field from the service account json. Replace with x509 cert | `12345-12345`|
+| `client_email`   | N | If using explicit credentials, this field should contain the `client_email` field from the service account json  | `"client@email.com"`|
+| `client_id`      | N | If using explicit credentials, this field should contain the `client_id` field from the service account json | `0123456789-0123456789`|
+| `auth_uri`       | N | If using explicit credentials, this field should contain the `auth_uri` field from the service account json | `https://accounts.google.com/o/oauth2/auth`|
+| `token_uri`      | N | If using explicit credentials, this field should contain the `token_uri` field from the service account json | `https://oauth2.googleapis.com/token`|
+| `auth_provider_x509_cert_url` | N | If using explicit credentials, this field should contain the `auth_provider_x509_cert_url` field from the service account json | `https://www.googleapis.com/oauth2/v1/certs`|
+| `client_x509_cert_url` | N | If using explicit credentials, this field should contain the `client_x509_cert_url` field from the service account json | `https://www.googleapis.com/robot/v1/metadata/x509/<PROJECT_NAME>.iam.gserviceaccount.com`|
+
+
+## GCP Credentials
+
+Since the GCP Secret Manager component uses the GCP Go Client Libraries, by default it authenticates using **Application Default Credentials**. This is explained further in the [Authenticate to GCP Cloud services using client libraries](https://cloud.google.com/docs/authentication/client-libraries) guide.
+Also, see how to [Set up Application Default Credentials](https://cloud.google.com/docs/authentication/provide-credentials-adc).
 
 ## Optional per-request metadata properties
 
