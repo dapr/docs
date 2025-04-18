@@ -8,7 +8,7 @@ aliases:
   - '/developing-applications/sdks/serialization/'
 ---
 
-An SDK for Dapr should provide serialization for two use cases. First, for API objects sent through request and response payloads. Second, for objects to be persisted. For both these use cases, a default serialization is provided. 
+Dapr SDKs provide serialization for two use cases. First, for API objects sent through request and response payloads. Second, for objects to be persisted. For both of these cases, a default serialization method is provided in each language SDK.
 
 | Language SDK                 | Default Serializer                                                                                         |
 |------------------------------|------------------------------------------------------------------------------------------------------------|
