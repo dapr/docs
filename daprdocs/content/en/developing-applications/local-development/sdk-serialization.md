@@ -192,7 +192,7 @@ Object serialization and deserialization for Actor method invocation are same as
 the only difference is that the application does not need to deserialize the request or serialize the response since it 
 is all done transparently by the SDK.
 
-For an Actor's methods, the SDK only supports methods with zero or one parameter.
+For Actor methods, the SDK only supports methods with zero or one parameter.
 
 {{< tabs ".NET" "Java" >}}
 
