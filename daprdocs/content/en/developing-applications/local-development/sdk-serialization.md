@@ -160,6 +160,29 @@ In this case, the object is serialized to `byte[]` as well and the input binding
     await client.InvokeBindingAsync("sample", "My Message");
 ```
 
+* Input binding (controllers):
+```csharp
+  [ApiController]
+  public class SampleController : ControllerBase
+  {
+    [HttpPost("propagate")]
+    public ActionResult<string> GetValue([FromBody] int itemId)
+    {
+      Console.WriteLine($"Received message:  {itemId}");
+      return $"itemID:{itemId}";
+    }
+  }
+ ```
+  
+* Input binding (minimal API):
+```csharp
+app.MapPost("value", ([FromBody] int itemId) =>
+{
+  Console.WriteLine($"Received message: {itemId}");
+  return ${itemID:{itemId}";
+});
+* ```
+
 {{% /codetab %}}
 
 <!-- Java -->
