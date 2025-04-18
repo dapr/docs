@@ -122,7 +122,6 @@ Below are code examples that leverage Dapr SDKs to demonstrate an output binding
 The following example demonstrates how to configure an input binding using ASP.NET Core controllers.
 
 ```csharp
-//dependencies
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
