@@ -188,7 +188,7 @@ My Message
 ```
 
 ## Actor Method invocation
-Object serialization and deserialization for invocation of Actor's methods are same as for the service method invocation, 
+Object serialization and deserialization for Actor method invocation are same as for the service method invocation, 
 the only difference is that the application does not need to deserialize the request or serialize the response since it 
 is all done transparently by the SDK.
 
