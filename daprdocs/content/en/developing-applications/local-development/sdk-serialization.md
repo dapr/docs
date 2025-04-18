@@ -40,7 +40,7 @@ Dapr SDKs provide serialization for two use cases. First, for API objects sent t
 
 {{% /codetab %}}
 
-In the example above, the app receives a `POST` request for the `saySomething` method with the request payload as 
+In the example above, the app `myappid` receives a `POST` request for the `saySomething` method with the request payload as 
 `"My Message"` - quoted since the serializer will serialize the input String to JSON.
 
 ```text
