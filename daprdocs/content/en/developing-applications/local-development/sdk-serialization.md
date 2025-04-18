@@ -10,11 +10,11 @@ aliases:
 
 Dapr SDKs provide serialization for two use cases. First, for API objects sent through request and response payloads. Second, for objects to be persisted. For both of these cases, a default serialization method is provided in each language SDK.
 
-| Language SDK                 | Default Serializer                                                                                         |
-|------------------------------|------------------------------------------------------------------------------------------------------------|
-| [.NET]({{< ref dotnet >}}) | DataContracts for remoted actors, System.Text.Json otherwise |                                               |
-| [Java]({{< ref java >}})   | [DefaultObjectSerializer](https://dapr.github.io/java-sdk/io/dapr/serializer/DefaultObjectSerializer.html) for JSON serialization|
-| [JavaScript]({{< ref js >}}) | JSON                                                                                                       | 
+| Language SDK                 | Default Serializer                                                                                                                                                                                                                                          |
+|------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [.NET]({{< ref dotnet >}}) | [DataContracts](https://learn.microsoft.com/en-us/dotnet/framework/wcf/feature-details/using-data-contracts) for remoted actors, [System.Text.Json](https://www.nuget.org/packages/System.Text.Json) otherwise. Read more about .NET serialization [here]({{< ref dotnet-actors-serialization >}}) |                                               |
+| [Java]({{< ref java >}})   | [DefaultObjectSerializer](https://dapr.github.io/java-sdk/io/dapr/serializer/DefaultObjectSerializer.html) for JSON serialization                                                                                                                           |
+| [JavaScript]({{< ref js >}}) | JSON                                                                                                                                                                                                                                                        | 
 
 ## Service invocation
 
