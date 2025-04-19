@@ -147,7 +147,7 @@ The event is published and the content is serialized to `byte[]` and sent to Dap
 
 ## Bindings
 
-In this case, the object is serialized to `byte[]` as well and the input binding receives the raw `byte[]` as-is and deserializes it to the expected object type.
+For output bindings the object is serialized to `byte[]` whereas the input binding receives the raw `byte[]` as-is and deserializes it to the expected object type.
 
 {{< tabs ".NET" "Java" >}}
 
