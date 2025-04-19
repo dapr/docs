@@ -219,7 +219,7 @@ For Actor methods, the SDK only supports methods with zero or one parameter.
 
 {{< tabs ".NET" "Java" >}}
 
-The .NET SDK supports two different serialization types based on whether you're using the strongly-typed (DataContracts)
+The .NET SDK supports two different serialization types based on whether you're using strongly-typed (DataContracts)
 or weakly-typed (DataContracts or System.Text.JSON) actor client. [This document]({{< ref dotnet-actors-serialization >}}) 
 can provide more information about the differences between each and additional considerations to keep in mind.
 
