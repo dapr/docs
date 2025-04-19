@@ -110,7 +110,7 @@ The event is published and the content is serialized to `byte[]` and sent to Dap
 ```csharp
 public async Task<IActionResult> HandleMessage(string message) 
 {
-  //ASP.NET Core automatically deserialize the UTF-8 encoded bytes to a string
+  //ASP.NET Core automatically deserializes the UTF-8 encoded bytes to a string
   return new Ok();
 }
 ```
