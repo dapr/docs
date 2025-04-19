@@ -133,7 +133,7 @@ app.MapPost("/TopicName", [Topic("MyPubSubName", "TopicName")] (string message) 
   client.publishEvent("TopicName", "My Message").block();
 ```
 
-The event is published and the content is serialized to `byte[]` and sent to Dapr sidecar. The subscriber receives it as a [CloudEvent](https://github.com/cloudevents/spec). Cloud event defines `data` as String. Dapr SDK also provides a built-in deserializer for `CloudEvent` object.
+The event is published and the content is serialized to `byte[]` and sent to Dapr sidecar. The subscriber receives it as a [CloudEvent](https://github.com/cloudevents/spec). Cloud event defines `data` as String. The Dapr SDK also provides a built-in deserializer for `CloudEvent` objects.
 
 ```java
   @PostMapping(path = "/TopicName")
