@@ -9,13 +9,13 @@ data:
   otel-collector-config: |
     receivers:
       zipkin:
-        endpoint: 0.0.0.0:9411
+        endpoint: ${env:MY_POD_IP}:9411
     extensions:
       health_check:
       pprof:
-        endpoint: :1888
+        endpoint: ${env:MY_POD_IP}:1888
       zpages:
-        endpoint: :55679
+        endpoint: ${env:MY_POD_IP}:55679
     exporters:
       debug:
         verbosity: basic
@@ -70,7 +70,7 @@ spec:
     spec:
       containers:
       - name: otel-collector
-        image: otel/opentelemetry-collector-contrib:0.101.0
+        image: otel/opentelemetry-collector-contrib:0.123.0
         command:
           - "/otelcol-contrib"
           - "--config=/conf/otel-collector-config.yaml"
@@ -83,6 +83,12 @@ spec:
             memory: 400Mi
         ports:
           - containerPort: 9411 # Default endpoint for Zipkin receiver.
+        env:
+          - name: MY_POD_IP
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: status.podIP
         volumeMounts:
           - name: otel-collector-config-vol
             mountPath: /conf
