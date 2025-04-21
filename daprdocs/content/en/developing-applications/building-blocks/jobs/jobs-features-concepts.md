@@ -20,7 +20,7 @@ interfacing with the Dapr runtime. The name is used as an identifier when creati
 to indicate which job a triggered invocation is associated with.
 
 Only one job can be associated with a name at any given time. Any attempt to create a new job using the same name
-as an existing job will result in an overwrite of this existing job.
+as an existing job will fail. To replace a job, it must first be explicitly deleted and then recreated.
 
 ## Scheduling Jobs
 A job can be scheduled using any of the following mechanisms:
