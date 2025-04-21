@@ -354,7 +354,7 @@ using System.Threading.Tasks;
 const string DAPR_STORE_NAME = "statestore";
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Serivces.AddDaprClient();
+builder.Services.AddDaprClient();
 var app = builder.Build();
 
 //Resolve the DaprClient from the dependency injection registration
