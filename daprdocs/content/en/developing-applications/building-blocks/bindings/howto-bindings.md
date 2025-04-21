@@ -118,7 +118,7 @@ using System.Threading.Tasks;
 using Dapr.Client;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Serivces.AddDaprClient();
+builder.Services.AddDaprClient();
 var app = builder.Build();
 
 const string BINDING_NAME = "checkout";
