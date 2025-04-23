@@ -35,7 +35,7 @@ Dapr SDKs provide serialization for two use cases. First, for API objects sent t
 
 ```java
     DaprClient client = (new DaprClientBuilder()).build();
-    client.invokeService("myappid", "saySomething", "My Message", HttpExtension.POST).block();
+    client.invokeMethod("myappid", "saySomething", "My Message", HttpExtension.POST).block();
 ```
 
 {{% /codetab %}}
