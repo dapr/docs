@@ -232,7 +232,7 @@ Do this:
 // Do this!!
 DateTime currentTime = context.CurrentUtcDateTime;
 Guid newIdentifier = context.NewGuid();
-string randomString = await context.CallActivityAsync<string>("GetRandomString");
+string randomString = await context.CallActivityAsync<string>(nameof("GetRandomString")); //Use "nameof" to prevent specifying an activity name that does not exist in your application 
 ```
 
 {{% /codetab %}}
@@ -339,7 +339,7 @@ Do this:
 ```csharp
 // Do this!!
 string configuration = workflowInput.Configuration; // imaginary workflow input argument
-string data = await context.CallActivityAsync<string>("MakeHttpCall", "https://example.com/api/data");
+string data = await context.CallActivityAsync<string>(nameof("MakeHttpCall"), "https://example.com/api/data");
 ```
 
 {{% /codetab %}}
@@ -439,7 +439,7 @@ Do this:
 
 ```csharp
 // Do this!!
-Task t = context.CallActivityAsync("DoSomething");
+Task t = context.CallActivityAsync(nameof("DoSomething"));
 await context.CreateTimer(5000).ConfigureAwait(true);
 ```
 
