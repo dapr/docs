@@ -13,9 +13,9 @@ data:
     extensions:
       health_check:
       pprof:
-        endpoint: ${env:MY_POD_IP}:1888
+        endpoint: :1888
       zpages:
-        endpoint: ${env:MY_POD_IP}:55679
+        endpoint: :55679
     exporters:
       debug:
         verbosity: basic
