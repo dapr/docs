@@ -2,7 +2,7 @@
 type: docs
 title: "How to: Integrate with Argo CD"
 linkTitle: "Argo CD"
-weight: 8000
+weight: 9000
 description: "Integrate Dapr into your GitOps pipeline"
 ---
 
