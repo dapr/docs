@@ -88,6 +88,10 @@ For example, if installing using the example above, the Cassandra DNS would be:
 
 {{< /tabs >}}
 
+## Apache Ignite
+
+[Apache Ignite](https://ignite.apache.org/)'s integration with Cassandra as a caching layer is not supported by this component.
+
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
 - Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
