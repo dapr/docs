@@ -12,6 +12,6 @@ description: "Integrate Dapr into your GitOps pipeline"
 
 You can use Argo CD to manage the deployment of Dapr control plane components and Dapr-enabled applications. By adopting a GitOps approach, you ensure that Dapr's configurations and applications are consistently deployed, versioned, and auditable across your environments. Argo CD can be easily configured to deploy Helm charts, manifests, and Dapr components stored in Git repositories.
 
-**Example:**  
+## Samples code
 
 A sample project demonstrating Dapr deployment with Argo CD is available at [https://github.com/dapr/samples/dapr-argocd](https://github.com/dapr/samples/dapr-argocd).
