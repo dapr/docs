@@ -14,4 +14,4 @@ You can use Argo CD to manage the deployment of Dapr control plane components an
 
 ## Samples code
 
-A sample project demonstrating Dapr deployment with Argo CD is available at [https://github.com/dapr/samples/dapr-argocd](https://github.com/dapr/samples/dapr-argocd).
+A sample project demonstrating Dapr deployment with Argo CD is available at [https://github.com/dapr/samples/tree/master/dapr-argocd](https://github.com/dapr/samples/tree/master/dapr-argocd).
