@@ -12,7 +12,7 @@ This means that there is no additional parameter required to run the scheduler s
 
 {{% alert title="Warning" color="warning" %}}
 The default storage size for the Scheduler is `1Gi`, which is likely not sufficient for most production deployments.
-Remember that the Scheduler is used for [Actor Reminders]({{< ref actors-timers-reminders.md >}}) & [Workflows]({{< ref workflow-overview.md >}}) when the [SchedulerReminders]({{< ref support-preview-features.md >}}) preview feature is enabled, and the [Jobs API]({{< ref jobs_api.md >}}).
+Remember that the Scheduler is used for [Actor Reminders]({{< ref actors-timers-reminders.md >}}) & [Workflows]({{< ref workflow-overview.md >}}), and the [Jobs API]({{< ref jobs_api.md >}}).
 You may want to consider reinstalling Dapr with a larger Scheduler storage of at least `16Gi` or more.
 For more information, see the [ETCD Storage Disk Size](#etcd-storage-disk-size) section below.
 {{% /alert %}}
@@ -30,8 +30,8 @@ error running scheduler: etcdserver: mvcc: database space exceeded
 ```
 
 Knowing the safe upper bound for your storage size is not an exact science, and relies heavily on the number, persistence, and the data payload size of your application jobs.
-The [Job API]({{< ref jobs_api.md >}}) and [Actor Reminders]({{< ref actors-timers-reminders.md >}}) (with the [SchedulerReminders]({{< ref support-preview-features.md >}}) preview feature enabled) transparently maps one to one to the usage of your applications.
-Workflows (when the [SchedulerReminders]({{< ref support-preview-features.md >}}) preview feature is enabled) create a large number of jobs as Actor Reminders, however these jobs are short lived- matching the lifecycle of each workflow execution.
+The [Job API]({{< ref jobs_api.md >}}) and [Actor Reminders]({{< ref actors-timers-reminders.md >}}) transparently maps one to one to the usage of your applications.
+Workflows create a large number of jobs as Actor Reminders, however these jobs are short lived- matching the lifecycle of each workflow execution.
 The data payload of jobs created by Workflows is typically empty or small.
 
 The Scheduler uses Etcd as its storage backend database.
