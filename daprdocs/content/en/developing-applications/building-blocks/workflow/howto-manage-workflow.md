@@ -14,13 +14,13 @@ Now that you've [authored the workflow and its activities in your application]({
 {{% codetab %}}
 
 Manage your workflow within your code. In the workflow example from the [Author a workflow]({{< ref "howto-author-workflow.md#write-the-application" >}}) guide, the workflow is registered in the code using the following APIs:
-- **start_workflow**: Start an instance of a workflow
-- **get_workflow**: Get information on the status of the workflow
+- **schedule_new_workflow**: Start an instance of a workflow
+- **get_workflow_state**: Get information on the status of the workflow
 - **pause_workflow**: Pauses or suspends a workflow instance that can later be resumed
 - **resume_workflow**: Resumes a paused workflow instance
 - **raise_workflow_event**: Raise an event on a workflow
 - **purge_workflow**: Removes all metadata related to a specific workflow instance
-- **terminate_workflow**: Terminate or stop a particular instance of a workflow
+- **wait_for_workflow_completion**: Complete a particular instance of a workflow
 
 ```python
 from dapr.ext.workflow import WorkflowRuntime, DaprWorkflowContext, WorkflowActivityContext
@@ -34,27 +34,28 @@ eventName = "event1"
 eventData = "eventData"
 
 # Start the workflow
-start_resp = d.start_workflow(instance_id=instanceId, workflow_component=workflowComponent,
-                        workflow_name=workflowName, input=inputData, workflow_options=workflowOptions)
+wf_client.schedule_new_workflow(
+        workflow=hello_world_wf, input=input_data, instance_id=instance_id
+    )
 
 # Get info on the workflow
-getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+wf_client.get_workflow_state(instance_id=instance_id)
 
 # Pause the workflow
-d.pause_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+wf_client.pause_workflow(instance_id=instance_id)
+    metadata = wf_client.get_workflow_state(instance_id=instance_id)
 
 # Resume the workflow
-d.resume_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+wf_client.resume_workflow(instance_id=instance_id)
 
 # Raise an event on the workflow. 
- d.raise_workflow_event(instance_id=instanceId, workflow_component=workflowComponent,
-                    event_name=eventName, event_data=eventData)
+wf_client.raise_workflow_event(instance_id=instance_id, event_name=event_name, data=event_data)
 
 # Purge the workflow
-d.purge_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+wf_client.purge_workflow(instance_id=instance_id)
 
-# Terminate the workflow
-d.terminate_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+# Wait for workflow completion
+wf_client.wait_for_workflow_completion(instance_id, timeout_in_seconds=30)
 ```
 
 {{% /codetab %}}
