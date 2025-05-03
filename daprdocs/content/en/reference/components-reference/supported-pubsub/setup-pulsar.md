@@ -91,6 +91,7 @@ The above example uses secrets as plain strings. It is recommended to use a [sec
 | keys          | N  | A comma delimited string containing names of [Pulsar session keys](https://pulsar.apache.org/docs/3.0.x/security-encryption/#how-it-works-in-pulsar). Used in conjunction with `publicKey` for publisher encryption |
 | processMode | N | Enable processing multiple messages at once. Default: `"async"` | `"async"`, `"sync"`|
 | subscribeType | N | Pulsar supports four kinds of [subscription types](https://pulsar.apache.org/docs/3.0.x/concepts-messaging/#subscription-types). Default: `"shared"` | `"shared"`, `"exclusive"`, `"failover"`, `"key_shared"`|
+| subscribeInitialPosition | N | Subscription position is the initial position which the cursor is set when start consuming. Default: `"latest"` | `"latest"`, `"earliest"` |
 | partitionKey | N | Sets the key of the message for routing policy. Default: `""` | |
 | `maxConcurrentHandlers` | N  | Defines the maximum number of concurrent message handlers. Default: `100` | `10`
 
