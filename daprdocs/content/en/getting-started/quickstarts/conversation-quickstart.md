@@ -96,7 +96,7 @@ apps:
 
 #### Echo mock LLM component
 
-In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components) directly of the quickstart, the [`conversation.yaml` file](https://github.com/dapr/quickstarts/tree/master/conversation/components/conversation.yml) configures the echo LLM component. 
+In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components) directly of the quickstart, the [`conversation.yaml` file](https://github.com/dapr/quickstarts/tree/master/conversation/components/conversation.yaml) configures the echo LLM component. 
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -215,7 +215,7 @@ apps:
 
 #### Echo mock LLM component
 
-In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components) directly of the quickstart, the [`conversation.yaml` file](https://github.com/dapr/quickstarts/tree/master/conversation/components/conversation.yml) configures the echo LLM component. 
+In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components) directly of the quickstart, the [`conversation.yaml` file](https://github.com/dapr/quickstarts/tree/master/conversation/components/conversation.yaml) configures the echo LLM component. 
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -345,7 +345,7 @@ apps:
 
 #### Echo mock LLM component
 
-In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components), the [`conversation.yaml` file](https://github.com/dapr/quickstarts/tree/master/conversation/components/conversation.yml) configures the echo mock LLM component. 
+In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components), the [`conversation.yaml` file](https://github.com/dapr/quickstarts/tree/master/conversation/components/conversation.yaml) configures the echo mock LLM component. 
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -475,7 +475,7 @@ apps:
 
 #### Echo mock LLM component
 
-In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components) directly of the quickstart, the [`conversation.yaml` file](https://github.com/dapr/quickstarts/tree/master/conversation/components/conversation.yml) configures the echo LLM component. 
+In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components) directly of the quickstart, the [`conversation.yaml` file](https://github.com/dapr/quickstarts/tree/master/conversation/components/conversation.yaml) configures the echo LLM component. 
 
 ```yml
 apiVersion: dapr.io/v1alpha1
