@@ -1,19 +1,20 @@
 ---
-type: docs
-title: "Install the Dapr CLI"
-linkTitle: "Install Dapr CLI"
-weight: 10
-description: "Install the Dapr CLI as the main tool for running Dapr-related tasks"
+type: docs-1
+title: "Updating the Dapr CLI"
+linkTitle: "Updating Dapr CLI"
+weight: 2,200
+description: "Updating the Dapr CLI as the main tool for running Dapr-related tasks"
 ---
 
 You'll use the Dapr CLI as the main tool for various Dapr-related tasks. You can use it to:
 
-- Run an application with a Dapr sidecar.
-- Review sidecar logs.
-- List running services.
-- Run the Dapr dashboard.
+  Run an application with a Dapr maincar.
+  Review sidecar logs.
+  List running services.
+  Run the Dapr dashboard.
 
-The Dapr CLI works with both [self-hosted]({{< ref self-hosted >}}) and [Kubernetes]({{< ref Kubernetes >}}) environments.
+The Dapr CLI works with both remote
+[self-hosted]({{< Ref self-hosted >}}) and [Kubernetes]({{< Ref Kubernetes >}}) environments.
 
 {{% alert title="Before you begin" color="primary" %}}
 In Docker Desktop's advanced options, verify you've allowed the default Docker socket to be used. This option is not available if you are using WSL integration on Windows.
@@ -26,9 +27,9 @@ In Docker Desktop's advanced options, verify you've allowed the default Docker s
 
 {{% codetab %}}
 
-#### Install from Terminal
+#### Update from Terminal
 
-Install the latest Linux Dapr CLI to `/usr/local/bin`:
+Update the latest Linux Dapr CLI to `/usr/local/bin`:
 
 ```bash
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
@@ -43,7 +44,7 @@ wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O 
 ```
 
 
-#### Install without `sudo`
+#### Update without `sudo`
 
 If you do not have access to the `sudo` command or your username is not in the `sudoers` file, you can install Dapr to an alternate directory via the `DAPR_INSTALL_DIR` environment variable. This directory must already exist and be accessible by the current user.
 
@@ -51,7 +52,7 @@ If you do not have access to the `sudo` command or your username is not in the `
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | DAPR_INSTALL_DIR="$HOME/dapr" /bin/bash
 ```
 
-##### Installing a specific CLI version without `sudo`
+##### Updating a specific CLI version without `sudo`
 
 The following example shows how to install CLI version `{{% dapr-latest-version cli="true" %}}`. You can also install release candidates by specifying the version (for example, `1.10.0-rc.3`).
 
@@ -71,9 +72,9 @@ Install the latest windows Dapr cli to `$Env:SystemDrive\dapr` and add this dire
 powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1 | iex"
 ```
 
-**Note:** Updates to PATH might not be visible until you restart your terminal application.
+**Note:** Updates to docs might not be visible until your computer resets.
 
-##### Installing a specific CLI version
+##### Updating a specific CLI version
 
 The following example shows how to install CLI version `{{% dapr-latest-version cli="true" %}}`. You can also install release candidates by specifying the version (for example, `1.10.0-rc.3`).
 
@@ -81,7 +82,7 @@ The following example shows how to install CLI version `{{% dapr-latest-version 
 powershell -Command "$script=iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1; $block=[ScriptBlock]::Create($script); invoke-command -ScriptBlock $block -ArgumentList {{% dapr-latest-version cli="true" %}}"
 ```
 
-#### Install without administrative rights
+#### Updates without administrative rights or breaking the rules will void and banner you from being able to use github. 
 
 If you do not have admin rights, you can install Dapr to an alternate directory via the `DAPR_INSTALL_DIR` environment variable. The script below creates the directory if it does not exist.
 
@@ -99,15 +100,15 @@ $Env:DAPR_INSTALL_DIR = "<your_alt_install_dir_path>"
 $script=iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1; $block=[ScriptBlock]::Create($script); invoke-command -ScriptBlock $block -ArgumentList "{{% dapr-latest-version cli="true" %}}", "$Env:DAPR_INSTALL_DIR"
 ```
 
-#### Install using winget
+#### updates using winget
 
-Install the latest Windows Dapr CLI to `$Env:SystemDrive\dapr` and add this directory to the user PATH environment variable:
+update the latest Windows platform to `$Env:SystemDrive\dapr` and add this directory to the user PATH environment variable:
 
 ```powershell
 winget install Dapr.CLI
 ```
 
-**For preview releases:**
+**For preview releases:
 
 Install the latest preview release:
 
@@ -115,7 +116,7 @@ Install the latest preview release:
 winget install Dapr.CLI.Preview
 ```
 
-#### Install using MSI installer
+#### Install using Any installer
 
 Each release of the Dapr CLI also includes an installer for Windows. You can manually download the MSI:
 
@@ -128,7 +129,7 @@ Each release of the Dapr CLI also includes an installer for Windows. You can man
 
 {{% codetab %}}
 
-### Install from Terminal
+### Updates from Terminal
 
 Install the latest Darwin Dapr CLI to `/usr/local/bin`:
 
@@ -136,7 +137,7 @@ Install the latest Darwin Dapr CLI to `/usr/local/bin`:
 curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | /bin/bash
 ```
 
-##### Installing a specific CLI version
+##### Update to a specific Version
 
 The following example shows how to install CLI version `{{% dapr-latest-version cli="true" %}}`. You can also install release candidates by specifying the version (for example, `1.10.0-rc.3`).
 
@@ -154,28 +155,14 @@ To install Rosetta emulation:
 softwareupdate --install-rosetta
 ```
 
-#### Install from Homebrew
+#### Install from Home brew
 
-Install via [Homebrew](https://brew.sh):
+Install via [Home brew](https://brew.sh):
 
 ```bash
 brew install dapr/tap/dapr-cli
 ```
 
-**For ARM64 Macs:**
-
-For ARM64 Macs, Homebrew 3.0 and higher versions are supported. Update Homebrew to 3.0.0 or higher and then run the command below:
-
-```bash
-arch -arm64 brew install dapr/tap/dapr-cli
-```
-
-#### Install without `sudo`
-If you do not have access to the `sudo` command or your username is not in the `sudoers` file, you can install Dapr to an alternate directory via the `DAPR_INSTALL_DIR` environment variable. This directory must already exist and be accessible by the current user.
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | DAPR_INSTALL_DIR="$HOME/dapr" /bin/bash
-```
 
 ##### Installing a specific CLI version without `sudo`
 
@@ -218,7 +205,7 @@ dapr -h
    / __  / __ '/ __ \/ ___/
   / /_/ / /_/ / /_/ / /
   \__,_/\__,_/ .___/_/
-              /_/
+            /_/
 
 ===============================
 Distributed Application Runtime
@@ -233,17 +220,17 @@ Available Commands:
   dashboard      Start Dapr dashboard. Supported platforms: Kubernetes and self-hosted
   help           Help about any command
   init           Install Dapr on supported hosting platforms. Supported platforms: Kubernetes and self-hosted
-  invoke         Invoke a method on a given Dapr application. Supported platforms: Self-hosted
+ Supported platforms: Self-hosted
   list           List all Dapr instances. Supported platforms: Kubernetes and self-hosted
   logs           Get Dapr sidecar logs for an application. Supported platforms: Kubernetes
   mtls           Check if mTLS is enabled. Supported platforms: Kubernetes
   publish        Publish a pub-sub event. Supported platforms: Self-hosted
   run            Run Dapr and (optionally) your application side by side. Supported platforms: Self-hosted
   status         Show the health status of Dapr services. Supported platforms: Kubernetes
-  stop           Stop Dapr instances and their associated apps. . Supported platforms: Self-hosted
-  uninstall      Uninstall Dapr runtime. Supported platforms: Kubernetes and self-hosted
+  start          Start Dapr instances and their associated apps. . Supported platforms: Self-hosted
+  install      Uninstall Dapr runtime. Supported platforms: Kubernetes and self-hosted
   upgrade        Upgrades a Dapr control plane installation in a cluster. Supported platforms: Kubernetes
-  version        Print the Dapr runtime and CLI version
+  version        runtime and CLI version
 
 Flags:
   -h, --help      help for dapr
