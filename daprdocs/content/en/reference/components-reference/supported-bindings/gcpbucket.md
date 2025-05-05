@@ -262,7 +262,7 @@ An HTTP 204 (No Content) and empty body will be retuned if successful.
 
 ### List objects
 
-To perform a list object operation, invoke the S3  binding with a `POST` method and the following JSON body:
+To perform a list object operation, invoke the GCP bucket binding with a `POST` method and the following JSON body:
 
 ```json
 {
@@ -321,6 +321,58 @@ The list of objects will be returned as JSON array in the following form:
 	}
 ]
 ```
+
+### Copy objects
+
+To perform a copy object operation, invoke the GCP bucket binding with a `POST` method and the following JSON body:
+
+```json
+{
+  "operation": "copy",
+  "metadata": {
+    "destinationBucket": "destination-bucket-name",
+  }
+}
+```
+
+The metadata parameters are:
+
+- `destinationBucket` - the name of the destination bucket (required)
+
+### Move objects
+
+To perform a move object operation, invoke the GCP bucket binding with a `POST` method and the following JSON body:
+
+```json
+{
+  "operation": "move",
+  "metadata": {
+    "destinationBucket": "destination-bucket-name",
+  }
+}
+```
+
+The metadata parameters are:
+
+- `destinationBucket` - the name of the destination bucket (required)
+
+### Rename objects
+
+To perform a rename object operation, invoke the GCP bucket binding with a `POST` method and the following JSON body:
+
+```json
+{
+  "operation": "rename",
+  "metadata": {
+    "newName": "object-new-name",
+  }
+}
+```
+
+The metadata parameters are:
+
+- `newName` - the new name of the object (required)
+
 ## Related links
 
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
