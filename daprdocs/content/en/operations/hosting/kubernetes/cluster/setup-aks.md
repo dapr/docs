@@ -39,7 +39,7 @@ This guide walks you through installing an Azure Kubernetes Service (AKS) cluste
 1. Create an AKS cluster. To use a specific version of Kubernetes, use `--kubernetes-version` (1.13.x or newer version required).
 
    ```bash
-   az aks create --resource-group [your_resource_group] --name [your_aks_cluster_name] --node-count 2 --enable-addons http_application_routing --generate-ssh-keys
+   az aks create --resource-group [your_resource_group] --name [your_aks_cluster_name] --location [region] --node-count 2 --enable-app-routing --generate-ssh-keys
    ```
 
 1. Get the access credentials for the AKS cluster.

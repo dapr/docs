@@ -113,7 +113,7 @@ Configure your application to receive incoming events. If you're using HTTP, you
 - Listen on a `POST` endpoint with the name of the binding, as specified in `metadata.name` in the `binding.yaml` file. 
 - Verify your application allows Dapr to make an `OPTIONS` request for this endpoint.
 
-Below are code examples that leverage Dapr SDKs to demonstrate an output binding.
+Below are code examples that leverage Dapr SDKs to demonstrate an input binding.
 
 {{< tabs ".NET" Java Python Go JavaScript>}}
 
