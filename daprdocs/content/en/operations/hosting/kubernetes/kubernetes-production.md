@@ -159,7 +159,7 @@ spec:
 
 ## Deploy Dapr with Helm
 
-[Visit the full guide on deploying Dapr with Helm]({{< ref "kubernetes-deploy.md#install-with-helm-advanced" >}}).
+[Visit the full guide on deploying Dapr with Helm]({{< ref "kubernetes-deploy.md#install-with-helm" >}}).
 
 ### Parameters file
 
