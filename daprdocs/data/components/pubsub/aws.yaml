@@ -1,8 +1,0 @@
-- component: AWS SNS/SQS
-  link: setup-aws-snssqs
-  state: Stable
-  version: v1
-  since: "1.10"
-  features:
-    bulkPublish: false
-    bulkSubscribe: false

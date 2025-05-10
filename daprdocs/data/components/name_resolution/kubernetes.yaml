@@ -1,5 +1,0 @@
-- component: Kubernetes
-  link: nr-kubernetes
-  state: Stable
-  version: v1
-  since: "1.0"

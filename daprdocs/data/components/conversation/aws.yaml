@@ -1,5 +1,0 @@
-- component: AWS Bedrock
-  link: aws-bedrock
-  state: Alpha
-  version: v1
-  since: "1.15"
