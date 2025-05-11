@@ -119,28 +119,35 @@ Below are code examples that leverage Dapr SDKs to demonstrate an input binding.
 
 {{% codetab %}}
 
+The following example demonstrates how to configure an input binding using ASP.NET Core controllers.
+
 ```csharp
-//dependencies
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
 using Microsoft.AspNetCore.Mvc;
 
-//code
-namespace CheckoutService.controller
+namespace CheckoutService.controller;
+
+[ApiController]
+public sealed class CheckoutServiceController : ControllerBase
 {
-    [ApiController]
-    public class CheckoutServiceController : Controller
+    [HttpPost("/checkout")]
+    public ActionResult<string> getCheckout([FromBody] int orderId)
     {
-        [HttpPost("/checkout")]
-        public ActionResult<string> getCheckout([FromBody] int orderId)
-        {
-            Console.WriteLine("Received Message: " + orderId);
-            return "CID" + orderId;
-        }
+        Console.WriteLine($"Received Message: {orderId}");
+        return $"CID{orderId}";
     }
 }
+```
 
+The following example demonstrates how to configure the same input binding using a minimal API approach:
+```csharp
+app.MapPost("checkout", ([FromBody] int orderId) =>
+{
+    Console.WriteLine($"Received Message: {orderId}");
+    return $"CID{orderId}"
+});
 ```
 
 {{% /codetab %}}
