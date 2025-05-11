@@ -31,7 +31,7 @@ Some Azure components offer alternative authentication methods, such as systems 
 
 ### Managed Identities and Workload Identity
 
-With Managed Identities (MI), your application can authenticate with Microsoft Entra ID and obtain an access token to make requests to Azure services. When your application is running on a supported Azure service (such as Azure VMs, Azure Container Apps, Azure Web Apps, etc), an identity for your application can be assigned at the infrastructure level.
+With Managed Identities (MI), your application can authenticate with Microsoft Entra ID and obtain an access token to make requests to Azure services. When your application is running on a supported Azure service (such as Azure VMs, Azure Container Apps, Azure Web Apps, etc), an identity for your application can be assigned at the infrastructure level. You can also setup Microsoft Entra ID to federate trust to your Dapr application identity directly by using a [Federated Identity Credential](https://learn.microsoft.com/en-us/graph/api/resources/federatedidentitycredentials-overview?view=graph-rest-1.0). This allows you to configure access to your Microsoft resources even when not running on Microsoft infrastructure. To see how to configure Dapr to use a federated identity, see the section on [Authenticating with a Federated Identity Credential](#authenticating-with-a-federated-identity-credential).
 
 Once using MI, your code doesn't have to deal with credentials, which:
 
@@ -111,6 +111,85 @@ When running on Kubernetes, you can also use references to Kubernetes secrets fo
 #### Authenticating with Workload Identity on AKS
 
 When running on Azure Kubernetes Service (AKS), you can authenticate components using Workload Identity. Refer to the Azure AKS documentation on [enabling Workload Identity](https://learn.microsoft.com/azure/aks/workload-identity-overview) for your Kubernetes resources.
+
+#### Authenticating with a Federated Identity Credential
+
+You can use a [Federated Identity Credential](https://learn.microsoft.com/en-us/graph/api/resources/federatedidentitycredentials-overview?view=graph-rest-1.0) in Microsoft Entra ID to federate trust directly to your Dapr installation regardless of where it is running. This allows you to easily configure access rules against your Dapr application's [SPIFFE](https://spiffe.io/) ID consistently across different clouds.
+
+In order to federate trust, you must be running Dapr Sentry with JWT issuing and OIDC discovery enabled. These can be configured using the following Dapr Sentry helm values:
+
+```yaml
+jwt:
+  enabled: true
+  issuer: <my-issuer-domain>
+  audiences:
+  - "api://AzureADTokenExchange"
+
+oidc:
+  httpPort: 9082 # any none zero port
+  tls:
+    certFile: /path/to/tls/cert.pem
+    keyFile: /path/to/tls/key.pem
+```
+
+This will expose the following endpoints on your Dapr Sentry installation on the provided OIDC HTTP port:
+```
+/.well-known/openid-configuration
+/jwks.json
+```
+
+In order for Microsoft Entra ID to be able to access those endpoints, you must expose them on a public address. You must ensure that the domain that you are serving these endpoints via is the same as the issuer you provided or added to the list of supported OIDC domains via the helm value `oidc.domains`.
+
+You can now create your federated credential in Microsoft Entra ID. 
+
+```shell
+cat > creds.json <<EOF
+{ 
+  "name": "DaprSpiffe", 
+  "issuer": "https://<my-issuer-domain>", 
+  "subject": spiffe://public/ns/<dapr-app-id-namespace>/<dapr-app-id>",
+  "audiences": ["api://AzureADTokenExchange"], 
+  "description": "Credential for Dapr App ID" 
+}
+EOF
+
+export APP_ID=$(az ad app create --display-name my-dapr-app --enable-access-token-issuance --enable-id-token-issuance | jq .id)
+az ad sp create --id $APP_ID
+az ad app federated-credential create --id $APP_ID --parameters ./creds.json
+```
+
+Now that you have a federated credential for you Microsoft Entra ID Application Registration, you can assign the desired roles to it's service principal.
+
+An example of assigning "Storage Blob Data Owner" role is below
+```shell
+az role assignment create --assignee-object-id $APP_ID --assignee-principal-type ServicePrincipal --role "Storage Blob Data Owner" --scope "/subscriptions/$SUBSCRIPTION/resourceGroups/$GROUP/providers/Microsoft.Storage/storageAccounts/$ACCOUNT_NAME"
+```
+
+To configure a Dapr Component to access an Azure resource using the federated credentail, you first need to fetch your `clientId` and `tenantId`:
+```shell
+CLIENT_ID=$(az ad app show --id $APP_ID --query appId --output tsv)
+TENANT_ID=$(az account show --query tenantId --output tsv)
+```
+
+Then you can create your Azure Dapr Component and simply provide those value:
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: azureblob
+spec:
+  type: state.azure.blobstorage
+  version: v2
+  metadata:
+  - name: clientId
+    value: $CLIENT_ID
+  - name: tenantId
+    value:  $TENANT_ID
+  - name: accountName
+    value: $ACCOUNT_NAME
+  - name: containerName
+    value: $CONTAINER_NAME
+```
 
 #### Authenticating using Azure CLI credentials (development-only)
 
