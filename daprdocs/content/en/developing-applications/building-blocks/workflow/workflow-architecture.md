@@ -23,7 +23,7 @@ The Dapr Workflow engine is internally powered by Dapr's actor runtime. The foll
 
 To use the Dapr Workflow building block, you write workflow code in your application using the Dapr Workflow SDK, which internally connects to the sidecar using a gRPC stream. This registers the workflow and any workflow activities, or tasks that workflows can schedule.
 
-The engine is embedded directly into the sidecar and implemented using the [`durabletask-go`](https://github.com/microsoft/durabletask-go) framework library. This framework allows you to swap out different storage providers, including a storage provider created for Dapr that leverages internal actors behind the scenes. Since Dapr Workflows use actors, you can store workflow state in state stores.
+The engine is embedded directly into the sidecar and implemented using the [`durabletask-go`](https://github.com/dapr/durabletask-go) framework library. This framework allows you to swap out different storage providers, including a storage provider created for Dapr that leverages internal actors behind the scenes. Since Dapr Workflows use actors, you can store workflow state in state stores.
 
 ## Sidecar interactions
 
