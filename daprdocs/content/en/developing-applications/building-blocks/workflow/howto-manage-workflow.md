@@ -138,31 +138,29 @@ Manage your workflow within your code. In the `OrderProcessingWorkflow` example 
 
 ```csharp
 string orderId = "exampleOrderId";
-string workflowComponent = "dapr";
-string workflowName = "OrderProcessingWorkflow";
 OrderPayload input = new OrderPayload("Paperclips", 99.95);
 Dictionary<string, string> workflowOptions; // This is an optional parameter
 
-// Start the workflow. This returns back a "StartWorkflowResponse" which contains the instance ID for the particular workflow instance.
-StartWorkflowResponse startResponse = await daprClient.StartWorkflowAsync(orderId, workflowComponent, workflowName, input, workflowOptions);
+// Start the workflow using the orderId as our workflow ID. This returns a string containing the instance ID for the particular workflow instance, whether we provide it ourselves or not.
+await daprWorkflowClient.ScheduleNewWorkflowAsync(nameof(OrderProcessingWorkflow), orderId, input, workflowOptions);
 
 // Get information on the workflow. This response contains information such as the status of the workflow, when it started, and more!
-GetWorkflowResponse getResponse = await daprClient.GetWorkflowAsync(orderId, workflowComponent, eventName);
+WorkflowState currentState = await daprWorkflowClient.GetWorkflowStateAsync(orderId, orderId);
 
 // Terminate the workflow
-await daprClient.TerminateWorkflowAsync(orderId, workflowComponent);
+await daprWorkflowClient.TerminateWorkflowAsync(orderId);
 
-// Raise an event (an incoming purchase order) that your workflow will wait for. This returns the item waiting to be purchased.
-await daprClient.RaiseWorkflowEventAsync(orderId, workflowComponent, workflowName, input);
+// Raise an event (an incoming purchase order) that your workflow will wait for
+await daprWorkflowClient.RaiseEventAsync(orderId, "incoming-purchase-order", input);
 
 // Pause
-await daprClient.PauseWorkflowAsync(orderId, workflowComponent);
+await daprWorkflowClient.SuspendWorkflowAsync(orderId);
 
 // Resume
-await daprClient.ResumeWorkflowAsync(orderId, workflowComponent);
+await daprWorkflowClient.ResumeWorkflowAsync(orderId);
 
 // Purge the workflow, removing all inbox and history information from associated instance
-await daprClient.PurgeWorkflowAsync(orderId, workflowComponent);
+await daprWorkflowClient.PurgeInstanceAsync(orderId);
 ```
 
 {{% /codetab %}}
