@@ -110,40 +110,30 @@ The code examples below leverage Dapr SDKs to invoke the output bindings endpoin
 
 {{% codetab %}}
 
+Here's an example of using a console app with top-level statements in .NET 6+:
+
 ```csharp
-//dependencies
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using Dapr.Client;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading;
 
-//code
-namespace EventService
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDaprClient();
+var app = builder.Build();
+
+const string BINDING_NAME = "checkout";
+const string BINDING_OPERATION = "create";
+
+var random = new Random();
+using var daprClient = app.Services.GetRequiredService<DaprClient>();
+
+while (true)
 {
-    class Program
-    {
-        static async Task Main(string[] args)
-        {
-            string BINDING_NAME = "checkout";
-            string BINDING_OPERATION = "create";
-            while(true)
-            {
-                System.Threading.Thread.Sleep(5000);
-                Random random = new Random();
-                int orderId = random.Next(1,1000);
-                using var client = new DaprClientBuilder().Build();
-                //Using Dapr SDK to invoke output binding
-                await client.InvokeBindingAsync(BINDING_NAME, BINDING_OPERATION, orderId);
-                Console.WriteLine("Sending message: " + orderId);
-            }
-        }
-    }
+    await Task.Delay(TimeSpan.FromSeconds(5));
+    var orderId = random.Next(1, 1000);
+    await client.InvokeBindingAsync(BINDING_NAME, BINDING_OPERATION, orderId);
+    Console.WriteLine($"Sending message: {orderId}"); 
 }
-
 ```
 
 {{% /codetab %}}
