@@ -318,8 +318,8 @@ Manage your workflow using HTTP calls. The example below plugs in the properties
 
 To start your workflow with an ID `12345678`, run:
 
-```http
-POST http://localhost:3500/v1.0/workflows/dapr/OrderProcessingWorkflow/start?instanceID=12345678
+```shell
+curl -X POST "http://localhost:3500/v1.0/workflows/dapr/OrderProcessingWorkflow/start?instanceID=12345678"
 ```
 
 Note that workflow instance IDs can only contain alphanumeric characters, underscores, and dashes.
@@ -328,16 +328,16 @@ Note that workflow instance IDs can only contain alphanumeric characters, unders
 
 To terminate your workflow with an ID `12345678`, run:
 
-```http
-POST http://localhost:3500/v1.0/workflows/dapr/12345678/terminate
+```shell
+curl -X POST "http://localhost:3500/v1.0/workflows/dapr/12345678/terminate"
 ```
 
 ### Raise an event
 
 For workflow components that support subscribing to external events, such as the Dapr Workflow engine, you can use the following "raise event" API to deliver a named event to a specific workflow instance.
 
-```http
-POST http://localhost:3500/v1.0/workflows/<workflowComponentName>/<instanceID>/raiseEvent/<eventName>
+```shell
+curl -X POST "http://localhost:3500/v1.0/workflows/<workflowComponentName>/<instanceID>/raiseEvent/<eventName>"
 ```
 
 > An `eventName` can be any function. 
@@ -346,14 +346,14 @@ POST http://localhost:3500/v1.0/workflows/<workflowComponentName>/<instanceID>/r
 
 To plan for down-time, wait for inputs, and more, you can pause and then resume a workflow. To pause a workflow with an ID `12345678` until triggered to resume, run:
 
-```http
-POST http://localhost:3500/v1.0/workflows/dapr/12345678/pause
+```shell
+curl -X POST "http://localhost:3500/v1.0/workflows/dapr/12345678/pause"
 ```
 
 To resume a workflow with an ID `12345678`, run:
 
-```http
-POST http://localhost:3500/v1.0/workflows/dapr/12345678/resume
+```shell
+curl -X POST "http://localhost:3500/v1.0/workflows/dapr/12345678/resume"
 ```
 
 ### Purge a workflow 
@@ -362,16 +362,16 @@ The purge API can be used to permanently delete workflow metadata from the under
 
 Only workflow instances in the COMPLETED, FAILED, or TERMINATED state can be purged. If the workflow is in any other state, calling purge returns an error.
 
-```http
-POST http://localhost:3500/v1.0/workflows/dapr/12345678/purge
+```shell
+curl -X POST "http://localhost:3500/v1.0/workflows/dapr/12345678/purge"
 ```
 
 ### Get information about a workflow
 
 To fetch workflow information (outputs and inputs) with an ID `12345678`, run:
 
-```http
-GET http://localhost:3500/v1.0/workflows/dapr/12345678
+```shell
+curl -X GET "http://localhost:3500/v1.0/workflows/dapr/12345678"
 ```
 
 Learn more about these HTTP calls in the [workflow API reference guide]({{< ref workflow_api.md >}}).
