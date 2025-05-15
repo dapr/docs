@@ -19,7 +19,7 @@ All jobs are registered with a case-sensitive job name. These names are intended
 interfacing with the Dapr runtime. The name is used as an identifier when creating and modifying the job as well as 
 to indicate which job a triggered invocation is associated with.
 
-Only one job can be associated with a name at any given time. By default, any attempt to create a new job using the same name as an existing job will result in an error. However, if the `overwrite` flag is set to `true`, the new job will overwrite the existing job with the same name. 
+Only one job can be associated with a name at any given time. By default, any attempt to create a new job using the same name as an existing job results in an error. However, if the `overwrite` flag is set to `true`, the new job overwrites the existing job with the same name. 
 
 ## Scheduling Jobs
 A job can be scheduled using any of the following mechanisms:
