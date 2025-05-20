@@ -114,7 +114,7 @@ POST request to the endpoint `/job/<job-name>`. The body includes the following 
 or the not-before time from which the schedule should take effect
 - `Ttl`: An optional value indicating when the job should expire
 - `Payload`: A collection of bytes containing data originally stored when the job was scheduled
-- `Overwrite`: An optional flag to allow the job to overwrite an existing job with the same name
+- `Overwrite`: A flag to allow the requested job to overwrite an existing job with the same name, if it already exists.
 
 The `DueTime` and `Ttl` fields will reflect an RC3339 timestamp value reflective of the time zone provided when the job was
 originally scheduled. If no time zone was provided, these values indicate the time zone used by the server running
