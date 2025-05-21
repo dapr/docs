@@ -53,7 +53,7 @@ Dapr's jobs API ensures the tasks represented in these scenarios are performed c
 
 ## Features
 
-The main functionality of jobs API allows you to create, retrieve, and delete scheduled jobs. By default, when you create a job with a name that already exists, the operation will fail unless you explicitly set the 'overwrite' flag. This ensures that existing jobs are not accidentally modified or overwritten.
+The main functionality of the Jobs API allows you to create, retrieve, and delete scheduled jobs. By default, when you create a job with a name that already exists, the operation will fail unless you explicitly set the `overwrite` flag to `true`. This ensures that existing jobs are not accidentally modified or overwritten.
 
 ### Schedule jobs across multiple replicas
 
