@@ -77,8 +77,13 @@ This component supports **output binding** with the following operations:
 
 - `create` : [Create file](#create-file)
 - `get` : [Get file](#get-file)
+- `bulkGet` : [Bulk get objects](#bulk-get-objects)
 - `delete` : [Delete file](#delete-file)
 - `list`: [List file](#list-files)
+- `copy`: [Copy file](#copy-files)
+- `move`: [Move file](#move-files)
+- `rename`: [Rename file](#rename-files)
+
 
 ### Create file
 
@@ -211,6 +216,72 @@ The metadata parameters are:
 
 The response body contains the value stored in the object.
 
+### Bulk get objects
+
+To perform a bulk get operation that retrieves all bucket files at once, invoke the GCP bucket binding with a `POST` method and the following JSON body:
+
+```json
+{
+  "operation": "bulkGet",
+}
+```
+
+The metadata parameters are:
+
+- `encodeBase64` - (optional) configuration to encode base64 file content before return the content for all files
+
+#### Example
+
+{{< tabs Windows Linux >}}
+
+  {{% codetab %}}
+  ```bash
+  curl -d '{ \"operation\": \"bulkget\"}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /codetab %}}
+
+  {{% codetab %}}
+  ```bash
+  curl -d '{ "operation": "bulkget"}' \
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /codetab %}}
+
+{{< /tabs >}}
+
+#### Response
+
+The response body contains an array of objects, where each object represents a file in the bucket with the following structure:
+
+```json
+[
+  {
+    "name": "file1.txt",
+    "data": "content of file1",
+    "attrs": {
+      "bucket": "mybucket",
+      "name": "file1.txt",
+      "size": 1234,
+      ...
+    }
+  },
+  {
+    "name": "file2.txt",
+    "data": "content of file2",
+    "attrs": {
+      "bucket": "mybucket",
+      "name": "file2.txt",
+      "size": 5678,
+      ...
+    }
+  }
+]
+```
+
+Each object in the array contains:
+- `name`: The name of the file
+- `data`: The content of the file
+- `attrs`: Object attributes from GCP Storage including metadata like creation time, size, content type, etc.
 
 ### Delete object
 
@@ -257,7 +328,7 @@ An HTTP 204 (No Content) and empty body will be retuned if successful.
 
 ### List objects
 
-To perform a list object operation, invoke the S3  binding with a `POST` method and the following JSON body:
+To perform a list object operation, invoke the GCP bucket binding with a `POST` method and the following JSON body:
 
 ```json
 {
@@ -316,6 +387,58 @@ The list of objects will be returned as JSON array in the following form:
 	}
 ]
 ```
+
+### Copy objects
+
+To perform a copy object operation, invoke the GCP bucket binding with a `POST` method and the following JSON body:
+
+```json
+{
+  "operation": "copy",
+  "metadata": {
+    "destinationBucket": "destination-bucket-name",
+  }
+}
+```
+
+The metadata parameters are:
+
+- `destinationBucket` - the name of the destination bucket (required)
+
+### Move objects
+
+To perform a move object operation, invoke the GCP bucket binding with a `POST` method and the following JSON body:
+
+```json
+{
+  "operation": "move",
+  "metadata": {
+    "destinationBucket": "destination-bucket-name",
+  }
+}
+```
+
+The metadata parameters are:
+
+- `destinationBucket` - the name of the destination bucket (required)
+
+### Rename objects
+
+To perform a rename object operation, invoke the GCP bucket binding with a `POST` method and the following JSON body:
+
+```json
+{
+  "operation": "rename",
+  "metadata": {
+    "newName": "object-new-name",
+  }
+}
+```
+
+The metadata parameters are:
+
+- `newName` - the new name of the object (required)
+
 ## Related links
 
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
