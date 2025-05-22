@@ -82,8 +82,13 @@ This component supports **output binding** with the following operations:
 
 - `create` : [Create file](#create-file)
 - `get` : [Get file](#get-file)
+- `bulkGet` : [Bulk get objects](#bulk-get-objects)
 - `delete` : [Delete file](#delete-file)
 - `list`: [List file](#list-files)
+- `copy`: [Copy file](#copy-files)
+- `move`: [Move file](#move-files)
+- `rename`: [Rename file](#rename-files)
+
 
 ### Create file
 
@@ -216,6 +221,72 @@ The metadata parameters are:
 
 The response body contains the value stored in the object.
 
+### Bulk get objects
+
+To perform a bulk get operation that retrieves all bucket files at once, invoke the GCP bucket binding with a `POST` method and the following JSON body:
+
+```json
+{
+  "operation": "bulkGet",
+}
+```
+
+The metadata parameters are:
+
+- `encodeBase64` - (optional) configuration to encode base64 file content before return the content for all files
+
+#### Example
+
+{{< tabs Windows Linux >}}
+
+  {{% codetab %}}
+  ```bash
+  curl -d '{ \"operation\": \"bulkget\"}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /codetab %}}
+
+  {{% codetab %}}
+  ```bash
+  curl -d '{ "operation": "bulkget"}' \
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /codetab %}}
+
+{{< /tabs >}}
+
+#### Response
+
+The response body contains an array of objects, where each object represents a file in the bucket with the following structure:
+
+```json
+[
+  {
+    "name": "file1.txt",
+    "data": "content of file1",
+    "attrs": {
+      "bucket": "mybucket",
+      "name": "file1.txt",
+      "size": 1234,
+      ...
+    }
+  },
+  {
+    "name": "file2.txt",
+    "data": "content of file2",
+    "attrs": {
+      "bucket": "mybucket",
+      "name": "file2.txt",
+      "size": 5678,
+      ...
+    }
+  }
+]
+```
+
+Each object in the array contains:
+- `name`: The name of the file
+- `data`: The content of the file
+- `attrs`: Object attributes from GCP Storage including metadata like creation time, size, content type, etc.
 
 ### Delete object
 
