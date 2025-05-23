@@ -92,6 +92,7 @@ The above example uses secrets as plain strings. It is recommended to use a [sec
 | processMode | N | Enable processing multiple messages at once. Default: `"async"` | `"async"`, `"sync"`|
 | subscribeType | N | Pulsar supports four kinds of [subscription types](https://pulsar.apache.org/docs/3.0.x/concepts-messaging/#subscription-types). Default: `"shared"` | `"shared"`, `"exclusive"`, `"failover"`, `"key_shared"`|
 | subscribeInitialPosition | N | Subscription position is the initial position which the cursor is set when start consuming. Default: `"latest"` | `"latest"`, `"earliest"` |
+| subscribeMode | N | Subscription mode indicates the cursor persistence, durable subscription retains messages and persists the current position. Default: `"durable"` | `"durable"`, `"non_durable"` |
 | partitionKey | N | Sets the key of the message for routing policy. Default: `""` | |
 | `maxConcurrentHandlers` | N  | Defines the maximum number of concurrent message handlers. Default: `100` | `10`
 
