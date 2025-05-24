@@ -111,7 +111,9 @@ Dapr apps can subscribe to raw messages from pub/sub topics, even if they werenâ
 
 ### Programmatically subscribe to raw events
 
-When subscribing programmatically, add the additional metadata entry for `rawPayload` to allow the subscriber to receive a message that is not wrapped by a CloudEvent. For .NET, this metadata entry is called `isRawPayload`. When using raw payloads the message will always be base64 encoded with content type `application/octet-stream`.
+When subscribing programmatically, add the additional metadata entry for `rawPayload` to allow the subscriber to receive a message that is not wrapped by a CloudEvent. For .NET, this metadata entry is called `isRawPayload`. 
+
+When using raw payloads the message is always base64 encoded with content type `application/octet-stream`.
 
 {{< tabs ".NET" "Python" "PHP" >}}
 
