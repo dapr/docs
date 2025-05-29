@@ -1406,7 +1406,7 @@ Common use cases for the compensation pattern include:
 - **Resource Provisioning**: When provisioning cloud resources across multiple providers, if one step fails, you need to clean up all previously provisioned resources.
 - **Multi-Step Business Processes**: Any business process that involves multiple irreversible steps that may need to be undone in case of later failures.
 
-Dapr Workflow provides support for the compensation pattern, allowing you to register compensation activities for each step and automatically execute them in reverse order when needed.
+Dapr Workflow provides support for the compensation pattern, allowing you to register compensation activities for each step and execute them in reverse order when needed.
 
 {{< tabs Java >}}
 
@@ -1455,7 +1455,7 @@ public class PaymentProcessingWorkflow implements Workflow {
                         switch (compensation) {
                             case "CancelShipment":
                                 String shipmentCancelResult = ctx.callActivity(
-                                    "CancelShipmentActivity", 
+                                    CancelShipmentActivity.class.getName(), 
                                     orderId, 
                                     String.class).await();
                                 ctx.getLogger().info("Shipment cancellation completed: {}", shipmentCancelResult);
@@ -1463,7 +1463,7 @@ public class PaymentProcessingWorkflow implements Workflow {
                                 
                             case "RefundPayment":
                                 String refundResult = ctx.callActivity(
-                                    "RefundPaymentActivity", 
+                                    RefundPaymentActivity.class.getName(), 
                                     orderId, 
                                     String.class).await();
                                 ctx.getLogger().info("Payment refund completed: {}", refundResult);
@@ -1471,7 +1471,7 @@ public class PaymentProcessingWorkflow implements Workflow {
                                 
                             case "ReleaseInventory":
                                 String releaseResult = ctx.callActivity(
-                                    "ReleaseInventoryActivity", 
+                                    ReleaseInventoryActivity.class.getName(), 
                                     orderId, 
                                     String.class).await();
                                 ctx.getLogger().info("Inventory release completed: {}", releaseResult);
