@@ -38,6 +38,7 @@ Parameter | Description
 `repeats` | An optional number of times in which the job should be triggered. If not set, the job runs indefinitely or until expiration.
 `ttl` | An optional time to live or expiration of the job. Accepts a "point in time" string in the format of RFC3339, Go duration string (calculated from job creation time), or non-repeating ISO8601.
 `overwrite` | A boolean value to specify if the job can overwrite an existing one with the same name. Default value is `false`
+`failure_policy` | An optional failure policy for the job. Details of the format are below.
 
 #### schedule
 `schedule` accepts both systemd timer-style cron expressions, as well as human readable '@' prefixed period strings, as defined below.
@@ -63,6 +64,37 @@ Entry                  | Description                                | Equivalent
 @daily (or @midnight)  | Run once a day, midnight                   | 0 0 0 * * *
 @hourly                | Run once an hour, beginning of hour        | 0 0 * * * *
 
+#### failure_policy
+
+`failure_policy` specifies how the job should handle failures.
+
+It can be set to `constant` or `drop`.
+- The `constant` policy will retry the job up to `max_retries` times, with a delay of `interval` between retries.
+- The `drop` policy will drop the job after the first failure, without retrying.
+
+##### Example 1
+
+```json
+{
+  //...
+  "failure_policy": {
+    "constant": {
+      "max_retries": 3,
+      "interval": "10s"
+    }
+  }
+}
+```
+##### Example 2
+
+```json
+{
+  //...
+  "failure_policy": {
+    "drop": {}
+  }
+}
+```
 
 ### Request body
 
