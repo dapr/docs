@@ -37,6 +37,7 @@ Parameter | Description
 `dueTime` | An optional time at which the job should be active, or the "one shot" time, if other scheduling type fields are not provided. Accepts a "point in time" string in the format of RFC3339, Go duration string (calculated from creation time), or non-repeating ISO8601.
 `repeats` | An optional number of times in which the job should be triggered. If not set, the job runs indefinitely or until expiration.
 `ttl` | An optional time to live or expiration of the job. Accepts a "point in time" string in the format of RFC3339, Go duration string (calculated from job creation time), or non-repeating ISO8601.
+`overwrite` | A boolean value to specify if the job can overwrite an existing one with the same name. Default value is `false`
 
 #### schedule
 `schedule` accepts both systemd timer-style cron expressions, as well as human readable '@' prefixed period strings, as defined below.

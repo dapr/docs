@@ -19,8 +19,7 @@ All jobs are registered with a case-sensitive job name. These names are intended
 interfacing with the Dapr runtime. The name is used as an identifier when creating and modifying the job as well as 
 to indicate which job a triggered invocation is associated with.
 
-Only one job can be associated with a name at any given time. Any attempt to create a new job using the same name
-as an existing job will result in an overwrite of this existing job.
+Only one job can be associated with a name at any given time. By default, any attempt to create a new job using the same name as an existing job results in an error. However, if the `overwrite` flag is set to `true`, the new job overwrites the existing job with the same name. 
 
 ## Scheduling Jobs
 A job can be scheduled using any of the following mechanisms:
@@ -115,6 +114,7 @@ POST request to the endpoint `/job/<job-name>`. The body includes the following 
 or the not-before time from which the schedule should take effect
 - `Ttl`: An optional value indicating when the job should expire
 - `Payload`: A collection of bytes containing data originally stored when the job was scheduled
+- `Overwrite`: A flag to allow the requested job to overwrite an existing job with the same name, if it already exists.
 
 The `DueTime` and `Ttl` fields will reflect an RC3339 timestamp value reflective of the time zone provided when the job was
 originally scheduled. If no time zone was provided, these values indicate the time zone used by the server running
