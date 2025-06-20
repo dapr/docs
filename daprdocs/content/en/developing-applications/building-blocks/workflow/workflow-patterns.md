@@ -710,7 +710,7 @@ The monitor pattern is recurring process that typically:
 
 The following diagram provides a rough illustration of this pattern.
 
-<img src="/images/workflow-overview/workflow-monitor-pattern.png" width=600 alt="Diagram showing how the monitor pattern works"/>
+<img src="/images/workflow-overview/workflow-monitor-pattern.png" width=800 alt="Diagram showing how the monitor pattern works"/>
 
 Depending on the business needs, there may be a single monitor or there may be multiple monitors, one for each business entity (for example, a stock). Furthermore, the amount of time to sleep may need to change, depending on the circumstances. These requirements make using cron-based scheduling systems impractical.
 
@@ -953,7 +953,7 @@ Here's an example workflow for a purchase order involving a human:
 
 The following diagram illustrates this flow.
 
-<img src="/images/workflow-overview/workflow-human-interaction-pattern.png" width=600 alt="Diagram showing how the external system interaction pattern works with a human involved"/>
+<img src="/images/workflow-overview/workflow-human-interaction-pattern.png" width=800 alt="Diagram showing how the external system interaction pattern works with a human involved"/>
 
 The following example code shows how this pattern can be implemented using Dapr Workflow.
 
