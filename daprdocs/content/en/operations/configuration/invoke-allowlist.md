@@ -40,7 +40,6 @@ The following tables lists the different properties for access control, policies
 |---------------|--------|-------------|
 | `defaultAction` | string | Global default action when no other policy is matched
 | `trustDomain`   | string | Trust domain assigned to the application. Default is "public".
-| `audiences`      | string | A list of audiences for the application's identity JWT.
 | `policies`      | string | Policies to determine what operations the calling app can do on the called app
 
 ### Policies
