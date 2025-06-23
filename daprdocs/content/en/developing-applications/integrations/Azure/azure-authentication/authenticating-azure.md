@@ -139,7 +139,11 @@ oidc:
     keyFile: "<path-to-tls-key.pem>"
 ```
 
-This will expose the following endpoints on your Dapr Sentry installation on the provided OIDC HTTP port:
+{{% alert title="Warning" color="warning" %}}
+The `issuer` value must match exactly the value you provide when creating the Federated Identity Credential in Microsoft Entra ID.
+{{% /alert %}}
+
+Providing these settings will expose the following endpoints on your Dapr Sentry installation on the provided OIDC HTTP port:
 ```
 /.well-known/openid-configuration
 /jwks.json
