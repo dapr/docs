@@ -120,16 +120,23 @@ In order to federate trust, you must be running Dapr Sentry with JWT issuing and
 
 ```yaml
 jwt:
+  # Enable JWT token issuance by Sentry
   enabled: true
-  issuer: <my-issuer-domain>
-  audiences:
-  - "api://AzureADTokenExchange"
+  # Issuer value for JWT tokens
+  issuer: "<your-issuer-domain>"
 
 oidc:
-  httpPort: 9082 # any none zero port
+  enabled: true
+  server:
+    # Port for the OIDC HTTP server
+    port: 9080
   tls:
-    certFile: /path/to/tls/cert.pem
-    keyFile: /path/to/tls/key.pem
+    # Enable TLS for the OIDC HTTP server
+    enabled: true
+    # TLS certificate file for the OIDC HTTP server
+    certFile: "<path-to-tls-cert.pem>"
+    # TLS certificate file for the OIDC HTTP server
+    keyFile: "<path-to-tls-key.pem>"
 ```
 
 This will expose the following endpoints on your Dapr Sentry installation on the provided OIDC HTTP port:
@@ -138,18 +145,23 @@ This will expose the following endpoints on your Dapr Sentry installation on the
 /jwks.json
 ```
 
-In order for Microsoft Entra ID to be able to access those endpoints, you must expose them on a public address. You must ensure that the domain that you are serving these endpoints via is the same as the issuer you provided or added to the list of supported OIDC domains via the helm value `oidc.domains`.
+You will also need to provide the Dapr runtime configuration to request a JWT token with the Azure audience `api://AzureADTokenExchange`.
+When running in standalone, this can be provided using the flag `--jwt-audiences=api://AzureADTokenExchange`.
+When running in Kubernetes, this can be provided by decorating the application Kubernetes manifest with the annotations `"dapr.io/jwt-audiences": "api://AzureADTokenExchange"`.
+This will ensure Sentry issues a JWT token with the correct audience, which is required for Microsoft Entra ID to validate the token.
+
+In order for Microsoft Entra ID to be able to access the OIDC endpoints, you must expose them on a public address. You must ensure that the domain that you are serving these endpoints via is the same as the issuer you provided when configuration Dapr Sentry.
 
 You can now create your federated credential in Microsoft Entra ID. 
 
 ```shell
 cat > creds.json <<EOF
 { 
-  "name": "DaprSpiffe", 
-  "issuer": "https://<my-issuer-domain>", 
+  "name": "DaprAppIDSpiffe",
+  "issuer": "https://<your-issuer-domain>",
   "subject": spiffe://public/ns/<dapr-app-id-namespace>/<dapr-app-id>",
-  "audiences": ["api://AzureADTokenExchange"], 
-  "description": "Credential for Dapr App ID" 
+  "audiences": ["api://AzureADTokenExchange"],
+  "description": "Credential for Dapr App ID"
 }
 EOF
 
@@ -158,9 +170,9 @@ az ad sp create --id $APP_ID
 az ad app federated-credential create --id $APP_ID --parameters ./creds.json
 ```
 
-Now that you have a federated credential for you Microsoft Entra ID Application Registration, you can assign the desired roles to it's service principal.
+Now that you have a federated credential for your Microsoft Entra ID Application Registration, you can assign the desired roles to it's service principal.
 
-An example of assigning "Storage Blob Data Owner" role is below
+An example of assigning "Storage Blob Data Owner" role is below.
 ```shell
 az role assignment create --assignee-object-id $APP_ID --assignee-principal-type ServicePrincipal --role "Storage Blob Data Owner" --scope "/subscriptions/$SUBSCRIPTION/resourceGroups/$GROUP/providers/Microsoft.Storage/storageAccounts/$ACCOUNT_NAME"
 ```
@@ -171,7 +183,7 @@ CLIENT_ID=$(az ad app show --id $APP_ID --query appId --output tsv)
 TENANT_ID=$(az account show --query tenantId --output tsv)
 ```
 
-Then you can create your Azure Dapr Component and simply provide those value:
+Then you can create your Azure Dapr Component and simply provide these value:
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -190,6 +202,8 @@ spec:
   - name: containerName
     value: $CONTAINER_NAME
 ```
+
+The Dapr runtime will use these details to authenticate with Microsoft Entra ID, using the Dapr Sentry issued JWT token to exchange for an access token to access the Azure resource.
 
 #### Authenticating using Azure CLI credentials (development-only)
 
