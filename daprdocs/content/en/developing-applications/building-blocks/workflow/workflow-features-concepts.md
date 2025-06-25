@@ -195,7 +195,7 @@ string randomString = GetRandomString();
 // DON'T DO THIS!
 Instant currentTime = Instant.now();
 UUID newIdentifier = UUID.randomUUID();
-string randomString = GetRandomString();
+String randomString = getRandomString();
 ```
 
 {{% /codetab %}}
@@ -242,7 +242,7 @@ string randomString = await context.CallActivityAsync<string>("GetRandomString")
 ```java
 // Do this!!
 Instant currentTime = context.getCurrentInstant();
-Guid newIdentifier = context.NewGuid();
+Guid newIdentifier = context.newGuid();
 String randomString = context.callActivity(GetRandomString.class.getName(), String.class).await();
 ```
 
@@ -338,7 +338,7 @@ Do this:
 
 ```csharp
 // Do this!!
-string configuation = workflowInput.Configuration; // imaginary workflow input argument
+string configuration = workflowInput.Configuration; // imaginary workflow input argument
 string data = await context.CallActivityAsync<string>("MakeHttpCall", "https://example.com/api/data");
 ```
 
@@ -348,7 +348,7 @@ string data = await context.CallActivityAsync<string>("MakeHttpCall", "https://e
 
 ```java
 // Do this!!
-String configuation = ctx.getInput(InputType.class).getConfiguration(); // imaginary workflow input argument
+String configuration = ctx.getInput(InputType.class).getConfiguration(); // imaginary workflow input argument
 String data = ctx.callActivity(MakeHttpCall.class, "https://example.com/api/data", String.class).await();
 ```
 
@@ -358,7 +358,7 @@ String data = ctx.callActivity(MakeHttpCall.class, "https://example.com/api/data
 
 ```javascript
 // Do this!!
-const configuation = workflowInput.getConfiguration(); // imaginary workflow input argument
+const configuration = workflowInput.getConfiguration(); // imaginary workflow input argument
 const data = yield ctx.callActivity(makeHttpCall, "https://example.com/api/data");
 ```
 

@@ -108,7 +108,7 @@ Refer [api spec]({{< ref "actors_api.md#invoke-timer" >}}) for more details.
 ## Actor reminders
 
 {{% alert title="Note" color="primary" %}}
-In Dapr v1.15, actor reminders are stored by default in the [Scheduler service]({{< ref "scheduler.md#actor-reminders" >}}).
+In Dapr v1.15, actor reminders are stored by default in the [Scheduler service]({{< ref "scheduler.md#actor-reminders" >}}). When upgrading to Dapr v1.15 all existing reminders are automatically migrated to the Scheduler service with no loss of reminders as a one time operation for each actor type.
 {{% /alert %}}
 
 Reminders are a mechanism to trigger *persistent* callbacks on an actor at specified times. Their functionality is similar to timers. But unlike timers, reminders are triggered under all circumstances until the actor explicitly unregisters them or the actor is explicitly deleted or the number in invocations is exhausted. Specifically, reminders are triggered across actor deactivations and failovers because the Dapr actor runtime persists the information about the actors' reminders using Dapr actor state provider.
@@ -136,6 +136,10 @@ You can remove the actor reminder by calling
 ```md
 DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
+
+If an actor reminder is triggered and the app does not return a 2** code to the runtime (for example, because of a connection issue),
+actor reminders will be retried up to three times with a backoff interval of one second between each attempt. There may be 
+additional retries attempted in accordance with any optionally applied [actor resiliency policy]({{< ref "override-default-retries.md" >}}). 
 
 Refer [api spec]({{< ref "actors_api.md#invoke-reminder" >}}) for more details.
 

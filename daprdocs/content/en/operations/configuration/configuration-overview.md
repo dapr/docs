@@ -145,9 +145,12 @@ metrics:
       - /payments/{paymentID}/refund
       - /payments/{paymentID}/details
     excludeVerbs: false
+  recordErrorCodes: true
 ```
 
-In the examples above, the path filter `/orders/{orderID}/items/{itemID}` would return _a single metric count_ matching all the `orderID`s and all the `itemID`s, rather than multiple metrics for each `itemID`. For more information, see [HTTP metrics path matching]({{< ref "metrics-overview.md#http-metrics-path-matching" >}})
+In the examples above, the path filter `/orders/{orderID}/items/{itemID}` would return _a single metric count_ matching all the `orderID`s and all the `itemID`s, rather than multiple metrics for each `itemID`. For more information, see [HTTP metrics path matching]({{< ref "metrics-overview.md#http-metrics-path-matching" >}}). 
+
+The above example also enables [recording error code metrics]({{< ref "metrics-overview.md#configuring-metrics-for-error-codes" >}}), which is disabled by default. 
 
 The following table lists the properties for metrics:
 

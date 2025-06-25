@@ -46,7 +46,7 @@ Each of these building block APIs is independent, meaning that you can use any n
 |----------------|-------------|
 | [**Service-to-service invocation**]({{< ref "service-invocation-overview.md" >}})  | Resilient service-to-service invocation enables method calls, including retries, on remote services, wherever they are located in the supported hosting environment.
 | [**Publish and subscribe**]({{< ref "pubsub-overview.md" >}}) | Publishing events and subscribing to topics between services enables event-driven architectures to simplify horizontal scalability and make them resilient to failure. Dapr provides at-least-once message delivery guarantee, message TTL, consumer groups and other advance features.
-| [**Workflows**]({{< ref "workflow-overview.md" >}}) | The workflow API can be combined with other Dapr building blocks to define long running, persistent processes or data flows that span multiple microservices using Dapr workflows or workflow components. 
+| [**Workflows**]({{< ref "workflow-overview.md" >}}) | The workflow API can be combined with other Dapr building blocks to define long running, persistent processes or data flows that span multiple microservices using Dapr workflows. 
 | [**State management**]({{< ref "state-management-overview.md" >}}) | With state management for storing and querying key/value pairs, long-running, highly available, stateful services can be easily written alongside stateless services in your application. The state store is pluggable and examples include AWS DynamoDB, Azure Cosmos DB, Azure SQL Server, GCP Firebase, PostgreSQL or Redis, among others.
 | [**Resource bindings**]({{< ref "bindings-overview.md" >}}) | Resource bindings with triggers builds further on event-driven architectures for scale and resiliency by receiving and sending events to and from any external source such as databases, queues, file systems, etc.
 | [**Actors**]({{< ref "actors-overview.md" >}}) | A pattern for stateful and stateless objects that makes concurrency simple, with method and state encapsulation. Dapr provides many capabilities in its actor runtime, including concurrency, state, and life-cycle management for actor activation/deactivation, and timers and reminders to wake up actors.
@@ -76,7 +76,7 @@ Dapr exposes its HTTP and gRPC APIs as a sidecar architecture, either as a conta
 ## Hosting environments
 
 Dapr can be hosted in multiple environments, including:
-- Self-hosted on a Windows/Linux/macOS machine for local development 
+- Self-hosted on a Windows/Linux/macOS machine for local development and in production
 - On Kubernetes or clusters of physical or virtual machines in production
 
 ### Self-hosted local development

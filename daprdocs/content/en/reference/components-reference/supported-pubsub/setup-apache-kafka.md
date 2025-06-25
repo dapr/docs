@@ -465,8 +465,8 @@ Apache Kafka supports the following bulk metadata options:
 
 | Configuration | Default |
 |----------|---------|
-| `maxBulkAwaitDurationMs` | `10000` (10s) |
-| `maxBulkSubCount` | `80` |
+| `maxAwaitDurationMs` | `10000` (10s) |
+| `maxMessagesCount` | `80` |
 
 ## Per-call metadata fields
 
@@ -546,6 +546,7 @@ app.include_router(router)
 ```
 
 {{% /codetab %}}
+
 {{< /tabs >}}
 
 ## Receiving message headers with special characters

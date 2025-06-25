@@ -6,7 +6,7 @@ description: "Detailed documentation on the workflow API"
 weight: 300
 ---
 
-Dapr provides users with the ability to interact with workflows and comes with a built-in `dapr` component.
+Dapr provides users with the ability to interact with workflows through its built-in workflow engine, which is implemented using Dapr Actors. This workflow engine is accessed using the name `dapr` in API calls as the `workflowComponentName`.
 
 ## Start workflow request
 
@@ -36,7 +36,7 @@ Code | Description
 ---- | -----------
 `202`  | Accepted
 `400`  | Request was malformed
-`500`  | Request formatted correctly, error in dapr code or underlying component
+`500`  | Request formatted correctly, error in dapr code
 
 ### Response content
 
@@ -76,7 +76,7 @@ Code | Description
 ---- | -----------
 `202`  | Accepted
 `400`  | Request was malformed
-`500`  | Request formatted correctly, error in dapr code or underlying component
+`500`  | Request formatted correctly, error in dapr code
 
 ### Response content
 
@@ -163,7 +163,7 @@ Code | Description
 ---- | -----------
 `202`  | Accepted
 `400`  | Request was malformed
-`500`  | Error in Dapr code or underlying component
+`500`  | Error in Dapr code
 
 ### Response content
 
@@ -194,7 +194,7 @@ Code | Description
 ---- | -----------
 `202`  | Accepted
 `400`  | Request was malformed
-`500`  | Error in Dapr code or underlying component
+`500`  | Error in Dapr code
 
 ### Response content
 
@@ -221,7 +221,7 @@ Code | Description
 ---- | -----------
 `200`  | OK
 `400`  | Request was malformed
-`500`  | Request formatted correctly, error in dapr code or underlying component
+`500`  | Error in Dapr code
 
 ### Response content
 
@@ -243,30 +243,6 @@ The API call will provide a JSON response similar to this:
 Parameter | Description
 --------- | -----------
 `runtimeStatus` | The status of the workflow instance. Values include: `"RUNNING"`, `"COMPLETED"`, `"CONTINUED_AS_NEW"`, `"FAILED"`, `"CANCELED"`, `"TERMINATED"`, `"PENDING"`, `"SUSPENDED"`  
-
-## Component format
-
-A Dapr `workflow.yaml` component file has the following structure:
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: <NAME>
-spec:
-  type: workflow.<TYPE>
-  version: v1.0-alpha1
-  metadata:
-  - name: <NAME>
-    value: <VALUE>
- ```
-
-| Setting | Description |
-| ------- | ----------- |
-| `metadata.name` | The name of the workflow component. |
-| `spec/metadata` | Additional metadata parameters specified by workflow component |
-
-However, Dapr comes with a built-in `dapr` workflow component that is built on Dapr Actors. No component file is required to use the built-in Dapr workflow component.
 
 ## Next Steps
 

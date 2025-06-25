@@ -315,10 +315,13 @@ console.log("Order passed: " + res.config.data);
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [.NET SDK or .NET 7 SDK installed](https://dotnet.microsoft.com/download).
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
+- [.NET 6](https://dotnet.microsoft.com/download/dotnet/6.0), [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0) or [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0) installed
+
+**NOTE:** .NET 6 is the minimally supported version of .NET for the Dapr .NET SDK packages in this release. Only .NET 8 and .NET 9
+will be supported in Dapr v1.16 and later releases.
 
 ### Step 2: Set up the environment
 
@@ -439,13 +442,11 @@ app.MapPost("/orders", (Order order) =>
 In the Program.cs file for the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
 
 ```csharp
-var client = new HttpClient();
-client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+var client = DaprClient.CreateInvokeHttpClient(appId: "order-processor");
+var cts = new CancellationTokenSource();
 
-client.DefaultRequestHeaders.Add("dapr-app-id", "order-processor");
-
-var response = await client.PostAsync($"{baseURL}/orders", content);
-    Console.WriteLine("Order passed: " + order);
+var response = await client.PostAsJsonAsync("/orders", order, cts.Token);
+Console.WriteLine("Order passed: " + order);
 ```
 
 {{% /codetab %}}
@@ -1089,13 +1090,11 @@ dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- dotnet r
 In the Program.cs file for the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
 
 ```csharp
-var client = new HttpClient();
-client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+var client = DaprClient.CreateInvokeHttpClient(appId: "order-processor");
+var cts = new CancellationTokenSource();
 
-client.DefaultRequestHeaders.Add("dapr-app-id", "order-processor");
-
-var response = await client.PostAsync($"{baseURL}/orders", content);
-    Console.WriteLine("Order passed: " + order);
+var response = await client.PostAsJsonAsync("/orders", order, cts.Token);
+Console.WriteLine("Order passed: " + order);
 ```
 
 ### Step 5: Use with Multi-App Run

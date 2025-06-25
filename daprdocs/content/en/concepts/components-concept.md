@@ -78,13 +78,6 @@ Pub/sub broker components are message brokers that can pass messages to/from ser
 - [List of pub/sub brokers]({{< ref supported-pubsub >}})
 - [Pub/sub broker implementations](https://github.com/dapr/components-contrib/tree/master/pubsub)
 
-### Workflows
-
-A [workflow]({{< ref workflow-overview.md >}}) is custom application logic that defines a reliable business process or data flow. Workflow components are workflow runtimes (or engines) that run the business logic written for that workflow and store their state into a state store.  
-
-<!--- [List of supported workflows]()
-- [Workflow implementations](https://github.com/dapr/components-contrib/tree/master/workflows)-->
-
 ### State stores
 
 State store components are data stores (databases, files, memory) that store key-value pairs as part of the [state management]({{< ref "state-management-overview.md" >}}) building block.

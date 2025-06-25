@@ -37,6 +37,9 @@ A list of features enabled via Configuration spec (including build-time override
 ### App connection details
 The metadata API returns information related to Dapr's connection to the app. This includes the app port, protocol, host, max concurrency, along with health check details.
 
+### Scheduler connection details
+Information related to the connection to one or more scheduler hosts.
+
 ### Attributes
 
 The metadata API allows you to store additional attribute information in the format of key-value pairs. These are ephemeral in-memory and are not persisted if a sidecar is reloaded. This information should be added at the time of a sidecar creation (for example, after the application has started).
@@ -82,6 +85,7 @@ components             | [Metadata API Response Component](#metadataapiresponsec
 httpEndpoints          | [Metadata API Response HttpEndpoint](#metadataapiresponsehttpendpoint)[] | A json encoded array of loaded HttpEndpoints metadata.
 subscriptions          | [Metadata API Response Subscription](#metadataapiresponsesubscription)[] | A json encoded array of pub/sub subscriptions metadata.
 appConnectionProperties| [Metadata API Response AppConnectionProperties](#metadataapiresponseappconnectionproperties) | A json encoded object of app connection properties.
+scheduler              | [Metadata API Response Scheduler](#metadataapiresponsescheduler) | A json encoded object of scheduler connection properties.
 
 <a id="metadataapiresponseactor"></a>**Metadata API Response Registered Actor**
 
@@ -141,6 +145,12 @@ healthCheckPath | string | Health check path, applicable for HTTP protocol.
 healthProbeInterval | string | Time between each health probe, in go duration format.
 healthProbeTimeout | string | Timeout for each health probe, in go duration format.
 healthThreshold | integer | Max number of failed health probes before the app is considered unhealthy.
+
+<a id="metadataapiresponsescheduler"></a>**Metadata API Response Scheduler**
+
+Name            | Type   | Description
+----            | ----   | -----------
+connected_addresses | string[] | List of strings representing the addresses of the conntected scheduler hosts.
 
 
 ### Examples
@@ -215,6 +225,13 @@ curl http://localhost:3500/v1.0/metadata
       "healthProbeTimeout": "500ms",
       "healthThreshold": 3
     }
+  },
+  "scheduler": {
+    "connected_addresses": [
+      "10.244.0.47:50006",
+      "10.244.0.48:50006",
+      "10.244.0.49:50006"
+    ]
   }
 }
 ```
@@ -338,6 +355,13 @@ Get the metadata information to confirm your custom attribute was added:
       "healthProbeTimeout": "500ms",
       "healthThreshold": 3
     }
+  },
+  "scheduler": {
+    "connected_addresses": [
+      "10.244.0.47:50006",
+      "10.244.0.48:50006",
+      "10.244.0.49:50006"
+    ]
   }
 }
 ```

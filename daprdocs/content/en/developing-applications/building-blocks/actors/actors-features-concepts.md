@@ -57,7 +57,7 @@ This simplifies some choices, but also carries some consideration:
 
 ## Actor communication
 
-You can interact with Dapr to invoke the actor method by calling HTTP/gRPC endpoint.
+You can interact with Dapr to invoke the actor method by calling the HTTP endpoint.
 
 ```bash
 POST/GET/PUT/DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/<method/state/timers/reminders>

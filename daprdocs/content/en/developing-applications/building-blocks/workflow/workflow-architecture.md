@@ -6,7 +6,9 @@ weight: 4000
 description: "The Dapr Workflow engine architecture"
 ---
 
-[Dapr Workflows]({{< ref "workflow-overview.md" >}}) allow developers to define workflows using ordinary code in a variety of programming languages. The workflow engine runs inside of the Dapr sidecar and orchestrates workflow code deployed as part of your application. This article describes:
+[Dapr Workflows]({{< ref "workflow-overview.md" >}}) allow developers to define workflows using ordinary code in a variety of programming languages. The workflow engine runs inside of the Dapr sidecar and orchestrates workflow code deployed as part of your application. Dapr Workflows are built on top of Dapr Actors providing durability and scalability for workflow execution.
+
+This article describes:
 
 - The architecture of the Dapr Workflow engine
 - How the workflow engine interacts with application code
@@ -72,7 +74,7 @@ The internal workflow actor types are only registered after an app has registere
 
 ### Workflow actors
 
-Workflow actors are responsible for managing the state and placement of all workflows running in the app. A new instance of the workflow actor is activated for every workflow instance that gets created. The ID of the workflow actor is the ID of the workflow. This internal actor stores the state of the workflow as it progresses and determines the node on which the workflow code executes via the actor placement service.
+There are 2 different types of actors used with workflows: workflow actors and activity actors. Workflow actors are responsible for managing the state and placement of all workflows running in the app. A new instance of the workflow actor is activated for every workflow instance that gets created. The ID of the workflow actor is the ID of the workflow. This internal actor stores the state of the workflow as it progresses and determines the node on which the workflow code executes via the actor placement service.
 
 Each workflow actor saves its state using the following keys in the configured state store:
 
@@ -84,7 +86,7 @@ Each workflow actor saves its state using the following keys in the configured s
 | `metadata` | Contains meta information about the workflow as a JSON blob and includes details such as the length of the inbox, the length of the history, and a 64-bit integer representing the workflow generation (for cases where the instance ID gets reused). The length information is used to determine which keys need to be read or written to when loading or saving workflow state updates. |
 
 {{% alert title="Warning" color="warning" %}}
-In the [Alpha release of the Dapr Workflow engine]({{< ref support-preview-features.md >}}), workflow actor state will remain in the state store even after a workflow has completed. Creating a large number of workflows could result in unbounded storage usage. In a future release, data retention policies will be introduced that can automatically purge the state store of old workflow state.
+Workflow actor state remains in the state store even after a workflow has completed. Creating a large number of workflows could result in unbounded storage usage. To address this either purge workflows using their ID or directly delete entries in the workflow DB store. 
 {{% /alert %}}
 
 The following diagram illustrates the typical lifecycle of a workflow actor.
@@ -122,7 +124,7 @@ Activity actors are short-lived:
 
 ### Reminder usage and execution guarantees
 
-The Dapr Workflow ensures workflow fault-tolerance by using [actor reminders]({{< ref "howto-actors.md#actor-timers-and-reminders" >}}) to recover from transient system failures. Prior to invoking application workflow code, the workflow or activity actor will create a new reminder. If the application code executes without interruption, the reminder is deleted. However, if the node or the sidecar hosting the associated workflow or activity crashes, the reminder will reactivate the corresponding actor and the execution will be retried.
+The Dapr Workflow ensures workflow fault-tolerance by using [actor reminders]({{< ref "../actors/actors-timers-reminders.md##actor-reminders" >}}) to recover from transient system failures. Prior to invoking application workflow code, the workflow or activity actor will create a new reminder. If the application code executes without interruption, the reminder is deleted. However, if the node or the sidecar hosting the associated workflow or activity crashes, the reminder will reactivate the corresponding actor and the execution will be retried.
 
 <img src="/images/workflow-overview/workflow-actor-reminder-flow.png" width=600 alt="Diagram showing the process of invoking workflow actors"/>
 

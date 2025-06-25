@@ -37,6 +37,10 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `model` | N | The LLM to use. Defaults to Bedrock's default provider model from Amazon.  | `amazon.titan-text-express-v1` |
 | `cacheTTL` | N | A time-to-live value for a prompt cache to expire. Uses Golang duration format.  | `10m` |
 
+## Authenticating AWS
+
+Instead of using a `key` parameter, AWS Bedrock authenticates using Dapr's standard method of IAM or static credentials. [Learn more about authenticating with AWS.]({{< ref authenticating-aws.md >}})
+
 ## Related links
 
 - [Conversation API overview]({{< ref conversation-overview.md >}})

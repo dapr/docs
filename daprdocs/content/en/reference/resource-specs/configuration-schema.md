@@ -36,6 +36,7 @@ spec:
         labels:
           - name: <LABEL-NAME>
             regex: {}
+    recordErrorCodes: <TRUE-OR-FALSE>
     latencyDistributionBuckets:
       - <BUCKET-VALUE-MS-0>
       - <BUCKET-VALUE-MS-1>

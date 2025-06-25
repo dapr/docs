@@ -45,11 +45,12 @@ The table below shows the versions of Dapr releases that have been tested togeth
 
 | Release date | Runtime     | CLI  | SDKs  | Dashboard  | Status | Release notes |
 |--------------------|:--------:|:--------|---------|---------|---------|------------|
-| September 16th 2024 | 1.14.4</br>  | 1.14.1 | Java 1.12.0 </br>Go 1.11.0 </br>PHP 1.2.0 </br>Python 1.14.0 </br>.NET 1.14.0 </br>JS 3.3.1 | 0.15.0 | Supported (current) | [v1.14.4 release notes](https://github.com/dapr/dapr/releases/tag/v1.14.4) |
+| February 27th 2025 | 1.15.0</br>  | 1.15.0 | Java 1.14.0 </br>Go 1.12.0 </br>PHP 1.2.0 </br>Python 1.15.0 </br>.NET 1.15.0 </br>JS 3.5.0 </br>Rust 0.16 | 0.15.0 | Supported (current) | [v1.15.0 release notes](https://github.com/dapr/dapr/releases/tag/v1.15.0) |
+| September 16th 2024 | 1.14.4</br>  | 1.14.1 | Java 1.12.0 </br>Go 1.11.0 </br>PHP 1.2.0 </br>Python 1.14.0 </br>.NET 1.14.0 </br>JS 3.3.1 | 0.15.0 | Supported | [v1.14.4 release notes](https://github.com/dapr/dapr/releases/tag/v1.14.4) |
 | September 13th 2024 | 1.14.3</br>  | 1.14.1 | Java 1.12.0 </br>Go 1.11.0 </br>PHP 1.2.0 </br>Python 1.14.0 </br>.NET 1.14.0 </br>JS 3.3.1 | 0.15.0 | ⚠️ Recalled | [v1.14.3 release notes](https://github.com/dapr/dapr/releases/tag/v1.14.3) |
-| September 6th 2024 | 1.14.2</br>  | 1.14.1 | Java 1.12.0 </br>Go 1.11.0 </br>PHP 1.2.0 </br>Python 1.14.0 </br>.NET 1.14.0 </br>JS 3.3.1 | 0.15.0 | Supported (current) | [v1.14.2 release notes](https://github.com/dapr/dapr/releases/tag/v1.14.2) |
-| August 14th 2024 | 1.14.1</br>  | 1.14.1 | Java 1.12.0 </br>Go 1.11.0 </br>PHP 1.2.0 </br>Python 1.14.0 </br>.NET 1.14.0 </br>JS 3.3.1 | 0.15.0 | Supported (current) | [v1.14.1 release notes](https://github.com/dapr/dapr/releases/tag/v1.14.1) |
-| August 14th 2024 | 1.14.0</br>  | 1.14.0 | Java 1.12.0 </br>Go 1.11.0 </br>PHP 1.2.0 </br>Python 1.14.0 </br>.NET 1.14.0 </br>JS 3.3.1 | 0.15.0 | Supported (current) | [v1.14.0 release notes](https://github.com/dapr/dapr/releases/tag/v1.14.0) |
+| September 6th 2024 | 1.14.2</br>  | 1.14.1 | Java 1.12.0 </br>Go 1.11.0 </br>PHP 1.2.0 </br>Python 1.14.0 </br>.NET 1.14.0 </br>JS 3.3.1 | 0.15.0 | Supported | [v1.14.2 release notes](https://github.com/dapr/dapr/releases/tag/v1.14.2) |
+| August 14th 2024 | 1.14.1</br>  | 1.14.1 | Java 1.12.0 </br>Go 1.11.0 </br>PHP 1.2.0 </br>Python 1.14.0 </br>.NET 1.14.0 </br>JS 3.3.1 | 0.15.0 | Supported | [v1.14.1 release notes](https://github.com/dapr/dapr/releases/tag/v1.14.1) |
+| August 14th 2024 | 1.14.0</br>  | 1.14.0 | Java 1.12.0 </br>Go 1.11.0 </br>PHP 1.2.0 </br>Python 1.14.0 </br>.NET 1.14.0 </br>JS 3.3.1 | 0.15.0 | Supported | [v1.14.0 release notes](https://github.com/dapr/dapr/releases/tag/v1.14.0) |
 | May 29th 2024 | 1.13.4</br>  | 1.13.0 | Java 1.11.0 </br>Go 1.10.0 </br>PHP 1.2.0 </br>Python 1.13.0 </br>.NET 1.13.0 </br>JS 3.3.0 | 0.14.0 | Supported  | [v1.13.4 release notes](https://github.com/dapr/dapr/releases/tag/v1.13.4) |
 | May 21st 2024 | 1.13.3</br>  | 1.13.0 | Java 1.11.0 </br>Go 1.10.0 </br>PHP 1.2.0 </br>Python 1.13.0 </br>.NET 1.13.0 </br>JS 3.3.0 | 0.14.0 | Supported | [v1.13.3 release notes](https://github.com/dapr/dapr/releases/tag/v1.13.3) |
 | April 3rd 2024 | 1.13.2</br>  | 1.13.0 | Java 1.11.0 </br>Go 1.10.0 </br>PHP 1.2.0 </br>Python 1.13.0 </br>.NET 1.13.0 </br>JS 3.3.0 | 0.14.0 | Supported | [v1.13.2 release notes](https://github.com/dapr/dapr/releases/tag/v1.13.2) |
@@ -143,7 +144,8 @@ General guidance on upgrading can be found for [self hosted mode]({{< ref self-h
 | 1.11.0 to 1.11.4         |                   N/A |                   1.12.4 |
 | 1.12.0 to 1.12.4         |                   N/A |                   1.13.5 |
 | 1.13.0 to 1.13.5         |                   N/A |                   1.14.0 |
-| 1.14.0 to 1.14.2         |                   N/A |                   1.14.2 |
+| 1.14.0 to 1.14.4         |                   N/A |                   1.14.4 |
+| 1.15.0                   |                   N/A |                   1.15.0 |
 
 ## Upgrade on Hosting platforms
 

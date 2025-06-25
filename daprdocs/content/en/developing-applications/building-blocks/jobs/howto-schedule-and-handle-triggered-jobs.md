@@ -2,7 +2,7 @@
 type: docs
 title: "How-To: Schedule and handle triggered jobs"
 linkTitle: "How-To: Schedule and handle triggered jobs"
-weight: 2000
+weight: 5000
 description: "Learn how to use the jobs API to schedule and handle triggered jobs"
 ---
 
@@ -20,7 +20,103 @@ When you [run `dapr init` in either self-hosted mode or on Kubernetes]({{< ref i
 
 In your code, set up and schedule jobs within your application.
 
-{{< tabs "Go" >}}
+{{< tabs ".NET" "Go" >}}
+
+{{% codetab %}}
+
+<!-- .NET -->
+
+The following .NET SDK code sample schedules the job named `prod-db-backup`. The job data contains information
+about the database that you'll be seeking to backup regularly. Over the course of this example, you'll:
+- Define types used in the rest of the example
+- Register an endpoint during application startup that handles all job trigger invocations on the service
+- Register the job with Dapr
+
+In the following example, you'll create records that you'll serialize and register alongside the job so the information 
+is available when the job is triggered in the future:
+- The name of the backup task (`db-backup`)
+- The backup task's `Metadata`, including:
+  - The database name (`DBName`)
+  - The database location (`BackupLocation`)
+
+Create an ASP.NET Core project and add the latest version of `Dapr.Jobs` from NuGet. 
+
+> **Note:** While it's not strictly necessary
+for your project to use the `Microsoft.NET.Sdk.Web` SDK to create jobs, as of the time this documentation is authored,
+only the service that schedules a job receives trigger invocations for it. As those invocations expect an endpoint
+that can handle the job trigger and requires the `Microsoft.NET.Sdk.Web` SDK, it's recommended that you
+use an ASP.NET Core project for this purpose.
+
+Start by defining types to persist our backup job data and apply our own JSON property name attributes to the properties 
+so they're consistent with other language examples.
+
+```cs
+//Define the types that we'll represent the job data with
+internal sealed record BackupJobData([property: JsonPropertyName("task")] string Task, [property: JsonPropertyName("metadata")] BackupMetadata Metadata);
+internal sealed record BackupMetadata([property: JsonPropertyName("DBName")]string DatabaseName, [property: JsonPropertyName("BackupLocation")] string BackupLocation);
+```
+
+Next, set up a handler as part of your application setup that will be called anytime a job is triggered on your
+application. It's the responsibility of this handler to identify how jobs should be processed based on the job name provided.
+
+This works by registering a handler with ASP.NET Core at `/job/<job-name>`, where `<job-name>` is parameterized and 
+passed into this handler delegate, meeting Dapr's expectation that an endpoint is available to handle triggered named jobs.
+
+Populate your `Program.cs` file with the following: 
+
+```cs
+using System.Text;
+using System.Text.Json;
+using Dapr.Jobs;
+using Dapr.Jobs.Extensions;
+using Dapr.Jobs.Models;
+using Dapr.Jobs.Models.Responses;
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDaprJobsClient();
+var app = builder.Build();
+
+//Registers an endpoint to receive and process triggered jobs
+var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+app.MapDaprScheduledJobHandler((string jobName, ReadOnlyMemory<byte> jobPayload, ILogger logger, CancellationToken cancellationToken) => {
+  logger?.LogInformation("Received trigger invocation for job '{jobName}'", jobName);
+  switch (jobName)
+  {
+    case "prod-db-backup":
+      // Deserialize the job payload metadata
+      var jobData = JsonSerializer.Deserialize<BackupJobData>(jobPayload);
+      
+      // Process the backup operation - we assume this is implemented elsewhere in your code
+      await BackupDatabaseAsync(jobData, cancellationToken);
+      break;
+  }
+}, cancellationTokenSource.Token);
+
+await app.RunAsync();
+```
+
+Finally, the job itself needs to be registered with Dapr so it can be triggered at a later point in time. You can do this
+by injecting a `DaprJobsClient` into a class and executing as part of an inbound operation to your application, but for
+this example's purposes, it'll go at the bottom of the `Program.cs` file you started above. Because you'll be using the
+`DaprJobsClient` you registered with dependency injection, start by creating a scope so you can access it.
+
+```cs
+//Create a scope so we can access the registered DaprJobsClient
+await using scope = app.Services.CreateAsyncScope();
+var daprJobsClient = scope.ServiceProvider.GetRequiredService<DaprJobsClient>();
+
+//Create the payload we wish to present alongside our future job triggers
+var jobData = new BackupJobData("db-backup", new BackupMetadata("my-prod-db", "/backup-dir")); 
+
+//Serialize our payload to UTF-8 bytes
+var serializedJobData = JsonSerializer.SerializeToUtf8Bytes(jobData);
+
+//Schedule our backup job to run every minute, but only repeat 10 times
+await daprJobsClient.ScheduleJobAsync("prod-db-backup", DaprJobSchedule.FromDuration(TimeSpan.FromMinutes(1)),
+    serializedJobData, repeats: 10);
+```
+
+{{% /codetab %}}
 
 {{% codetab %}}
 
@@ -92,66 +188,8 @@ In this example, at trigger time, which is `@every 1s` according to the `Schedul
 	}
 ```
 
-At the trigger time, the `prodDBBackupHandler` function is called, executing the desired business logic for this job at trigger time. For example:
-
-#### HTTP
-
-When you create a job using Dapr's Jobs API, Dapr will automatically assume there is an endpoint available at 
-`/job/<job-name>`. For instance, if you schedule a job named `test`, Dapr expects your application to listen for job 
-events at `/job/test`. Ensure your application has a handler set up for this endpoint to process the job when it is 
-triggered. For example:
-
-*Note: The following example is in Go but applies to any programming language.*
-
-```go
-
-func main() {
-    ...
-    http.HandleFunc("/job/", handleJob)
-	http.HandleFunc("/job/<job-name>", specificJob)
-    ...
-}
-
-func specificJob(w http.ResponseWriter, r *http.Request) {
-    // Handle specific triggered job
-}
-
-func handleJob(w http.ResponseWriter, r *http.Request) {
-    // Handle the triggered jobs
-}
-```
-
-#### gRPC
-
-When a job reaches its scheduled trigger time, the triggered job is sent back to the application via the following 
-callback function:
-
-*Note: The following example is in Go but applies to any programming language with gRPC support.*
-
-```go
-import rtv1 "github.com/dapr/dapr/pkg/proto/runtime/v1"
-...
-func (s *JobService) OnJobEventAlpha1(ctx context.Context, in *rtv1.JobEventRequest) (*rtv1.JobEventResponse, error) {
-    // Handle the triggered job
-}
-```
-
-This function processes the triggered jobs within the context of your gRPC server. When you set up the server, ensure that 
-you register the callback server, which will invoke this function when a job is triggered:
-
-```go
-...
-js := &JobService{}
-rtv1.RegisterAppCallbackAlphaServer(server, js)
-```
-
-In this setup, you have full control over how triggered jobs are received and processed, as they are routed directly 
-through this gRPC method.
-
-#### SDKs
-
-For SDK users, handling triggered jobs is simpler. When a job is triggered, Dapr will automatically route the job to the 
-event handler you set up during the server initialization. For example, in Go, you'd register the event handler like this:
+When a job is triggered, Dapr will automatically route the job to the event handler you set up during the server 
+initialization. For example, in Go, you'd register the event handler like this:
 
 ```go
 ...

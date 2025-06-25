@@ -1,9 +1,9 @@
 ---
 type: docs
 title: "Serialization in Dapr's SDKs"
-linkTitle: "Serialization"
+linkTitle: "SDK Serialization"
 description: "How Dapr serializes data within the SDKs"
-weight: 2000
+weight: 400
 aliases:
   - '/developing-applications/sdks/serialization/'
 ---

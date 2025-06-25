@@ -27,11 +27,11 @@ Creating a new actor follows a local call like `http://localhost:3500/v1.0/actor
 
 The Dapr runtime SDKs have language-specific actor frameworks. For example, the .NET SDK has C# actors. The goal is for all the Dapr language SDKs to have an actor framework. Currently .NET, Java, Go and Python SDK have actor frameworks.
 
-### Does Dapr have any SDKs I can use if I want to work with a particular programming language or framework?
+## Does Dapr have any SDKs I can use if I want to work with a particular programming language or framework?
 
 To make using Dapr more natural for different languages, it includes [language specific SDKs]({{<ref sdks>}}) for Go, Java, JavaScript, .NET,  Python, PHP, Rust and C++. These SDKs expose the functionality in the Dapr building blocks, such as saving state, publishing an event or creating an actor, through a typed language API rather than calling the http/gRPC API. This enables you to write a combination of stateless and stateful functions and actors all in the language of your choice. And because these SDKs share the Dapr runtime, you get cross-language actor and functions support.
 
-### What frameworks does Dapr integrate with?
+## What frameworks does Dapr integrate with?
 Dapr can be integrated with any developer framework. For example, in the Dapr .NET SDK you can find ASP.NET Core integration, which brings stateful routing controllers that respond to pub/sub events from other services.
 
 Dapr is integrated with the following frameworks;

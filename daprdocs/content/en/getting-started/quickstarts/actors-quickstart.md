@@ -20,8 +20,8 @@ As a quick overview of the .NET actors quickstart:
 1. Using a `SmartDevice.Service` microservice, you host:
    - Two `SmokeDetectorActor` smoke alarm objects
    - A `ControllerActor` object that commands and controls the smart devices  
-1. Using a `SmartDevice.Client` console app, the client app interacts with each actor, or the controller, to perform actions in aggregate. 
-1. The `SmartDevice.Interfaces` contains the shared interfaces and data types used by both the service and client apps.
+2. Using a `SmartDevice.Client` console app, the client app interacts with each actor, or the controller, to perform actions in aggregate. 
+3. The `SmartDevice.Interfaces` contains the shared interfaces and data types used by both the service and client apps.
 
 <img src="/images/actors-quickstart/actors-quickstart.png" width=800 style="padding-bottom:15px;">
 
@@ -30,10 +30,13 @@ As a quick overview of the .NET actors quickstart:
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [.NET SDK or .NET 6 SDK installed](https://dotnet.microsoft.com/download).
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
+- [.NET 6](https://dotnet.microsoft.com/download/dotnet/6.0), [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0) or [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0) installed
+
+**NOTE:** .NET 6 is the minimally supported version of .NET for the Dapr .NET SDK packages in this release. Only .NET 8 and .NET 9
+will be supported in Dapr v1.16 and later releases.
 
 ### Step 1: Set up the environment
 

@@ -1,12 +1,10 @@
 ---
 type: docs
-title: Dapr errors
-linkTitle: "Dapr errors"
-weight: 700
-description: "Information on Dapr errors and how to handle them"
+title: Handling gRPC error codes
+linkTitle: "gRPC"
+weight: 40
+description: "Information on Dapr gRPC errors and how to handle them"
 ---
-
-## Error handling: Understanding errors model and reporting
 
 Initially, errors followed the [Standard gRPC error model](https://grpc.io/docs/guides/error/#standard-error-model). However, to provide more detailed and informative error messages, an enhanced error model has been defined which aligns with the gRPC [Richer error model](https://grpc.io/docs/guides/error/#richer-error-model). 
 
@@ -14,7 +12,7 @@ Initially, errors followed the [Standard gRPC error model](https://grpc.io/docs/
 Not all Dapr errors have been converted to the richer gRPC error model.
 {{% /alert %}}
 
-### Standard gRPC Error Model
+## Standard gRPC Error Model
 
 The [Standard gRPC error model](https://grpc.io/docs/guides/error/#standard-error-model) is an approach to error reporting in gRPC. Each error response includes an error code and an error message. The error codes are standardized and reflect common error conditions. 
 
@@ -25,7 +23,7 @@ ERROR:
   Message: input key/keyPrefix 'bad||keyname' can't contain '||'
 ```
 
-### Richer gRPC Error Model
+## Richer gRPC Error Model
 
 The [Richer gRPC error model](https://grpc.io/docs/guides/error/#richer-error-model) extends the standard error model by providing additional context and details about the error. This model includes the standard error `code` and `message`, along with a `details` section that can contain various types of information, such as `ErrorInfo`, `ResourceInfo`, and `BadRequest` details.
 

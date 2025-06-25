@@ -58,6 +58,8 @@ spec:
     - name: storageConnectionString
       value: "DefaultEndpointsProtocol=https;AccountName=<account>;AccountKey=<account-key>"
     # Optional metadata
+    - name: getAllMessageProperties
+      value: "true"
     - name: direction
       value: "input, output"
 ```
@@ -84,6 +86,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `storageAccountKey`   | Y*  | Input | Storage account key for the checkpoint store account.<br>* When using Microsoft Entra ID, it's possible to omit this if the service principal has access to the storage account too. | `"112233445566778899"`
 | `storageConnectionString`   | Y*  | Input | Connection string for the checkpoint store, alternative to specifying `storageAccountKey` | `"DefaultEndpointsProtocol=https;AccountName=myeventhubstorage;AccountKey=<account-key>"`
 | `storageContainerName` | Y | Input | Storage container name for the storage account name.  | `"myeventhubstoragecontainer"`
+| `getAllMessageProperties` | N | Input | When set to `true`, retrieves all user/app/custom properties from the Event Hub message and forwards them in the returned event metadata. Default setting is `"false"`.  | `"true"`, `"false"`
 | `direction` | N | Input/Output | The direction of the binding.  | `"input"`, `"output"`, `"input, output"`
 
 ### Microsoft Entra ID authentication

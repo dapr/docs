@@ -66,7 +66,7 @@ This guide walks you through installing an Elastic Kubernetes Service (EKS) clus
 1. Create the cluster by running the following command:
 
    ```bash
-   eksctl create cluster -f cluster.yaml
+   eksctl create cluster -f cluster-config.yaml
    ```
    
 1. Verify the kubectl context:
