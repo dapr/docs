@@ -1,8 +1,8 @@
 ---
 type: docs
-title: "OpenAI"
-linkTitle: "OpenAI"
-description: Detailed information on the OpenAI conversation component
+title: "GoogleAI"
+linkTitle: "GoogleAI"
+description: Detailed information on the GoogleAI conversation component
 ---
 
 ## Component format
@@ -13,16 +13,14 @@ A Dapr `conversation.yaml` component file has the following structure:
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: openai
+  name: googleai
 spec:
-  type: conversation.openai
+  type: conversation.googleai
   metadata:
   - name: key
     value: mykey
   - name: model
-    value: gpt-4-turbo
-  - name: endpoint
-    value: 'https://api.openai.com/v1'
+    value: gemini-1.5-flash
   - name: cacheTTL
     value: 10m
 ```
@@ -35,9 +33,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| `key`   | Y | API key for OpenAI. | `mykey` |
-| `model` | N | The OpenAI LLM to use. Defaults to `gpt-4-turbo`.  | `gpt-4-turbo` |
-| `endpoint` | N | Custom API endpoint URL for OpenAI API-compatible services. If not specified, the default OpenAI API endpoint is used. | `https://api.openai.com/v1` |
+| `key`   | Y | API key for GoogleAI. | `mykey` |
+| `model` | N | The GoogleAI LLM to use. Defaults to `gemini-1.5-flash`.  | `gemini-2.0-flash` |
 | `cacheTTL` | N | A time-to-live value for a prompt cache to expire. Uses Golang duration format.  | `10m` |
 
 ## Related links

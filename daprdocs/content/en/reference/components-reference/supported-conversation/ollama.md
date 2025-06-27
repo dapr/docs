@@ -1,8 +1,8 @@
 ---
 type: docs
-title: "OpenAI"
-linkTitle: "OpenAI"
-description: Detailed information on the OpenAI conversation component
+title: "Ollama"
+linkTitle: "Ollama"
+description: Detailed information on the Ollama conversation component
 ---
 
 ## Component format
@@ -13,16 +13,12 @@ A Dapr `conversation.yaml` component file has the following structure:
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: openai
+  name: ollama
 spec:
-  type: conversation.openai
+  type: conversation.ollama
   metadata:
-  - name: key
-    value: mykey
   - name: model
-    value: gpt-4-turbo
-  - name: endpoint
-    value: 'https://api.openai.com/v1'
+    value: llama3.2:latest
   - name: cacheTTL
     value: 10m
 ```
@@ -35,9 +31,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| `key`   | Y | API key for OpenAI. | `mykey` |
-| `model` | N | The OpenAI LLM to use. Defaults to `gpt-4-turbo`.  | `gpt-4-turbo` |
-| `endpoint` | N | Custom API endpoint URL for OpenAI API-compatible services. If not specified, the default OpenAI API endpoint is used. | `https://api.openai.com/v1` |
+| `model` | N | The Ollama LLM to use. Defaults to `llama3.2:latest`.  | `phi4:latest` |
 | `cacheTTL` | N | A time-to-live value for a prompt cache to expire. Uses Golang duration format.  | `10m` |
 
 ## Related links
