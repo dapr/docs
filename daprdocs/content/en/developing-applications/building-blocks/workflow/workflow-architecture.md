@@ -31,7 +31,7 @@ When a workflow application starts up, it uses a workflow authoring SDK to send 
 
 The workflow app executes the appropriate workflow code and then sends a gRPC request back to the sidecar with the execution results.
 
-<img src="/images/workflow-overview/workflow-engine-protocol.png" alt="Dapr Workflow Engine Protocol" />
+<img src="/images/workflow-overview/workflow-engine-protocol.png" width=500 alt="Dapr Workflow Engine Protocol" />
 
 All interactions happen over a single gRPC channel and are initiated by the application, which means the application doesn't need to open any inbound ports. The details of these interactions are internally handled by the language-specific Dapr Workflow authoring SDK.
 
@@ -91,7 +91,7 @@ Workflow actor state remains in the state store even after a workflow has comple
 
 The following diagram illustrates the typical lifecycle of a workflow actor.
 
-<img src="/images/workflow-overview/workflow-actor-flowchart.png" alt="Dapr Workflow Actor Flowchart"/>
+<img src="/images/workflow-overview/workflow-actor-flowchart.png" width=600 alt="Dapr Workflow Actor Flowchart"/>
 
 To summarize:
 
@@ -113,7 +113,7 @@ Each activity actor stores a single key into the state store:
 
 The following diagram illustrates the typical lifecycle of an activity actor.
 
-<img src="/images/workflow-overview/workflow-activity-actor-flowchart.png" alt="Workflow Activity Actor Flowchart"/>
+<img src="/images/workflow-overview/workflow-activity-actor-flowchart.png" width=600 alt="Workflow Activity Actor Flowchart"/>
 
 Activity actors are short-lived:
 

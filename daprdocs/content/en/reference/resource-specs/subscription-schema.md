@@ -9,12 +9,12 @@ description: "The basic spec for a Dapr subscription"
 The `Subscription` Dapr resource allows you to subscribe declaratively to a topic using an external component YAML file. 
 
 {{% alert title="Note" color="primary" %}}
-Any subscription can be restricted to a particular [namepsace]({{< ref isolation-concept.md >}}) and restricted access through scopes to any particular set of applications.
+Any subscription can be restricted to a particular [namespace]({{< ref isolation-concept.md >}}) and restricted access through scopes to any particular set of applications.
 {{% /alert %}}
 
 This guide demonstrates two subscription API versions:
 
-- `v2alpha` (default spec)
+- `v2alpha1` (default spec)
 - `v1alpha1` (deprecated)
 
 ## `v2alpha1` format
