@@ -42,6 +42,17 @@
     etag: true
     ttl: false
     query: false
+- component: Coherence
+  link: setup-coherence
+  state: Alpha
+  version: v1
+  since: "1.15"
+  features:
+    crud: true
+    transactions: false
+    etag: false
+    ttl: true
+    query: false
 - component: etcd
   link: setup-etcd
   state: Beta
