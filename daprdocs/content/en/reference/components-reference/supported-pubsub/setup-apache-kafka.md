@@ -592,7 +592,7 @@ Currently, only message value serialization/deserialization is supported. Since 
 
 Please note that `rawPayload=true` should NOT be set for consumers, as the message value will be wrapped into a CloudEvent and base64-encoded. Leaving `rawPayload` as default (i.e. `false`) will send the Avro-decoded message to the application as a JSON payload.
 
-When setting the `useAvroJson` component metatadata to `true`, the inbound/outbond Avro binary will be converted into/from Avro JSON encoding. 
+When setting the `useAvroJson` component metadata to `true`, the inbound/outbound Avro binary is converted into/from Avro JSON encoding. 
 This can be preferable when accurate type mapping is desirable. 
 The default is standard JSON which is typically easier to bind to a native type in an application. 
 {{% /alert %}}
