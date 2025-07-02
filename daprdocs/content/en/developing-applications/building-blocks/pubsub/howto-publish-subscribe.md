@@ -8,8 +8,8 @@ description: "Learn how to send messages to a topic with one service and subscri
 
 Now that you've learned what the Dapr pub/sub building block provides, learn how it can work in your service. The below code example loosely describes an application that processes orders with two services, each with Dapr sidecars:
 
-- A checkout service using Dapr to subscribe to the topic in the message queue.
-- An order processing service using Dapr to publish a message to RabbitMQ.
+- A checkout service using Dapr to publish a message to RabbitMQ.
+- An order processing service using Dapr to subscribe to the topic in the message queue.
 
 
 <img src="/images/pubsub-howto-overview.png" width=1000 alt="Diagram showing state management of example service">
