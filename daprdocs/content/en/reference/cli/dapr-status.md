@@ -11,7 +11,7 @@ Show the health status of Dapr services.
 
 ### Supported platforms
 
-- [Kubernetes]({{< ref kubernetes >}})
+- [Kubernetes]({{% ref kubernetes %}})
 
 ### Usage
 

@@ -166,4 +166,4 @@ $ curl -X DELETE http://localhost:3500/v1.0-alpha1/jobs/jobforjabba -H "Content-
 
 ## Next steps
 
-[Jobs API overview]({{< ref jobs-overview.md >}})
+[Jobs API overview]({{% ref jobs-overview.md %}})

@@ -7,7 +7,7 @@ weight: 600
 ---
 
 Dapr provides native, cross-platform, and cross-language virtual actor capabilities.
-Besides the [language specific SDKs]({{<ref sdks>}}), a developer can invoke an actor using the API endpoints below.
+Besides the [language specific SDKs]({{%ref sdks%}}), a developer can invoke an actor using the API endpoints below.
 
 ## User service code calling Dapr
 
@@ -77,8 +77,8 @@ Persists the change to the state for an actor as a multi-item transaction.
 
 #### TTL
 
-With the [`ActorStateTTL` feature enabled]({{< ref
-"support-preview-features.md" >}}), actor clients can set the `ttlInSeconds`
+With the [`ActorStateTTL` feature enabled]({{% ref
+"support-preview-features.md" %}}), actor clients can set the `ttlInSeconds`
 field in the transaction metadata to have the state expire after that many
 seconds. If the `ttlInSeconds` field is not set, the state will not expire.
 
@@ -114,7 +114,7 @@ Parameter | Description
 
 #### Examples
 
-> Note, the following example uses the `ttlInSeconds` field, which requires the [`ActorStateTTL` feature enabled]({{< ref "support-preview-features.md" >}}).
+> Note, the following example uses the `ttlInSeconds` field, which requires the [`ActorStateTTL` feature enabled]({{% ref "support-preview-features.md" %}}).
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/actors/stormtrooper/50/state \
@@ -384,7 +384,7 @@ POST/PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/timers/<n
 ```
 
 #### Timer request body:
-The format for the timer request body is the same as for [actor reminders]({{< ref "#reminder-request-body" >}}). For example:
+The format for the timer request body is the same as for [actor reminders]({{% ref "#reminder-request-body" %}}). For example:
 
 The following specifies a `dueTime` of 3 seconds and a period of 7 seconds.
 

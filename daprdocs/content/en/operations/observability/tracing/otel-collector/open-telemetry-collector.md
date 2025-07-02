@@ -14,7 +14,7 @@ Dapr can also write traces using the Zipkin protocol. Prior to supporting the OT
 
 ## Prerequisites
 
-- [Install Dapr on Kubernetes]({{< ref kubernetes >}})
+- [Install Dapr on Kubernetes]({{% ref kubernetes %}})
 - Verify your trace backends are already set up to receive traces
 - Review your OTEL Collector exporter's required parameters:
   - [`opentelemetry-collector-contrib/exporter`](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter)
@@ -25,7 +25,7 @@ Dapr can also write traces using the Zipkin protocol. Prior to supporting the OT
 1. Check out the [`open-telemetry-collector-generic.yaml`](/docs/open-telemetry-collector/open-telemetry-collector-generic.yaml). 
 
 1. Replace the `<your-exporter-here>` section with the correct settings for your trace exporter. 
-   - Refer to the OTEL Collector links in the [prerequisites section]({{< ref "#prerequisites.md" >}}) to determine the correct settings.
+   - Refer to the OTEL Collector links in the [prerequisites section]({{% ref "#prerequisites.md" %}}) to determine the correct settings.
 
 1. Apply the configuration with:
 
@@ -80,4 +80,4 @@ Deploy and run some applications. Wait for the trace to propagate to your tracin
 
 ## Related links
 - Try out the [observability quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/observability/README.md)
-- Learn how to set [tracing configuration options]({{< ref "configuration-overview.md#tracing" >}})
+- Learn how to set [tracing configuration options]({{% ref "configuration-overview.md#tracing" %}})

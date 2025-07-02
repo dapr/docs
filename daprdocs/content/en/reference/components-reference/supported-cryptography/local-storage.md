@@ -39,7 +39,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets, as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets, as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -58,4 +58,4 @@ Let's say you've set `path=/mnt/keys`, which contains the following files:
 When using the component, you can reference the keys as `mykey1.pm` and `mykey2`.
 
 ## Related links
-[Cryptography building block]({{< ref cryptography >}})
+[Cryptography building block]({{% ref cryptography %}})

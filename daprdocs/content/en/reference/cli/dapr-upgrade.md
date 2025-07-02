@@ -17,7 +17,7 @@ Prior to downgrading, confirm components are backwards compatible and applicatio
 
 ### Supported platforms
 
-- [Kubernetes]({{< ref kubernetes >}})
+- [Kubernetes]({{% ref kubernetes %}})
 
 ### Usage
 
@@ -68,4 +68,4 @@ Please see docs.dapr.io for certificate renewal instructions to avoid service in
 
 ### Related links
 
-- [Upgrade Dapr on a Kubernetes cluster]({{< ref kubernetes-upgrade.md >}})
+- [Upgrade Dapr on a Kubernetes cluster]({{% ref kubernetes-upgrade.md %}})

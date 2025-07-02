@@ -7,7 +7,7 @@ aliases:
 - /developing-applications/middleware/supported-middleware/middleware-oauth2/
 ---
 
-The OAuth2 [HTTP middleware]({{< ref middleware.md >}}) enables the [OAuth2 Authorization Code flow](https://tools.ietf.org/html/rfc6749#section-4.1) on a Web API without modifying the application. This design separates authentication/authorization concerns from the application, so that application operators can adopt and configure authentication/authorization providers without impacting the application code.
+The OAuth2 [HTTP middleware]({{% ref middleware.md %}}) enables the [OAuth2 Authorization Code flow](https://tools.ietf.org/html/rfc6749#section-4.1) on a Web API without modifying the application. This design separates authentication/authorization concerns from the application, so that application operators can adopt and configure authentication/authorization providers without impacting the application code.
 
 ## Component format
 
@@ -39,7 +39,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -57,7 +57,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Dapr configuration
 
-To be applied, the middleware must be referenced in [configuration]({{< ref configuration-concept.md >}}). See [middleware pipelines]({{< ref "middleware.md#customize-processing-pipeline">}}).
+To be applied, the middleware must be referenced in [configuration]({{% ref configuration-concept.md %}}). See [middleware pipelines]({{% ref "middleware.md#customize-processing-pipeline"%}}).
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -73,8 +73,8 @@ spec:
 
 ## Related links
 
-- [Configure API authorization with OAuth]({{< ref oauth >}})
+- [Configure API authorization with OAuth]({{% ref oauth %}})
 - [Middleware OAuth sample (interactive)](https://github.com/dapr/samples/tree/master/middleware-oauth-google)
-- [Middleware]({{< ref middleware.md >}})
-- [Configuration concept]({{< ref configuration-concept.md >}})
-- [Configuration overview]({{< ref configuration-overview.md >}})
+- [Middleware]({{% ref middleware.md %}})
+- [Configuration concept]({{% ref configuration-concept.md %}})
+- [Configuration overview]({{% ref configuration-overview.md %}})

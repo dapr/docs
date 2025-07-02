@@ -7,7 +7,7 @@ aliases:
 - /developing-applications/middleware/supported-middleware/middleware-rate-limit/
 ---
 
-The rate limit [HTTP middleware]({{< ref middleware.md >}}) allows restricting the maximum number of allowed HTTP requests per second. Rate limiting can protect your application from Denial of Service (DoS) attacks. DoS attacks can be initiated by malicious 3rd parties but also by bugs in your software (a.k.a. a "friendly fire" DoS attack).
+The rate limit [HTTP middleware]({{% ref middleware.md %}}) allows restricting the maximum number of allowed HTTP requests per second. Rate limiting can protect your application from Denial of Service (DoS) attacks. DoS attacks can be initiated by malicious 3rd parties but also by bugs in your software (a.k.a. a "friendly fire" DoS attack).
 
 ## Component format
 
@@ -38,11 +38,11 @@ Once the limit is reached, the requests will fail with HTTP Status code *429: To
 The rate limit is enforced independently in each Dapr sidecar, and not cluster-wide.
 {{% /alert %}}
 
-Alternatively, the [max concurrency setting]({{< ref control-concurrency.md >}}) can be used to rate-limit applications and applies to all traffic, regardless of remote IP, protocol, or path.
+Alternatively, the [max concurrency setting]({{% ref control-concurrency.md %}}) can be used to rate-limit applications and applies to all traffic, regardless of remote IP, protocol, or path.
 
 ## Dapr configuration
 
-To be applied, the middleware must be referenced in [configuration]({{< ref configuration-concept.md >}}). See [middleware pipelines]({{< ref "middleware.md#customize-processing-pipeline">}}).
+To be applied, the middleware must be referenced in [configuration]({{% ref configuration-concept.md %}}). See [middleware pipelines]({{% ref "middleware.md#customize-processing-pipeline"%}}).
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -58,7 +58,7 @@ spec:
 
 ## Related links
 
-- [Control max concurrently]({{< ref control-concurrency.md >}})
-- [Middleware]({{< ref middleware.md >}})
-- [Dapr configuration]({{< ref configuration-concept.md >}})
-- [Configuration overview]({{< ref configuration-overview.md >}})
+- [Control max concurrently]({{% ref control-concurrency.md %}})
+- [Middleware]({{% ref middleware.md %}})
+- [Dapr configuration]({{% ref configuration-concept.md %}})
+- [Configuration overview]({{% ref configuration-overview.md %}})

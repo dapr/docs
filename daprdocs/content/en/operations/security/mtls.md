@@ -10,7 +10,7 @@ Dapr supports in-transit encryption of communication between Dapr instances usin
 
 Dapr allows operators and developers to bring in their own certificates, or instead let Dapr automatically create and persist self-signed root and issuer certificates.
 
-For detailed information on mTLS, read the [security concepts section]({{< ref "security-concept.md" >}}).
+For detailed information on mTLS, read the [security concepts section]({{% ref "security-concept.md" %}}).
 
 If custom certificates have not been provided, Dapr automatically creates and persist self-signed certs valid for one year.
 In Kubernetes, the certs are persisted to a secret that resides in the namespace of the Dapr system pods, accessible only to them.
@@ -385,9 +385,9 @@ spec:
 
 In addition to the Dapr configuration, you also need to provide the TLS certificates to each Dapr sidecar instance. You can do so by setting the following environment variables before running the Dapr instance:
 
-{{< tabs "Linux/MacOS" Windows >}}
+{{% tabpane "Linux/MacOS" Windows %}}
 
-{{% codetab %}}
+{{% tab %}}
 ```bash
 export DAPR_TRUST_ANCHORS=`cat $HOME/.dapr/certs/ca.crt`
 export DAPR_CERT_CHAIN=`cat $HOME/.dapr/certs/issuer.crt`
@@ -395,9 +395,9 @@ export DAPR_CERT_KEY=`cat $HOME/.dapr/certs/issuer.key`
 export NAMESPACE=default
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab %}}
 ```powershell
 $env:DAPR_TRUST_ANCHORS=$(Get-Content -raw $env:USERPROFILE\.dapr\certs\ca.crt)
 $env:DAPR_CERT_CHAIN=$(Get-Content -raw $env:USERPROFILE\.dapr\certs\issuer.crt)
@@ -405,9 +405,9 @@ $env:DAPR_CERT_KEY=$(Get-Content -raw $env:USERPROFILE\.dapr\certs\issuer.key)
 $env:NAMESPACE="default"
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{% /tabpane %}}
 
 If using the Dapr CLI, point Dapr to the config file above to run the Dapr instance with mTLS enabled:
 

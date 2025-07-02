@@ -18,7 +18,7 @@ Each lock has a name. The application determines the resources that the named lo
 
 For example, in the competing consumer pattern, multiple instances of an application access a queue. You can decide that you want to lock the queue while the application is running its business logic.
 
-In the diagram below, two instances of the same application, `App1`, use the [Redis lock component]({{< ref redis-lock >}}) to take a lock on a shared resource. 
+In the diagram below, two instances of the same application, `App1`, use the [Redis lock component]({{% ref redis-lock %}}) to take a lock on a shared resource. 
 
 - The first app instance acquires the named lock and gets exclusive access. 
 - The second app instance is unable to acquire the lock and therefore is not allowed to access the resource until the lock is released, either:
@@ -47,5 +47,5 @@ Watch [this video for an overview of the distributed lock API](https://youtu.be/
 ## Next steps
 
 Follow these guides on:
-- [How-To: Use distributed locks in your application]({{< ref howto-use-distributed-lock.md >}})
+- [How-To: Use distributed locks in your application]({{% ref howto-use-distributed-lock %}})
 

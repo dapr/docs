@@ -29,9 +29,9 @@ The `maxStackDepth` parameter sets a value that controls how many reentrant call
 
 The reentrant actor must provide the appropriate configuration. This is done by the actor's endpoint for `GET /dapr/config`, similar to other actor configuration elements.
 
-{{< tabs ".NET" JavaScript Python Java Go >}}
+{{% tabpane ".NET" JavaScript Python Java Go %}}
 
-{{% codetab %}}
+{{% tab %}}
 <!--dotnet-->
 
 ```csharp
@@ -53,9 +53,9 @@ public class Startup
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab %}}
 <!--javascript-->
 
 ```js
@@ -72,9 +72,9 @@ const clientOptions = {
 };
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab %}}
 <!--python-->
 
 ```python
@@ -100,19 +100,19 @@ def do_something_reentrant():
 	# invoke another actor here, reentrancy will be handled automatically
 	return
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab %}}
 <!--java-->
 
 ```java
 
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
 
-{{% codetab %}}
+{{% tab %}}
 
 Here is a snippet of an actor written in Golang providing the reentrancy configuration via the HTTP API. Reentrancy has not yet been included into the Go SDK.
 
@@ -168,9 +168,9 @@ func reentrantCallHandler(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{% /tabpane %}}
 
 ## Demo
 
@@ -182,9 +182,9 @@ Watch this [video](https://www.youtube.com/watch?v=QADHQ5v-gww&list=PLcip_LgkYwz
 
 ## Next steps
 
-{{< button text="Actors in the Dapr SDKs" page="developing-applications/sdks/#sdk-languages" >}}
+{{< button text="Actors in the Dapr SDKs" page="developing-applications/sdks/_index.md#sdk-languages" >}}
 
 ## Related links
 
-- [Actors API reference]({{< ref actors_api.md >}})
-- [Actors overview]({{< ref actors-overview.md >}})
+- [Actors API reference]({{% ref actors_api %}})
+- [Actors overview]({{% ref actors-overview %}})

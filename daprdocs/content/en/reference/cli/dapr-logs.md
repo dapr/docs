@@ -11,7 +11,7 @@ Get Dapr sidecar logs for an application.
 
 ### Supported platforms
 
-- [Kubernetes]({{< ref kubernetes >}})
+- [Kubernetes]({{% ref kubernetes %}})
 
 ### Usage
 

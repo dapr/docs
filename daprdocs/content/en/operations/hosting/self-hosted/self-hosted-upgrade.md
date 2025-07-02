@@ -17,7 +17,7 @@ description: "Follow these steps to upgrade Dapr in self-hosted mode and ensure 
    dapr uninstall --all
    ```
 
-1. Download and install the latest CLI by visiting [this guide]({{< ref install-dapr-cli.md >}}).
+1. Download and install the latest CLI by visiting [this guide]({{% ref install-dapr-cli.md %}}).
 
 1. Initialize the Dapr runtime:
 

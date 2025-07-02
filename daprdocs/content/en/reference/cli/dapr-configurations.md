@@ -11,7 +11,7 @@ List all Dapr configurations.
 
 ### Supported platforms
 
-- [Kubernetes]({{< ref kubernetes >}})
+- [Kubernetes]({{% ref kubernetes %}})
 
 ### Usage
 

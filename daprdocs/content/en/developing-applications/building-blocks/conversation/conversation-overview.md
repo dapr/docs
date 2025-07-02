@@ -7,14 +7,14 @@ description: "Overview of the conversation API building block"
 ---
 
 {{% alert title="Alpha" color="primary" %}}
-The conversation API is currently in [alpha]({{< ref "certification-lifecycle.md#certification-levels" >}}).
+The conversation API is currently in [alpha]({{% ref "certification-lifecycle#certification-levels" %}}).
 {{% /alert %}}
 
 Dapr's conversation API reduces the complexity of securely and reliably interacting with Large Language Models (LLM) at scale. Whether you're a developer who doesn't have the necessary native SDKs or a polyglot shop who just wants to focus on the prompt aspects of LLM interactions, the conversation API provides one consistent API entry point to talk to underlying LLM providers. 
 
 <img src="/images/conversation-overview.png" width=800 alt="Diagram showing the flow of a user's app communicating with Dapr's LLM components.">
 
-In additon to enabling critical performance and security functionality (like [prompt caching]({{< ref "#prompt-caching" >}}) and [PII scrubbing]({{< ref "#personally-identifiable-information-pii-obfuscation" >}})), you can also pair the conversation API with Dapr functionalities, like:
+In additon to enabling critical performance and security functionality (like [prompt caching]({{% ref "#prompt-caching" %}}) and [PII scrubbing]({{% ref "#personally-identifiable-information-pii-obfuscation" %}})), you can also pair the conversation API with Dapr functionalities, like:
 - Resiliency circuit breakers and retries to circumvent limit and token errors, or 
 - Middleware to authenticate requests coming to and from the LLM
 
@@ -22,7 +22,7 @@ Dapr provides observability by issuing metrics for your LLM interactions.
 
 ## Features
 
-The following features are out-of-the-box for [all the supported conversation components]({{< ref supported-conversation >}}).
+The following features are out-of-the-box for [all the supported conversation components]({{% ref supported-conversation %}}).
 
 ### Prompt caching
 
@@ -59,13 +59,13 @@ Want to put the Dapr conversation API to the test? Walk through the following qu
 
 | Quickstart/tutorial | Description |
 | ------------------- | ----------- |
-| [Conversation quickstart]({{< ref conversation-quickstart.md >}}) | Learn how to  interact with Large Language Models (LLMs) using the conversation API. |
+| [Conversation quickstart]({{% ref conversation-quickstart %}}) | Learn how to  interact with Large Language Models (LLMs) using the conversation API. |
 
 ### Start using the conversation API directly in your app
 
-Want to skip the quickstarts? Not a problem. You can try out the conversation building block directly in your application. After [Dapr is installed]({{< ref "getting-started/_index.md" >}}), you can begin using the conversation API starting with [the how-to guide]({{< ref howto-conversation-layer.md >}}).
+Want to skip the quickstarts? Not a problem. You can try out the conversation building block directly in your application. After [Dapr is installed]({{% ref "getting-started/_index" %}}), you can begin using the conversation API starting with [the how-to guide]({{% ref howto-conversation-layer %}}).
 
 ## Next steps
 
-- [How-To: Converse with an LLM using the conversation API]({{< ref howto-conversation-layer.md >}})
-- [Conversation API components]({{< ref supported-conversation >}})
+- [How-To: Converse with an LLM using the conversation API]({{% ref howto-conversation-layer %}})
+- [Conversation API components]({{% ref supported-conversation %}})

@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup GCP Firestore state store create a component of type `state.gcp.firestore`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+To setup GCP Firestore state store create a component of type `state.gcp.firestore`. See [this guide]({{% ref "howto-get-save-state.md#step-1-setup-a-state-store" %}}) on how to create and apply a state store configuration.
 
 
 ```yaml
@@ -50,7 +50,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -77,22 +77,22 @@ Since the GCP Firestore component uses the GCP Go Client Libraries, by default i
 
 ## Setup GCP Firestore
 
-{{< tabs "Self-Hosted" "Google Cloud" >}}
+{{% tabpane "Self-Hosted" "Google Cloud" %}}
 
-{{% codetab %}}
+{{% tab %}}
 You can use the GCP Datastore emulator to run locally using the instructions [here](https://cloud.google.com/datastore/docs/tools/datastore-emulator).
 
 You can then interact with the server using `http://localhost:8432`.
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab %}}
 Follow the instructions [here](https://cloud.google.com/datastore/docs/quickstart) to get started with setting up Firestore in Google Cloud.
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{% /tabpane %}}
 
 
 ## Related links
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
-- [State management building block]({{< ref state-management >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" %}}) for instructions on configuring state store components
+- [State management building block]({{% ref state-management %}})

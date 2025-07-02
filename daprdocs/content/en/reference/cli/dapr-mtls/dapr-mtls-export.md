@@ -12,7 +12,7 @@ Export the root Certificate Authority (CA), issuer cert and issuer key to local 
 
 ### Supported platforms
 
-- [Kubernetes]({{< ref kubernetes >}})
+- [Kubernetes]({{% ref kubernetes %}})
 
 ### Usage
 

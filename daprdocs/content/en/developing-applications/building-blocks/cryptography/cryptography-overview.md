@@ -67,11 +67,11 @@ Want to put the Dapr cryptography API to the test? Walk through the following qu
 
 | Quickstart/tutorial | Description |
 | ------------------- | ----------- |
-| [Cryptography quickstart]({{< ref cryptography-quickstart.md >}}) | Encrypt and decrypt messages and large files using RSA and AES keys with the cryptography API. |
+| [Cryptography quickstart]({{% ref cryptography-quickstart %}}) | Encrypt and decrypt messages and large files using RSA and AES keys with the cryptography API. |
 
 ### Start using cryptography directly in your app
 
-Want to skip the quickstarts? Not a problem. You can try out the cryptography building block directly in your application to encrypt and decrypt your application. After [Dapr is installed]({{< ref "getting-started/_index.md" >}}), you can begin using the cryptography API starting with [the cryptography how-to guide]({{< ref howto-cryptography.md >}}).
+Want to skip the quickstarts? Not a problem. You can try out the cryptography building block directly in your application to encrypt and decrypt your application. After [Dapr is installed]({{% ref "getting-started/_index.md" %}}), you can begin using the cryptography API starting with [the cryptography how-to guide]({{% ref howto-cryptography %}}).
 
 ## Demo
 
@@ -84,6 +84,6 @@ Watch this [demo video of the Cryptography API from the Dapr Community Call #83]
 {{< button text="Use the cryptography API >>" page="howto-cryptography.md" >}}
 
 ## Related links
-- [Cryptography overview]({{< ref cryptography-overview.md >}})
-- [Cryptography component specs]({{< ref supported-cryptography >}})
-- [Cryptography API reference doc]({{< ref cryptography_api >}})
+- [Cryptography overview]({{% ref cryptography-overview %}})
+- [Cryptography component specs]({{% ref supported-cryptography %}})
+- [Cryptography API reference doc]({{% ref cryptography_api %}})
