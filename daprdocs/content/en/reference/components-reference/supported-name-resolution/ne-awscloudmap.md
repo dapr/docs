@@ -8,7 +8,11 @@ description: Detailed information on the AWS Cloudmap name resolution component
 
 This component uses [AWS Cloud Map](https://aws.amazon.com/cloud-map/) for service discovery in Dapr. It supports both HTTP and DNS namespaces, allowing services to discover and connect to other services using AWS Cloud Map's service discovery capabilities.
 
-## Component Format
+## Configuration format
+
+Name resolution is configured via the [Dapr Configuration]({{< ref configuration-overview.md >}}).
+
+Within the configuration YAML, set the `spec.nameResolution.component` property to `"aws.cloudmap"`, then pass configuration options in the `spec.nameResolution.configuration` dictionary.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -41,7 +45,7 @@ spec:
 
 ## Specification
 
-### AWS Authentication
+### AWS authentication
 
 The component supports multiple authentication methods:
 
@@ -56,7 +60,7 @@ The component supports multiple authentication methods:
 3. Explicit Credentials:
    - Provided in the component metadata (not recommended for production)
 
-### Required Permissions
+### Required permissions
 
 The AWS credentials must have the following permissions:
 ```json
@@ -76,7 +80,7 @@ The AWS credentials must have the following permissions:
 }
 ```
 
-### Configuration Options
+### Spec configuration fields
 
 | Property | Type | Required | Default | Description |
 |----------|------|----------|---------|-------------|
@@ -86,7 +90,7 @@ The AWS credentials must have the following permissions:
 | endpoint | string | N | "" | Custom endpoint for AWS CloudMap API. Useful for testing with LocalStack |
 | defaultDaprPort | number | N | 3500 | Default port for Dapr sidecar if not specified in instance attributes |
 
-### Service Registration
+### Service registration
 
 To use this name resolver, your services must be registered in AWS CloudMap. When registering instances, ensure they have the following attributes:
 

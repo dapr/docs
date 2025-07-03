@@ -24,15 +24,15 @@ spec:
       format: "service-{appid}.default.svc.cluster.local"  # Replace with your desired format pattern
 ```
 
-## Configuration Fields
+## Spec configuration fields
 
 | Field   | Required | Details | Example |
 |---------|----------|---------|---------|
-| format  | Y | The format string to use for name resolution. Must contain the `{appid}` placeholder which will be replaced with the actual service name. | `"service-{appid}.default.svc.cluster.local"` |
+| format  | Y | The format string to use for name resolution. Must contain the `{appid}` placeholder which is replaced with the actual service name. | `"service-{appid}.default.svc.cluster.local"` |
 
 ## Examples
 
-When configured with `format: "service-{appid}.default.svc.cluster.local"`, the resolver will transform service names as follows:
+When configured with `format: "service-{appid}.default.svc.cluster.local"`, the resolver transforms service names as follows:
 
 - Service ID "myapp" → "service-myapp.default.svc.cluster.local"
 - Service ID "frontend" → "service-frontend.default.svc.cluster.local"
@@ -40,6 +40,6 @@ When configured with `format: "service-{appid}.default.svc.cluster.local"`, the 
 
 ## Notes
 
-- Empty service IDs are not allowed and will result in an error
+- Empty service IDs are not allowed and results in an error.
 - The format string must be provided in the configuration
 - The format string must contain at least one `{appid}` placeholder 
