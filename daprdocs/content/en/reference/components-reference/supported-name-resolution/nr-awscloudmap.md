@@ -22,6 +22,7 @@ metadata:
 spec:
   nameResolution:
     component: "aws.cloudmap"
+    version: "v1"
     configuration:
       # Required: AWS CloudMap namespace configuration (one of these is required)
       namespaceName: "my-namespace"  # The name of your CloudMap namespace
@@ -82,13 +83,13 @@ The AWS credentials must have the following permissions:
 
 ### Spec configuration fields
 
-| Property | Type | Required | Default | Description |
-|----------|------|----------|---------|-------------|
-| namespaceName | string | One of namespaceName or namespaceId | "" | The name of your AWS CloudMap namespace |
-| namespaceId | string | One of namespaceName or namespaceId | "" | The ID of your AWS CloudMap namespace |
-| region | string | N | "" | AWS region. If not provided, will be determined from environment or instance metadata |
-| endpoint | string | N | "" | Custom endpoint for AWS CloudMap API. Useful for testing with LocalStack |
-| defaultDaprPort | number | N | 3500 | Default port for Dapr sidecar if not specified in instance attributes |
+| Field           | Required                            | Type   | Default | Description |
+|-----------------|-------------------------------------|--------|---------|-------------|
+| namespaceName   | One of namespaceName or namespaceId | string | ""      | The name of your AWS CloudMap namespace |
+| namespaceId     | One of namespaceName or namespaceId | string | ""      | The ID of your AWS CloudMap namespace |
+| region          | N                                   | string | ""      | AWS region. If not provided, will be determined from environment or instance metadata |
+| endpoint        | N                                   | string | ""      | Custom endpoint for AWS CloudMap API. Useful for testing with LocalStack |
+| defaultDaprPort | N                                   | number | 3500    | Default port for Dapr sidecar if not specified in instance attributes |
 
 ### Service registration
 
@@ -115,6 +116,8 @@ Example instance attributes:
 
 
 ## Example Usage
+
+Name resolution is configured via the [Dapr Configuration]({{< ref configuration-overview.md >}}). Here are some examples of its usage.
 
 ### Minimal Configuration
 
@@ -148,3 +151,7 @@ spec:
       accessKey: "test"
       secretKey: "test"
 ``` 
+
+### Related Links
+- [Service invocation building block]({{< ref service-invocation >}})
+- [AWS Cloudmap documentation](https://aws.amazon.com/cloud-map/)

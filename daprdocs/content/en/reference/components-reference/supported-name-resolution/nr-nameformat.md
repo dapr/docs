@@ -6,11 +6,15 @@ description: Detailed information on the NameFormat name resolution component
 ---
 
 
-The Name Format name resolver provides a flexible way to resolve service names using a configurable format string with placeholders. This is useful in scenarios where you want to map service names to predictable DNS names following a specific pattern.
+The Name Format name resolver provides a flexible way to resolve service names using a configurable format string with placeholders. This is useful in scenarios where you want to map service names to predictable DNS names following a specific pattern. 
+
+Consider using this name resolver if there is no specific name resolver available for your service registry, but your service registry can expose services via internal DNS names using predictable naming conventions. 
 
 ## Configuration Format
 
-To use the Name Format name resolver, create a configuration in your Dapr environment:
+Name resolution is configured via the [Dapr Configuration]({{< ref configuration-overview.md >}}).
+
+Within the configuration YAML, set the `spec.nameResolution.component` property to `"nameformat"`, then pass configuration options in the `spec.nameResolution.configuration` dictionary.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
