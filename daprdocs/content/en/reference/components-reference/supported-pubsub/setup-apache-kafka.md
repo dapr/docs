@@ -59,6 +59,8 @@ spec:
     value: 2097152
   - name: channelBufferSize # Optional. Advanced setting. The number of events to buffer in internal and external channels.
     value: 512
+  - name: consumerGroupRebalanceStrategy # Optional. Advanced setting. The strategy to use for consumer group rebalancing.
+    value: sticky
   - name: schemaRegistryURL # Optional. When using Schema Registry Avro serialization/deserialization. The Schema Registry URL.
     value: http://localhost:8081
   - name: schemaRegistryAPIKey # Optional. When using Schema Registry Avro serialization/deserialization. The Schema Registry API Key.
@@ -69,6 +71,8 @@ spec:
     value: true
   - name: schemaLatestVersionCacheTTL # Optional. When using Schema Registry Avro serialization/deserialization. The TTL for schema caching when publishing a message with latest schema available.
     value: 5m
+  - name: useAvroJson # Optional. Enables Avro JSON schema for serialization as opposed to Standard JSON default. Only applicable when the subscription uses valueSchemaType=Avro
+    value: "true"
   - name: escapeHeaders # Optional.
     value: false
   
@@ -115,6 +119,7 @@ spec:
 | schemaRegistryAPISecret | N | When using Schema Registry Avro serialization/deserialization. The Schema Registry credentials API Secret. | `ABCDEFGMEADFF` |
 | schemaCachingEnabled | N | When using Schema Registry Avro serialization/deserialization. Enables caching for schemas. Default is `true` | `true` |
 | schemaLatestVersionCacheTTL | N | When using Schema Registry Avro serialization/deserialization. The TTL for schema caching when publishing a message with latest schema available. Default is 5 min | `5m` |
+| useAvroJson | N | Enables Avro JSON schema for serialization as opposed to Standard JSON default. Only applicable when the subscription uses valueSchemaType=Avro. Default is `"false"` | `"true"` |
 | clientConnectionTopicMetadataRefreshInterval | N | The interval for the client connection's topic metadata to be refreshed with the broker as a Go duration. Defaults to `9m`. | `"4m"` |
 | clientConnectionKeepAliveInterval | N | The maximum time for the client connection to be kept alive with the broker, as a Go duration, before closing the connection. A zero value (default) means keeping alive indefinitely. | `"4m"` |
 | consumerFetchMin | N | The minimum number of message bytes to fetch in a request - the broker will wait until at least this many are available. The default is `1`, as `0` causes the consumer to spin when no messages are available. Equivalent to the JVM's `fetch.min.bytes`. | `"2"` |
@@ -122,6 +127,7 @@ spec:
 | channelBufferSize | N | The number of events to buffer in internal and external channels. This permits the producer and consumer to continue processing some messages in the background while user code is working, greatly improving throughput. Defaults to `256`. | `"512"` |
 | heartbeatInterval | N | The interval between heartbeats to the consumer coordinator. At most, the value should be set to a 1/3 of the `sessionTimeout` value. Defaults to "3s". | `"5s"` |
 | sessionTimeout | N | The timeout used to detect client failures when using Kafka’s group management facility. If the broker fails to receive any heartbeats from the consumer before the expiration of this session timeout, then the consumer is removed and initiates a rebalance. Defaults to "10s". | `"20s"` |
+| consumerGroupRebalanceStrategy | N | The strategy to use for consumer group rebalancing. Supported values: `range`, `sticky`, `roundrobin`. Default is `range` | `"sticky"` |
 | escapeHeaders | N | Enables URL escaping of the message header values received by the consumer. Allows receiving content with special characters that are usually not allowed in HTTP headers. Default is `false`. | `true` |
 
 The `secretKeyRef` above is referencing  a [kubernetes secrets store]({{< ref kubernetes-secret-store.md >}}) to access the tls information. Visit [here]({{< ref setup-secret-store.md >}}) to learn more about how to configure a secret store component.
@@ -583,7 +589,12 @@ You can configure pub/sub to publish or consume data encoded using [Avro binary 
 
 {{% alert title="Important" color="warning" %}}
 Currently, only message value serialization/deserialization is supported. Since cloud events are not supported, the `rawPayload=true` metadata must be passed when publishing Avro messages.
+
 Please note that `rawPayload=true` should NOT be set for consumers, as the message value will be wrapped into a CloudEvent and base64-encoded. Leaving `rawPayload` as default (i.e. `false`) will send the Avro-decoded message to the application as a JSON payload.
+
+When setting the `useAvroJson` component metadata to `true`, the inbound/outbound Avro binary is converted into/from Avro JSON encoding. 
+This can be preferable when accurate type mapping is desirable. 
+The default is standard JSON which is typically easier to bind to a native type in an application. 
 {{% /alert %}}
 
 When configuring the Kafka pub/sub component metadata, you must define:
@@ -671,7 +682,25 @@ app.include_router(router)
 
 {{< /tabs >}} 
 
+### Overriding default consumer group rebalancing
+In Kafka, rebalancing strategies determine how partitions are assigned to consumers within a consumer group. The default strategy is "range", but "roundrobin" and "sticky" are also available. 
+- `Range`:
+Partitions are assigned to consumers based on their lexicographical order. 
+If you have three partitions (0, 1, 2) and two consumers (A, B), consumer A might get partitions 0 and 1, while consumer B gets partition 2. 
+- `RoundRobin`:
+Partitions are assigned to consumers in a round-robin fashion. 
+With the same example above, consumer A might get partitions 0 and 2, while consumer B gets partition 1. 
+- `Sticky`:
+This strategy aims to preserve previous assignments as much as possible while still maintaining a balanced distribution. 
+If a consumer leaves or joins the group, only the affected partitions are reassigned, minimizing disruption. 
 
+#### Choosing a Strategy:
+- `Range`:
+Simple to understand and implement, but can lead to uneven distribution if partition sizes vary significantly. 
+- `RoundRobin`:
+Provides a good balance in many cases, but might not be optimal if message keys are unevenly distributed. 
+- `Sticky`:
+Generally preferred for its ability to minimize disruption during rebalances, especially when dealing with a large number of partitions or frequent consumer group changes. 
 
 ## Create a Kafka instance
 
