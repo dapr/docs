@@ -46,7 +46,7 @@
   link: setup-coherence
   state: Alpha
   version: v1
-  since: "1.15"
+  since: "1.16"
   features:
     crud: true
     transactions: false
