@@ -61,7 +61,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | scopeName          |    N     | A scope name to use for the internal cache. Defaults to ""                                                                                  | `"my-scope"`                                  |
 | requestTimeout     |    N     | ATimeout for calls to the cluster Defaults to "30s"                                                                                         | `"15s"`                                       |
 | nearCacheTTL       |    N     | If non-zero a near cache is used and the TTL of the near cache is this value. Defaults to 0s                                      | `"60s"`                                       |
-| nearCacheUnits     |    N     | If non zero a near cache will be used and the maximum size of the near cache will be this value in units. Defaults to 0                     | `"1000"`                                      |
+| nearCacheUnits     |    N     | If non-zero a near cache is used and the maximum size of the near cache is this value in units. Defaults to 0                     | `"1000"`                                      |
 | nearCacheMemory    |    N     | If non zero a near cache will be used and the maximum size of the near cache will be this value in bytes. Defaults to 0                     | `"4096"`                                      |
 
 ## Setup Coherence
