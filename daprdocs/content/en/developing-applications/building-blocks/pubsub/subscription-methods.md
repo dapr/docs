@@ -37,17 +37,16 @@ metadata:
 spec:
   topic: orders
   routes:
-    default: /checkout
+    default: /orders
   pubsubname: pubsub
 scopes:
 - orderprocessing
-- checkout
 ```
 
 Here the subscription called `order`: 
 - Uses the pub/sub component called `pubsub` to subscribes to the topic called `orders`.
-- Sets the `route` field to send all topic messages to the `/checkout` endpoint in the app.
-- Sets `scopes` field to scope this subscription for access only by apps with IDs `orderprocessing` and `checkout`.
+- Sets the `route` field to send all topic messages to the `/orders` endpoint in the app.
+- Sets `scopes` field to scope this subscription for access only by apps with ID `orderprocessing`.
 
 When running Dapr, set the YAML component file path to point Dapr to the component.
 
@@ -113,7 +112,7 @@ In your application code, subscribe to the topic specified in the Dapr pub/sub c
 
 ```csharp
  //Subscribe to a topic 
-[HttpPost("checkout")]
+[HttpPost("orders")]
 public void getCheckout([FromBody] int orderId)
 {
     Console.WriteLine("Subscriber received : " + orderId);
@@ -128,7 +127,7 @@ public void getCheckout([FromBody] int orderId)
 import io.dapr.client.domain.CloudEvent;
 
  //Subscribe to a topic
-@PostMapping(path = "/checkout")
+@PostMapping(path = "/orders")
 public Mono<Void> getCheckout(@RequestBody(required = false) CloudEvent<String> cloudEvent) {
     return Mono.fromRunnable(() -> {
         try {
@@ -146,7 +145,7 @@ public Mono<Void> getCheckout(@RequestBody(required = false) CloudEvent<String> 
 from cloudevents.sdk.event import v1
 
 #Subscribe to a topic 
-@app.route('/checkout', methods=['POST'])
+@app.route('/orders', methods=['POST'])
 def checkout(event: v1.Event) -> None:
     data = json.loads(event.Data())
     logging.info('Subscriber received: ' + str(data))
@@ -163,7 +162,7 @@ const app = express()
 app.use(bodyParser.json({ type: 'application/*+json' }));
 
 // listen to the declarative route
-app.post('/checkout', (req, res) => {
+app.post('/orders', (req, res) => {
   console.log(req.body);
   res.sendStatus(200);
 });
@@ -178,7 +177,7 @@ app.post('/checkout', (req, res) => {
 var sub = &common.Subscription{
 	PubsubName: "pubsub",
 	Topic:      "orders",
-	Route:      "/checkout",
+	Route:      "/orders",
 }
 
 func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err error) {
@@ -191,7 +190,7 @@ func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err er
 
 {{< /tabs >}}
 
-The `/checkout` endpoint matches the `route` defined in the subscriptions and this is where Dapr sends all topic messages to.
+The `/orders` endpoint matches the `route` defined in the subscriptions and this is where Dapr sends all topic messages to.
 
 ### Streaming subscriptions
 
@@ -204,7 +203,160 @@ As messages are sent to the given message handler code, there is no concept of r
 
 The example below shows the different ways to stream subscribe to a topic.
 
-{{< tabs Go>}}
+{{< tabs ".NET" Python Go >}}
+
+{{% codetab %}}
+
+You can use the `SubscribeAsync` method on the `DaprPublishSubscribeClient` to configure the message handler to use to pull messages from the stream.
+
+```c#
+using System.Text;
+using Dapr.Messaging.PublishSubscribe;
+using Dapr.Messaging.PublishSubscribe.Extensions;
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDaprPubSubClient();
+var app = builder.Build();
+
+var messagingClient = app.Services.GetRequiredService<DaprPublishSubscribeClient>();
+
+//Create a dynamic streaming subscription and subscribe with a timeout of 30 seconds and 10 seconds for message handling
+var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+var subscription = await messagingClient.SubscribeAsync("pubsub", "myTopic",
+    new DaprSubscriptionOptions(new MessageHandlingPolicy(TimeSpan.FromSeconds(10), TopicResponseAction.Retry)),
+    HandleMessageAsync, cancellationTokenSource.Token);
+
+await Task.Delay(TimeSpan.FromMinutes(1));
+
+//When you're done with the subscription, simply dispose of it
+await subscription.DisposeAsync();
+return;
+
+//Process each message returned from the subscription
+Task<TopicResponseAction> HandleMessageAsync(TopicMessage message, CancellationToken cancellationToken = default)
+{
+    try
+    {
+        //Do something with the message
+        Console.WriteLine(Encoding.UTF8.GetString(message.Data.Span));
+        return Task.FromResult(TopicResponseAction.Success);
+    }
+    catch
+    {
+        return Task.FromResult(TopicResponseAction.Retry);
+    }
+}
+```
+
+[Learn more about streaming subscriptions using the .NET SDK client.]({{< ref "dotnet-messaging-pubsub-howto.md" >}})
+
+{{% /codetab %}}
+
+
+{{% codetab %}}
+
+You can use the `subscribe` method, which returns a `Subscription` object and allows you to pull messages from the stream by calling the `next_message` method. This runs in and may block the main thread while waiting for messages. 
+
+```python
+import time
+
+from dapr.clients import DaprClient
+from dapr.clients.grpc.subscription import StreamInactiveError
+
+counter = 0
+
+
+def process_message(message):
+    global counter
+    counter += 1
+    # Process the message here
+    print(f'Processing message: {message.data()} from {message.topic()}...')
+    return 'success'
+
+
+def main():
+    with DaprClient() as client:
+        global counter
+
+        subscription = client.subscribe(
+            pubsub_name='pubsub', topic='orders', dead_letter_topic='orders_dead'
+        )
+
+        try:
+            while counter < 5:
+                try:
+                    message = subscription.next_message()
+
+                except StreamInactiveError as e:
+                    print('Stream is inactive. Retrying...')
+                    time.sleep(1)
+                    continue
+                if message is None:
+                    print('No message received within timeout period.')
+                    continue
+
+                # Process the message
+                response_status = process_message(message)
+
+                if response_status == 'success':
+                    subscription.respond_success(message)
+                elif response_status == 'retry':
+                    subscription.respond_retry(message)
+                elif response_status == 'drop':
+                    subscription.respond_drop(message)
+
+        finally:
+            print("Closing subscription...")
+            subscription.close()
+
+
+if __name__ == '__main__':
+    main()
+
+```
+
+You can also use the `subscribe_with_handler` method, which accepts a callback function executed for each message received from the stream. This runs in a separate thread, so it doesn't block the main thread. 
+
+```python
+import time
+
+from dapr.clients import DaprClient
+from dapr.clients.grpc._response import TopicEventResponse
+
+counter = 0
+
+
+def process_message(message):
+    # Process the message here
+    global counter
+    counter += 1
+    print(f'Processing message: {message.data()} from {message.topic()}...')
+    return TopicEventResponse('success')
+
+
+def main():
+    with (DaprClient() as client):
+        # This will start a new thread that will listen for messages
+        # and process them in the `process_message` function
+        close_fn = client.subscribe_with_handler(
+            pubsub_name='pubsub', topic='orders', handler_fn=process_message,
+            dead_letter_topic='orders_dead'
+        )
+
+        while counter < 5:
+            time.sleep(1)
+
+        print("Closing subscription...")
+        close_fn()
+
+
+if __name__ == '__main__':
+    main()
+```
+
+[Learn more about streaming subscriptions using the Python SDK client.]({{< ref "python-client.md#streaming-message-subscription" >}})
+
+{{% /codetab %}}
 
 {{% codetab %}}
 
@@ -325,7 +477,7 @@ In the example below, you define the values found in the [declarative YAML subsc
 
 ```csharp
 [Topic("pubsub", "orders")]
-[HttpPost("/checkout")]
+[HttpPost("/orders")]
 public async Task<ActionResult<Order>>Checkout(Order order, [FromServices] DaprClient daprClient)
 {
     // Logic
@@ -337,7 +489,7 @@ or
 
 ```csharp
 // Dapr subscription in [Topic] routes orders topic to this route
-app.MapPost("/checkout", [Topic("pubsub", "orders")] (Order order) => {
+app.MapPost("/orders", [Topic("pubsub", "orders")] (Order order) => {
     Console.WriteLine("Subscriber received : " + order);
     return Results.Ok(order);
 });
@@ -359,7 +511,7 @@ app.UseEndpoints(endpoints =>
 ```java
 private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-@Topic(name = "checkout", pubsubName = "pubsub")
+@Topic(name = "orders", pubsubName = "pubsub")
 @PostMapping(path = "/orders")
 public Mono<Void> handleMessage(@RequestBody(required = false) CloudEvent<String> cloudEvent) {
   return Mono.fromRunnable(() -> {
@@ -370,6 +522,7 @@ public Mono<Void> handleMessage(@RequestBody(required = false) CloudEvent<String
       throw new RuntimeException(e);
     }
   });
+}
 ```
 
 {{% /codetab %}}
@@ -382,7 +535,7 @@ def subscribe():
     subscriptions = [
       {
         'pubsubname': 'pubsub',
-        'topic': 'checkout',
+        'topic': 'orders',
         'routes': {
           'rules': [
             {
@@ -418,7 +571,7 @@ app.get('/dapr/subscribe', (req, res) => {
   res.json([
     {
       pubsubname: "pubsub",
-      topic: "checkout",
+      topic: "orders",
       routes: {
         rules: [
           {
@@ -480,7 +633,7 @@ func configureSubscribeHandler(w http.ResponseWriter, _ *http.Request) {
 	t := []subscription{
 		{
 			PubsubName: "pubsub",
-			Topic:      "checkout",
+			Topic:      "orders",
 			Routes: routes{
 				Rules: []rule{
 					{

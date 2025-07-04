@@ -123,6 +123,7 @@ services:
      "--app-id", "nodeapp",
      "--app-port", "3000",
      "--placement-host-address", "placement:50006", # Dapr's placement service can be reach via the docker DNS entry
+     "--scheduler-host-address", "scheduler:50007", # Dapr's scheduler service can be reach via the docker DNS entry
      "--resources-path", "./components"
      ]
     volumes:
@@ -134,10 +135,19 @@ services:
   ... # Deploy other daprized services and components (i.e. Redis)
 
   placement:
-    image: "daprio/dapr"
+    image: "daprio/placement"
     command: ["./placement", "--port", "50006"]
     ports:
       - "50006:50006"
+
+  scheduler:
+    image: "daprio/scheduler"
+    command: ["./scheduler", "--port", "50007", "--etcd-data-dir", "/data"]
+    ports:
+      - "50007:50007"
+    user: root
+    volumes:
+    - "./dapr-etcd-data/:/data"
   
   networks:
     hello-dapr: null
@@ -146,6 +156,8 @@ services:
 > For those running the Docker daemon on a Linux host, you can also use `network_mode: host` to leverage host networking if needed.
 
 To further learn how to run Dapr with Docker Compose, see the [Docker-Compose Sample](https://github.com/dapr/samples/tree/master/hello-docker-compose).
+
+The above example also includes a scheduler definition that uses a non-persistent data store for testing and development purposes.
 
 ## Run on Kubernetes
 

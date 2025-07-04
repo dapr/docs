@@ -6,9 +6,15 @@ weight: 2000
 description: "The basic spec for a Dapr subscription"
 ---
 
-The `Subscription` Dapr resource allows you to subscribe declaratively to a topic using an external component YAML file. This guide demonstrates two subscription API versions:
+The `Subscription` Dapr resource allows you to subscribe declaratively to a topic using an external component YAML file. 
 
-- `v2alpha` (default spec)
+{{% alert title="Note" color="primary" %}}
+Any subscription can be restricted to a particular [namespace]({{< ref isolation-concept.md >}}) and restricted access through scopes to any particular set of applications.
+{{% /alert %}}
+
+This guide demonstrates two subscription API versions:
+
+- `v2alpha1` (default spec)
 - `v1alpha1` (deprecated)
 
 ## `v2alpha1` format
@@ -23,15 +29,15 @@ metadata:
 spec:
   topic: <REPLACE-WITH-TOPIC-NAME> # Required
   routes: # Required
-  - rules:
-    - match: <REPLACE-WITH-CEL-FILTER>
-      path: <REPLACE-WITH-PATH>
+    rules:
+      - match: <REPLACE-WITH-CEL-FILTER>
+        path: <REPLACE-WITH-PATH>
   pubsubname: <REPLACE-WITH-PUBSUB-NAME> # Required
   deadLetterTopic: <REPLACE-WITH-DEADLETTERTOPIC-NAME> # Optional
   bulkSubscribe: # Optional
-  - enabled: <REPLACE-WITH-BOOLEAN-VALUE>
-  - maxMessagesCount: <REPLACE-WITH-VALUE>
-  - maxAwaitDurationMs: <REPLACE-WITH-VALUE>
+    enabled: <REPLACE-WITH-BOOLEAN-VALUE>
+    maxMessagesCount: <REPLACE-WITH-VALUE>
+    maxAwaitDurationMs: <REPLACE-WITH-VALUE>
 scopes:
 - <REPLACE-WITH-SCOPED-APPIDS>
 ```

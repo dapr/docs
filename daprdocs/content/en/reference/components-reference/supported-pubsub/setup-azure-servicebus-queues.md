@@ -80,7 +80,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `maxConcurrentHandlers` | N  | Defines the maximum number of concurrent message handlers. Default: `0` (unlimited) | `10`
 | `disableEntityManagement` | N  | When set to true, queues and subscriptions do not get created automatically. Default: `"false"` | `"true"`, `"false"`
 | `defaultMessageTimeToLiveInSec` | N  | Default message time to live, in seconds. Used during subscription creation only. | `10`
-| `autoDeleteOnIdleInSec` | N  | Time in seconds to wait before auto deleting idle subscriptions. Used during subscription creation only. Default: `0` (disabled) | `3600`
+| `autoDeleteOnIdleInSec` | N  | Time in seconds to wait before auto deleting idle subscriptions. Used during subscription creation only. Must be 300s or greater. Default: `0` (disabled) | `3600`
 | `maxDeliveryCount`      | N  | Defines the number of attempts the server will make to deliver a message. Used during subscription creation only. Default set by server. | `10`
 | `lockDurationInSec`     | N  | Defines the length in seconds that a message will be locked for before expiring. Used during subscription creation only. Default set by server. | `30`
 | `minConnectionRecoveryInSec` | N | Minimum interval (in seconds) to wait before attempting to reconnect to Azure Service Bus in case of a connection failure. Default: `2` | `5`
@@ -151,7 +151,9 @@ In addition to the [settable metadata listed above](#sending-a-message-with-meta
 - `metadata.EnqueuedTimeUtc`
 - `metadata.SequenceNumber`
 
-To find out more details on the purpose of any of these metadata properties, please refer to [the official Azure Service Bus documentation](https://docs.microsoft.com/rest/api/servicebus/message-headers-and-properties#message-headers).
+To find out more details on the purpose of any of these metadata properties refer to [the official Azure Service Bus documentation](https://docs.microsoft.com/rest/api/servicebus/message-headers-and-properties#message-headers).
+
+In addition, all entries of `ApplicationProperties` from the original Azure Service Bus message are appended as `metadata.<application property's name>`.
 
 {{% alert title="Note" color="primary" %}}
 All times are populated by the server and are not adjusted for clock skews.
@@ -180,6 +182,23 @@ When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to
 ## Create an Azure Service Bus broker for queues
 
 Follow the instructions [here](https://learn.microsoft.com/azure/service-bus-messaging/service-bus-quickstart-portal) on setting up Azure Service Bus Queues.
+
+{{% alert title="Note" color="primary" %}}
+Your queue must have the same name as the topic you are publishing to with Dapr. For example, if you are publishing to the pub/sub `"myPubsub"` on the topic `"orders"`, your queue must be named `"orders"`.
+If you are using a shared access policy to connect to the queue, that policy must be able to "manage" the queue. To work with a dead-letter queue, the policy must live on the Service Bus Namespace that contains both the main queue and the dead-letter queue.
+{{% /alert %}}
+
+### Retry policy and dead-letter queues
+
+By default, an Azure Service Bus Queue has a dead-letter queue. The messages are retried the amount given for `maxDeliveryCount`. The default `maxDeliveryCount` value defaults to 10, but can be set up to 2000. These retries happen very rapidly and the message is put in the dead-letter queue if no success is returned.
+
+Dapr Pub/sub offers its own dead-letter queue concept that lets you control the retry policy and subscribe to the dead-letter queue through Dapr. 
+1. Set up a separate queue as that dead-letter queue in the Azure Service Bus namespace, and a resilience policy that defines how to retry. 
+1. Subscribe to the topic to get the failed messages and deal with them. 
+
+For example, setting up a dead-letter queue `orders-dlq` in the subscription and a resiliency policy lets you subscribe to the topic `orders-dlq` to handle failed messages.
+
+For more details on setting up dead-letter queues, see the [dead-letter article]({{< ref pubsub-deadletter >}}).
 
 ## Related links
 

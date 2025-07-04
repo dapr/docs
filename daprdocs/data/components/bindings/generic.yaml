@@ -134,6 +134,14 @@
   features:
     input: true
     output: false
+- component: SFTP
+  link: sftp
+  state: Alpha
+  version: v1
+  since: "1.15"
+  features:
+    input: false
+    output: true
 - component: SMTP
   link: smtp
   state: Alpha

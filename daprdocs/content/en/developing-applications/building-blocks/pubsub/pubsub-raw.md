@@ -6,7 +6,7 @@ weight: 2200
 description: "Learn when you might not use CloudEvents and how to disable them."
 ---
 
-When adding Dapr to your application, some services may still need to communicate via pub/sub messages not encapsulated in CloudEvents, due to either compatibility reasons or some apps not using Dapr. These are referred to as "raw" pub/sub messages. Dapr enables apps to [publish and subscribe to raw events]({{< ref "pubsub-cloudevents.md#publishing-raw-messages" >}}) not wrapped in a CloudEvent for compatibility.
+When adding Dapr to your application, some services may still need to communicate via pub/sub messages not encapsulated in CloudEvents, due to either compatibility reasons or some apps not using Dapr. These are referred to as "raw" pub/sub messages. Dapr enables apps to [publish and subscribe to raw events]({{< ref "pubsub-cloudevents.md#publishing-raw-messages" >}}) not wrapped in a CloudEvent for compatibility and to send data that is not JSON serializable.
 
 ## Publishing raw messages
 
@@ -20,12 +20,49 @@ Not using CloudEvents disables support for tracing, event deduplication per mess
 
 To disable CloudEvent wrapping, set the `rawPayload` metadata to `true` as part of the publishing request. This allows subscribers to receive these messages without having to parse the CloudEvent schema.
 
-{{< tabs curl "Python SDK" "PHP SDK">}}
+{{< tabs curl ".NET" "Python" "PHP">}}
 
 {{% codetab %}}
 ```bash
 curl -X "POST" http://localhost:3500/v1.0/publish/pubsub/TOPIC_A?metadata.rawPayload=true -H "Content-Type: application/json" -d '{"order-number": "345"}'
 ```
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```csharp
+using Dapr.Client;
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers().AddDapr();
+
+var app = builder.Build();
+
+app.MapPost("/publish", async (DaprClient daprClient) =>
+{
+    var message = new Message(
+        Guid.NewGuid().ToString(),
+        $"Hello at {DateTime.UtcNow}",
+        DateTime.UtcNow
+    );
+
+    await daprClient.PublishEventAsync(
+        "pubsub",           // pubsub name
+        "messages",         // topic name
+        message,           // message data
+        new Dictionary<string, string> 
+        { 
+            { "rawPayload", "true" },
+            { "content-type", "application/json" }
+        }
+    );
+    
+    return Results.Ok(message);
+});
+
+app.Run();
+```
+
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -68,15 +105,60 @@ $app->run(function(\DI\FactoryInterface $factory) {
 
 ## Subscribing to raw messages
 
-Dapr apps are also able to subscribe to raw events coming from existing pub/sub topics that do not use CloudEvent encapsulation.
+Dapr apps can subscribe to raw messages from pub/sub topics, even if they weren’t published as CloudEvents. However, the subscribing Dapr process still wraps these raw messages in a CloudEvent before delivering them to the subscribing application.
 
 <img src="/images/pubsub_subscribe_raw.png" alt="Diagram showing how to subscribe with Dapr when publisher does not use Dapr or CloudEvent" width=1000>
 
 ### Programmatically subscribe to raw events
 
-When subscribing programmatically, add the additional metadata entry for `rawPayload` so the Dapr sidecar automatically wraps the payloads into a CloudEvent that is compatible with current Dapr SDKs.
+When subscribing programmatically, add the additional metadata entry for `rawPayload` to allow the subscriber to receive a message that is not wrapped by a CloudEvent. For .NET, this metadata entry is called `isRawPayload`. 
 
-{{< tabs "Python" "PHP SDK" >}}
+When using raw payloads the message is always base64 encoded with content type `application/octet-stream`.
+
+{{< tabs ".NET" "Python" "PHP" >}}
+
+{{% codetab %}}
+
+```csharp
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+app.MapGet("/dapr/subscribe", () =>
+{
+    var subscriptions = new[]
+    {
+        new
+        {
+            pubsubname = "pubsub",
+            topic = "messages",
+            route = "/messages",
+            metadata = new Dictionary<string, string>
+            {
+                { "isRawPayload", "true" },
+                { "content-type", "application/json" }
+            }
+        }
+    };
+    return Results.Ok(subscriptions);
+});
+
+app.MapPost("/messages", async (HttpContext context) =>
+{
+    using var reader = new StreamReader(context.Request.Body);
+    var json = await reader.ReadToEndAsync();
+
+    Console.WriteLine($"Raw message received: {json}");
+
+    return Results.Ok();
+});
+
+app.Run();
+```
+
+{{% /codetab %}}
 
 {{% codetab %}}
 
@@ -151,7 +233,7 @@ spec:
     default: /dsstatus
   pubsubname: pubsub
   metadata:
-    rawPayload: "true"
+    isRawPayload: "true"
 scopes:
 - app1
 - app2
@@ -162,3 +244,4 @@ scopes:
 - Learn more about [publishing and subscribing messages]({{< ref pubsub-overview.md >}})
 - List of [pub/sub components]({{< ref supported-pubsub >}})
 - Read the [API reference]({{< ref pubsub_api.md >}})
+- Read the .NET sample on how to [consume Kafka messages without CloudEvents](https://github.com/dapr/samples/pubsub-raw-payload)

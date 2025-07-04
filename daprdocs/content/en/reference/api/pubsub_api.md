@@ -302,7 +302,7 @@ other | warning is logged and all messages to be retried
 
 ## Message envelope
 
-Dapr pub/sub adheres to version 1.0 of CloudEvents.
+Dapr pub/sub adheres to [version 1.0 of CloudEvents](https://github.com/cloudevents/spec/blob/v1.0/spec.md).
 
 ## Related links
 

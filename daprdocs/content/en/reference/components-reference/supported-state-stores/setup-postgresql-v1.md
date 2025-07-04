@@ -52,7 +52,7 @@ spec:
     # Controls the default mode for executing queries. (optional)
     #- name: queryExecMode
     #  value: ""
-    # Uncomment this if you wish to use PostgreSQL as a state store for actors (optional)
+    # Uncomment this if you wish to use PostgreSQL as a state store for actors or workflows (optional)
     #- name: actorStateStore
     #  value: "true"
 ```
@@ -82,6 +82,22 @@ Authenticating with Microsoft Entra ID is supported with Azure Database for Post
 | `azureTenantId` | N | ID of the Microsoft Entra ID tenant | `"cd4b2887-304c-…"` |
 | `azureClientId` | N | Client ID (application ID) | `"c7dd251f-811f-…"` |
 | `azureClientSecret` | N | Client secret (application password) | `"Ecy3X…"` |
+
+### Authenticate using AWS IAM
+
+Authenticating with AWS IAM is supported with all versions of PostgreSQL type components.
+The user specified in the connection string must be an already existing user in the DB, and an AWS IAM enabled user granted the `rds_iam` database role.
+Authentication is based on the AWS authentication configuration file, or the AccessKey/SecretKey provided.
+The AWS authentication token will be dynamically rotated before it's expiration time with AWS.
+
+| Field  | Required | Details | Example |
+|--------|:--------:|---------|---------|
+| `useAWSIAM` | Y | Must be set to `true` to enable the component to retrieve access tokens from AWS IAM. This authentication method only works with AWS Relational Database Service for PostgreSQL databases. | `"true"` |
+| `connectionString` | Y | The connection string for the PostgreSQL database.<br>This must contain an already existing user, which corresponds to the name of the user created inside PostgreSQL that maps to the AWS IAM policy. This connection string should not contain any password. Note that the database name field is denoted by dbname with AWS. | `"host=mydb.postgres.database.aws.com user=myapplication port=5432 dbname=my_db sslmode=require"`|
+| `awsRegion` | N | The AWS Region where the AWS Relational Database Service is deployed to. | `"us-east-1"` |
+| `awsAccessKey` | N | AWS access key associated with an IAM account | `"AKIAIOSFODNN7EXAMPLE"` |
+| `awsSecretKey` | N | The secret key associated with the access key | `"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"` |
+| `awsSessionToken` | N | AWS session token to use. A session token is only required if you are using temporary security credentials. | `"TOKEN"` |
 
 ### Other metadata options
 

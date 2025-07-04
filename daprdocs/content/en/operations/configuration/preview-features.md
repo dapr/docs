@@ -6,23 +6,21 @@ weight: 7000
 description: "How to specify and enable preview features"
 ---
 
-## Overview
-Preview features in Dapr are considered experimental when they are first released. These preview features require explicit opt-in in order to be used. The opt-in is specified in Dapr's configuration.
+[Preview features]({{< ref support-preview-features >}}) in Dapr are considered experimental when they are first released. These preview features require you to explicitly opt-in to use them. You specify this opt-in in Dapr's Configuration file.
 
 Preview features are enabled on a per application basis by setting configuration when running an application instance.
 
-### Preview features
-The current list of preview features can be found [here]({{<ref support-preview-features>}}).
-
 ## Configuration properties
+
 The `features` section under the `Configuration` spec contains the following properties:
 
 | Property       | Type   | Description |
 |----------------|--------|-------------|
-|name|string|The name of the preview feature that is enabled/disabled
-|enabled|bool|Boolean specifying if the feature is enabled or disabled
+|`name`|string|The name of the preview feature that is enabled/disabled
+|`enabled`|bool|Boolean specifying if the feature is enabled or disabled
 
 ## Enabling a preview feature
+
 Preview features are specified in the configuration. Here is an example of a full configuration that contains multiple features:
 
 ```yaml
@@ -42,7 +40,11 @@ spec:
       enabled: true
 ```
 
-### Standalone
+{{< tabs Self-hosted Kubernetes >}}
+
+<!--self-hosted-->
+{{% codetab %}}
+
 To enable preview features when running Dapr locally, either update the default configuration or specify a separate config file using `dapr run`.
 
 The default Dapr config is created when you run `dapr init`, and is located at:
@@ -55,8 +57,11 @@ Alternately, you can update preview features on all apps run locally by specifyi
 dapr run --app-id myApp --config ./previewConfig.yaml ./app
 ```
 
+{{% /codetab %}}
 
-### Kubernetes
+<!--kubernetes-->
+{{% codetab %}}
+
 In Kubernetes mode, the configuration must be provided via a configuration component. Using the same configuration as above, apply it via `kubectl`:
 
 ```bash
@@ -94,3 +99,11 @@ spec:
         - containerPort: 3000
         imagePullPolicy: Always
 ```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+## Next steps
+
+{{< button text="Configuration schema" page="configuration-schema" >}}

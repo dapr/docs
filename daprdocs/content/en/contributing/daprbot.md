@@ -2,7 +2,7 @@
 type: docs
 title: "Dapr bot reference"
 linkTitle: "Dapr bot"
-weight: 15
+weight: 70
 description: "List of Dapr bot capabilities."
 ---
 

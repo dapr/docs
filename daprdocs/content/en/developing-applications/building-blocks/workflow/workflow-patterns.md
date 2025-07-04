@@ -647,7 +647,7 @@ The Dapr workflow HTTP API supports the asynchronous request-reply pattern out-o
 The following `curl` commands illustrate how the workflow APIs support this pattern.
 
 ```bash
-curl -X POST http://localhost:3500/v1.0-beta1/workflows/dapr/OrderProcessingWorkflow/start?instanceID=12345678 -d '{"Name":"Paperclips","Quantity":1,"TotalCost":9.95}'
+curl -X POST http://localhost:3500/v1.0/workflows/dapr/OrderProcessingWorkflow/start?instanceID=12345678 -d '{"Name":"Paperclips","Quantity":1,"TotalCost":9.95}'
 ```
 
 The previous command will result in the following response JSON:
@@ -659,7 +659,7 @@ The previous command will result in the following response JSON:
 The HTTP client can then construct the status query URL using the workflow instance ID and poll it repeatedly until it sees the "COMPLETE", "FAILURE", or "TERMINATED" status in the payload.
 
 ```bash
-curl http://localhost:3500/v1.0-beta1/workflows/dapr/12345678
+curl http://localhost:3500/v1.0/workflows/dapr/12345678
 ```
 
 The following is an example of what an in-progress workflow status might look like.
@@ -710,7 +710,7 @@ The monitor pattern is recurring process that typically:
 
 The following diagram provides a rough illustration of this pattern.
 
-<img src="/images/workflow-overview/workflow-monitor-pattern.png" width=600 alt="Diagram showing how the monitor pattern works"/>
+<img src="/images/workflow-overview/workflow-monitor-pattern.png" width=800 alt="Diagram showing how the monitor pattern works"/>
 
 Depending on the business needs, there may be a single monitor or there may be multiple monitors, one for each business entity (for example, a stock). Furthermore, the amount of time to sleep may need to change, depending on the circumstances. These requirements make using cron-based scheduling systems impractical.
 
@@ -749,7 +749,7 @@ def status_monitor_workflow(ctx: wf.DaprWorkflowContext, job: JobStatus):
             ctx.call_activity(send_alert, input=f"Job '{job.job_id}' is unhealthy!")
         next_sleep_interval = 5  # check more frequently when unhealthy
 
-    yield ctx.create_timer(fire_at=ctx.current_utc_datetime + timedelta(seconds=next_sleep_interval))
+    yield ctx.create_timer(fire_at=ctx.current_utc_datetime + timedelta(minutes=next_sleep_interval))
 
     # restart from the beginning with a new JobStatus input
     ctx.continue_as_new(job)
@@ -896,7 +896,7 @@ func StatusMonitorWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 	}
 	if status == "healthy" {
 		job.IsHealthy = true
-		sleepInterval = time.Second * 60
+		sleepInterval = time.Minutes * 60
 	} else {
 		if job.IsHealthy {
 			job.IsHealthy = false
@@ -905,7 +905,7 @@ func StatusMonitorWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 				return "", err
 			}
 		}
-		sleepInterval = time.Second * 5
+		sleepInterval = time.Minutes * 5
 	}
 	if err := ctx.CreateTimer(sleepInterval).Await(nil); err != nil {
 		return "", err
@@ -953,7 +953,7 @@ Here's an example workflow for a purchase order involving a human:
 
 The following diagram illustrates this flow.
 
-<img src="/images/workflow-overview/workflow-human-interaction-pattern.png" width=600 alt="Diagram showing how the external system interaction pattern works with a human involved"/>
+<img src="/images/workflow-overview/workflow-human-interaction-pattern.png" width=800 alt="Diagram showing how the external system interaction pattern works with a human involved"/>
 
 The following example code shows how this pattern can be implemented using Dapr Workflow.
 
@@ -1365,7 +1365,7 @@ func raiseEvent() {
   if err != nil {
     log.Fatalf("failed to initialize the client")
   }
-  err = daprClient.RaiseEventWorkflowBeta1(context.Background(), &client.RaiseEventWorkflowRequest{
+  err = daprClient.RaiseEventWorkflow(context.Background(), &client.RaiseEventWorkflowRequest{
     InstanceID: "instance_id",
     WorkflowComponent: "dapr",
     EventName: "approval_received",

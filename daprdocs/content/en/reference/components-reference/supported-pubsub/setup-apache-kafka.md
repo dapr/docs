@@ -53,6 +53,12 @@ spec:
     value: 2.0.0
   - name: disableTls # Optional. Disable TLS. This is not safe for production!! You should read the `Mutual TLS` section for how to use TLS.
     value: "true"
+  - name: consumerFetchMin # Optional. Advanced setting. The minimum number of message bytes to fetch in a request - the broker will wait until at least this many are available.
+    value: 1
+  - name: consumerFetchDefault # Optional. Advanced setting. The default number of message bytes to fetch from the broker in each request.
+    value: 2097152
+  - name: channelBufferSize # Optional. Advanced setting. The number of events to buffer in internal and external channels.
+    value: 512
   - name: schemaRegistryURL # Optional. When using Schema Registry Avro serialization/deserialization. The Schema Registry URL.
     value: http://localhost:8081
   - name: schemaRegistryAPIKey # Optional. When using Schema Registry Avro serialization/deserialization. The Schema Registry API Key.
@@ -63,6 +69,8 @@ spec:
     value: true
   - name: schemaLatestVersionCacheTTL # Optional. When using Schema Registry Avro serialization/deserialization. The TTL for schema caching when publishing a message with latest schema available.
     value: 5m
+  - name: escapeHeaders # Optional.
+    value: false
   
 ```
 
@@ -96,12 +104,12 @@ spec:
 | oidcClientSecret | N | The OAuth2 client secret that has been provisioned in the identity provider: Required when `authType` is set to `oidc` | `"KeFg23!"` |
 | oidcScopes | N | Comma-delimited list of OAuth2/OIDC scopes to request with the access token. Recommended when `authType` is set to `oidc`. Defaults to `"openid"` | `"openid,kafka-prod"` |
 | oidcExtensions | N | String containing a JSON-encoded dictionary of OAuth2/OIDC extensions to request with the access token | `{"cluster":"kafka","poolid":"kafkapool"}` |
-| awsRegion | N | The AWS region where the Kafka cluster is deployed to. Required when `authType` is set to `awsiam` | `us-west-1` |
-| awsAccessKey | N  | AWS access key associated with an IAM account. | `"accessKey"`
-| awsSecretKey | N  | The secret key associated with the access key. | `"secretKey"`
-| awsSessionToken | N  | AWS session token to use. A session token is only required if you are using temporary security credentials. | `"sessionToken"`
-| awsIamRoleArn | N  | IAM role that has access to AWS Managed Streaming for Apache Kafka (MSK). This is another option to authenticate with MSK aside from the AWS Credentials. | `"arn:aws:iam::123456789:role/mskRole"`
-| awsStsSessionName | N  | Represents the session name for assuming a role. | `"MSKSASLDefaultSession"`
+| awsRegion | N | This maintains backwards compatibility with existing fields. It will be deprecated as of Dapr 1.17. Use 'region' instead. The AWS region where the Kafka cluster is deployed to. Required when `authType` is set to `awsiam` | `us-west-1` |
+| awsAccessKey | N  |  This maintains backwards compatibility with existing fields. It will be deprecated as of Dapr 1.17. Use 'accessKey' instead. AWS access key associated with an IAM account. | `"accessKey"`
+| awsSecretKey | N  | This maintains backwards compatibility with existing fields. It will be deprecated as of Dapr 1.17. Use 'secretKey' instead. The secret key associated with the access key. | `"secretKey"`
+| awsSessionToken | N  | This maintains backwards compatibility with existing fields. It will be deprecated as of Dapr 1.17. Use 'sessionToken' instead. AWS session token to use. A session token is only required if you are using temporary security credentials. | `"sessionToken"`
+| awsIamRoleArn | N  | This maintains backwards compatibility with existing fields. It will be deprecated as of Dapr 1.17. Use 'assumeRoleArn' instead. IAM role that has access to AWS Managed Streaming for Apache Kafka (MSK). This is another option to authenticate with MSK aside from the AWS Credentials. | `"arn:aws:iam::123456789:role/mskRole"`
+| awsStsSessionName | N  | This maintains backwards compatibility with existing fields. It will be deprecated as of Dapr 1.17. Use 'sessionName' instead. Represents the session name for assuming a role. | `"DaprDefaultSession"`
 | schemaRegistryURL | N | Required when using Schema Registry Avro serialization/deserialization. The Schema Registry URL. | `http://localhost:8081` |
 | schemaRegistryAPIKey | N | When using Schema Registry Avro serialization/deserialization. The Schema Registry credentials API Key. | `XYAXXAZ` |
 | schemaRegistryAPISecret | N | When using Schema Registry Avro serialization/deserialization. The Schema Registry credentials API Secret. | `ABCDEFGMEADFF` |
@@ -109,9 +117,12 @@ spec:
 | schemaLatestVersionCacheTTL | N | When using Schema Registry Avro serialization/deserialization. The TTL for schema caching when publishing a message with latest schema available. Default is 5 min | `5m` |
 | clientConnectionTopicMetadataRefreshInterval | N | The interval for the client connection's topic metadata to be refreshed with the broker as a Go duration. Defaults to `9m`. | `"4m"` |
 | clientConnectionKeepAliveInterval | N | The maximum time for the client connection to be kept alive with the broker, as a Go duration, before closing the connection. A zero value (default) means keeping alive indefinitely. | `"4m"` |
+| consumerFetchMin | N | The minimum number of message bytes to fetch in a request - the broker will wait until at least this many are available. The default is `1`, as `0` causes the consumer to spin when no messages are available. Equivalent to the JVM's `fetch.min.bytes`. | `"2"` |
 | consumerFetchDefault | N | The default number of message bytes to fetch from the broker in each request. Default is `"1048576"` bytes. | `"2097152"` |
+| channelBufferSize | N | The number of events to buffer in internal and external channels. This permits the producer and consumer to continue processing some messages in the background while user code is working, greatly improving throughput. Defaults to `256`. | `"512"` |
 | heartbeatInterval | N | The interval between heartbeats to the consumer coordinator. At most, the value should be set to a 1/3 of the `sessionTimeout` value. Defaults to "3s". | `"5s"` |
 | sessionTimeout | N | The timeout used to detect client failures when using Kafka’s group management facility. If the broker fails to receive any heartbeats from the consumer before the expiration of this session timeout, then the consumer is removed and initiates a rebalance. Defaults to "10s". | `"20s"` |
+| escapeHeaders | N | Enables URL escaping of the message header values received by the consumer. Allows receiving content with special characters that are usually not allowed in HTTP headers. Default is `false`. | `true` |
 
 The `secretKeyRef` above is referencing  a [kubernetes secrets store]({{< ref kubernetes-secret-store.md >}}) to access the tls information. Visit [here]({{< ref setup-secret-store.md >}}) to learn more about how to configure a secret store component.
 
@@ -321,7 +332,7 @@ spec:
 
 Authenticating with AWS IAM is supported with MSK. Setting `authType` to `awsiam` uses AWS SDK to generate auth tokens to authenticate.
 {{% alert title="Note" color="primary" %}}
-The only required metadata field is `awsRegion`. If no `awsAccessKey` and `awsSecretKey` are provided, you can use AWS IAM roles for service accounts to have password-less authentication to your Kafka cluster.
+The only required metadata field is `region`. If no `acessKey` and `secretKey` are provided, you can use AWS IAM roles for service accounts to have password-less authentication to your Kafka cluster.
 {{% /alert %}}
 
 ```yaml
@@ -341,18 +352,18 @@ spec:
     value: "my-dapr-app-id"
   - name: authType # Required.
     value: "awsiam"
-  - name: awsRegion # Required.
+  - name: region # Required.
     value: "us-west-1"
-  - name: awsAccessKey # Optional.
+  - name: accessKey # Optional.
     value: <AWS_ACCESS_KEY>
-  - name: awsSecretKey # Optional.
+  - name: secretKey # Optional.
     value: <AWS_SECRET_KEY>
-  - name: awsSessionToken # Optional.
+  - name: sessionToken # Optional.
     value: <AWS_SESSION_KEY>
-  - name: awsIamRoleArn # Optional.
+  - name: assumeRoleArn # Optional.
     value: "arn:aws:iam::123456789:role/mskRole"
-  - name: awsStsSessionName # Optional.
-    value: "MSKSASLDefaultSession"
+  - name: sessionName # Optional.
+    value: "DaprDefaultSession"
 ```
 
 ### Communication using TLS
@@ -448,8 +459,8 @@ Apache Kafka supports the following bulk metadata options:
 
 | Configuration | Default |
 |----------|---------|
-| `maxBulkAwaitDurationMs` | `10000` (10s) |
-| `maxBulkSubCount` | `80` |
+| `maxAwaitDurationMs` | `10000` (10s) |
+| `maxMessagesCount` | `80` |
 
 ## Per-call metadata fields
 
@@ -457,7 +468,7 @@ Apache Kafka supports the following bulk metadata options:
 
 When invoking the Kafka pub/sub, its possible to provide an optional partition key by using the `metadata` query param in the request url.
 
-The param name is `partitionKey`.
+The param name can either be `partitionKey` or `__key` 
 
 Example:
 
@@ -473,7 +484,7 @@ curl -X POST http://localhost:3500/v1.0/publish/myKafka/myTopic?metadata.partiti
 
 ### Message headers
 
-All other metadata key/value pairs (that are not `partitionKey`) are set as headers in the Kafka message. Here is an example setting a `correlationId` for the message.
+All other metadata key/value pairs (that are not `partitionKey` or `__key`) are set as headers in the Kafka message. Here is an example setting a `correlationId` for the message.
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/publish/myKafka/myTopic?metadata.correlationId=myCorrelationID&metadata.partitionKey=key1 \
@@ -483,6 +494,86 @@ curl -X POST http://localhost:3500/v1.0/publish/myKafka/myTopic?metadata.correla
           "message": "Hi"
         }
       }'
+```
+### Kafka Pubsub special message headers received on consumer side
+
+When consuming messages, special message metadata are being automatically passed as headers. These are:
+- `__key`: the message key if available
+- `__topic`: the topic for the message
+- `__partition`: the partition number for the message
+- `__offset`: the offset of the message in the partition
+- `__timestamp`: the timestamp for the message
+
+You can access them within the consumer endpoint as follows:
+{{< tabs "Python (FastAPI)" >}}
+
+{{% codetab %}}
+
+```python
+from fastapi import APIRouter, Body, Response, status
+import json
+import sys
+
+app = FastAPI()
+
+router = APIRouter()
+
+
+@router.get('/dapr/subscribe')
+def subscribe():
+    subscriptions = [{'pubsubname': 'pubsub',
+                      'topic': 'my-topic',
+                      'route': 'my_topic_subscriber',
+                      }]
+    return subscriptions
+
+@router.post('/my_topic_subscriber')
+def my_topic_subscriber(
+      key: Annotated[str, Header(alias="__key")],
+      offset: Annotated[int, Header(alias="__offset")],
+      event_data=Body()):
+    print(f"key={key} - offset={offset} - data={event_data}", flush=True)
+      return Response(status_code=status.HTTP_200_OK)
+
+app.include_router(router)
+
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+## Receiving message headers with special characters
+
+The consumer application may be required to receive message headers that include special characters, which may cause HTTP protocol validation errors. 
+HTTP header values must follow specifications, making some characters not allowed. [Learn more about the protocols](https://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2).
+In this case, you can enable `escapeHeaders` configuration setting, which uses URL escaping to encode header values on the consumer side.
+
+{{% alert title="Note" color="primary" %}}
+When using this setting, the received message headers are URL escaped, and you need to URL "un-escape" it to get the original value.
+{{% /alert %}}
+
+Set `escapeHeaders` to `true` to URL escape.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: kafka-pubsub-escape-headers
+spec:
+  type: pubsub.kafka
+  version: v1
+  metadata:
+  - name: brokers # Required. Kafka broker connection setting
+    value: "dapr-kafka.myapp.svc.cluster.local:9092"
+  - name: consumerGroup # Optional. Used for input bindings.
+    value: "group1"
+  - name: clientID # Optional. Used as client tracing ID by Kafka brokers.
+    value: "my-dapr-app-id"
+  - name: authType # Required.
+    value: "none"
+  - name: escapeHeaders
+    value: "true"
 ```
 
 ## Avro Schema Registry serialization/deserialization
@@ -596,6 +687,7 @@ To run Kafka on Kubernetes, you can use any Kafka operator, such as [Strimzi](ht
 {{% /codetab %}}
 
 {{< /tabs >}}
+
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})

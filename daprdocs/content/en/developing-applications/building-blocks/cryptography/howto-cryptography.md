@@ -15,7 +15,39 @@ Dapr cryptography is currently in alpha.
 
 ## Encrypt
 
-{{< tabs "JavaScript" "Go" ".NET" >}}
+{{< tabs "Python" "JavaScript" ".NET" "Go" >}}
+
+{{% codetab %}}
+
+<!--Python-->
+
+Using the Dapr SDK in your project, with the gRPC APIs, you can encrypt a stream of data, such as a file or a string:
+
+```python
+# When passing data (a buffer or string), `encrypt` returns a Buffer with the encrypted message
+def encrypt_decrypt_string(dapr: DaprClient):
+    message = 'The secret is "passw0rd"'
+
+    # Encrypt the message
+    resp = dapr.encrypt(
+        data=message.encode(),
+        options=EncryptOptions(
+            # Name of the cryptography component (required)
+            component_name=CRYPTO_COMPONENT_NAME,
+            # Key stored in the cryptography component (required)
+            key_name=RSA_KEY_NAME,
+            # Algorithm used for wrapping the key, which must be supported by the key named above.
+            # Options include: "RSA", "AES"
+            key_wrap_algorithm='RSA',
+        ),
+    )
+
+    # The method returns a readable stream, which we read in full in memory
+    encrypt_bytes = resp.read()
+    print(f'Encrypted the message, got {len(encrypt_bytes)} bytes')
+```
+
+{{% /codetab %}}
 
 {{% codetab %}}
 
@@ -53,6 +85,26 @@ await pipeline(
     }),
     fs.createWriteStream("ciphertext.out"),
 );
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!-- .NET -->
+Using the Dapr SDK in your project, with the gRPC APIs, you can encrypt data in a string or a byte array:
+
+```csharp
+using var client = new DaprClientBuilder().Build();
+
+const string componentName = "azurekeyvault"; //Change this to match your cryptography component
+const string keyName = "myKey"; //Change this to match the name of the key in your cryptographic store
+
+const string plainText = "This is the value we're going to encrypt today";
+
+//Encode the string to a UTF-8 byte array and encrypt it
+var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
+var encryptedBytesResult = await client.EncryptAsync(componentName, plaintextBytes, keyName, new EncryptionOptions(KeyWrapAlgorithm.Rsa));
 ```
 
 {{% /codetab %}}
@@ -136,32 +188,45 @@ if err != nil {
 
 {{% /codetab %}}
 
-{{% codetab %}}
-
-<!-- .NET -->
-Using the Dapr SDK in your project, with the gRPC APIs, you can encrypt data in a string or a byte array:
-
-```csharp
-using var client = new DaprClientBuilder().Build();
-
-const string componentName = "azurekeyvault"; //Change this to match your cryptography component
-const string keyName = "myKey"; //Change this to match the name of the key in your cryptographic store
-
-const string plainText = "This is the value we're going to encrypt today";
-
-//Encode the string to a UTF-8 byte array and encrypt it
-var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
-var encryptedBytesResult = await client.EncryptAsync(componentName, plaintextBytes, keyName, new EncryptionOptions(KeyWrapAlgorithm.Rsa));
-```
-
-{{% /codetab %}}
-
 {{< /tabs >}}
 
 
 ## Decrypt
 
-{{< tabs "JavaScript" "Go" ".NET" >}}
+{{< tabs "Python" "JavaScript" ".NET" "Go" >}}
+
+{{% codetab %}}
+
+<!--python-->
+
+To decrypt a stream of data, use `decrypt`.
+
+```python
+def encrypt_decrypt_string(dapr: DaprClient):
+    message = 'The secret is "passw0rd"'
+
+    # ...
+
+    # Decrypt the encrypted data
+    resp = dapr.decrypt(
+        data=encrypt_bytes,
+        options=DecryptOptions(
+            # Name of the cryptography component (required)
+            component_name=CRYPTO_COMPONENT_NAME,
+            # Key stored in the cryptography component (required)
+            key_name=RSA_KEY_NAME,
+        ),
+    )
+
+    # The method returns a readable stream, which we read in full in memory
+    decrypt_bytes = resp.read()
+    print(f'Decrypted the message, got {len(decrypt_bytes)} bytes')
+
+    print(decrypt_bytes.decode())
+    assert message == decrypt_bytes.decode()
+```
+
+{{% /codetab %}}
 
 {{% codetab %}}
 
@@ -191,23 +256,6 @@ await pipeline(
 
 {{% codetab %}}
 
-<!--go-->
-
-To decrypt a file, use the `Decrypt` gRPC API to your project.
-
-In the following example, `out` is a stream that can be written to file or read in memory, as in the examples above.
-
-```go
-out, err := sdkClient.Decrypt(context.Background(), rf, dapr.EncryptOptions{
-	// Only required option is the component name
-	ComponentName: "mycryptocomponent",
-})
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
 <!-- .NET -->
 To decrypt a string, use the 'DecryptAsync' gRPC API in your project.
 
@@ -225,6 +273,23 @@ public async Task<string> DecryptBytesAsync(byte[] encryptedBytes)
   var decryptedString = Encoding.UTF8.GetString(decryptedBytes.ToArray());
   return decryptedString;
 }
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--go-->
+
+To decrypt a file, use the `Decrypt` gRPC API to your project.
+
+In the following example, `out` is a stream that can be written to file or read in memory, as in the examples above.
+
+```go
+out, err := sdkClient.Decrypt(context.Background(), rf, dapr.EncryptOptions{
+	// Only required option is the component name
+	ComponentName: "mycryptocomponent",
+})
 ```
 
 {{% /codetab %}}

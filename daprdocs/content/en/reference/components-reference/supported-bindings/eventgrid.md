@@ -90,6 +90,21 @@ This component supports **output binding** with the following operations:
 
 - `create`: publishes a message on the Event Grid topic
 
+## Receiving events
+
+You can use the Event Grid binding to receive events from a variety of sources and actions. [Learn more about all of the available event sources and handlers that work with Event Grid.](https://learn.microsoft.com/azure/event-grid/overview)
+
+In the following table, you can find the list of Dapr components that can raise events.
+
+| Event sources | Dapr components |
+| ------------- | --------------- |
+| [Azure Blob Storage](https://learn.microsoft.com/azure/storage/blobs/) | [Azure Blob Storage binding]({{< ref blobstorage.md >}}) <br/>[Azure Blob Storage state store]({{< ref setup-azure-blobstorage.md >}}) |
+| [Azure Cache for Redis](https://learn.microsoft.com/azure/azure-cache-for-redis/cache-overview) | [Redis binding]({{< ref redis.md >}}) <br/>[Redis pub/sub]({{< ref setup-redis-pubsub.md >}}) |
+| [Azure Event Hubs](https://learn.microsoft.com/azure/event-hubs/event-hubs-about) | [Azure Event Hubs pub/sub]({{< ref setup-azure-eventhubs.md >}}) <br/>[Azure Event Hubs binding]({{< ref eventhubs.md >}}) |
+| [Azure IoT Hub](https://learn.microsoft.com/azure/iot-hub/iot-concepts-and-iot-hub) | [Azure Event Hubs pub/sub]({{< ref setup-azure-eventhubs.md >}}) <br/>[Azure Event Hubs binding]({{< ref eventhubs.md >}}) |
+| [Azure Service Bus](https://learn.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview) | [Azure Service Bus binding]({{< ref servicebusqueues.md >}}) <br/>[Azure Service Bus pub/sub topics]({{< ref setup-azure-servicebus-topics.md >}}) and [queues]({{< ref setup-azure-servicebus-queues.md >}}) |
+| [Azure SignalR Service](https://learn.microsoft.com/azure/azure-signalr/signalr-overview) | [SignalR binding]({{< ref signalr.md >}}) |
+
 ## Microsoft Entra ID credentials
 
 The Azure Event Grid binding requires an Microsoft Entra ID application and service principal for two reasons:
@@ -142,7 +157,7 @@ Connect-MgGraph -Scopes "Application.Read.All","Application.ReadWrite.All"
 
 > Note: if your directory does not have a Service Principal for the application "Microsoft.EventGrid", you may need to run the command `Connect-MgGraph` and sign in as an admin for the Microsoft Entra ID tenant (this is related to permissions on the Microsoft Entra ID directory, and not the Azure subscription). Otherwise, please ask your tenant's admin to sign in and run this PowerShell command: `New-MgServicePrincipal -AppId "4962773b-9cdb-44cf-a8bf-237846a00ab7"` (the UUID is a constant)
 
-### Testing locally
+## Testing locally
 
 - Install [ngrok](https://ngrok.com/download)
 - Run locally using a custom port, for example `9000`, for handshakes
@@ -160,7 +175,7 @@ ngrok http --host-header=localhost 9000
 dapr run --app-id dotnetwebapi --app-port 5000 --dapr-http-port 3500 dotnet run
 ```
 
-### Testing on Kubernetes
+## Testing on Kubernetes
 
 Azure Event Grid requires a valid HTTPS endpoint for custom webhooks; self-signed certificates aren't accepted. In order to enable traffic from the public internet to your app's Dapr sidecar you need an ingress controller enabled with Dapr. There's a good article on this topic: [Kubernetes NGINX ingress controller with Dapr](https://carlos.mendible.com/2020/04/05/kubernetes-nginx-ingress-controller-with-dapr/).
 

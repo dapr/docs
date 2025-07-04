@@ -79,11 +79,28 @@ Authenticating with Microsoft Entra ID is supported with Azure Database for Post
 | `azureClientId` | N | Client ID (application ID) | `"c7dd251f-811f-…"` |
 | `azureClientSecret` | N | Client secret (application password) | `"Ecy3X…"` |
 
+### Authenticate using AWS IAM
+
+Authenticating with AWS IAM is supported with all versions of PostgreSQL type components.
+The user specified in the connection string must be an already existing user in the DB, and an AWS IAM enabled user granted the `rds_iam` database role.
+Authentication is based on the AWS authentication configuration file, or the AccessKey/SecretKey provided.
+The AWS authentication token will be dynamically rotated before it's expiration time with AWS.
+
+| Field  | Required | Details | Example |
+|--------|:--------:|---------|---------|
+| `useAWSIAM` | Y | Must be set to `true` to enable the component to retrieve access tokens from AWS IAM. This authentication method only works with AWS Relational Database Service for PostgreSQL databases. | `"true"` |
+| `connectionString` | Y | The connection string for the PostgreSQL database.<br>This must contain an already existing user, which corresponds to the name of the user created inside PostgreSQL that maps to the AWS IAM policy. This connection string should not contain any password. Note that the database name field is denoted by dbname with AWS. | `"host=mydb.postgres.database.aws.com user=myapplication port=5432 dbname=my_db sslmode=require"`|
+| `awsRegion` | N | This maintains backwards compatibility with existing fields. It will be deprecated as of Dapr 1.17. Use 'region' instead. The AWS Region where the AWS Relational Database Service is deployed to. | `"us-east-1"` |
+| `awsAccessKey` | N | This maintains backwards compatibility with existing fields. It will be deprecated as of Dapr 1.17. Use 'accessKey' instead. AWS access key associated with an IAM account | `"AKIAIOSFODNN7EXAMPLE"` |
+| `awsSecretKey` | N | This maintains backwards compatibility with existing fields. It will be deprecated as of Dapr 1.17. Use 'secretKey' instead. The secret key associated with the access key | `"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"` |
+| `awsSessionToken` | N | This maintains backwards compatibility with existing fields. It will be deprecated as of Dapr 1.17. Use 'sessionToken' instead. AWS session token to use. A session token is only required if you are using temporary security credentials. | `"TOKEN"` |
+
 ### Other metadata options
 
 | Field | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | `table` | Y | Table name for configuration information, must be lowercased. | `configtable`
+| `timeout` | N | Timeout for operations on the database, as a [Go duration](https://pkg.go.dev/time#ParseDuration). Integers are interpreted as number of seconds. Defaults to `20s` | `"30s"`, `30` |
 | `maxConns` | N | Maximum number of connections pooled by this component. Set to 0 or lower to use the default value, which is the greater of 4 or the number of CPUs. | `"4"`
 | `connectionMaxIdleTime` | N | Max idle time before unused connections are automatically closed in the connection pool. By default, there's no value and this is left to the database driver to choose. | `"5m"`
 | `queryExecMode` | N | Controls the default mode for executing queries. By default Dapr uses the extended protocol and automatically prepares and caches prepared statements. However, this may be incompatible with proxies such as PGBouncer. In this case it may be preferrable to use `exec` or `simple_protocol`. | `"simple_protocol"`

@@ -203,6 +203,7 @@ apps:
     appLogDestination: file # (optional), can be file, console or fileAndConsole. default is fileAndConsole.
     daprdLogDestination: file # (optional), can be file, console or fileAndConsole. default is file.
     containerImage: ghcr.io/dapr/samples/hello-k8s-node:latest # (optional) URI of the container image to be used when deploying to Kubernetes dev/test environment.
+    containerImagePullPolicy: IfNotPresent # (optional), the container image is downloaded if one is not present locally, otherwise the local one is used.
     createService: true # (optional) Create a Kubernetes service for the application when deploying to dev/test environment.
   - appID: backend # optional
     appDirPath: .dapr/backend/ # REQUIRED
@@ -253,14 +254,14 @@ The properties for the Multi-App Run template align with the `dapr run` CLI flag
 | `apiListenAddresses`     | N        | Dapr API listen addresses |  |
 | `logLevel`               | N        | The log verbosity. |  |
 | `appMaxConcurrency`      | N        | The concurrency level of the application; default is unlimited |  |
-| `placementHostAddress`   | N        |  |  |
+| `placementHostAddress`   | N        | Comma separated list of addresses for Dapr placement servers | `127.0.0.1:50057,127.0.0.1:50058` |
+| `schedulerHostAddress`   | N        | Dapr Scheduler Service host address | `localhost:50006` |
 | `appSSL`                 | N        | Enable https when Dapr invokes the application |  |
-| `daprHTTPMaxRequestSize` | N        | Max size of the request body in MB. |  |
-| `daprHTTPReadBufferSize` | N        | Max size of the HTTP read buffer in KB. This also limits the maximum size of HTTP headers. The default 4 KB |  |
+| `maxBodySize`            | N        | Max size of the request body in MB. Set the value using size units (e.g., `16Mi` for 16MB). The default is `4Mi` |  |
+| `readBufferSize`         | N        | Max size of the HTTP read buffer in KB. This also limits the maximum size of HTTP headers. Set the value using size units, for example `32Ki` will support headers up to 32KB . Default is `4Ki` for 4KB |  |
 | `enableAppHealthCheck`   | N        | Enable the app health check on the application | `true`, `false` |
 | `appHealthCheckPath`     | N        | Path to the health check file | `/healthz` |
-| `appHealthProbeInterval` | N        | Interval to probe for the health of the app in seconds
- |  |
+| `appHealthProbeInterval` | N        | Interval to probe for the health of the app in seconds |  |
 | `appHealthProbeTimeout`  | N        | Timeout for app health probes in milliseconds |  |
 | `appHealthThreshold`     | N        | Number of consecutive failures for the app to be considered unhealthy |  |
 | `enableApiLogging`       | N        | Enable the logging of all API calls from application to Dapr |  |
@@ -285,39 +286,40 @@ The properties for the Multi-App Run template align with the `dapr run -k` CLI f
 
 {{< table "table table-white table-striped table-bordered" >}}
 
-| Properties               | Required | Details | Example |
-|--------------------------|:--------:|--------|---------|
-| `appDirPath`             | Y        | Path to the your application code | `./webapp/`, `./backend/` |
-| `appID`                  | N        | Application's app ID. If not provided, will be derived from `appDirPath` | `webapp`, `backend` |
-| `appChannelAddress`      | N        | The network address the application listens on. Can be left to the default value by convention. | `127.0.0.1` | `localhost` |
-| `appProtocol`            | N        | The protocol Dapr uses to talk to the application. | `http`, `grpc` |
-| `appPort`                | N        | The port your application is listening on | `8080`, `3000` |
-| `daprHTTPPort`           | N        | Dapr HTTP port |  |
-| `daprGRPCPort`           | N        | Dapr GRPC port |  |
-| `daprInternalGRPCPort`   | N        | gRPC port for the Dapr Internal API to listen on; used when parsing the value from a local DNS component |  |
-| `metricsPort`            | N        | The port that Dapr sends its metrics information to |  |
-| `unixDomainSocket`       | N        | Path to a unix domain socket dir mount. If specified, communication with the Dapr sidecar uses unix domain sockets for lower latency and greater throughput when compared to using TCP ports. Not available on Windows. | `/tmp/test-socket` |
-| `profilePort`            | N        | The port for the profile server to listen on |  |
-| `enableProfiling`        | N        | Enable profiling via an HTTP endpoint |  |
-| `apiListenAddresses`     | N        | Dapr API listen addresses |  |
-| `logLevel`               | N        | The log verbosity. |  |
-| `appMaxConcurrency`      | N        | The concurrency level of the application; default is unlimited |  |
-| `placementHostAddress`   | N        |  |  |
-| `appSSL`                 | N        | Enable https when Dapr invokes the application |  |
-| `daprHTTPMaxRequestSize` | N        | Max size of the request body in MB. |  |
-| `daprHTTPReadBufferSize` | N        | Max size of the HTTP read buffer in KB. This also limits the maximum size of HTTP headers. The default 4 KB |  |
-| `enableAppHealthCheck`   | N        | Enable the app health check on the application | `true`, `false` |
-| `appHealthCheckPath`     | N        | Path to the health check file | `/healthz` |
-| `appHealthProbeInterval` | N        | Interval to probe for the health of the app in seconds
- |  |
-| `appHealthProbeTimeout`  | N        | Timeout for app health probes in milliseconds |  |
-| `appHealthThreshold`     | N        | Number of consecutive failures for the app to be considered unhealthy |  |
-| `enableApiLogging`       | N        | Enable the logging of all API calls from application to Dapr |  |
-| `env`                    | N        | Map to environment variable; environment variables applied per application will overwrite environment variables shared across applications | `DEBUG`, `DAPR_HOST_ADD` |
-| `appLogDestination`                    | N        | Log destination for outputting app logs; Its value can be file, console or fileAndConsole. Default is fileAndConsole | `file`, `console`, `fileAndConsole` |
-| `daprdLogDestination`                    | N        | Log destination for outputting daprd logs; Its value can be file, console or fileAndConsole. Default is file | `file`, `console`, `fileAndConsole` |
-| `containerImage`| N | URI of the container image to be used when deploying to Kubernetes dev/test environment. | `ghcr.io/dapr/samples/hello-k8s-python:latest`
-| `createService`|  N | Create a Kubernetes service for the application when deploying to dev/test environment. | `true`, `false` |
+| Properties                 | Required | Details                                                                                                                                                                                                                 | Example                                        |
+|----------------------------|:--------:|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------|
+| `appDirPath`               |    Y     | Path to the your application code                                                                                                                                                                                       | `./webapp/`, `./backend/`                      |
+| `appID`                    |    N     | Application's app ID. If not provided, will be derived from `appDirPath`                                                                                                                                                | `webapp`, `backend`                            |
+| `appChannelAddress`        |    N     | The network address the application listens on. Can be left to the default value by convention.                                                                                                                         | `127.0.0`, `localhost`                         |
+| `appProtocol`              |    N     | The protocol Dapr uses to talk to the application.                                                                                                                                                                      | `http`, `grpc`                                 |
+| `appPort`                  |    N     | The port your application is listening on                                                                                                                                                                               | `8080`, `3000`                                 |
+| `daprHTTPPort`             |    N     | Dapr HTTP port                                                                                                                                                                                                          |                                                |
+| `daprGRPCPort`             |    N     | Dapr GRPC port                                                                                                                                                                                                          |                                                |
+| `daprInternalGRPCPort`     |    N     | gRPC port for the Dapr Internal API to listen on; used when parsing the value from a local DNS component                                                                                                                |                                                |
+| `metricsPort`              |    N     | The port that Dapr sends its metrics information to                                                                                                                                                                     |                                                |
+| `unixDomainSocket`         |    N     | Path to a unix domain socket dir mount. If specified, communication with the Dapr sidecar uses unix domain sockets for lower latency and greater throughput when compared to using TCP ports. Not available on Windows. | `/tmp/test-socket`                             |
+| `profilePort`              |    N     | The port for the profile server to listen on                                                                                                                                                                            |                                                |
+| `enableProfiling`          |    N     | Enable profiling via an HTTP endpoint                                                                                                                                                                                   |                                                |
+| `apiListenAddresses`       |    N     | Dapr API listen addresses                                                                                                                                                                                               |                                                |
+| `logLevel`                 |    N     | The log verbosity.                                                                                                                                                                                                      |                                                |
+| `appMaxConcurrency`        |    N     | The concurrency level of the application; default is unlimited                                                                                                                                                          |                                                |
+| `placementHostAddress`     |    N     | Comma separated list of addresses for Dapr placement servers                                                                                                                                                            | `127.0.0.1:50057,127.0.0.1:50058`              |
+| `schedulerHostAddress`     |    N     | Dapr Scheduler Service host address                                                                                                                                                                                     | `127.0.0.1:50006`                              |
+| `appSSL`                   |    N     | Enable HTTPS when Dapr invokes the application                                                                                                                                                                          |                                                |
+| `maxBodySize`              |    N     | Max size of the request body in MB. Set the value using size units (e.g., `16Mi` for 16MB). The default is `4Mi`                                                                                                        | `16Mi`                                         |
+| `readBufferSize`           |    N     | Max size of the HTTP read buffer in KB. This also limits the maximum size of HTTP headers. Set the value using size units, for example `32Ki` will support headers up to 32KB . Default is `4Ki` for 4KB                | `32Ki`                                         |
+| `enableAppHealthCheck`     |    N     | Enable the app health check on the application                                                                                                                                                                          | `true`, `false`                                |
+| `appHealthCheckPath`       |    N     | Path to the health check file                                                                                                                                                                                           | `/healthz`                                     |
+| `appHealthProbeInterval`   |    N     | Interval to probe for the health of the app in seconds                                                                                                                                                                  |                                                |
+| `appHealthProbeTimeout`    |    N     | Timeout for app health probes in milliseconds                                                                                                                                                                           |                                                |
+| `appHealthThreshold`       |    N     | Number of consecutive failures for the app to be considered unhealthy                                                                                                                                                   |                                                |
+| `enableApiLogging`         |    N     | Enable the logging of all API calls from application to Dapr                                                                                                                                                            |                                                |
+| `env`                      |    N     | Map to environment variable; environment variables applied per application will overwrite environment variables shared across applications                                                                              | `DEBUG`, `DAPR_HOST_ADD`                       |
+| `appLogDestination`        |    N     | Log destination for outputting app logs; Its value can be file, console or fileAndConsole. Default is fileAndConsole                                                                                                    | `file`, `console`, `fileAndConsole`            |
+| `daprdLogDestination`      |    N     | Log destination for outputting daprd logs; Its value can be file, console or fileAndConsole. Default is file                                                                                                            | `file`, `console`, `fileAndConsole`            |
+| `containerImage`           |    N     | URI of the container image to be used when deploying to Kubernetes dev/test environment.                                                                                                                                | `ghcr.io/dapr/samples/hello-k8s-python:latest` |
+| `containerImagePullPolicy` |    N     | The container image pull policy (default to `Always`).                                                                                                                                                                  | `Always`, `IfNotPresent`, `Never`              |
+| `createService`            |    N     | Create a Kubernetes service for the application when deploying to dev/test environment.                                                                                                                                 | `true`, `false`                                |
 
 {{< /table >}}
 

@@ -95,27 +95,10 @@ dapr init
 
 **Expected output:**
 
-```
-⌛  Making the jump to hyperspace...
-✅  Downloaded binaries and completed components set up.
-ℹ️  daprd binary has been installed to  $HOME/.dapr/bin.
-ℹ️  dapr_placement container is running.
-ℹ️  dapr_scheduler container is running.
-ℹ️  dapr_redis container is running.
-ℹ️  dapr_zipkin container is running.
-ℹ️  Use `docker ps` to check running containers.
-✅  Success! Dapr is up and running. To get started, go here: https://aka.ms/dapr-getting-started
-```
+<img src="/images/install-dapr-selfhost/dapr-init-output.png" style=
+"padding-bottom: 5px" >
 
 [See the troubleshooting guide if you encounter any error messages regarding Docker not being installed or running.]({{< ref "common_issues.md#dapr-cant-connect-to-docker-when-installing-the-dapr-cli" >}})
-
-#### Slim init
-
-To install the CLI without any default configuration files or Docker containers, use the `--slim` flag. [Learn more about the `init` command and its flags.]({{< ref dapr-init.md >}})
-
-```bash
-dapr init --slim
-```
 
 ### Step 3: Verify Dapr version
 
@@ -138,7 +121,7 @@ docker ps
 
 **Output:**  
 
-<img src="/images/install-dapr-selfhost/docker-containers.png" width=800>
+<img src="/images/install-dapr-selfhost/docker-containers.png">
 
 ### Step 5: Verify components directory has been initialized
 
@@ -188,6 +171,15 @@ explorer "%USERPROFILE%\.dapr"
 {{< /tabs >}}
 
 <br>
+
+### Slim init
+
+To install the CLI without any default configuration files or Docker containers, use the `--slim` flag. [Learn more about the `init` command and its flags.]({{< ref dapr-init.md >}})
+
+```bash
+dapr init --slim
+```
+
 
 {{< button text="Next step: Use the Dapr API >>" page="getting-started/get-started-api.md" >}}
 

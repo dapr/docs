@@ -231,6 +231,19 @@ You can install Dapr on Kubernetes using a Helm v3 chart.
     --wait
     ```
 
+   To install in **high availability** mode and scale select services independently of global:
+
+   ```bash
+       helm upgrade --install dapr dapr/dapr \
+    --version={{% dapr-latest-version short="true" %}} \
+    --namespace dapr-system \
+    --create-namespace \
+    --set global.ha.enabled=false \
+    --set dapr_scheduler.ha=true \
+    --set dapr_placement.ha=true \
+    --wait
+   ```
+   
 See [Guidelines for production ready deployments on Kubernetes]({{< ref kubernetes-production.md >}}) for more information on installing and upgrading Dapr using Helm.
 
 ### (optional) Install the Dapr dashboard as part of the control plane

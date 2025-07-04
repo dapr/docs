@@ -8,6 +8,10 @@ description: "The basic spec for a Dapr resiliency resource"
 
 The `Resiliency` Dapr resource allows you to define and apply fault tolerance resiliency policies. Resiliency specs are applied when the Dapr sidecar starts. 
 
+{{% alert title="Note" color="primary" %}}
+Any resiliency resource can be restricted to a particular [namepsace]({{< ref isolation-concept.md >}}) and restricted access through scopes to any particular set of applications.
+{{% /alert %}}
+
 ## Format
 
 ```yml
@@ -28,6 +32,9 @@ spec:
         duration: <REPLACE-WITH-VALUE>
         maxInterval: <REPLACE-WITH-VALUE>
         maxRetries: <REPLACE-WITH-VALUE>
+        matching:
+          httpStatusCodes: <REPLACE-WITH-VALUE>
+          gRPCStatusCodes: <REPLACE-WITH-VALUE>
     circuitBreakers:
       circuitBreakerName: # Replace with any unique name
         maxRequests: <REPLACE-WITH-VALUE>
@@ -57,7 +64,7 @@ targets: # Required
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| policies | Y | The configuration of resiliency policies, including: <br><ul><li>`timeouts`</li><li>`retries`</li><li>`circuitBreakers`</li></ul> <br> [See more examples with all of the built-in policies]({{< ref policies.md >}}) | timeout: `general`<br>retry: `retryForever`<br>circuit breaker: `simpleCB` |
+| policies | Y | The configuration of resiliency policies, including: <br><ul><li>`timeouts`</li><li>`retries`</li><li>`circuitBreakers`</li></ul> <br> [See more examples with all of the built-in policies]({{< ref resiliency-overview.md >}}) | timeout: `general`<br>retry: `retryForever`<br>circuit breaker: `simpleCB` |
 | targets | Y | The configuration for the applications, actors, or components that use the resiliency policies. <br>[See more examples in the resiliency targets guide]({{< ref targets.md >}})  | `apps` <br>`components`<br>`actors` |
 
 

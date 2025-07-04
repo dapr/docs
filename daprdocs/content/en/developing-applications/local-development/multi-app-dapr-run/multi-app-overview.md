@@ -124,6 +124,7 @@ apps:
     appDirPath: ./nodeapp/
     appPort: 3000
     containerImage: ghcr.io/dapr/samples/hello-k8s-node:latest
+    containerImagePullPolicy: Always
     createService: true
     env:
       APP_PORT: 3000
@@ -134,6 +135,7 @@ apps:
 
 > **Note:**
 > - If the `containerImage` field is not specified, `dapr run -k -f` produces an error.
+> - The containerImagePullPolicy indicates that a new container image is always downloaded for this app.
 > - The `createService` field defines a basic service in Kubernetes (ClusterIP or LoadBalancer) that targets the `--app-port` specified in the template. If `createService` isn't specified, the application is not accessible from outside the cluster.
 
 For a more in-depth example and explanation of the template properties, see [Multi-app template]({{< ref multi-app-template.md >}}).

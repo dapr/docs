@@ -6,10 +6,6 @@ weight: 2000
 description: "Learn more about the Dapr Workflow features and concepts"
 ---
 
-{{% alert title="Note" color="primary" %}}
-Dapr Workflow is currently in beta. [See known limitations for {{% dapr-latest-version cli="true" %}}]({{< ref "workflow-overview.md#limitations" >}}).
-{{% /alert %}}
-
 Now that you've learned about the [workflow building block]({{< ref workflow-overview.md >}}) at a high level, let's deep dive into the features and concepts included with the Dapr Workflow engine and SDKs. Dapr Workflow exposes several core features and concepts which are common across all supported languages. 
 
 {{% alert title="Note" color="primary" %}}
@@ -135,7 +131,7 @@ Because workflow retry policies are configured in code, the exact developer expe
 | --- | --- |
 | **Maximum number of attempts** | The maximum number of times to execute the activity or child workflow. |
 | **First retry interval** | The amount of time to wait before the first retry. |
-| **Backoff coefficient** | The amount of time to wait before each subsequent retry. |
+| **Backoff coefficient** | The coefficient used to determine the rate of increase of back-off. For example a coefficient of 2 doubles the wait of each subsequent retry. |
 | **Maximum retry interval** | The maximum amount of time to wait before each subsequent retry. |
 | **Retry timeout** | The overall timeout for retries, regardless of any configured max number of attempts. |
 
@@ -151,9 +147,9 @@ Learn more about [external system interaction.]({{< ref "workflow-patterns.md#ex
 
 ## Workflow backend
 
-Dapr Workflow relies on the Durable Task Framework for Go (a.k.a. [durabletask-go](https://github.com/microsoft/durabletask-go)) as the core engine for executing workflows. This engine is designed to support multiple backend implementations. For example, the [durabletask-go](https://github.com/microsoft/durabletask-go) repo includes a SQLite implementation and the Dapr repo includes an Actors implementation. 
+Dapr Workflow relies on the Durable Task Framework for Go (a.k.a. [durabletask-go](https://github.com/dapr/durabletask-go)) as the core engine for executing workflows. This engine is designed to support multiple backend implementations. For example, the [durabletask-go](https://github.com/dapr/durabletask-go) repo includes a SQLite implementation and the Dapr repo includes an Actors implementation. 
 
-By default, Dapr Workflow supports the Actors backend, which is stable and scalable. However, you can choose a different backend supported in Dapr Workflow. For example, [SQLite](https://github.com/microsoft/durabletask-go/tree/main/backend/sqlite)(TBD future release) could be an option for backend for local development and testing.
+By default, Dapr Workflow supports the Actors backend, which is stable and scalable. However, you can choose a different backend supported in Dapr Workflow. For example, [SQLite](https://github.com/dapr/durabletask-go/tree/main/backend/sqlite)(TBD future release) could be an option for backend for local development and testing.
 
 The backend implementation is largely decoupled from the workflow core engine or the programming model that you see. The backend primarily impacts:
 - How workflow state is stored 
@@ -199,7 +195,7 @@ string randomString = GetRandomString();
 // DON'T DO THIS!
 Instant currentTime = Instant.now();
 UUID newIdentifier = UUID.randomUUID();
-string randomString = GetRandomString();
+String randomString = getRandomString();
 ```
 
 {{% /codetab %}}
@@ -236,7 +232,7 @@ Do this:
 // Do this!!
 DateTime currentTime = context.CurrentUtcDateTime;
 Guid newIdentifier = context.NewGuid();
-string randomString = await context.CallActivityAsync<string>("GetRandomString");
+string randomString = await context.CallActivityAsync<string>(nameof("GetRandomString")); //Use "nameof" to prevent specifying an activity name that does not exist in your application 
 ```
 
 {{% /codetab %}}
@@ -246,7 +242,7 @@ string randomString = await context.CallActivityAsync<string>("GetRandomString")
 ```java
 // Do this!!
 Instant currentTime = context.getCurrentInstant();
-Guid newIdentifier = context.NewGuid();
+Guid newIdentifier = context.newGuid();
 String randomString = context.callActivity(GetRandomString.class.getName(), String.class).await();
 ```
 
@@ -342,8 +338,8 @@ Do this:
 
 ```csharp
 // Do this!!
-string configuation = workflowInput.Configuration; // imaginary workflow input argument
-string data = await context.CallActivityAsync<string>("MakeHttpCall", "https://example.com/api/data");
+string configuration = workflowInput.Configuration; // imaginary workflow input argument
+string data = await context.CallActivityAsync<string>(nameof("MakeHttpCall"), "https://example.com/api/data");
 ```
 
 {{% /codetab %}}
@@ -352,7 +348,7 @@ string data = await context.CallActivityAsync<string>("MakeHttpCall", "https://e
 
 ```java
 // Do this!!
-String configuation = ctx.getInput(InputType.class).getConfiguration(); // imaginary workflow input argument
+String configuration = ctx.getInput(InputType.class).getConfiguration(); // imaginary workflow input argument
 String data = ctx.callActivity(MakeHttpCall.class, "https://example.com/api/data", String.class).await();
 ```
 
@@ -362,7 +358,7 @@ String data = ctx.callActivity(MakeHttpCall.class, "https://example.com/api/data
 
 ```javascript
 // Do this!!
-const configuation = workflowInput.getConfiguration(); // imaginary workflow input argument
+const configuration = workflowInput.getConfiguration(); // imaginary workflow input argument
 const data = yield ctx.callActivity(makeHttpCall, "https://example.com/api/data");
 ```
 
@@ -443,7 +439,7 @@ Do this:
 
 ```csharp
 // Do this!!
-Task t = context.CallActivityAsync("DoSomething");
+Task t = context.CallActivityAsync(nameof("DoSomething"));
 await context.CreateTimer(5000).ConfigureAwait(true);
 ```
 

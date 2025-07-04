@@ -46,7 +46,7 @@ Each of these building block APIs is independent, meaning that you can use any n
 |----------------|-------------|
 | [**Service-to-service invocation**]({{< ref "service-invocation-overview.md" >}})  | Resilient service-to-service invocation enables method calls, including retries, on remote services, wherever they are located in the supported hosting environment.
 | [**Publish and subscribe**]({{< ref "pubsub-overview.md" >}}) | Publishing events and subscribing to topics between services enables event-driven architectures to simplify horizontal scalability and make them resilient to failure. Dapr provides at-least-once message delivery guarantee, message TTL, consumer groups and other advance features.
-| [**Workflows**]({{< ref "workflow-overview.md" >}}) | The workflow API can be combined with other Dapr building blocks to define long running, persistent processes or data flows that span multiple microservices using Dapr workflows or workflow components. 
+| [**Workflows**]({{< ref "workflow-overview.md" >}}) | The workflow API can be combined with other Dapr building blocks to define long running, persistent processes or data flows that span multiple microservices using Dapr workflows. 
 | [**State management**]({{< ref "state-management-overview.md" >}}) | With state management for storing and querying key/value pairs, long-running, highly available, stateful services can be easily written alongside stateless services in your application. The state store is pluggable and examples include AWS DynamoDB, Azure Cosmos DB, Azure SQL Server, GCP Firebase, PostgreSQL or Redis, among others.
 | [**Resource bindings**]({{< ref "bindings-overview.md" >}}) | Resource bindings with triggers builds further on event-driven architectures for scale and resiliency by receiving and sending events to and from any external source such as databases, queues, file systems, etc.
 | [**Actors**]({{< ref "actors-overview.md" >}}) | A pattern for stateful and stateless objects that makes concurrency simple, with method and state encapsulation. Dapr provides many capabilities in its actor runtime, including concurrency, state, and life-cycle management for actor activation/deactivation, and timers and reminders to wake up actors.
@@ -55,6 +55,7 @@ Each of these building block APIs is independent, meaning that you can use any n
 | [**Distributed lock**]({{< ref "distributed-lock-api-overview.md" >}})  | The distributed lock API enables your application to acquire a lock for any resource that gives it exclusive access until either the lock is released by the application, or a lease timeout occurs. 
 | [**Cryptography**]({{< ref "cryptography-overview.md" >}}) | The cryptography API provides an abstraction layer on top of security infrastructure such as key vaults. It contains APIs that allow you to perform cryptographic operations, such as encrypting and decrypting messages, without exposing keys to your applications.
 | [**Jobs**]({{< ref "jobs-overview.md" >}}) | The jobs API enables you to schedule jobs at specific times or intervals.
+| [**Conversation**]({{< ref "conversation-overview.md" >}}) | The conversation API enables you to abstract the complexities of interacting with large language models (LLMs) and includes features such as prompt caching and personally identifiable information (PII) obfuscation. Using [conversation components]({{< ref supported-conversation >}}), you can supply prompts to converse with different LLMs. 
 
 ### Cross-cutting APIs
 
@@ -75,7 +76,7 @@ Dapr exposes its HTTP and gRPC APIs as a sidecar architecture, either as a conta
 ## Hosting environments
 
 Dapr can be hosted in multiple environments, including:
-- Self-hosted on a Windows/Linux/macOS machine for local development 
+- Self-hosted on a Windows/Linux/macOS machine for local development and in production
 - On Kubernetes or clusters of physical or virtual machines in production
 
 ### Self-hosted local development
@@ -108,7 +109,7 @@ Deploying and running a Dapr-enabled application into your Kubernetes cluster is
 
 ### Clusters of physical or virtual machines
 
-The Dapr control plane services can be deployed in high availability (HA) mode to clusters of physical or virtual machines in production. In the diagram below, the Actor `Placement` and security `Sentry` services are started on three different VMs to provide HA control plane. In order to provide name resolution using DNS for the applications running in the cluster, Dapr uses [Hashicorp Consul service]({{< ref setup-nr-consul >}}), also running in HA mode.  
+The Dapr control plane services can be deployed in high availability (HA) mode to clusters of physical or virtual machines in production. In the diagram below, the Actor `Placement` and security `Sentry` services are started on three different VMs to provide HA control plane. In order to provide name resolution using DNS for the applications running in the cluster, Dapr uses multicast DNS by default, but can also optionally support [Hashicorp Consul service]({{< ref setup-nr-consul >}}).  
 
 <img src="/images/overview-vms-hosting.png" width=1200 alt="Architecture diagram of Dapr control plane and Consul deployed to VMs in high availability mode">
 
@@ -139,7 +140,7 @@ Dapr can be used from any developer framework. Here are some that have been inte
 | [.NET]({{< ref dotnet >}}) | [ASP.NET Core](https://github.com/dapr/dotnet-sdk/tree/master/examples/AspNetCore) | Brings stateful routing controllers that respond to pub/sub events from other services. Can also take advantage of [ASP.NET Core gRPC Services](https://docs.microsoft.com/aspnet/core/grpc/).
 | [Java]({{< ref java >}}) | [Spring Boot](https://spring.io/) | Build Spring boot applications with Dapr APIs
 | [Python]({{< ref python >}}) | [Flask]({{< ref python-flask.md >}}) | Build Flask applications with Dapr APIs
-| [JavaScript](https://github.com/dapr/js-sdk) | [Express](http://expressjs.com/) | Build Express applications with Dapr APIs
+| [JavaScript](https://github.com/dapr/js-sdk) | [Express](https://expressjs.com/) | Build Express applications with Dapr APIs
 | [PHP]({{< ref php >}}) | | You can serve with Apache, Nginx, or Caddyserver.
 
 #### Integrations and extensions

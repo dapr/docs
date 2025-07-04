@@ -68,6 +68,7 @@ After announcing a future breaking change, the change will happen in 2 releases 
 | Hazelcast PubSub Component | 1.9.0 | 1.11.0 |
 | Twitter Binding Component | 1.10.0 | 1.11.0 |
 | NATS Streaming PubSub Component | 1.11.0 | 1.13.0 |
+| Workflows API Alpha1 `/v1.0-alpha1/workflows` being deprecated in favor of Workflow Client | 1.15.0 | 1.17.0 |
 
 ## Related links
 

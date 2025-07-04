@@ -76,32 +76,25 @@ Now that you've set up the local secret store, call Dapr to get the secrets from
 {{% codetab %}}
 
 ```csharp
-//dependencies
 using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Dapr.Client;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading;
-using System.Text.Json;
 
-//code
-namespace EventService
-{
-    class Program
-    {
-        static async Task Main(string[] args)
-        {
-            string SECRET_STORE_NAME = "localsecretstore";
-            using var client = new DaprClientBuilder().Build();
-            //Using Dapr SDK to get a secret
-            var secret = await client.GetSecretAsync(SECRET_STORE_NAME, "secret");
-            Console.WriteLine($"Result: {string.Join(", ", secret)}");
-        }
-    }
-}
+namespace EventService;
+
+const string SECRET_STORE_NAME = "localsecretstore";
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDaprClient();
+var app = builder.Build();
+
+//Resolve a DaprClient from DI
+var daprClient = app.Services.GetRequiredService<DaprClient>();
+
+//Use the Dapr SDK to get a secret
+var secret = await daprClient.GetSecretAsync(SECRET_STORE_NAME, "secret");
+
+Console.WriteLine($"Result: {string.Join(", ", secret)}");
 ```
 
 {{% /codetab %}}

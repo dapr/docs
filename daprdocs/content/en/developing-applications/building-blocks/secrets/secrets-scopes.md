@@ -69,7 +69,7 @@ spec:
         allowedSecrets: ["secret1", "secret2"]
 ```
 
-The default access to the `vault` secret store is `deny`, while some secrets are accessible by the application, based on the `allowedSecrets` list. [Learn how to apply configuration to the sidecar]]({{< ref configuration-concept.md >}}).
+The default access to the `vault` secret store is `deny`, while some secrets are accessible by the application, based on the `allowedSecrets` list. [Learn how to apply configuration to the sidecar]({{< ref configuration-concept.md >}}).
 
 ## Scenario 3: Deny access to certain sensitive secrets in a secret store
 
@@ -88,7 +88,7 @@ spec:
         deniedSecrets: ["secret1", "secret2"]
 ```
 
-This example configuration explicitly denies access to `secret1` and `secret2` from the secret store named `vault` while allowing access to all other secrets. [Learn how to apply configuration to the sidecar]]({{< ref configuration-concept.md >}}).
+This example configuration explicitly denies access to `secret1` and `secret2` from the secret store named `vault` while allowing access to all other secrets. [Learn how to apply configuration to the sidecar]({{< ref configuration-concept.md >}}).
 
 ## Permission priority
 

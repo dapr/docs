@@ -166,7 +166,7 @@ Note that while the `caCert` and `clientCert` values may not be secrets, they ca
 The RabbitMQ pub/sub component has no built-in support for retry strategies. This means that the sidecar sends a message to the service only once. When the service returns a result, the message will be marked as consumed regardless of whether it was processed correctly or not. Note that this is common among all Dapr PubSub components and not just RabbitMQ.
 Dapr can try redelivering a message a second time, when `autoAck` is set to `false` and `requeueInFailure` is set to `true`.
 
-To make Dapr use more sophisticated retry policies, you can apply a [retry resiliency policy]({{< ref "policies.md#retries" >}}) to the RabbitMQ pub/sub component.
+To make Dapr use more sophisticated retry policies, you can apply a [retry resiliency policy]({{< ref "retries-overview.md" >}}) to the RabbitMQ pub/sub component.
 
 There is a crucial difference between the two ways to retry messages:
 
@@ -450,6 +450,30 @@ You can set a time-to-live (TTL) value at either the message or component level.
 {{% alert title="Note" color="primary" %}}
 If you set both component-level and message-level TTL, the default component-level TTL is ignored in favor of the message-level TTL.
 {{% /alert %}}
+
+## Single Active Consumer
+
+The RabbitMQ [Single Active Consumer](https://www.rabbitmq.com/docs/consumers#single-active-consumer) setup ensures that only one consumer at a time processes messages from a queue and switches to another registered consumer if the active one is canceled or fails. This approach might be required when it is crucial for messages to be consumed in the exact order they arrive in the queue and if distributed processing with multiple instances is not supported.
+When this option is enabled on a queue by Dapr, an instance of the Dapr runtime will be the single active consumer. To allow another application instance to take over in case of failure, Dapr runtime must [probe the application's health]({{< ref "app-health.md" >}}) and unsubscribe from the pub/sub component.
+
+{{% alert title="Note" color="primary" %}}
+This pattern will prevent the application to scale as only one instance can process the load. While it might be interesting for Dapr integration with legacy or sensible applications, you should consider a design allowing distributed processing if you need scalability.
+{{% /alert %}}
+
+
+```yml
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: pubsub
+spec:
+  topic: orders
+  routes:
+    default: /orders
+  pubsubname: order-pub-sub
+  metadata:
+    singleActiveConsumer: "true"
+```
 
 ## Related links
 

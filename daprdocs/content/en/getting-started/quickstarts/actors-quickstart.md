@@ -18,10 +18,10 @@ Currently, you can experience this actors quickstart using the .NET SDK.
 As a quick overview of the .NET actors quickstart:
 
 1. Using a `SmartDevice.Service` microservice, you host:
-   - Two `SmartDectectorActor` smoke alarm objects
+   - Two `SmokeDetectorActor` smoke alarm objects
    - A `ControllerActor` object that commands and controls the smart devices  
-1. Using a `SmartDevice.Client` console app, the client app interacts with each actor, or the controller, to perform actions in aggregate. 
-1. The `SmartDevice.Interfaces` contains the shared interfaces and data types used by both the service and client apps.
+2. Using a `SmartDevice.Client` console app, the client app interacts with each actor, or the controller, to perform actions in aggregate. 
+3. The `SmartDevice.Interfaces` contains the shared interfaces and data types used by both the service and client apps.
 
 <img src="/images/actors-quickstart/actors-quickstart.png" width=800 style="padding-bottom:15px;">
 
@@ -30,14 +30,17 @@ As a quick overview of the .NET actors quickstart:
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [.NET SDK or .NET 6 SDK installed](https://dotnet.microsoft.com/download).
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
+- [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0) installed
+
+**NOTE:** .NET 6 is the minimally supported version of .NET for the Dapr .NET SDK packages in this release. Only .NET 8 and .NET 9
+will be supported in Dapr v1.16 and later releases.
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/actors).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/actors/csharp/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -119,7 +122,7 @@ If you have Zipkin configured for Dapr locally on your machine, you can view the
 
 When you ran the client app, a few things happened:
 
-1. Two `SmartDetectorActor` actors were [created in the client application](https://github.com/dapr/quickstarts/blob/master/actors/csharp/sdk/client/Program.cs) and initialized with object state with:
+1. Two `SmokeDetectorActor` actors were [created in the client application](https://github.com/dapr/quickstarts/blob/master/actors/csharp/sdk/client/Program.cs) and initialized with object state with:
    - `ActorProxy.Create<ISmartDevice>(actorId, actorType)` 
    - `proxySmartDevice.SetDataAsync(data)`  
    
@@ -177,7 +180,7 @@ When you ran the client app, a few things happened:
    Console.WriteLine($"Device 2 state: {storedDeviceData2}");
    ```
 
-1. The [`DetectSmokeAsync` method of `SmartDetectorActor 1` is called](https://github.com/dapr/quickstarts/blob/master/actors/csharp/sdk/service/SmokeDetectorActor.cs#L70).
+1. The [`DetectSmokeAsync` method of `SmokeDetectorActor 1` is called](https://github.com/dapr/quickstarts/blob/master/actors/csharp/sdk/service/SmokeDetectorActor.cs#L70).
 
    ```csharp
     public async Task DetectSmokeAsync()
@@ -216,7 +219,7 @@ When you ran the client app, a few things happened:
     await proxySmartDevice1.DetectSmokeAsync();   
     ```
 
-1. The [`SoundAlarm` methods](https://github.com/dapr/quickstarts/blob/master/actors/csharp/sdk/service/SmokeDetectorActor.cs#L78) of `SmartDetectorActor 1` and `2` are called.
+1. The [`SoundAlarm` methods](https://github.com/dapr/quickstarts/blob/master/actors/csharp/sdk/service/SmokeDetectorActor.cs#L78) of `SmokeDetectorActor 1` and `2` are called.
 
    ```csharp
    storedDeviceData1 = await proxySmartDevice1.GetDataAsync();
@@ -234,9 +237,9 @@ When you ran the client app, a few things happened:
 
 For full context of the sample, take a look at the following code:
 
-- [`SmartDetectorActor.cs`](https://github.com/dapr/quickstarts/blob/master/actors/csharp/sdk/service/SmokeDetectorActor.cs): Implements the smart device actors
+- [`SmokeDetectorActor.cs`](https://github.com/dapr/quickstarts/blob/master/actors/csharp/sdk/service/SmokeDetectorActor.cs): Implements the smart device actors
 - [`ControllerActor.cs`](https://github.com/dapr/quickstarts/blob/master/actors/csharp/sdk/service/ControllerActor.cs): Implements the controller actor that manages all devices
-- [`ISmartDevice`](https://github.com/dapr/quickstarts/blob/master/actors/csharp/sdk/interfaces/ISmartDevice.cs): The method definitions and shared data types for each `SmartDetectorActor`
+- [`ISmartDevice`](https://github.com/dapr/quickstarts/blob/master/actors/csharp/sdk/interfaces/ISmartDevice.cs): The method definitions and shared data types for each `SmokeDetectorActor`
 - [`IController`](https://github.com/dapr/quickstarts/blob/master/actors/csharp/sdk/interfaces/IController.cs): The method definitions and shared data types for the `ControllerActor`
 
 {{% /codetab %}}

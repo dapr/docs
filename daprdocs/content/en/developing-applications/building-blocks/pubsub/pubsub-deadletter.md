@@ -70,7 +70,7 @@ app.get('/dapr/subscribe', (_req, res) => {
 ## Retries and dead letter topics
 
 By default, when a dead letter topic is set, any failing message immediately goes to the dead letter topic.  As a result it is recommend to always have a retry policy set when using dead letter topics in a subscription.
-To enable the retry of a message before sending it to the dead letter topic, apply a [retry resiliency policy]({{< ref "policies.md#retries" >}}) to the pub/sub component.
+To enable the retry of a message before sending it to the dead letter topic, apply a [retry resiliency policy]({{< ref "retries-overview.md" >}}) to the pub/sub component.
 
 This example shows how to set a constant retry policy named `pubsubRetry`, with 10 maximum delivery attempts applied every 5 seconds for the `pubsub` pub/sub component.
 

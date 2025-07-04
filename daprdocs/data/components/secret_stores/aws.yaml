@@ -1,8 +1,8 @@
 - component: AWS Secrets Manager
   link: aws-secret-manager
-  state: Alpha
+  state: Beta
   version: v1
-  since: "1.0"
+  since: "1.15"
 - component: AWS SSM Parameter Store
   link: aws-parameter-store
   state: Alpha

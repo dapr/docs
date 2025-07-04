@@ -36,6 +36,8 @@ spec:
       value: "namespace"
     - name: enableEntityManagement
       value: "false"
+    - name: enableInOrderMessageDelivery
+      value: "false"
     # The following four properties are needed only if enableEntityManagement is set to true
     - name: resourceGroupName
       value: "test-rg"
@@ -56,6 +58,8 @@ spec:
     - name: storageConnectionString
       value: "DefaultEndpointsProtocol=https;AccountName=<account>;AccountKey=<account-key>"
     # Optional metadata
+    - name: getAllMessageProperties
+      value: "true"
     - name: direction
       value: "input, output"
 ```
@@ -71,7 +75,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `eventHub` | Y* | Input/Output | The name of the Event Hubs hub ("topic"). Required if using Microsoft Entra ID authentication or if the connection string doesn't contain an `EntityPath` value | `mytopic` |
 | `connectionString`    | Y*  | Input/Output | Connection string for the Event Hub or the Event Hub namespace.<br>* Mutally exclusive with `eventHubNamespace` field.<br>* Required when not using [Microsoft Entra ID Authentication]({{< ref "authenticating-azure.md" >}}) | `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}"` or `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key}"`
 | `eventHubNamespace` | Y* | Input/Output | The Event Hub Namespace name.<br>* Mutally exclusive with `connectionString` field.<br>* Required when using [Microsoft Entra ID Authentication]({{< ref "authenticating-azure.md" >}}) | `"namespace"`
-| `enableEntityManagement` | N | Input/Output | Boolean value to allow management of the EventHub namespace and storage account. Default: `false` | `"true", "false"`
+| `enableEntityManagement` | N | Input/Output | Boolean value to allow management of the EventHub namespace and storage account. Default: `false` | `"true"`, `"false"`
+| `enableInOrderMessageDelivery` | N | Input/Output | Boolean value to allow messages to be delivered in the order in which they were posted. This assumes `partitionKey` is set when publishing or posting to ensure ordering across partitions. Default: `false` | `"true"`, `"false"`
 | `resourceGroupName` | N | Input/Output | Name of the resource group the Event Hub namespace is part of. Required when entity management is enabled | `"test-rg"`
 | `subscriptionID` | N | Input/Output | Azure subscription ID value. Required when entity management is enabled | `"azure subscription id"`
 | `partitionCount` | N | Input/Output | Number of partitions for the new Event Hub namespace. Used only when entity management is enabled. Default: `"1"` | `"2"`
@@ -81,6 +86,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `storageAccountKey`   | Y*  | Input | Storage account key for the checkpoint store account.<br>* When using Microsoft Entra ID, it's possible to omit this if the service principal has access to the storage account too. | `"112233445566778899"`
 | `storageConnectionString`   | Y*  | Input | Connection string for the checkpoint store, alternative to specifying `storageAccountKey` | `"DefaultEndpointsProtocol=https;AccountName=myeventhubstorage;AccountKey=<account-key>"`
 | `storageContainerName` | Y | Input | Storage container name for the storage account name.  | `"myeventhubstoragecontainer"`
+| `getAllMessageProperties` | N | Input | When set to `true`, retrieves all user/app/custom properties from the Event Hub message and forwards them in the returned event metadata. Default setting is `"false"`.  | `"true"`, `"false"`
 | `direction` | N | Input/Output | The direction of the binding.  | `"input"`, `"output"`, `"input, output"`
 
 ### Microsoft Entra ID authentication
