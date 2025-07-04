@@ -113,9 +113,9 @@ Since the GCP Pub/Sub component uses the GCP Go Client Libraries, by default it 
 
 ## Create a GCP Pub/Sub
 
-{{% tabpane "Self-Hosted" "GCP" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 For local development, the [GCP Pub/Sub Emulator](https://cloud.google.com/pubsub/docs/emulator) is used to test the GCP Pub/Sub Component. Follow [these instructions](https://cloud.google.com/pubsub/docs/emulator#start) to run the GCP Pub/Sub Emulator.
 
 To run the GCP Pub/Sub Emulator locally using Docker, use the following `docker-compose.yaml`:
@@ -156,7 +156,7 @@ spec:
 {{% /tab %}}
 
 
-{{% tab %}}
+{{% tab "GCP" %}}
 
 You can use either "explicit" or "implicit" credentials to configure access to your GCP pubsub instance. If using explicit, most fields are required. Implicit relies on dapr running under a Kubernetes service account (KSA) mapped to a Google service account (GSA) which has the necessary permissions to access pubsub. In implicit mode, only the `projectId` attribute is needed, all other are optional.
 

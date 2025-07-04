@@ -130,9 +130,9 @@ Note that in the case, the value of the consumer ID is random every time Dapr re
 
 ## Create a MQTT broker
 
-{{% tabpane "Self-Hosted" "Kubernetes"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 You can run a MQTT broker [locally using Docker](https://hub.docker.com/_/eclipse-mosquitto):
 
 ```bash
@@ -142,7 +142,7 @@ docker run -d -p 1883:1883 -p 9001:9001 --name mqtt eclipse-mosquitto:1.6
 You can then interact with the server using the client port: `mqtt://localhost:1883`
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 You can run a MQTT broker in kubernetes using following yaml:
 
 ```yaml

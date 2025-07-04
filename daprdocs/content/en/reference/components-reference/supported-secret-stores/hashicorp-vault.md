@@ -76,13 +76,13 @@ Query Parameter | Description
 
 ## Setup Hashicorp Vault instance
 
-{{% tabpane "Self-Hosted" "Kubernetes" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 Setup Hashicorp Vault using the Vault documentation: https://www.vaultproject.io/docs/install/index.html.
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 For Kubernetes, you can use the Helm Chart: <https://github.com/hashicorp/vault-helm>.
 {{% /tab %}}
 

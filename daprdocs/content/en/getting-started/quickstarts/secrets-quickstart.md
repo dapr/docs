@@ -16,9 +16,9 @@ Dapr provides a dedicated secrets API that allows developers to retrieve secrets
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{% tabpane "Python" "JavaScript" ".NET" "Java" "Go" %}}
+{{% tabpane %}}
  <!-- Python -->
-{{% tab %}}
+{{% tab "Python" %}}
 
 ### Pre-requisites
 
@@ -127,7 +127,7 @@ Order-processor output:
 {{% /tab %}}
 
  <!-- JavaScript -->
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ### Pre-requisites
 
@@ -240,7 +240,7 @@ Order-processor output:
 {{% /tab %}}
 
  <!-- .NET -->
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ### Pre-requisites
 
@@ -352,7 +352,7 @@ Order-processor output:
 {{% /tab %}}
 
  <!-- Java -->
-{{% tab %}}
+{{% tab "Java" %}}
 
 ### Pre-requisites
 
@@ -460,7 +460,7 @@ Order-processor output:
 {{% /tab %}}
 
  <!-- Go -->
-{{% tab %}}
+{{% tab "Go" %}}
 
 ### Pre-requisites
 

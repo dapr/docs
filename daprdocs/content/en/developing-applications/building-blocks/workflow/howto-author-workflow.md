@@ -30,9 +30,9 @@ The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar si
 
 [Workflow activities]({{% ref "workflow-features-concepts.md#workflow-activites" %}}) are the basic unit of work in a workflow and are the tasks that get orchestrated in the business process.
 
-{{% tabpane Python JavaScript ".NET" Java Go %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 <!--python-->
 
@@ -51,7 +51,7 @@ def hello_act(ctx: WorkflowActivityContext, wf_input):
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 <!--javascript-->
 
@@ -82,7 +82,7 @@ export default class WorkflowActivityContext {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 <!--csharp-->
 
@@ -150,7 +150,7 @@ public class ProcessPaymentActivity : WorkflowActivity<PaymentRequest, object>
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 <!--java-->
 
@@ -193,7 +193,7 @@ public class DemoWorkflowActivity implements WorkflowActivity {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 <!--go-->
 
@@ -221,9 +221,9 @@ func TestActivity(ctx workflow.ActivityContext) (any, error) {
 
 Next, register and call the activites in a workflow. 
 
-{{% tabpane Python JavaScript ".NET" Java Go %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 <!--python-->
 
@@ -257,7 +257,7 @@ def hello_world_wf(ctx: DaprWorkflowContext, wf_input):
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 <!--javascript-->
 
@@ -302,7 +302,7 @@ export default class WorkflowRuntime {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 <!--csharp-->
 
@@ -345,7 +345,7 @@ The `OrderProcessingWorkflow` class is derived from a base class called `Workflo
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 <!--java-->
 
@@ -376,7 +376,7 @@ public class DemoWorkflowWorker {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 <!--go-->
 
@@ -413,9 +413,9 @@ func TestWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 
 Finally, compose the application using the workflow.
 
-{{% tabpane Python JavaScript ".NET" Java Go %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 <!--python-->
 
@@ -592,7 +592,7 @@ if __name__ == '__main__':
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 <!--javascript-->
 
@@ -739,7 +739,7 @@ export default class DaprWorkflowClient {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 <!--csharp-->
 
@@ -810,7 +810,7 @@ app.Run();
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 <!--java-->
 
@@ -857,7 +857,7 @@ public class DemoWorkflow extends Workflow {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 <!--go-->
 

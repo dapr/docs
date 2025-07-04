@@ -58,11 +58,11 @@ spec:
 
 The following examples use an HTTP client to send a POST request to Dapr's sidecar HTTP endpoint. You can also use [the Dapr SDK client instead]({{% ref "#related-links" %}}).
 
-{{% tabpane ".NET" "Go" "Rust" %}}
+{{% tabpane %}}
 
 
  <!-- .NET -->
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using Dapr.AI.Conversation;
@@ -93,7 +93,7 @@ foreach (var resp in response.Outputs)
 {{% /tab %}}
 
  <!-- Go -->
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 package main
@@ -135,7 +135,7 @@ func main() {
 {{% /tab %}}
 
  <!-- Rust -->
-{{% tab %}}
+{{% tab "Rust" %}}
 
 ```rust
 use dapr::client::{ConversationInputBuilder, ConversationRequestBuilder};
@@ -178,10 +178,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 Start the connection using the `dapr run` command. For example, for this scenario, we're running `dapr run` on an application with the app ID `conversation` and pointing to our conversation YAML file in the `./config` directory. 
 
-{{% tabpane ".NET" "Go" "Rust" %}}
+{{% tabpane %}}
 
  <!-- .NET -->
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```bash
 dapr run --app-id conversation --dapr-grpc-port 50001 --log-level debug --resources-path ./config -- dotnet run
@@ -190,7 +190,7 @@ dapr run --app-id conversation --dapr-grpc-port 50001 --log-level debug --resour
 {{% /tab %}}
 
  <!-- Go -->
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```bash
 dapr run --app-id conversation --dapr-grpc-port 50001 --log-level debug --resources-path ./config -- go run ./main.go
@@ -205,7 +205,7 @@ dapr run --app-id conversation --dapr-grpc-port 50001 --log-level debug --resour
 {{% /tab %}}
 
  <!-- Rust -->
-{{% tab %}}
+{{% tab "Rust" %}}
 
 ```bash
 dapr run --app-id=conversation --resources-path ./config --dapr-grpc-port 3500 -- cargo run --example conversation
@@ -237,24 +237,24 @@ To learn how to enable these features, see the [conversation API reference guide
 Try out the conversation API using the full examples provided in the supported SDK repos.
 
 
-{{% tabpane ".NET" "Go" "Rust" %}}
+{{% tabpane %}}
 
  <!-- .NET -->
-{{% tab %}}
+{{% tab ".NET" %}}
 
 [Dapr conversation example with the .NET SDK](https://github.com/dapr/dotnet-sdk/tree/master/examples/AI/ConversationalAI)
 
 {{% /tab %}}
 
  <!-- Go -->
-{{% tab %}}
+{{% tab "Go" %}}
 
 [Dapr conversation example with the Go SDK](https://github.com/dapr/go-sdk/tree/main/examples/conversation)
 
 {{% /tab %}}
 
  <!-- Rust -->
-{{% tab %}}
+{{% tab "Rust" %}}
 
 [Dapr conversation example with the Rust SDK](https://github.com/dapr/rust-sdk/tree/main/examples/src/conversation)
 

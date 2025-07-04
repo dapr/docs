@@ -12,10 +12,10 @@ You can increase the HTTP header size by using:
 - The `dapr.io/http-read-buffer-size` annotation, or 
 - The `--dapr-http-read-buffer-size` flag when using the CLI.
 
-{{% tabpane Self-hosted Kubernetes %}}
+{{% tabpane %}}
 
 <!--Self-hosted-->
-{{% tab %}}
+{{% tab "Self-hosted" %}}
 
 When running in self-hosted mode, use the `--dapr-http-read-buffer-size` flag to configure Dapr to use non-default http header size:
 
@@ -27,7 +27,7 @@ This tells Dapr to set maximum read buffer size to `16` KB.
 {{% /tab %}}
 
 <!--Kubernetes-->
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 On Kubernetes, set the following annotations in your deployment YAML:
 

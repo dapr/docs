@@ -50,8 +50,8 @@ Notice, that objects contained in the state each have a `key` assigned with the 
 
 Save a new state object using the following command:
 
-{{% tabpane "HTTP API (Bash)" "HTTP API (PowerShell)"%}}
-{{% tab %}}
+{{% tabpane %}}
+{{% tab "HTTP API (Bash)" %}}
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '[{ "key": "name", "value": "Bruce Wayne"}]' http://localhost:3500/v1.0/state/statestore
@@ -59,7 +59,7 @@ curl -X POST -H "Content-Type: application/json" -d '[{ "key": "name", "value": 
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{ "key": "name", "value": "Bruce Wayne"}]' -Uri 'http://localhost:3500/v1.0/state/statestore'
@@ -73,9 +73,9 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{ "key": 
 
 Retrieve the object you just stored in the state by using the state management API with the key `name`. In the same terminal window, run the following command:
 
-{{% tabpane "HTTP API (Bash)" "HTTP API (PowerShell)"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 ```bash
 curl http://localhost:3500/v1.0/state/statestore/name 
@@ -83,7 +83,7 @@ curl http://localhost:3500/v1.0/state/statestore/name
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 ```powershell
 Invoke-RestMethod -Uri 'http://localhost:3500/v1.0/state/statestore/name'
@@ -132,9 +132,9 @@ exit
 
 In the same terminal window, delete the`name` state object from the state store.
 
-{{% tabpane "HTTP API (Bash)" "HTTP API (PowerShell)"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 ```bash
 curl -v -X DELETE -H "Content-Type: application/json" http://localhost:3500/v1.0/state/statestore/name
@@ -142,7 +142,7 @@ curl -v -X DELETE -H "Content-Type: application/json" http://localhost:3500/v1.0
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 ```powershell
 Invoke-RestMethod -Method Delete -ContentType 'application/json' -Uri 'http://localhost:3500/v1.0/state/statestore/name'

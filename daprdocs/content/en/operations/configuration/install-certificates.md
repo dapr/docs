@@ -12,10 +12,10 @@ The Dapr sidecar can be configured to trust certificates for communicating with 
 
 Both certificate authority (CA) certificates and leaf certificates are supported.
 
-{{% tabpane Self-hosted Kubernetes %}}
+{{% tabpane %}}
 
 <!--self-hosted-->
-{{% tab %}}
+{{% tab "Self-hosted" %}}
 
 You can make the following configurations when the sidecar is running as a container.
 
@@ -50,7 +50,7 @@ services:
 {{% /tab %}}
 
 <!--kubernetes-->
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 On Kubernetes:
 

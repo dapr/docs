@@ -45,9 +45,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Create a NATS server
 
-{{% tabpane "Self-Hosted" "Kubernetes"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 You can run a NATS Server with JetStream enabled locally using Docker:
 
 ```bash
@@ -57,7 +57,7 @@ docker run -d -p 4222:4222 nats:latest -js
 You can then interact with the server using the client port: `localhost:4222`.
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 Install NATS JetStream on Kubernetes by using the [helm](https://github.com/nats-io/k8s/tree/main/helm/charts/nats#jetstream):
 
 ```bash

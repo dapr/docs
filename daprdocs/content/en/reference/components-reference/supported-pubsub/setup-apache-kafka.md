@@ -505,9 +505,9 @@ When consuming messages, special message metadata are being automatically passed
 - `__timestamp`: the timestamp for the message
 
 You can access them within the consumer endpoint as follows:
-{{% tabpane "Python (FastAPI)" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Python (FastAPI)" %}}
 
 ```python
 from fastapi import APIRouter, Body, Response, status
@@ -599,15 +599,15 @@ Date/Datetime fields must be passed as their [Epoch Unix timestamp](https://en.w
 ### Publishing Avro messages
 In order to indicate to the Kafka pub/sub component that the message should be using Avro serialization, the `valueSchemaType` metadata must be set to `Avro`.
 
-{{% tabpane curl "Python SDK"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "curl" %}}
 ```bash
 curl -X "POST" http://localhost:3500/v1.0/publish/pubsub/my-topic?metadata.rawPayload=true&metadata.valueSchemaType=Avro -H "Content-Type: application/json" -d '{"order_number": "345", "created_date": 1704861365986}'
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Python SDK" %}}
 ```python
 from dapr.clients import DaprClient
 
@@ -634,9 +634,9 @@ with DaprClient() as d:
 ### Subscribing to Avro topics
 In order to indicate to the Kafka pub/sub component that the message should be deserialized using Avro, the `valueSchemaType` metadata must be set to `Avro` in the subscription metadata.
 
-{{% tabpane "Python (FastAPI)" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Python (FastAPI)" %}}
 
 ```python
 from fastapi import APIRouter, Body, Response, status
@@ -675,14 +675,14 @@ app.include_router(router)
 
 ## Create a Kafka instance
 
-{{% tabpane "Self-Hosted" "Kubernetes"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 You can run Kafka locally using [this](https://github.com/wurstmeister/kafka-docker) Docker image.
 To run without Docker, see the getting started guide [here](https://kafka.apache.org/quickstart).
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 To run Kafka on Kubernetes, you can use any Kafka operator, such as [Strimzi](https://strimzi.io/quickstarts/).
 {{% /tab %}}
 

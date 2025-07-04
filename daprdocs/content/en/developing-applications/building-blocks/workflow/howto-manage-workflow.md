@@ -8,10 +8,10 @@ description: Manage and run workflows
 
 Now that you've [authored the workflow and its activities in your application]({{% ref howto-author-workflow.md %}}), you can start, terminate, and get information about the workflow using HTTP API calls. For more information, read the [workflow API reference]({{% ref workflow_api.md %}}).
 
-{{% tabpane Python JavaScript ".NET" Java Go HTTP %}}
+{{% tabpane %}}
 
 <!--Python-->
-{{% tab %}}
+{{% tab "Python" %}}
 
 Manage your workflow within your code. In the workflow example from the [Author a workflow]({{% ref "howto-author-workflow.md#write-the-application" %}}) guide, the workflow is registered in the code using the following APIs:
 - **schedule_new_workflow**: Start an instance of a workflow
@@ -61,7 +61,7 @@ wf_client.wait_for_workflow_completion(instance_id, timeout_in_seconds=30)
 {{% /tab %}}
 
 <!--JavaScript-->
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 Manage your workflow within your code. In the workflow example from the [Author a workflow]({{% ref "howto-author-workflow.md#write-the-application" %}}) guide, the workflow is registered in the code using the following APIs:
 - **client.workflow.start**: Start an instance of a workflow
@@ -132,7 +132,7 @@ start().catch((e) => {
 {{% /tab %}}
 
 <!--NET-->
-{{% tab %}}
+{{% tab ".NET" %}}
 
 Manage your workflow within your code. In the `OrderProcessingWorkflow` example from the [Author a workflow]({{% ref "howto-author-workflow.md#write-the-application" %}}) guide, the workflow is registered in the code. You can now start, terminate, and get information about a running workflow:
 
@@ -166,7 +166,7 @@ await daprWorkflowClient.PurgeInstanceAsync(orderId);
 {{% /tab %}}
 
 <!--Java-->
-{{% tab %}}
+{{% tab "Java" %}}
 
 Manage your workflow within your code. [In the workflow example from the Java SDK](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/workflows/), the workflow is registered in the code using the following APIs:
 
@@ -231,7 +231,7 @@ public class DemoWorkflowClient {
 {{% /tab %}}
 
 <!--Go-->
-{{% tab %}}
+{{% tab "Go" %}}
 
 Manage your workflow within your code. [In the workflow example from the Go SDK](https://github.com/dapr/go-sdk/tree/main/examples/workflow), the workflow is registered in the code using the following APIs:
 
@@ -310,7 +310,7 @@ type RaiseEventWorkflowRequest struct {
 {{% /tab %}}
 
 <!--HTTP-->
-{{% tab %}}
+{{% tab "HTTP" %}}
 
 Manage your workflow using HTTP calls. The example below plugs in the properties from the [Author a workflow example]({{% ref "howto-author-workflow.md#write-the-workflow" %}}) with a random instance ID number.
 

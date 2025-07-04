@@ -67,9 +67,9 @@ Note, the value of "project"，"logstore"，"topic" and "source" property should
 
 #### Example
 
-{{% tabpane "Windows" "Linux/MacOS" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Windows" %}}
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -d "{\"metadata\":{\"project\":\"project-name\",\"logstore\":\"logstore-name\",\"topic\":\"topic-name\",\"source\":\"source-name\"},\"data\":{\"log-filed\":\"log info\"}" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -77,7 +77,7 @@ curl -X POST -H "Content-Type: application/json" -d "{\"metadata\":{\"project\":
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Linux/MacOS" %}}
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{"metadata":{"project":"project-name","logstore":"logstore-name","topic":"topic-name","source":"source-name"},"data":{"log-filed":"log info"}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>

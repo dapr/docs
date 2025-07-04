@@ -125,9 +125,9 @@ Learn more about concurrency requirements in the [State Management overview]({{%
 
 The following examples demonstrate how to return an error in your own pluggable component, changing the messages to suit your needs.
 
-{{% tabpane ".NET" "Java" "Go" %}}
+{{% tabpane %}}
  <!-- .NET -->
-{{% tab %}}
+{{% tab ".NET" %}}
 
 > **Important:** In order to use .NET for error mapping, first install the [`Google.Api.CommonProtos` NuGet package](https://www.nuget.org/packages/Google.Api.CommonProtos/).
 
@@ -203,7 +203,7 @@ throw new RpcException(new Grpc.Core.Status(baseStatusCode, "fake-err-msg"), met
 {{% /tab %}}
 
  <!-- Java -->
-{{% tab %}}
+{{% tab "Java" %}}
 
 Just like the [Dapr Java SDK](https://github.com/tmacam/dapr-java-sdk/), the Java Pluggable Components SDK uses [Project Reactor](https://projectreactor.io/), which provides an asynchronous API for Java.
 
@@ -260,7 +260,7 @@ return Mono.error(StatusProto.toStatusException(status));
 {{% /tab %}}
 
  <!-- Go -->
-{{% tab %}}
+{{% tab "Go" %}}
 
 **ETag Mismatch**
 

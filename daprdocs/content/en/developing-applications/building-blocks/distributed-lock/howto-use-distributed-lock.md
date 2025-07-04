@@ -41,9 +41,9 @@ spec:
 
 ### Acquire lock
 
-{{% tabpane HTTP ".NET" Go %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "HTTP" %}}
 
 ```bash
 curl -X POST http://localhost:3500/v1.0-alpha1/lock/lockstore
@@ -53,7 +53,7 @@ curl -X POST http://localhost:3500/v1.0-alpha1/lock/lockstore
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using System;
@@ -88,7 +88,7 @@ namespace LockService
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 package main
@@ -122,9 +122,9 @@ func main() {
 
 ### Unlock existing lock
 
-{{% tabpane HTTP ".NET" Go %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "HTTP" %}}
 
 ```bash
 curl -X POST http://localhost:3500/v1.0-alpha1/unlock/lockstore
@@ -134,7 +134,7 @@ curl -X POST http://localhost:3500/v1.0-alpha1/unlock/lockstore
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using System;
@@ -158,7 +158,7 @@ namespace LockService
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 package main

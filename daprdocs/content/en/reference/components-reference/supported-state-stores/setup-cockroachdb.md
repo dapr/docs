@@ -64,9 +64,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Setup CockroachDB
 
-{{% tabpane "Self-Hosted" "Kubernetes" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 
 1. Run an instance of CockroachDB. You can run a local instance of CockroachDB in Docker CE with the following command:
 
@@ -85,7 +85,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
     ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 The easiest way to install CockroachDB on Kubernetes is by using the [CockroachDB Operator](https://github.com/cockroachdb/cockroach-operator):
 {{% /tab %}}
 

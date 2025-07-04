@@ -20,9 +20,9 @@ A state store component represents a resource that Dapr uses to communicate with
 
 For the purpose of this guide we'll use a Redis state store, but any state store from the [supported list]({{% ref supported-state-stores %}}) will work.
 
-{{% tabpane "Self-Hosted (CLI)" Kubernetes%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted (CLI)" %}}
 
 When you run `dapr init` in self-hosted mode, Dapr creates a default Redis `statestore.yaml` and runs a Redis state store on your local machine, located:
 
@@ -33,7 +33,7 @@ With the `statestore.yaml` component, you can easily swap out underlying compone
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 To deploy this into a Kubernetes cluster, fill in the `metadata` connection details of your [state store component]({{% ref supported-state-stores %}}) in the YAML below, save as `statestore.yaml`, and run `kubectl apply -f statestore.yaml`.
 
@@ -66,9 +66,9 @@ Set an `app-id`, as the state keys are prefixed with this value. If you don't se
 
 The following example shows how to save and retrieve a single key/value pair using the Dapr state management API.
 
-{{% tabpane ".NET" Java Python Go JavaScript "HTTP API (Bash)" "HTTP API (PowerShell)"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 
@@ -104,7 +104,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 ```java
 //dependencies
@@ -152,7 +152,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 ```python
 #dependencies
@@ -185,7 +185,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 // dependencies
@@ -233,7 +233,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 //dependencies
@@ -289,7 +289,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 Launch a Dapr sidecar:
 
@@ -313,7 +313,7 @@ Restart your sidecar and try retrieving state again to observe that state persis
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 Launch a Dapr sidecar:
 
@@ -343,9 +343,9 @@ Restart your sidecar and try retrieving state again to observe that state persis
 
 Below are code examples that leverage Dapr SDKs for deleting the state.
 
-{{% tabpane ".NET" Java Python Go JavaScript "HTTP API (Bash)" "HTTP API (PowerShell)"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using Dapr.Client;
@@ -372,7 +372,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 ```java
 //dependencies
@@ -402,7 +402,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 ```python
 #dependencies
@@ -425,7 +425,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 //dependencies
@@ -460,7 +460,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 //dependencies
@@ -491,7 +491,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 With the same Dapr instance running from above, run:
 
@@ -503,7 +503,7 @@ Try getting state again. Note that no value is returned.
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 With the same Dapr instance running from above, run:
 
@@ -521,9 +521,9 @@ Try getting state again. Note that no value is returned.
 
 Below are code examples that leverage Dapr SDKs for saving and retrieving multiple states.
 
-{{% tabpane ".NET" Java Python Go JavaScript "HTTP API (Bash)" "HTTP API (PowerShell)"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using Dapr.Client;
@@ -569,7 +569,7 @@ record Widget(string Size, string Color);
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 ```java
 //dependencies
@@ -602,7 +602,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 ```python
 #dependencies
@@ -628,7 +628,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 // dependencies
@@ -678,7 +678,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 //dependencies
@@ -720,7 +720,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 With the same Dapr instance running from above, save two key/value pairs into your statestore:
 
@@ -736,7 +736,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"keys":["order_1", "order_
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 With the same Dapr instance running from above, save two key/value pairs into your statestore:
 
@@ -762,9 +762,9 @@ State transactions require a state store that supports multi-item transactions. 
 
 Below are code examples that leverage Dapr SDKs for performing state transactions.
 
-{{% tabpane ".NET" Java Python Go JavaScript "HTTP API (Bash)" "HTTP API (PowerShell)"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using Dapr.Client;
@@ -808,7 +808,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 ```java
 //dependencies
@@ -861,7 +861,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 ```python
 #dependencies
 import random
@@ -907,7 +907,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 // dependencies
@@ -980,7 +980,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 //dependencies
@@ -1040,7 +1040,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 With the same Dapr instance running from above, perform two state transactions:
 
@@ -1056,7 +1056,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"keys":["order_1", "order_
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 With the same Dapr instance running from above, save two key/value pairs into your statestore:
 

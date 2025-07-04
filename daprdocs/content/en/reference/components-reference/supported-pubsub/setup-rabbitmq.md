@@ -175,9 +175,9 @@ There is a crucial difference between the two ways to retry messages:
 
 ## Create a RabbitMQ server
 
-{{% tabpane "Self-Hosted" "Kubernetes" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 You can run a RabbitMQ server locally using Docker:
 
 ```bash
@@ -187,7 +187,7 @@ docker run -d --hostname my-rabbit --name some-rabbit rabbitmq:3
 You can then interact with the server using the client port: `localhost:5672`.
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 The easiest way to install RabbitMQ on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/rabbitmq):
 
 ```bash
@@ -285,9 +285,9 @@ spec:
 
 ### Programmatic priority queue example
 
-{{% tabpane Python JavaScript Go%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 ```python
 @app.route('/dapr/subscribe', methods=['GET'])
@@ -307,7 +307,7 @@ def subscribe():
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 const express = require('express')
@@ -335,7 +335,7 @@ app.get('/dapr/subscribe', (req, res) => {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 package main
@@ -384,9 +384,9 @@ func configureSubscribeHandler(w http.ResponseWriter, _ *http.Request) {
 
 To set a priority on a message, add the publish metadata key `maxPriority` to the publish endpoint or SDK method.
 
-{{% tabpane "HTTP API (Bash)" Python JavaScript Go%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 ```bash
 curl -X POST http://localhost:3601/v1.0/publish/order-pub-sub/orders?metadata.priority=3 -H "Content-Type: application/json" -d '{"orderId": "100"}'
@@ -394,7 +394,7 @@ curl -X POST http://localhost:3601/v1.0/publish/order-pub-sub/orders?metadata.pr
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 ```python
 with DaprClient() as client:
@@ -408,7 +408,7 @@ with DaprClient() as client:
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 await client.pubsub.publish(PUBSUB_NAME, TOPIC_NAME, orderId, { 'priority': '3' });
@@ -416,7 +416,7 @@ await client.pubsub.publish(PUBSUB_NAME, TOPIC_NAME, orderId, { 'priority': '3' 
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 client.PublishEvent(ctx, PUBSUB_NAME, TOPIC_NAME, []byte(strconv.Itoa(orderId)), map[string]string{"priority": "3"})

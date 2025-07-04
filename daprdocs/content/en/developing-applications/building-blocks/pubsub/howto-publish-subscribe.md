@@ -27,9 +27,9 @@ The following example demonstrates how your applications publish and subscribe t
 
 The first step is to set up the pub/sub component:
 
-{{% tabpane "Self-Hosted (CLI)" Kubernetes %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted (CLI)" %}}
 When you run `dapr init`, Dapr creates a default Redis `pubsub.yaml` and runs a Redis container on your local machine, located:
 
 - On Windows, under `%UserProfile%\.dapr\components\pubsub.yaml`
@@ -65,52 +65,10 @@ scopes:
 
 You can override this file with another [pubsub component]({{% ref setup-pubsub %}}) by creating a components directory (in this example, `myComponents`) containing the file and using the flag `--resources-path` with the `dapr run` CLI command.
 
-{{% tabpane ".NET" Java Python Go JavaScript %}}
-
-{{% tab %}}
-
-```bash
-dapr run --app-id myapp --resources-path ./myComponents -- dotnet run
-```
-
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
-```bash
-dapr run --app-id myapp --resources-path ./myComponents -- mvn spring-boot:run
-```
-
-{{% /tab %}}
-
-{{% tab %}}
-
-```bash
-dapr run --app-id myapp --resources-path ./myComponents -- python3 app.py
-```
-
-{{% /tab %}}
-
-{{% tab %}}
-
-```bash
-dapr run --app-id myapp --resources-path ./myComponents -- go run app.go
-```
-
-{{% /tab %}}
-
-{{% tab %}}
-
-```bash
-dapr run --app-id myapp --resources-path ./myComponents -- npm start
-```
-{{% /tab %}}
-
-{{% /tabpane %}}
-
-{{% /tab %}}
-
-{{% tab %}}
 To deploy this into a Kubernetes cluster, fill in the `metadata` connection details of the [pub/sub component]({{% ref setup-pubsub %}}) in the YAML below, save as `pubsub.yaml`, and run `kubectl apply -f pubsub.yaml`.
 
 ```yaml
@@ -150,6 +108,50 @@ scopes:
 {{% /tab %}}
 
 {{% /tabpane %}}
+
+{{% tabpane %}}
+
+{{% tab ".NET" %}}
+
+```bash
+dapr run --app-id myapp --resources-path ./myComponents -- dotnet run
+```
+
+{{% /tab %}}
+
+{{% tab "Java" %}}
+
+```bash
+dapr run --app-id myapp --resources-path ./myComponents -- mvn spring-boot:run
+```
+
+{{% /tab %}}
+
+{{% tab "Python" %}}
+
+```bash
+dapr run --app-id myapp --resources-path ./myComponents -- python3 app.py
+```
+
+{{% /tab %}}
+
+{{% tab "Go" %}}
+
+```bash
+dapr run --app-id myapp --resources-path ./myComponents -- go run app.go
+```
+
+{{% /tab %}}
+
+{{% tab "JavaScript" %}}
+
+```bash
+dapr run --app-id myapp --resources-path ./myComponents -- npm start
+```
+{{% /tab %}}
+
+{{% /tabpane %}}
+
 
 ## Subscribe to topics
 
@@ -194,9 +196,9 @@ To prevent reprocessing or loss of unprocessed messages, in-flight messages betw
 
 Below are code examples that leverage Dapr SDKs to subscribe to the topic you defined in `subscription.yaml`.
 
-{{% tabpane ".NET" Java Python Go JavaScript%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using System.Collections.Generic;
@@ -229,7 +231,7 @@ dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-por
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 ```java
 //dependencies
@@ -269,7 +271,7 @@ dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-por
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 ```python
 #dependencies
@@ -298,7 +300,7 @@ dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --app-protocol 
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 //dependencies
@@ -343,7 +345,7 @@ dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-por
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 //dependencies
@@ -397,9 +399,9 @@ dapr run --app-id orderprocessing --dapr-http-port 3601
 
 Then publish a message to the `orders` topic:
 
-{{% tabpane "Dapr CLI" "HTTP API (Bash)" "HTTP API (PowerShell)"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Dapr CLI" %}}
 
 ```bash
 dapr publish --publish-app-id orderprocessing --pubsub order-pub-sub --topic orders --data '{"orderId": "100"}'
@@ -407,7 +409,7 @@ dapr publish --publish-app-id orderprocessing --pubsub order-pub-sub --topic ord
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 ```bash
 curl -X POST http://localhost:3601/v1.0/publish/order-pub-sub/orders -H "Content-Type: application/json" -d '{"orderId": "100"}'
@@ -415,7 +417,7 @@ curl -X POST http://localhost:3601/v1.0/publish/order-pub-sub/orders -H "Content
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"orderId": "100"}' -Uri 'http://localhost:3601/v1.0/publish/order-pub-sub/orders'
@@ -427,9 +429,9 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"orderId"
 
 Below are code examples that leverage Dapr SDKs to publish a topic.
 
-{{% tabpane ".NET" Java Python Go JavaScript%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using System;
@@ -471,7 +473,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 ```java
 //dependencies
@@ -521,7 +523,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 ```python
 #dependencies  
@@ -558,7 +560,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --app-pr
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 //dependencies
@@ -606,7 +608,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 //dependencies

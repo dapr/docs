@@ -63,7 +63,7 @@ Want to put the Dapr conversation API to the test? Walk through the following qu
 
 ### Start using the conversation API directly in your app
 
-Want to skip the quickstarts? Not a problem. You can try out the conversation building block directly in your application. After [Dapr is installed]({{% ref "getting-started/_index" %}}), you can begin using the conversation API starting with [the how-to guide]({{% ref howto-conversation-layer %}}).
+Want to skip the quickstarts? Not a problem. You can try out the conversation building block directly in your application. After [Dapr is installed]({{% ref "getting-started/_index.md" %}}), you can begin using the conversation API starting with [the how-to guide]({{% ref howto-conversation-layer %}}).
 
 ## Next steps
 

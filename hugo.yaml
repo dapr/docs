@@ -2,7 +2,7 @@ baseURL: https://dpcs.dapr.io
 title: Dapr Docs
 
 # Output directory for generated site
-publishDir: daprdocs/public
+publishDir: public
 
 # Language settings
 contentDir: content/en
@@ -185,9 +185,9 @@ params:
     # Set to true if you don't want the top navbar to be translucent when over a `block/cover`, like on the homepage.
     navbar_translucent_over_cover_disable: false
     # Enable to show the side bar menu in its compact state.
-    sidebar_menu_compact: false
+    sidebar_menu_compact: true
     # Set to true to hide the sidebar search box (the top nav search box will still be displayed if search is enabled)
-    sidebar_search_disable: false
+    sidebar_search_disable: true
 
     # Adds a H2 section titled "Feedback" to the bottom of each doc. The responses are sent to Google Analytics as events.
     # This feature depends on [services.googleAnalytics] and will be disabled if "services.googleAnalytics.id" is not set.
@@ -210,36 +210,34 @@ params:
   links:
     # End user relevant links. These will show up on left side of footer and in the community page if you have one.
     user:
-      - name: User mailing list
-        url: https://example.org/mail
-        icon: fa fa-envelope
-        desc: Discussion and help from your fellow users
-      - name: Twitter
-        url: https://example.org/twitter
+      - name: YouTube
+        url: https://www.youtube.com/@darpdev
+        icon: fab fa-youtube
+        desc: Subscribe to our YouTube channel
+      - name: LinkedIn
+        url: https://www.linkedin.com/company/daprdev/
+        icon: fab fa-linkedin
+        desc: Follow us on LinkedIn to get the latest news!
+      - name: Twitter / X
+        url: https://twitter.com/daprdev
         icon: fab fa-twitter
         desc: Follow us on Twitter to get the latest news!
-      - name: Stack Overflow
-        url: https://example.org/stack
-        icon: fab fa-stack-overflow
-        desc: Practical questions and curated answers
+      - name: BlueSky
+        url: https://bsky.app/profile/daprdev.bsky.social
+        icon: fab fa-bluesky
+        desc: Follow us on BlueSky to get the latest news!
     # Developer relevant links. These will show up on right side of footer and in the community page if you have one.
     developer:
       - name: GitHub
-        url: https://github.com/google/docsy
+        url: https://github.com/dapr/
         icon: fab fa-github
-        desc: Development takes place here!
-      - name: Slack
-        url: https://example.org/slack
-        icon: fab fa-slack
-        desc: Chat with other project developers
-      - name: Developer mailing list
-        url: https://example.org/mail
-        icon: fa fa-envelope
-        desc: Discuss development issues around the project
+        desc: Help contribute to Dapr!
+      - name: Discord
+        url: https://bit.ly/dapr-discord
+        icon: fab fa-discord
+        desc: Join our Discord server and talk with other Dapr developers
 
 module:
-  # Uncomment the next line to build and serve using local docsy clone declared in the named Hugo workspace:
-  # workspace: docsy.work
   hugoVersion:
     extended: true
     min: 0.146.0
@@ -247,6 +245,19 @@ module:
     - path: github.com/google/docsy
       disable: false
   mounts:
+    - source: daprdocs/content/en
+      target: content
+      lang: en
+    - source: daprdocs/static
+      target: static
+    - source: daprdocs/layouts
+      target: layouts
+    - source: daprdocs/data
+      target: data
+    - source: daprdocs/assets
+      target: assets
+    - source: daprdocs/archetypes
+      target: archetypes
     - source: sdkdocs/python/daprdocs/content/en/python-sdk-docs
       target: content/developing-applications/sdks/python
       lang: en
@@ -293,7 +304,7 @@ module:
       target: content/developing-applications/develop-components/pluggable-components/pluggable-components-sdks/pluggable-components-go
       lang: en
     - source: translations/docs-zh/translated_content/zh_CN/docs
-      target: content/contributing/sdk-contrib/
+      target: content
       lang: zh-hans
     - source: translations/docs-zh/translated_content/zh_CN/contributing
       target: content/contributing/sdk-contrib/
@@ -317,7 +328,7 @@ module:
       target: content/developing-applications/sdks/js
       lang: zh-hans
     - source: translations/docs-zh/translated_content/zh_CN/sdks_rust
-      target: content/developing-applications/sdks/rus
+      target: content/developing-applications/sdks/rust
       lang: zh-hans
     - source: translations/docs-zh/translated_content/zh_CN/pluggable-components/dotnet
       target: content/developing-applications/develop-components/pluggable-components/pluggable-components-sdks/pluggable-components-dotnet
@@ -325,16 +336,3 @@ module:
     - source: translations/docs-zh/translated_content/zh_CN/pluggable-components/go
       target: content/developing-applications/develop-components/pluggable-components/pluggable-components-sdks/pluggable-components-go
       lang: zh-hans
-    - source: daprdocs/content/en
-      target: content
-      lang: en
-    - source: daprdocs/static
-      target: static
-    - source: daprdocs/layouts
-      target: layouts
-    - source: daprdocs/data
-      target: data
-    - source: daprdocs/assets
-      target: assets
-    - source: daprdocs/archetypes
-      target: archetypes

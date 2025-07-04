@@ -66,9 +66,9 @@ If you are using `v1`, you should continue to use `v1` until you create a new Et
 
 ## Setup Etcd
 
-{{% tabpane "Self-Hosted" "Kubernetes" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 
 You can run Etcd database locally using Docker Compose. Create a new file called `docker-compose.yml` and add the following contents as an example:
 
@@ -96,7 +96,7 @@ etcdctl --endpoints=localhost:2379 put mykey myvalue
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 Use [Helm](https://helm.sh/) to quickly create an Etcd instance in your Kubernetes cluster. This approach requires [Installing Helm](https://github.com/helm/helm#install).
 

@@ -46,9 +46,9 @@ By default, the `placement` binary is installed in:
 - For Linux/MacOS: `/$HOME/.dapr/bin`
 - For Windows: `%USERPROFILE%\.dapr\bin`
 
-{{% tabpane "Linux/MacOS" "Windows"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Linux/MacOS" %}}
 
 ```bash
 $ $HOME/.dapr/bin/placement
@@ -66,7 +66,7 @@ INFO[0001] leader is established.                        instance=Nicoletaz-L10.
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Windows" %}}
 
 When running standalone placement on Windows, specify port 6050:
 

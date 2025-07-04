@@ -59,13 +59,13 @@ spec:
 Once you have created the component's YAML file, follow these instructions to apply it based on your hosting environment:
 
 
-{{% tabpane "Self-Hosted" "Kubernetes" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--resources-path`.
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 To deploy in Kubernetes, assuming your component file is named `mybinding.yaml`, run:
 
 ```bash

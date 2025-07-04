@@ -18,9 +18,9 @@ While this sample uses Redis, you can swap it out for any one of the [supported 
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{% tabpane "Python" "JavaScript" ".NET" "Java" "Go" %}}
+{{% tabpane %}}
  <!-- Python -->
-{{% tab %}}
+{{% tab "Python" %}}
 
 ### Pre-requisites
 
@@ -149,7 +149,7 @@ In the YAML file:
 {{% /tab %}}
 
  <!-- JavaScript -->
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ### Pre-requisites
 
@@ -281,7 +281,7 @@ In the YAML file:
 {{% /tab %}}
 
  <!-- .NET -->
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ### Pre-requisites
 
@@ -415,7 +415,7 @@ In the YAML file:
 {{% /tab %}}
 
  <!-- Java -->
-{{% tab %}}
+{{% tab "Java" %}}
 
 ### Pre-requisites
 
@@ -551,7 +551,7 @@ In the YAML file:
 {{% /tab %}}
 
  <!-- Go -->
-{{% tab %}}
+{{% tab "Go" %}}
 
 ### Pre-requisites
 
@@ -689,9 +689,9 @@ In the YAML file:
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{% tabpane "Python" "JavaScript" ".NET" "Java" "Go" %}}
+{{% tabpane %}}
  <!-- Python -->
-{{% tab %}}
+{{% tab "Python" %}}
 
 ### Pre-requisites
 
@@ -807,7 +807,7 @@ In the YAML file:
 {{% /tab %}}
 
  <!-- JavaScript -->
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ### Pre-requisites
 
@@ -929,7 +929,7 @@ In the YAML file:
 {{% /tab %}}
 
  <!-- .NET -->
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ### Pre-requisites
 
@@ -1046,7 +1046,7 @@ In the YAML file:
 {{% /tab %}}
 
  <!-- Java -->
-{{% tab %}}
+{{% tab "Java" %}}
 
 ### Pre-requisites
 
@@ -1168,7 +1168,7 @@ In the YAML file:
 {{% /tab %}}
 
  <!-- Go -->
-{{% tab %}}
+{{% tab "Go" %}}
 
 ### Pre-requisites
 

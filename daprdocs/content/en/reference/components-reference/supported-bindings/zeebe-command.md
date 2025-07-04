@@ -147,9 +147,9 @@ The metadata parameters are:
 
 The binding returns a JSON with the following response:
 
-{{% tabpane "BPMN" "DMN" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "BPMN" %}}
 
 ```json
 {
@@ -171,7 +171,7 @@ The binding returns a JSON with the following response:
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "DMN" %}}
 
 ```json
 {
@@ -251,9 +251,9 @@ For more information please visit the [official documentation](https://docs.camu
 
 To perform a `create-instance` operation, invoke the Zeebe command binding with a `POST` method, and the following JSON body:
 
-{{% tabpane "By BPMN process ID" "By process definition key" "Synchronous execution" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "By BPMN process ID" %}}
 
 ```json
 {
@@ -271,7 +271,7 @@ To perform a `create-instance` operation, invoke the Zeebe command binding with 
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "By process definition key" %}}
 
 ```json
 {
@@ -289,7 +289,7 @@ To perform a `create-instance` operation, invoke the Zeebe command binding with 
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Synchronous execution" %}}
 
 ```json
 {

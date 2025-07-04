@@ -126,9 +126,9 @@ ctx = metadata.AppendToOutgoingContext(ctx, "dapr-app-id", "server")
 
 All languages supported by gRPC allow for adding metadata. Here are a few examples:
 
-{{% tabpane Java ".NET" Python JavaScript Ruby "C++"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 ```java
 Metadata headers = new Metadata();
 Metadata.Key<String> jwtKey = Metadata.Key.of("dapr-app-id", "server");
@@ -139,7 +139,7 @@ stub.SayHello(new HelloRequest() { Name = "Darth Malak" });
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 ```csharp
 var metadata = new Metadata
 {
@@ -150,14 +150,14 @@ var call = client.SayHello(new HelloRequest { Name = "Darth Nihilus" }, metadata
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 ```python
 metadata = (('dapr-app-id', 'server'),)
 response = stub.SayHello(request={ name: 'Darth Revan' }, metadata=metadata)
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 ```javascript
 const metadata = new grpc.Metadata();
 metadata.add('dapr-app-id', 'server');
@@ -166,14 +166,14 @@ client.sayHello({ name: "Darth Malgus" }, metadata)
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Ruby" %}}
 ```ruby
 metadata = { 'dapr-app-id' : 'server' }
 response = service.sayHello({ 'name': 'Darth Bane' }, metadata)
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "C++" %}}
 ```c++
 grpc::ClientContext context;
 context.AddMetadata("dapr-app-id", "server");
@@ -249,16 +249,16 @@ When using Dapr to proxy streaming RPC calls using gRPC, you must set an additio
 
 For example:
 
-{{% tabpane Go Java ".NET" Python JavaScript Ruby "C++"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 ```go
 ctx = metadata.AppendToOutgoingContext(ctx, "dapr-app-id", "server")
 ctx = metadata.AppendToOutgoingContext(ctx, "dapr-stream", "true")
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 ```java
 Metadata headers = new Metadata();
 Metadata.Key<String> jwtKey = Metadata.Key.of("dapr-app-id", "server");
@@ -266,7 +266,7 @@ Metadata.Key<String> jwtKey = Metadata.Key.of("dapr-stream", "true");
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 ```csharp
 var metadata = new Metadata
 {
@@ -276,13 +276,13 @@ var metadata = new Metadata
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 ```python
 metadata = (('dapr-app-id', 'server'), ('dapr-stream', 'true'),)
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 ```javascript
 const metadata = new grpc.Metadata();
 metadata.add('dapr-app-id', 'server');
@@ -290,14 +290,14 @@ metadata.add('dapr-stream', 'true');
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Ruby" %}}
 ```ruby
 metadata = { 'dapr-app-id' : 'server' }
 metadata = { 'dapr-stream' : 'true' }
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "C++" %}}
 ```c++
 grpc::ClientContext context;
 context.AddMetadata("dapr-app-id", "server");

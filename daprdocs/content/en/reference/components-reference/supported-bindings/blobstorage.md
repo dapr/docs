@@ -85,7 +85,7 @@ To perform a create blob operation, invoke the Azure Blob Storage binding with a
 
 ##### Save text to a random generated UUID blob
 
-{{% tabpane Windows Linux %}}
+{{% tabpane %}}
   {{% tab %}}
   On Windows, utilize cmd prompt (PowerShell has different escaping mechanism)
   ```bash
@@ -104,7 +104,7 @@ To perform a create blob operation, invoke the Azure Blob Storage binding with a
 
 ##### Save text to a specific blob
 
-{{% tabpane Windows Linux %}}
+{{% tabpane %}}
 
   {{% tab %}}
   ```bash
@@ -148,7 +148,7 @@ spec:
 
 Then you can upload it as you would normally:
 
-{{% tabpane Windows Linux %}}
+{{% tabpane %}}
 
   {{% tab %}}
   ```bash
@@ -197,7 +197,7 @@ The metadata parameters are:
 
 #### Example
 
-{{% tabpane Windows Linux %}}
+{{% tabpane %}}
 
   {{% tab %}}
   ```bash
@@ -245,7 +245,7 @@ The metadata parameters are:
 
 ##### Delete blob
 
-{{% tabpane Windows Linux %}}
+{{% tabpane %}}
 
   {{% tab %}}
   ```bash
@@ -264,7 +264,7 @@ The metadata parameters are:
 
 ##### Delete blob snapshots only
 
-{{% tabpane Windows Linux %}}
+{{% tabpane %}}
 
   {{% tab %}}
   ```bash
@@ -283,7 +283,7 @@ The metadata parameters are:
 
 ##### Delete blob including snapshots
 
-{{% tabpane Windows Linux %}}
+{{% tabpane %}}
 
   {{% tab %}}
   ```bash

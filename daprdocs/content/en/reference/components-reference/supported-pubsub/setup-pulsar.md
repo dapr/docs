@@ -328,9 +328,9 @@ To ensure that messages arrive in order for each consumer subscribed to a specif
 
 ## Create a Pulsar instance
 
-{{% tabpane "Self-Hosted" "Kubernetes"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 
 ```
 docker run -it \
@@ -345,7 +345,7 @@ docker run -it \
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 Refer to the following [Helm chart](https://pulsar.apache.org/docs/helm-overview) Documentation.
 {{% /tab %}}
 

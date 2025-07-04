@@ -17,9 +17,9 @@ In this Quickstart, you schedule a batch script to run every 10 seconds using an
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{% tabpane "Python" "JavaScript" ".NET" "Java" "Go" %}}
+{{% tabpane %}}
  <!-- Python -->
-{{% tab %}}
+{{% tab "Python" %}}
 
 ### Pre-requisites
 
@@ -230,7 +230,7 @@ In the YAML file:
 {{% /tab %}}
 
  <!-- JavaScript -->
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ### Pre-requisites
 
@@ -436,7 +436,7 @@ In the YAML file:
 {{% /tab %}}
 
  <!-- .NET -->
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ### Pre-requisites
 
@@ -647,7 +647,7 @@ In the YAML file:
 {{% /tab %}}
 
  <!-- Java -->
-{{% tab %}}
+{{% tab "Java" %}}
 
 ### Pre-requisites
 
@@ -861,7 +861,7 @@ In the YAML file:
 {{% /tab %}}
 
  <!-- Go -->
-{{% tab %}}
+{{% tab "Go" %}}
 
 ### Pre-requisites
 

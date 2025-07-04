@@ -49,9 +49,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Setup HashiCorp Consul
 
-{{% tabpane "Self-Hosted" "Kubernetes" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 You can run Consul locally using Docker:
 
 ```
@@ -61,7 +61,7 @@ docker run -d --name=dev-consul -e CONSUL_BIND_INTERFACE=eth0 consul
 You can then interact with the server using `localhost:8500`.
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 The easiest way to install Consul on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/consul):
 
 ```

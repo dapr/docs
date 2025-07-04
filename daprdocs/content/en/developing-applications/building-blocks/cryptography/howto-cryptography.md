@@ -15,9 +15,9 @@ Dapr cryptography is currently in alpha.
 
 ## Encrypt
 
-{{% tabpane "Python" "JavaScript" ".NET" "Go" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 <!--Python-->
 
@@ -49,7 +49,7 @@ def encrypt_decrypt_string(dapr: DaprClient):
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 <!--JavaScript-->
 
@@ -89,7 +89,7 @@ await pipeline(
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 <!-- .NET -->
 Using the Dapr SDK in your project, with the gRPC APIs, you can encrypt data in a string or a byte array:
@@ -109,7 +109,7 @@ var encryptedBytesResult = await client.EncryptAsync(componentName, plaintextByt
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 <!--go-->
 
@@ -193,9 +193,9 @@ if err != nil {
 
 ## Decrypt
 
-{{% tabpane "Python" "JavaScript" ".NET" "Go" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 <!--python-->
 
@@ -228,7 +228,7 @@ def encrypt_decrypt_string(dapr: DaprClient):
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 <!--JavaScript-->
 
@@ -254,7 +254,7 @@ await pipeline(
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 <!-- .NET -->
 To decrypt a string, use the 'DecryptAsync' gRPC API in your project.
@@ -277,7 +277,7 @@ public async Task<string> DecryptBytesAsync(byte[] encryptedBytes)
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 <!--go-->
 

@@ -104,7 +104,7 @@ The metadata parameters are:
 #### Examples
 ##### Save text to a random generated UUID file
 
-{{% tabpane Windows Linux %}}
+{{% tabpane %}}
   {{% tab %}}
   On Windows, utilize cmd prompt (PowerShell has different escaping mechanism)
   ```bash
@@ -123,7 +123,7 @@ The metadata parameters are:
 
 ##### Save text to a specific file
 
-{{% tabpane Windows Linux %}}
+{{% tabpane %}}
 
   {{% tab %}}
   ```bash
@@ -148,7 +148,7 @@ To upload a file, pass the file contents as the data payload; you may want to en
 
 Then you can upload it as you would normally:
 
-{{% tabpane Windows Linux %}}
+{{% tabpane %}}
 
   {{% tab %}}
   ```bash
@@ -195,7 +195,7 @@ The metadata parameters are:
 
 #### Example
 
-{{% tabpane Windows Linux %}}
+{{% tabpane %}}
 
   {{% tab %}}
   ```bash
@@ -239,7 +239,7 @@ The metadata parameters are:
 
 ##### Delete object
 
-{{% tabpane Windows Linux %}}
+{{% tabpane %}}
 
   {{% tab %}}
   ```bash

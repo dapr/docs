@@ -127,9 +127,9 @@ It is recommended to use [StatefulSets]({{% ref "howto-subscribe-statefulset.md"
 
 ## Create a MQTT3 broker
 
-{{% tabpane "Self-Hosted" "Kubernetes"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 You can run a MQTT broker like emqx [locally using Docker](https://hub.docker.com/_/emqx):
 
 ```bash
@@ -139,7 +139,7 @@ docker run -d -p 1883:1883 --name mqtt emqx:latest
 You can then interact with the server using the client port: `tcp://localhost:1883`
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 You can run a MQTT3 broker in kubernetes using following yaml:
 
 ```yaml

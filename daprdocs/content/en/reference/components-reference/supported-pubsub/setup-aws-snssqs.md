@@ -155,9 +155,9 @@ Consider potential contention scenarios when using SNS/SQS with Dapr, and config
 
 ## Create an SNS/SQS instance
 
-{{% tabpane "Self-Hosted" "Kubernetes" "AWS" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 For local development, the [localstack project](https://github.com/localstack/localstack) is used to integrate AWS SNS/SQS. Follow [these instructions](https://github.com/localstack/localstack#running) to run localstack.
 
 To run localstack locally from the command line using Docker, apply the following cmd:
@@ -192,7 +192,7 @@ spec:
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 To run localstack on Kubernetes, you can apply the configuration below. Localstack is then reachable at the DNS name `http://localstack.default.svc.cluster.local:4566` (assuming this was applied to the default namespace), which should be used as the `endpoint`.
 
 ```yaml
@@ -238,7 +238,7 @@ spec:
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "AWS" %}}
 In order to run in AWS, create or assign an IAM user with permissions to the SNS and SQS services, with a policy like:
 
 ```json

@@ -39,9 +39,9 @@ Create a new binding component named `checkout`. Within the `metadata` section, 
 
 When creating the binding component, [specify the supported `direction` of the binding]({{% ref "bindings_api#binding-direction-optional" %}}). 
 
-{{% tabpane "Self-Hosted (CLI)" Kubernetes %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted (CLI)" %}}
 
 Use the `--resources-path` flag with the `dapr run` command to point to your custom resources directory.
 
@@ -73,7 +73,7 @@ spec:
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 To deploy into a Kubernetes cluster, run `kubectl apply -f binding.yaml`.
 
@@ -115,9 +115,9 @@ Configure your application to receive incoming events. If you're using HTTP, you
 
 Below are code examples that leverage Dapr SDKs to demonstrate an input binding.
 
-{{% tabpane ".NET" Java Python Go JavaScript%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 The following example demonstrates how to configure an input binding using ASP.NET Core controllers.
 
@@ -152,7 +152,7 @@ app.MapPost("checkout", ([FromBody] int orderId) =>
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 ```java
 //dependencies
@@ -177,7 +177,7 @@ public class CheckoutServiceController {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 ```python
 #dependencies
@@ -198,7 +198,7 @@ app.run(6002)
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 //dependencies
@@ -232,7 +232,7 @@ func main() {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript%}}" %}}
 
 ```javascript
 //dependencies 

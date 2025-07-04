@@ -189,17 +189,17 @@ Tabs are made possible through [Hugo shortcodes](https://gohugo.io/content-manag
 The overall format is:
 
 ```
-{{%/* tabpane [Tab1] [Tab2]%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Tab1" %}}
 [Content for Tab1]
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Tab2" %}}
 [Content for Tab2]
 {{% /tab %}}
 
-{{% /tabpane */%}}
+{{% /tabpane %}}
 ```
 
 All content you author will be rendered to markdown, so you can include images, code blocks, YouTube videos, and more.
@@ -207,34 +207,34 @@ All content you author will be rendered to markdown, so you can include images, 
 #### Example
 
 ````
-{{%/* tabpane Windows Linux MacOS%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Windows" %}}
 ```powershell
 powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1 | iex"
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Linux" %}}
 ```bash
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "MacOS" %}}
 ```bash
 brew install dapr/tap/dapr-cli
 ```
 {{% /tab %}}
 
-{{% /tabpane */%}}
+{{% /tabpane %}}
 ````
 
 This example will render to this:
 
-{{% tabpane Windows Linux MacOS%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Windows" %}}
 
 ```powershell
 powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1 | iex"
@@ -242,7 +242,7 @@ powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Linux" %}}
 
 ```bash
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
@@ -250,7 +250,7 @@ wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O 
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "MacOS" %}}
 
 ```bash
 brew install dapr/tap/dapr-cli

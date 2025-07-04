@@ -42,9 +42,9 @@ spec:
 
 ## Create a KubeMQ broker
 
-{{% tabpane "Self-Hosted" "Kubernetes"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 1. [Obtain KubeMQ Key](https://docs.kubemq.io/getting-started/quick-start#obtain-kubemq-license-key).
 2. Wait for an email confirmation with your Key
 
@@ -57,7 +57,7 @@ You can then interact with the server using the client port: `localhost:50000`
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 1. [Obtain KubeMQ Key](https://docs.kubemq.io/getting-started/quick-start#obtain-kubemq-license-key).
 2. Wait for an email confirmation with your Key
 
@@ -79,15 +79,15 @@ Go to [KubeMQ CLI](https://github.com/kubemq-io/kubemqctl/releases) and download
 
 ## Browse KubeMQ Dashboard
 
-{{% tabpane "Self-Hosted" "Kubernetes"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 <!-- IGNORE_LINKS -->
 Open a browser and navigate to [http://localhost:8080](http://localhost:8080)
 <!-- END_IGNORE -->
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 With KubeMQCTL installed, run the following command:
 
 ```bash

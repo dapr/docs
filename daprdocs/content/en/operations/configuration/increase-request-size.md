@@ -10,10 +10,10 @@ By default, Dapr has a limit for the request body size, set to 4MB. You can chan
 - The `dapr.io/http-max-request-size` annotation, or
 - The `--dapr-http-max-request-size` flag.
 
-{{% tabpane Self-hosted Kubernetes %}}
+{{% tabpane %}}
 
 <!--self hosted-->
-{{% tab %}}
+{{% tab "Self-hosted" %}}
 
 When running in self-hosted mode, use the `--dapr-http-max-request-size` flag to configure Dapr to use non-default request body size:
 
@@ -25,7 +25,7 @@ This tells Dapr to set maximum request body size to `16` MB.
 {{% /tab %}}
 
 <!--kubernetes-->
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 On Kubernetes, set the following annotations in your deployment YAML:
 

@@ -20,9 +20,9 @@ When you [run `dapr init` in either self-hosted mode or on Kubernetes]({{% ref i
 
 In your code, set up and schedule jobs within your application.
 
-{{% tabpane ".NET" "Go" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 <!-- .NET -->
 
@@ -118,7 +118,7 @@ await daprJobsClient.ScheduleJobAsync("prod-db-backup", DaprJobSchedule.FromDura
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 <!--go-->
 
@@ -229,9 +229,9 @@ func prodDBBackupHandler(ctx context.Context, job *common.JobEvent) error {
 
 Once you've set up the Jobs API in your application, in a terminal window run the Dapr sidecar with the following command. 
 
-{{% tabpane "Go" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```bash
 dapr run --app-id=distributed-scheduler \

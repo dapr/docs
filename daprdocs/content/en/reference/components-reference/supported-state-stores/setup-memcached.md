@@ -42,9 +42,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Setup Memcached
 
-{{% tabpane "Self-Hosted" "Kubernetes" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 You can run Memcached locally using Docker:
 
 ```
@@ -54,7 +54,7 @@ docker run --name my-memcache -d memcached
 You can then interact with the server using `localhost:11211`.
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 The easiest way to install Memcached on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/memcached):
 
 ```

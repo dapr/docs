@@ -86,8 +86,8 @@ If an error message occurs, stating the `app-id` is already in use, you may need
 
 In a separate terminal, run:
 
-{{% tabpane "HTTP API (Bash)" "HTTP API (PowerShell)"%}}
-{{% tab %}}
+{{% tabpane %}}
+{{% tab "HTTP API (Bash)" %}}
 
 ```bash
 curl http://localhost:3500/v1.0/secrets/my-secret-store/my-secret
@@ -95,7 +95,7 @@ curl http://localhost:3500/v1.0/secrets/my-secret-store/my-secret
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 ```powershell
 Invoke-RestMethod -Uri 'http://localhost:3500/v1.0/secrets/my-secret-store/my-secret'

@@ -25,9 +25,9 @@ While the pattern is simple, there are many complexities hidden in the implement
 
 Dapr Workflow solves these complexities by allowing you to implement the task chaining pattern concisely as a simple function in the programming language of your choice, as shown in the following example.
 
-{{% tabpane Python JavaScript ".NET" Java Go %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 <!--python-->
 
 ```python
@@ -72,7 +72,7 @@ def error_handler(ctx, error):
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 <!--javascript-->
 
 ```javascript
@@ -146,7 +146,7 @@ start().catch((e) => {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 <!--dotnet-->
 
 ```csharp
@@ -179,7 +179,7 @@ catch (TaskFailedException) // Task failures are surfaced as TaskFailedException
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 <!--java-->
 
 ```java
@@ -234,7 +234,7 @@ public class ChainWorkflow extends Workflow {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 <!--go-->
 
 ```go
@@ -311,9 +311,9 @@ In addition to the challenges mentioned in [the previous pattern]({{% ref "workf
 
 Dapr Workflows provides a way to express the fan-out/fan-in pattern as a simple function, as shown in the following example:
 
-{{% tabpane Python JavaScript ".NET" Java Go %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 <!--python-->
 
 ```python
@@ -353,7 +353,7 @@ def process_results(ctx, final_result: int):
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 <!--javascript-->
 
 ```javascript
@@ -461,7 +461,7 @@ start().catch((e) => {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 <!--dotnet-->
 
 ```csharp
@@ -486,7 +486,7 @@ await context.CallActivityAsync("PostResults", sum);
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 <!--java-->
 
 ```java
@@ -512,7 +512,7 @@ public class FaninoutWorkflow extends Workflow {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 <!--go-->
 
 ```go
@@ -590,9 +590,9 @@ Furthermore, the execution of the workflow is durable. If a workflow starts 100 
 
 It's possible to go further and limit the degree of concurrency using simple, language-specific constructs. The sample code below illustrates how to restrict the degree of fan-out to just 5 concurrent activity executions:
 
-{{% tabpane ".NET" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 <!-- .NET -->
 ```csharp
 
@@ -716,9 +716,9 @@ Depending on the business needs, there may be a single monitor or there may be m
 
 Dapr Workflow supports this pattern natively by allowing you to implement _eternal workflows_. Rather than writing infinite while-loops ([which is an anti-pattern]({{% ref "workflow-features-concepts.md#infinite-loops-and-eternal-workflows" %}})), Dapr Workflow exposes a _continue-as-new_ API that workflow authors can use to restart a workflow function from the beginning with a new input.
 
-{{% tabpane Python JavaScript ".NET" Java Go %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 <!--python-->
 
 ```python
@@ -765,7 +765,7 @@ def send_alert(ctx, message: str):
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 <!--javascript-->
 
 ```javascript
@@ -793,7 +793,7 @@ const statusMonitorWorkflow: TWorkflow = async function* (ctx: WorkflowContext):
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 <!--dotnet-->
 
 ```csharp
@@ -834,7 +834,7 @@ public override async Task<object> RunAsync(WorkflowContext context, MyEntitySta
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 <!--java-->
 
 ```java
@@ -876,7 +876,7 @@ public class MonitorWorkflow extends Workflow {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 <!--go-->
 
 ```go
@@ -957,9 +957,9 @@ The following diagram illustrates this flow.
 
 The following example code shows how this pattern can be implemented using Dapr Workflow.
 
-{{% tabpane Python JavaScript ".NET" Java Go %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 <!--python-->
 
 ```python
@@ -1018,7 +1018,7 @@ def place_order(_, order: Order) -> None:
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 <!--javascript-->
 
 ```javascript
@@ -1158,7 +1158,7 @@ start().catch((e) => {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 <!--dotnet-->
 
 ```csharp
@@ -1202,7 +1202,7 @@ public override async Task<OrderResult> RunAsync(WorkflowContext context, OrderP
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 <!--java-->
 
 ```java
@@ -1239,7 +1239,7 @@ public class ExternalSystemInteractionWorkflow extends Workflow {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 <!--go-->
 
 ```go
@@ -1300,9 +1300,9 @@ func PlaceOrder(ctx workflow.ActivityContext) (any, error) {
 
 The code that delivers the event to resume the workflow execution is external to the workflow. Workflow events can be delivered to a waiting workflow instance using the [raise event]({{% ref "howto-manage-workflow.md#raise-an-event" %}}) workflow management API, as shown in the following example:
 
-{{% tabpane Python JavaScript ".NET" Java Go %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 <!--python-->
 
 ```python
@@ -1319,7 +1319,7 @@ with DaprClient() as d:
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 <!--javascript-->
 
 ```javascript
@@ -1332,7 +1332,7 @@ import { DaprClient } from "@dapr/dapr";
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 <!--dotnet-->
 
 ```csharp
@@ -1346,7 +1346,7 @@ await daprClient.RaiseWorkflowEventAsync(
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 <!--java-->
 
 ```java
@@ -1356,7 +1356,7 @@ client.raiseEvent(restartingInstanceId, "RestartEvent", "RestartEventPayload");
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 <!--go-->
 
 ```go

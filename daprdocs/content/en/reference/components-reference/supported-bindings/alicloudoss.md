@@ -68,9 +68,9 @@ By default, a random UUID is auto-generated as the object key. See below for Met
 
 **Saving to a random generated UUID file**
 
-{{% tabpane "Windows" "Linux/MacOS" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Windows" %}}
 
 ```bash
 curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\" }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -78,7 +78,7 @@ curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\" }" http://localh
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Linux/MacOS" %}}
 
 ```bash
 curl -d '{ "operation": "create", "data": "Hello World" }' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -91,9 +91,9 @@ curl -d '{ "operation": "create", "data": "Hello World" }' http://localhost:<dap
 <br />
 
 **Saving to a specific file**
-{{% tabpane "Windows" "Linux/MacOS" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Windows" %}}
 
 ```bash
 curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\", \"metadata\": { \"key\": \"my-key\" } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -101,7 +101,7 @@ curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\", \"metadata\": {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Linux/MacOS" %}}
 
 ```bash
 curl -d '{ "operation": "create", "data": "Hello World", "metadata": { "key": "my-key" } }' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>

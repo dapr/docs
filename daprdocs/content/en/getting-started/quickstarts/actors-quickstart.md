@@ -10,10 +10,10 @@ Let's take a look at Dapr's [Actors building block]({{% ref actors %}}). In this
 
 Currently, you can experience this actors quickstart using the .NET SDK.
 
-{{% tabpane ".NET" %}}
+{{% tabpane %}}
 
  <!-- .NET -->
-{{% tab %}}
+{{% tab ".NET" %}}
 
 As a quick overview of the .NET actors quickstart:
 

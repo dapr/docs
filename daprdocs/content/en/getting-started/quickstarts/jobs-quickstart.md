@@ -21,10 +21,10 @@ You can try out this jobs quickstart by either:
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart. Currently, you can experiment with the jobs API with the Go SDK.
 
-{{% tabpane Go %}}
+{{% tabpane %}}
 
  <!-- Go -->
-{{% tab %}}
+{{% tab "Go" %}}
 
 This quickstart includes two apps:
 
@@ -420,10 +420,10 @@ func delete(droidJob DroidJob) error {
 
 ## Run one job application at a time
 
-{{% tabpane Go %}}
+{{% tabpane %}}
 
  <!-- Go -->
-{{% tab %}}
+{{% tab "Go" %}}
 
 This quickstart includes two apps:
 

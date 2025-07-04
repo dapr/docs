@@ -14,10 +14,10 @@ Not only can you call Dapr via gRPC, Dapr can communicate with an application vi
 
 ## Configuring Dapr to communicate with an app via gRPC
 
-{{% tabpane "Self-hosted" Kubernetes %}}
+{{% tabpane %}}
 
  <!-- Self hosted -->
-{{% tab %}}
+{{% tab "Self-hosted" %}}
 
 When running in self hosted mode, use the `--app-protocol` flag to tell Dapr to use gRPC to talk to the app:
 
@@ -29,7 +29,7 @@ This tells Dapr to communicate with your app via gRPC over port `5005`.
 {{% /tab %}}
 
  <!-- Kubernetes -->
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 On Kubernetes, set the following annotations in your deployment YAML:
 

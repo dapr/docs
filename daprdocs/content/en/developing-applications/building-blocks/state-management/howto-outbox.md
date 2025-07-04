@@ -118,9 +118,9 @@ If you have two or more `outbox.projection` enabled state items for the same key
 
 [Learn more about default and custom CloudEvent messages.]({{% ref pubsub-cloudevents.md %}})
 
-{{% tabpane Python JavaScript ".NET" Java Go HTTP %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 <!--python-->
 
@@ -163,7 +163,7 @@ By setting the metadata item `"outbox.projection"` to `"true"` and making sure t
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 <!--javascript-->
 
@@ -218,7 +218,7 @@ By setting the metadata item `"outbox.projection"` to `"true"` and making sure t
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 <!--dotnet-->
 
@@ -268,7 +268,7 @@ By setting the metadata item `"outbox.projection"` to `"true"` and making sure t
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 <!--java-->
 
@@ -320,7 +320,7 @@ By setting the metadata item `"outbox.projection"` to `"true"` and making sure t
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 <!--go-->
 
@@ -358,7 +358,7 @@ By setting the metadata item `"outbox.projection"` to `"true"` and making sure t
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP" %}}
 
 <!--http-->
 
@@ -409,9 +409,9 @@ By setting the metadata item `"outbox.projection"` to `"true"` and making sure t
 
 You can override the [Dapr-generated CloudEvent fields]({{% ref "pubsub-cloudevents.md#dapr-generated-cloudevents-example" %}}) on the published outbox event with custom CloudEvent metadata.
 
-{{% tabpane Python JavaScript ".NET" Java Go HTTP %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 <!--python-->
 
@@ -452,7 +452,7 @@ if __name__ == "__main__":
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 <!--javascript-->
 
@@ -492,7 +492,7 @@ executeStateTransaction();
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 <!--csharp-->
 
@@ -543,7 +543,7 @@ public class StateOperationExample
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 <!--java-->
 
@@ -591,7 +591,7 @@ public class StateOperationExample {
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 <!--go-->
 
@@ -640,7 +640,7 @@ func main() {
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP" %}}
 
 <!--http-->
 

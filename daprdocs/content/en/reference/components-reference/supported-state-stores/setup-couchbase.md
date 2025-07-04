@@ -46,9 +46,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Setup Couchbase
 
-{{% tabpane "Self-Hosted" "Kubernetes" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 You can run Couchbase locally using Docker:
 
 ```
@@ -58,7 +58,7 @@ docker run -d --name db -p 8091-8094:8091-8094 -p 11210:11210 couchbase
 You can then interact with the server using `localhost:8091` and start the server setup.
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 The easiest way to install Couchbase on Kubernetes is by using the [Helm chart](https://github.com/couchbase-partners/helm-charts#deploying-for-development-quick-start):
 
 ```

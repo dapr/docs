@@ -150,9 +150,9 @@ ORDER BY
 
 Execute the query with the following command:
 
-{{% tabpane "HTTP API (Bash)" "HTTP API (PowerShell)" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 ```bash
 curl -s -X POST -H "Content-Type: application/json" -d @query-api-examples/query1.json http://localhost:3500/v1.0-alpha1/state/statestore/query | jq .
@@ -160,7 +160,7 @@ curl -s -X POST -H "Content-Type: application/json" -d @query-api-examples/query
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -InFile query-api-examples/query1.json -Uri 'http://localhost:3500/v1.0-alpha1/state/statestore/query'
@@ -250,9 +250,9 @@ SELECT * FROM c WHERE
 
 Execute the query with the following command:
 
-{{% tabpane "HTTP API (Bash)" "HTTP API (PowerShell)" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 ```bash
 curl -s -X POST -H "Content-Type: application/json" -d @query-api-examples/query2.json http://localhost:3500/v1.0-alpha1/state/statestore/query | jq .
@@ -260,7 +260,7 @@ curl -s -X POST -H "Content-Type: application/json" -d @query-api-examples/query
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -InFile query-api-examples/query2.json -Uri 'http://localhost:3500/v1.0-alpha1/state/statestore/query'
@@ -331,9 +331,9 @@ LIMIT 3
 
 Execute the query with the following command:
 
-{{% tabpane "HTTP API (Bash)" "HTTP API (PowerShell)" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 ```bash
 curl -s -X POST -H "Content-Type: application/json" -d @query-api-examples/query3.json http://localhost:3500/v1.0-alpha1/state/statestore/query | jq .
@@ -341,7 +341,7 @@ curl -s -X POST -H "Content-Type: application/json" -d @query-api-examples/query
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -InFile query-api-examples/query3.json -Uri 'http://localhost:3500/v1.0-alpha1/state/statestore/query'
@@ -434,9 +434,9 @@ The pagination token is used "as is" in the [subsequent query](../query-api-exam
 }
 ```
 
-{{% tabpane "HTTP API (Bash)" "HTTP API (PowerShell)" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 ```bash
 curl -s -X POST -H "Content-Type: application/json" -d @query-api-examples/query3-token.json http://localhost:3500/v1.0-alpha1/state/statestore/query | jq .
@@ -444,7 +444,7 @@ curl -s -X POST -H "Content-Type: application/json" -d @query-api-examples/query
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -InFile query-api-examples/query3-token.json -Uri 'http://localhost:3500/v1.0-alpha1/state/statestore/query'

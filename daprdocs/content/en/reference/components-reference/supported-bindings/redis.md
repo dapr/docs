@@ -165,14 +165,14 @@ Dapr can use any Redis instance - containerized, running on your local dev machi
 
 *Note: Dapr does not support Redis >= 7. It is recommended to use Redis 6*
 
-{{% tabpane "Self-Hosted" "Kubernetes" "AWS" "Azure" "GCP" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 The Dapr CLI will automatically create and setup a Redis Streams instance for you.
 The Redis instance will be installed via Docker when you run `dapr init`, and the component file will be created in default directory. (`$HOME/.dapr/components` directory (Mac/Linux) or `%USERPROFILE%\.dapr\components` on Windows).
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Kubernetes cluster. This approach requires [Installing Helm](https://github.com/helm/helm#install).
 
 1. Install Redis into your cluster.
@@ -203,11 +203,11 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
     ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "AWS" %}}
 [AWS Redis](https://aws.amazon.com/redis/)
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Azure" %}}
 1. [Create an Azure Cache for Redis instance using the official Microsoft documentation.](https://docs.microsoft.com/azure/azure-cache-for-redis/quickstart-create-redis)
 
 1. Once your instance is created, grab the Host name (FQDN) and your access key from the Azure portal. 
@@ -236,7 +236,7 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "GCP" %}}
 [GCP Cloud MemoryStore](https://cloud.google.com/memorystore/)
 {{% /tab %}}
 

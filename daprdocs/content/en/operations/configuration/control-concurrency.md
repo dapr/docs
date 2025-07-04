@@ -35,10 +35,10 @@ Using Dapr, you don't need to make any code changes to your application.
 
 Select how you'd like to configure `app-max-concurrency`.
 
-{{% tabpane "CLI" Kubernetes %}}
+{{% tabpane %}}
 
  <!-- CLI -->
-{{% tab %}}
+{{% tab "CLI" %}}
 
 To set concurrency limits with the Dapr CLI for running on your local dev machine, add the `app-max-concurrency` flag:
 
@@ -51,7 +51,7 @@ The above example effectively turns your app into a sequential processing servic
 {{% /tab %}}
 
  <!-- Kubernetes -->
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 To configure concurrency limits in Kubernetes, add the following annotation to your pod:
 

@@ -37,9 +37,9 @@ APP_ID=$(az ad app create --display-name "${APP_NAME}"  | jq -r .appId)
 
 Select how you'd prefer to pass credentials.
 
-{{% tabpane "Client secret" "PFX certificate"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Client secret" %}}
 
 To create a **client secret**, run the following command. 
 
@@ -69,7 +69,7 @@ When adding the returned values to your Dapr component's metadata:
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "PFX certificate" %}}
 For a **PFX (PKCS#12) certificate**, run the following command to create a self-signed certificate:
 
 ```sh

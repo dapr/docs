@@ -23,10 +23,10 @@ Currently, you can only use JavaScript for the quickstart sample using HTTP, not
 
 ## Run the app with the template file
 
-{{% tabpane Python JavaScript ".NET" Go %}}
+{{% tabpane %}}
 
  <!-- Python -->
-{{% tab %}}
+{{% tab "Python" %}}
 
 
 ### Step 1: Pre-requisites
@@ -144,7 +144,7 @@ with DaprClient() as d:
 {{% /tab %}}
 
  <!-- JavaScript -->
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 
 ### Step 1: Pre-requisites
@@ -280,7 +280,7 @@ main().catch((error) => {
 {{% /tab %}}
 
  <!-- .NET -->
-{{% tab %}}
+{{% tab ".NET" %}}
 
 
 ### Step 1: Pre-requisites
@@ -410,7 +410,7 @@ class Program
 {{% /tab %}}
 
  <!-- Go -->
-{{% tab %}}
+{{% tab "Go" %}}
 
 
 ### Step 1: Pre-requisites
@@ -539,10 +539,10 @@ func main() {
 
 ## Run the app without the template
 
-{{% tabpane Python JavaScript ".NET" Go %}}
+{{% tabpane %}}
 
  <!-- Python -->
-{{% tab %}}
+{{% tab "Python" %}}
 
 
 ### Step 1: Pre-requisites
@@ -595,7 +595,7 @@ dapr run --app-id conversation --resources-path ../../../components -- python3 a
 {{% /tab %}}
 
  <!-- JavaScript -->
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 
 ### Step 1: Pre-requisites
@@ -646,7 +646,7 @@ dapr run --app-id conversation --resources-path ../../../components/ -- npm run 
 {{% /tab %}}
 
  <!-- .NET -->
-{{% tab %}}
+{{% tab ".NET" %}}
 
 
 ### Step 1: Pre-requisites
@@ -697,7 +697,7 @@ dapr run --app-id conversation --resources-path ../../../components/ -- dotnet r
 {{% /tab %}}
 
  <!-- Go -->
-{{% tab %}}
+{{% tab "Go" %}}
 
 
 ### Step 1: Pre-requisites

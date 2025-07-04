@@ -136,13 +136,13 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 
 Dapr can use any Redis instance: containerized, running on your local dev machine, or a managed cloud service.
 
-{{% tabpane "Self-Hosted" "Kubernetes" "AWS" "Azure" "GCP" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 A Redis instance is automatically created as a Docker container when you run `dapr init`
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Kubernetes cluster. This approach requires [Installing Helm](https://github.com/helm/helm#install).
 
 1. Install Redis into your cluster. Note that we're explicitly setting an image tag to get a version greater than 5, which is what Dapr' pub/sub functionality requires. If you're intending on using Redis as just a state store (and not for pub/sub), you do not have to set the image version.
@@ -171,11 +171,11 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
     ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "AWS" %}}
 [AWS Redis](https://aws.amazon.com/redis/)
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Azure" %}}
 1. [Create an Azure Cache for Redis instance using the official Microsoft documentation.](https://docs.microsoft.com/azure/azure-cache-for-redis/quickstart-create-redis)
 
 1. Once your instance is created, grab the Host name (FQDN) and your access key from the Azure portal. 
@@ -204,7 +204,7 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "GCP" %}}
 [GCP Cloud MemoryStore](https://cloud.google.com/memorystore/)
 {{% /tab %}}
 
@@ -303,9 +303,9 @@ Consecutively, you can now store, retrieve, and query these documents.
 Consider the example from ["How-To: Query state"]({{% ref "howto-state-query-api.md#example-data-and-query" %}}) guide. Let's run it with Redis.
 
 
-{{% tabpane "Self-Hosted" "Kubernetes" "Azure" "AWS" "GCP" "Redis Enterprise Cloud" "Alibaba Cloud" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 If you are using a self-hosted deployment of Dapr, a Redis instance without the JSON module is automatically created as a Docker container when you run `dapr init`.
 
 Alternatively, you can create an instance of Redis by running the following command:
@@ -323,7 +323,7 @@ docker run -p 9445:9445 --name rejson --rm redislabs/rejson:2.0.6
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 Follow instructions for [Redis deployment in Kubernetes](#setup-redis) with one extra detail.
 
 When installing Redis Helm package, provide a configuration file that specifies container image and enables required modules:
@@ -347,31 +347,31 @@ master:
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Azure" %}}
 {{% alert title="Note" color="warning" %}}
 Azure Redis managed service does not support the RedisJson module and cannot be used with query.
 {{% /alert %}}
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "AWS" %}}
 Follow instructions for [Redis deployment in AWS](#setup-redis).
 {{% alert title="Note" color="primary" %}}
 For query support you need to enable RediSearch and RedisJson.
 {{% /alert %}}
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "GCP" %}}
 {{% alert title="Note" color="warning" %}}
 Memory Store does not support modules and cannot be used with query.
 {{% /alert %}}
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Redis Enterprise Cloud" %}}
 [Redis Enterprise Cloud](https://docs.redis.com/latest/rc/)
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Alibaba Cloud" %}}
 <!-- IGNORE_LINKS -->
 [Alibaba Cloud](https://www.alibabacloud.com/product/apsaradb-for-redis)
 <!-- END_IGNORE -->

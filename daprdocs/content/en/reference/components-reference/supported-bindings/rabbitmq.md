@@ -97,8 +97,8 @@ The field name is `ttlInSeconds`.
 
 Example:
 
-{{% tabpane Windows Linux %}}
-{{% tab %}}
+{{% tabpane %}}
+{{% tab "Windows" %}}
 ```shell
 curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
   -H "Content-Type: application/json" \
@@ -114,7 +114,7 @@ curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Linux" %}}
 ```bash
 curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
   -H "Content-Type: application/json" \
@@ -142,8 +142,8 @@ The field name is `priority`.
 
 Example:
 
-{{% tabpane Windows Linux %}}
-{{% tab %}}
+{{% tabpane %}}
+{{% tab "Windows" %}}
 ```shell
 curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
   -H "Content-Type: application/json" \
@@ -159,7 +159,7 @@ curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Linux" %}}
 ```shell
 curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
   -H "Content-Type: application/json" \

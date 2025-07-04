@@ -53,9 +53,9 @@ If the optional `archive` metadata is set to `true`, on each state change, the R
 
 ## Setup RethinkDB
 
-{{% tabpane "Self-Hosted" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 You can run [RethinkDB](https://rethinkdb.com/) locally using Docker:
 
 ```
@@ -68,7 +68,8 @@ To connect to the admin UI:
 open "http://$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' rethinkdb):8080"
 ```
 {{% /tab %}}
-{{% /tab %}}
+
+{{% /tabpane %}}
 
 ## Related links
 - [Basic schema for a Dapr component]({{% ref component-schema %}})

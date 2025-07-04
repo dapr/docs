@@ -16,10 +16,10 @@ Dapr configurations are settings and policies that enable you to change both the
 
 You can set up application configuration either in self-hosted or Kubernetes mode.
 
-{{% tabpane "Self-hosted" Kubernetes %}}
+{{% tabpane %}}
 
  <!-- Self hosted -->
-{{% tab %}}
+{{% tab "Self-hosted" %}}
 
 In self hosted mode, the Dapr configuration is a [configuration file]({{% ref configuration-schema.md %}}) - for example, `config.yaml`. By default, the Dapr sidecar looks in the default Dapr folder for the runtime configuration:
 - Linux/MacOs: `$HOME/.dapr/config.yaml`
@@ -30,7 +30,7 @@ An application can also apply a configuration by using a `--config` flag to the 
 {{% /tab %}}
 
  <!-- Kubernetes -->
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 In Kubernetes mode, the Dapr configuration is a Configuration resource, that is applied to the cluster. For example:
 

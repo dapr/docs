@@ -218,9 +218,9 @@ spec:
 
 The same can be achieved using the Dapr SDK:
 
-{{% tabpane ".NET" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 [Topic("order-pub-sub", "orders")]

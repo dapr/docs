@@ -18,9 +18,9 @@ This guide demonstrates configuring and invoking Dapr with gRPC using a Go SDK a
 
 ## Configure Dapr to communicate with an app via gRPC
 
-{{% tabpane "Self-hosted" "Kubernetes"%}}
+{{% tabpane %}}
 <!--selfhosted-->
-{{% tab %}}
+{{% tab "Self-hosted" %}}
 
 When running in self-hosted mode, use the `--app-protocol` flag to tell Dapr to use gRPC to talk to the app.
 
@@ -33,7 +33,7 @@ This tells Dapr to communicate with your app via gRPC over port `5005`.
 {{% /tab %}}
 
 <!--k8s-->
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 On Kubernetes, set the following annotations in your deployment YAML:
 
@@ -224,9 +224,9 @@ The following steps will show how to create an app that exposes a server for wit
 
 ## Run the application
 
-{{% tabpane "Self-hosted" "Kubernetes"%}}
+{{% tabpane %}}
 <!--selfhosted-->
-{{% tab %}}
+{{% tab "Self-hosted" %}}
 
 To run locally, use the Dapr CLI:
 
@@ -237,7 +237,7 @@ dapr run --app-id goapp --app-port 50001 --app-protocol grpc go run main.go
 {{% /tab %}}
 
 <!--k8s-->
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 On Kubernetes, set the required `dapr.io/app-protocol: "grpc"` and `dapr.io/app-port: "50001` annotations in your pod spec template, as mentioned above.
 

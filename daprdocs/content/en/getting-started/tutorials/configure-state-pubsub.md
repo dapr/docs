@@ -28,13 +28,13 @@ Dapr can use any Redis instance, either:
 
 If you already have a Redis store, move on to the [configuration](#configure-dapr-components) section.
 
-{{% tabpane "Self-Hosted" "Kubernetes" "Azure" "AWS" "GCP" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 Redis is automatically installed in self-hosted environments by the Dapr CLI as part of the initialization process. You are all set! Skip ahead to the [next steps](#next-steps).
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 You can use [Helm](https://helm.sh/) to create a Redis instance in our Kubernetes cluster. Before beginning, [install Helm v3](https://github.com/helm/helm#install).
 
 Install Redis into your cluster:
@@ -64,7 +64,7 @@ For Kubernetes:
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Azure" %}}
 Verify you have an Azure subscription.
 
 1. Open and log into the [Azure portal](https://ms.portal.azure.com/#create/Microsoft.Cache) to start the Azure Redis Cache creation flow. 
@@ -83,7 +83,7 @@ Verify you have an Azure subscription.
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "AWS" %}}
 
 1. Deploy a Redis instance from [AWS Redis](https://aws.amazon.com/redis/).
 1. Note the Redis hostname in the AWS portal for later.
@@ -95,7 +95,7 @@ Verify you have an Azure subscription.
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "GCP" %}}
 
 1. Deploy a MemoryStore instance from [GCP Cloud MemoryStore](https://cloud.google.com/memorystore/).
 1. Note the Redis hostname in the GCP portal for later.
@@ -115,9 +115,9 @@ Dapr defines resources to use for building block functionality with components. 
 
 #### Locate your component files
 
-{{% tabpane "Self-Hosted" "Kubernetes" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 
 In self-hosted mode, component files are automatically created under:
 - **Windows**: `%USERPROFILE%\.dapr\components\`
@@ -125,7 +125,7 @@ In self-hosted mode, component files are automatically created under:
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 Since Kubernetes files are applied with `kubectl`, they can be created in any directory.
 
@@ -137,9 +137,9 @@ Since Kubernetes files are applied with `kubectl`, they can be created in any di
 
 Create a file named `redis-state.yaml`, and paste the following:
 
-{{% tabpane "Self-Hosted" "Kubernetes" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -164,7 +164,7 @@ spec:
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -201,9 +201,9 @@ If using a state store other than Redis, refer to the [supported state stores]({
 
 Create a file called `redis-pubsub.yaml`, and paste the following:
 
-{{% tabpane "Self-Hosted" "Kubernetes" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -228,7 +228,7 @@ spec:
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -305,9 +305,9 @@ spec:
 
 ### Step 3: Apply the configuration
 
-{{% tabpane "Self-Hosted" "Kubernetes"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 
 When you run `dapr init`, Dapr creates a default redis `pubsub.yaml` on your local machine. Verify by opening your components directory:
 
@@ -323,7 +323,7 @@ If you initialized Dapr in [slim mode]({{% ref self-hosted-no-docker.md %}}) (wi
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 Run `kubectl apply -f <FILENAME>` for both state and pubsub files:
 

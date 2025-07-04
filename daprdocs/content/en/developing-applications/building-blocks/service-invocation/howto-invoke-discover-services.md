@@ -19,9 +19,9 @@ This article demonstrates how to deploy services each with an unique application
 
 Dapr allows you to assign a global, unique ID for your app. This ID encapsulates the state for your application, regardless of the number of instances it may have.
 
-{{% tabpane Python JavaScript ".NET" Java Go Kubernetes %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 ```bash
 dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- python3 checkout/app.py
@@ -39,7 +39,7 @@ dapr run --app-id order-processor --app-port 8001 --app-protocol https --dapr-ht
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ```bash
 dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm start
@@ -57,7 +57,7 @@ dapr run --app-id order-processor --app-port 5001 --dapr-http-port 3501 --app-pr
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```bash
 dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- dotnet run
@@ -75,7 +75,7 @@ dapr run --app-id order-processor --app-port 7001 --dapr-http-port 3501 --app-pr
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 ```bash
 dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
@@ -93,7 +93,7 @@ dapr run --app-id order-processor --app-port 9001 --dapr-http-port 3501 --app-pr
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```bash
 dapr run --app-id checkout --dapr-http-port 3500 -- go run .
@@ -111,7 +111,7 @@ dapr run --app-id order-processor --app-port 6006 --dapr-http-port 3501 --app-pr
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 ### Set an app-id when deploying to Kubernetes
 
@@ -153,9 +153,9 @@ To invoke an application using Dapr, you can use the `invoke` API on any Dapr in
 
 Below are code examples that leverage Dapr SDKs for service invocation.
 
-{{% tabpane Python JavaScript ".NET" Java  Go %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 ```python
 #dependencies
@@ -182,7 +182,7 @@ while True:
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 //dependencies
@@ -217,7 +217,7 @@ main();
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 //dependencies
@@ -258,7 +258,7 @@ namespace EventService
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 ```java
 //dependencies
@@ -313,7 +313,7 @@ public class CheckoutServiceApplication {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 package main

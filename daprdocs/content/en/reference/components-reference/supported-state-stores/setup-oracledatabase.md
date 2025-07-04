@@ -129,9 +129,9 @@ Oracle Database state store does not currently support the Query API.
 
 ## Create an Oracle Database and User Schema
 
-{{% tabpane "Self-Hosted" "Autonomous Database on OCI"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 
 1. Run an instance of Oracle Database. You can run a local instance of Oracle Database in Docker CE with the following command - or of course use an existing Oracle Database:     
      ```bash
@@ -175,7 +175,7 @@ The Oracle Database state store component checks if the table for storing state 
     ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Autonomous Database on OCI" %}}
 
 1. Create a free (or paid for) Autonomous Transaction Processing (ATP) or ADW (Autonomous Data Warehouse) instance on Oracle Cloud Infrastructure, as described in the [OCI documentation for the always free autonomous database](https://docs.oracle.com/en/cloud/paas/autonomous-database/adbsa/autonomous-always-free.html#GUID-03F9F3E8-8A98-4792-AB9C-F0BACF02DC3E).
 

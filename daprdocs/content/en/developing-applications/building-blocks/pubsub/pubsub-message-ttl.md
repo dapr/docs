@@ -39,15 +39,15 @@ When non-Dapr subscribers use components such as Azure Service Bus, which native
 
 Message TTL can be set in the metadata as part of the publishing request:
 
-{{% tabpane curl "Python SDK" "PHP SDK"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "curl" %}}
 ```bash
 curl -X "POST" http://localhost:3500/v1.0/publish/pubsub/TOPIC_A?metadata.ttlInSeconds=120 -H "Content-Type: application/json" -d '{"order-number": "345"}'
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Python SDK" %}}
 ```python
 from dapr.clients import DaprClient
 
@@ -67,7 +67,7 @@ with DaprClient() as d:
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "PHP SDK" %}}
 
 ```php
 <?php

@@ -35,9 +35,9 @@ You can also install [Podman](https://podman.io/) in place of Docker. Read more 
 
 ### Step 1: Open an elevated terminal
 
-{{% tabpane "Linux/MacOS" "Windows"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Linux/MacOS" %}}
 
 You will need to use `sudo` for this quickstart if:
 
@@ -46,7 +46,7 @@ You will need to use `sudo` for this quickstart if:
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Windows" %}}
 
 Run Windows Terminal or command prompt as administrator.
 
@@ -59,9 +59,9 @@ Run Windows Terminal or command prompt as administrator.
 
 ### Step 2: Run the init CLI command
 
-{{% tabpane "Linux/MacOS" "Windows"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Linux/MacOS" %}}
 
 Install the latest Dapr runtime binaries:
 
@@ -81,7 +81,7 @@ If you are installing on **Mac OS Silicon** with Docker, you may need to perform
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Windows" %}}
 
 Install the latest Dapr runtime binaries:
 
@@ -135,9 +135,9 @@ Verify by opening your components directory:
 - On Windows, under `%UserProfile%\.dapr`
 - On Linux/MacOS, under `~/.dapr`
 
-{{% tabpane "Linux/MacOS" "Windows"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Linux/MacOS" %}}
 
 ```bash
 ls $HOME/.dapr
@@ -151,7 +151,7 @@ ls $HOME/.dapr
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Windows" %}}
 You can verify using either PowerShell or command line. If using PowerShell, run:
 ```powershell
 explorer "$env:USERPROFILE\.dapr"

@@ -99,9 +99,9 @@ Dapr can manage the Worker for you automatically, or you can pre-provision a Wor
 Use a separate Worker for each Dapr component. Do not use the same Worker script for different Cloudflare Queues bindings, and do not use the same Worker script for different Cloudflare components in Dapr (for example, the Workers KV state store and the Queues binding).
 {{% /alert %}}
 
-{{% tabpane "Let Dapr manage the Worker" "Manually provision the Worker script" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Let Dapr manage the Worker" %}}
 <!-- Let Dapr manage the Worker -->
 
 If you want to let Dapr manage the Worker for you, you will need to provide these 3 metadata options:
@@ -119,7 +119,7 @@ When Dapr is configured to manage the Worker for you, when a Dapr Runtime is sta
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Manually provision the Worker script" %}}
 <!-- Manually provision the Worker script -->
 
 If you'd rather not give Dapr permissions to deploy Worker scripts for you, you can manually provision a Worker for Dapr to use. Note that if you have multiple Dapr components that interact with Cloudflare services via a Worker, you will need to create a separate Worker for each one of them.
@@ -189,9 +189,9 @@ All Cloudflare Workers listen on the public Internet, so Dapr needs to use addit
 
 To let Dapr issue bearer tokens, and have your Worker validate them, you will need to generate a new Ed25519 key pair. Here are examples of generating the key pair using OpenSSL or the step CLI.
 
-{{% tabpane "Generate with OpenSSL" "Generate with the step CLI" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Generate with OpenSSL" %}}
 <!-- Generate with OpenSSL -->
 
 > Support for generating Ed25519 keys is available since OpenSSL 1.1.0, so the commands below will not work if you're using an older version of OpenSSL.
@@ -214,7 +214,7 @@ openssl pkey -in private.pem -pubout -out public.pem
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Generate with the step CLI" %}}
 <!-- Generate with the step CLI -->
 
 If you don't have the step CLI already, install it following the [official instructions](https://smallstep.com/docs/step-cli/installation).

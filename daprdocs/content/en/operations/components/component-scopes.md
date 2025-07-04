@@ -13,9 +13,9 @@ When Dapr runs, it matches it's own configured namespace with the namespace of t
 ## Namespaces
 Namespaces can be used to limit component access to particular Dapr instances.
 
-{{% tabpane "Self-Hosted" "Kubernetes"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 In self hosted mode, a developer can specify the namespace to a Dapr instance by setting the `NAMESPACE` environment variable.
 If the `NAMESPACE` environment variable is set, Dapr does not load any component that does not specify the same namespace in its metadata.
 
@@ -50,7 +50,7 @@ setx NAMESPACE "production"
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 Let's consider the following component in Kubernetes:
 
 ```yaml

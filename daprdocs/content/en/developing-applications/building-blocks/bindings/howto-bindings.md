@@ -34,9 +34,9 @@ Create a new binding component named `checkout`. Within the `metadata` section, 
 
 When creating the binding component, [specify the supported `direction` of the binding]({{% ref "bindings_api#binding-direction-optional" %}}). 
 
-{{% tabpane "Self-Hosted (CLI)" Kubernetes %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted (CLI)" %}}
 
 Use the `--resources-path` flag with `dapr run` to point to your custom resources directory.
 
@@ -68,7 +68,7 @@ spec:
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 To deploy the following `binding.yaml` file into a Kubernetes cluster, run `kubectl apply -f binding.yaml`.
 
@@ -106,9 +106,9 @@ spec:
 
 The code examples below leverage Dapr SDKs to invoke the output bindings endpoint on a running Dapr instance. 
 
-{{% tabpane ".NET" Java Python Go JavaScript%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 Here's an example of using a console app with top-level statements in .NET 6+:
 
@@ -138,7 +138,7 @@ while (true)
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 ```java
 //dependencies
@@ -176,7 +176,7 @@ public class OrderProcessingServiceApplication {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 ```python
 #dependencies
@@ -204,7 +204,7 @@ while True:
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 //dependencies
@@ -242,7 +242,7 @@ func main() {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript%}}" %}}
 
 ```javascript
 //dependencies

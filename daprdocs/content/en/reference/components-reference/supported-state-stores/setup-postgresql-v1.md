@@ -114,9 +114,9 @@ The AWS authentication token will be dynamically rotated before it's expiration 
 
 ## Setup PostgreSQL
 
-{{% tabpane "Self-Hosted" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 
 1. Run an instance of PostgreSQL. You can run a local instance of PostgreSQL in Docker CE with the following command:
 

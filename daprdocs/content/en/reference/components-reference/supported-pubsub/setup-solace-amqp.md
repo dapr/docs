@@ -91,9 +91,9 @@ By default, messages are published and subscribed over topics. If you would like
 
 ## Create a Solace broker
 
-{{% tabpane "Self-Hosted" "SaaS"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 You can run a Solace broker [locally using Docker](https://hub.docker.com/r/solace/solace-pubsub-standard):
 
 ```bash
@@ -103,7 +103,7 @@ docker run -d -p 8080:8080 -p 55554:55555 -p 8008:8008 -p 1883:1883 -p 8000:8000
 You can then interact with the server using the client port: `mqtt://localhost:5672`
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "SaaS" %}}
 You can also sign up for a free SaaS broker on [Solace Cloud](https://console.solace.cloud/login/new-account?product=event-streaming).
 {{% /tab %}}
 

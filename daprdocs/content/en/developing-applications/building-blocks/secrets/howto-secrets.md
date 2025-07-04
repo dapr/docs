@@ -71,9 +71,9 @@ See a [full API reference]({{% ref secrets_api %}}).
 
 Now that you've set up the local secret store, call Dapr to get the secrets from your application code. Below are code examples that leverage Dapr SDKs for retrieving a secret.
 
-{{% tabpane ".NET" Java Python Go JavaScript%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using System;
@@ -99,7 +99,7 @@ Console.WriteLine($"Result: {string.Join(", ", secret)}");
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 ```java
 //dependencies
@@ -133,7 +133,7 @@ public class OrderProcessingServiceApplication {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 ```python
 #dependencies 
@@ -163,7 +163,7 @@ with DaprClient() as client:
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 //dependencies 
@@ -201,7 +201,7 @@ func main() {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 //dependencies 

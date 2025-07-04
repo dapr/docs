@@ -127,9 +127,9 @@ Other less restrictive roles, like "Key Vault Secrets Officer" and "Key Vault Ad
 
 ### Configure the component
 
-{{% tabpane "Self-Hosted" "Kubernetes"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 
 #### Using a client secret
 
@@ -178,7 +178,7 @@ spec:
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 In Kubernetes, you store the client secret or the certificate into the Kubernetes Secret Store and then refer to those in the YAML file. Before you start, you need the details of [the Microsoft Entra ID application you created]({{% ref authenticating-azure.md %}}).
 
 #### Using a client secret

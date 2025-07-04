@@ -151,16 +151,16 @@ The response body contains the data returned by the HTTP endpoint.  The `data` f
 
 **Requesting the base URL**
 
-{{% tabpane Windows Linux %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Windows" %}}
 ```bash
 curl -d "{ \"operation\": \"get\" }" \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Linux" %}}
 ```bash
 curl -d '{ "operation": "get" }' \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -171,16 +171,16 @@ curl -d '{ "operation": "get" }' \
 
 **Requesting a specific path**
 
-{{% tabpane Windows Linux %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Windows" %}}
 ```sh
 curl -d "{ \"operation\": \"get\", \"metadata\": { \"path\": \"/things/1234\" } }" \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Linux" %}}
 ```sh
 curl -d '{ "operation": "get", "metadata": { "path": "/things/1234" } }' \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -213,16 +213,16 @@ For example, the default content type is `application/json; charset=utf-8`. This
 
 **Posting a new record**
 
-{{% tabpane Windows Linux %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Windows" %}}
 ```sh
 curl -d "{ \"operation\": \"post\", \"data\": \"YOUR_BASE_64_CONTENT\", \"metadata\": { \"path\": \"/things\" } }" \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Linux" %}}
 ```sh
 curl -d '{ "operation": "post", "data": "YOUR_BASE_64_CONTENT", "metadata": { "path": "/things" } }' \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -258,9 +258,9 @@ spec:
 
 #### Install the TLS certificate in the sidecar
 
-{{% tabpane Self-Hosted Kubernetes %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 When the sidecar is not running inside a container, the TLS certificate can be directly installed on the host operating system.
 
 Below is an example when the sidecar is running as a container. The SSL certificate is located on the host computer at `/tmp/ssl/cert.pem`.
@@ -288,7 +288,7 @@ services:
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 The sidecar can read the TLS certificate from a variety of sources. See [How-to: Mount Pod volumes to the Dapr sidecar]({{% ref kubernetes-volume-mounts %}}) for more. In this example, we store the TLS certificate as a Kubernetes secret.
 
@@ -335,16 +335,16 @@ spec:
 
 #### Invoke the binding securely
 
-{{% tabpane Windows Linux %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Windows" %}}
 ```bash
 curl -d "{ \"operation\": \"get\" }" \
       https://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Linux" %}}
 ```bash
 curl -d '{ "operation": "get" }' \
       https://localhost:<dapr-port>/v1.0/bindings/<binding-name>

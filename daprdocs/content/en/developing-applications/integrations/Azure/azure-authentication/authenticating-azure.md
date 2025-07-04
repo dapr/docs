@@ -129,9 +129,9 @@ Using this authentication method does not require setting any metadata option.
 
 In this example, you will set up an Azure Key Vault secret store component that uses Microsoft Entra ID to authenticate.
 
-{{% tabpane "Self-Hosted" "Kubernetes"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 
 To use a **client secret**, create a file called `azurekeyvault.yaml` in the components directory, filling in with the details from the above setup process:
 
@@ -178,7 +178,7 @@ spec:
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 In Kubernetes, you store the client secret or the certificate into the Kubernetes Secret Store and then refer to those in the YAML file.
 
 To use a **client secret**:

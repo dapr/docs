@@ -58,9 +58,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Setup Cassandra
 
-{{% tabpane "Self-Hosted" "Kubernetes" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 You can run Cassandra locally with the Datastax Docker image:
 
 ```
@@ -70,7 +70,7 @@ docker run -e DS_LICENSE=accept --memory 4g --name my-dse -d datastax/dse-server
 You can then interact with the server using `localhost:9042`.
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 The easiest way to install Cassandra on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/incubator/cassandra):
 
 ```

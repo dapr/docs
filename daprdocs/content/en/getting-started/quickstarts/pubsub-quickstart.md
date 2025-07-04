@@ -23,9 +23,9 @@ You can try out this pub/sub quickstart by either:
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{% tabpane "Python" "JavaScript" ".NET" "Java" "Go" %}}
+{{% tabpane %}}
  <!-- Python -->
-{{% tab %}}
+{{% tab "Python" %}}
 
 ### Step 1: Pre-requisites
 
@@ -203,7 +203,7 @@ with DaprClient() as client:
 {{% /tab %}}
 
  <!-- JavaScript -->
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ### Step 1: Pre-requisites
 
@@ -351,7 +351,7 @@ console.log("Published data: " + JSON.stringify(order));
 {{% /tab %}}
 
  <!-- .NET -->
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ### Step 1: Pre-requisites
 
@@ -508,7 +508,7 @@ Console.WriteLine("Published data: " + order);
 {{% /tab %}}
 
  <!-- Java -->
-{{% tab %}}
+{{% tab "Java" %}}
 
 ### Step 1: Pre-requisites
 
@@ -672,7 +672,7 @@ logger.info("Published data: " + order.getOrderId());
 {{% /tab %}}
 
  <!-- Go -->
-{{% tab %}}
+{{% tab "Go" %}}
 
 ### Step 1: Pre-requisites
 
@@ -830,9 +830,9 @@ fmt.Println("Published data: ", order)
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{% tabpane "Python" "JavaScript" ".NET" "Java" "Go" %}}
+{{% tabpane %}}
  <!-- Python -->
-{{% tab %}}
+{{% tab "Python" %}}
 
 ### Step 1: Pre-requisites
 
@@ -1006,7 +1006,7 @@ In the YAML file:
 {{% /tab %}}
 
  <!-- JavaScript -->
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ### Step 1: Pre-requisites
 
@@ -1164,7 +1164,7 @@ In the YAML file:
 {{% /tab %}}
 
  <!-- .NET -->
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ### Step 1: Pre-requisites
 
@@ -1317,7 +1317,7 @@ In the YAML file:
 {{% /tab %}}
 
  <!-- Java -->
-{{% tab %}}
+{{% tab "Java" %}}
 
 ### Step 1: Pre-requisites
 
@@ -1482,7 +1482,7 @@ In the YAML file:
 {{% /tab %}}
 
  <!-- Go -->
-{{% tab %}}
+{{% tab "Go" %}}
 
 ### Step 1: Pre-requisites
 

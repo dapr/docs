@@ -102,7 +102,7 @@ The data parameters are:
 Read more about the importance and usage of these parameters in the [Azure OpenAI API documentation](https://learn.microsoft.com/azure/ai-services/openai/reference).
 #### Examples
 
-{{% tabpane Linux %}}
+{{% tabpane %}}
   {{% tab %}}
   ```bash
   curl -d '{ "data": {"deploymentId: "my-model" , "prompt": "A dog is ", "maxTokens":15}, "operation": "completion" }' \
@@ -174,7 +174,7 @@ Each message is of the form:
 
 #### Example
 
-{{% tabpane Linux %}}
+{{% tabpane %}}
 
   {{% tab %}}
   ```bash
@@ -251,9 +251,9 @@ The data parameters are:
 
 #### Example
 
-{{% tabpane Linux %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Linux" %}}
   ```bash
 curl -d '{
     "data": {

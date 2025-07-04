@@ -12,15 +12,15 @@ Dapr supports namespacing in service invocation calls between applications, when
 
 To get started, create and configure your namespace.
 
-{{% tabpane "Self-Hosted" "Kubernetes"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 
 In self-hosted mode, specify the namespace for a Dapr instance by setting the `NAMESPACE` environment variable.
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 On Kubernetes, create and configure the namespace:
 

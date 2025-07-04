@@ -176,9 +176,9 @@ APIs that generate random numbers, random UUIDs, or the current date are _non-de
 
 For example, instead of this:
 
-{{% tabpane ".NET" Java JavaScript Go %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 // DON'T DO THIS!
@@ -189,7 +189,7 @@ string randomString = GetRandomString();
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 ```java
 // DON'T DO THIS!
@@ -200,7 +200,7 @@ String randomString = getRandomString();
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 // DON'T DO THIS!
@@ -211,7 +211,7 @@ const randomString = getRandomString();
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 // DON'T DO THIS!
@@ -224,9 +224,9 @@ const currentTime = time.Now()
 
 Do this:
 
-{{% tabpane ".NET" Java JavaScript Go %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 // Do this!!
@@ -237,7 +237,7 @@ string randomString = await context.CallActivityAsync<string>(nameof("GetRandomS
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 ```java
 // Do this!!
@@ -248,7 +248,7 @@ String randomString = context.callActivity(GetRandomString.class.getName(), Stri
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 // Do this!!
@@ -258,7 +258,7 @@ const randomString = yield context.callActivity(getRandomString);
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 const currentTime = ctx.CurrentUTCDateTime()
@@ -276,9 +276,9 @@ Instead, workflows should interact with external state _indirectly_ using workfl
 
 For example, instead of this:
 
-{{% tabpane ".NET" Java JavaScript Go %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 // DON'T DO THIS!
@@ -287,7 +287,7 @@ string data = await new HttpClient().GetStringAsync("https://example.com/api/dat
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 ```java
 // DON'T DO THIS!
@@ -299,7 +299,7 @@ HttpResponse<String> response = HttpClient.newBuilder().build().send(request, Ht
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 // DON'T DO THIS!
@@ -318,7 +318,7 @@ fetch('https://postman-echo.com/get')
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 // DON'T DO THIS!
@@ -332,9 +332,9 @@ resp, err := http.Get("http://example.com/api/data")
 
 Do this:
 
-{{% tabpane ".NET" Java JavaScript Go %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 // Do this!!
@@ -344,7 +344,7 @@ string data = await context.CallActivityAsync<string>(nameof("MakeHttpCall"), "h
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 ```java
 // Do this!!
@@ -354,7 +354,7 @@ String data = ctx.callActivity(MakeHttpCall.class, "https://example.com/api/data
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 // Do this!!
@@ -365,7 +365,7 @@ const data = yield ctx.callActivity(makeHttpCall, "https://example.com/api/data"
 {{% /tab %}}
 
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 // Do this!!
@@ -386,9 +386,9 @@ Failure to follow this rule could result in undefined behavior. Any background p
 
 For example, instead of this:
 
-{{% tabpane ".NET" Java JavaScript Go %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 // DON'T DO THIS!
@@ -397,7 +397,7 @@ await context.CreateTimer(5000).ConfigureAwait(false);
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 ```java
 // DON'T DO THIS!
@@ -409,13 +409,13 @@ ctx.createTimer(Duration.ofSeconds(5)).await();
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 Don't declare JavaScript workflow as `async`. The Node.js runtime doesn't guarantee that asynchronous functions are deterministic.
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 // DON'T DO THIS!
@@ -433,9 +433,9 @@ err := ctx.CreateTimer(time.Second).Await(nil)
 
 Do this:
 
-{{% tabpane ".NET" Java JavaScript Go %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 // Do this!!
@@ -445,7 +445,7 @@ await context.CreateTimer(5000).ConfigureAwait(true);
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 ```java
 // Do this!!
@@ -455,13 +455,13 @@ ctx.createTimer(Duration.ofSeconds(5)).await();
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 Since the Node.js runtime doesn't guarantee that asynchronous functions are deterministic, always declare JavaScript workflow as synchronous generator functions. 
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 // Do this!

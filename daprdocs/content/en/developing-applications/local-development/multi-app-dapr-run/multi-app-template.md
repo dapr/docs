@@ -26,9 +26,9 @@ When you provide a directory path, the CLI will try to locate the Multi-App Run 
 
 Execute the following CLI command to read the Multi-App Run template file, named `dapr.yaml` by default:
 
-{{% tabpane Self-hosted Kubernetes%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-hosted" %}}
 <!--selfhosted-->
 
 ```cmd
@@ -38,7 +38,7 @@ dapr run -f <dir_path>
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 <!--kubernetes-->
 
 ```cmd
@@ -52,9 +52,9 @@ dapr run -f <dir_path> -k
 
 If the Multi-App Run template file is named something other than `dapr.yaml`, then you can provide the relative or absolute file path to the command:
 
-{{% tabpane Self-hosted Kubernetes%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-hosted" %}}
 <!--selfhosted-->
 
 ```cmd
@@ -63,7 +63,7 @@ dapr run -f ./path/to/<your-preferred-file-name>.yaml
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 <!--kubernetes-->
 
 ```cmd
@@ -77,9 +77,9 @@ dapr run -f ./path/to/<your-preferred-file-name>.yaml -k
 
 Once the multi-app template is running, you can view the started applications with the following command:
 
-{{% tabpane Self-hosted Kubernetes%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-hosted" %}}
 <!--selfhosted-->
 
 ```cmd
@@ -88,7 +88,7 @@ dapr list
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 <!--kubernetes-->
 
 ```cmd
@@ -102,9 +102,9 @@ dapr list -k
 
 Stop the multi-app run template anytime with either of the following commands:
 
-{{% tabpane Self-hosted Kubernetes%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-hosted" %}}
 <!--selfhosted-->
 
 ```cmd
@@ -120,7 +120,7 @@ dapr stop -f ./path/to/<your-preferred-file-name>.yaml
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 <!--kubernetes-->
 
 ```cmd
@@ -143,9 +143,9 @@ dapr stop -f ./path/to/<your-preferred-file-name>.yaml -k
 
 The Multi-App Run template file can include the following properties. Below is an example template showing two applications that are configured with some of the properties.
 
-{{% tabpane Self-hosted Kubernetes%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-hosted" %}}
 <!--selfhosted-->
 
 ```yaml
@@ -185,7 +185,7 @@ The following rules apply for all the paths present in the template file:
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 <!--kubernetes-->
 
 ```yaml
@@ -225,9 +225,9 @@ The following rules apply for all the paths present in the template file:
 
 ## Template properties
 
-{{% tabpane Self-hosted Kubernetes%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-hosted" %}}
 <!--selfhosted-->
 
 The properties for the Multi-App Run template align with the `dapr run` CLI flags, [listed in the CLI reference documentation]({{% ref "dapr-run.md#flags" %}}).
@@ -279,7 +279,7 @@ Watch [this video for an overview on Multi-App Run](https://youtu.be/s1p9MNl4VGo
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/s1p9MNl4VGo?start=2456" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 <!--kubernetes-->
 
 The properties for the Multi-App Run template align with the `dapr run -k` CLI flags, [listed in the CLI reference documentation]({{% ref "dapr-run.md#flags" %}}).

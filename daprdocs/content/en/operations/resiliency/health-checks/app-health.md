@@ -109,9 +109,9 @@ Thresholds only apply to failures. A single successful response is enough for Da
 
 ## Example
 
-{{% tabpane "Self-Hosted (CLI)" Kubernetes %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted (CLI)" %}}
 
 Use the CLI flags with the `dapr run` command to enable app health checks:
 
@@ -131,7 +131,7 @@ dapr run \
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 To enable app health checks in Kubernetes, add the relevant annotations to your Deployment:
 

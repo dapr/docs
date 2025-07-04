@@ -20,15 +20,15 @@ Not using CloudEvents disables support for tracing, event deduplication per mess
 
 To disable CloudEvent wrapping, set the `rawPayload` metadata to `true` as part of the publishing request. This allows subscribers to receive these messages without having to parse the CloudEvent schema.
 
-{{% tabpane curl ".NET" "Python" "PHP"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "curl" %}}
 ```bash
 curl -X "POST" http://localhost:3500/v1.0/publish/pubsub/TOPIC_A?metadata.rawPayload=true -H "Content-Type: application/json" -d '{"order-number": "345"}'
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using Dapr.Client;
@@ -65,7 +65,7 @@ app.Run();
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 ```python
 from dapr.clients import DaprClient
 
@@ -85,7 +85,7 @@ with DaprClient() as d:
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "PHP" %}}
 
 ```php
 <?php
@@ -115,9 +115,9 @@ When subscribing programmatically, add the additional metadata entry for `rawPay
 
 When using raw payloads the message is always base64 encoded with content type `application/octet-stream`.
 
-{{% tabpane ".NET" "Python" "PHP" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using System.Text.Json;
@@ -160,7 +160,7 @@ app.Run();
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 ```python
 import flask
@@ -191,7 +191,7 @@ app.run()
 ```
 
 {{% /tab %}}
-{{% tab %}}
+{{% tab "PHP" %}}
 
 ```php
 <?php

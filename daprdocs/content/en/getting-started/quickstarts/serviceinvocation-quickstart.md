@@ -20,9 +20,9 @@ Learn more about Dapr's methods for service invocation in the [overview article]
 
 Select your preferred language before proceeding with the Quickstart.
 
-{{% tabpane "Python" "JavaScript" ".NET" "Java" "Go" %}}
+{{% tabpane %}}
  <!-- Python -->
-{{% tab %}}
+{{% tab "Python" %}}
 
 ### Step 1: Pre-requisites
 
@@ -168,7 +168,7 @@ result = requests.post(
 {{% /tab %}}
 
  <!-- JavaScript -->
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ### Step 1: Pre-requisites
 
@@ -308,7 +308,7 @@ console.log("Order passed: " + res.config.data);
 {{% /tab %}}
 
  <!-- .NET -->
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ### Step 1: Pre-requisites
 
@@ -452,7 +452,7 @@ Console.WriteLine("Order passed: " + order);
 {{% /tab %}}
 
  <!-- Java -->
-{{% tab %}}
+{{% tab "Java" %}}
 
 ### Step 1: Pre-requisites
 
@@ -593,7 +593,7 @@ System.out.println("Order passed: "+ orderId)
 {{% /tab %}}
 
  <!-- Go -->
-{{% tab %}}
+{{% tab "Go" %}}
 
 ### Step 1: Pre-requisites
 
@@ -738,9 +738,9 @@ response, err := client.Do(req)
 
 Select your preferred language before proceeding with the Quickstart.
 
-{{% tabpane "Python" "JavaScript" ".NET" "Java" "Go" %}}
+{{% tabpane %}}
  <!-- Python -->
-{{% tab %}}
+{{% tab "Python" %}}
 
 ### Step 1: Pre-requisites
 
@@ -881,7 +881,7 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 {{% /tab %}}
 
  <!-- JavaScript -->
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ### Step 1: Pre-requisites
 
@@ -1013,7 +1013,7 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 {{% /tab %}}
 
  <!-- .NET -->
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ### Step 1: Pre-requisites
 
@@ -1148,7 +1148,7 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 {{% /tab %}}
 
  <!-- Java -->
-{{% tab %}}
+{{% tab "Java" %}}
 
 ### Step 1: Pre-requisites
 
@@ -1281,7 +1281,7 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 {{% /tab %}}
 
  <!-- Go -->
-{{% tab %}}
+{{% tab "Go" %}}
 
 ### Step 1: Pre-requisites
 

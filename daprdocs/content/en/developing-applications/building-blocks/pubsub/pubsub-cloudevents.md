@@ -95,9 +95,9 @@ The ability to replace CloudEvents properties using these metadata properties ap
 
 For example, to replace the `source` and `id` values from [the CloudEvent example above]({{% ref "#cloudevents-example" %}}) in code:
 
-{{% tabpane "Python" ".NET" %}}
+{{% tabpane %}}
  <!-- Python -->
-{{% tab %}}
+{{% tab "Python" %}}
 
 ```python
 with DaprClient() as client:
@@ -133,7 +133,7 @@ with DaprClient() as client:
 {{% /tab %}}
 
  <!-- .NET -->
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 var order = new Order(i);
@@ -205,9 +205,9 @@ You can add additional fields to a custom CloudEvent that are not part of the of
 
 ### Example
 
-{{% tabpane "Dapr CLI" "HTTP API (Bash)" "HTTP API (PowerShell)"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Dapr CLI" %}}
 
 Publish a CloudEvent to the `orders` topic:
 
@@ -217,7 +217,7 @@ dapr publish --publish-app-id orderprocessing --pubsub order-pub-sub --topic ord
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 Publish a CloudEvent to the `orders` topic:
 
@@ -227,7 +227,7 @@ curl -X POST http://localhost:3601/v1.0/publish/order-pub-sub/orders -H "Content
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 Publish a CloudEvent to the `orders` topic:
 

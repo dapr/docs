@@ -139,13 +139,13 @@ spec:
 ```
 
 ## Setup HashiCorp Consul
-{{% tabpane "Self-Hosted" "Kubernetes" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 HashiCorp offer in depth guides on how to setup Consul for different hosting models. Check out the [self-hosted guide here](https://learn.hashicorp.com/collections/consul/getting-started)
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 HashiCorp offer in depth guides on how to setup Consul for different hosting models. Check out the [Kubernetes guide here](https://learn.hashicorp.com/collections/consul/kubernetes)
 {{% /tab %}}
 

@@ -22,9 +22,9 @@ The bulk publish operation also does not guarantee any ordering of messages.
 
 ### Example
 
-{{% tabpane Java JavaScript ".NET" Python Go "HTTP API (Bash)" "HTTP API (PowerShell)" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 ```java
 import io.dapr.client.DaprClientBuilder;
@@ -56,7 +56,7 @@ class BulkPublisher {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ```typescript
 
@@ -107,7 +107,7 @@ start().catch((e) => {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using System;
@@ -145,7 +145,7 @@ else
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 ```python
 import requests
@@ -175,7 +175,7 @@ print(response.status_code)
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 package main
@@ -222,7 +222,7 @@ func main() {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 ```bash
 curl -X POST http://localhost:3500/v1.0-alpha1/publish/bulk/my-pubsub-name/topic-a \
@@ -245,7 +245,7 @@ curl -X POST http://localhost:3500/v1.0-alpha1/publish/bulk/my-pubsub-name/topic
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Uri 'http://localhost:3500/v1.0-alpha1/publish/bulk/my-pubsub-name/topic-a' `
@@ -342,8 +342,8 @@ Refer to [Expected HTTP Response for Bulk Subscribe]({{% ref pubsub_api %}}) for
 
 The following code examples demonstrate how to use Bulk Subscribe.
 
-{{% tabpane "Java" "JavaScript" ".NET" "Python" %}}
-{{% tab %}}
+{{% tabpane %}}
+{{% tab "Java" %}}
 
 ```java
 import io.dapr.Topic;
@@ -385,7 +385,7 @@ class BulkSubscriber {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ```typescript
 
@@ -420,7 +420,7 @@ async function start() {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using Microsoft.AspNetCore.Mvc;
@@ -470,7 +470,7 @@ public class BulkMessageController : ControllerBase
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 Currently, you can only bulk subscribe in Python using an HTTP client. 
 
 ```python

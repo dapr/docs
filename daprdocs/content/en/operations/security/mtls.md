@@ -385,9 +385,9 @@ spec:
 
 In addition to the Dapr configuration, you also need to provide the TLS certificates to each Dapr sidecar instance. You can do so by setting the following environment variables before running the Dapr instance:
 
-{{% tabpane "Linux/MacOS" Windows %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Linux/MacOS" %}}
 ```bash
 export DAPR_TRUST_ANCHORS=`cat $HOME/.dapr/certs/ca.crt`
 export DAPR_CERT_CHAIN=`cat $HOME/.dapr/certs/issuer.crt`
@@ -397,7 +397,7 @@ export NAMESPACE=default
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Windows" %}}
 ```powershell
 $env:DAPR_TRUST_ANCHORS=$(Get-Content -raw $env:USERPROFILE\.dapr\certs\ca.crt)
 $env:DAPR_CERT_CHAIN=$(Get-Content -raw $env:USERPROFILE\.dapr\certs\issuer.crt)

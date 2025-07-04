@@ -12,9 +12,9 @@ You can upgrade the Dapr control plane on a Kubernetes cluster using either the 
 Refer to the [Dapr version policy]({{% ref "support-release-policy.md#upgrade-paths" %}}) for guidance on Dapr's upgrade path.
 {{% /alert %}}
 
-{{% tabpane "Dapr CLI" "Helm" %}}
+{{% tabpane %}}
  <!-- Dapr CLI -->
-{{% tab %}}
+{{% tab "Dapr CLI" %}}
 ## Upgrade using the Dapr CLI
 
 You can upgrade Dapr using the [Dapr CLI]({{% ref install-dapr-cli.md %}}).
@@ -57,7 +57,7 @@ The CustomResourceDefinition "configurations.dapr.io" is invalid: spec.preserveU
 {{% /tab %}}
 
  <!-- Helm -->
-{{% tab %}}
+{{% tab "Helm" %}}
 ## Upgrade using Helm
 
 You can upgrade Dapr using a Helm v3 chart.

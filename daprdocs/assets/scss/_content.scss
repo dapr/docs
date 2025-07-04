@@ -12,6 +12,7 @@
     > h1 {
         font-weight: $font-weight-bold;
         margin-bottom: .5rem;
+        color: $secondary;
     }
 
     > h2 {
@@ -64,6 +65,27 @@
         @extend .td-max-width-on-larger-screens;
     }
 
+    a, a:visited {
+        color: $secondary;
+        text-decoration: none;;
+    }
+
+    a:hover {
+        color: $primary;
+        text-decoration: none;;
+    }
+
+    .alert {
+        background-color: white;
+        border-color: $highlight2;
+    }
+
+    a.btn {
+        background-color: $highlight1;
+        text-decoration: none;
+        color: white;
+    }
+
     .alert:not(:first-child) {
         margin-top: 2 * $spacer;
         margin-bottom: 2 * $spacer;
@@ -75,6 +97,26 @@
     }
 }
 
+.text-white a, .text-white a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+.text-white a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+.td-breadcrumbs a, .td-breadcrumbs a:visited {
+    color: $secondary;
+    text-decoration: none;
+}
+
+.td-breadcrumbs a:hover {
+    color: $primary;
+    text-decoration: none;
+}
+
 .td-title {
     margin-top: 1rem;
     margin-bottom: .5rem;
@@ -82,4 +124,11 @@
     @include media-breakpoint-up(sm) {
         font-size: 3rem;
     }
+}
+
+.carddeck .card {
+    flex: 1 0;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    margin-left: 15px;
 }

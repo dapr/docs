@@ -16,9 +16,9 @@ Observe Dapr resiliency capabilities by simulating a system failure. In this Qui
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{% tabpane "Python" "JavaScript" ".NET" "Java" "Go" %}}
+{{% tabpane %}}
  <!-- Python -->
-{{% tab %}}
+{{% tab "Python" %}}
 
 ### Pre-requisites
 
@@ -145,9 +145,29 @@ Since the `resiliency.yaml` spec defines the `order-processor` service as a resi
 
 In the `order-processor` window, stop the service:
 
+{{% tabpane %}}
+
+ <!-- MacOS -->
+
+{{% tab "MacOs" %}}
+
+```script
+CMD + C
+```
+
+{{% /tab %}}
+
+ <!-- Windows -->
+
+{{% tab "Windows" %}}
+
 ```script
 CTRL + C
 ```
+
+{{% /tab %}}
+
+{{% /tabpane %}}
 
 Once the first request fails, the retry policy titled `retryForever` is applied:
 
@@ -224,7 +244,7 @@ dapr run --app-port 8001 --app-id order-processor --app-protocol http --dapr-htt
 {{% /tab %}}
 
  <!-- JavaScript -->
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ### Pre-requisites
 
@@ -354,11 +374,11 @@ Since the `resiliency.yaml` spec defines the `order-processor` service as a resi
 
 In the `order-processor` window, stop the service:
 
-{{% tabpane "MacOs" "Windows" %}}
+{{% tabpane %}}
 
  <!-- MacOS -->
 
-{{% tab %}}
+{{% tab "MacOs" %}}
 
 ```script
 CMD + C
@@ -368,7 +388,7 @@ CMD + C
 
  <!-- Windows -->
 
-{{% tab %}}
+{{% tab "Windows" %}}
 
 ```script
 CTRL + C
@@ -454,7 +474,7 @@ dapr run --app-port 5001 --app-id order-processor --resources-path ../../../reso
 {{% /tab %}}
 
  <!-- .NET -->
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ### Pre-requisites
 
@@ -586,11 +606,11 @@ Since the `resiliency.yaml` spec defines the `order-processor` service as a resi
 
 In the `order-processor` window, stop the service:
 
-{{% tabpane "MacOs" "Windows" %}}
+{{% tabpane %}}
 
  <!-- MacOS -->
 
-{{% tab %}}
+{{% tab "MacOs" %}}
 
 ```script
 CMD + C
@@ -600,7 +620,7 @@ CMD + C
 
  <!-- Windows -->
 
-{{% tab %}}
+{{% tab "Windows" %}}
 
 ```script
 CTRL + C
@@ -686,7 +706,7 @@ dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-htt
 {{% /tab %}}
 
  <!-- Java -->
-{{% tab %}}
+{{% tab "Java" %}}
 
 ### Pre-requisites
 
@@ -819,11 +839,11 @@ Since the `resiliency.yaml` spec defines the `order-processor` service as a resi
 
 In the `order-processor` window, stop the service:
 
-{{% tabpane "MacOs" "Windows" %}}
+{{% tabpane %}}
 
  <!-- MacOS -->
 
-{{% tab %}}
+{{% tab "MacOs" %}}
 
 ```script
 CMD + C
@@ -833,7 +853,7 @@ CMD + C
 
  <!-- Windows -->
 
-{{% tab %}}
+{{% tab "Windows" %}}
 
 ```script
 CTRL + C
@@ -919,7 +939,7 @@ dapr run --app-id order-processor --resources-path ../../../resources/ --app-por
 {{% /tab %}}
 
  <!-- Go -->
-{{% tab %}}
+{{% tab "Go" %}}
 
 ### Pre-requisites
 
@@ -1049,11 +1069,11 @@ Since the `resiliency.yaml` spec defines the `order-processor` service as a resi
 
 In the `order-processor` window, stop the service:
 
-{{% tabpane "MacOs" "Windows" %}}
+{{% tabpane %}}
 
  <!-- MacOS -->
 
-{{% tab %}}
+{{% tab "MacOs" %}}
 
 ```script
 CMD + C
@@ -1063,7 +1083,7 @@ CMD + C
 
  <!-- Windows -->
 
-{{% tab %}}
+{{% tab "Windows" %}}
 
 ```script
 CTRL + C

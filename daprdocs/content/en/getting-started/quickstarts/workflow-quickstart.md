@@ -36,10 +36,10 @@ The workflow also contains business logic:
 <img src="/images/workflow-quickstart-controlflow.png" width=800 style="padding-bottom:15px;">
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
-{{% tabpane "Python" "JavaScript" ".NET" "Java" Go %}}
+{{% tabpane %}}
 
  <!-- Python -->
-{{% tab %}}
+{{% tab "Python" %}}
 
 The `order-processor` console app starts and manages the `order_processing_workflow`, which simulates purchasing items from a store. The workflow consists of five unique workflow activities, or tasks:
 
@@ -409,7 +409,7 @@ def request_approval_activity(ctx: WorkflowActivityContext,
 {{% /tab %}}
 
  <!-- JavaScript -->
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 The `order-processor` console app starts and manages the lifecycle of an order processing workflow that stores and retrieves data in a state store. The workflow consists of four workflow activities, or tasks:
 
@@ -786,7 +786,7 @@ export const orderProcessingWorkflow: TWorkflow = async function* (ctx: Workflow
 {{% /tab %}}
 
  <!-- .NET -->
-{{% tab %}}
+{{% tab ".NET" %}}
 
 The `order-processor` console app starts and manages the lifecycle of an order processing workflow that stores and retrieves data in a state store. The workflow consists of four workflow activities, or tasks:
 
@@ -1246,7 +1246,7 @@ Watch [this video to walk through the Dapr Workflow .NET demo](https://youtu.be/
 {{% /tab %}}
 
  <!-- Java -->
-{{% tab %}}
+{{% tab "Java" %}}
 
 The `order-processor` console app starts and manages the lifecycle of an order processing workflow that stores and retrieves data in a state store. The workflow consists of four workflow activities, or tasks:
 
@@ -1635,7 +1635,7 @@ The `Activities` directory holds the four workflow activities used by the workfl
 {{% /tab %}}
 
  <!-- Go -->
-{{% tab %}}
+{{% tab "Go" %}}
 
 The `order-processor` console app starts and manages the `OrderProcessingWorkflow` workflow, which simulates purchasing items from a store. The workflow consists of five unique workflow activities, or tasks:
 

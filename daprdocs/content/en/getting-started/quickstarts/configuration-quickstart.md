@@ -19,9 +19,9 @@ In this quickstart, you'll run an `order-processor` microservice that utilizes t
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{% tabpane "Python" "JavaScript" ".NET" "Java" "Go" %}}
+{{% tabpane %}}
  <!-- Python -->
-{{% tab %}}
+{{% tab "Python" %}}
 
 ### Pre-requisites
 
@@ -144,7 +144,7 @@ if unsubscribed == True:
 
 
 <!-- JavaScript -->
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ### Pre-requisites
 
@@ -265,7 +265,7 @@ setTimeout(() => {
 {{% /tab %}}
 
  <!-- .NET -->
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ### Pre-requisites
 
@@ -385,7 +385,7 @@ try
 {{% /tab %}}
 
  <!-- Java -->
-{{% tab %}}
+{{% tab "Java" %}}
 
 ### Pre-requisites
 
@@ -503,7 +503,7 @@ if (unsubscribe.getIsUnsubscribed()) {
 {{% /tab %}}
 
  <!-- Go -->
-{{% tab %}}
+{{% tab "Go" %}}
 
 ### Pre-requisites
 

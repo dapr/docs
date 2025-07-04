@@ -42,9 +42,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Setup Aerospike
 
-{{% tabpane "Self-Hosted" "Kubernetes" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 You can run Aerospike locally using Docker:
 
 ```
@@ -54,7 +54,7 @@ docker run -d --name aerospike -p 3000:3000 -p 3001:3001 -p 3002:3002 -p 3003:30
 You can then interact with the server using `localhost:3000`.
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 The easiest way to install Aerospike on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/aerospike):
 
 ```

@@ -178,9 +178,9 @@ Time to live can be defined on a per-queue level (as illustrated above) or at th
 
 To set time to live at message level use the `metadata` section in the request body during the binding invocation: the field name is `ttlInSeconds`.
 
-{{% tabpane "Linux"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Linux" %}}
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/bindings/myServiceBusQueue \
@@ -207,9 +207,9 @@ To schedule a message, use the `metadata` section in the request body during the
 
 The supported timestamp formats are [RFC1123](https://www.rfc-editor.org/rfc/rfc1123) and [RFC3339](https://www.rfc-editor.org/rfc/rfc3339).
 
-{{% tabpane "Linux"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Linux" %}}
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/bindings/myServiceBusQueue \

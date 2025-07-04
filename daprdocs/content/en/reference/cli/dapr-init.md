@@ -50,9 +50,9 @@ dapr init [flags]
 
 ### Examples
 
-{{% tabpane "Self-hosted" "Kubernetes" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-hosted" %}}
 
 **Install**
 
@@ -159,7 +159,7 @@ dapr uninstall --all --network mynet
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 ```bash
 dapr init -k

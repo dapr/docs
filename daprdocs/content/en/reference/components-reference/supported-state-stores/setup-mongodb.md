@@ -84,9 +84,9 @@ If you wish to use MongoDB as an actor store, add this metadata option to your C
 
 ## Setup MongoDB
 
-{{% tabpane "Self-Hosted" "Kubernetes" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 You can run a single MongoDB instance locally using Docker:
 
 ```sh
@@ -98,7 +98,7 @@ You can then interact with the server at `localhost:27017`. If you do not specif
 In order to use the MongoDB state store for transactions and as an actor state store, you need to run MongoDB as a Replica Set. Refer to [the official documentation](https://www.mongodb.com/compatibility/deploying-a-mongodb-cluster-with-docker) for how to create a 3-node Replica Set using Docker.
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 You can conveniently install MongoDB on Kubernetes using the [Helm chart packaged by Bitnami](https://github.com/bitnami/charts/tree/main/bitnami/mongodb/). Refer to the documentation for the Helm chart for deploying MongoDB, both as a standalone server, and with a Replica Set (required for using transactions and actors).
 This installs MongoDB into the `default` namespace.
 To interact with MongoDB, find the service with: `kubectl get svc mongo-mongodb`.

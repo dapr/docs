@@ -58,7 +58,7 @@ To perform a create file operation, invoke the Local Storage binding with a `POS
 
 ##### Save text to a random generated UUID file
 
-{{% tabpane Windows Linux %}}
+{{% tabpane %}}
   {{% tab %}}
   On Windows, utilize cmd prompt (PowerShell has different escaping mechanism)
   ```bash
@@ -77,7 +77,7 @@ To perform a create file operation, invoke the Local Storage binding with a `POS
 
 ##### Save text to a specific file
 
-{{% tabpane Windows Linux %}}
+{{% tabpane %}}
 
   {{% tab %}}
   ```bash
@@ -100,7 +100,7 @@ To perform a create file operation, invoke the Local Storage binding with a `POS
 
 To upload a file, encode it as Base64. The binding should automatically detect the Base64 encoding.
 
-{{% tabpane Windows Linux %}}
+{{% tabpane %}}
 
   {{% tab %}}
   ```bash
@@ -143,7 +143,7 @@ To perform a get file operation, invoke the Local Storage binding with a `POST` 
 
 #### Example
 
-{{% tabpane Windows Linux %}}
+{{% tabpane %}}
 
   {{% tab %}}
   ```bash
@@ -187,7 +187,7 @@ If you only want to list the files beneath a particular directory below the `roo
 
 #### Example
 
-{{% tabpane Windows Linux %}}
+{{% tabpane %}}
 
   {{% tab %}}
   ```bash
@@ -223,7 +223,7 @@ To perform a delete file operation, invoke the Local Storage binding with a `POS
 
 #### Example
 
-{{% tabpane Windows Linux %}}
+{{% tabpane %}}
 
   {{% tab %}}
   ```bash

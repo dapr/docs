@@ -101,9 +101,9 @@ Dapr then authenticates to AWS without specifying credentials in the Dapr compon
 
 ### Authenticate to AWS when running dapr locally in stand-alone mode
 
-{{% tabpane "Linux/MacOS" "Windows" %}}
+{{% tabpane %}}
  <!-- linux -->
-{{% tab %}}
+{{% tab "Linux/MacOS" %}}
 
 When running Dapr (or the Dapr runtime directly) in stand-alone mode, you can inject environment variables into the process, like the following example: 
 
@@ -128,7 +128,7 @@ You can use any of the [supported environment variables](https://docs.aws.amazon
 {{% /tab %}}
 
  <!-- windows -->
-{{% tab %}}
+{{% tab "Windows" %}}
 
 On Windows, the environment variable needs to be set before starting the `dapr` or `daprd` command, doing it inline (like in Linux/MacOS) is not supported.
 
@@ -142,9 +142,9 @@ If you authenticate to AWS using [AWS SSO](https://aws.amazon.com/single-sign-on
 - [AwsHelper](https://pypi.org/project/awshelper/) 
 - [aws-sso-util](https://github.com/benkehoe/aws-sso-util)
 
-{{% tabpane "Linux/MacOS" "Windows" %}}
+{{% tabpane %}}
  <!-- linux -->
-{{% tab %}}
+{{% tab "Linux/MacOS" %}}
 
 If using AwsHelper, start Dapr like this:
 
@@ -160,7 +160,7 @@ AWS_PROFILE=myprofile awshelper daprd...
 {{% /tab %}}
 
  <!-- windows -->
-{{% tab %}}
+{{% tab "Windows" %}}
 
 On Windows, the environment variable needs to be set before starting the `awshelper` command; doing it inline (like in Linux/MacOS) is not supported.
 

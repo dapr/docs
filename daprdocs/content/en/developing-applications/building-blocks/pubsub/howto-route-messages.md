@@ -40,9 +40,9 @@ scopes:
 
 In the programmatic approach, the `routes` structure is returned instead of `route`. The JSON structure matches the declarative YAML:
 
-{{% tabpane Python JavaScript ".NET" Go PHP%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 ```python
 import flask
 from flask import request, jsonify
@@ -84,7 +84,7 @@ app.run()
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 ```javascript
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -124,7 +124,7 @@ app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 ```csharp
         [Topic("pubsub", "inventory", "event.type ==\"widget\"", 1)]
         [HttpPost("widgets")]
@@ -152,7 +152,7 @@ app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 ```golang
 package main
 
@@ -218,7 +218,7 @@ func main() {
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "PHP" %}}
 ```php
 <?php
 

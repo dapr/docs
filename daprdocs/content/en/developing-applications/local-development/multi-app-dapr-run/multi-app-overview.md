@@ -17,9 +17,9 @@ Let's say you want to run several applications locally to test them together, si
 
 The Multi-App Run template file describes how to start multiple applications as if you had run many separate CLI `run` commands. By default, this template file is called `dapr.yaml`.
 
-{{% tabpane Self-hosted Kubernetes%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-hosted" %}}
 <!--selfhosted-->
 
 ## Multi-App Run template file
@@ -91,7 +91,7 @@ Watch [this video for an overview on Multi-App Run](https://youtu.be/s1p9MNl4VGo
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 <!--kubernetes-->
 
 ## Multi-App Run template file

@@ -8,21 +8,21 @@ description: "How to view Dapr metrics in a Grafana dashboard."
 
 ## Available dashboards
 
-{{% tabpane "System Service" "Sidecars" "Actors" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "System Service" %}}
 The `grafana-system-services-dashboard.json` template shows Dapr system component status, dapr-operator, dapr-sidecar-injector, dapr-sentry, and dapr-placement:
 
 <img src="/images/grafana-system-service-dashboard.png" alt="Screenshot of the system service dashboard" width=1200>
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Sidecars" %}}
 The `grafana-sidecar-dashboard.json` template shows Dapr sidecar status, including sidecar health/resources, throughput/latency of HTTP and gRPC, Actor, mTLS, etc.:
 
 <img src="/images/grafana-sidecar-dashboard.png" alt="Screenshot of the sidecar dashboard" width=1200>
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Actors" %}}
 The `grafana-actor-dashboard.json` template shows Dapr Sidecar status, actor invocation throughput/latency, timer/reminder triggers, and turn-based concurrnecy:
 
 <img src="/images/grafana-actor-dashboard.png" alt="Screenshot of the actor dashboard" width=1200>

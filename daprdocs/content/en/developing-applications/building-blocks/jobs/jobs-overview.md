@@ -12,7 +12,7 @@ Not only does the jobs API help you with scheduling jobs, but internally, Dapr u
 
 Jobs in Dapr consist of:
 - [The jobs API building block]({{% ref jobs_api %}})
-- [The Scheduler control plane service]({{% ref "concepts/dapr-services/scheduler" %}})
+- [The Scheduler control plane service]({{% ref "concepts/dapr-services/scheduler.md" %}})
 
 [See example scenarios.]({{% ref "#scenarios" %}})
 

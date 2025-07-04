@@ -68,9 +68,9 @@ If you wish to use MySQL as an actor store, append the following to the yaml.
 
 Dapr can use any MySQL instance - containerized, running on your local dev machine, or a managed cloud service.
 
-{{% tabpane "Self-Hosted" "Kubernetes" "Azure" "AWS" "GCP" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 <!-- Self-Hosted -->
 
 Run an instance of MySQL. You can run a local instance of MySQL in Docker CE with the following command:
@@ -83,7 +83,7 @@ docker run --name dapr-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -d
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 <!-- Kubernetes -->
 
 We can use [Helm](https://helm.sh/) to quickly create a MySQL instance in our Kubernetes cluster. This approach requires [Installing Helm](https://github.com/helm/helm#install).
@@ -106,7 +106,7 @@ We can use [Helm](https://helm.sh/) to quickly create a MySQL instance in our Ku
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Azure" %}}
 <!-- Azure -->
 
 [Azure MySQL](http://bit.ly/AzureMySQL)
@@ -115,14 +115,14 @@ If you are using [MySQL on Azure](http://bit.ly/AzureMySQLSSL) see the Azure [do
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "AWS" %}}
 <!-- AWS -->
 
 [AWS MySQL](https://aws.amazon.com/rds/mysql/)
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "GCP" %}}
 <!-- GCP -->
 
 [GCP MySQL](https://cloud.google.com/sql/docs/mysql/features)

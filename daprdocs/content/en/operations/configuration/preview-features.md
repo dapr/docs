@@ -40,10 +40,10 @@ spec:
       enabled: true
 ```
 
-{{% tabpane Self-hosted Kubernetes %}}
+{{% tabpane %}}
 
 <!--self-hosted-->
-{{% tab %}}
+{{% tab "Self-hosted" %}}
 
 To enable preview features when running Dapr locally, either update the default configuration or specify a separate config file using `dapr run`.
 
@@ -60,7 +60,7 @@ dapr run --app-id myApp --config ./previewConfig.yaml ./app
 {{% /tab %}}
 
 <!--kubernetes-->
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 In Kubernetes mode, the configuration must be provided via a configuration component. Using the same configuration as above, apply it via `kubectl`:
 

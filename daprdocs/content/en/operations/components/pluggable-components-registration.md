@@ -35,9 +35,9 @@ As a prerequisite the operating system must supports Unix Domain Sockets, any UN
 
 Select your environment to begin making your component discoverable.
 
-{{% tabpane "Standalone" "Kubernetes" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Standalone" %}}
 [uds]: https://en.wikipedia.org/wiki/Unix_domain_socket
 
 ## Run the component
@@ -108,7 +108,7 @@ curl http://localhost:$PORT/v1.0/state/prod-mystore/name
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 [uds]: https://en.wikipedia.org/wiki/Unix_domain_socket
 

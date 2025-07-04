@@ -48,9 +48,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Setup Zookeeper
 
-{{% tabpane "Self-Hosted" "Kubernetes" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 You can run Zookeeper locally using Docker:
 
 ```
@@ -60,7 +60,7 @@ docker run --name some-zookeeper --restart always -d zookeeper
 You can then interact with the server using `localhost:2181`.
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 The easiest way to install Zookeeper on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/incubator/zookeeper):
 
 ```

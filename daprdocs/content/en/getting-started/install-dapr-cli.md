@@ -22,9 +22,9 @@ In Docker Desktop's advanced options, verify you've allowed the default Docker s
 
 ### Step 1: Install the Dapr CLI
 
-{{% tabpane Linux Windows MacOS Binaries%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Linux" %}}
 
 #### Install from Terminal
 
@@ -61,7 +61,7 @@ wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O 
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Windows" %}}
 
 #### Install from Command Prompt
 
@@ -126,7 +126,7 @@ Each release of the Dapr CLI also includes an installer for Windows. You can man
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "MacOS" %}}
 
 ### Install from Terminal
 
@@ -187,7 +187,7 @@ curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh 
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Binaries" %}}
 Each release of Dapr CLI includes various OSes and architectures. You can manually download and install these binary versions.
 
 1. Download the desired Dapr CLI from the latest [Dapr Release](https://github.com/dapr/cli/releases).

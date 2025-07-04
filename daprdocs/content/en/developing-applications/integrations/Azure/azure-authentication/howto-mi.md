@@ -69,10 +69,10 @@ If the sidecar loads a component which does not specify `azureClientId`, it only
 
 The following examples demonstrate setting up either a system-managed or user-assigned identity in an Azure KeyVault secrets component.
 
-{{% tabpane "System-managed" "User-assigned" "Kubernetes" %}}
+{{% tabpane %}}
 
  <!-- system managed -->
-{{% tab %}}
+{{% tab "System-managed" %}}
 
 If you set up system-managed identity using an Azure KeyVault component, the YAML would look like the following:
 
@@ -94,7 +94,7 @@ In this example, the system-managed identity looks up the service identity and c
 {{% /tab %}}
 
  <!-- user assigned -->
-{{% tab %}}
+{{% tab "User-assigned" %}}
 
 If you set up user-assigned identity using an Azure KeyVault component, the YAML would look like the following:
 
@@ -118,7 +118,7 @@ Once you've set up the component YAML with the `azureClientId` property, you can
 {{% /tab %}}
 
  <!-- k8s -->
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 For component configuration in Kubernetes or AKS, refer to the [Workload Identity guidance.](https://learn.microsoft.com/azure/aks/workload-identity-overview?tabpane=dotnet)
 

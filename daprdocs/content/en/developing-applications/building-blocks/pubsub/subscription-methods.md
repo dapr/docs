@@ -50,9 +50,9 @@ Here the subscription called `order`:
 
 When running Dapr, set the YAML component file path to point Dapr to the component.
 
-{{% tabpane ".NET" Java Python JavaScript Go Kubernetes%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```bash
 dapr run --app-id myapp --resources-path ./myComponents -- dotnet run
@@ -60,7 +60,7 @@ dapr run --app-id myapp --resources-path ./myComponents -- dotnet run
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 ```bash
 dapr run --app-id myapp --resources-path ./myComponents -- mvn spring-boot:run
@@ -68,7 +68,7 @@ dapr run --app-id myapp --resources-path ./myComponents -- mvn spring-boot:run
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 ```bash
 dapr run --app-id myapp --resources-path ./myComponents -- python3 app.py
@@ -76,7 +76,7 @@ dapr run --app-id myapp --resources-path ./myComponents -- python3 app.py
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ```bash
 dapr run --app-id myapp --resources-path ./myComponents -- npm start
@@ -84,7 +84,7 @@ dapr run --app-id myapp --resources-path ./myComponents -- npm start
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```bash
 dapr run --app-id myapp --resources-path ./myComponents -- go run app.go
@@ -92,7 +92,7 @@ dapr run --app-id myapp --resources-path ./myComponents -- go run app.go
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 
 In Kubernetes, apply the component to the cluster:
 
@@ -106,9 +106,9 @@ kubectl apply -f subscription.yaml
 
 In your application code, subscribe to the topic specified in the Dapr pub/sub component.
 
-{{% tabpane ".NET" Java Python JavaScript Go %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
  //Subscribe to a topic 
@@ -121,7 +121,7 @@ public void getCheckout([FromBody] int orderId)
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 ```java
 import io.dapr.client.domain.CloudEvent;
@@ -139,7 +139,7 @@ public Mono<Void> getCheckout(@RequestBody(required = false) CloudEvent<String> 
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 ```python
 from cloudevents.sdk.event import v1
@@ -153,7 +153,7 @@ def checkout(event: v1.Event) -> None:
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 const express = require('express')
@@ -170,7 +170,7 @@ app.post('/orders', (req, res) => {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 //Subscribe to a topic
@@ -203,9 +203,9 @@ As messages are sent to the given message handler code, there is no concept of r
 
 The example below shows the different ways to stream subscribe to a topic.
 
-{{% tabpane ".NET" Python Go %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 You can use the `SubscribeAsync` method on the `DaprPublishSubscribeClient` to configure the message handler to use to pull messages from the stream.
 
@@ -253,7 +253,7 @@ Task<TopicResponseAction> HandleMessageAsync(TopicMessage message, CancellationT
 {{% /tab %}}
 
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 You can use the `subscribe` method, which returns a `Subscription` object and allows you to pull messages from the stream by calling the `next_message` method. This runs in and may block the main thread while waiting for messages. 
 
@@ -358,7 +358,7 @@ if __name__ == '__main__':
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 package main
@@ -471,9 +471,9 @@ The dynamic programmatic approach returns the `routes` JSON structure within the
 
 In the example below, you define the values found in the [declarative YAML subscription](#declarative-subscriptions) above within the application code.
 
-{{% tabpane ".NET" Java Python JavaScript Go%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 [Topic("pubsub", "orders")]
@@ -506,7 +506,7 @@ app.UseEndpoints(endpoints =>
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 
 ```java
 private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -527,7 +527,7 @@ public Mono<Void> handleMessage(@RequestBody(required = false) CloudEvent<String
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 ```python
 @app.route('/dapr/subscribe', methods=['GET'])
@@ -557,7 +557,7 @@ app.run()
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 const express = require('express')
@@ -595,7 +595,7 @@ app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 ```go
 package main

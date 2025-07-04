@@ -29,9 +29,9 @@ The `maxStackDepth` parameter sets a value that controls how many reentrant call
 
 The reentrant actor must provide the appropriate configuration. This is done by the actor's endpoint for `GET /dapr/config`, similar to other actor configuration elements.
 
-{{% tabpane ".NET" JavaScript Python Java Go %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 <!--dotnet-->
 
 ```csharp
@@ -55,7 +55,7 @@ public class Startup
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "JavaScript" %}}
 <!--javascript-->
 
 ```js
@@ -74,7 +74,7 @@ const clientOptions = {
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 <!--python-->
 
 ```python
@@ -102,7 +102,7 @@ def do_something_reentrant():
 ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Java" %}}
 <!--java-->
 
 ```java
@@ -111,8 +111,7 @@ def do_something_reentrant():
 
 {{% /tab %}}
 
-
-{{% tab %}}
+{{% tab "Go" %}}
 
 Here is a snippet of an actor written in Golang providing the reentrancy configuration via the HTTP API. Reentrancy has not yet been included into the Go SDK.
 

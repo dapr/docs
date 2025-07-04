@@ -34,9 +34,9 @@ Refer to the TTL column in the [state store components guide]({{% ref supported-
 
 You can set state TTL in the metadata as part of the state store set request:
 
-{{% tabpane Python ".NET" Go "HTTP API (Bash)" "HTTP API (PowerShell)"%}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Python" %}}
 
 <!--python-->
 
@@ -64,7 +64,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab ".NET" %}}
 
 <!--dotnet-->
 
@@ -90,7 +90,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Go" %}}
 
 <!--go-->
 
@@ -117,7 +117,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '[{ "key": "order_1", "value": "250", "metadata": { "ttlInSeconds": "120" } }]' http://localhost:3601/v1.0/state/statestore
@@ -125,7 +125,7 @@ curl -X POST -H "Content-Type: application/json" -d '[{ "key": "order_1", "value
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{"key": "order_1", "value": "250", "metadata": {"ttlInSeconds": "120"}}]' -Uri 'http://localhost:3601/v1.0/state/statestore'

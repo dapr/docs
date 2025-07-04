@@ -66,13 +66,13 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 Dapr can use any Redis instance: containerized, running on your local dev machine, or a managed cloud service.
 
-{{% tabpane "Self-Hosted" "Kubernetes" "AWS" "Azure" "GCP" %}}
+{{% tabpane %}}
 
-{{% tab %}}
+{{% tab "Self-Hosted" %}}
 A Redis instance is automatically created as a Docker container when you run `dapr init`
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Kubernetes" %}}
 You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Kubernetes cluster. This approach requires [Installing Helm](https://github.com/helm/helm#install).
 
 1. Install Redis into your cluster. Note that we're explicitly setting an image tag to get a version greater than 5, which is what Dapr' pub/sub functionality requires. If you're intending on using Redis as just a state store (and not for pub/sub), you do not have to set the image version.
@@ -101,11 +101,11 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
     ```
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "AWS" %}}
 [AWS Redis](https://aws.amazon.com/redis/)
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "Azure" %}}
 
 1. [Create an Azure Cache for Redis instance using the official Microsoft documentation.](https://docs.microsoft.com/azure/azure-cache-for-redis/quickstart-create-redis)
 
@@ -135,7 +135,7 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 
 {{% /tab %}}
 
-{{% tab %}}
+{{% tab "GCP" %}}
 [GCP Cloud MemoryStore](https://cloud.google.com/memorystore/)
 {{% /tab %}}
 
