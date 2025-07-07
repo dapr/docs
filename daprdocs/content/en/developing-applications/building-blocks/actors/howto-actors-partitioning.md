@@ -37,7 +37,7 @@ If you need to change the number of partitions, Dapr's sidecar will automaticall
 
 Similar to other actor configuration elements, the actor runtime provides the appropriate configuration to partition actor reminders via the actor's endpoint for `GET /dapr/config`. Select your preferred language for an actor runtime configuration example.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -169,7 +169,7 @@ func configHandler(w http.ResponseWriter, r *http.Request) {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 The following is an example of a valid configuration for reminder partitioning:
 

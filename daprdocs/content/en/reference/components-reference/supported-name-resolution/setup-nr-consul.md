@@ -139,7 +139,7 @@ spec:
 ```
 
 ## Setup HashiCorp Consul
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 HashiCorp offer in depth guides on how to setup Consul for different hosting models. Check out the [self-hosted guide here](https://learn.hashicorp.com/collections/consul/getting-started)
@@ -149,7 +149,7 @@ HashiCorp offer in depth guides on how to setup Consul for different hosting mod
 HashiCorp offer in depth guides on how to setup Consul for different hosting models. Check out the [Kubernetes guide here](https://learn.hashicorp.com/collections/consul/kubernetes)
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Related links
 - [Service invocation building block]({{% ref service-invocation %}})

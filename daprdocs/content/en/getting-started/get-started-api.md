@@ -50,7 +50,7 @@ Notice, that objects contained in the state each have a `key` assigned with the 
 
 Save a new state object using the following command:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 {{% tab "HTTP API (Bash)" %}}
 
 ```bash
@@ -67,13 +67,13 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{ "key": 
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ### Step 3: Get state
 
 Retrieve the object you just stored in the state by using the state management API with the key `name`. In the same terminal window, run the following command:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "HTTP API (Bash)" %}}
 
@@ -91,7 +91,7 @@ Invoke-RestMethod -Uri 'http://localhost:3500/v1.0/state/statestore/name'
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ### Step 4: See how the state is stored in Redis
 
@@ -132,7 +132,7 @@ exit
 
 In the same terminal window, delete the`name` state object from the state store.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "HTTP API (Bash)" %}}
 
@@ -150,6 +150,6 @@ Invoke-RestMethod -Method Delete -ContentType 'application/json' -Uri 'http://lo
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 {{< button text="Next step: Dapr Quickstarts >>" page="getting-started/quickstarts.md" >}}

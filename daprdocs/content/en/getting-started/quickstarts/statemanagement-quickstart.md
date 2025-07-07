@@ -18,7 +18,7 @@ While this sample uses Redis, you can swap it out for any one of the [supported 
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
  <!-- Python -->
 {{% tab "Python" %}}
 
@@ -682,14 +682,14 @@ In the YAML file:
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 ## Run one application at a time
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
  <!-- Python -->
 {{% tab "Python" %}}
 
@@ -1285,7 +1285,7 @@ In the YAML file:
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Tell us what you think!
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this quickstart helpful? Do you have suggestions for improvement?

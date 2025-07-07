@@ -125,7 +125,7 @@ Learn more about concurrency requirements in the [State Management overview]({{%
 
 The following examples demonstrate how to return an error in your own pluggable component, changing the messages to suit your needs.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
  <!-- .NET -->
 {{% tab ".NET" %}}
 
@@ -304,7 +304,7 @@ st, err := st.WithDetails(br)
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Next steps
 

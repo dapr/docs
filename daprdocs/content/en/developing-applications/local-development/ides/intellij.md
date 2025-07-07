@@ -28,7 +28,7 @@ First, quit IntelliJ before modifying the configurations file directly.
 ### IntelliJ configuration file location
 For versions [2020.1](https://www.jetbrains.com/help/idea/2020.1/tuning-the-ide.html#config-directory) and above the configuration files for tools should be located in:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Windows" %}}
 
@@ -52,7 +52,7 @@ For versions [2020.1](https://www.jetbrains.com/help/idea/2020.1/tuning-the-ide.
 {{% /tab %}}
 
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 > The configuration file location is different for version 2019.3 or prior. See [here](https://www.jetbrains.com/help/idea/2019.3/tuning-the-ide.html#config-directory) for more details.
 

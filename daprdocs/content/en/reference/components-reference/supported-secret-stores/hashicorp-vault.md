@@ -76,7 +76,7 @@ Query Parameter | Description
 
 ## Setup Hashicorp Vault instance
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 Setup Hashicorp Vault using the Vault documentation: https://www.vaultproject.io/docs/install/index.html.
@@ -86,7 +86,7 @@ Setup Hashicorp Vault using the Vault documentation: https://www.vaultproject.io
 For Kubernetes, you can use the Helm Chart: <https://github.com/hashicorp/vault-helm>.
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 ## Multiple key-values per secret

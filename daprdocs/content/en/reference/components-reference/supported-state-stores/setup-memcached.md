@@ -42,7 +42,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Setup Memcached
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 You can run Memcached locally using Docker:
@@ -69,7 +69,7 @@ For example, if installing using the example above, the Memcached host address w
 `memcached.default.svc.cluster.local:11211`
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Related links
 - [Basic schema for a Dapr component]({{% ref component-schema %}})

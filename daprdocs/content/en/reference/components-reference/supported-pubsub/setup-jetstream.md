@@ -103,7 +103,7 @@ spec:
 
 ## Create a NATS server
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 You can run a NATS Server with JetStream enabled locally using Docker:
@@ -133,7 +133,7 @@ For more information on helm chart settings, see the [Helm chart documentation](
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Create JetStream
 

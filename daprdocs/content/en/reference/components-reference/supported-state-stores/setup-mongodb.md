@@ -84,7 +84,7 @@ If you wish to use MongoDB as an actor store, add this metadata option to your C
 
 ## Setup MongoDB
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 You can run a single MongoDB instance locally using Docker:
@@ -108,7 +108,7 @@ Follow the on-screen instructions to get the root password for MongoDB.
 The username is typically `admin` by default.
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ### TTLs and cleanups
 

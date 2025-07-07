@@ -26,7 +26,7 @@ When you provide a directory path, the CLI will try to locate the Multi-App Run 
 
 Execute the following CLI command to read the Multi-App Run template file, named `dapr.yaml` by default:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-hosted" %}}
 <!--selfhosted-->
@@ -46,13 +46,13 @@ dapr run -f <dir_path> -k
 ```
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ### Execute by providing a file path
 
 If the Multi-App Run template file is named something other than `dapr.yaml`, then you can provide the relative or absolute file path to the command:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-hosted" %}}
 <!--selfhosted-->
@@ -71,13 +71,13 @@ dapr run -f ./path/to/<your-preferred-file-name>.yaml -k
 ```
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## View the started applications
 
 Once the multi-app template is running, you can view the started applications with the following command:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-hosted" %}}
 <!--selfhosted-->
@@ -96,13 +96,13 @@ dapr list -k
 ```
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Stop the multi-app template
 
 Stop the multi-app run template anytime with either of the following commands:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-hosted" %}}
 <!--selfhosted-->
@@ -136,14 +136,14 @@ dapr stop -f ./path/to/<your-preferred-file-name>.yaml -k
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 ## Template file structure
 
 The Multi-App Run template file can include the following properties. Below is an example template showing two applications that are configured with some of the properties.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-hosted" %}}
 <!--selfhosted-->
@@ -221,11 +221,11 @@ The following rules apply for all the paths present in the template file:
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Template properties
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-hosted" %}}
 <!--selfhosted-->
@@ -331,6 +331,6 @@ Watch [this video for an overview on Multi-App Run in Kubernetes](https://youtu.
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 

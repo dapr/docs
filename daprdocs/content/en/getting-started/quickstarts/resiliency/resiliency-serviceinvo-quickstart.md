@@ -16,7 +16,7 @@ Observe Dapr resiliency capabilities by simulating a system failure. In this Qui
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
  <!-- Python -->
 {{% tab "Python" %}}
 
@@ -145,7 +145,7 @@ Since the `resiliency.yaml` spec defines the `order-processor` service as a resi
 
 In the `order-processor` window, stop the service:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
  <!-- MacOS -->
 
@@ -167,7 +167,7 @@ CTRL + C
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 Once the first request fails, the retry policy titled `retryForever` is applied:
 
@@ -374,7 +374,7 @@ Since the `resiliency.yaml` spec defines the `order-processor` service as a resi
 
 In the `order-processor` window, stop the service:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
  <!-- MacOS -->
 
@@ -396,7 +396,7 @@ CTRL + C
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 Once the first request fails, the retry policy titled `retryForever` is applied:
@@ -606,7 +606,7 @@ Since the `resiliency.yaml` spec defines the `order-processor` service as a resi
 
 In the `order-processor` window, stop the service:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
  <!-- MacOS -->
 
@@ -628,7 +628,7 @@ CTRL + C
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 Once the first request fails, the retry policy titled `retryForever` is applied:
@@ -839,7 +839,7 @@ Since the `resiliency.yaml` spec defines the `order-processor` service as a resi
 
 In the `order-processor` window, stop the service:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
  <!-- MacOS -->
 
@@ -861,7 +861,7 @@ CTRL + C
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 Once the first request fails, the retry policy titled `retryForever` is applied:
@@ -1069,7 +1069,7 @@ Since the `resiliency.yaml` spec defines the `order-processor` service as a resi
 
 In the `order-processor` window, stop the service:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
  <!-- MacOS -->
 
@@ -1091,7 +1091,7 @@ CTRL + C
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 Once the first request fails, the retry policy titled `retryForever` is applied:
@@ -1168,7 +1168,7 @@ dapr run --app-port 6001 --app-id order-processor --resources-path ../../../reso
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Tell us what you think!
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this quickstart helpful? Do you have suggestions for improvement?

@@ -39,7 +39,7 @@ When non-Dapr subscribers use components such as Azure Service Bus, which native
 
 Message TTL can be set in the metadata as part of the publishing request:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "curl" %}}
 ```bash
@@ -83,7 +83,7 @@ $app->run(function(\DI\FactoryInterface $factory) {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 See [this guide]({{% ref pubsub_api %}}) for a reference on the pub/sub API.
 

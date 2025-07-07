@@ -8,7 +8,7 @@ description: "How to view Dapr metrics in a Grafana dashboard."
 
 ## Available dashboards
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "System Service" %}}
 The `grafana-system-services-dashboard.json` template shows Dapr system component status, dapr-operator, dapr-sidecar-injector, dapr-sentry, and dapr-placement:
@@ -28,7 +28,7 @@ The `grafana-actor-dashboard.json` template shows Dapr Sidecar status, actor inv
 <img src="/images/grafana-actor-dashboard.png" alt="Screenshot of the actor dashboard" width=1200>
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Pre-requisites
 

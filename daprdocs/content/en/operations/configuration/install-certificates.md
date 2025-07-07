@@ -12,7 +12,7 @@ The Dapr sidecar can be configured to trust certificates for communicating with 
 
 Both certificate authority (CA) certificates and leaf certificates are supported.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 <!--self-hosted-->
 {{% tab "Self-hosted" %}}
@@ -96,7 +96,7 @@ spec:
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 After following these steps, all the certificates in the directory pointed by `SSL_CERT_DIR` are installed.
 

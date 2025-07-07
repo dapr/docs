@@ -40,7 +40,7 @@ spec:
       enabled: true
 ```
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 <!--self-hosted-->
 {{% tab "Self-hosted" %}}
@@ -102,7 +102,7 @@ spec:
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Next steps
 

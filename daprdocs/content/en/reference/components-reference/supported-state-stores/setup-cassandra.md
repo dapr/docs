@@ -58,7 +58,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Setup Cassandra
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 You can run Cassandra locally with the Datastax Docker image:
@@ -86,7 +86,7 @@ For example, if installing using the example above, the Cassandra DNS would be:
 `cassandra.cassandra.svc.cluster.local`
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Apache Ignite
 

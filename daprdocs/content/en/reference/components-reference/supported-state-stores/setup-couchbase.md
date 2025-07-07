@@ -46,7 +46,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Setup Couchbase
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 You can run Couchbase locally using Docker:
@@ -68,7 +68,7 @@ helm install couchbase/couchbase-cluster
 ```
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Related links
 - [Basic schema for a Dapr component]({{% ref component-schema %}})

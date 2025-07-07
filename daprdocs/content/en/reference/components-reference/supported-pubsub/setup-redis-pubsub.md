@@ -75,7 +75,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service, provided the version of Redis is 5.x or 6.x.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 The Dapr CLI will automatically create and setup a Redis Streams instance for you.
@@ -150,7 +150,7 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 [GCP Cloud MemoryStore](https://cloud.google.com/memorystore/)
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 {{% alert title="Note" color="primary" %}}

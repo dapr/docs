@@ -95,7 +95,7 @@ The ability to replace CloudEvents properties using these metadata properties ap
 
 For example, to replace the `source` and `id` values from [the CloudEvent example above]({{% ref "#cloudevents-example" %}}) in code:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
  <!-- Python -->
 {{% tab "Python" %}}
 
@@ -154,7 +154,7 @@ await Task.Delay(TimeSpan.FromSeconds(1));
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 The JSON payload then reflects the new `source` and `id` values:
@@ -205,7 +205,7 @@ You can add additional fields to a custom CloudEvent that are not part of the of
 
 ### Example
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Dapr CLI" %}}
 
@@ -237,7 +237,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/cloudevents+json' -Body
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Event deduplication
 

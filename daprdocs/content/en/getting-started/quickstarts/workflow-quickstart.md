@@ -36,7 +36,7 @@ The workflow also contains business logic:
 <img src="/images/workflow-quickstart-controlflow.png" width=800 style="padding-bottom:15px;">
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
  <!-- Python -->
 {{% tab "Python" %}}
@@ -2067,7 +2067,7 @@ func RequestApprovalActivity(ctx workflow.ActivityContext) (any, error) {
 {{% /tab %}}
 
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Tell us what you think!
 

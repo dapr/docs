@@ -136,7 +136,7 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 
 Dapr can use any Redis instance: containerized, running on your local dev machine, or a managed cloud service.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 A Redis instance is automatically created as a Docker container when you run `dapr init`
@@ -208,7 +208,7 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 [GCP Cloud MemoryStore](https://cloud.google.com/memorystore/)
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Querying JSON objects (optional)
 
@@ -303,7 +303,7 @@ Consecutively, you can now store, retrieve, and query these documents.
 Consider the example from ["How-To: Query state"]({{% ref "howto-state-query-api.md#example-data-and-query" %}}) guide. Let's run it with Redis.
 
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 If you are using a self-hosted deployment of Dapr, a Redis instance without the JSON module is automatically created as a Docker container when you run `dapr init`.
@@ -377,7 +377,7 @@ Memory Store does not support modules and cannot be used with query.
 <!-- END_IGNORE -->
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 Next is to start a Dapr application. Refer to this [component configuration file](../../../../developing-applications/building-blocks/state-management/query-api-examples/components/redis/redis.yml), which contains query indexing schemas. Make sure to modify the `redisHost` to reflect the local forwarding port which `redislabs/rejson` uses.
 ```bash

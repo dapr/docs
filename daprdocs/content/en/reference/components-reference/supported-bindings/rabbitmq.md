@@ -97,7 +97,7 @@ The field name is `ttlInSeconds`.
 
 Example:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 {{% tab "Windows" %}}
 ```shell
 curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
@@ -129,7 +129,7 @@ curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
       }'
 ```
 {{% /tab %}}
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 ## Specifying a priority per message
@@ -142,7 +142,7 @@ The field name is `priority`.
 
 Example:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 {{% tab "Windows" %}}
 ```shell
 curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
@@ -174,7 +174,7 @@ curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
       }'
 ```
 {{% /tab %}}
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Related links
 

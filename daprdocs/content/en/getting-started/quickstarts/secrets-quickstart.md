@@ -16,7 +16,7 @@ Dapr provides a dedicated secrets API that allows developers to retrieve secrets
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
  <!-- Python -->
 {{% tab "Python" %}}
 
@@ -566,7 +566,7 @@ Order-processor output:
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Tell us what you think!
 

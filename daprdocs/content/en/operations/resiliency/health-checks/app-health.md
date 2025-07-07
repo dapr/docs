@@ -109,7 +109,7 @@ Thresholds only apply to failures. A single successful response is enough for Da
 
 ## Example
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted (CLI)" %}}
 
@@ -161,7 +161,7 @@ spec:
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Demo
 

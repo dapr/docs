@@ -114,7 +114,7 @@ The AWS authentication token will be dynamically rotated before it's expiration 
 
 ## Setup PostgreSQL
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 
@@ -137,7 +137,7 @@ The AWS authentication token will be dynamically rotated before it's expiration 
   
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Advanced
 

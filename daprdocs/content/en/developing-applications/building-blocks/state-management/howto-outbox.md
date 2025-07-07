@@ -118,7 +118,7 @@ If you have two or more `outbox.projection` enabled state items for the same key
 
 [Learn more about default and custom CloudEvent messages.]({{% ref pubsub-cloudevents.md %}})
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Python" %}}
 
@@ -403,13 +403,13 @@ By setting the metadata item `"outbox.projection"` to `"true"` and making sure t
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ### Override Dapr-generated CloudEvent fields
 
 You can override the [Dapr-generated CloudEvent fields]({{% ref "pubsub-cloudevents.md#dapr-generated-cloudevents-example" %}}) on the published outbox event with custom CloudEvent metadata.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Python" %}}
 
@@ -669,7 +669,7 @@ curl -X POST http://localhost:3500/v1.0/state/starwars/transaction \
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 {{% alert title="Note" color="primary" %}}

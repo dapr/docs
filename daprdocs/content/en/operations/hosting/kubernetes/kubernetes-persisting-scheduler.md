@@ -43,7 +43,7 @@ This means the actual disk usage of Scheduler will be higher than the current ob
 If you need to increase an **existing** Scheduler storage size, see the [Increase Scheduler Storage Size](#increase-existing-scheduler-storage-size) section below.
 To increase the storage size (in this example- `16Gi`) for a **fresh** Dapr installation, you can use the following command:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
  <!-- Dapr CLI -->
 {{% tab "Dapr CLI" %}}
 
@@ -67,7 +67,7 @@ helm upgrade --install dapr dapr/dapr \
 ```
 
 {{% /tab %}}
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 {{% alert title="Note" color="primary" %}}
 For storage providers that do NOT support dynamic volume expansion: If Dapr has ever been installed on the cluster before, the Scheduler's Persistent Volume Claims must be manually uninstalled in order for new ones with increased storage size to be created.
@@ -153,7 +153,7 @@ Once the storage class is available, you can install Dapr using the following co
 If Dapr is already installed, the control plane needs to be completely [uninstalled]({{% ref dapr-uninstall.md %}}) in order for the Scheduler `StatefulSet` to be recreated with the new persistent volume.
 {{% /alert %}}
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
  <!-- Dapr CLI -->
 {{% tab "Dapr CLI" %}}
 
@@ -176,7 +176,7 @@ helm upgrade --install dapr dapr/dapr \
 ```
 
 {{% /tab %}}
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Ephemeral Storage
 
@@ -187,7 +187,7 @@ This is useful in non-production deployments or for testing where storage is not
 If Dapr is already installed, the control plane needs to be completely [uninstalled]({{% ref dapr-uninstall.md %}}) in order for the Scheduler `StatefulSet` to be recreated without the persistent volume.
 {{% /alert %}}
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
  <!-- Dapr CLI -->
 {{% tab "Dapr CLI" %}}
 
@@ -210,4 +210,4 @@ helm upgrade --install dapr dapr/dapr \
 ```
 
 {{% /tab %}}
-{{% /tabpane %}}
+{{< /tabpane >}}

@@ -17,7 +17,7 @@ Each namespaced actor deployment must use its own separate state store, especial
 
 You can use namespaces either in self-hosted mode or on Kubernetes.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 In self-hosted mode, you can specify the namespace for a Dapr instance by setting [the `NAMESPACE` environment variable]({{% ref environment %}}).
@@ -36,7 +36,7 @@ Then, deploy your actor applications into this namespace (in the example, `names
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Configuring actor state stores for namespacing
 

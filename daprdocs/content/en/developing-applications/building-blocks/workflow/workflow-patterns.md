@@ -25,7 +25,7 @@ While the pattern is simple, there are many complexities hidden in the implement
 
 Dapr Workflow solves these complexities by allowing you to implement the task chaining pattern concisely as a simple function in the programming language of your choice, as shown in the following example.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Python" %}}
 <!--python-->
@@ -285,7 +285,7 @@ func Step3(ctx workflow.ActivityContext) (any, error) {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 As you can see, the workflow is expressed as a simple series of statements in the programming language of your choice. This allows any engineer in the organization to quickly understand the end-to-end flow without necessarily needing to understand the end-to-end system architecture.
 
@@ -311,7 +311,7 @@ In addition to the challenges mentioned in [the previous pattern]({{% ref "workf
 
 Dapr Workflows provides a way to express the fan-out/fan-in pattern as a simple function, as shown in the following example:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Python" %}}
 <!--python-->
@@ -578,7 +578,7 @@ func ProcessResults(ctx workflow.ActivityContext) (any, error) {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 The key takeaways from this example are:
 
@@ -590,7 +590,7 @@ Furthermore, the execution of the workflow is durable. If a workflow starts 100 
 
 It's possible to go further and limit the degree of concurrency using simple, language-specific constructs. The sample code below illustrates how to restrict the degree of fan-out to just 5 concurrent activity executions:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 <!-- .NET -->
@@ -622,7 +622,7 @@ await context.CallActivityAsync("PostResults", sum);
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 Limiting the degree of concurrency in this way can be useful for limiting contention against shared resources. For example, if the activities need to call into external resources that have their own concurrency limits, like a databases or external APIs, it can be useful to ensure that no more than a specified number of activities call that resource concurrently.
 
@@ -716,7 +716,7 @@ Depending on the business needs, there may be a single monitor or there may be m
 
 Dapr Workflow supports this pattern natively by allowing you to implement _eternal workflows_. Rather than writing infinite while-loops ([which is an anti-pattern]({{% ref "workflow-features-concepts.md#infinite-loops-and-eternal-workflows" %}})), Dapr Workflow exposes a _continue-as-new_ API that workflow authors can use to restart a workflow function from the beginning with a new input.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Python" %}}
 <!--python-->
@@ -929,7 +929,7 @@ func SendAlert(ctx workflow.ActivityContext) (any, error) {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 A workflow implementing the monitor pattern can loop forever or it can terminate itself gracefully by not calling _continue-as-new_.
 
@@ -957,7 +957,7 @@ The following diagram illustrates this flow.
 
 The following example code shows how this pattern can be implemented using Dapr Workflow.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Python" %}}
 <!--python-->
@@ -1296,11 +1296,11 @@ func PlaceOrder(ctx workflow.ActivityContext) (any, error) {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 The code that delivers the event to resume the workflow execution is external to the workflow. Workflow events can be delivered to a waiting workflow instance using the [raise event]({{% ref "howto-manage-workflow.md#raise-an-event" %}}) workflow management API, as shown in the following example:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Python" %}}
 <!--python-->
@@ -1382,7 +1382,7 @@ func raiseEvent() {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 External events don't have to be directly triggered by humans. They can also be triggered by other systems. For example, a workflow may need to pause and wait for a payment to be received. In this case, a payment system might publish an event to a pub/sub topic on receipt of a payment, and a listener on that topic can raise an event to the workflow using the raise event workflow API.
 

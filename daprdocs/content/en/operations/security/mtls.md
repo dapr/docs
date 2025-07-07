@@ -385,7 +385,7 @@ spec:
 
 In addition to the Dapr configuration, you also need to provide the TLS certificates to each Dapr sidecar instance. You can do so by setting the following environment variables before running the Dapr instance:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Linux/MacOS" %}}
 ```bash
@@ -407,7 +407,7 @@ $env:NAMESPACE="default"
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 If using the Dapr CLI, point Dapr to the config file above to run the Dapr instance with mTLS enabled:
 

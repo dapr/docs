@@ -12,7 +12,7 @@ You can increase the HTTP header size by using:
 - The `dapr.io/http-read-buffer-size` annotation, or 
 - The `--dapr-http-read-buffer-size` flag when using the CLI.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 <!--Self-hosted-->
 {{% tab "Self-hosted" %}}
@@ -58,7 +58,7 @@ spec:
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Related links
 [Dapr Kubernetes pod annotations spec]({{% ref arguments-annotations-overview.md %}})

@@ -17,7 +17,7 @@ In this Quickstart, you schedule a batch script to run every 10 seconds using an
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
  <!-- Python -->
 {{% tab "Python" %}}
 
@@ -1076,7 +1076,7 @@ In the YAML file:
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Tell us what you think!
 

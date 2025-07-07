@@ -155,7 +155,7 @@ Consider potential contention scenarios when using SNS/SQS with Dapr, and config
 
 ## Create an SNS/SQS instance
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 For local development, the [localstack project](https://github.com/localstack/localstack) is used to integrate AWS SNS/SQS. Follow [these instructions](https://github.com/localstack/localstack#running) to run localstack.
@@ -307,7 +307,7 @@ Alternatively, let's say you want to provision the SNS and SQS assets using your
 In the above example, you are running your applications on an EKS cluster with dynamic assets creation (the default Dapr behavior).
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Related links
 

@@ -13,7 +13,7 @@ When Dapr runs, it matches it's own configured namespace with the namespace of t
 ## Namespaces
 Namespaces can be used to limit component access to particular Dapr instances.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 In self hosted mode, a developer can specify the namespace to a Dapr instance by setting the `NAMESPACE` environment variable.
@@ -70,7 +70,7 @@ spec:
 In this example, the Redis component is only accessible to Dapr instances running inside the `production` namespace.
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 {{% alert title="Note" color="primary" %}}
 The component YAML applied to namespace "A" can *reference* the implementation in namespace "B". For example, a component YAML for Redis in namespace "production-A" can point the Redis host address to the Redis instance deployed in namespace "production-B". 

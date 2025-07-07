@@ -66,7 +66,7 @@ If you are using `v1`, you should continue to use `v1` until you create a new Et
 
 ## Setup Etcd
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 
@@ -104,7 +104,7 @@ Follow the [Bitnami instructions](https://github.com/bitnami/charts/tree/main/bi
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Related links
 

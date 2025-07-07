@@ -48,7 +48,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Setup Zookeeper
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 You can run Zookeeper locally using Docker:
@@ -76,7 +76,7 @@ For example, if installing using the example above, the Zookeeper host address w
 `zookeeper.default.svc.cluster.local:2181`
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 ## Related links

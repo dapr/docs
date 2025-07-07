@@ -10,7 +10,7 @@ By default, Dapr has a limit for the request body size, set to 4MB. You can chan
 - The `dapr.io/http-max-request-size` annotation, or
 - The `--dapr-http-max-request-size` flag.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 <!--self hosted-->
 {{% tab "Self-hosted" %}}
@@ -56,7 +56,7 @@ spec:
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Related links
 

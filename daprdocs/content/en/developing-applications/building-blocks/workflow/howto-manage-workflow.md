@@ -8,7 +8,7 @@ description: Manage and run workflows
 
 Now that you've [authored the workflow and its activities in your application]({{% ref howto-author-workflow.md %}}), you can start, terminate, and get information about the workflow using HTTP API calls. For more information, read the [workflow API reference]({{% ref workflow_api.md %}}).
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 <!--Python-->
 {{% tab "Python" %}}
@@ -379,7 +379,7 @@ Learn more about these HTTP calls in the [workflow API reference guide]({{% ref 
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 ## Next steps

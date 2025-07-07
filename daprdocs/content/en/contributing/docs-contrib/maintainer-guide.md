@@ -408,4 +408,3 @@ To bring updates to the SDK docs live to the Dapr docs site, you need to perform
 
 ## Next steps
 
-For guidance on contributing to Dapr docs, read the [Contributor Guide]({{% ref contributing-docs %}}).

@@ -18,7 +18,7 @@ Dapr SDKs provide serialization for two use cases. First, for API objects sent t
 
 ## Service invocation
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 <!-- .NET -->
 {{% tab ".NET" %}}
@@ -40,7 +40,7 @@ Dapr SDKs provide serialization for two use cases. First, for API objects sent t
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 In the example above, the app `myappid` receives a `POST` request for the `saySomething` method with the request payload as 
 `"My Message"` - quoted since the serializer will serialize the input String to JSON.
@@ -56,7 +56,7 @@ Content-Length: 12
 
 ## State management
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 <!-- .NET -->
 {{% tab ".NET" %}}
@@ -83,7 +83,7 @@ Content-Length: 12
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 In this example, `My Message` is saved. It is not quoted because Dapr's API internally parse the JSON request 
 object before saving it.
@@ -99,7 +99,7 @@ object before saving it.
 
 ## PubSub
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 <!-- .NET -->
 {{% tab ".NET" %}}
@@ -149,13 +149,13 @@ The event is published and the content is serialized to `byte[]` and sent to Dap
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Bindings
 
 For output bindings the object is serialized to `byte[]` whereas the input binding receives the raw `byte[]` as-is and deserializes it to the expected object type.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 <!-- .NET -->
 {{% tab ".NET" %}}
@@ -211,7 +211,7 @@ app.MapPost("value", ([FromBody] int itemId) =>
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 It should print:
 ```
@@ -225,7 +225,7 @@ is all done transparently by the SDK.
 
 For Actor methods, the SDK only supports methods with zero or one parameter.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 The .NET SDK supports two different serialization types based on whether you're using strongly-typed (DataContracts)
 or weakly-typed (DataContracts or System.Text.JSON) actor client. [This document]({{% ref dotnet-actors-serialization %}}) 
@@ -272,7 +272,7 @@ public String say(String something) {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 It should print:
 ```
@@ -283,7 +283,7 @@ It should print:
 Actors can also have state. In this case, the state manager will serialize and deserialize the objects using the state 
 serializer and handle it transparently to the application.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 <!-- .NET -->
 {{% tab ".NET" %}}
@@ -318,7 +318,7 @@ public String actorMethod(String message) {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Default serializer
 

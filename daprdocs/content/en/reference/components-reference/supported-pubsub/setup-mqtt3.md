@@ -127,7 +127,7 @@ It is recommended to use [StatefulSets]({{% ref "howto-subscribe-statefulset.md"
 
 ## Create a MQTT3 broker
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 You can run a MQTT broker like emqx [locally using Docker](https://hub.docker.com/_/emqx):
@@ -188,7 +188,7 @@ spec:
 You can then interact with the server using the client port: `tcp://mqtt-broker.default.svc.cluster.local:1883`
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Related links
 

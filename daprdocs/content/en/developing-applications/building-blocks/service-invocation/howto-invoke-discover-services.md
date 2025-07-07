@@ -19,7 +19,7 @@ This article demonstrates how to deploy services each with an unique application
 
 Dapr allows you to assign a global, unique ID for your app. This ID encapsulates the state for your application, regardless of the number of instances it may have.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Python" %}}
 
@@ -145,7 +145,7 @@ If your app uses a TLS connection, you can tell Dapr to invoke your app over TLS
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Invoke the service
 
@@ -153,7 +153,7 @@ To invoke an application using Dapr, you can use the `invoke` API on any Dapr in
 
 Below are code examples that leverage Dapr SDKs for service invocation.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Python" %}}
 
@@ -369,7 +369,7 @@ func main() {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ### Additional URL formats
 

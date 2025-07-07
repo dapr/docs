@@ -23,7 +23,7 @@ You can try out this pub/sub quickstart by either:
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
  <!-- Python -->
 {{% tab "Python" %}}
 
@@ -824,13 +824,13 @@ fmt.Println("Published data: ", order)
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Run one application at a time
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
  <!-- Python -->
 {{% tab "Python" %}}
 
@@ -1639,7 +1639,7 @@ In the YAML file:
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Tell us what you think!
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this Quickstart helpful? Do you have suggestions for improvement?

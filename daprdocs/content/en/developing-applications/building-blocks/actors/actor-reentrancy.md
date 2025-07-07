@@ -29,7 +29,7 @@ The `maxStackDepth` parameter sets a value that controls how many reentrant call
 
 The reentrant actor must provide the appropriate configuration. This is done by the actor's endpoint for `GET /dapr/config`, similar to other actor configuration elements.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 <!--dotnet-->
@@ -169,7 +169,7 @@ func reentrantCallHandler(w http.ResponseWriter, r *http.Request) {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Demo
 

@@ -72,7 +72,7 @@ To perform a create operation, invoke the Huawei OBS binding with a `POST` metho
 #### Examples
 ##### Save text to a random generated UUID file
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
   {{% tab %}}
   On Windows, utilize cmd prompt (PowerShell has different escaping mechanism)
   ```bash
@@ -87,11 +87,11 @@ To perform a create operation, invoke the Huawei OBS binding with a `POST` metho
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ##### Save text to a specific file
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -107,7 +107,7 @@ To perform a create operation, invoke the Huawei OBS binding with a `POST` metho
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -133,7 +133,7 @@ To upload a binary file (for example, _.jpg_, _.zip_), invoke the Huawei OBS bin
 
 #### Example
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -149,7 +149,7 @@ To upload a binary file (for example, _.jpg_, _.zip_), invoke the Huawei OBS bin
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -174,7 +174,7 @@ The metadata parameters are:
 
 #### Example
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -189,7 +189,7 @@ The metadata parameters are:
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -218,7 +218,7 @@ The metadata parameters are:
 
 ##### Delete object
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -233,7 +233,7 @@ The metadata parameters are:
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -265,7 +265,7 @@ The data parameters are:
 
 #### Example
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -280,7 +280,7 @@ The data parameters are:
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Response
 

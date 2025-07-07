@@ -189,7 +189,7 @@ Tabs are made possible through [Hugo shortcodes](https://gohugo.io/content-manag
 The overall format is:
 
 ```
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Tab1" %}}
 [Content for Tab1]
@@ -199,7 +199,7 @@ The overall format is:
 [Content for Tab2]
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 ```
 
 All content you author will be rendered to markdown, so you can include images, code blocks, YouTube videos, and more.
@@ -207,7 +207,7 @@ All content you author will be rendered to markdown, so you can include images, 
 #### Example
 
 ````
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Windows" %}}
 ```powershell
@@ -227,12 +227,12 @@ brew install dapr/tap/dapr-cli
 ```
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 ````
 
 This example will render to this:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Windows" %}}
 
@@ -258,7 +258,7 @@ brew install dapr/tap/dapr-cli
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ### Embedded code snippets
 

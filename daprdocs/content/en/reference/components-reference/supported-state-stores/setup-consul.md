@@ -49,7 +49,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Setup HashiCorp Consul
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 You can run Consul locally using Docker:
@@ -76,7 +76,7 @@ For example, if installing using the example above, the Consul host address woul
 `consul.default.svc.cluster.local:8500`
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Related links
 - [Basic schema for a Dapr component]({{% ref component-schema %}})

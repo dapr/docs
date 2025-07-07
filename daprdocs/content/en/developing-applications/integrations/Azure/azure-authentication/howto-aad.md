@@ -37,7 +37,7 @@ APP_ID=$(az ad app create --display-name "${APP_NAME}"  | jq -r .appId)
 
 Select how you'd prefer to pass credentials.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Client secret" %}}
 
@@ -103,7 +103,7 @@ When adding the returned values to your Dapr component's metadata:
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ### Create a Service Principal
 

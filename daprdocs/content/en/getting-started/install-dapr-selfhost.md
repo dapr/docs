@@ -35,7 +35,7 @@ You can also install [Podman](https://podman.io/) in place of Docker. Read more 
 
 ### Step 1: Open an elevated terminal
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Linux/MacOS" %}}
 
@@ -55,11 +55,11 @@ Run Windows Terminal or command prompt as administrator.
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ### Step 2: Run the init CLI command
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Linux/MacOS" %}}
 
@@ -91,7 +91,7 @@ dapr init
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 **Expected output:**
 
@@ -135,7 +135,7 @@ Verify by opening your components directory:
 - On Windows, under `%UserProfile%\.dapr`
 - On Linux/MacOS, under `~/.dapr`
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Linux/MacOS" %}}
 
@@ -168,7 +168,7 @@ explorer "%USERPROFILE%\.dapr"
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 <br>
 

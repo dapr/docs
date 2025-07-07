@@ -20,7 +20,7 @@ When you [run `dapr init` in either self-hosted mode or on Kubernetes]({{% ref i
 
 In your code, set up and schedule jobs within your application.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -223,13 +223,13 @@ func prodDBBackupHandler(ctx context.Context, job *common.JobEvent) error {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Run the Dapr sidecar 
 
 Once you've set up the Jobs API in your application, in a terminal window run the Dapr sidecar with the following command. 
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Go" %}}
 
@@ -245,7 +245,7 @@ dapr run --app-id=distributed-scheduler \
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 ## Next steps

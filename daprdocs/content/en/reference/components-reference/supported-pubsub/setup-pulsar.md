@@ -328,7 +328,7 @@ To ensure that messages arrive in order for each consumer subscribed to a specif
 
 ## Create a Pulsar instance
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 
@@ -349,7 +349,7 @@ docker run -it \
 Refer to the following [Helm chart](https://pulsar.apache.org/docs/helm-overview) Documentation.
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Related links
 

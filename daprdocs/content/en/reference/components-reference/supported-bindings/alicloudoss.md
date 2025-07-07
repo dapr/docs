@@ -68,7 +68,7 @@ By default, a random UUID is auto-generated as the object key. See below for Met
 
 **Saving to a random generated UUID file**
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Windows" %}}
 
@@ -86,12 +86,12 @@ curl -d '{ "operation": "create", "data": "Hello World" }' http://localhost:<dap
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 <br />
 
 **Saving to a specific file**
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Windows" %}}
 
@@ -109,7 +109,7 @@ curl -d '{ "operation": "create", "data": "Hello World", "metadata": { "key": "m
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 {{% alert title="Note" color="primary" %}}
 Windows CMD requires escaping the `"` character.

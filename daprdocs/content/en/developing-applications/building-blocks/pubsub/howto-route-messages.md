@@ -40,7 +40,7 @@ scopes:
 
 In the programmatic approach, the `routes` structure is returned instead of `route`. The JSON structure matches the declarative YAML:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Python" %}}
 ```python
@@ -245,7 +245,7 @@ $app->start();
 ```
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Common Expression Language (CEL)
 

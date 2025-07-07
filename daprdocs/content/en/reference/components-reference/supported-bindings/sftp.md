@@ -79,7 +79,7 @@ To perform a create file operation, invoke the SFTP binding with a `POST` method
 
 #### Example
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -94,7 +94,7 @@ To perform a create file operation, invoke the SFTP binding with a `POST` method
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -122,7 +122,7 @@ To perform a get file operation, invoke the SFTP binding with a `POST` method an
 
 #### Example
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -137,7 +137,7 @@ To perform a get file operation, invoke the SFTP binding with a `POST` method an
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -166,7 +166,7 @@ If you only want to list the files beneath a particular directory below the `roo
 
 #### Example
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -181,7 +181,7 @@ If you only want to list the files beneath a particular directory below the `roo
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -202,7 +202,7 @@ To perform a delete file operation, invoke the SFTP binding with a `POST` method
 
 #### Example
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -217,7 +217,7 @@ To perform a delete file operation, invoke the SFTP binding with a `POST` method
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Response
 

@@ -95,7 +95,7 @@ Dapr can manage the Worker for you automatically, or you can pre-provision a Wor
 Use a separate Worker for each Dapr component. Do not use the same Worker script for different Cloudflare Workers KV state store components, and do not use the same Worker script for different Cloudflare components in Dapr (e.g. the Workers KV state store and the Queues binding).
 {{% /alert %}}
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Let Dapr manage the Worker" %}}
 <!-- Let Dapr manage the Worker -->
@@ -173,7 +173,7 @@ Once your Worker has been deployed, you will need to initialize the component wi
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Generate an Ed25519 key pair
 
@@ -185,7 +185,7 @@ All Cloudflare Workers listen on the public Internet, so Dapr needs to use addit
 
 To let Dapr issue bearer tokens, and have your Worker validate them, you will need to generate a new Ed25519 key pair. Here are examples of generating the key pair using OpenSSL or the step CLI.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Generate with OpenSSL" %}}
 <!-- Generate with OpenSSL -->
@@ -226,7 +226,7 @@ step crypto keypair \
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 Regardless of how you generated your key pair, with the instructions above you'll have two files:
 

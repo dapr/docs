@@ -71,7 +71,7 @@ spec:
 
 The following example shows how to get a saved configuration item using the Dapr Configuration API.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -239,14 +239,14 @@ Invoke-RestMethod -Uri 'http://localhost:3601/v1.0/configuration/configstore?key
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 ### Subscribe to configuration item updates
 
 Below are code examples that leverage SDKs to subscribe to keys `[orderId1, orderId2]` using `configstore` store component.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -495,7 +495,7 @@ dapr run --app-id orderprocessing --app-protocol grpc --dapr-grpc-port 3500 -- n
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 ### Unsubscribe from configuration item updates
@@ -504,7 +504,7 @@ After you've subscribed to watch configuration items, you will receive updates f
 
 Following are the code examples showing how you can unsubscribe to configuration updates using unsubscribe API.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -656,7 +656,7 @@ Invoke-RestMethod -Uri 'http://localhost:<DAPR_HTTP_PORT>/v1.0/configuration/con
 ```
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Next steps
 

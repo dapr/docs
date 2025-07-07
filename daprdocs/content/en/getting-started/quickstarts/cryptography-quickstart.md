@@ -23,7 +23,7 @@ This example uses the Dapr SDK, which leverages gRPC and is **strongly** recomme
 
 Currently, you can experience the cryptography API using the Go SDK.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
  <!-- JavaScript -->
 {{% tab "JavaScript" %}}
@@ -469,7 +469,7 @@ The application then decrypts the large image file:
 {{% /tab %}}
 
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Watch the demo
 

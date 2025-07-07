@@ -150,7 +150,7 @@ ORDER BY
 
 Execute the query with the following command:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "HTTP API (Bash)" %}}
 
@@ -168,7 +168,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -InFile query-api
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 The query result is an array of matching key/value pairs in the requested order:
 
@@ -250,7 +250,7 @@ SELECT * FROM c WHERE
 
 Execute the query with the following command:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "HTTP API (Bash)" %}}
 
@@ -268,7 +268,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -InFile query-api
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 Similar to the previous example, the result is an array of matching key/value pairs.
 
@@ -331,7 +331,7 @@ LIMIT 3
 
 Execute the query with the following command:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "HTTP API (Bash)" %}}
 
@@ -349,7 +349,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -InFile query-api
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 Upon successful execution, the state store returns a JSON object with a list of matching records and the pagination token:
 
@@ -434,7 +434,7 @@ The pagination token is used "as is" in the [subsequent query](../query-api-exam
 }
 ```
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "HTTP API (Bash)" %}}
 
@@ -452,7 +452,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -InFile query-api
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 And the result of this query is:
 

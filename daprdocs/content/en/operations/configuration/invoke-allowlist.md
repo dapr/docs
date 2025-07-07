@@ -302,9 +302,9 @@ When walking through this tutorial, you:
 
 1. In a command prompt, set these environment variables:
 
-    {{% tabpane "Linux/MacOS" Windows %}}
+    {{< tabpane text=true >}}
 
-    {{% tab %}}
+    {{% tab "Linux/MacOS" %}}
 
       ```bash
       export DAPR_TRUST_ANCHORS=`cat $HOME/.dapr/certs/ca.crt`
@@ -315,7 +315,7 @@ When walking through this tutorial, you:
 
     {{% /tab %}}
 
-    {{% tab %}}
+    {{% tab Windows %}}
 
       ```powershell
       $env:DAPR_TRUST_ANCHORS=$(Get-Content -raw $env:USERPROFILE\.dapr\certs\ca.crt)
@@ -326,7 +326,7 @@ When walking through this tutorial, you:
 
     {{% /tab %}}
     
-    {{% /tabpane %}}
+    {{< /tabpane >}}
 
 1. Run daprd to launch a Dapr sidecar for the Node.js app with mTLS enabled, referencing the local Sentry service:
 
@@ -344,9 +344,9 @@ When walking through this tutorial, you:
 
 1. In another command prompt, set these environment variables:
 
-   {{% tabpane "Linux/MacOS" Windows %}}
+   {{< tabpane text=true >}}
 
-   {{% tab %}}
+   {{% tab "Linux/MacOS" %}}
 
     ```bash
     export DAPR_TRUST_ANCHORS=`cat $HOME/.dapr/certs/ca.crt`
@@ -356,7 +356,7 @@ When walking through this tutorial, you:
    ```
    {{% /tab %}}
 
-   {{% tab %}}
+   {{% tab Windows %}}
 
    ```powershell
    $env:DAPR_TRUST_ANCHORS=$(Get-Content -raw $env:USERPROFILE\.dapr\certs\ca.crt)
@@ -367,7 +367,7 @@ When walking through this tutorial, you:
   
    {{% /tab %}}
 
-   {{% /tabpane %}}
+   {{< /tabpane >}}
 
 1. Run daprd to launch a Dapr sidecar for the Python app with mTLS enabled, referencing the local Sentry service:
 

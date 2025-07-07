@@ -86,7 +86,7 @@ If an error message occurs, stating the `app-id` is already in use, you may need
 
 In a separate terminal, run:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 {{% tab "HTTP API (Bash)" %}}
 
 ```bash
@@ -102,7 +102,7 @@ Invoke-RestMethod -Uri 'http://localhost:3500/v1.0/secrets/my-secret-store/my-se
 ```
 
 {{% /tab %}}
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 **Output:**
 

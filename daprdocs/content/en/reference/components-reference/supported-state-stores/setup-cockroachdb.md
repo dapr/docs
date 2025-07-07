@@ -64,7 +64,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Setup CockroachDB
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 
@@ -89,7 +89,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 The easiest way to install CockroachDB on Kubernetes is by using the [CockroachDB Operator](https://github.com/cockroachdb/cockroach-operator):
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Advanced
 

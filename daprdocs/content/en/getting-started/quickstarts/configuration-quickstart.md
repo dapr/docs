@@ -19,7 +19,7 @@ In this quickstart, you'll run an `order-processor` microservice that utilizes t
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
  <!-- Python -->
 {{% tab "Python" %}}
 
@@ -621,7 +621,7 @@ case <-ctx.Done():
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Demo
 

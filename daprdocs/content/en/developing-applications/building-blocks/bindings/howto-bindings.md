@@ -34,7 +34,7 @@ Create a new binding component named `checkout`. Within the `metadata` section, 
 
 When creating the binding component, [specify the supported `direction` of the binding]({{% ref "bindings_api#binding-direction-optional" %}}). 
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted (CLI)" %}}
 
@@ -100,13 +100,13 @@ spec:
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Send an event (output binding)
 
 The code examples below leverage Dapr SDKs to invoke the output bindings endpoint on a running Dapr instance. 
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -284,7 +284,7 @@ function sleep(ms) {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 You can also invoke the output bindings endpoint using HTTP:
 

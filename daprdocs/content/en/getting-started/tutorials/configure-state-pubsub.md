@@ -28,7 +28,7 @@ Dapr can use any Redis instance, either:
 
 If you already have a Redis store, move on to the [configuration](#configure-dapr-components) section.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 Redis is automatically installed in self-hosted environments by the Dapr CLI as part of the initialization process. You are all set! Skip ahead to the [next steps](#next-steps).
@@ -107,7 +107,7 @@ Verify you have an Azure subscription.
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ### Step 2: Configure Dapr components
 
@@ -115,7 +115,7 @@ Dapr defines resources to use for building block functionality with components. 
 
 #### Locate your component files
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 
@@ -131,13 +131,13 @@ Since Kubernetes files are applied with `kubectl`, they can be created in any di
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Create State store component
 
 Create a file named `redis-state.yaml`, and paste the following:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 
@@ -191,7 +191,7 @@ Note the above code example uses the Kubernetes secret you created earlier when 
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 {{% alert title="Other stores" color="primary" %}}
 If using a state store other than Redis, refer to the [supported state stores]({{% ref supported-state-stores %}}) for information on options to set.
@@ -201,7 +201,7 @@ If using a state store other than Redis, refer to the [supported state stores]({
 
 Create a file called `redis-pubsub.yaml`, and paste the following:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 
@@ -255,7 +255,7 @@ Note the above code example uses the Kubernetes secret you created earlier when 
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 {{% alert title="Other stores" color="primary" %}}
 If using a pub/sub message broker other than Redis, refer to the [supported pub/sub message brokers]({{% ref supported-pubsub %}}) for information on options to set.
@@ -305,7 +305,7 @@ spec:
 
 ### Step 3: Apply the configuration
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 
@@ -334,7 +334,7 @@ kubectl apply -f redis-pubsub.yaml
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Next steps
 [Try out a Dapr quickstart]({{% ref quickstarts.md %}})

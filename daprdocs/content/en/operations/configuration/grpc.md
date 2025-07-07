@@ -14,7 +14,7 @@ Not only can you call Dapr via gRPC, Dapr can communicate with an application vi
 
 ## Configuring Dapr to communicate with an app via gRPC
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
  <!-- Self hosted -->
 {{% tab "Self-hosted" %}}
@@ -60,7 +60,7 @@ spec:
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Next steps
 

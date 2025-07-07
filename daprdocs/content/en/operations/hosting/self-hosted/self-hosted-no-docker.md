@@ -46,7 +46,7 @@ By default, the `placement` binary is installed in:
 - For Linux/MacOS: `/$HOME/.dapr/bin`
 - For Windows: `%USERPROFILE%\.dapr\bin`
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Linux/MacOS" %}}
 
@@ -86,7 +86,7 @@ time="2022-10-17T14:56:56.8232286-05:00" level=info msg="leader is established."
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 Now, to run an application with actors enabled, you can follow the sample example created for:
 - [java-sdk](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/actors)

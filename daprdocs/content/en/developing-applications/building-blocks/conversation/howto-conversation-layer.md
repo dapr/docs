@@ -58,7 +58,7 @@ spec:
 
 The following examples use an HTTP client to send a POST request to Dapr's sidecar HTTP endpoint. You can also use [the Dapr SDK client instead]({{% ref "#related-links" %}}).
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 
  <!-- .NET -->
@@ -172,13 +172,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Run the conversation connection
 
 Start the connection using the `dapr run` command. For example, for this scenario, we're running `dapr run` on an application with the app ID `conversation` and pointing to our conversation YAML file in the `./config` directory. 
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
  <!-- .NET -->
 {{% tab ".NET" %}}
@@ -220,7 +220,7 @@ dapr run --app-id=conversation --resources-path ./config --dapr-grpc-port 3500 -
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Advanced features
 
@@ -237,7 +237,7 @@ To learn how to enable these features, see the [conversation API reference guide
 Try out the conversation API using the full examples provided in the supported SDK repos.
 
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
  <!-- .NET -->
 {{% tab ".NET" %}}
@@ -260,7 +260,7 @@ Try out the conversation API using the full examples provided in the supported S
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 ## Next steps

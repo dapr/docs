@@ -20,7 +20,7 @@ A state store component represents a resource that Dapr uses to communicate with
 
 For the purpose of this guide we'll use a Redis state store, but any state store from the [supported list]({{% ref supported-state-stores %}}) will work.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted (CLI)" %}}
 
@@ -56,7 +56,7 @@ See [how to setup different state stores on Kubernetes]({{% ref "setup-state-sto
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 {{% alert title="Important" color="warning" %}}
 Set an `app-id`, as the state keys are prefixed with this value. If you don't set an `app-id`, one is generated for you at runtime. The next time you run the command, a new `app-id` is generated and you will no longer have access to the previously saved state.
@@ -66,7 +66,7 @@ Set an `app-id`, as the state keys are prefixed with this value. If you don't se
 
 The following example shows how to save and retrieve a single key/value pair using the Dapr state management API.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -337,13 +337,13 @@ Restart your sidecar and try retrieving state again to observe that state persis
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Delete state
 
 Below are code examples that leverage Dapr SDKs for deleting the state.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -515,13 +515,13 @@ Try getting state again. Note that no value is returned.
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Save and retrieve multiple states
 
 Below are code examples that leverage Dapr SDKs for saving and retrieving multiple states.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -752,7 +752,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"keys":["
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Perform state transactions
 
@@ -762,7 +762,7 @@ State transactions require a state store that supports multi-item transactions. 
 
 Below are code examples that leverage Dapr SDKs for performing state transactions.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -1072,7 +1072,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"keys":["
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Next steps
 

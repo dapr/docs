@@ -7,7 +7,7 @@ description: "How to push trace events to Jaeger distributed tracing platform, u
 ---
 
 While Dapr supports writing traces using OpenTelemetry (OTLP) and Zipkin protocols, Zipkin support for Jaeger has been deprecated in favor of OTLP. Although Jaeger supports OTLP directly, the recommended approach for production is to use the OpenTelemetry Collector to collect traces from Dapr and send them to Jaeger, allowing your application to quickly offload data and take advantage of features like retries, batching, and encryption. For more information, read the Open Telemetry Collector [documentation](https://opentelemetry.io/docs/collector/#when-to-use-a-collector).
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-hosted" %}}
 <!-- self-hosted -->
@@ -133,7 +133,7 @@ In your browser, go to `http://localhost:16686` and you will see the Jaeger UI.
 ![jaeger](/images/jaeger_ui.png)
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 ## References
 
 - [Jaeger Getting Started](https://www.jaegertracing.io/docs/1.49/getting-started/)

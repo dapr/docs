@@ -104,7 +104,7 @@ The metadata parameters are:
 #### Examples
 ##### Save text to a random generated UUID file
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
   {{% tab %}}
   On Windows, utilize cmd prompt (PowerShell has different escaping mechanism)
   ```bash
@@ -119,11 +119,11 @@ The metadata parameters are:
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ##### Save text to a specific file
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -139,7 +139,7 @@ The metadata parameters are:
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 ##### Upload a file
@@ -148,7 +148,7 @@ To upload a file, pass the file contents as the data payload; you may want to en
 
 Then you can upload it as you would normally:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -163,7 +163,7 @@ Then you can upload it as you would normally:
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 #### Response
 
 The response body will contain the following JSON:
@@ -195,7 +195,7 @@ The metadata parameters are:
 
 #### Example
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -210,7 +210,7 @@ The metadata parameters are:
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -239,7 +239,7 @@ The metadata parameters are:
 
 ##### Delete object
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -254,7 +254,7 @@ The metadata parameters are:
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Response
 An HTTP 204 (No Content) and empty body will be retuned if successful.

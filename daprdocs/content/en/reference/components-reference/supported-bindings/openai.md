@@ -102,7 +102,7 @@ The data parameters are:
 Read more about the importance and usage of these parameters in the [Azure OpenAI API documentation](https://learn.microsoft.com/azure/ai-services/openai/reference).
 #### Examples
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
   {{% tab %}}
   ```bash
   curl -d '{ "data": {"deploymentId: "my-model" , "prompt": "A dog is ", "maxTokens":15}, "operation": "completion" }' \
@@ -110,7 +110,7 @@ Read more about the importance and usage of these parameters in the [Azure OpenA
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -174,7 +174,7 @@ Each message is of the form:
 
 #### Example
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -201,7 +201,7 @@ http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -251,7 +251,7 @@ The data parameters are:
 
 #### Example
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Linux" %}}
   ```bash
@@ -266,7 +266,7 @@ http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Response
 

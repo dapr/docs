@@ -175,7 +175,7 @@ There is a crucial difference between the two ways to retry messages:
 
 ## Create a RabbitMQ server
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 You can run a RabbitMQ server locally using Docker:
@@ -203,7 +203,7 @@ For example, if installing using the example above, the RabbitMQ server client a
 `rabbitmq.default.svc.cluster.local:5672`
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Use topic exchange to route messages
 
@@ -285,7 +285,7 @@ spec:
 
 ### Programmatic priority queue example
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Python" %}}
 
@@ -378,13 +378,13 @@ func configureSubscribeHandler(w http.ResponseWriter, _ *http.Request) {
 ```
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ### Setting a priority when publishing a message
 
 To set a priority on a message, add the publish metadata key `maxPriority` to the publish endpoint or SDK method.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "HTTP API (Bash)" %}}
 
@@ -423,7 +423,7 @@ client.PublishEvent(ctx, PUBSUB_NAME, TOPIC_NAME, []byte(strconv.Itoa(orderId)),
 ```
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Use quorum queues
 

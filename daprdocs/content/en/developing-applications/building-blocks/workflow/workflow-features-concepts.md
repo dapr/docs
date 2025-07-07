@@ -176,7 +176,7 @@ APIs that generate random numbers, random UUIDs, or the current date are _non-de
 
 For example, instead of this:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -220,11 +220,11 @@ const currentTime = time.Now()
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 Do this:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -266,7 +266,7 @@ const currentTime = ctx.CurrentUTCDateTime()
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 #### Workflow functions must only interact _indirectly_ with external state. 
@@ -276,7 +276,7 @@ Instead, workflows should interact with external state _indirectly_ using workfl
 
 For example, instead of this:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -328,11 +328,11 @@ resp, err := http.Get("http://example.com/api/data")
 {{% /tab %}}
 
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 Do this:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -374,7 +374,7 @@ err := ctx.CallActivity(MakeHttpCallActivity, workflow.ActivityInput("https://ex
 ```
 
 {{% /tab %}}
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 #### Workflow functions must execute only on the workflow dispatch thread.  
@@ -386,7 +386,7 @@ Failure to follow this rule could result in undefined behavior. Any background p
 
 For example, instead of this:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -429,11 +429,11 @@ err := ctx.CreateTimer(time.Second).Await(nil)
 
 
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 Do this:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -471,7 +471,7 @@ task.Await(nil)
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 ### Updating workflow code

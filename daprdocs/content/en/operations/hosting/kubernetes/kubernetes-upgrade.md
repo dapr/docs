@@ -12,7 +12,7 @@ You can upgrade the Dapr control plane on a Kubernetes cluster using either the 
 Refer to the [Dapr version policy]({{% ref "support-release-policy.md#upgrade-paths" %}}) for guidance on Dapr's upgrade path.
 {{% /alert %}}
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
  <!-- Dapr CLI -->
 {{% tab "Dapr CLI" %}}
 ## Upgrade using the Dapr CLI
@@ -115,7 +115,7 @@ As of version 1.0.0 onwards, existing certificate values will automatically be r
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 ## Upgrade existing Dapr deployment to enable high availability mode

@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Script to format tabpane shortcodes in Hugo markdown files
+# Converts {{% tab %}} to {{% tab header="Language" %}} format
+# Ensures {{< tabpane >}} always has text=true parameter
 # Usage: ./format-tabpane.sh <markdown-file>
 
 if [ $# -eq 0 ]; then
@@ -28,18 +30,22 @@ awk '
 BEGIN {
     languages_found = 0
     tab_index = 0
+    has_text_param = 0
 }
 
 # Find the tabpane line and extract languages
-/^{{% tabpane / {
-    # Extract everything after "tabpane " and before "%}}"
+/^{{< tabpane / {
+    # Reset for each tabpane
+    has_text_param = 0
+    
+    # Extract everything after "tabpane " and before ">}}"
     line = $0
-    gsub(/^{{% tabpane /, "", line)
-    gsub(/%}}$/, "", line)
+    gsub(/^{{< tabpane /, "", line)
+    gsub(/>}}$/, "", line)
     # Remove any trailing spaces
     gsub(/ +$/, "", line)
     
-    # Parse quoted and unquoted strings
+    # Parse quoted and unquoted strings, ignoring text=true parameter
     lang_count = 0
     i = 1
     while (i <= length(line)) {
@@ -60,7 +66,14 @@ BEGIN {
             }
             if (i <= length(line)) {
                 # Found closing quote
-                languages[++lang_count] = substr(line, start, i - start)
+                token = substr(line, start, i - start)
+                # Skip text=true parameter
+                if (token != "text=true") {
+                    languages[++lang_count] = token
+                } else {
+                    # Remember that text=true was present
+                    has_text_param = 1
+                }
                 i++ # Skip closing quote
             }
         } else {
@@ -70,10 +83,14 @@ BEGIN {
                 i++
             }
             token = substr(line, start, i - start)
-            # Remove any trailing %}} that might have been missed
-            gsub(/%}}$/, "", token)
-            if (token != "") {
+            # Remove any trailing >}} that might have been missed
+            gsub(/>}}$/, "", token)
+            # Skip text=true parameter and empty tokens
+            if (token != "" && token != "text=true") {
                 languages[++lang_count] = token
+            } else if (token == "text=true") {
+                # Remember that text=true was present
+                has_text_param = 1
             }
         }
     }
@@ -81,16 +98,16 @@ BEGIN {
     languages_found = lang_count
     tab_index = 0
     
-    # Output empty tabpane
-    print "{{% tabpane %}}"
+    # Always output tabpane with text=true
+    print "{{< tabpane text=true >}}"
     next
 }
 
-# Replace {{% tab %}} with language-specific versions
+# Replace {{% tab %}} with language-specific versions using header parameter
 /^{{% tab %}}$/ {
     if (languages_found > 0 && tab_index < languages_found) {
         tab_index++
-        print "{{% tab \"" languages[tab_index] "\" %}}"
+        print "{{% tab header=\"" languages[tab_index] "\" %}}"
     } else {
         print $0
     }

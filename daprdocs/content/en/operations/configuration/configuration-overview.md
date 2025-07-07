@@ -16,7 +16,7 @@ Dapr configurations are settings and policies that enable you to change both the
 
 You can set up application configuration either in self-hosted or Kubernetes mode.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
  <!-- Self hosted -->
 {{% tab "Self-hosted" %}}
@@ -58,7 +58,7 @@ A Dapr sidecar can apply a specific configuration by using a `dapr.io/config` an
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ### Application configuration settings
 

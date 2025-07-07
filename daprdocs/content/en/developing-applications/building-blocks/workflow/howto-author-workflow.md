@@ -30,7 +30,7 @@ The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar si
 
 [Workflow activities]({{% ref "workflow-features-concepts.md#workflow-activites" %}}) are the basic unit of work in a workflow and are the tasks that get orchestrated in the business process.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Python" %}}
 
@@ -215,13 +215,13 @@ func TestActivity(ctx workflow.ActivityContext) (any, error) {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Write the workflow
 
 Next, register and call the activites in a workflow. 
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Python" %}}
 
@@ -407,13 +407,13 @@ func TestWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Write the application
 
 Finally, compose the application using the workflow.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Python" %}}
 
@@ -1188,7 +1188,7 @@ func TestActivity(ctx workflow.ActivityContext) (any, error) {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 {{% alert title="Important" color="warning" %}}

@@ -27,7 +27,7 @@ The following example demonstrates how your applications publish and subscribe t
 
 The first step is to set up the pub/sub component:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted (CLI)" %}}
 When you run `dapr init`, Dapr creates a default Redis `pubsub.yaml` and runs a Redis container on your local machine, located:
@@ -107,9 +107,9 @@ scopes:
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -150,7 +150,7 @@ dapr run --app-id myapp --resources-path ./myComponents -- npm start
 ```
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 ## Subscribe to topics
@@ -196,7 +196,7 @@ To prevent reprocessing or loss of unprocessed messages, in-flight messages betw
 
 Below are code examples that leverage Dapr SDKs to subscribe to the topic you defined in `subscription.yaml`.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -387,7 +387,7 @@ dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-por
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Publish a message
 
@@ -399,7 +399,7 @@ dapr run --app-id orderprocessing --dapr-http-port 3601
 
 Then publish a message to the `orders` topic:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Dapr CLI" %}}
 
@@ -425,11 +425,11 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"orderId"
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 Below are code examples that leverage Dapr SDKs to publish a topic.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -655,7 +655,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Message acknowledgement and retries
 

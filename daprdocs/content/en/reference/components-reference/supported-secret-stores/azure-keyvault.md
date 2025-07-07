@@ -127,7 +127,7 @@ Other less restrictive roles, like "Key Vault Secrets Officer" and "Key Vault Ad
 
 ### Configure the component
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 
@@ -327,7 +327,7 @@ However, when using **managed identity via Microsoft Entra ID workload identity*
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## References
 

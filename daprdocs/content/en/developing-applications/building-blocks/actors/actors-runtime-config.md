@@ -21,7 +21,7 @@ You can modify the default Dapr actor runtime behavior using the following confi
 
 ## Examples
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 ```csharp
@@ -193,7 +193,7 @@ func configHandler(w http.ResponseWriter, r *http.Request) {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Related links
 

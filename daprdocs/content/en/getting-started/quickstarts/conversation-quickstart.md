@@ -23,7 +23,7 @@ Currently, you can only use JavaScript for the quickstart sample using HTTP, not
 
 ## Run the app with the template file
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
  <!-- Python -->
 {{% tab "Python" %}}
@@ -535,11 +535,11 @@ func main() {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Run the app without the template
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
  <!-- Python -->
 {{% tab "Python" %}}
@@ -747,7 +747,7 @@ dapr run --app-id conversation --resources-path ../../../components/ -- go run .
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Demo
 

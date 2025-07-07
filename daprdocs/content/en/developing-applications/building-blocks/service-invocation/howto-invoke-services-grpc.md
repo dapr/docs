@@ -126,7 +126,7 @@ ctx = metadata.AppendToOutgoingContext(ctx, "dapr-app-id", "server")
 
 All languages supported by gRPC allow for adding metadata. Here are a few examples:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Java" %}}
 ```java
@@ -180,7 +180,7 @@ context.AddMetadata("dapr-app-id", "server");
 ```
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ### Run the client using the Dapr CLI
 
@@ -249,7 +249,7 @@ When using Dapr to proxy streaming RPC calls using gRPC, you must set an additio
 
 For example:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Go" %}}
 ```go
@@ -305,7 +305,7 @@ context.AddMetadata("dapr-stream", "true");
 ```
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ### Streaming gRPCs and Resiliency
 

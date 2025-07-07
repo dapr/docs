@@ -69,7 +69,7 @@ If the sidecar loads a component which does not specify `azureClientId`, it only
 
 The following examples demonstrate setting up either a system-managed or user-assigned identity in an Azure KeyVault secrets component.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
  <!-- system managed -->
 {{% tab "System-managed" %}}
@@ -124,7 +124,7 @@ For component configuration in Kubernetes or AKS, refer to the [Workload Identit
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Troubleshooting
 

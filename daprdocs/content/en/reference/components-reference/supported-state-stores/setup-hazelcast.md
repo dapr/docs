@@ -39,7 +39,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Setup Hazelcast
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 You can run Hazelcast locally using Docker:
@@ -55,7 +55,7 @@ You can then interact with the server using the `127.0.0.1:5701`.
 The easiest way to install Hazelcast on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/hazelcast).
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Related links
 - [Basic schema for a Dapr component]({{% ref component-schema %}})

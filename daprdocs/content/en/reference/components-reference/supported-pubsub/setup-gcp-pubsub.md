@@ -113,7 +113,7 @@ Since the GCP Pub/Sub component uses the GCP Go Client Libraries, by default it 
 
 ## Create a GCP Pub/Sub
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 For local development, the [GCP Pub/Sub Emulator](https://cloud.google.com/pubsub/docs/emulator) is used to test the GCP Pub/Sub Component. Follow [these instructions](https://cloud.google.com/pubsub/docs/emulator#start) to run the GCP Pub/Sub Emulator.
@@ -164,7 +164,7 @@ Follow the instructions [here](https://cloud.google.com/pubsub/docs/quickstart-c
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Related links
 - [Basic schema for a Dapr component]({{% ref component-schema %}})

@@ -20,7 +20,7 @@ Learn more about Dapr's methods for service invocation in the [overview article]
 
 Select your preferred language before proceeding with the Quickstart.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
  <!-- Python -->
 {{% tab "Python" %}}
 
@@ -732,13 +732,13 @@ response, err := client.Do(req)
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Run one application at a time 
 
 Select your preferred language before proceeding with the Quickstart.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
  <!-- Python -->
 {{% tab "Python" %}}
 
@@ -1416,7 +1416,7 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Tell us what you think!
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this Quickstart helpful? Do you have suggestions for improvement?

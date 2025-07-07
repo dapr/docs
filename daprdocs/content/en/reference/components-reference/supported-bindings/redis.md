@@ -165,7 +165,7 @@ Dapr can use any Redis instance - containerized, running on your local dev machi
 
 *Note: Dapr does not support Redis >= 7. It is recommended to use Redis 6*
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 The Dapr CLI will automatically create and setup a Redis Streams instance for you.
@@ -240,7 +240,7 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 [GCP Cloud MemoryStore](https://cloud.google.com/memorystore/)
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 {{% alert title="Note" color="primary" %}}

@@ -42,7 +42,7 @@ spec:
 
 ## Create a KubeMQ broker
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 1. [Obtain KubeMQ Key](https://docs.kubemq.io/getting-started/quick-start#obtain-kubemq-license-key).
@@ -72,14 +72,14 @@ kubectl apply -f https://deploy.kubemq.io/key/<your-key>
 ```
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Install KubeMQ CLI
 Go to [KubeMQ CLI](https://github.com/kubemq-io/kubemqctl/releases) and download the latest version of the CLI.
 
 ## Browse KubeMQ Dashboard
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 <!-- IGNORE_LINKS -->
@@ -100,7 +100,7 @@ kubectl port-forward svc/kubemq-cluster-api -n kubemq 8080:8080
 ```
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 ## KubeMQ Documentation

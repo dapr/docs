@@ -14,7 +14,7 @@ When [setting up Dapr on Kubernetes]({{% ref kubernetes-overview.md %}}), you ca
 Both the Dapr CLI and the Dapr Helm chart automatically deploy with affinity for nodes with the label `kubernetes.io/os=linux`. You can deploy Dapr to Windows nodes if your application requires it. For more information, see [Deploying to a hybrid Linux/Windows Kubernetes cluster]({{% ref kubernetes-hybrid-clusters %}}).
 {{% /alert %}}
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
  <!-- Dapr CLI -->
 {{% tab "Dapr CLI" %}}
 ## Install with Dapr CLI
@@ -292,7 +292,7 @@ helm uninstall dapr --namespace dapr-system
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ### Use Mariner-based images
 
@@ -302,7 +302,7 @@ Alternatively, you can use Dapr container images based on Mariner 2 (minimal dis
 
 To use Mariner-based images for Dapr, you need to add `-mariner` to your Docker tags. For example, while `ghcr.io/dapr/dapr:latest` is the Docker image based on *distroless*, `ghcr.io/dapr/dapr:latest-mariner` is based on Mariner. Tags pinned to a specific version are also available, such as `{{% dapr-latest-version short="true" %}}-mariner`.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
  <!-- Dapr CLI -->
 {{% tab "Dapr CLI" %}}
 
@@ -330,7 +330,7 @@ helm upgrade --install dapr dapr/dapr \
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Related links
 - [Deploy Dapr with Helm parameters and other details]({{% ref "kubernetes-production.md#deploy-dapr-with-helm" %}})

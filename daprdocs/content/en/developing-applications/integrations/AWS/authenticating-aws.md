@@ -101,7 +101,7 @@ Dapr then authenticates to AWS without specifying credentials in the Dapr compon
 
 ### Authenticate to AWS when running dapr locally in stand-alone mode
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
  <!-- linux -->
 {{% tab "Linux/MacOS" %}}
 
@@ -134,7 +134,7 @@ On Windows, the environment variable needs to be set before starting the `dapr` 
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ### Authenticate to AWS if using AWS SSO based profiles
 
@@ -142,7 +142,7 @@ If you authenticate to AWS using [AWS SSO](https://aws.amazon.com/single-sign-on
 - [AwsHelper](https://pypi.org/project/awshelper/) 
 - [aws-sso-util](https://github.com/benkehoe/aws-sso-util)
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
  <!-- linux -->
 {{% tab "Linux/MacOS" %}}
 
@@ -166,7 +166,7 @@ On Windows, the environment variable needs to be set before starting the `awshel
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Next steps
 

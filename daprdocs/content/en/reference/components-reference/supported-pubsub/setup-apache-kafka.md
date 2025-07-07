@@ -505,7 +505,7 @@ When consuming messages, special message metadata are being automatically passed
 - `__timestamp`: the timestamp for the message
 
 You can access them within the consumer endpoint as follows:
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Python (FastAPI)" %}}
 
@@ -541,7 +541,7 @@ app.include_router(router)
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Receiving message headers with special characters
 
@@ -599,7 +599,7 @@ Date/Datetime fields must be passed as their [Epoch Unix timestamp](https://en.w
 ### Publishing Avro messages
 In order to indicate to the Kafka pub/sub component that the message should be using Avro serialization, the `valueSchemaType` metadata must be set to `Avro`.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "curl" %}}
 ```bash
@@ -628,13 +628,13 @@ with DaprClient() as d:
 ```
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 ### Subscribing to Avro topics
 In order to indicate to the Kafka pub/sub component that the message should be deserialized using Avro, the `valueSchemaType` metadata must be set to `Avro` in the subscription metadata.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Python (FastAPI)" %}}
 
@@ -669,13 +669,13 @@ app.include_router(router)
 
 {{% /tab %}}
 
-{{% /tabpane %}} 
+{{< /tabpane >}} 
 
 
 
 ## Create a Kafka instance
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 You can run Kafka locally using [this](https://github.com/wurstmeister/kafka-docker) Docker image.
@@ -686,7 +686,7 @@ To run without Docker, see the getting started guide [here](https://kafka.apache
 To run Kafka on Kubernetes, you can use any Kafka operator, such as [Strimzi](https://strimzi.io/quickstarts/).
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 ## Related links

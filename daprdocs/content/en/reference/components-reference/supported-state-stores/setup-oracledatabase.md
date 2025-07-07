@@ -129,7 +129,7 @@ Oracle Database state store does not currently support the Query API.
 
 ## Create an Oracle Database and User Schema
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 
@@ -211,7 +211,7 @@ The Oracle Database state store component checks if the table for storing state 
 {{% /tab %}}
 
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Related links
 - [Basic schema for a Dapr component]({{% ref component-schema %}})

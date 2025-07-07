@@ -22,7 +22,7 @@ The bulk publish operation also does not guarantee any ordering of messages.
 
 ### Example
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Java" %}}
 
@@ -267,7 +267,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Uri 'http://loca
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Subscribing messages in bulk
 
@@ -342,7 +342,7 @@ Refer to [Expected HTTP Response for Bulk Subscribe]({{% ref pubsub_api %}}) for
 
 The following code examples demonstrate how to use Bulk Subscribe.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 {{% tab "Java" %}}
 
 ```java
@@ -512,7 +512,7 @@ if __name__ == '__main__':
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## How components handle publishing and subscribing to bulk messages
 

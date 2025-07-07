@@ -50,4 +50,3 @@ For example, for an application using the [Dapr extention for Azure Kubernetes S
 ## Next steps
 
 - Learn more about [GitHub Actions](https://docs.github.com/en/actions).
-- Follow the tutorial to learn how [GitHub Actions works with your Dapr container app (Azure Container Apps)](https://learn.microsoft.com/azure/container-apps/dapr-github-actions?tabpane=azure-cli)

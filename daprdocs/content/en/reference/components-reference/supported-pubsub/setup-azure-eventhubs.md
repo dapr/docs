@@ -218,7 +218,7 @@ spec:
 
 The same can be achieved using the Dapr SDK:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -234,7 +234,7 @@ public ActionResult Checkout(Order order, [FromHeader] int priority)
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Subscribing to Azure IoT Hub Events
 

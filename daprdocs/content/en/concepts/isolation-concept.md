@@ -12,7 +12,7 @@ Dapr supports namespacing in service invocation calls between applications, when
 
 To get started, create and configure your namespace.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 
@@ -33,7 +33,7 @@ Then deploy your applications into this namespace.
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 Learn how to use namespacing throughout Dapr:
 
@@ -42,4 +42,3 @@ Learn how to use namespacing throughout Dapr:
 - Components:
   - [How to: Configure pub/sub components with multiple namespaces]({{% ref pubsub-namespaces %}})
   - [Scope components to one or more applications]({{% ref component-scopes %}})
-- [Namespaced actors]({{% ref namespaced-actors %}})

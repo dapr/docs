@@ -39,7 +39,7 @@ Create a new binding component named `checkout`. Within the `metadata` section, 
 
 When creating the binding component, [specify the supported `direction` of the binding]({{% ref "bindings_api#binding-direction-optional" %}}). 
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted (CLI)" %}}
 
@@ -105,7 +105,7 @@ spec:
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Listen for incoming events (input binding)
 
@@ -115,7 +115,7 @@ Configure your application to receive incoming events. If you're using HTTP, you
 
 Below are code examples that leverage Dapr SDKs to demonstrate an input binding.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -267,7 +267,7 @@ async function start() {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ### ACK an event
 

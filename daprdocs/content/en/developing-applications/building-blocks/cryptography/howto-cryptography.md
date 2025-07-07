@@ -15,7 +15,7 @@ Dapr cryptography is currently in alpha.
 
 ## Encrypt
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Python" %}}
 
@@ -188,12 +188,12 @@ if err != nil {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 ## Decrypt
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Python" %}}
 
@@ -294,7 +294,7 @@ out, err := sdkClient.Decrypt(context.Background(), rf, dapr.EncryptOptions{
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Next steps
 [Cryptography component specs]({{% ref supported-cryptography %}})

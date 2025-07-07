@@ -130,7 +130,7 @@ Note that in the case, the value of the consumer ID is random every time Dapr re
 
 ## Create a MQTT broker
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 You can run a MQTT broker [locally using Docker](https://hub.docker.com/_/eclipse-mosquitto):
@@ -198,7 +198,7 @@ spec:
 You can then interact with the server using the client port: `tcp://mqtt-broker.default.svc.cluster.local:1883`
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Related links
 

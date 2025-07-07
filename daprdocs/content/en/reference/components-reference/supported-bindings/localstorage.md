@@ -58,7 +58,7 @@ To perform a create file operation, invoke the Local Storage binding with a `POS
 
 ##### Save text to a random generated UUID file
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
   {{% tab %}}
   On Windows, utilize cmd prompt (PowerShell has different escaping mechanism)
   ```bash
@@ -73,11 +73,11 @@ To perform a create file operation, invoke the Local Storage binding with a `POS
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ##### Save text to a specific file
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -93,14 +93,14 @@ To perform a create file operation, invoke the Local Storage binding with a `POS
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 ##### Save a binary file
 
 To upload a file, encode it as Base64. The binding should automatically detect the Base64 encoding.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -115,7 +115,7 @@ To upload a file, encode it as Base64. The binding should automatically detect t
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -143,7 +143,7 @@ To perform a get file operation, invoke the Local Storage binding with a `POST` 
 
 #### Example
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -158,7 +158,7 @@ To perform a get file operation, invoke the Local Storage binding with a `POST` 
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -187,7 +187,7 @@ If you only want to list the files beneath a particular directory below the `roo
 
 #### Example
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -202,7 +202,7 @@ If you only want to list the files beneath a particular directory below the `roo
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -223,7 +223,7 @@ To perform a delete file operation, invoke the Local Storage binding with a `POS
 
 #### Example
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -238,7 +238,7 @@ To perform a delete file operation, invoke the Local Storage binding with a `POS
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Response
 

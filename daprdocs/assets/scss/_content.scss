@@ -67,7 +67,7 @@
 
     a, a:visited {
         color: $secondary;
-        text-decoration: none;;
+        text-decoration: none;
     }
 
     a:hover {
@@ -94,6 +94,15 @@
     .lead {
         margin-bottom: 1.5rem;
         font-weight: $font-weight-bold;
+    }
+
+    .highlight i.fas {
+        // To prevent the margin change when doing mouseover.
+        display: inline !important;
+    }
+
+    .highlight {
+        margin: 0.5rem 0;
     }
 }
 
@@ -126,9 +135,50 @@
     }
 }
 
-.carddeck .card {
+.card-deck {
+    display: flex;
+    flex-flow: row wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.card {
     flex: 1 0;
     margin-right: 15px;
     margin-bottom: 15px;
     margin-left: 15px;
+}
+
+.card h5 {
+    color: $secondary;
+}
+
+.td-page-meta {
+    
+    a, a:visited {
+        color: $secondary;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: $primary;
+        text-decoration: none;
+    }
+}
+
+nav#TableOfContents {
+    margin-top: 1.5em;
+}
+
+.tab-content {
+    
+    max-width: 100%  !important;
+
+    .tab-pane {
+        background-color: white !important;
+        max-width: 100%  !important;
+        border-left: none !important;
+        border-right: none !important;
+        border-bottom: none !important;
+    }
 }

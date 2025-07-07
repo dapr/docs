@@ -151,7 +151,7 @@ The response body contains the data returned by the HTTP endpoint.  The `data` f
 
 **Requesting the base URL**
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Windows" %}}
 ```bash
@@ -167,11 +167,11 @@ curl -d '{ "operation": "get" }' \
 ```
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 **Requesting a specific path**
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Windows" %}}
 ```sh
@@ -187,7 +187,7 @@ curl -d '{ "operation": "get", "metadata": { "path": "/things/1234" } }' \
 ```
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ### Sending and updating data
 
@@ -213,7 +213,7 @@ For example, the default content type is `application/json; charset=utf-8`. This
 
 **Posting a new record**
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Windows" %}}
 ```sh
@@ -229,7 +229,7 @@ curl -d '{ "operation": "post", "data": "YOUR_BASE_64_CONTENT", "metadata": { "p
 ```
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Using HTTPS
 
@@ -258,7 +258,7 @@ spec:
 
 #### Install the TLS certificate in the sidecar
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 When the sidecar is not running inside a container, the TLS certificate can be directly installed on the host operating system.
@@ -331,11 +331,11 @@ spec:
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Invoke the binding securely
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Windows" %}}
 ```bash
@@ -351,7 +351,7 @@ curl -d '{ "operation": "get" }' \
 ```
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 {{% alert title="Note" color="primary" %}}
 HTTPS binding support can also be configured using the **MTLSRootCA** metadata option. This will add the specified certificate to the list of trusted certificates for the binding. There's no specific preference for either method. While the **MTLSRootCA** option is easy to use and doesn't require any changes to the sidecar, it accepts only one certificate. If you need to trust multiple certificates, you need to [install them in the sidecar by following the steps above]({{% ref "#install-the-ssl-certificate-in-the-sidecar" %}}).

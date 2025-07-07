@@ -77,7 +77,7 @@ Since the GCP Firestore component uses the GCP Go Client Libraries, by default i
 
 ## Setup GCP Firestore
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 You can use the GCP Datastore emulator to run locally using the instructions [here](https://cloud.google.com/datastore/docs/tools/datastore-emulator).
@@ -89,7 +89,7 @@ You can then interact with the server using `http://localhost:8432`.
 Follow the instructions [here](https://cloud.google.com/datastore/docs/quickstart) to get started with setting up Firestore in Google Cloud.
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 ## Related links

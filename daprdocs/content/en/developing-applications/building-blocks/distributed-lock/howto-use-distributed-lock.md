@@ -41,7 +41,7 @@ spec:
 
 ### Acquire lock
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "HTTP" %}}
 
@@ -118,11 +118,11 @@ func main() {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ### Unlock existing lock
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "HTTP" %}}
 
@@ -187,7 +187,7 @@ func main() {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Next steps
 

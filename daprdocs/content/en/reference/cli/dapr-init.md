@@ -50,7 +50,7 @@ dapr init [flags]
 
 ### Examples
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-hosted" %}}
 
@@ -203,4 +203,4 @@ dapr init -k --image-registry docker.io/username/<directory-name>
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}

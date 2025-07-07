@@ -50,7 +50,7 @@ Here the subscription called `order`:
 
 When running Dapr, set the YAML component file path to point Dapr to the component.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -102,11 +102,11 @@ kubectl apply -f subscription.yaml
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 In your application code, subscribe to the topic specified in the Dapr pub/sub component.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -188,7 +188,7 @@ func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err er
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 The `/orders` endpoint matches the `route` defined in the subscriptions and this is where Dapr sends all topic messages to.
 
@@ -203,7 +203,7 @@ As messages are sent to the given message handler code, there is no concept of r
 
 The example below shows the different ways to stream subscribe to a topic.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -455,7 +455,7 @@ func eventHandler(e *common.TopicEvent) common.SubscriptionResponseStatus {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Demo
 
@@ -471,7 +471,7 @@ The dynamic programmatic approach returns the `routes` JSON structure within the
 
 In the example below, you define the values found in the [declarative YAML subscription](#declarative-subscriptions) above within the application code.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -658,7 +658,7 @@ func main() {
 ```
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Next Steps
 

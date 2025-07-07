@@ -35,7 +35,7 @@ Using Dapr, you don't need to make any code changes to your application.
 
 Select how you'd like to configure `app-max-concurrency`.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
  <!-- CLI -->
 {{% tab "CLI" %}}
@@ -82,7 +82,7 @@ spec:
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Limitations
 

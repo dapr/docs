@@ -35,7 +35,7 @@ As a prerequisite the operating system must supports Unix Domain Sockets, any UN
 
 Select your environment to begin making your component discoverable.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Standalone" %}}
 [uds]: https://en.wikipedia.org/wiki/Unix_domain_socket
@@ -243,7 +243,7 @@ curl http://localhost:$PORT/v1.0/state/prod-mystore/name
 ```
 
 {{% /tab %}}
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Next Steps
 

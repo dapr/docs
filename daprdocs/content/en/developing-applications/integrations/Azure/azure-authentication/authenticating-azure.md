@@ -129,7 +129,7 @@ Using this authentication method does not require setting any metadata option.
 
 In this example, you will set up an Azure Key Vault secret store component that uses Microsoft Entra ID to authenticate.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 
@@ -275,7 +275,7 @@ To use a **certificate**:
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Next steps
 

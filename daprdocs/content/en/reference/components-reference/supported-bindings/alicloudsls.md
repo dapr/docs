@@ -67,7 +67,7 @@ Note, the value of "project"，"logstore"，"topic" and "source" property should
 
 #### Example
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Windows" %}}
 
@@ -85,7 +85,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"metadata":{"project":"pro
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 <br />
 

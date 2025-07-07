@@ -85,7 +85,7 @@ To perform a create blob operation, invoke the Azure Blob Storage binding with a
 
 ##### Save text to a random generated UUID blob
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
   {{% tab %}}
   On Windows, utilize cmd prompt (PowerShell has different escaping mechanism)
   ```bash
@@ -100,11 +100,11 @@ To perform a create blob operation, invoke the Azure Blob Storage binding with a
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ##### Save text to a specific blob
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -120,7 +120,7 @@ To perform a create blob operation, invoke the Azure Blob Storage binding with a
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 
 ##### Save a file to a blob
@@ -148,7 +148,7 @@ spec:
 
 Then you can upload it as you would normally:
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -163,7 +163,7 @@ Then you can upload it as you would normally:
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -197,7 +197,7 @@ The metadata parameters are:
 
 #### Example
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -212,7 +212,7 @@ The metadata parameters are:
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -245,7 +245,7 @@ The metadata parameters are:
 
 ##### Delete blob
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -260,11 +260,11 @@ The metadata parameters are:
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ##### Delete blob snapshots only
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -279,11 +279,11 @@ The metadata parameters are:
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ##### Delete blob including snapshots
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
   {{% tab %}}
   ```bash
@@ -298,7 +298,7 @@ The metadata parameters are:
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Response
 

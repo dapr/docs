@@ -18,7 +18,7 @@ This guide demonstrates configuring and invoking Dapr with gRPC using a Go SDK a
 
 ## Configure Dapr to communicate with an app via gRPC
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 <!--selfhosted-->
 {{% tab "Self-hosted" %}}
 
@@ -64,7 +64,7 @@ spec:
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Invoke Dapr with gRPC
 
@@ -224,7 +224,7 @@ The following steps will show how to create an app that exposes a server for wit
 
 ## Run the application
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 <!--selfhosted-->
 {{% tab "Self-hosted" %}}
 
@@ -243,7 +243,7 @@ On Kubernetes, set the required `dapr.io/app-protocol: "grpc"` and `dapr.io/app-
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
     
 
 ## Other languages

@@ -20,7 +20,7 @@ Not using CloudEvents disables support for tracing, event deduplication per mess
 
 To disable CloudEvent wrapping, set the `rawPayload` metadata to `true` as part of the publishing request. This allows subscribers to receive these messages without having to parse the CloudEvent schema.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "curl" %}}
 ```bash
@@ -101,7 +101,7 @@ $app->run(function(\DI\FactoryInterface $factory) {
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Subscribing to raw messages
 
@@ -115,7 +115,7 @@ When subscribing programmatically, add the additional metadata entry for `rawPay
 
 When using raw payloads the message is always base64 encoded with content type `application/octet-stream`.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
 
@@ -216,7 +216,7 @@ $app->start();
 ```
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Declaratively subscribe to raw events
 

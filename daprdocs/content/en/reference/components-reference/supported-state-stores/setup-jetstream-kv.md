@@ -45,7 +45,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Create a NATS server
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 You can run a NATS Server with JetStream enabled locally using Docker:
@@ -69,7 +69,7 @@ This installs a single NATS server into the `default` namespace. To interact
 with NATS, find the service with: `kubectl get svc my-nats`.
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Creating a JetStream KV bucket
 

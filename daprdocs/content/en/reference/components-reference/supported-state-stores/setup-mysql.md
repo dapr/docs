@@ -68,7 +68,7 @@ If you wish to use MySQL as an actor store, append the following to the yaml.
 
 Dapr can use any MySQL instance - containerized, running on your local dev machine, or a managed cloud service.
 
-{{% tabpane %}}
+{{< tabpane text=true >}}
 
 {{% tab "Self-Hosted" %}}
 <!-- Self-Hosted -->
@@ -129,7 +129,7 @@ If you are using [MySQL on Azure](http://bit.ly/AzureMySQLSSL) see the Azure [do
 
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ### Non SSL connection
 
