@@ -69,9 +69,9 @@ Entry                  | Description                                | Equivalent
 `failure_policy` specifies how the job should handle failures.
 
 It can be set to `constant` or `drop`.
-- The `constant` policy retries the job based on the configuration.
-  - `max_retries` configures how many times the job should be retried. Not setting this makes it retry indefinitely.
-  - `interval` configures the delay between retries. Not setting this makes it retry immediately.
+- The `constant` policy retries the job constantly with the following configuration options.
+  - `max_retries` configures how many times the job should be retried. Defaults to retrying indefinitely.
+  - `interval` configures the delay between retries. Defaults to retrying immediately. Valid values are of the form `200ms`, `15s`, `2m`, etc.
 - The `drop` policy drops the job after the first failure, without retrying.
 
 ##### Example 1
