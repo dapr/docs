@@ -70,7 +70,7 @@ Entry                  | Description                                | Equivalent
 
 It can be set to `constant` or `drop`.
 - The `constant` policy retries the job constantly with the following configuration options.
-  - `max_retries` configures how many times the job should be retried. Defaults to retrying indefinitely.
+  - `max_retries` configures how many times the job should be retried. Defaults to retrying indefinitely. `nil` denotes unlimited retries, while `0` means the request will not be retried.
   - `interval` configures the delay between retries. Defaults to retrying immediately. Valid values are of the form `200ms`, `15s`, `2m`, etc.
 - The `drop` policy drops the job after the first failure, without retrying.
 
