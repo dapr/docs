@@ -2,7 +2,7 @@ baseURL: https://dpcs.dapr.io
 title: Dapr Docs
 
 # Output directory for generated site
-publishDir: public
+publishDir: daprdocs/public
 
 # Language settings
 contentDir: content/en
@@ -140,7 +140,7 @@ params:
   github_repo: https://github.com/dapr/docs
 
   # An optional link to a related project repo. For example, the sibling repository where your product code lives.
-  github_project_repo: https://github.com/dapr/docs
+  github_project_repo: https://github.com/dapr/dapr
 
   # Specify a value here if your content directory is not in your repo's root directory
   github_subdir: "/daprdocs"
@@ -160,12 +160,19 @@ params:
       url: https://v1-13.docs.dapr.io
     - version: v1.12
       url: https://v1-12.docs.dapr.io
+    - version: v1.11
+      url: https://v1-11.docs.dapr.io
+    - version: v1.10
+      url: https://v1-10.docs.dapr.io
+    - version: v1.9
+      url: https://v1-9.docs.dapr.io
+    - version: v1.8
+      url: https://v1-8.docs.dapr.io
+    - version: v1.7
+      url: https://v1-7.docs.dapr.io
 
   # Google Custom Search Engine ID. Remove or comment out to disable search.
-  gcs_engine_id: d72aa9b2712488cc3
-
-  # Enable Lunr.js offline search
-  offlineSearch: false
+  # gcs_engine_id: d72aa9b2712488cc3
 
   # Enable syntax highlighting and copy buttons on code blocks with Prism
   prism_syntax_highlighting: false
@@ -175,6 +182,13 @@ params:
     distributed: Documentation Distributed under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/)
     trademark: The Linux Foundation. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our [Trademark Usage](https://linuxfoundation.org/trademark-usage/) page.
     from_year: 2018
+
+  search:
+    algolia:
+      appId: 'O0QLQGNF38'
+      apiKey: '54ae43aa28ce8f00c54c8d5f544d29b9'
+      indexName: daprdocs
+    offlineSearch: false
 
   # User interface configuration
   ui:
@@ -194,7 +208,7 @@ params:
     # If you want this feature, but occasionally need to remove the "Feedback" section from a single page,
     # add "hide_feedback: true" to the page's front matter.
     feedback:
-      enable: true
+      enable: false
       # The responses that the user sees after clicking "yes" (the page was helpful) or "no" (the page was not helpful).
       'yes': >-
         Glad to hear it! Please <a href="https://github.com/USERNAME/REPOSITORY/issues/new">tell us how we can improve</a>.
