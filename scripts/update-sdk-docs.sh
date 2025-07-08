@@ -65,11 +65,11 @@ process_file() {
         echo "  - Replaced [codetabs] with [tabpane]"
     fi
     
-    # Step 2: Change {{< ref file.md >}} to {{% ref file.md %}}
+    # Step 2: Change {{< ref filename >}} to {{% ref filename %}}
     # Handle both formats: with and without space before >}}
     # Use non-greedy matching to handle multiple links on the same line
-    if grep -q '{{< ref [^}]*\.md[^}]*>}}' "$temp_file"; then
-        sed -i 's/{{< ref \([^}]*\.md[^}]*\) >}}/{{% ref \1 %}}/g; s/{{< ref \([^}]*\.md[^}]*\)>}}/{{% ref \1 %}}/g' "$temp_file"
+    if grep -q '{{< ref [^}]*>}}' "$temp_file"; then
+        sed -i 's/{{< ref \([^}]*\) >}}/{{% ref \1 %}}/g; s/{{< ref \([^}]*\)>}}/{{% ref \1 %}}/g' "$temp_file"
         changes_made=true
         echo "  - Updated ref links from {{< >}} to {{% %}}"
     fi
@@ -118,13 +118,14 @@ process_file() {
                 
                 # Extract everything after "tabs" and before ">}}"
                 line = $0
-                # Remove the opening {{< tabs part (with optional space)
+                # Remove the opening {{< tabs part (handle optional space after tabs)
+                # This handles cases like "{{< tabs SDK HTTP>}}" and "{{< tabs SDK HTTP >}}"
                 gsub(/^{{< tabs */, "", line)
                 gsub(/>}}$/, "", line)
                 gsub(/^ +/, "", line)  # Remove leading spaces
                 gsub(/ +$/, "", line)  # Remove trailing spaces
                 
-                # Parse quoted and unquoted strings
+                # Parse quoted and unquoted strings with improved logic
                 languages_count = 0
                 i = 1
                 while (i <= length(line)) {
@@ -137,7 +138,7 @@ process_file() {
                     
                     # Check if this token starts with a quote
                     if (substr(line, i, 1) == "\"") {
-                        # Find the closing quote
+                        # Find the closing quote - handle quoted strings with spaces
                         i++ # Skip opening quote
                         start = i
                         while (i <= length(line) && substr(line, i, 1) != "\"") {
@@ -153,6 +154,7 @@ process_file() {
                         }
                     } else {
                         # Unquoted token - read until space or end
+                        # This handles single words and dash-separated words
                         start = i
                         while (i <= length(line) && substr(line, i, 1) != " ") {
                             i++
@@ -170,7 +172,7 @@ process_file() {
             }
             
             # Step 7: Replace {{< /tabs >}} with {{< /tabpane >}}
-            /^{{< \/tabs >}}$/ {
+            /^{{< \/tabs *>}}$/ {
                 in_tabs = 0
                 print "{{< /tabpane >}}"
                 file_has_changes = 1
@@ -178,7 +180,7 @@ process_file() {
             }
             
             # Update {{% tab %}} within tabs to include header parameter
-            /^{{% tab %}}$/ && in_tabs {
+            /^{{% tab *%}}$/ && in_tabs {
                 if (tab_index < languages_count) {
                     tab_index++
                     print "{{% tab header=\"" languages[tab_index] "\" %}}"
@@ -215,11 +217,11 @@ process_file() {
         if [ "$tabs_processed" = true ]; then
             echo "  - Running validation checks..."
             
-            # Get counts safely
-            local opening_tabs=$(safe_count '{{% tab' "$file")
-            local closing_tabs=$(safe_count '{{% /tab' "$file")
-            local opening_tabpanes=$(safe_count '{{< tabpane' "$file")
-            local closing_tabpanes=$(safe_count '{{< /tabpane' "$file")
+            # Get counts safely from the processed temp file
+            local opening_tabs=$(safe_count '{{% tab' "$temp_file")
+            local closing_tabs=$(safe_count '{{% /tab' "$temp_file")
+            local opening_tabpanes=$(safe_count '{{< tabpane' "$temp_file")
+            local closing_tabpanes=$(safe_count '{{< /tabpane' "$temp_file")
             
             # Check for mismatches only if elements exist
             local validation_issues=false
@@ -298,7 +300,7 @@ fi
 echo ""
 echo "Summary of transformations applied:"
 echo "1. ✅ [codetabs] → [tabpane]"
-echo "2. ✅ {{< ref file.md>}} → {{% ref file.md %}}"
+echo "2. ✅ {{< ref filename>}} → {{% ref filename %}}"
 echo "3. ✅ Conditional processing based on presence of codetab/tabs elements"
 echo "4. ✅ {{% codetab %}} → {{% tab %}} (if codetabs found)"
 echo "5. ✅ {{% /codetab %}} → {{% /tab %}} (if codetabs found)"
