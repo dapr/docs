@@ -74,7 +74,7 @@ When using the near cache option, Coherence automatically adds a MapListener to 
 
 To manage the amount of memory used by the near cache, the following options are supported when creating one:
 
-- nearCacheTTL – objects expired after time in near cache, e.g. 5 minutes
+- nearCacheTTL – objects expired after time in near cache, for example 5 minutes
 - nearCacheUnits – maximum number of cache entries in the near cache
 - nearCacheMemory – maximum amount of memory used by cache entries
 
