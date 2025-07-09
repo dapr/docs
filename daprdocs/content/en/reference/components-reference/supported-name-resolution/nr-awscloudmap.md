@@ -104,7 +104,7 @@ To use this name resolver, your services must be registered in AWS CloudMap. Whe
    - `DAPR_PORT`: The port that the Dapr sidecar is listening on
    - If not specified, the component will use the `defaultDaprPort` from configuration (defaults to 3500)
 
-The resolver will only return healthy instances (those with `HEALTHY` status) to ensure reliable service communication.
+The resolver only returns healthy instances (those with `HEALTHY` status) to ensure reliable service communication.
 
 Example instance attributes:
 ```json
