@@ -17,6 +17,7 @@ Most observability tools support OTEL, including:
 - [Zipkin](https://zipkin.io/)
 - [Jaeger](https://www.jaegertracing.io/)
 - [SignalFX](https://www.signalfx.com/)
+- [Dash0](https://www.dash0.com/)
 
 The following diagram demonstrates how Dapr (using OTEL and Zipkin protocols) integrates with multiple observability tools.
 
