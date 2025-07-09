@@ -37,10 +37,11 @@ jobs:
         with:
           hugo-version: 0.147.9
           extended: true
-      - name: Setup Docsy
+      - name: Setup Submodules
         run: |
           cd daprdocs
           git submodule update --init --recursive
+          cd ..
           sudo npm install -D --save autoprefixer
           sudo npm install -D --save postcss-cli
       - name: Build Hugo Website
