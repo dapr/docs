@@ -21,6 +21,8 @@ spec:
     value: mykey
   - name: model
     value: gpt-4-turbo
+  - name: endpoint
+    value: 'https://api.openai.com/v1'
   - name: cacheTTL
     value: 10m
 ```
@@ -35,6 +37,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|---------|---------|
 | `key`   | Y | API key for OpenAI. | `mykey` |
 | `model` | N | The OpenAI LLM to use. Defaults to `gpt-4-turbo`.  | `gpt-4-turbo` |
+| `endpoint` | N | Custom API endpoint URL for OpenAI API-compatible services. If not specified, the default OpenAI API endpoint is used. | `https://api.openai.com/v1` |
 | `cacheTTL` | N | A time-to-live value for a prompt cache to expire. Uses Golang duration format.  | `10m` |
 
 ## Related links

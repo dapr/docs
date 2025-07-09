@@ -28,3 +28,8 @@
   state: Alpha
   version: v1
   since: "1.16"
+- component: GoogleAI
+  link: googleai
+  state: Alpha
+  version: v1
+  since: "1.16"

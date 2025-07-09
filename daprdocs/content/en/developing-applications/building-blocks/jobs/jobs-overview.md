@@ -53,11 +53,11 @@ Dapr's jobs API ensures the tasks represented in these scenarios are performed c
 
 ## Features
 
-The jobs API provides several features to make it easy for you to schedule jobs.
+The main functionality of the Jobs API allows you to create, retrieve, and delete scheduled jobs. By default, when you create a job with a name that already exists, the operation fails unless you explicitly set the `overwrite` flag to `true`. This ensures that existing jobs are not accidentally modified or overwritten.
 
 ### Schedule jobs across multiple replicas
 
-When you create a job, it replaces any existing job with the same name. This means that every time a job is created, it resets the count and only keeps 1 record in the embedded etcd for that job. Therefore, you don't need to worry about multiple jobs being created and firing off — only the most recent job is recorded and executed, even if all your apps schedule the same job on startup. 
+When you create a job, it does not replace an existing job with the same name, unless you explicitly set the `overwrite` flag. This means that every time a job is created, it resets the count and only keeps 1 record in the embedded etcd for that job. Therefore, you don't need to worry about multiple jobs being created and firing off — only the most recent job is recorded and executed, even if all your apps schedule the same job on startup. 
 
 The Scheduler service enables the scheduling of jobs to scale across multiple replicas, while guaranteeing that a job is only triggered by 1 Scheduler service instance. 
 
