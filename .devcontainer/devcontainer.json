@@ -10,7 +10,7 @@
 		},
 		"ghcr.io/devcontainers/features/hugo:1": {
 			"extended": true,
-			"version": "latest"
+			"version": "0.100.2"
 		},
 		"ghcr.io/devcontainers/features/node:1": {
 			"nodeGypDependencies": true,

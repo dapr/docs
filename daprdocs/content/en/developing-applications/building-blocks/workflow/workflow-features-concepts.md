@@ -147,9 +147,9 @@ Learn more about [external system interaction.]({{< ref "workflow-patterns.md#ex
 
 ## Workflow backend
 
-Dapr Workflow relies on the Durable Task Framework for Go (a.k.a. [durabletask-go](https://github.com/microsoft/durabletask-go)) as the core engine for executing workflows. This engine is designed to support multiple backend implementations. For example, the [durabletask-go](https://github.com/microsoft/durabletask-go) repo includes a SQLite implementation and the Dapr repo includes an Actors implementation. 
+Dapr Workflow relies on the Durable Task Framework for Go (a.k.a. [durabletask-go](https://github.com/dapr/durabletask-go)) as the core engine for executing workflows. This engine is designed to support multiple backend implementations. For example, the [durabletask-go](https://github.com/dapr/durabletask-go) repo includes a SQLite implementation and the Dapr repo includes an Actors implementation. 
 
-By default, Dapr Workflow supports the Actors backend, which is stable and scalable. However, you can choose a different backend supported in Dapr Workflow. For example, [SQLite](https://github.com/microsoft/durabletask-go/tree/main/backend/sqlite)(TBD future release) could be an option for backend for local development and testing.
+By default, Dapr Workflow supports the Actors backend, which is stable and scalable. However, you can choose a different backend supported in Dapr Workflow. For example, [SQLite](https://github.com/dapr/durabletask-go/tree/main/backend/sqlite)(TBD future release) could be an option for backend for local development and testing.
 
 The backend implementation is largely decoupled from the workflow core engine or the programming model that you see. The backend primarily impacts:
 - How workflow state is stored 
@@ -232,7 +232,7 @@ Do this:
 // Do this!!
 DateTime currentTime = context.CurrentUtcDateTime;
 Guid newIdentifier = context.NewGuid();
-string randomString = await context.CallActivityAsync<string>("GetRandomString");
+string randomString = await context.CallActivityAsync<string>(nameof("GetRandomString")); //Use "nameof" to prevent specifying an activity name that does not exist in your application 
 ```
 
 {{% /codetab %}}
@@ -339,7 +339,7 @@ Do this:
 ```csharp
 // Do this!!
 string configuration = workflowInput.Configuration; // imaginary workflow input argument
-string data = await context.CallActivityAsync<string>("MakeHttpCall", "https://example.com/api/data");
+string data = await context.CallActivityAsync<string>(nameof("MakeHttpCall"), "https://example.com/api/data");
 ```
 
 {{% /codetab %}}
@@ -439,7 +439,7 @@ Do this:
 
 ```csharp
 // Do this!!
-Task t = context.CallActivityAsync("DoSomething");
+Task t = context.CallActivityAsync(nameof("DoSomething"));
 await context.CreateTimer(5000).ConfigureAwait(true);
 ```
 

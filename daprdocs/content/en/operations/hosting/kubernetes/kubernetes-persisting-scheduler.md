@@ -12,7 +12,7 @@ This means that there is no additional parameter required to run the scheduler s
 
 {{% alert title="Warning" color="warning" %}}
 The default storage size for the Scheduler is `1Gi`, which is likely not sufficient for most production deployments.
-Remember that the Scheduler is used for [Actor Reminders]({{< ref actors-timers-reminders.md >}}) & [Workflows]({{< ref workflow-overview.md >}}) when the [SchedulerReminders]({{< ref support-preview-features.md >}}) preview feature is enabled, and the [Jobs API]({{< ref jobs_api.md >}}).
+Remember that the Scheduler is used for [Actor Reminders]({{< ref actors-timers-reminders.md >}}) & [Workflows]({{< ref workflow-overview.md >}}), and the [Jobs API]({{< ref jobs_api.md >}}).
 You may want to consider reinstalling Dapr with a larger Scheduler storage of at least `16Gi` or more.
 For more information, see the [ETCD Storage Disk Size](#etcd-storage-disk-size) section below.
 {{% /alert %}}
@@ -30,8 +30,8 @@ error running scheduler: etcdserver: mvcc: database space exceeded
 ```
 
 Knowing the safe upper bound for your storage size is not an exact science, and relies heavily on the number, persistence, and the data payload size of your application jobs.
-The [Job API]({{< ref jobs_api.md >}}) and [Actor Reminders]({{< ref actors-timers-reminders.md >}}) (with the [SchedulerReminders]({{< ref support-preview-features.md >}}) preview feature enabled) transparently maps one to one to the usage of your applications.
-Workflows (when the [SchedulerReminders]({{< ref support-preview-features.md >}}) preview feature is enabled) create a large number of jobs as Actor Reminders, however these jobs are short lived- matching the lifecycle of each workflow execution.
+The [Job API]({{< ref jobs_api.md >}}) and [Actor Reminders]({{< ref actors-timers-reminders.md >}}) transparently maps one to one to the usage of your applications.
+Workflows create a large number of jobs as Actor Reminders, however these jobs are short lived- matching the lifecycle of each workflow execution.
 The data payload of jobs created by Workflows is typically empty or small.
 
 The Scheduler uses Etcd as its storage backend database.
@@ -41,7 +41,7 @@ This means the actual disk usage of Scheduler will be higher than the current ob
 ### Setting the Storage Size on Installation
 
 If you need to increase an **existing** Scheduler storage size, see the [Increase Scheduler Storage Size](#increase-existing-scheduler-storage-size) section below.
-To increase the storage size (in this example- `16Gi`) for a **fresh** Dapr instalation, you can use the following command:
+To increase the storage size (in this example- `16Gi`) for a **fresh** Dapr installation, you can use the following command:
 
 {{< tabs "Dapr CLI" "Helm" >}}
  <!-- Dapr CLI -->
@@ -68,6 +68,14 @@ helm upgrade --install dapr dapr/dapr \
 
 {{% /codetab %}}
 {{< /tabs >}}
+
+{{% alert title="Note" color="primary" %}}
+For storage providers that do NOT support dynamic volume expansion: If Dapr has ever been installed on the cluster before, the Scheduler's Persistent Volume Claims must be manually uninstalled in order for new ones with increased storage size to be created.
+```bash
+kubectl delete pvc -n dapr-system dapr-scheduler-data-dir-dapr-scheduler-server-0 dapr-scheduler-data-dir-dapr-scheduler-server-1 dapr-scheduler-data-dir-dapr-scheduler-server-2
+```
+Persistent Volume Claims are not deleted automatically with an [uninstall]({{< ref dapr-uninstall.md >}}). This is a deliberate safety measure to prevent accidental data loss.
+{{% /alert %}}
 
 #### Increase existing Scheduler Storage Size
 
