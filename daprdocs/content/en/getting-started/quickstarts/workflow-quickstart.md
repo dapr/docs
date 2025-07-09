@@ -251,7 +251,6 @@ class WorkflowConsoleApp:
 if __name__ == '__main__':
     app = WorkflowConsoleApp()
     app.main()
-
 ```
 
 #### `order-processor/workflow.py`
@@ -275,7 +274,6 @@ store_name = "statestore"
 wfr = WorkflowRuntime()
 
 logging.basicConfig(level=logging.INFO)
-
 
 @wfr.workflow(name="order_processing_workflow")
 def order_processing_workflow(ctx: DaprWorkflowContext, order_payload_str: str):
@@ -343,7 +341,6 @@ def notify_activity(ctx: WorkflowActivityContext, input: Notification):
     logger = logging.getLogger('NotifyActivity')
     logger.info(input.message)
 
-
 @wfr.activity(name="process_payment_activity")
 def process_payment_activity(ctx: WorkflowActivityContext, input: PaymentRequest):
     """Defines Process Payment Activity.This is used by the workflow to process a payment"""
@@ -352,7 +349,6 @@ def process_payment_activity(ctx: WorkflowActivityContext, input: PaymentRequest
                 +f'{input.quantity}' +' ' +f'{input.item_being_purchased}'+' at '+f'{input.amount}'
                 +' USD')
     logger.info(f'Payment for request ID {input.request_id} processed successfully')
-
 
 @wfr.activity(name="verify_inventory_activity")
 def verify_inventory_activity(ctx: WorkflowActivityContext,
@@ -377,8 +373,6 @@ def verify_inventory_activity(ctx: WorkflowActivityContext,
         return InventoryResult(True, inventory_item)
     return InventoryResult(False, None)
 
-
-
 @wfr.activity(name="update_inventory_activity")
 def update_inventory_activity(ctx: WorkflowActivityContext,
                               input: PaymentRequest) -> InventoryResult:
@@ -401,8 +395,6 @@ def update_inventory_activity(ctx: WorkflowActivityContext,
         client.save_state(store_name, input.item_being_purchased, new_val)
         logger.info(f'There are now {new_quantity} {input.item_being_purchased} left in stock')
 
-
-
 @wfr.activity(name="request_approval_activity")
 def request_approval_activity(ctx: WorkflowActivityContext,
                              input: OrderPayload):
@@ -413,7 +405,6 @@ def request_approval_activity(ctx: WorkflowActivityContext,
 
     logger.info('Requesting approval for payment of '+f'{input["total_cost"]}'+' USD for '
                 +f'{input["quantity"]}' +' ' +f'{input["item_name"]}')
-
 ```
 {{% /codetab %}}
 

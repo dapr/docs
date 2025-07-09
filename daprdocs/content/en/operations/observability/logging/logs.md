@@ -127,7 +127,7 @@ If you are using the Azure Kubernetes Service, you can use [Azure Monitor for co
 
 ## References
 
-- [How-to: Set up Fleuntd, Elastic search, and Kibana]({{< ref fluentd.md >}})
+- [How-to: Set up Fluentd, Elastic search, and Kibana]({{< ref fluentd.md >}})
 - [How-to: Set up Azure Monitor in Azure Kubernetes Service]({{< ref azure-monitor.md >}})
 - [Configure and view Dapr Logs]({{< ref "logs-troubleshooting.md" >}})
 - [Configure and view Dapr API Logs]({{< ref "api-logs-troubleshooting.md" >}})

@@ -52,7 +52,7 @@ For a detailed list of all available arguments run `daprd --help` or see this [t
 1. Specify the port your application is listening to
 
    ```bash
-   daprd --app-id --app-port 5000
+   daprd --app-id myapp --app-port 5000
    ```
 
 1. If you are using several custom resources and want to specify the location of the resource definition files, use the `--resources-path` argument:
