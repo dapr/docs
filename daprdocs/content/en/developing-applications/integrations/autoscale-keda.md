@@ -92,7 +92,7 @@ The above YAML defines the pub/sub component that your application subscribes to
 
 If you used the [Kafka Helm install instructions]({{< ref "#install-and-deploy-kafka" >}}), you can leave the `brokers` value as-is. Otherwise, change this value to the connection string to your Kafka brokers.
 
-Notice the `autoscaling-subscriber` value set for `consumerID`. This value is used later to ensure that KEDA and your deployment use the same [Kafka partition offset](http://cloudurable.com/blog/kafka-architecture-topics/index.html#:~:text=Kafka%20continually%20appended%20to%20partitions,fit%20on%20a%20single%20server.).
+Notice the `autoscaling-subscriber` value set for `consumerID`. This value is used later to ensure that KEDA and your deployment use the same [Kafka partition offset](https://cloudurable.com/blog/kafka-architecture-topics/index.html#:~:text=Kafka%20continually%20appended%20to%20partitions,fit%20on%20a%20single%20server.).
 
 Now, deploy the component to the cluster:
 
@@ -130,15 +130,15 @@ spec:
 
 Let's review a few metadata values in the file above:
 
-| Values | Description |
-| ------ | ----------- |
-| `scaleTargetRef`/`name` | The Dapr ID of your app defined in the Deployment (The value of the `dapr.io/id` annotation). |
-| `pollingInterval` | The frequency in seconds with which KEDA checks Kafka for current topic partition offset. |
-| `minReplicaCount` | The minimum number of replicas KEDA creates for your deployment. If your application takes a long time to start, it may be better to set this to `1` to ensure at least one replica of your deployment is always running. Otherwise, set to `0` and KEDA creates the first replica for you. |
-| `maxReplicaCount` | The maximum number of replicas for your deployment. Given how [Kafka partition offset](http://cloudurable.com/blog/kafka-architecture-topics/index.html#:~:text=Kafka%20continually%20appended%20to%20partitions,fit%20on%20a%20single%20server.) works, you shouldn't set that value higher than the total number of topic partitions. |
-| `triggers`/`metadata`/`topic` | Should be set to the same topic to which your Dapr deployment subscribed (in this example, `demo-topic`). |
-| `triggers`/`metadata`/`bootstrapServers` | Should be set to the same broker connection string used in the `kafka-pubsub.yaml` file. |
-| `triggers`/`metadata`/`consumerGroup` | Should be set to the same value as the `consumerID` in the `kafka-pubsub.yaml` file. |
+| Values | Description                                                                                                                                                                                                                                                                                                                              |
+| ------ |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `scaleTargetRef`/`name` | The Dapr ID of your app defined in the Deployment (The value of the `dapr.io/id` annotation).                                                                                                                                                                                                                                            |
+| `pollingInterval` | The frequency in seconds with which KEDA checks Kafka for current topic partition offset.                                                                                                                                                                                                                                                |
+| `minReplicaCount` | The minimum number of replicas KEDA creates for your deployment. If your application takes a long time to start, it may be better to set this to `1` to ensure at least one replica of your deployment is always running. Otherwise, set to `0` and KEDA creates the first replica for you.                                              |
+| `maxReplicaCount` | The maximum number of replicas for your deployment. Given how [Kafka partition offset](https://cloudurable.com/blog/kafka-architecture-topics/index.html#:~:text=Kafka%20continually%20appended%20to%20partitions,fit%20on%20a%20single%20server.) works, you shouldn't set that value higher than the total number of topic partitions. |
+| `triggers`/`metadata`/`topic` | Should be set to the same topic to which your Dapr deployment subscribed (in this example, `demo-topic`).                                                                                                                                                                                                                                |
+| `triggers`/`metadata`/`bootstrapServers` | Should be set to the same broker connection string used in the `kafka-pubsub.yaml` file.                                                                                                                                                                                                                                                 |
+| `triggers`/`metadata`/`consumerGroup` | Should be set to the same value as the `consumerID` in the `kafka-pubsub.yaml` file.                                                                                                                                                                                                                                                     |
 
 {{% alert title="Important" color="warning" %}}
  Setting the connection string, topic, and consumer group to the *same* values for both the Dapr service subscription and the KEDA scaler configuration is critical to ensure the autoscaling works correctly.

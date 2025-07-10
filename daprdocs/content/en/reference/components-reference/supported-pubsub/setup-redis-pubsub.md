@@ -69,6 +69,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | failover           | N         | Property to enabled failover configuration. Needs sentinalMasterName to be set. Defaults to `"false"` | `"true"`, `"false"`
 | sentinelMasterName | N         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/manual/sentinel/) | `""`,  `"127.0.0.1:6379"`
 | maxLenApprox        | N        | Maximum number of items inside a stream.The old entries are automatically evicted when the specified length is reached, so that the stream is left at a constant size. Defaults to unlimited. | `"10000"`
+| streamTTL        | N        | TTL duration for stream entries. Entries older than this duration will be evicted. This is an approximate value, as it's implemented using Redis stream's `MINID` trimming with the '~' modifier. The actual retention may include slightly more entries than strictly defined by the TTL, as Redis optimizes the trimming operation for efficiency by potentially keeping some additional entries. | `"30d"`
 
 ## Create a Redis instance
 
