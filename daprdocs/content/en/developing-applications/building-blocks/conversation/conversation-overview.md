@@ -30,7 +30,7 @@ Prompt caching optimizes performance by storing and reusing prompts that are oft
 
 ### Personally identifiable information (PII) obfuscation
 
-The PII obfuscation feature identifies and removes any form of sensitve user information from a conversation response. Simply enable PII obfuscation on input and output data to protect your privacy and scrub sensitive details that could be used to identify an individual. 
+The PII obfuscation feature identifies and removes any form of sensitive user information from a conversation response. Simply enable PII obfuscation on input and output data to protect your privacy and scrub sensitive details that could be used to identify an individual. 
 
 The PII scrubber obfuscates the following user information:
 - Phone number

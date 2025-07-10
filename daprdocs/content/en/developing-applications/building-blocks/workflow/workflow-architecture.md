@@ -23,7 +23,7 @@ The Dapr Workflow engine is internally powered by Dapr's actor runtime. The foll
 
 To use the Dapr Workflow building block, you write workflow code in your application using the Dapr Workflow SDK, which internally connects to the sidecar using a gRPC stream. This registers the workflow and any workflow activities, or tasks that workflows can schedule.
 
-The engine is embedded directly into the sidecar and implemented using the [`durabletask-go`](https://github.com/microsoft/durabletask-go) framework library. This framework allows you to swap out different storage providers, including a storage provider created for Dapr that leverages internal actors behind the scenes. Since Dapr Workflows use actors, you can store workflow state in state stores.
+The engine is embedded directly into the sidecar and implemented using the [`durabletask-go`](https://github.com/dapr/durabletask-go) framework library. This framework allows you to swap out different storage providers, including a storage provider created for Dapr that leverages internal actors behind the scenes. Since Dapr Workflows use actors, you can store workflow state in state stores.
 
 ## Sidecar interactions
 
@@ -31,7 +31,7 @@ When a workflow application starts up, it uses a workflow authoring SDK to send 
 
 The workflow app executes the appropriate workflow code and then sends a gRPC request back to the sidecar with the execution results.
 
-<img src="/images/workflow-overview/workflow-engine-protocol.png" alt="Dapr Workflow Engine Protocol" />
+<img src="/images/workflow-overview/workflow-engine-protocol.png" width=500 alt="Dapr Workflow Engine Protocol" />
 
 All interactions happen over a single gRPC channel and are initiated by the application, which means the application doesn't need to open any inbound ports. The details of these interactions are internally handled by the language-specific Dapr Workflow authoring SDK.
 
@@ -91,7 +91,7 @@ Workflow actor state remains in the state store even after a workflow has comple
 
 The following diagram illustrates the typical lifecycle of a workflow actor.
 
-<img src="/images/workflow-overview/workflow-actor-flowchart.png" alt="Dapr Workflow Actor Flowchart"/>
+<img src="/images/workflow-overview/workflow-actor-flowchart.png" width=600 alt="Dapr Workflow Actor Flowchart"/>
 
 To summarize:
 
@@ -113,7 +113,7 @@ Each activity actor stores a single key into the state store:
 
 The following diagram illustrates the typical lifecycle of an activity actor.
 
-<img src="/images/workflow-overview/workflow-activity-actor-flowchart.png" alt="Workflow Activity Actor Flowchart"/>
+<img src="/images/workflow-overview/workflow-activity-actor-flowchart.png" width=600 alt="Workflow Activity Actor Flowchart"/>
 
 Activity actors are short-lived:
 
