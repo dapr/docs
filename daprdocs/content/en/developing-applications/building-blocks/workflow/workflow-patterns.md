@@ -637,7 +637,7 @@ concurrency by using the following extension methods on the `WorkflowContext`:
 var workBatch = await context.CallActivityAsync<object[]>("GetWorkBatch", null);
 
 // Process deterministically in parallel with an upper cap of 5 activities at a time
-var results = await context.ProcessInParallelAsync(workBatch, batch => context.CallActivityAsync<int>("ProcessWorkItem", workItem), maxConcurrency: 5);
+var results = await context.ProcessInParallelAsync(workBatch, workItem => context.CallActivityAsync<int>("ProcessWorkItem", workItem), maxConcurrency: 5);
 
 var sum = results.Sum(t => t);
 await context.CallActivityAsync("PostResults", sum);
