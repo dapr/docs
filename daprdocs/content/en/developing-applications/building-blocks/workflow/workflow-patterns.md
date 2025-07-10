@@ -624,6 +624,29 @@ await context.CallActivityAsync("PostResults", sum);
 
 {{< /tabs >}}
 
+With the release of 1.16, it's even easier to process workflow activities in parallel while putting an upper cap on 
+concurrency by using the following extension methods on the `WorkflowContext`:
+
+{{< tabs ".NET" >}}
+
+{{% codetab %}}
+<!-- .NET -->
+```csharp
+//Revisiting the earlier example...
+// Get a list of work items to process
+var workBatch = await context.CallActivityAsync<object[]>("GetWorkBatch", null);
+
+// Process deterministically in parallel with an upper cap of 5 activities at a time
+var results = await context.ProcessInParallelAsync(workBatch, workItem => context.CallActivityAsync<int>("ProcessWorkItem", workItem), maxConcurrency: 5);
+
+var sum = results.Sum(t => t);
+await context.CallActivityAsync("PostResults", sum);
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
 Limiting the degree of concurrency in this way can be useful for limiting contention against shared resources. For example, if the activities need to call into external resources that have their own concurrency limits, like a databases or external APIs, it can be useful to ensure that no more than a specified number of activities call that resource concurrently.
 
 ## Async HTTP APIs
