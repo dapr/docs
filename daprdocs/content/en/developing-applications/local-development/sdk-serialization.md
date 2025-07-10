@@ -8,16 +8,40 @@ aliases:
   - '/developing-applications/sdks/serialization/'
 ---
 
-An SDK for Dapr should provide serialization for two use cases. First, for API objects sent through request and response payloads. Second, for objects to be persisted. For both these use cases, a default serialization is provided. In the Java SDK, it is the [DefaultObjectSerializer](https://dapr.github.io/java-sdk/io/dapr/serializer/DefaultObjectSerializer.html) class, providing JSON serialization.
+Dapr SDKs provide serialization for two use cases. First, for API objects sent through request and response payloads. Second, for objects to be persisted. For both of these cases, a default serialization method is provided in each language SDK.
+
+| Language SDK                 | Default Serializer                                                                                                                                                                                                                                          |
+|------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [.NET]({{< ref dotnet >}}) | [DataContracts](https://learn.microsoft.com/dotnet/framework/wcf/feature-details/using-data-contracts) for remoted actors, [System.Text.Json](https://www.nuget.org/packages/System.Text.Json) otherwise. Read more about .NET serialization [here]({{< ref dotnet-actors-serialization >}}) |                                               |
+| [Java]({{< ref java >}})   | [DefaultObjectSerializer](https://dapr.github.io/java-sdk/io/dapr/serializer/DefaultObjectSerializer.html) for JSON serialization                                                                                                                           |
+| [JavaScript]({{< ref js >}}) | JSON                                                                                                                                                                                                                                                        | 
 
 ## Service invocation
 
-```java
-    DaprClient client = (new DaprClientBuilder()).build();
-    client.invokeService("myappid", "saySomething", "My Message", HttpExtension.POST).block();
+{{< tabs ".NET" "Java" >}}
+
+<!-- .NET -->
+{{% codetab %}}
+
+```csharp
+    using var client = (new DaprClientBuilder()).Build();
+    await client.InvokeMethodAsync("myappid", "saySomething", "My Message");
 ```
 
-In the example above, the app will receive a `POST` request for the `saySomething` method with the request payload as `"My Message"` - quoted since the serializer will serialize the input String to JSON.
+{{% /codetab %}}
+
+<!-- Java -->
+{{% codetab %}}
+
+```java
+    DaprClient client = (new DaprClientBuilder()).build();
+    client.invokeMethod("myappid", "saySomething", "My Message", HttpExtension.POST).block();
+```
+
+{{% /codetab %}}
+
+In the example above, the app `myappid` receives a `POST` request for the `saySomething` method with the request payload as 
+`"My Message"` - quoted since the serializer will serialize the input String to JSON.
 
 ```text
 POST /saySomething HTTP/1.1
@@ -30,11 +54,35 @@ Content-Length: 12
 
 ## State management
 
+{{< tabs ".NET" "Java" >}}
+
+<!-- .NET -->
+{{% codetab %}}
+
+```csharp
+    using var client = (new DaprClientBuilder()).Build();
+    var state = new Dictionary<string, string>
+    {
+      { "key": "MyKey" },
+      { "value": "My Message" }
+    };
+    await client.SaveStateAsync("MyStateStore", "MyKey", state);
+```
+
+{{% /codetab %}}
+
+<!-- Java -->
+{{% codetab %}}
+
 ```java
     DaprClient client = (new DaprClientBuilder()).build();
     client.saveState("MyStateStore", "MyKey", "My Message").block();
 ```
-In this example, `My Message` will be saved. It is not quoted because Dapr's API will internally parse the JSON request object before saving it.
+
+{{% /codetab %}}
+
+In this example, `My Message` is saved. It is not quoted because Dapr's API internally parse the JSON request 
+object before saving it.
 
 ```JSON
 [
@@ -47,12 +95,45 @@ In this example, `My Message` will be saved. It is not quoted because Dapr's API
 
 ## PubSub
 
+{{< tabs ".NET" "Java" >}}
+
+<!-- .NET -->
+{{% codetab %}}
+
+```csharp
+    using var client = (new DaprClientBuilder()).Build();
+    await client.PublishEventAsync("MyPubSubName", "TopicName", "My Message");
+```
+
+The event is published and the content is serialized to `byte[]` and sent to Dapr sidecar. The subscriber receives it as a [CloudEvent](https://github.com/cloudevents/spec). Cloud event defines `data` as String. The Dapr SDK also provides a built-in deserializer for `CloudEvent` object. 
+
+```csharp
+public async Task<IActionResult> HandleMessage(string message) 
+{
+  //ASP.NET Core automatically deserializes the UTF-8 encoded bytes to a string
+  return new Ok();
+}
+```
+
+or
+
+```csharp
+app.MapPost("/TopicName", [Topic("MyPubSubName", "TopicName")] (string message) => {
+  return Results.Ok();
+}
+```
+
+{{% /codetab %}}
+
+<!-- Java -->
+{{% codetab %}}
+
 ```java
   DaprClient client = (new DaprClientBuilder()).build();
   client.publishEvent("TopicName", "My Message").block();
 ```
 
-The event is published and the content is serialized to `byte[]` and sent to Dapr sidecar. The subscriber will receive it as a [CloudEvent](https://github.com/cloudevents/spec). Cloud event defines `data` as String. Dapr SDK also provides a built-in deserializer for `CloudEvent` object.
+The event is published and the content is serialized to `byte[]` and sent to Dapr sidecar. The subscriber receives it as a [CloudEvent](https://github.com/cloudevents/spec). Cloud event defines `data` as String. The Dapr SDK also provides a built-in deserializer for `CloudEvent` objects.
 
 ```java
   @PostMapping(path = "/TopicName")
@@ -62,9 +143,50 @@ The event is published and the content is serialized to `byte[]` and sent to Dap
   }
 ```
 
+{{% /codetab %}}
+
 ## Bindings
 
-In this case, the object is serialized to `byte[]` as well and the input binding receives the raw `byte[]` as-is and deserializes it to the expected object type.
+For output bindings the object is serialized to `byte[]` whereas the input binding receives the raw `byte[]` as-is and deserializes it to the expected object type.
+
+{{< tabs ".NET" "Java" >}}
+
+<!-- .NET -->
+{{% codetab %}}
+
+* Output binding:
+```csharp
+    using var client = (new DaprClientBuilder()).Build();
+    await client.InvokeBindingAsync("sample", "My Message");
+```
+
+* Input binding (controllers):
+```csharp
+  [ApiController]
+  public class SampleController : ControllerBase
+  {
+    [HttpPost("propagate")]
+    public ActionResult<string> GetValue([FromBody] int itemId)
+    {
+      Console.WriteLine($"Received message:  {itemId}");
+      return $"itemID:{itemId}";
+    }
+  }
+ ```
+  
+* Input binding (minimal API):
+```csharp
+app.MapPost("value", ([FromBody] int itemId) =>
+{
+  Console.WriteLine($"Received message: {itemId}");
+  return ${itemID:{itemId}";
+});
+* ```
+
+{{% /codetab %}}
+
+<!-- Java -->
+{{% codetab %}}
 
 * Output binding:
 ```java
@@ -80,15 +202,49 @@ In this case, the object is serialized to `byte[]` as well and the input binding
       System.out.println(message);
   }
 ```
+
+{{% /codetab %}}
+
 It should print:
 ```
 My Message
 ```
 
 ## Actor Method invocation
-Object serialization and deserialization for invocation of Actor's methods are same as for the service method invocation, the only difference is that the application does not need to deserialize the request or serialize the response since it is all done transparently by the SDK.
+Object serialization and deserialization for Actor method invocation are same as for the service method invocation, 
+the only difference is that the application does not need to deserialize the request or serialize the response since it 
+is all done transparently by the SDK.
 
-For Actor's methods, the SDK only supports methods with zero or one parameter.
+For Actor methods, the SDK only supports methods with zero or one parameter.
+
+{{< tabs ".NET" "Java" >}}
+
+The .NET SDK supports two different serialization types based on whether you're using strongly-typed (DataContracts)
+or weakly-typed (DataContracts or System.Text.JSON) actor client. [This document]({{< ref dotnet-actors-serialization >}}) 
+can provide more information about the differences between each and additional considerations to keep in mind.
+
+<!-- .NET -->
+{{% codetab %}}
+
+* Invoking an Actor's method using the weakly-typed client and System.Text.JSON:
+```csharp
+    var proxy = this.ProxyFactory.Create(ActorId.CreateRandom(), "DemoActor");
+    await proxy.SayAsync("My message");
+```
+
+* Implementing an Actor's method:
+```csharp
+public Task SayAsync(string message) 
+{
+    Console.WriteLine(message);
+    return Task.CompletedTask;
+}
+```
+
+{{% /codetab %}}
+
+<!-- Java -->
+{{% codetab %}}
 
 * Invoking an Actor's method:
 ```java
@@ -105,13 +261,37 @@ public String say(String something) {
   return "OK";
 }
 ```
+
+{{% /codetab %}}
+
 It should print:
 ```
     My Message
 ```
 
 ## Actor's state management
-Actors can also have state. In this case, the state manager will serialize and deserialize the objects using the state serializer and handle it transparently to the application.
+Actors can also have state. In this case, the state manager will serialize and deserialize the objects using the state 
+serializer and handle it transparently to the application.
+
+<!-- .NET -->
+{{% codetab %}}
+
+```csharp
+public Task SayAsync(string message) 
+{
+    // Reads state from a key
+    var previousMessage = await this.StateManager.GetStateAsync<string>("lastmessage");
+    
+    // Sets the new state for the key after serializing it
+    await this.StateManager.SetStateAsync("lastmessage", message);
+    return previousMessage;
+}
+```
+
+{{% /codetab %}}
+
+<!-- Java -->
+{{% codetab %}}
 
 ```java
 public String actorMethod(String message) {
@@ -124,12 +304,17 @@ public String actorMethod(String message) {
 }
 ```
 
+{{% /codetab %}}
+
 ## Default serializer
 
 The default serializer for Dapr is a JSON serializer with the following expectations:
 
-1. Use of basic [JSON data types](https://www.w3schools.com/js/js_json_datatypes.asp) for cross-language and cross-platform compatibility: string, number, array, boolean, null and another JSON object. Every complex property type in application's serializable objects (DateTime, for example), should be represented as one of the JSON's basic types.
-2. Data persisted with the default serializer should be saved as JSON objects too, without extra quotes or encoding. The example below shows how a string and a JSON object would look like in a Redis store.
+1. Use of basic [JSON data types](https://www.w3schools.com/js/js_json_datatypes.asp) for cross-language and cross-platform compatibility: string, number, array, 
+boolean, null and another JSON object. Every complex property type in application's serializable objects (DateTime, 
+for example), should be represented as one of the JSON's basic types.
+2. Data persisted with the default serializer should be saved as JSON objects too, without extra quotes or encoding. 
+The example below shows how a string and a JSON object would look like in a Redis store.
 ```bash
 redis-cli MGET "ActorStateIT_StatefulActorService||StatefulActorTest||1581130928192||message
 "This is a message to be saved and retrieved."
@@ -140,7 +325,8 @@ redis-cli MGET "ActorStateIT_StatefulActorService||StatefulActorTest||1581130928
 ```
 3. Custom serializers must serialize object to `byte[]`.
 4. Custom serializers must deserialize `byte[]` to object.
-5. When user provides a custom serializer, it should be transferred or persisted as `byte[]`. When persisting, also encode as Base64 string. This is done natively by most JSON libraries.
+5. When user provides a custom serializer, it should be transferred or persisted as `byte[]`. When persisting, also 
+encode as Base64 string. This is done natively by most JSON libraries.
 ```bash
 redis-cli MGET "ActorStateIT_StatefulActorService||StatefulActorTest||1581130928192||message
 "VGhpcyBpcyBhIG1lc3NhZ2UgdG8gYmUgc2F2ZWQgYW5kIHJldHJpZXZlZC4="
@@ -149,5 +335,3 @@ redis-cli MGET "ActorStateIT_StatefulActorService||StatefulActorTest||1581130928
  redis-cli MGET "ActorStateIT_StatefulActorService||StatefulActorTest||1581130928192||mydata
 "eyJ2YWx1ZSI6Ik15IGRhdGEgdmFsdWUuIn0="
 ```
-
-*As of now, the [Java SDK](https://github.com/dapr/java-sdk/) is the only Dapr SDK that implements this specification. In the near future, other SDKs will also implement the same.*

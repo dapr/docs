@@ -199,7 +199,6 @@ Below are code examples that leverage Dapr SDKs to subscribe to the topic you de
 {{% codetab %}}
 
 ```csharp
-//dependencies 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
@@ -207,19 +206,17 @@ using Microsoft.AspNetCore.Mvc;
 using Dapr;
 using Dapr.Client;
 
-//code
-namespace CheckoutService.controller
+namespace CheckoutService.Controllers;
+
+[ApiController]
+public sealed class CheckoutServiceController : ControllerBase
 {
-    [ApiController]
-    public class CheckoutServiceController : Controller
+    //Subscribe to a topic called "orders" from the "order-pub-sub" compoennt 
+    [Topic("order-pub-sub", "orders")]
+    [HttpPost("checkout")]
+    public void GetCheckout([FromBody] int orderId)
     {
-         //Subscribe to a topic 
-        [Topic("order-pub-sub", "orders")]
-        [HttpPost("checkout")]
-        public void getCheckout([FromBody] int orderId)
-        {
-            Console.WriteLine("Subscriber received : " + orderId);
-        }
+        Console.WriteLine("Subscriber received : " + orderId);
     }
 }
 ```
@@ -435,38 +432,34 @@ Below are code examples that leverage Dapr SDKs to publish a topic.
 {{% codetab %}}
 
 ```csharp
-//dependencies
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Dapr.Client;
-using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 
-//code
-namespace EventService
-{
-    class Program
-    {
-        static async Task Main(string[] args)
-        {
-           string PUBSUB_NAME = "order-pub-sub";
-           string TOPIC_NAME = "orders";
-           while(true) {
-                System.Threading.Thread.Sleep(5000);
-                Random random = new Random();
-                int orderId = random.Next(1,1000);
-                CancellationTokenSource source = new CancellationTokenSource();
-                CancellationToken cancellationToken = source.Token;
-                using var client = new DaprClientBuilder().Build();
-                //Using Dapr SDK to publish a topic
-                await client.PublishEventAsync(PUBSUB_NAME, TOPIC_NAME, orderId, cancellationToken);
-                Console.WriteLine("Published data: " + orderId);
-		        }
-        }
-    }
+const string PUBSUB_NAME = "order-pub-sub";
+const string TOPIC_NAME = "orders";
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDaprClient();
+
+var app = builder.Build();
+var random = new Random();
+
+var client = app.Services.GetRequiredService<DaprClient>();
+
+while(true) {
+    await Task.Delay(TimeSpan.FromSeconds(5));
+    var orderId = random.Next(1,1000);
+    var source = new CancellationTokenSource();
+    var cancellationToken = source.Token;
+    
+    //Using Dapr SDK to publish a topic
+    await client.PublishEventAsync(PUBSUB_NAME, TOPIC_NAME, orderId, cancellationToken);
+    Console.WriteLine("Published data: " + orderId);
 }
 ```
 

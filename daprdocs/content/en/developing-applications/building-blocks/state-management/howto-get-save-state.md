@@ -72,38 +72,27 @@ The following example shows how to save and retrieve a single key/value pair usi
 
 ```csharp
 
-//dependencies
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using Dapr.Client;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading;
-using System.Text.Json;
 
-//code
-namespace EventService
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDaprClient();
+var app = builder.Build();
+
+var random = new Random();
+//Resolve the DaprClient from its dependency injection registration
+using var client = app.Services.GetRequiredService<DaprClient>();
+
+while(true) 
 {
-    class Program
-    {
-        static async Task Main(string[] args)
-        {
-            string DAPR_STORE_NAME = "statestore";
-            while(true) {
-                System.Threading.Thread.Sleep(5000);
-                using var client = new DaprClientBuilder().Build();
-                Random random = new Random();
-                int orderId = random.Next(1,1000);
-                //Using Dapr SDK to save and get state
-                await client.SaveStateAsync(DAPR_STORE_NAME, "order_1", orderId.ToString());
-                await client.SaveStateAsync(DAPR_STORE_NAME, "order_2", orderId.ToString());
-                var result = await client.GetStateAsync<string>(DAPR_STORE_NAME, "order_1");
-                Console.WriteLine("Result after get: " + result);
-            }
-        }
-    }
+    await Task.Delay(TimeSpan.FromSeconds(5));
+    var orderId = random.Next(1,1000);
+    //Using Dapr SDK to save and get state
+    await client.SaveStateAsync(DAPR_STORE_NAME, "order_1", orderId.ToString());
+    await client.SaveStateAsync(DAPR_STORE_NAME, "order_2", orderId.ToString());
+    var result = await client.GetStateAsync<string>(DAPR_STORE_NAME, "order_1");
+    Console.WriteLine($"Result after get: {result}");
 }
 ```
 
@@ -359,23 +348,20 @@ Below are code examples that leverage Dapr SDKs for deleting the state.
 {{% codetab %}}
 
 ```csharp
-//dependencies
 using Dapr.Client;
+using System.Threading.Tasks;
 
-//code
-namespace EventService
-{
-    class Program
-    {
-        static async Task Main(string[] args)
-        {
-            string DAPR_STORE_NAME = "statestore";
-            //Using Dapr SDK to delete the state
-            using var client = new DaprClientBuilder().Build();
-            await client.DeleteStateAsync(DAPR_STORE_NAME, "order_1", cancellationToken: cancellationToken);
-        }
-    }
-}
+const string DAPR_STORE_NAME = "statestore";
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDaprClient();
+var app = builder.Build();
+
+//Resolve the DaprClient from the dependency injection registration
+using var client = app.Services.GetRequiredService<DaprClient>();
+
+//Use the DaprClient to delete the state
+await client.DeleteStateAsync(DAPR_STORE_NAME, "order_1", cancellationToken: cancellationToken);
 ```
 
 To launch a Dapr sidecar for the above example application, run a command similar to the following:
@@ -540,22 +526,19 @@ Below are code examples that leverage Dapr SDKs for saving and retrieving multip
 {{% codetab %}}
 
 ```csharp
-//dependencies
 using Dapr.Client;
-//code
-namespace EventService
-{
-    class Program
-    {
-        static async Task Main(string[] args)
-        {
-            string DAPR_STORE_NAME = "statestore";
-            //Using Dapr SDK to retrieve multiple states
-            using var client = new DaprClientBuilder().Build();
-            IReadOnlyList<BulkStateItem> multipleStateResult = await client.GetBulkStateAsync(DAPR_STORE_NAME, new List<string> { "order_1", "order_2" }, parallelism: 1);
-        }
-    }
-}
+using System.Threading.Tasks;
+
+const string DAPR_STORE_NAME = "statestore";
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDaprClient();
+var app = builder.Build();
+
+//Resolve the DaprClient from the dependency injection registration
+using var client = app.Services.GetRequiredService<DaprClient>();
+
+IReadOnlyList<BulkStateItem> multipleStateResult = await client.GetBulkStateAsync(DAPR_STORE_NAME, new List<string> { "order_1", "order_2" }, parallelism: 1);
 ```
 
 To launch a Dapr sidecar for the above example application, run a command similar to the following:
@@ -567,28 +550,21 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 The above example returns a `BulkStateItem` with the serialized format of the value you saved to state. If you prefer that the value be deserialized by the SDK across each of your bulk response items, you can instead use the following:
 
 ```csharp
-//dependencies
 using Dapr.Client;
-//code
-namespace EventService
-{
-    class Program
-    {
-        static async Task Main(string[] args)
-        {
-            string DAPR_STORE_NAME = "statestore";
-            //Using Dapr SDK to retrieve multiple states
-            using var client = new DaprClientBuilder().Build();
-            IReadOnlyList<BulkStateItem<Widget>> mulitpleStateResult = await client.GetBulkStateAsync<Widget>(DAPR_STORE_NAME, new List<string> { "widget_1", "widget_2" }, parallelism: 1);
-        }
-    }
+using System.Threading.Tasks;
 
-    class Widget
-    {
-        string Size { get; set; }
-        string Color { get; set; }        
-    }
-}
+const string DAPR_STORE_NAME = "statestore";
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Serivces.AddDaprClient();
+var app = builder.Build();
+
+//Resolve the DaprClient from the dependency injection registration
+using var client = app.Services.GetRequiredService<DaprClient>();
+
+IReadOnlyList<BulkStateItem<Widget>> mulitpleStateResult = await client.GetBulkStateAsync<Widget>(DAPR_STORE_NAME, new List<string> { "widget_1", "widget_2" }, parallelism: 1);
+
+record Widget(string Size, string Color);
 ```
 
 {{% /codetab %}}
@@ -791,44 +767,36 @@ Below are code examples that leverage Dapr SDKs for performing state transaction
 {{% codetab %}}
 
 ```csharp
-//dependencies
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using Dapr.Client;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading;
-using System.Text.Json;
+using System.Threading.Tasks;
 
-//code
-namespace EventService
+const string DAPR_STORE_NAME = "statestore";
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Serivces.AddDaprClient();
+var app = builder.Build();
+
+//Resolve the DaprClient from the dependency injection registration
+using var client = app.Services.GetRequiredService<DaprClient>();
+
+var random = new Random();
+
+while (true)
 {
-    class Program
-    {
-        static async Task Main(string[] args)
-        {
-            string DAPR_STORE_NAME = "statestore";
-            while(true) {
-                System.Threading.Thread.Sleep(5000);
-                Random random = new Random();
-                int orderId = random.Next(1,1000);
-                using var client = new DaprClientBuilder().Build();
-                var requests = new List<StateTransactionRequest>()
-                {
-                    new StateTransactionRequest("order_3", JsonSerializer.SerializeToUtf8Bytes(orderId.ToString()), StateOperationType.Upsert),
-                    new StateTransactionRequest("order_2", null, StateOperationType.Delete)
-                };
-                CancellationTokenSource source = new CancellationTokenSource();
-                CancellationToken cancellationToken = source.Token;
-                //Using Dapr SDK to perform the state transactions
-                await client.ExecuteStateTransactionAsync(DAPR_STORE_NAME, requests, cancellationToken: cancellationToken);
-                Console.WriteLine("Order requested: " + orderId);
-                Console.WriteLine("Result: " + result);
-            }
-        }
-    }
+   await Task.Delay(TimeSpan.FromSeconds(5));
+   var orderId = random.Next(1, 1000);
+   var requests = new List<StateTransactionRequest> 
+   {
+        new StateTransactionRequest("order_3", JsonSerializer.SerializeToUtf8Bytes(orderId.ToString()), StateOperationType.Upsert),
+        new StateTransactionRequest("order_2", null, StateOperationType.Delete)
+   };
+   var cancellationTokenSource = new CancellationTokenSource();
+   var cancellationToken = cancellationTokenSource.Token;
+   
+   //Use the DaprClient to perform the state transactions
+   await client.ExecuteStateTransactionAsync(DAPR_STORE_NAME, requests, cancellationToken: cancellationToken);
+   Console.WriteLine($"Order requested: {orderId}");
+   Console.WriteLine($"Result: {result}");
 }
 ```
 

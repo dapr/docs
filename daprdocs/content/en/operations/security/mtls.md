@@ -334,12 +334,12 @@ Example:
 dapr status -k
 
   NAME                   NAMESPACE    HEALTHY  STATUS   REPLICAS  VERSION   AGE  CREATED
-  dapr-operator          dapr-system  True     Running  1         1.15.0    4m   2025-02-19 17:36.26
-  dapr-placement-server  dapr-system  True     Running  1         1.15.0    4m   2025-02-19 17:36.27
+  dapr-operator          dapr-system  True     Running  1         1.15.1    4m   2025-02-19 17:36.26
+  dapr-placement-server  dapr-system  True     Running  1         1.15.1    4m   2025-02-19 17:36.27
   dapr-dashboard         dapr-system  True     Running  1         0.15.0    4m   2025-02-19 17:36.27
-  dapr-sentry            dapr-system  True     Running  1         1.15.0    4m   2025-02-19 17:36.26
-  dapr-scheduler-server  dapr-system  True     Running  3         1.15.0    4m   2025-02-19 17:36.27
-  dapr-sidecar-injector  dapr-system  True     Running  1         1.15.0    4m   2025-02-19 17:36.26
+  dapr-sentry            dapr-system  True     Running  1         1.15.1    4m   2025-02-19 17:36.26
+  dapr-scheduler-server  dapr-system  True     Running  3         1.15.1    4m   2025-02-19 17:36.27
+  dapr-sidecar-injector  dapr-system  True     Running  1         1.15.1    4m   2025-02-19 17:36.26
 ⚠  Dapr root certificate of your Kubernetes cluster expires in 2 days. Expiry date: Mon, 04 Apr 2025 15:01:03 UTC.
  Please see docs.dapr.io for certificate renewal instructions to avoid service interruptions.
 ```

@@ -50,7 +50,7 @@ The Dapr cron binding supports following formats:
 For example:
 
 * `30 * * * * *` - every 30 seconds
-* `0 15 * * * *` - every 15 minutes
+* `0 */15 * * * *` - every 15 minutes
 * `0 30 3-6,20-23 * * *` - every hour on the half hour in the range 3-6am, 8-11pm
 * `CRON_TZ=America/New_York 0 30 04 * * *` - every day at 4:30am New York time
 

@@ -22,6 +22,7 @@ App health checks are disabled by default. Once you enable app health checks, th
 - Unsubscribing from all pub/sub subscriptions
 - Stopping all input bindings
 - Short-circuiting all service-invocation requests, which terminate in the Dapr runtime and are not forwarded to the application
+- Unregistering Dapr Actor types, thereby causing Actor instances to migrate to a different replica if one is available
 
 These changes are meant to be temporary, and Dapr resumes normal operations once it detects that the application is responsive again.
 
