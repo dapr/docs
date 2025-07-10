@@ -14,13 +14,13 @@ To get started, create and configure your namespace.
 
 {{< tabpane text=true >}}
 
-{{% tab "Self-Hosted" %}}
+{{% tab header="Self-Hosted" %}}
 
 In self-hosted mode, specify the namespace for a Dapr instance by setting the `NAMESPACE` environment variable.
 
 {{% /tab %}}
 
-{{% tab "Kubernetes" %}}
+{{% tab header="Kubernetes" %}}
 
 On Kubernetes, create and configure the namespace:
 

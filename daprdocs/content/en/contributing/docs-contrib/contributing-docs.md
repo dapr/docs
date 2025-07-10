@@ -191,11 +191,11 @@ The overall format is:
 ```
 {{< tabpane text=true >}}
 
-{{% tab "Tab1" %}}
+{{% tab header="Tab1" %}}
 [Content for Tab1]
 {{% /tab %}}
 
-{{% tab "Tab2" %}}
+{{% tab header="Tab2" %}}
 [Content for Tab2]
 {{% /tab %}}
 
@@ -209,19 +209,19 @@ All content you author will be rendered to markdown, so you can include images, 
 ````
 {{< tabpane text=true >}}
 
-{{% tab "Windows" %}}
+{{% tab header="Windows" %}}
 ```powershell
 powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1 | iex"
 ```
 {{% /tab %}}
 
-{{% tab "Linux" %}}
+{{% tab header="Linux" %}}
 ```bash
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
 ```
 {{% /tab %}}
 
-{{% tab "MacOS" %}}
+{{% tab header="MacOS" %}}
 ```bash
 brew install dapr/tap/dapr-cli
 ```
@@ -234,7 +234,7 @@ This example will render to this:
 
 {{< tabpane text=true >}}
 
-{{% tab "Windows" %}}
+{{% tab header="Windows" %}}
 
 ```powershell
 powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1 | iex"
@@ -242,7 +242,7 @@ powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master
 
 {{% /tab %}}
 
-{{% tab "Linux" %}}
+{{% tab header="Linux" %}}
 
 ```bash
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
@@ -250,7 +250,7 @@ wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O 
 
 {{% /tab %}}
 
-{{% tab "MacOS" %}}
+{{% tab header="MacOS" %}}
 
 ```bash
 brew install dapr/tap/dapr-cli

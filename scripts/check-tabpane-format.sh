@@ -54,16 +54,16 @@ check_markdown_file() {
             issues+=("tabpane exists but no tab elements found")
         fi
         
-        # Check 4: Tab element format should be {{% tab header=VALUE text=true %}}
+        # Check 4: Tab element format should be {{% tab header=VALUE %}}
         # Allow VALUE to be a word with/without quotes or multiple words within quotes
         tab_lines=$(echo "$content" | grep -n "{% tab")
         while IFS= read -r line; do
             if [ -n "$line" ]; then
                 line_content=$(echo "$line" | cut -d: -f2-)
-                if ! echo "$line_content" | grep -qE '\{\{%\s*tab\s+header=(("[^"]*")|([a-zA-Z0-9_-]+))\s+text=true\s*%\}\}'; then
+                if ! echo "$line_content" | grep -qE '\{\{%\s*tab\s+header=(("[^"]*")|([a-zA-Z0-9_-]+))\s*%\}\}'; then
                     has_issues=true
                     line_num=$(echo "$line" | cut -d: -f1)
-                    issues+=("Line $line_num: Incorrect tab opening format - should be '{{% tab header=VALUE text=true %}}' where VALUE can be a word or quoted string")
+                    issues+=("Line $line_num: Incorrect tab opening format - should be '{{% tab header=VALUE %}}' where VALUE can be a word or quoted string")
                 fi
             fi
         done <<< "$tab_lines"
