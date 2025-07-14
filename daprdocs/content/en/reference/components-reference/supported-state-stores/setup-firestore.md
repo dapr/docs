@@ -23,6 +23,8 @@ spec:
   metadata:
   - name: project_id
     value: <REPLACE-WITH-PROJECT-ID> # Required.
+  - name: type 
+    value: <REPLACE-WITH-CREDENTIALS-TYPE> # Required.
   - name: endpoint # Optional. 
     value: "http://localhost:8432"
   - name: private_key_id
@@ -45,8 +47,6 @@ spec:
     value: <REPLACE-WITH-ENTITY-KIND> # Optional. default: "DaprState"
   - name: noindex
     value: <REPLACE-WITH-BOOLEAN> # Optional. default: "false"
-  - name: type 
-    value: <REPLACE-WITH-CREDENTIALS-TYPE> # Deprecated.
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -58,6 +58,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | project_id         | Y        | The ID of the GCP project to use | `"project-id"`
+| type                 | Y      | The credentials type | `"service_account"`
 | endpoint       | N  | GCP endpoint for the component to use. Only used for local development with (for example) [GCP Datastore Emulator](https://cloud.google.com/datastore/docs/tools/datastore-emulator). The `endpoint` is unnecessary when running against the GCP production API. | `"localhost:8432"`
 | private_key_id     | N        | The ID of the prvate key to use  | `"private-key-id"`
 | privateKey         | N |  If using explicit credentials, this field should contain the `private_key` field from the service account json | `-----BEGIN PRIVATE KEY-----MIIBVgIBADANBgkqhkiG9w0B`
@@ -69,7 +70,6 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | client_x509_cert_url | N      | The client certificate URL | `"https://www.googleapis.com/robot/v1/metadata/x509/x"`
 | entity_kind          | N      | The entity name in Filestore. Defaults to `"DaprState"` | `"DaprState"`
 | noindex              | N      | Whether to disable indexing of state entities. Use this setting if you encounter Firestore index size limitations. Defaults to `"false"` | `"true"`
-| type                 | N       | **DEPRECATED** The credentials type | `"serviceaccount"`
 
 
 ## GCP Credentials
