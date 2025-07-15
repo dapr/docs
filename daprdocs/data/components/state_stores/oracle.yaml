@@ -8,7 +8,7 @@
     transactions: true
     etag: true
     ttl: true
-    query: false
+    workflow: false
 - component: Object Storage
   link: setup-oci-objectstorage
   state: Alpha
@@ -19,4 +19,4 @@
     transactions: false
     etag: true
     ttl: true
-    query: false
+    workflow: false
