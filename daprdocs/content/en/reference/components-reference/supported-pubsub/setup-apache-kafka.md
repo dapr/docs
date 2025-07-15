@@ -686,12 +686,12 @@ app.include_router(router)
 ### Avoiding downstream side effects when publishing messages requiring custom metadata
 Dapr allows customizing the publishing behavior by setting custom publish metadata. 
 
-For instance, to publish in avro format, it is required to set `valueSchemaType=Avro` and `rawPayload=true` metadata.
+For instance, to publish in avro format, it is required to set the `valueSchemaType=Avro` metadata.
 
 However, by default these metadata items get converted to Kafka headers and published along with the message. This default behavior is very helpful for instance to forward tracing headers across a chain of publishers/consumers.
 
 In certain scenario, however, it has unwanted side effects. 
-Let's assume you consume an Avro message using Dapr with the headers above.If this message cannot be consumed successfully and sent to a dead letter topic, `valueSchemaType=Avro` will be automatically carried forward when publishing to the dead letter topic, requiring the set up of a schema associated with this topic. In many scenarios, it is preferable to publish dead letter messages in JSON only.
+Let's assume you consume an Avro message using Dapr with the headers above.If this message cannot be consumed successfully and configured to be sent to a dead letter topic, `valueSchemaType=Avro` will be automatically carried forward when publishing to the dead letter topic, requiring the set up of a schema associated with this topic. In many scenarios, it is preferable to publish dead letter messages in JSON only, as complying to a determined schema is not possible.
 
 To avoid this behavior, the kafka-pubsub component can be configured to exclude certain metadata keys from being converted to/from headers.
 ```yaml
