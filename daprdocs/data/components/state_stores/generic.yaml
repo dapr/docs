@@ -118,7 +118,7 @@
     transactions: true
     etag: true
     ttl: true
-    workflow: false
+    workflow: true
 - component: MySQL & MariaDB
   link: setup-mysql
   state: Stable
