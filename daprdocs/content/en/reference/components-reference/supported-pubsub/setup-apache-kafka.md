@@ -691,14 +691,14 @@ For instance, to publish in avro format, it is required to set `valueSchemaType=
 However, by default these metadata items get converted to Kafka headers and published along with the message. This default behavior is very helpful for instance to forward tracing headers across a chain of publishers/consumers.
 
 In certain scenario, however, it has unwanted side effects. 
-Let's assume you consume an Avro message using Dapr with the headers above.If this message cannot be consumed successfully and sent to a dead letter topic, the `valueSchemaType=Avro` and `rawPayload=true` will be automatically carried forward when publishing to the dead letter topic, requiring the set up of a schema associated with this topic. In many scenarios, it is preferable to publish dead letter messages in JSON only.
+Let's assume you consume an Avro message using Dapr with the headers above.If this message cannot be consumed successfully and sent to a dead letter topic, `valueSchemaType=Avro` will be automatically carried forward when publishing to the dead letter topic, requiring the set up of a schema associated with this topic. In many scenarios, it is preferable to publish dead letter messages in JSON only.
 
 To avoid this behavior, the kafka-pubsub component can be configured to exclude certain metadata keys from being converted to/from headers.
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: kafka-pubsub-exclude-metadaa
+  name: kafka-pubsub-exclude-metadata
   type: pubsub.kafka
   version: v1
   metadata:
@@ -707,7 +707,7 @@ metadata:
   - name: authType # Required.
     value: "none"
   - name: excludeMetaHeaderRegex
-    value: "^valueSchemaType$" # Optional. Excludes both `valueSchemaType` header from being published to headers and converted to metadata
+    value: "^valueSchemaType$" # Optional. Excludes `valueSchemaType` header from being published to headers and converted to metadata
 ```
 
 ### Overriding default consumer group rebalancing
