@@ -403,7 +403,7 @@ The following attributes are **optional** to appear in CloudEvents. See the [Not
 - **Constraints:**
   - OPTIONAL
   - If present, must adhere to the format specified in [RFC 2046](https://tools.ietf.org/html/rfc2046)
-- For Media Type examples, see [IANA Media Types](http://www.iana.org/assignments/media-types/media-types.xhtml)
+- For Media Type examples, see [IANA Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml)
 
 #### dataschema
 
