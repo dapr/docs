@@ -627,9 +627,9 @@ await context.CallActivityAsync("PostResults", sum);
 With the release of 1.16, it's even easier to process workflow activities in parallel while putting an upper cap on 
 concurrency by using the following extension methods on the `WorkflowContext`:
 
-{{< tabs ".NET" >}}
+{{% tabpane %}}
 
-{{% codetab %}}
+{{% tab header=".NET" %}}
 <!-- .NET -->
 ```csharp
 //Revisiting the earlier example...
@@ -643,9 +643,9 @@ var sum = results.Sum(t => t);
 await context.CallActivityAsync("PostResults", sum);
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{% /tabpane %}}
 
 Limiting the degree of concurrency in this way can be useful for limiting contention against shared resources. For example, if the activities need to call into external resources that have their own concurrency limits, like a databases or external APIs, it can be useful to ensure that no more than a specified number of activities call that resource concurrently.
 

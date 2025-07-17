@@ -237,22 +237,22 @@ The metadata parameters are:
 
 #### Example
 
-{{< tabs Windows Linux >}}
+{{% tabpane text=true %}}
 
-  {{% codetab %}}
+  {{% tab header="Windows" %}}
   ```bash
   curl -d '{ \"operation\": \"bulkget\"}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab header="Linux" %}}
   ```bash
   curl -d '{ "operation": "bulkget"}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{% /tabpane %}}
 
 #### Response
 
