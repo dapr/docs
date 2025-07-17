@@ -1,16 +1,30 @@
 ---
 type: docs
-title: "Tools"
-linkTitle: "Tools"
-weight: 50
-description: "Various tools and integrations available in Dapr Agents"
+title: "Integrations"
+linkTitle: "Integrations"
+weight: 60
+description: "Various integrations available in Dapr Agents"
 ---
 
-# Tools
+# Integrations
+
+
+Dapr Agents integrates with popular Python frameworks and tools.  
+
+| Framework | Integration | Description |
+|-----------|-------------|-------------|
+| [**FastAPI**]({{< ref "dapr-agents-getting-started.md#fastapi-integration" >}}) | Native | Expose agents as REST APIs with automatic documentation and validation
+| [**Chainlit**]({{< ref "dapr-agents-quickstarts.md#chainlit-integration" >}}) | Supported | Build conversational UIs for agent interactions with file upload and chat capabilities
+| [**Pydantic**]({{< ref "dapr-agents-core-concepts.md#pydantic-integration" >}}) | Built-in | Type-safe configuration and structured outputs for agents and tools
+
+
+
+# Out-of-the-box Tools
+
 
 ## Text Splitter
 
-The Text Splitter module is a foundational tool in `Dapr Agents` designed to preprocess documents for use in [Retrieval-Augmented Generation (RAG)](https://en.wikipedia.org/wiki/Retrieval-augmented_generation) workflows and other `in-context learning` applications. Its primary purpose is to break large documents into smaller, meaningful chunks that can be embedded, indexed, and efficiently retrieved based on user queries.
+The Text Splitter module is a foundational integration in `Dapr Agents` designed to preprocess documents for use in [Retrieval-Augmented Generation (RAG)](https://en.wikipedia.org/wiki/Retrieval-augmented_generation) workflows and other `in-context learning` applications. Its primary purpose is to break large documents into smaller, meaningful chunks that can be embedded, indexed, and efficiently retrieved based on user queries.
 
 By focusing on manageable chunk sizes and preserving contextual integrity through overlaps, the Text Splitter ensures documents are processed in a way that supports downstream tasks like question answering, summarization, and document retrieval.
 
@@ -311,6 +325,6 @@ The Arxiv Fetcher enables various use cases for researchers and developers:
 
 While the Arxiv Fetcher provides robust functionality for retrieving and processing research papers, its output can be integrated into advanced workflows:
 
-* **Building a Searchable Knowledge Base**: Combine fetched papers with tools like text splitting and vector embeddings for advanced search capabilities.
+* **Building a Searchable Knowledge Base**: Combine fetched papers with integrations like text splitting and vector embeddings for advanced search capabilities.
 * **Retrieval-Augmented Generation (RAG)**: Use processed papers as inputs for RAG pipelines to power question-answering systems.
 * **Automated Literature Surveys**: Generate summaries or insights based on the fetched and processed research. 

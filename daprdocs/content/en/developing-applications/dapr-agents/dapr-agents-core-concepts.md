@@ -2,17 +2,13 @@
 type: docs
 title: "Core Concepts"
 linkTitle: "Core Concepts"
-weight: 30
+weight: 40
 description: "Learn about the core concepts and principles of Dapr Agents"
 ---
 
-# Core Concepts
+## Principles
 
-## Core Principles
-
-![Agent Overview](/images/dapr-agents/concepts-agents-overview.png)
-
-### 1. Agent-Centric Design
+### Agent-Centric Design
 
 Dapr Agents is designed to place agents, powered by LLMs, at the core of task execution and workflow orchestration. This principle emphasizes:
 
@@ -26,7 +22,7 @@ While Dapr Agents centers around agents, it also recognizes the versatility of u
 Agents are not standalone; they are building blocks in larger, orchestrated workflows.
 {{% /alert %}}
 
-### 2. Decoupled Infrastructure Design
+### Decoupled Infrastructure Design
 
 Dapr Agents ensures a clean separation between agents and the underlying infrastructure, emphasizing simplicity, scalability, and adaptability:
 
@@ -39,7 +35,7 @@ Decoupling infrastructure keeps agents focused on tasks while enabling seamless 
 
 ![Decoupled Principles](/images/dapr-agents/home_concepts_principles_decoupled.png)
 
-### 3. Modular Component Model
+### Modular Component Model
 
 Dapr Agents utilizes [Dapr's pluggable component framework](https://docs.dapr.io/concepts/components-concept/) and building blocks to simplify development and enhance flexibility:
 
@@ -54,22 +50,7 @@ Developers can easily switch between different components (e.g., Redis to Dynamo
 
 ![Modular Principles](/images/dapr-agents/home_concepts_principles_modular.png)
 
-### 4. Actor-Based Model for Agents
-
-Dapr Agents leverages [Dapr's Virtual Actor model](https://docs.dapr.io/developing-applications/building-blocks/actors/actors-overview/) to enable agents to function efficiently and flexibly within distributed environments. Each agent in Dapr Agents is instantiated as an instance of a class, wrapped and managed by a virtual actor. This design offers:
-
-* **Stateful Agents**: Virtual actors allow agents to store and recall information across tasks, maintaining context and continuity for workflows.
-* **Dynamic Lifecycle Management**: Virtual actors are automatically instantiated when invoked and deactivated when idle. This eliminates the need for explicit creation or cleanup, ensuring resource efficiency and simplicity.
-* **Location Transparency**: Agents can be accessed and operate seamlessly, regardless of where they are located in the system. The underlying runtime handles their mobility, enabling fault-tolerance and dynamic load balancing.
-* **Scalable Execution**: Agents process one task at a time, avoiding concurrency issues, and scale dynamically across nodes to meet workload demands.
-
-This model ensures agents remain focused on their core logic, while the infrastructure abstracts complexities like state management, fault recovery, and resource optimization.
-
-{{% alert title="Note" color="info" %}}
-Dapr Agents' use of virtual actors makes agents always addressable and highly scalable, enabling them to operate reliably and efficiently in distributed, high-demand environments.
-{{% /alert %}}
-
-### 5. Message-Driven Communication
+### Message-Driven Communication
 
 Dapr Agents emphasizes the use of Pub/Sub messaging for event-driven communication between agents. This principle ensures:
 
@@ -83,7 +64,7 @@ Pub/Sub messaging serves as the backbone for Dapr Agents' event-driven workflows
 
 ![Message Principles](/images/dapr-agents/home_concepts_principles_message.png)
 
-### 6. Workflow-Oriented Design
+### Workflow-Oriented Design
 
 Dapr Agents embraces workflows as a foundational concept, integrating [Dapr Workflows](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-overview/) to support both deterministic and event-driven task orchestration. This dual approach enables robust and adaptive systems:
 
