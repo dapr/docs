@@ -40,9 +40,9 @@ jobs:
           action: "upload"
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "/daprdocs" # App source code path
+          app_location: "/" # App source code path
           api_location: "api" # Api source code path - optional
-          output_location: "public" # Built app content directory - optional
+          output_location: "/daprdocs/public" # Built app content directory - optional
           app_build_command: "git config --global --add safe.directory /github/workspace && hugo"
           ###### End of Repository/Build Configurations ######
 
