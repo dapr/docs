@@ -121,6 +121,8 @@ Below are code examples that leverage Dapr SDKs to demonstrate an input binding.
 
 The following example demonstrates how to configure an input binding using ASP.NET Core controllers.
 
+The following example demonstrates how to configure an input binding using ASP.NET Core controllers.
+
 ```csharp
 using System.Collections.Generic;
 using System.Threading.Tasks;
