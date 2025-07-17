@@ -6,7 +6,7 @@ weight: 1100
 description: "Learn how to author and implement pluggable components"
 ---
 
-In this guide, you'll learn why and how to implement a [pluggable component]({{< ref pluggable-components-overview >}}). To learn how to configure and register a pluggable component, refer to [How to: Register a pluggable component]({{< ref pluggable-components-registration.md >}})
+In this guide, you'll learn why and how to implement a [pluggable component]({{% ref pluggable-components-overview %}}). To learn how to configure and register a pluggable component, refer to [How to: Register a pluggable component]({{% ref pluggable-components-registration.md %}})
 
 ## Implement a pluggable component
 
@@ -25,10 +25,10 @@ Currently, the following component APIs are supported:
 
 |  Component  |    Type    | gRPC definition  |                       Built-in Reference Implementation                        | Docs                                                                                                                                                                  |
 | :---------: | :--------: | :--------------: | :----------------------------------------------------------------------------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| State Store |  `state`   |  [state.proto](https://github.com/dapr/dapr/blob/master/dapr/proto/components/v1/state.proto)   |  [Redis](https://github.com/dapr/components-contrib/tree/master/state/redis)   | [concept]({{< ref "state-management-overview" >}}), [howto]({{< ref "howto-get-save-state" >}}), [api spec]({{< ref "state_api" >}})                                        |
-|   Pub/sub   |  `pubsub`  |  [pubsub.proto](https://github.com/dapr/dapr/blob/master/dapr/proto/components/v1/pubsub.proto)  |  [Redis](https://github.com/dapr/components-contrib/tree/master/pubsub/redis)  | [concept]({{< ref "pubsub-overview" >}}), [howto]({{< ref "howto-publish-subscribe" >}}), [api spec]({{< ref "pubsub_api" >}})                                              |
-|  Bindings   | `bindings` | [bindings.proto](https://github.com/dapr/dapr/blob/master/dapr/proto/components/v1/bindings.proto) | [Kafka](https://github.com/dapr/components-contrib/tree/master/bindings/kafka) | [concept]({{< ref "bindings-overview" >}}), [input howto]({{< ref "howto-triggers" >}}), [output howto]({{< ref "howto-bindings" >}}), [api spec]({{< ref "bindings_api" >}}) |
-|  Secret Store   | `secretstores` | [secretstore.proto](https://github.com/dapr/dapr/blob/master/dapr/proto/components/v1/secretstore.proto) | [Hashicorp/Vault](https://github.com/dapr/components-contrib/blob/master/secretstores/hashicorp/vault/vault.go) | [concept]({{< ref "secrets-overview" >}}), [howto-secrets]({{< ref "howto-secrets" >}}), [api spec]({{< ref "secrets_api" >}}) |
+| State Store |  `state`   |  [state.proto](https://github.com/dapr/dapr/blob/master/dapr/proto/components/v1/state.proto)   |  [Redis](https://github.com/dapr/components-contrib/tree/master/state/redis)   | [concept]({{% ref "state-management-overview" %}}), [howto]({{% ref "howto-get-save-state" %}}), [api spec]({{% ref "state_api" %}})                                        |
+|   Pub/sub   |  `pubsub`  |  [pubsub.proto](https://github.com/dapr/dapr/blob/master/dapr/proto/components/v1/pubsub.proto)  |  [Redis](https://github.com/dapr/components-contrib/tree/master/pubsub/redis)  | [concept]({{% ref "pubsub-overview" %}}), [howto]({{% ref "howto-publish-subscribe" %}}), [api spec]({{% ref "pubsub_api" %}})                                              |
+|  Bindings   | `bindings` | [bindings.proto](https://github.com/dapr/dapr/blob/master/dapr/proto/components/v1/bindings.proto) | [Kafka](https://github.com/dapr/components-contrib/tree/master/bindings/kafka) | [concept]({{% ref "bindings-overview" %}}), [input howto]({{% ref "howto-triggers" %}}), [output howto]({{% ref "howto-bindings" %}}), [api spec]({{% ref "bindings_api" %}}) |
+|  Secret Store   | `secretstores` | [secretstore.proto](https://github.com/dapr/dapr/blob/master/dapr/proto/components/v1/secretstore.proto) | [Hashicorp/Vault](https://github.com/dapr/components-contrib/blob/master/secretstores/hashicorp/vault/vault.go) | [concept]({{% ref "secrets-overview" %}}), [howto-secrets]({{% ref "howto-secrets" %}}), [api spec]({{% ref "secrets_api" %}}) |
 
 Below is a snippet of the gRPC service definition for pluggable component state stores ([state.proto]):
 
@@ -121,13 +121,13 @@ Returning semantic errors are also part of the pluggable component protocol. The
 | ETag Invalid             | `codes.InvalidArgument`         | State store      |  |
 | Bulk Delete Row Mismatch | `codes.Internal`                | State store      |  |
 
-Learn more about concurrency requirements in the [State Management overview]({{< ref "state-management-overview.md#concurrency" >}}).
+Learn more about concurrency requirements in the [State Management overview]({{% ref "state-management-overview.md#concurrency" %}}).
 
 The following examples demonstrate how to return an error in your own pluggable component, changing the messages to suit your needs.
 
-{{< tabs ".NET" "Java" "Go" >}}
+{{< tabpane text=true >}}
  <!-- .NET -->
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 > **Important:** In order to use .NET for error mapping, first install the [`Google.Api.CommonProtos` NuGet package](https://www.nuget.org/packages/Google.Api.CommonProtos/).
 
@@ -200,10 +200,10 @@ metadata.Add("grpc-status-details-bin", status.ToByteArray());
 throw new RpcException(new Grpc.Core.Status(baseStatusCode, "fake-err-msg"), metadata);
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Java -->
-{{% codetab %}}
+{{% tab "Java" %}}
 
 Just like the [Dapr Java SDK](https://github.com/tmacam/dapr-java-sdk/), the Java Pluggable Components SDK uses [Project Reactor](https://projectreactor.io/), which provides an asynchronous API for Java.
 
@@ -257,10 +257,10 @@ final Status status = Status.newBuilder()
 return Mono.error(StatusProto.toStatusException(status));
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Go -->
-{{% codetab %}}
+{{% tab "Go" %}}
 
 **ETag Mismatch**
 
@@ -302,12 +302,12 @@ br.Metadata = map[string]string{
 st, err := st.WithDetails(br)
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Next steps
 
 - Get started with developing .NET pluggable component using this [sample code](https://github.com/dapr/samples/tree/master/pluggable-components-dotnet-template) 
-- [Review the pluggable components overview]({{< ref pluggable-components-overview.md >}})
-- [Learn how to register your pluggable component]({{< ref pluggable-components-registration >}})
+- [Review the pluggable components overview]({{% ref pluggable-components-overview.md %}})
+- [Learn how to register your pluggable component]({{% ref pluggable-components-registration %}})

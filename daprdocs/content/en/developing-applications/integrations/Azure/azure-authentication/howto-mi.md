@@ -22,7 +22,7 @@ In this guide, you learn how to:
 That's about all there is to it.
 
 {{% alert title="Note" color="primary" %}}
-In your component YAML, you only need the [`azureClientId` property]({{< ref "authenticating-azure.md#authenticating-with-managed-identities-mi" >}}) if using user-assigned identity. Otherwise, you can omit this property for system-managed identity to be used by default.
+In your component YAML, you only need the [`azureClientId` property]({{% ref "authenticating-azure.md#authenticating-with-managed-identities-mi" %}}) if using user-assigned identity. Otherwise, you can omit this property for system-managed identity to be used by default.
 {{% /alert %}}
 
 ## Grant access to the service
@@ -32,7 +32,7 @@ Set the requisite Microsoft Entra ID role assignments or custom permissions to y
 You can set up a managed identity to a new or existing Azure resource. The instructions depend on the service use. Check the following official documentation for the most appropriate instructions:
 
 - [Azure Kubernetes Service (AKS)](https://docs.microsoft.com/azure/aks/use-managed-identity)
-- [Azure Container Apps (ACA)](https://learn.microsoft.com/azure/container-apps/dapr-components?tabs=yaml#using-managed-identity)
+- [Azure Container Apps (ACA)](https://learn.microsoft.com/azure/container-apps/dapr-components?tabpane=yaml#using-managed-identity)
 - [Azure App Service](https://docs.microsoft.com/azure/app-service/overview-managed-identity) (including Azure Web Apps and Azure Functions)
 - [Azure Virtual Machines (VM)](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/qs-configure-cli-windows-vm)
 - [Azure Virtual Machines Scale Sets (VMSS)](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/qs-configure-cli-windows-vmss)
@@ -49,7 +49,7 @@ After assigning a system-managed identity to your Azure resource, you'll have cr
 }
 ```
 
-From the returned values, take note of the **`principalId`** value, which is [the Service Principal ID created for your identity]({{< ref "howto-aad.md#create-a-service-principal" >}}). Use that to grant access permissions for your Azure resources component to access the identity.
+From the returned values, take note of the **`principalId`** value, which is [the Service Principal ID created for your identity]({{% ref "howto-aad.md#create-a-service-principal" %}}). Use that to grant access permissions for your Azure resources component to access the identity.
 
 {{% alert title="Managed identities in Azure Container Apps" color="primary" %}}
 Every container app has a completely different system-managed identity, making it very unmanageable to handle the required role assignments across multiple apps. 
@@ -69,10 +69,10 @@ If the sidecar loads a component which does not specify `azureClientId`, it only
 
 The following examples demonstrate setting up either a system-managed or user-assigned identity in an Azure KeyVault secrets component.
 
-{{< tabs "System-managed" "User-assigned" "Kubernetes" >}}
+{{< tabpane text=true >}}
 
  <!-- system managed -->
-{{% codetab %}}
+{{% tab "System-managed" %}}
 
 If you set up system-managed identity using an Azure KeyVault component, the YAML would look like the following:
 
@@ -91,10 +91,10 @@ spec:
 
 In this example, the system-managed identity looks up the service identity and communicates with the `mykeyvault` vault. Next, grant your system-managed identiy access to the desired service.
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- user assigned -->
-{{% codetab %}}
+{{% tab "User-assigned" %}}
 
 If you set up user-assigned identity using an Azure KeyVault component, the YAML would look like the following:
 
@@ -115,16 +115,16 @@ spec:
 
 Once you've set up the component YAML with the `azureClientId` property, you can grant your user-assigned identity access to your service.
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- k8s -->
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
-For component configuration in Kubernetes or AKS, refer to the [Workload Identity guidance.](https://learn.microsoft.com/azure/aks/workload-identity-overview?tabs=dotnet)
+For component configuration in Kubernetes or AKS, refer to the [Workload Identity guidance.](https://learn.microsoft.com/azure/aks/workload-identity-overview?tabpane=dotnet)
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Troubleshooting
 
@@ -133,7 +133,7 @@ If you receive an error or your managed identity doesn't work as expected, check
 - The system-managed identity or user-assigned identity don't have the required permissions on the target resource.
 - The user-assigned identity isn't attached to the Azure service (container app or pod) from which you're loading the component. This can especially happen if:
   - You have an unscoped component (a component loaded by all container apps in an environment, or all deployments in your AKS cluster). 
-  - You attached the user-assigned identity to only one container app or one deployment in AKS (using [Azure Workload Identity](https://learn.microsoft.com/azure/aks/workload-identity-overview?tabs=dotnet)). 
+  - You attached the user-assigned identity to only one container app or one deployment in AKS (using [Azure Workload Identity](https://learn.microsoft.com/azure/aks/workload-identity-overview?tabpane=dotnet)). 
   
   In this scenario, since the identity isn't attached to every other container app or deployment in AKS, the component referencing the user-assigned identity via `azureClientId` fails.
 
@@ -141,4 +141,4 @@ If you receive an error or your managed identity doesn't work as expected, check
 
 ## Next steps
 
-{{< button text="Refer to Azure component specs >>" page="components-reference" >}}
+{{< button text="Refer to Azure component specs >>" page="components-reference.md" >}}

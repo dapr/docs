@@ -21,9 +21,9 @@ You can modify the default Dapr actor runtime behavior using the following confi
 
 ## Examples
 
-{{< tabs ".NET" JavaScript Python Java Go >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 ```csharp
 // In Startup.cs
 public void ConfigureServices(IServiceCollection services)
@@ -59,11 +59,11 @@ public void ConfigureServices(IServiceCollection services)
     services.AddSingleton<BankService>();
 }
 ```
-[See the .NET SDK documentation on registering actors]({{< ref "dotnet-actors-usage.md#registring-actors" >}}).
+[See the .NET SDK documentation on registering actors]({{% ref "dotnet-actors-usage#registring-actors" %}}).
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 <!--javascript-->
 
@@ -93,11 +93,11 @@ const server = new DaprServer(serverHost, serverPort, daprHost, daprPort, client
 const client = new DaprClient(daprHost, daprPort, CommunicationProtocolEnum.HTTP, clientOptions);
 ```
 
-[See the documentation on writing actors with the JavaScript SDK]({{< ref "js-actors.md#registering-actors" >}}).
+[See the documentation on writing actors with the JavaScript SDK]({{% ref "js-actors#registering-actors" %}}).
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 <!--python-->
 
@@ -117,11 +117,11 @@ ActorRuntime.set_actor_config(
 )
 ```
 
-[See the documentation on running actors with the Python SDK]({{< ref "python-actor.md" >}})
+[See the documentation on running actors with the Python SDK]({{% ref "python-actor" %}})
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 <!--java-->
 
@@ -137,11 +137,11 @@ ActorRuntime.getInstance().getConfig().setActorReentrancyConfig(false, null);
 ActorRuntime.getInstance().getConfig().setRemindersStoragePartitions(7);
 ```
 
-[See the documentation on writing actors with the Java SDK]({{< ref "java.md#actors" >}}).
+[See the documentation on writing actors with the Java SDK]({{% ref "java#actors" %}}).
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 <!--go-->
 
 ```go
@@ -191,12 +191,12 @@ func configHandler(w http.ResponseWriter, r *http.Request) {
 
 [See an example for using actors with the Go SDK](https://github.com/dapr/go-sdk/tree/main/examples/actor).
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Related links
 
-- Refer to the [Dapr SDK documentation and examples]({{< ref "developing-applications/sdks/#sdk-languages" >}}).
-- [Actors API reference]({{< ref actors_api.md >}})
-- [Actors overview]({{< ref actors-overview.md >}})
+- Refer to the [Dapr SDK documentation and examples]({{% ref "developing-applications/sdks/_index.md#sdk-languages" %}}).
+- [Actors API reference]({{% ref actors_api %}})
+- [Actors overview]({{% ref actors-overview %}})

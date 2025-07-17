@@ -8,7 +8,7 @@ description: "Overview of Dapr configuration"
 
 Dapr configurations are settings and policies that enable you to change both the behavior of individual Dapr applications, or the global behavior of the Dapr control plane system services. 
 
-[for more information, read the configuration concept.]({{< ref configuration-concept.md >}})
+[for more information, read the configuration concept.]({{% ref configuration-concept.md %}})
 
 ## Application configuration
 
@@ -16,21 +16,21 @@ Dapr configurations are settings and policies that enable you to change both the
 
 You can set up application configuration either in self-hosted or Kubernetes mode.
 
-{{< tabs "Self-hosted" Kubernetes >}}
+{{< tabpane text=true >}}
 
  <!-- Self hosted -->
-{{% codetab %}}
+{{% tab "Self-hosted" %}}
 
-In self hosted mode, the Dapr configuration is a [configuration file]({{< ref configuration-schema.md >}}) - for example, `config.yaml`. By default, the Dapr sidecar looks in the default Dapr folder for the runtime configuration:
+In self hosted mode, the Dapr configuration is a [configuration file]({{% ref configuration-schema.md %}}) - for example, `config.yaml`. By default, the Dapr sidecar looks in the default Dapr folder for the runtime configuration:
 - Linux/MacOs: `$HOME/.dapr/config.yaml`
 - Windows: `%USERPROFILE%\.dapr\config.yaml`
 
 An application can also apply a configuration by using a `--config` flag to the file path with `dapr run` CLI command.
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Kubernetes -->
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
 In Kubernetes mode, the Dapr configuration is a Configuration resource, that is applied to the cluster. For example:
 
@@ -54,11 +54,11 @@ A Dapr sidecar can apply a specific configuration by using a `dapr.io/config` an
     dapr.io/config: "myappconfig"
 ```
 
-> **Note:** [See all Kubernetes annotations]({{< ref "arguments-annotations-overview.md" >}}) available to configure the Dapr sidecar on activation by sidecar Injector system service.
+> **Note:** [See all Kubernetes annotations]({{% ref "arguments-annotations-overview.md" %}}) available to configure the Dapr sidecar on activation by sidecar Injector system service.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### Application configuration settings
 
@@ -121,7 +121,7 @@ turns on tracing for the sidecar.
 | `OTEL_EXPORTER_OTLP_INSECURE` | Sets the connection to the endpoint as unencrypted (true/false) |
 | `OTEL_EXPORTER_OTLP_PROTOCOL` | Transport protocol (`grpc`, `http/protobuf`, `http/json`) |
 
-See [Observability distributed tracing]({{< ref "tracing-overview.md" >}}) for more information.
+See [Observability distributed tracing]({{% ref "tracing-overview.md" %}}) for more information.
 
 #### Metrics
 
@@ -148,9 +148,9 @@ metrics:
   recordErrorCodes: true
 ```
 
-In the examples above, the path filter `/orders/{orderID}/items/{itemID}` would return _a single metric count_ matching all the `orderID`s and all the `itemID`s, rather than multiple metrics for each `itemID`. For more information, see [HTTP metrics path matching]({{< ref "metrics-overview.md#http-metrics-path-matching" >}}). 
+In the examples above, the path filter `/orders/{orderID}/items/{itemID}` would return _a single metric count_ matching all the `orderID`s and all the `itemID`s, rather than multiple metrics for each `itemID`. For more information, see [HTTP metrics path matching]({{% ref "metrics-overview.md#http-metrics-path-matching" %}}). 
 
-The above example also enables [recording error code metrics]({{< ref "metrics-overview.md#configuring-metrics-for-error-codes" >}}), which is disabled by default. 
+The above example also enables [recording error code metrics]({{% ref "metrics-overview.md#configuring-metrics-for-error-codes" %}}), which is disabled by default. 
 
 The following table lists the properties for metrics:
 
@@ -159,7 +159,7 @@ The following table lists the properties for metrics:
 | `enabled`                    | boolean | When set to true, the default, enables metrics collection and the metrics endpoint.                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `rules`                      | array   | Named rule to filter metrics. Each rule contains a set of `labels` to filter on and a `regex` expression to apply to the metrics path.                                                                                                                                                                                                                                                                                                                                                                                                           |
 | `latencyDistributionBuckets` | array   | Array of latency distribution buckets in milliseconds for latency metrics histograms.                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `http.increasedCardinality`  | boolean | When set to `true` (default), in the Dapr HTTP server each request path causes the creation of a new "bucket" of metrics. This can cause issues, including excessive memory consumption, when there many different requested endpoints (such as when interacting with RESTful APIs).<br> To mitigate high memory usage and egress costs associated with [high cardinality metrics]({{< ref "metrics-overview.md#high-cardinality-metrics" >}}) with the HTTP server, you should set the `metrics.http.increasedCardinality` property to `false`. |
+| `http.increasedCardinality`  | boolean | When set to `true` (default), in the Dapr HTTP server each request path causes the creation of a new "bucket" of metrics. This can cause issues, including excessive memory consumption, when there many different requested endpoints (such as when interacting with RESTful APIs).<br> To mitigate high memory usage and egress costs associated with [high cardinality metrics]({{% ref "metrics-overview.md#high-cardinality-metrics" %}}) with the HTTP server, you should set the `metrics.http.increasedCardinality` property to `false`. |
 | `http.pathMatching`          | array   | Array of paths for path matching, allowing users to define matching paths to manage cardinality.                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `http.excludeVerbs`          | boolean | When set to true (default is false), the Dapr HTTP server ignores each request HTTP verb when building the method metric label.                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
@@ -178,7 +178,7 @@ metrics:
           "orders/": "orders/.+"
 ```
 
-See [metrics documentation]({{< ref "metrics-overview.md" >}}) for more information.
+See [metrics documentation]({{% ref "metrics-overview.md" %}}) for more information.
 
 #### Logging
 
@@ -202,7 +202,7 @@ The following table lists the properties for logging:
 | `apiLogging.obfuscateURLs` | boolean | When enabled, obfuscates the values of URLs in HTTP API logs (if enabled), logging the abstract route name rather than the full path being invoked, which could contain Personal Identifiable Information (PII). Default: `false`.
 | `apiLogging.omitHealthChecks` | boolean | If `true`, calls to health check endpoints (e.g. `/v1.0/healthz`) are not logged when API logging is enabled. This is useful if those calls are adding a lot of noise in your logs. Default: `false`
 
-See [logging documentation]({{< ref "logs.md" >}}) for more information.
+See [logging documentation]({{% ref "logs.md" %}}) for more information.
 
 #### Middleware
 
@@ -230,7 +230,7 @@ The following table lists the properties for HTTP handlers:
 | `name`     | string | Name of the middleware component
 | `type`     | string | Type of middleware component
 
-See [Middleware pipelines]({{< ref "middleware.md" >}}) for more information.
+See [Middleware pipelines]({{% ref "middleware.md" %}}) for more information.
 
 #### Name resolution component
 
@@ -252,20 +252,20 @@ spec:
 ```
 
 For more information, see:
-- [The name resolution component documentation]({{< ref supported-name-resolution >}}) for more examples.
-- [The Configuration file documentation]({{< ref configuration-schema.md >}}) to learn more about how to configure name resolution per component.
+- [The name resolution component documentation]({{% ref supported-name-resolution %}}) for more examples.
+- [The Configuration file documentation]({{% ref configuration-schema.md %}}) to learn more about how to configure name resolution per component.
 
 #### Scope secret store access
 
-See the [Scoping secrets]({{< ref "secret-scope.md" >}}) guide for information and examples on how to scope secrets to an application.
+See the [Scoping secrets]({{% ref "secret-scope.md" %}}) guide for information and examples on how to scope secrets to an application.
 
 #### Access Control allow lists for building block APIs
 
-See the guide for [selectively enabling Dapr APIs on the Dapr sidecar]({{< ref "api-allowlist.md" >}}) for information and examples on how to set access control allow lists (ACLs) on the building block APIs lists.
+See the guide for [selectively enabling Dapr APIs on the Dapr sidecar]({{% ref "api-allowlist.md" %}}) for information and examples on how to set access control allow lists (ACLs) on the building block APIs lists.
 
 #### Access Control allow lists for service invocation API
 
-See the [Allow lists for service invocation]({{< ref "invoke-allowlist.md" >}}) guide for information and examples on how to set allow lists with ACLs which use the service invocation API.
+See the [Allow lists for service invocation]({{% ref "invoke-allowlist.md" %}}) guide for information and examples on how to set allow lists with ACLs which use the service invocation API.
 
 #### Disallow usage of certain component types
 
@@ -294,12 +294,12 @@ Optionally, you can specify a version to disallow by adding it at the end of the
  - Created by Dapr automatically
  - Used to store secrets specified in Components specs
  
- If you want to disable the built-in Kubernetes secret store, you need to use the `dapr.io/disable-builtin-k8s-secret-store` [annotation]({{< ref arguments-annotations-overview.md >}}).
+ If you want to disable the built-in Kubernetes secret store, you need to use the `dapr.io/disable-builtin-k8s-secret-store` [annotation]({{% ref arguments-annotations-overview.md %}}).
 {{% /alert %}} 
 
 #### Turning on preview features
 
-See the [preview features]({{< ref "preview-features.md" >}}) guide for information and examples on how to opt-in to preview features for a release. 
+See the [preview features]({{% ref "preview-features.md" %}}) guide for information and examples on how to opt-in to preview features for a release. 
 
 Enabling preview features unlock new capabilities to be added for dev/test, since they still need more time before becoming generally available (GA) in the runtime.
 
@@ -376,7 +376,7 @@ The `mtls` section contains properties for mTLS.
 | `controlPlaneTrustDomain` | string | Trust domain for the control plane. This is used to verify connection to control plane services. |
 | `tokenValidators` | array | Additional Sentry token validators to use for authenticating certificate requests. |
 
-See the [mTLS how-to]({{< ref "mtls.md" >}}) and [security concepts]({{< ref "security-concept.md" >}}) for more information.
+See the [mTLS how-to]({{% ref "mtls.md" %}}) and [security concepts]({{% ref "security-concept.md" %}}) for more information.
 
 ### Example control plane configuration
 
@@ -395,4 +395,4 @@ spec:
 
 ## Next steps
 
-{{< button text="Learn about concurrency and rate limits" page="control-concurrency" >}}
+{{< button text="Learn about concurrency and rate limits" page="control-concurrency.md" >}}

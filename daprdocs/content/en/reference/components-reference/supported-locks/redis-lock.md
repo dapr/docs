@@ -7,7 +7,7 @@ description: Detailed information on the Redis lock component
 
 ## Component format
 
-To set up the Redis lock, create a component of type `lock.redis`. See [this guide]({{< ref "howto-use-distributed-lock" >}}) on how to create a lock.
+To set up the Redis lock, create a component of type `lock.redis`. See [this guide]({{% ref "howto-use-distributed-lock" %}}) on how to create a lock.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -73,7 +73,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets, as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets, as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 
@@ -84,7 +84,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | redisHost          | Y        | Connection-string for the redis host  | `localhost:6379`, `redis-master.default.svc.cluster.local:6379`
 | redisPassword      | N        | Password for Redis host. No Default. Can be `secretKeyRef` to use a secret reference  | `""`, `"KeFg23!"`
 | redisUsername      | N        | Username for Redis host. Defaults to empty. Make sure your redis server version is 6 or above, and have created acl rule correctly. | `""`, `"default"`
-| useEntraID | N | Implements EntraID support for Azure Cache for Redis. Before enabling this: <ul><li>The `redisHost` name must be specified in the form of `"server:port"`</li><li>TLS must be enabled</li></ul> Learn more about this setting under [Create a Redis instance > Azure Cache for Redis]({{< ref "#setup-redis" >}}) | `"true"`, `"false"` |
+| useEntraID | N | Implements EntraID support for Azure Cache for Redis. Before enabling this: <ul><li>The `redisHost` name must be specified in the form of `"server:port"`</li><li>TLS must be enabled</li></ul> Learn more about this setting under [Create a Redis instance > Azure Cache for Redis]({{% ref "#setup-redis" %}}) | `"true"`, `"false"` |
 | enableTLS          | N         | If the Redis instance supports TLS with public certificates, can be configured to be enabled or disabled. Defaults to `"false"` | `"true"`, `"false"`
 | maxRetries         | N         | Maximum number of retries before giving up. Defaults to `3` | `5`, `10`
 | maxRetryBackoff    | N         | Maximum backoff between each retry. Defaults to `2` seconds; `"-1"` disables backoff. | `3000000000`
@@ -111,13 +111,13 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 Dapr can use any Redis instance: containerized, running on your local dev machine, or a managed cloud service.
 
-{{< tabs "Self-Hosted" "Kubernetes" "AWS" "Azure" "GCP" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 A Redis instance is automatically created as a Docker container when you run `dapr init`
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Kubernetes cluster. This approach requires [Installing Helm](https://github.com/helm/helm#install).
 
 1. Install Redis into your cluster. Note that we're explicitly setting an image tag to get a version greater than 5, which is what Dapr' pub/sub functionality requires. If you're intending on using Redis as just a state store (and not for pub/sub), you do not have to set the image version.
@@ -144,13 +144,13 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
         - name: redisPassword
           value: lhDOkwTlp0
     ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "AWS" %}}
 [AWS Redis](https://aws.amazon.com/redis/)
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Azure" %}}
 1. [Create an Azure Cache for Redis instance using the official Microsoft documentation.](https://docs.microsoft.com/azure/azure-cache-for-redis/quickstart-create-redis)
 
 1. Once your instance is created, grab the Host name (FQDN) and your access key from the Azure portal. 
@@ -167,7 +167,7 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
    
 1. Set the `redisHost` key to `[HOST NAME FROM PREVIOUS STEP]:6379` and the `redisPassword` key to the key you saved earlier. 
    
-   **Note:** In a production-grade application, follow [secret management]({{< ref component-secrets.md >}}) instructions to securely manage your secrets.
+   **Note:** In a production-grade application, follow [secret management]({{% ref component-secrets.md %}}) instructions to securely manage your secrets.
 
 1. Enable EntraID support:
    - Enable Entra ID authentication on your Azure Redis server. This may takes a few minutes.
@@ -175,17 +175,17 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 
 1. Set `enableTLS` to `"true"` to support TLS. 
 
-> **Note:**`useEntraID` assumes that either your UserPrincipal (via AzureCLICredential) or the SystemAssigned managed identity have the RedisDataOwner role permission. If a user-assigned identity is used, [you need to specify the `azureClientID` property]({{< ref "howto-mi.md#set-up-identities-in-your-component" >}}).
+> **Note:**`useEntraID` assumes that either your UserPrincipal (via AzureCLICredential) or the SystemAssigned managed identity have the RedisDataOwner role permission. If a user-assigned identity is used, [you need to specify the `azureClientID` property]({{% ref "howto-mi.md#set-up-identities-in-your-component" %}}).
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "GCP" %}}
 [GCP Cloud MemoryStore](https://cloud.google.com/memorystore/)
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 ## Related links
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Distributed lock building block]({{< ref distributed-lock-api-overview >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Distributed lock building block]({{% ref distributed-lock-api-overview %}})

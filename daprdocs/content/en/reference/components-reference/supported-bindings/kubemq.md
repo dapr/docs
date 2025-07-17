@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup KubeMQ binding create a component of type `bindings.kubemq`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup KubeMQ binding create a component of type `bindings.kubemq`. See [this guide]({{% ref "howto-bindings.md#1-create-a-binding" %}}) on how to create and apply a binding configuration.
 
 
 ```yaml
@@ -48,9 +48,9 @@ This component supports both **input and output** binding interfaces.
 
 ## Create a KubeMQ broker
 
-{{< tabs "Self-Hosted" "Kubernetes">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 1. [Obtain KubeMQ Key](https://docs.kubemq.io/getting-started/quick-start#obtain-kubemq-license-key).
 2. Wait for an email confirmation with your Key
 
@@ -61,9 +61,9 @@ docker run -d -p 8080:8080 -p 50000:50000 -p 9090:9090 -e KUBEMQ_TOKEN=<your-key
 ```
 You can then interact with the server using the client port: `localhost:50000`
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 1. [Obtain KubeMQ Key](https://docs.kubemq.io/getting-started/quick-start#obtain-kubemq-license-key).
 2. Wait for an email confirmation with your Key
 
@@ -76,24 +76,24 @@ kubectl apply -f https://deploy.kubemq.io/init
 ```bash
 kubectl apply -f https://deploy.kubemq.io/key/<your-key>
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Install KubeMQ CLI
 Go to [KubeMQ CLI](https://github.com/kubemq-io/kubemqctl/releases) and download the latest version of the CLI.
 
 ## Browse KubeMQ Dashboard
 
-{{< tabs "Self-Hosted" "Kubernetes">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 <!-- IGNORE_LINKS -->
 Open a browser and navigate to [http://localhost:8080](http://localhost:8080)
 <!-- END_IGNORE -->
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 With KubeMQCTL installed, run the following command:
 
 ```bash
@@ -104,17 +104,17 @@ Or, with kubectl installed, run port-forward command:
 ```bash
 kubectl port-forward svc/kubemq-cluster-api -n kubemq 8080:8080
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## KubeMQ Documentation
 Visit [KubeMQ Documentation](https://docs.kubemq.io/) for more information.
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Bindings building block]({{< ref bindings >}})
-- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
-- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
-- [Bindings API reference]({{< ref bindings_api.md >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Bindings building block]({{% ref bindings %}})
+- [How-To: Trigger application with input binding]({{% ref howto-triggers.md %}})
+- [How-To: Use bindings to interface with external resources]({{% ref howto-bindings.md %}})
+- [Bindings API reference]({{% ref bindings_api.md %}})

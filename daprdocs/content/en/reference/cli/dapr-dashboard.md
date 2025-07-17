@@ -11,8 +11,8 @@ Start [Dapr dashboard](https://github.com/dapr/dashboard).
 
 ### Supported platforms
 
-- [Self-Hosted]({{< ref self-hosted >}})
-- [Kubernetes]({{< ref kubernetes >}})
+- [Self-Hosted]({{% ref self-hosted %}})
+- [Kubernetes]({{% ref kubernetes %}})
 
 ### Usage
 

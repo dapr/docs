@@ -7,6 +7,6 @@ description: The supported conversation components that interface with Dapr
 no_list: true
 ---
 
-{{< partial "components/description.html" >}}
+{{% partial "components/description.html" %}}
 
-{{< partial "components/conversation.html" >}}
+{{% partial "components/conversation.html" %}}

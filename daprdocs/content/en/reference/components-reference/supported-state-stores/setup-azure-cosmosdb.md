@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup Azure Cosmos DB state store create a component of type `state.azure.cosmosdb`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+To setup Azure Cosmos DB state store create a component of type `state.azure.cosmosdb`. See [this guide]({{% ref "howto-get-save-state.md#step-1-setup-a-state-store" %}}) on how to create and apply a state store configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -34,7 +34,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 If you wish to use Cosmos DB as an actor store, append the following to the yaml.
@@ -56,7 +56,7 @@ If you wish to use Cosmos DB as an actor store, append the following to the yam
 
 ### Microsoft Entra ID authentication
 
-The Azure Cosmos DB state store component supports authentication using all Microsoft Entra ID mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of Microsoft Entra ID authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+The Azure Cosmos DB state store component supports authentication using all Microsoft Entra ID mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of Microsoft Entra ID authentication mechanism, see the [docs for authenticating to Azure]({{% ref authenticating-azure.md %}}).
 
 You can read additional information for setting up Cosmos DB with Azure AD authentication in the [section below](#setting-up-cosmos-db-for-authenticating-with-azure-ad).
 
@@ -75,7 +75,7 @@ In order to setup Cosmos DB as a state store, you need the following properties
 
 ### TTLs and cleanups
 
-This state store supports [Time-To-Live (TTL)]({{< ref state-store-ttl.md >}}) for records stored with Dapr. When storing data using Dapr, you can set the `ttlInSeconds` metadata property to override the default TTL on the CosmodDB container, indicating when the data should be considered "expired". Note that this value _only_ takes effect if the container's `DefaultTimeToLive` field has a non-NULL value. See the [CosmosDB documentation](https://docs.microsoft.com/azure/cosmos-db/nosql/time-to-live) for more information.
+This state store supports [Time-To-Live (TTL)]({{% ref state-store-ttl.md %}}) for records stored with Dapr. When storing data using Dapr, you can set the `ttlInSeconds` metadata property to override the default TTL on the CosmodDB container, indicating when the data should be considered "expired". Note that this value _only_ takes effect if the container's `DefaultTimeToLive` field has a non-NULL value. See the [CosmosDB documentation](https://docs.microsoft.com/azure/cosmos-db/nosql/time-to-live) for more information.
 
 ## Best Practices for Production Use
 
@@ -83,7 +83,7 @@ Azure Cosmos DB shares a strict metadata request rate limit across all database
 
 Therefore several strategies must be applied to avoid simultaneous new connections to Azure Cosmos DB:
 
-- Ensure sidecars of applications only load the Azure Cosmos DB component when they require it to avoid unnecessary database connections. This can be done by [scoping your components to specific applications]({{< ref component-scopes.md >}}#application-access-to-components-with-scopes).
+- Ensure sidecars of applications only load the Azure Cosmos DB component when they require it to avoid unnecessary database connections. This can be done by [scoping your components to specific applications]({{% ref component-scopes.md %}}#application-access-to-components-with-scopes).
 - Choose deployment strategies that sequentially deploy or start your applications to minimize bursts in new connections to your Azure Cosmos DB accounts.
 - Avoid reusing the same Azure Cosmos DB account for unrelated databases or systems (even outside of Dapr). Distinct Azure Cosmos DB accounts have distinct rate limits.
 - Increase the `initTimeout` value to allow the component to retry connecting to Azure Cosmos DB during side car initialization for up to 5 minutes. The default value is `5s` and should be increased. When using Kubernetes, increasing this value may also require an update to your [Readiness and Liveness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/).
@@ -145,7 +145,7 @@ When using the Dapr Cosmos DB state store and authenticating with Microsoft Ent
 
 Prerequisites:
 
-- You need a Service Principal created as per the instructions in the [authenticating to Azure]({{< ref authenticating-azure.md >}}) page. You need the ID of the Service Principal for the commands below (note that this is different from the client ID of your application, or the value you use for `azureClientId` in the metadata).
+- You need a Service Principal created as per the instructions in the [authenticating to Azure]({{% ref authenticating-azure.md %}}) page. You need the ID of the Service Principal for the commands below (note that this is different from the client ID of your application, or the value you use for `azureClientId` in the metadata).
 - [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli)
 - [jq](https://stedolan.github.io/jq/download/)
 - The scripts below are optimized for a bash or zsh shell
@@ -227,6 +227,6 @@ This particular optimization only makes sense if you are saving large objects to
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
-- [State management building block]({{< ref state-management >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" %}}) for instructions on configuring state store components
+- [State management building block]({{% ref state-management %}})

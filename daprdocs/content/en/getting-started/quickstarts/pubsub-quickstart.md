@@ -6,7 +6,7 @@ weight: 72
 description: "Get started with Dapr's Publish and Subscribe building block"
 ---
 
-Let's take a look at Dapr's [Publish and Subscribe (Pub/sub) building block]({{< ref pubsub >}}). In this Quickstart, you will run a publisher microservice and a subscriber microservice to demonstrate how Dapr enables a Pub/sub pattern.
+Let's take a look at Dapr's [Publish and Subscribe (Pub/sub) building block]({{% ref pubsub %}}). In this Quickstart, you will run a publisher microservice and a subscriber microservice to demonstrate how Dapr enables a Pub/sub pattern.
 
 1. Using a publisher service, developers can repeatedly publish messages to a topic.
 1. [A Pub/sub component](https://docs.dapr.io/concepts/components-concept/#pubsub-brokers) queues or brokers those messages. Our example below uses Redis, you can use RabbitMQ, Kafka, etc.
@@ -16,16 +16,16 @@ Let's take a look at Dapr's [Publish and Subscribe (Pub/sub) building block]({{<
 
 You can try out this pub/sub quickstart by either:
 
-- [Running all applications in this sample simultaneously with the Multi-App Run template file]({{< ref "#run-using-multi-app-run" >}}), or
-- [Running one application at a time]({{< ref "#run-one-application-at-a-time" >}})
+- [Running all applications in this sample simultaneously with the Multi-App Run template file]({{% ref "#run-using-multi-app-run" %}}), or
+- [Running one application at a time]({{% ref "#run-one-application-at-a-time" %}})
 
 ## Run using Multi-App Run
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{< tabs "Python" "JavaScript" ".NET" "Java" "Go" >}}
+{{< tabpane text=true >}}
  <!-- Python -->
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ### Step 1: Pre-requisites
 
@@ -74,7 +74,7 @@ With the following command, simultaneously run the following services alongside 
 ```bash
 dapr run -f .
 ```
-> **Note**: Since Python3.exe is not defined in Windows, you may need to change  `python3` to `python` in the  [`dapr.yaml`]({{< ref "#dapryaml-multi-app-run-template-file" >}}) file before running `dapr run -f .`
+> **Note**: Since Python3.exe is not defined in Windows, you may need to change  `python3` to `python` in the  [`dapr.yaml`]({{% ref "#dapryaml-multi-app-run-template-file" %}}) file before running `dapr run -f .`
 
 
 **Expected output**
@@ -106,14 +106,14 @@ Exited App successfully
 ### What happened?
 
 When you ran `dapr init` during Dapr install, the following YAML files were generated in the `.dapr/components` directory: 
-- [`dapr.yaml` Multi-App Run template file]({{< ref "#dapryaml-multi-app-run-template-file" >}})
-- [`pubsub.yaml` component file]({{< ref "#pubsubyaml-component-file" >}})
+- [`dapr.yaml` Multi-App Run template file]({{% ref "#dapryaml-multi-app-run-template-file" %}})
+- [`pubsub.yaml` component file]({{% ref "#pubsubyaml-component-file" %}})
 
-Running `dapr run -f .` in this Quickstart started both the [subscriber]({{< ref "#order-processor-subscriber" >}}) and [publisher]({{< ref "#checkout-publisher" >}}) applications. 
+Running `dapr run -f .` in this Quickstart started both the [subscriber]({{% ref "#order-processor-subscriber" %}}) and [publisher]({{% ref "#checkout-publisher" %}}) applications. 
 
 ##### `dapr.yaml` Multi-App Run template file
 
-Running the [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
+Running the [Multi-App Run template file]({{% ref multi-app-dapr-run %}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
 
 ```yml
 version: 1
@@ -158,7 +158,7 @@ In the component YAML file:
 
 ##### `order-processor` subscriber
 
-In the `order-processor` subscriber, you subscribe to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
+In the `order-processor` subscriber, you subscribe to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
 
 ```py
 # Register Dapr pub/sub subscriptions
@@ -187,7 +187,7 @@ app.run(port=5001)
 
 ##### `checkout` publisher
 
-In the `checkout` publisher, you publish the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
+In the `checkout` publisher, you publish the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
 ```python
 with DaprClient() as client:
@@ -200,10 +200,10 @@ with DaprClient() as client:
     )
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- JavaScript -->
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ### Step 1: Pre-requisites
 
@@ -279,14 +279,14 @@ Exited App successfully
 ### What happened?
 
 When you ran `dapr init` during Dapr install, the following YAML files were generated in the `.dapr/components` directory: 
-- [`dapr.yaml` Multi-App Run template file]({{< ref "#dapryaml-multi-app-run-template-file" >}})
-- [`pubsub.yaml` component file]({{< ref "#pubsubyaml-component-file" >}})
+- [`dapr.yaml` Multi-App Run template file]({{% ref "#dapryaml-multi-app-run-template-file" %}})
+- [`pubsub.yaml` component file]({{% ref "#pubsubyaml-component-file" %}})
 
-Running `dapr run -f .` in this Quickstart started both the [subscriber]({{< ref "#order-processor-subscriber" >}}) and [publisher]({{< ref "#checkout-publisher" >}}) applications. 
+Running `dapr run -f .` in this Quickstart started both the [subscriber]({{% ref "#order-processor-subscriber" %}}) and [publisher]({{% ref "#checkout-publisher" %}}) applications. 
 
 ##### `dapr.yaml` Multi-App Run template file
 
-Running the [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
+Running the [Multi-App Run template file]({{% ref multi-app-dapr-run %}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
 
 ```yml
 version: 1
@@ -331,7 +331,7 @@ In the component YAML file:
 
 ##### `order-processor` subscriber
 
-In the `order-processor` subscriber, you subscribe to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
+In the `order-processor` subscriber, you subscribe to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
 
 ```js
 server.pubsub.subscribe("orderpubsub", "orders", (data) => console.log("Subscriber received: " + JSON.stringify(data)));
@@ -339,7 +339,7 @@ server.pubsub.subscribe("orderpubsub", "orders", (data) => console.log("Subscrib
 
 ##### `checkout` publisher
 
-In the `checkout` publisher service, you publish the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
+In the `checkout` publisher service, you publish the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
 ```js
 const client = new DaprClient();
@@ -348,10 +348,10 @@ await client.pubsub.publish(PUBSUB_NAME, PUBSUB_TOPIC, order);
 console.log("Published data: " + JSON.stringify(order));
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- .NET -->
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ### Step 1: Pre-requisites
 
@@ -431,14 +431,14 @@ Exited App successfully
 ### What happened?
 
 When you ran `dapr init` during Dapr install, the following YAML files were generated in the `.dapr/components` directory: 
-- [`dapr.yaml` Multi-App Run template file]({{< ref "#dapryaml-multi-app-run-template-file" >}})
-- [`pubsub.yaml` component file]({{< ref "#pubsubyaml-component-file" >}})
+- [`dapr.yaml` Multi-App Run template file]({{% ref "#dapryaml-multi-app-run-template-file" %}})
+- [`pubsub.yaml` component file]({{% ref "#pubsubyaml-component-file" %}})
 
-Running `dapr run -f .` in this Quickstart started both the [subscriber]({{< ref "#order-processor-subscriber" >}}) and [publisher]({{< ref "#checkout-publisher" >}}) applications. 
+Running `dapr run -f .` in this Quickstart started both the [subscriber]({{% ref "#order-processor-subscriber" %}}) and [publisher]({{% ref "#checkout-publisher" %}}) applications. 
 
 ##### `dapr.yaml` Multi-App Run template file
 
-Running the [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
+Running the [Multi-App Run template file]({{% ref multi-app-dapr-run %}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
 
 ```yml
 version: 1
@@ -483,7 +483,7 @@ In the component YAML file:
 
 ##### `order-processor` subscriber
 
-In the `order-processor` subscriber, you subscribe to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
+In the `order-processor` subscriber, you subscribe to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
 
 ```cs
 // Dapr subscription in [Topic] routes orders topic to this route
@@ -497,7 +497,7 @@ public record Order([property: JsonPropertyName("orderId")] int OrderId);
 
 ##### `checkout` publisher
 
-In the `checkout` publisher, you publish the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
+In the `checkout` publisher, you publish the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
 ```cs
 using var client = new DaprClientBuilder().Build();
@@ -505,10 +505,10 @@ await client.PublishEventAsync("orderpubsub", "orders", order);
 Console.WriteLine("Published data: " + order);
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Java -->
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ### Step 1: Pre-requisites
 
@@ -587,14 +587,14 @@ Exited App successfully
 ### What happened?
 
 When you ran `dapr init` during Dapr install, the following YAML files were generated in the `.dapr/components` directory: 
-- [`dapr.yaml` Multi-App Run template file]({{< ref "#dapryaml-multi-app-run-template-file" >}})
-- [`pubsub.yaml` component file]({{< ref "#pubsubyaml-component-file" >}})
+- [`dapr.yaml` Multi-App Run template file]({{% ref "#dapryaml-multi-app-run-template-file" %}})
+- [`pubsub.yaml` component file]({{% ref "#pubsubyaml-component-file" %}})
 
-Running `dapr run -f .` in this Quickstart started both the [subscriber]({{< ref "#order-processor-subscriber" >}}) and [publisher]({{< ref "#checkout-publisher" >}}) applications. 
+Running `dapr run -f .` in this Quickstart started both the [subscriber]({{% ref "#order-processor-subscriber" %}}) and [publisher]({{% ref "#checkout-publisher" %}}) applications. 
 
 ##### `dapr.yaml` Multi-App Run template file
 
-Running the [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
+Running the [Multi-App Run template file]({{% ref multi-app-dapr-run %}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
 
 ```yml
 version: 1
@@ -639,7 +639,7 @@ In the component YAML file:
 
 ##### `order-processor` subscriber
 
-In the `order-processor` subscriber, you subscribe to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
+In the `order-processor` subscriber, you subscribe to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
 
 ```java
 @Topic(name = "orders", pubsubName = "orderpubsub")
@@ -658,7 +658,7 @@ public Mono<ResponseEntity> getCheckout(@RequestBody(required = false) CloudEven
 
 ##### `checkout` publisher
 
-In the `checkout` publisher, you publish the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
+In the `checkout` publisher, you publish the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
 ```java
 DaprClient client = new DaprClientBuilder().build();
@@ -669,10 +669,10 @@ client.publishEvent(
 logger.info("Published data: " + order.getOrderId());
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Go -->
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ### Step 1: Pre-requisites
 
@@ -747,14 +747,14 @@ Exited App successfully
 ### What happened?
 
 When you ran `dapr init` during Dapr install, the following YAML files were generated in the `.dapr/components` directory: 
-- [`dapr.yaml` Multi-App Run template file]({{< ref "#dapryaml-multi-app-run-template-file" >}})
-- [`pubsub.yaml` component file]({{< ref "#pubsubyaml-component-file" >}})
+- [`dapr.yaml` Multi-App Run template file]({{% ref "#dapryaml-multi-app-run-template-file" %}})
+- [`pubsub.yaml` component file]({{% ref "#pubsubyaml-component-file" %}})
 
-Running `dapr run -f .` in this Quickstart started both the [subscriber]({{< ref "#order-processor-subscriber" >}}) and [publisher]({{< ref "#checkout-publisher" >}}) applications. 
+Running `dapr run -f .` in this Quickstart started both the [subscriber]({{% ref "#order-processor-subscriber" %}}) and [publisher]({{% ref "#checkout-publisher" %}}) applications. 
 
 ##### `dapr.yaml` Multi-App Run template file
 
-Running the [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
+Running the [Multi-App Run template file]({{% ref multi-app-dapr-run %}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
 
 ```yml
 version: 1
@@ -799,7 +799,7 @@ In the component YAML file:
 
 ##### `order-processor` subscriber
 
-In the `order-processor` subscriber, you subscribe to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
+In the `order-processor` subscriber, you subscribe to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
 
 ```go
 func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err error) {
@@ -810,7 +810,7 @@ func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err er
 
 ##### `checkout` publisher
 
-In the `checkout` publisher, you publish the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
+In the `checkout` publisher, you publish the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
 ```go
 client, err := dapr.NewClient()
@@ -822,17 +822,17 @@ if err := client.PublishEvent(ctx, PUBSUB_NAME, PUBSUB_TOPIC, []byte(order)); er
 fmt.Println("Published data: ", order)
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Run one application at a time
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{< tabs "Python" "JavaScript" ".NET" "Java" "Go" >}}
+{{< tabpane text=true >}}
  <!-- Python -->
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ### Step 1: Pre-requisites
 
@@ -875,7 +875,7 @@ dapr run --app-id order-processor --resources-path ../../../components/ --app-po
 
 > **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
 
-In the `order-processor` subscriber, we're subscribing to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
+In the `order-processor` subscriber, we're subscribing to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
 
 ```py
 # Register Dapr pub/sub subscriptions
@@ -924,7 +924,7 @@ dapr run --app-id checkout --resources-path ../../../components/ -- python3 app.
 
 > **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
 
-In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
+In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
 ```python
 with DaprClient() as client:
@@ -1003,10 +1003,10 @@ In the YAML file:
 - `spec/metadata` defines the connection to the instance of the component.
 - `scopes` specify which application can use the component.
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- JavaScript -->
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ### Step 1: Pre-requisites
 
@@ -1052,7 +1052,7 @@ Run the `order-processor` subscriber service alongside a Dapr sidecar.
 dapr run --app-port 5002 --app-id order-processing --app-protocol http --dapr-http-port 3501 --resources-path ../../../components -- npm run start
 ```
 
-In the `order-processor` subscriber, we're subscribing to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
+In the `order-processor` subscriber, we're subscribing to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
 
 ```js
 server.pubsub.subscribe("orderpubsub", "orders", (data) => console.log("Subscriber received: " + JSON.stringify(data)));
@@ -1084,7 +1084,7 @@ Run the `checkout` publisher service alongside a Dapr sidecar.
 dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 --resources-path ../../../components -- npm run start
 ```
 
-In the `checkout` publisher service, we're publishing the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
+In the `checkout` publisher service, we're publishing the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
 ```js
 const client = new DaprClient();
@@ -1161,10 +1161,10 @@ In the YAML file:
 - `spec/metadata` defines the connection to the instance of the component.
 - `scopes` specify which application can use the component.
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- .NET -->
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ### Step 1: Pre-requisites
 
@@ -1206,7 +1206,7 @@ Run the `order-processor` subscriber service alongside a Dapr sidecar.
 dapr run --app-id order-processor --resources-path ../../../components --app-port 7006 -- dotnet run
 ```
 
-In the `order-processor` subscriber, we're subscribing to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
+In the `order-processor` subscriber, we're subscribing to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
 
 ```cs
 // Dapr subscription in [Topic] routes orders topic to this route
@@ -1240,7 +1240,7 @@ Run the `checkout` publisher service alongside a Dapr sidecar.
 dapr run --app-id checkout --resources-path ../../../components -- dotnet run
 ```
 
-In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
+In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
 ```cs
 using var client = new DaprClientBuilder().Build();
@@ -1314,10 +1314,10 @@ In the YAML file:
 - `spec/metadata` defines the connection to the instance of the component.
 - `scopes` specify which application can use the component.
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Java -->
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ### Step 1: Pre-requisites
 
@@ -1361,7 +1361,7 @@ Run the `order-processor` subscriber service alongside a Dapr sidecar.
 dapr run --app-port 8080 --app-id order-processor --resources-path ../../../components -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
-In the `order-processor` subscriber, we're subscribing to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
+In the `order-processor` subscriber, we're subscribing to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
 
 ```java
 @Topic(name = "orders", pubsubName = "orderpubsub")
@@ -1399,7 +1399,7 @@ Run the `checkout` publisher service alongside a Dapr sidecar.
 dapr run --app-id checkout --resources-path ../../../components -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
 ```
 
-In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
+In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
 ```java
 DaprClient client = new DaprClientBuilder().build();
@@ -1479,10 +1479,10 @@ In the YAML file:
 - `spec/metadata` defines the connection to the instance of the component.
 - `scopes` specify which application can use the component.
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Go -->
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ### Step 1: Pre-requisites
 
@@ -1523,7 +1523,7 @@ Run the `order-processor` subscriber service alongside a Dapr sidecar.
 dapr run --app-port 6005 --app-id order-processor-sdk --app-protocol http --dapr-http-port 3501 --resources-path ../../../components -- go run .
 ```
 
-In the `order-processor` subscriber, we're subscribing to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
+In the `order-processor` subscriber, we're subscribing to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
 
 ```go
 func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err error) {
@@ -1553,7 +1553,7 @@ Run the `checkout` publisher service alongside a Dapr sidecar.
 dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 --resources-path ../../../components -- go run .
 ```
 
-In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
+In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
 ```go
 client, err := dapr.NewClient()
@@ -1637,9 +1637,9 @@ In the YAML file:
 - `spec/metadata` defines the connection to the instance of the component.
 - `scopes` specify which application can use the component.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Tell us what you think!
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this Quickstart helpful? Do you have suggestions for improvement?
@@ -1654,6 +1654,6 @@ Join the discussion in our [discord channel](https://discord.com/channels/778680
   - [.NET](https://github.com/dapr/quickstarts/tree/master/pub_sub/csharp/http)
   - [Java](https://github.com/dapr/quickstarts/tree/master/pub_sub/java/http)
   - [Go](https://github.com/dapr/quickstarts/tree/master/pub_sub/go/http)
-- Learn more about [Pub/sub as a Dapr building block]({{< ref pubsub-overview >}})
+- Learn more about [Pub/sub as a Dapr building block]({{% ref pubsub-overview %}})
 
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}

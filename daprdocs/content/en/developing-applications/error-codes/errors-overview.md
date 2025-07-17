@@ -29,7 +29,7 @@ Some of the most common errors returned include:
 - ERR_STATE_STORE_NOT_FOUND
 - ERR_HEALTH_NOT_READY
 
-> **Note:** [See a full list of error codes in Dapr.]({{< ref error-codes-reference.md >}})
+> **Note:** [See a full list of error codes in Dapr.]({{% ref error-codes-reference.md %}})
 
 An error returned for a state store not found might look like the following:
 
@@ -49,7 +49,7 @@ The returned error includes:
 
 ## Dapr error code metrics
 
-Metrics help you see when exactly errors are occuring from within the runtime. Error code metrics are collected using the `error_code_total` endpoint. This endpoint is disabled by default. You can [enable it using the `recordErrorCodes` field in your configuration file]({{< ref "metrics-overview.md#configuring-metrics-for-error-codes" >}}). 
+Metrics help you see when exactly errors are occuring from within the runtime. Error code metrics are collected using the `error_code_total` endpoint. This endpoint is disabled by default. You can [enable it using the `recordErrorCodes` field in your configuration file]({{% ref "metrics-overview.md#configuring-metrics-for-error-codes" %}}). 
 
 ## Demo
 
@@ -59,4 +59,4 @@ Watch a demo presented during [Diagrid's Dapr v1.15 celebration](https://www.dia
 
 ## Next step
 
-{{< button text="See a list of all Dapr error codes" page="error-codes-reference" >}}
+{{< button text="See a list of all Dapr error codes" page="error-codes-reference.md" >}}

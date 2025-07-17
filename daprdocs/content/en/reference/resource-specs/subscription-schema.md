@@ -9,7 +9,7 @@ description: "The basic spec for a Dapr subscription"
 The `Subscription` Dapr resource allows you to subscribe declaratively to a topic using an external component YAML file. 
 
 {{% alert title="Note" color="primary" %}}
-Any subscription can be restricted to a particular [namespace]({{< ref isolation-concept.md >}}) and restricted access through scopes to any particular set of applications.
+Any subscription can be restricted to a particular [namespace]({{% ref isolation-concept.md %}}) and restricted access through scopes to any particular set of applications.
 {{% /alert %}}
 
 This guide demonstrates two subscription API versions:
@@ -86,7 +86,7 @@ scopes:
 | bulksubscribe | N | Enable bulk subscribe properties. | `true`, `false` |
 
 ## Related links
-- [Learn more about the declarative subscription method]({{< ref "subscription-methods.md#declarative-subscriptions" >}})
-- [Learn more about dead letter topics]({{< ref pubsub-deadletter.md >}})
-- [Learn more about routing messages]({{< ref "howto-route-messages.md#declarative-subscription" >}})
-- [Learn more about bulk subscribing]({{< ref pubsub-bulk.md >}})
+- [Learn more about the declarative subscription method]({{% ref "subscription-methods.md#declarative-subscriptions" %}})
+- [Learn more about dead letter topics]({{% ref pubsub-deadletter.md %}})
+- [Learn more about routing messages]({{% ref "howto-route-messages.md#declarative-subscription" %}})
+- [Learn more about bulk subscribing]({{% ref pubsub-bulk.md %}})

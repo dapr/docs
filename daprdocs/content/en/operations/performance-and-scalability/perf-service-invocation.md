@@ -17,7 +17,7 @@ Dapr consists of a data plane, the sidecar that runs next to your app, and a con
 * Sentry (optional, control plane)
 * Placement (optional, control plane)
 
-For more information see [overview of Dapr in self-hosted mode]({{< ref self-hosted-overview.md >}}).
+For more information see [overview of Dapr in self-hosted mode]({{% ref self-hosted-overview.md %}}).
 
 ### Kubernetes components
 
@@ -27,7 +27,7 @@ For more information see [overview of Dapr in self-hosted mode]({{< ref self-hos
 * Operator (control plane)
 * Sidecar Injector (control plane)
 
-For more information see [overview of Dapr on Kubernetes]({{< ref kubernetes-overview.md >}}).
+For more information see [overview of Dapr on Kubernetes]({{% ref kubernetes-overview.md %}}).
 
 ## Performance summary for Dapr v1.0
 
@@ -35,7 +35,7 @@ The service invocation API is a reverse proxy with built-in service discovery to
 
 Using service invocation you can call from HTTP to HTTP, HTTP to gRPC, gRPC to HTTP, and gRPC to gRPC. Dapr does not use HTTP for the communication between sidecars, always using gRPC, while carrying over the semantics of the protocol used when called from the app. Service invocation is the underlying mechanism of communicating with Dapr Actors.
 
-For more information see [service invocation overview]({{< ref service-invocation-overview.md >}}).
+For more information see [service invocation overview]({{% ref service-invocation-overview.md %}}).
 
 ### Kubernetes performance test setup
 
@@ -76,7 +76,7 @@ There are a number of variants that affect the CPU and memory consumption for ea
 ### Data plane performance
 
 The Dapr sidecar uses 0.48 vCPU and 23Mb per 1000 requests per second.
-End-to-end, the Dapr sidecars (client and server) add ~1.40 ms to the 90th percentile latency, and ~2.10 ms to the 99th percentile latency. End-to-end here is a call from one app to another app receiving a response. This is shown by steps 1-7 in [this diagram]({{< ref service-invocation-overview.md >}}).
+End-to-end, the Dapr sidecars (client and server) add ~1.40 ms to the 90th percentile latency, and ~2.10 ms to the 99th percentile latency. End-to-end here is a call from one app to another app receiving a response. This is shown by steps 1-7 in [this diagram]({{% ref service-invocation-overview.md %}}).
 
 This performance is on par or better than commonly used service meshes.
 

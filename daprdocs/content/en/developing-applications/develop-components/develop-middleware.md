@@ -9,7 +9,7 @@ aliases:
   - /concepts/middleware-concept/
 ---
 
-Dapr allows custom processing pipelines to be defined by chaining a series of middleware components. In this guide, you'll learn how to create a middleware component. To learn how to configure an existing middleware component, see [Configure middleware components]({{< ref middleware.md >}})
+Dapr allows custom processing pipelines to be defined by chaining a series of middleware components. In this guide, you'll learn how to create a middleware component. To learn how to configure an existing middleware component, see [Configure middleware components]({{% ref middleware.md %}})
 
 ## Writing a custom HTTP middleware
 
@@ -48,6 +48,6 @@ func (m *customMiddleware) GetHandler(metadata middleware.Metadata) (func(next h
 
 ## Related links
 
-- [Component schema]({{< ref component-schema.md >}})
-- [Configuration overview]({{< ref configuration-overview.md >}})
+- [Component schema]({{% ref component-schema.md %}})
+- [Configuration overview]({{% ref configuration-overview.md %}})
 - [API middleware sample](https://github.com/dapr/samples/tree/master/middleware-oauth-google)

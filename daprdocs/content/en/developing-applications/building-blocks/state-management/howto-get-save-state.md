@@ -18,11 +18,11 @@ The code example below _loosely_ describes an application that processes orders 
 
 A state store component represents a resource that Dapr uses to communicate with a database.
 
-For the purpose of this guide we'll use a Redis state store, but any state store from the [supported list]({{< ref supported-state-stores >}}) will work.
+For the purpose of this guide we'll use a Redis state store, but any state store from the [supported list]({{% ref supported-state-stores %}}) will work.
 
-{{< tabs "Self-Hosted (CLI)" Kubernetes>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted (CLI)" %}}
 
 When you run `dapr init` in self-hosted mode, Dapr creates a default Redis `statestore.yaml` and runs a Redis state store on your local machine, located:
 
@@ -31,11 +31,11 @@ When you run `dapr init` in self-hosted mode, Dapr creates a default Redis `stat
 
 With the `statestore.yaml` component, you can easily swap out underlying components without application code changes.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
-To deploy this into a Kubernetes cluster, fill in the `metadata` connection details of your [state store component]({{< ref supported-state-stores >}}) in the YAML below, save as `statestore.yaml`, and run `kubectl apply -f statestore.yaml`.
+To deploy this into a Kubernetes cluster, fill in the `metadata` connection details of your [state store component]({{% ref supported-state-stores %}}) in the YAML below, save as `statestore.yaml`, and run `kubectl apply -f statestore.yaml`.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -52,11 +52,11 @@ spec:
     value: ""
 ```
 
-See [how to setup different state stores on Kubernetes]({{< ref "setup-state-store" >}}).
+See [how to setup different state stores on Kubernetes]({{% ref "setup-state-store" %}}).
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 {{% alert title="Important" color="warning" %}}
 Set an `app-id`, as the state keys are prefixed with this value. If you don't set an `app-id`, one is generated for you at runtime. The next time you run the command, a new `app-id` is generated and you will no longer have access to the previously saved state.
@@ -66,9 +66,9 @@ Set an `app-id`, as the state keys are prefixed with this value. If you don't se
 
 The following example shows how to save and retrieve a single key/value pair using the Dapr state management API.
 
-{{< tabs ".NET" Java Python Go JavaScript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 
@@ -102,9 +102,9 @@ To launch a Dapr sidecar for the above example application, run a command simila
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ```java
 //dependencies
@@ -150,9 +150,9 @@ To launch a Dapr sidecar for the above example application, run a command simila
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ```python
 #dependencies
@@ -183,9 +183,9 @@ To launch a Dapr sidecar for the above example application, run a command simila
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 // dependencies
@@ -231,9 +231,9 @@ To launch a Dapr sidecar for the above example application, run a command simila
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run OrderProcessingService.go
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 //dependencies
@@ -287,9 +287,9 @@ To launch a Dapr sidecar for the above example application, run a command simila
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 Launch a Dapr sidecar:
 
@@ -311,9 +311,9 @@ curl http://localhost:3601/v1.0/state/statestore/order_1
 
 Restart your sidecar and try retrieving state again to observe that state persists separately from the app.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 Launch a Dapr sidecar:
 
@@ -335,17 +335,17 @@ Invoke-RestMethod -Uri 'http://localhost:3601/v1.0/state/statestore/order_1'
 
 Restart your sidecar and try retrieving state again to observe that state persists separately from the app.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Delete state
 
 Below are code examples that leverage Dapr SDKs for deleting the state.
 
-{{< tabs ".NET" Java Python Go JavaScript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using Dapr.Client;
@@ -370,9 +370,9 @@ To launch a Dapr sidecar for the above example application, run a command simila
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ```java
 //dependencies
@@ -400,9 +400,9 @@ To launch a Dapr sidecar for the above example application, run a command simila
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ```python
 #dependencies
@@ -423,9 +423,9 @@ To launch a Dapr sidecar for the above example application, run a command simila
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 //dependencies
@@ -458,9 +458,9 @@ To launch a Dapr sidecar for the above example application, run a command simila
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run OrderProcessingService.go
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 //dependencies
@@ -489,9 +489,9 @@ To launch a Dapr sidecar for the above example application, run a command simila
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 With the same Dapr instance running from above, run:
 
@@ -501,9 +501,9 @@ curl -X DELETE 'http://localhost:3601/v1.0/state/statestore/order_1'
 
 Try getting state again. Note that no value is returned.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 With the same Dapr instance running from above, run:
 
@@ -513,17 +513,17 @@ Invoke-RestMethod -Method Delete -Uri 'http://localhost:3601/v1.0/state/statesto
 
 Try getting state again. Note that no value is returned.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Save and retrieve multiple states
 
 Below are code examples that leverage Dapr SDKs for saving and retrieving multiple states.
 
-{{< tabs ".NET" Java Python Go JavaScript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using Dapr.Client;
@@ -567,9 +567,9 @@ IReadOnlyList<BulkStateItem<Widget>> mulitpleStateResult = await client.GetBulkS
 record Widget(string Size, string Color);
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ```java
 //dependencies
@@ -600,9 +600,9 @@ To launch a Dapr sidecar for the above example application, run a command simila
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ```python
 #dependencies
@@ -626,9 +626,9 @@ To launch a Dapr sidecar for the above example application, run a command simila
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 // dependencies
@@ -676,9 +676,9 @@ To launch a Dapr sidecar for the above example application, run a command simila
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run OrderProcessingService.go
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 //dependencies
@@ -718,9 +718,9 @@ To launch a Dapr sidecar for the above example application, run a command simila
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 With the same Dapr instance running from above, save two key/value pairs into your statestore:
 
@@ -734,9 +734,9 @@ Now get the states you just saved:
 curl -X POST -H "Content-Type: application/json" -d '{"keys":["order_1", "order_2"]}' http://localhost:3601/v1.0/state/statestore/bulk
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 With the same Dapr instance running from above, save two key/value pairs into your statestore:
 
@@ -750,21 +750,21 @@ Now get the states you just saved:
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"keys":["order_1", "order_2"]}' -Uri 'http://localhost:3601/v1.0/state/statestore/bulk'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Perform state transactions
 
 {{% alert title="Note" color="primary" %}}
-State transactions require a state store that supports multi-item transactions. See the [supported state stores page]({{< ref supported-state-stores >}}) for a full list.
+State transactions require a state store that supports multi-item transactions. See the [supported state stores page]({{% ref supported-state-stores %}}) for a full list.
 {{% /alert %}}
 
 Below are code examples that leverage Dapr SDKs for performing state transactions.
 
-{{< tabs ".NET" Java Python Go JavaScript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using Dapr.Client;
@@ -806,9 +806,9 @@ To launch a Dapr sidecar for the above example application, run a command simila
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ```java
 //dependencies
@@ -859,9 +859,9 @@ To launch a Dapr sidecar for the above example application, run a command simila
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 ```python
 #dependencies
 import random
@@ -905,9 +905,9 @@ To launch a Dapr sidecar for the above example application, run a command simila
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 // dependencies
@@ -978,9 +978,9 @@ To launch a Dapr sidecar for the above example application, run a command simila
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run OrderProcessingService.go
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 //dependencies
@@ -1038,9 +1038,9 @@ To launch a Dapr sidecar for the above example application, run a command simila
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 With the same Dapr instance running from above, perform two state transactions:
 
@@ -1054,9 +1054,9 @@ Now see the results of your state transactions:
 curl -X POST -H "Content-Type: application/json" -d '{"keys":["order_1", "order_2"]}' http://localhost:3601/v1.0/state/statestore/bulk
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 With the same Dapr instance running from above, save two key/value pairs into your statestore:
 
@@ -1070,12 +1070,12 @@ Now see the results of your state transactions:
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"keys":["order_1", "order_2"]}' -Uri 'http://localhost:3601/v1.0/state/statestore/bulk'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Next steps
 
-- Read the full [State API reference]({{< ref state_api.md >}})
-- Try one of the [Dapr SDKs]({{< ref sdks >}})
-- Build a [stateful service]({{< ref howto-stateful-service.md >}})
+- Read the full [State API reference]({{% ref state_api %}})
+- Try one of the [Dapr SDKs]({{% ref sdks %}})
+- Build a [stateful service]({{% ref howto-stateful-service %}})

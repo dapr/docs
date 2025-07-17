@@ -59,8 +59,8 @@ Metadata can be sent via query parameters in the request's URL. It must be prefi
 
 Parameter | Description
 --------- | -----------
-`metadata.ttlInSeconds` | The number of seconds for the message to expire, as [described here]({{< ref pubsub-message-ttl.md >}})
-`metadata.rawPayload` | Boolean to determine if Dapr should publish the event without wrapping it as CloudEvent, as [described here]({{< ref pubsub-raw.md >}})
+`metadata.ttlInSeconds` | The number of seconds for the message to expire, as [described here]({{% ref pubsub-message-ttl.md %}})
+`metadata.rawPayload` | Boolean to determine if Dapr should publish the event without wrapping it as CloudEvent, as [described here]({{% ref pubsub-raw.md %}})
 
 > Additional metadata parameters are available based on each pubsub component.
 
@@ -113,7 +113,7 @@ The `Content-Type` header should always be set to `application/json` since the r
 |`daprPort`|The Dapr port|
 |`pubsubname`|The name of pub/sub component|
 |`topic`|The name of the topic|
-|`metadata`|Query parameters for [metadata]({{< ref "pubsub_api.md#metadata" >}})|
+|`metadata`|Query parameters for [metadata]({{% ref "pubsub_api.md#metadata" %}})|
 
 ### Metadata
 
@@ -201,11 +201,11 @@ Optionally, metadata can be sent via the request body.
 
 Parameter | Description
 --------- | -----------
-`rawPayload` | boolean to subscribe to events that do not comply with CloudEvent specification, as [described here]({{< ref pubsub-raw.md >}})
+`rawPayload` | boolean to subscribe to events that do not comply with CloudEvent specification, as [described here]({{% ref pubsub-raw.md %}})
 
 ### Provide route(s) for Dapr to deliver topic events
 
-In order to deliver topic events, a `POST` call will be made to user code with the route specified in the subscription response. Under `routes`, you can provide [rules that match a certain condition to a specific path when a message topic is received.]({{< ref "howto-route-messages.md" >}}) You can also provide a default route for any rules that do not have a specific match.
+In order to deliver topic events, a `POST` call will be made to user code with the route specified in the subscription response. Under `routes`, you can provide [rules that match a certain condition to a specific path when a message topic is received.]({{% ref "howto-route-messages.md" %}}) You can also provide a default route for any rules that do not have a specific match.
 
 The following example illustrates this point, considering a subscription for topic `newOrder` with route `orders` on port 3000: `POST http://localhost:3000/orders`
 
@@ -261,7 +261,7 @@ In order to receive messages in a bulk manner for a topic subscription, the appl
 
 - Needs to opt for `bulkSubscribe` while sending list of topics to be subscribed to
 - Optionally, can configure `maxMessagesCount` and/or `maxAwaitDurationMs`
-Refer to the [Send and receive messages in bulk]({{< ref pubsub-bulk.md >}}) guide for more details on how to opt-in.
+Refer to the [Send and receive messages in bulk]({{% ref pubsub-bulk.md %}}) guide for more details on how to opt-in.
 
 #### Expected HTTP Response for Bulk Subscribe
 
@@ -306,5 +306,5 @@ Dapr pub/sub adheres to [version 1.0 of CloudEvents](https://github.com/cloudeve
 
 ## Related links
 
-* [How to publish to and consume topics]({{< ref howto-publish-subscribe.md >}})
+* [How to publish to and consume topics]({{% ref howto-publish-subscribe.md %}})
 * [Sample for pub/sub](https://github.com/dapr/quickstarts/tree/master/tutorials/pub-sub)

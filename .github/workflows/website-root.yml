@@ -25,27 +25,27 @@ jobs:
       HUGO_ENV: production
     steps:
       - name: Checkout docs repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: '14'
+          node-version: '18'
       - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2.5.0
+        uses: peaceiris/actions-hugo@v3.0.0
         with:
-          hugo-version: 0.102.3
+          hugo-version: 0.147.9
           extended: true
-      - name: Setup Docsy
+      - name: Setup Submodules
         run: |
           cd daprdocs
           git submodule update --init --recursive
+          cd ..
           sudo npm install -D --save autoprefixer
           sudo npm install -D --save postcss-cli
       - name: Build Hugo Website
         run: |
-          cd daprdocs
           git config --global --add safe.directory /github/workspace
           if [ $GITHUB_EVENT_NAME == 'pull_request' ]; then
             STAGING_URL="https://${SWA_BASE}-${{github.event.number}}.westus2.azurestaticapps.net/"
@@ -93,7 +93,7 @@ jobs:
       ALGOLIA_INDEX_NAME: daprdocs
     steps:
       - name: Checkout docs repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: false
       - name: Download Hugo artifacts

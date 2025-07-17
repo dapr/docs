@@ -80,15 +80,16 @@ cd ./daprdocs
 git submodule update --init --recursive
 ```
 
-5. Install npm packages:
+1. Navigate back to the repository root and install npm packages:
 
 ```sh
+cd ..
 npm install
 ```
 
 ## Run local server
 
-1. Make sure you're in the `daprdocs` directory
+1. Make sure you're in the root of the repository
 2. Run
 
 ```sh

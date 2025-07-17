@@ -57,7 +57,7 @@ AKS Edge Essentials does not come with a default storage class, which may cause 
 
 ## Related links
 
-- Learn more about [the Dapr extension for AKS]({{< ref azure-kubernetes-service-extension >}})
+- Learn more about [the Dapr extension for AKS]({{% ref azure-kubernetes-service-extension %}})
    - [Install the Dapr extension for AKS](https://learn.microsoft.com/azure/aks/dapr)
    - [Configure the Dapr extension for AKS](https://learn.microsoft.com/azure/aks/dapr-settings)
    - [Deploy and run workflows with the Dapr extension for AKS](https://learn.microsoft.com/azure/aks/dapr-workflow)

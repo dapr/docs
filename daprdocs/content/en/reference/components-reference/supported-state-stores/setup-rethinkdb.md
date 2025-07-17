@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup RethinkDB state store, create a component of type `state.rethinkdb`. See [the how-to guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) to create and apply a state store configuration.
+To setup RethinkDB state store, create a component of type `state.rethinkdb`. See [the how-to guide]({{% ref "howto-get-save-state.md#step-1-setup-a-state-store" %}}) to create and apply a state store configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -35,7 +35,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets, as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets, as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 If the optional `archive` metadata is set to `true`, on each state change, the RethinkDB state store will also log state changes with timestamp in the `daprstate_archive` table. This allows for time series analyses of the state managed by Dapr.
@@ -53,9 +53,9 @@ If the optional `archive` metadata is set to `true`, on each state change, the R
 
 ## Setup RethinkDB
 
-{{< tabs "Self-Hosted" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 You can run [RethinkDB](https://rethinkdb.com/) locally using Docker:
 
 ```
@@ -67,10 +67,11 @@ To connect to the admin UI:
 ```shell
 open "http://$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' rethinkdb):8080"
 ```
-{{% /codetab %}}
-{{% /codetab %}}
+{{% /tab %}}
+
+{{< /tabpane >}}
 
 ## Related links
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [the how-to guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components.
-- [State management building block]({{< ref state-management >}}).
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [the how-to guide]({{% ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" %}}) for instructions on configuring state store components.
+- [State management building block]({{% ref state-management %}}).

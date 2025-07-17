@@ -5,7 +5,7 @@ linkTitle: "Scheduler"
 description: "Overview of the Dapr scheduler service"
 ---
 
-The Dapr Scheduler service is used to schedule different types of jobs, running in [self-hosted mode]({{< ref self-hosted >}}) or on [Kubernetes]({{< ref kubernetes >}}). 
+The Dapr Scheduler service is used to schedule different types of jobs, running in [self-hosted mode]({{% ref self-hosted %}}) or on [Kubernetes]({{% ref kubernetes %}}). 
 - Jobs created through the Jobs API
 - Actor reminder jobs (used by the actor reminders)
 - Actor reminder jobs created by the Workflow API (which uses actor reminders)
@@ -20,7 +20,7 @@ The diagram below shows how the Scheduler service is used via the jobs API when 
 
 ## Actor Reminders
 
-Prior to Dapr v1.15, [actor reminders]({{< ref "actors-timers-reminders.md#actor-reminders" >}}) were run using the Placement service. Now, by default, the [`SchedulerReminders` feature flag]({{< ref "support-preview-features.md#current-preview-features" >}}) is set to `true`, and all new actor reminders you create are run using the Scheduler service to make them more scalable.
+Prior to Dapr v1.15, [actor reminders]({{% ref "actors-timers-reminders#actor-reminders" %}}) were run using the Placement service. Now, by default, the [`SchedulerReminders` feature flag]({{% ref "support-preview-features#current-preview-features" %}}) is set to `true`, and all new actor reminders you create are run using the Scheduler service to make them more scalable.
 
 When you deploy Dapr v1.15, any _existing_ actor reminders are automatically migrated from the Actor State Store to the Scheduler service as a one time operation for each actor type. Each replica will only migrate the reminders whose actor type and id are associated with that host. This means that only when all replicas implementing an actor type are upgraded to 1.15, will all the reminders associated with that type be migrated. There will be _no_ loss of reminder triggers during the migration. However, you can prevent this migration and keep the existing actor reminders running using the Actor State Store by setting the `SchedulerReminders` flag to `false` in the application configuration file for the actor type.
 
@@ -63,13 +63,13 @@ For non-client side errors, for example, when a job cannot be sent to an availab
 
 ## Self-hosted mode
 
-The Scheduler service Docker container is started automatically as part of `dapr init`. It can also be run manually as a process if you are running in [slim-init mode]({{< ref self-hosted-no-docker.md >}}).
+The Scheduler service Docker container is started automatically as part of `dapr init`. It can also be run manually as a process if you are running in [slim-init mode]({{% ref self-hosted-no-docker %}}).
 
-The Scheduler can be run in both high availability (HA) and non-HA modes in self-hosted deployments. However, non-HA mode is not recommended for production use. If switching between non-HA and HA modes, the existing data directory must be removed, which results in loss of jobs and actor reminders. [Run a back-up]({{< ref "#back-up-and-restore-scheduler-data" >}}) before making this change to avoid losing data.
+The Scheduler can be run in both high availability (HA) and non-HA modes in self-hosted deployments. However, non-HA mode is not recommended for production use. If switching between non-HA and HA modes, the existing data directory must be removed, which results in loss of jobs and actor reminders. [Run a back-up]({{% ref "#back-up-and-restore-scheduler-data" %}}) before making this change to avoid losing data.
 
 ## Kubernetes mode
 
-The Scheduler service is deployed as part of `dapr init -k`, or via the Dapr Helm charts. Scheduler always runs in high availability (HA) mode in Kubernetes deployments. Scaling the Scheduler service replicas up or down is not possible without incurring data loss due to the nature of the embedded data store. [Learn more about setting HA mode in your Kubernetes service.]({{< ref "kubernetes-production.md#individual-service-ha-helm-configuration" >}})
+The Scheduler service is deployed as part of `dapr init -k`, or via the Dapr Helm charts. Scheduler always runs in high availability (HA) mode in Kubernetes deployments. Scaling the Scheduler service replicas up or down is not possible without incurring data loss due to the nature of the embedded data store. [Learn more about setting HA mode in your Kubernetes service.]({{% ref "kubernetes-production#individual-service-ha-helm-configuration" %}})
 
 When a Kubernetes namespace is deleted, all the Job and Actor Reminders corresponding to that namespace are deleted.
 
@@ -127,14 +127,14 @@ Port forward the Scheduler instance and view etcd's metrics with the following:
 curl -s http://localhost:2379/metrics
 ```
 
-Fine tune the embedded etcd to your needs by [reviewing and configuring the Scheduler's etcd flags as needed](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md#dapr-scheduler-options).
+Fine tune the embedded etcd to your needs by [reviewing and configuring the Scheduler's etcd flags as needed](https://github.com/dapr/dapr/blob/master/charts/dapr/README#dapr-scheduler-options).
 
 ## Disabling the Scheduler service
 
 If you are not using any features that require the Scheduler service (Jobs API, Actor Reminders, or Workflows), you can disable it by setting `global.scheduler.enabled=false`.
 
-For more information on running Dapr on Kubernetes, visit the [Kubernetes hosting page]({{< ref kubernetes >}}).
+For more information on running Dapr on Kubernetes, visit the [Kubernetes hosting page]({{% ref kubernetes %}}).
 
 ## Related links
 
-[Learn more about the Jobs API.]({{< ref jobs_api.md >}})
+[Learn more about the Jobs API.]({{% ref jobs_api %}})

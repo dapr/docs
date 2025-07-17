@@ -16,9 +16,9 @@ Dapr provides a dedicated secrets API that allows developers to retrieve secrets
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{< tabs "Python" "JavaScript" ".NET" "Java" "Go" >}}
+{{< tabpane text=true >}}
  <!-- Python -->
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ### Pre-requisites
 
@@ -124,10 +124,10 @@ Order-processor output:
 == APP == INFO:root:Fetched Secret: {'secret': 'YourPasskeyHere'}
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- JavaScript -->
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ### Pre-requisites
 
@@ -237,10 +237,10 @@ Order-processor output:
 == APP == Fetched Secret: {"secret":"YourPasskeyHere"}
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- .NET -->
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ### Pre-requisites
 
@@ -349,10 +349,10 @@ Order-processor output:
 == APP == Fetched Secret: [secret, YourPasskeyHere]
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Java -->
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ### Pre-requisites
 
@@ -457,10 +457,10 @@ Order-processor output:
 == APP == Fetched Secret: {secret=YourPasskeyHere}
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Go -->
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ### Pre-requisites
 
@@ -564,9 +564,9 @@ Order-processor output:
 == APP == Fetched Secret:  YourPasskeyHere
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Tell us what you think!
 
@@ -582,6 +582,6 @@ Join the discussion in our [discord channel](https://discord.com/channels/778680
   - [.NET](https://github.com/dapr/quickstarts/tree/master/secrets_management/csharp/http)
   - [Java](https://github.com/dapr/quickstarts/tree/master/secrets_management/java/http)
   - [Go](https://github.com/dapr/quickstarts/tree/master/secrets_management/go/http)
-- Learn more about the [Secrets Management building block]({{< ref secrets-overview >}})
+- Learn more about the [Secrets Management building block]({{% ref secrets-overview %}})
 
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}

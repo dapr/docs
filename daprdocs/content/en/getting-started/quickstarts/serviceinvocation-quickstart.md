@@ -11,18 +11,18 @@ With [Dapr's Service Invocation building block](https://docs.dapr.io/developing-
 <img src="/images/serviceinvocation-quickstart/service-invocation-overview.png" width=800 alt="Diagram showing the steps of service invocation" style="padding-bottom:25px;">
 
 Dapr offers several methods for service invocation, which you can choose depending on your scenario. For this Quickstart, you'll enable the checkout service to invoke a method using HTTP proxy in the order-processor service and by either:
-- [Running all applications in this sample simultaneously with the Multi-App Run template file]({{< ref "#run-using-multi-app-run" >}}), or
-- [Running one application at a time]({{< ref "#run-one-application-at-a-time" >}})
+- [Running all applications in this sample simultaneously with the Multi-App Run template file]({{% ref "#run-using-multi-app-run" %}}), or
+- [Running one application at a time]({{% ref "#run-one-application-at-a-time" %}})
 
-Learn more about Dapr's methods for service invocation in the [overview article]({{< ref service-invocation-overview.md >}}).
+Learn more about Dapr's methods for service invocation in the [overview article]({{% ref service-invocation-overview %}}).
 
 ## Run using Multi-App Run
 
 Select your preferred language before proceeding with the Quickstart.
 
-{{< tabs "Python" "JavaScript" ".NET" "Java" "Go" >}}
+{{< tabpane text=true >}}
  <!-- Python -->
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ### Step 1: Pre-requisites
 
@@ -67,7 +67,7 @@ With the following command, simultaneously run the following services alongside 
 ```bash
 dapr run -f .
 ```
-> **Note**: Since Python3.exe is not defined in Windows, you may need to change  `python3` to `python` in the  [`dapr.yaml`]({{< ref "#dapryaml-multi-app-run-template-file" >}}) file before running `dapr run -f .`
+> **Note**: Since Python3.exe is not defined in Windows, you may need to change  `python3` to `python` in the  [`dapr.yaml`]({{% ref "#dapryaml-multi-app-run-template-file" %}}) file before running `dapr run -f .`
 
 **Expected output**
 
@@ -117,11 +117,11 @@ Exited App successfully
 
 ### What happened? 
 
-Running `dapr run -f .` in this Quickstart started both the [subscriber]({{< ref "#order-processor-service" >}}) and [publisher]({{< ref "#checkout-service" >}}) applications using the `dapr.yaml` Multi-App Run template file.
+Running `dapr run -f .` in this Quickstart started both the [subscriber]({{% ref "#order-processor-service" %}}) and [publisher]({{% ref "#checkout-service" %}}) applications using the `dapr.yaml` Multi-App Run template file.
 
 ##### `dapr.yaml` Multi-App Run template file
 
-Running the [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
+Running the [Multi-App Run template file]({{% ref multi-app-dapr-run %}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
 
 ```yml
 version: 1
@@ -165,10 +165,10 @@ result = requests.post(
 )
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- JavaScript -->
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ### Step 1: Pre-requisites
 
@@ -262,11 +262,11 @@ Exited App successfully
 
 ### What happened? 
 
-Running `dapr run -f .` in this Quickstart started both the [subscriber]({{< ref "#order-processor-service" >}}) and [publisher]({{< ref "#checkout-service" >}}) applications using the `dapr.yaml` Multi-App Run template file.
+Running `dapr run -f .` in this Quickstart started both the [subscriber]({{% ref "#order-processor-service" %}}) and [publisher]({{% ref "#checkout-service" %}}) applications using the `dapr.yaml` Multi-App Run template file.
 
 ##### `dapr.yaml` Multi-App Run template file
 
-Running the [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
+Running the [Multi-App Run template file]({{% ref multi-app-dapr-run %}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
 
 ```yml
 version: 1
@@ -305,10 +305,10 @@ const res = await axios.post(`${DAPR_HOST}:${DAPR_HTTP_PORT}/orders`, order , ax
 console.log("Order passed: " + res.config.data);
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- .NET -->
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ### Step 1: Pre-requisites
 
@@ -407,11 +407,11 @@ Exited App successfully
 
 ### What happened? 
 
-Running `dapr run -f .` in this Quickstart started both the [subscriber]({{< ref "#order-processor-service" >}}) and [publisher]({{< ref "#checkout-service" >}}) applications using the `dapr.yaml` Multi-App Run template file.
+Running `dapr run -f .` in this Quickstart started both the [subscriber]({{% ref "#order-processor-service" %}}) and [publisher]({{% ref "#checkout-service" %}}) applications using the `dapr.yaml` Multi-App Run template file.
 
 ##### `dapr.yaml` Multi-App Run template file
 
-Running the [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
+Running the [Multi-App Run template file]({{% ref multi-app-dapr-run %}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
 
 ```yml
 version: 1
@@ -449,10 +449,10 @@ var response = await client.PostAsJsonAsync("/orders", order, cts.Token);
 Console.WriteLine("Order passed: " + order);
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Java -->
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ### Step 1: Pre-requisites
 
@@ -549,11 +549,11 @@ Exited App successfully
 
 ### What happened? 
 
-Running `dapr run -f .` in this Quickstart started both the [subscriber]({{< ref "#order-processor-service" >}}) and [publisher]({{< ref "#checkout-service" >}}) applications using the `dapr.yaml` Multi-App Run template file.
+Running `dapr run -f .` in this Quickstart started both the [subscriber]({{% ref "#order-processor-service" %}}) and [publisher]({{% ref "#checkout-service" %}}) applications using the `dapr.yaml` Multi-App Run template file.
 
 ##### `dapr.yaml` Multi-App Run template file
 
-Running the [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
+Running the [Multi-App Run template file]({{% ref multi-app-dapr-run %}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
 
 ```yml
 version: 1
@@ -590,10 +590,10 @@ HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandle
 System.out.println("Order passed: "+ orderId)
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Go -->
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ### Step 1: Pre-requisites
 
@@ -688,11 +688,11 @@ Exited App successfully
 
 ### What happened? 
 
-Running `dapr run -f .` in this Quickstart started both the [subscriber]({{< ref "#order-processor-service" >}}) and [publisher]({{< ref "#checkout-service" >}}) applications using the `dapr.yaml` Multi-App Run template file.
+Running `dapr run -f .` in this Quickstart started both the [subscriber]({{% ref "#order-processor-service" %}}) and [publisher]({{% ref "#checkout-service" %}}) applications using the `dapr.yaml` Multi-App Run template file.
 
 ##### `dapr.yaml` Multi-App Run template file
 
-Running the [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
+Running the [Multi-App Run template file]({{% ref multi-app-dapr-run %}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
 
 ```yml
 version: 1
@@ -730,17 +730,17 @@ req.Header.Add("dapr-app-id", "order-processor")
 response, err := client.Do(req)
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% /tabs %}}
+{{< /tabpane >}}
 
 ## Run one application at a time 
 
 Select your preferred language before proceeding with the Quickstart.
 
-{{< tabs "Python" "JavaScript" ".NET" "Java" "Go" >}}
+{{< tabpane text=true >}}
  <!-- Python -->
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ### Step 1: Pre-requisites
 
@@ -832,7 +832,7 @@ result = requests.post(
 
 ### Step 5: Use with Multi-App Run
 
-You can run the Dapr applications in this quickstart with the [Multi-App Run template]({{< ref multi-app-dapr-run >}}). Instead of running two separate `dapr run` commands for the `order-processor` and `checkout` applications, run the following command:
+You can run the Dapr applications in this quickstart with the [Multi-App Run template]({{% ref multi-app-dapr-run %}}). Instead of running two separate `dapr run` commands for the `order-processor` and `checkout` applications, run the following command:
 
 ```sh
 dapr run -f .
@@ -878,10 +878,10 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 == APP == Order received: {"orderId": 10}
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- JavaScript -->
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ### Step 1: Pre-requisites
 
@@ -964,7 +964,7 @@ console.log("Order passed: " + res.config.data);
 
 ### Step 5: Use with Multi-App Run
 
-You can run the Dapr applications in this quickstart with the [Multi-App Run template]({{< ref multi-app-dapr-run >}}). Instead of running two separate `dapr run` commands for the `order-processor` and `checkout` applications, run the following command:
+You can run the Dapr applications in this quickstart with the [Multi-App Run template]({{% ref multi-app-dapr-run %}}). Instead of running two separate `dapr run` commands for the `order-processor` and `checkout` applications, run the following command:
 
 ```sh
 dapr run -f .
@@ -1010,10 +1010,10 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 == APP == Order received: {"orderId": 10}
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- .NET -->
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ### Step 1: Pre-requisites
 
@@ -1099,7 +1099,7 @@ Console.WriteLine("Order passed: " + order);
 
 ### Step 5: Use with Multi-App Run
 
-You can run the Dapr applications in this quickstart with the [Multi-App Run template]({{< ref multi-app-dapr-run >}}). Instead of running two separate `dapr run` commands for the `order-processor` and `checkout` applications, run the following command:
+You can run the Dapr applications in this quickstart with the [Multi-App Run template]({{% ref multi-app-dapr-run %}}). Instead of running two separate `dapr run` commands for the `order-processor` and `checkout` applications, run the following command:
 
 ```sh
 dapr run -f .
@@ -1145,10 +1145,10 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 == APP == Order received: Order { OrderId: 10 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Java -->
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ### Step 1: Pre-requisites
 
@@ -1232,7 +1232,7 @@ System.out.println("Order passed: "+ orderId)
 
 ### Step 5: Use with Multi-App Run
 
-You can run the Dapr applications in this quickstart with the [Multi-App Run template]({{< ref multi-app-dapr-run >}}). Instead of running two separate `dapr run` commands for the `order-processor` and `checkout` applications, run the following command:
+You can run the Dapr applications in this quickstart with the [Multi-App Run template]({{% ref multi-app-dapr-run %}}). Instead of running two separate `dapr run` commands for the `order-processor` and `checkout` applications, run the following command:
 
 ```sh
 dapr run -f .
@@ -1278,10 +1278,10 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 == APP == Order received: 10
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Go -->
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ### Step 1: Pre-requisites
 
@@ -1367,7 +1367,7 @@ response, err := client.Do(req)
 
 ### Step 5: Use with Multi-App Run
 
-You can run the Dapr applications in this quickstart with the [Multi-App Run template]({{< ref multi-app-dapr-run >}}). Instead of running two separate `dapr run` commands for the `order-processor` and `checkout` applications, run the following command:
+You can run the Dapr applications in this quickstart with the [Multi-App Run template]({{% ref multi-app-dapr-run %}}). Instead of running two separate `dapr run` commands for the `order-processor` and `checkout` applications, run the following command:
 
 ```sh
 dapr run -f .
@@ -1414,9 +1414,9 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 ```
 
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% /tabs %}}
+{{< /tabpane >}}
 
 ## Tell us what you think!
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this Quickstart helpful? Do you have suggestions for improvement?
@@ -1425,9 +1425,9 @@ Join the discussion in our [discord channel](https://discord.com/channels/778680
 
 ## Next Steps
 
-- Learn more about [Service Invocation as a Dapr building block]({{< ref service-invocation-overview.md >}})
+- Learn more about [Service Invocation as a Dapr building block]({{% ref service-invocation-overview %}})
 - Learn more about how to invoke Dapr's Service Invocation with:
-    - [HTTP]({{< ref howto-invoke-discover-services.md >}}), or
-    - [gRPC]({{< ref howto-invoke-services-grpc.md >}})
+    - [HTTP]({{% ref howto-invoke-discover-services %}}), or
+    - [gRPC]({{% ref howto-invoke-services-grpc %}})
 
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}

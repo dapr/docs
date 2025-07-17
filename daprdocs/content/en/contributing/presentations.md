@@ -25,7 +25,7 @@ brew install --cask font-space-grotesk
 ## Giving a Dapr presentation
 
 - Begin by downloading the [Dapr Presentation Decks](/presentations/dapr-slidedecks.zip). These contain slides, diagrams, and graphical assets needed to give a Dapr presentation.
-- Next, review the docs to make sure you understand the [concepts]({{< ref concepts >}}).
+- Next, review the docs to make sure you understand the [concepts]({{% ref concepts %}}).
 - Use the Dapr [quickstarts](https://github.com/dapr/quickstarts) repo to show demos of how to use Dapr.
 - Once you've done a Dapr presentation, claim the *Dapr Presenter* badge by adding your presentation to [this table](https://github.com/dapr/community/tree/master/presentations) in the Dapr Community repository.
 

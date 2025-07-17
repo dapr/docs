@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup AlibabaCloud OOS Parameter Store secret store create a component of type `secretstores.alicloud.parameterstore`. See [this guide]({{< ref "setup-secret-store.md#apply-the-configuration" >}}) on how to create and apply a secretstore configuration. See this guide on [referencing secrets]({{< ref component-secrets.md >}}) to retrieve and use the secret with Dapr components.
+To setup AlibabaCloud OOS Parameter Store secret store create a component of type `secretstores.alicloud.parameterstore`. See [this guide]({{% ref "setup-secret-store.md#apply-the-configuration" %}}) on how to create and apply a secretstore configuration. See this guide on [referencing secrets]({{% ref component-secrets.md %}}) to retrieve and use the secret with Dapr components.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -31,7 +31,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a local secret store such as [Kubernetes secret store]({{< ref kubernetes-secret-store.md >}}) or a [local file]({{< ref file-secret-store.md >}}) to bootstrap secure key storage.
+The above example uses secrets as plain strings. It is recommended to use a local secret store such as [Kubernetes secret store]({{% ref kubernetes-secret-store.md %}}) or a [local file]({{% ref file-secret-store.md %}}) to bootstrap secure key storage.
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -45,7 +45,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 
 ## Optional per-request metadata properties
 
-The following [optional query parameters]({{< ref "secrets_api.md#query-parameters" >}}) can be provided when retrieving secrets from this secret store:
+The following [optional query parameters]({{% ref "secrets_api.md#query-parameters" %}}) can be provided when retrieving secrets from this secret store:
 
 Query Parameter | Description
 --------- | -----------
@@ -58,7 +58,7 @@ Setup AlibabaCloud OOS Parameter Store using the AlibabaCloud documentation: htt
 
 ## Related links
 
-- [Secrets building block]({{< ref secrets >}})
-- [How-To: Retrieve a secret]({{< ref "howto-secrets.md" >}})
-- [How-To: Reference secrets in Dapr components]({{< ref component-secrets.md >}})
-- [Secrets API reference]({{< ref secrets_api.md >}})
+- [Secrets building block]({{% ref secrets %}})
+- [How-To: Retrieve a secret]({{% ref "howto-secrets.md" %}})
+- [How-To: Reference secrets in Dapr components]({{% ref component-secrets.md %}})
+- [Secrets API reference]({{% ref secrets_api.md %}})
