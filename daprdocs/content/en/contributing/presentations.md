@@ -6,9 +6,14 @@ weight: 20
 description: How to give a presentation on Dapr and examples
 ---
 
-We welcome community members giving presentations on Dapr and spreading the word about all the awesome Dapr features! We offer a template PowerPoint file to get started.
+We encourage community members to give presentations on Dapr. To get you started quickly, we offer two PowerPoint files:
 
-{{< button text="Download the Dapr Presentation Deck" link="/presentations/dapr-slidedeck.pptx.zip" >}}
+- *dapr-slidedeck.pptx*, this is a 150+ page slide deck and contains; an overview of Dapr, all of its building block APIs, cross-cutting concerns, hosting options, and assets to create your own architecture diagrams.
+- *dapr-workflow.pptx*, this is a dedicated slide deck about Dapr workflow and contains; durable execution concept, workflow authoring, workflow patterns, workflow management, and challenges & tips.
+
+There is a downloadable zip file contains both slide decks.
+
+{{< button text="Download the Dapr Presentation Decks" link="/presentations/dapr-slidedecks.zip" >}}
 
 {{% alert color="primary" %}}
 If you're using the PowerPoint template with MacOS, please install the Space Grotesk font to ensure the text is rendered properly:
@@ -19,19 +24,16 @@ brew install --cask font-space-grotesk
 
 ## Giving a Dapr presentation
 
-- Begin by downloading the [Dapr Presentation Deck](/presentations/dapr-slidedeck.pptx.zip). This contains slides and diagrams needed to give a Dapr presentation.
+- Begin by downloading the [Dapr Presentation Decks](/presentations/dapr-slidedecks.zip). These contain slides, diagrams, and graphical assets needed to give a Dapr presentation.
 - Next, review the docs to make sure you understand the [concepts]({{< ref concepts >}}).
-- Use the Dapr [quickstarts](https://github.com/dapr/quickstarts) repo and [samples](https://github.com/dapr/samples) repo to show demos of how to use Dapr.
+- Use the Dapr [quickstarts](https://github.com/dapr/quickstarts) repo to show demos of how to use Dapr.
+- Once you've done a Dapr presentation, claim the *Dapr Presenter* badge by adding your presentation to [this table](https://github.com/dapr/community/tree/master/presentations) in the Dapr Community repository.
 
-## Previous Dapr presentations
+## Dapr presentations from the community
 
-| Presentation | Recording | Deck |
-|--------------|-----------|------|
-| Running Event-Driven Pub/Sub Microservices In Kubernetes With Dapr | [Link](https://youtu.be/-4sHUvfk2Eg) | N/A
-| Ignite 2019: Mark Russinovich Presents the Future of Cloud Native Applications | [Link](https://www.youtube.com/watch?v=LAUDVk8PaCY) | [Link](/presentations/2019IgniteCloudNativeApps.pdf)
-| Azure Community Live: Build microservice applications using DAPR with Mark Fussell | [Link](https://www.youtube.com/watch?v=CgqI7nen-Ng) | N/A
-| Ready 2020: Mark Russinovich Presents Cloud Native Applications | [Link](https://youtu.be/eJCu6a-x9uo?t=1614) | [Link](/presentations/2020ReadyCloudNativeApps.pdf)
-| Ignite 2021: Mark Russinovich Presents Dapr v1.0 Release | [Link](https://youtu.be/69PrhWQorEM?t=3789) | N/A
+If you need some inspiration, watch these Dapr presentations by the community via this [Dapr YouTube playlist](https://youtube.com/playlist?list=PLcip_LgkYwztNWGLdO6yROA3zKl-uUu7h&si=dLMS2CPPyMsfl-QQ):
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?si=0atWXnp3ikvuqao7&amp;list=PLcip_LgkYwztNWGLdO6yROA3zKl-uUu7h" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Additional resources
 

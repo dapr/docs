@@ -26,6 +26,8 @@ spec:
     value: "items"
   - name: region
     value: "us-west-2"
+  - name: endpoint
+    value: "sqs.us-west-2.amazonaws.com"    
   - name: accessKey
     value: "*****************"
   - name: secretKey
@@ -45,11 +47,12 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | `queueName` | Y | Input/Output | The SQS queue name | `"myqueue"` |
-| `region`             | Y        | Input/Output |  The specific AWS region | `"us-east-1"`       |
-| `accessKey`          | Y        | Input/Output | The AWS Access Key to access this resource                              | `"key"`             |
-| `secretKey`          | Y        | Input/Output | The AWS Secret Access Key to access this resource                       | `"secretAccessKey"` |
-| `sessionToken`       | N        | Input/Output | The AWS session token to use                                            | `"sessionToken"`    |
-| `direction`       | N        | Input/Output | The direction of the binding                                           | `"input"`, `"output"`, `"input, output"`    |
+| `region`             | Y        | Input/Output |  The specific AWS region  | `"us-east-1"`                     |
+| `endpoint`           | N        | Output       | The specific AWS endpoint | `"sqs.us-east-1.amazonaws.com"`   |
+| `accessKey`          | Y        | Input/Output | The AWS Access Key to access this resource                    | `"key"`                |
+| `secretKey`          | Y        | Input/Output | The AWS Secret Access Key to access this resource             | `"secretAccessKey"`    |
+| `sessionToken`       | N        | Input/Output | The AWS session token to use         | `"sessionToken"`       |
+| `direction`          | N        | Input/Output | The direction of the binding                                  | `"input"`, `"output"`, `"input, output"`                                                                         |
 
 {{% alert title="Important" color="warning" %}}
 When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernetes), if you're using a node/pod that has already been attached to an IAM policy defining access to AWS resources, you **must not** provide AWS access-key, secret-key, and tokens in the definition of the component spec you're using.  
