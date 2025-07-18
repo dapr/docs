@@ -136,7 +136,7 @@ Field values for status codes must follow the format specified above. An incorre
 
 Watch a demo presented during [Diagrid's Dapr v1.15 celebration](https://www.diagrid.io/videos/dapr-1-15-deep-dive) to see how to set retry status code filters using Diagrid Conductor
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/NTnwoDhHIcQ?si=8k1IhRazjyrIJE3P&amp;start=4565" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+{{< youtube id=NTnwoDhHIcQ start=4565 >}}
 
 ## Next steps
 

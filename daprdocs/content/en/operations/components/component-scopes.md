@@ -102,9 +102,7 @@ scopes:
 ```
 ### Community call demo
 
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/8W-iBDNvCUM?start=1763" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
+{{< youtube id=8W-iBDNvCUM start=1763 >}}
 
 ## Using namespaces with service invocation
 Read [Service invocation across namespaces]({{% ref "service-invocation-namespaces.md" %}}) for more information on using namespaces when calling between services.

@@ -77,7 +77,7 @@ Want to skip the quickstarts? Not a problem. You can try out the cryptography bu
 
 Watch this [demo video of the Cryptography API from the Dapr Community Call #83](https://youtu.be/PRWYX4lb2Sg?t=1148):
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/PRWYX4lb2Sg?start=1148" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{{< youtube id=PRWYX4lb2Sg start=1148 >}}
 
 ## Next steps
 

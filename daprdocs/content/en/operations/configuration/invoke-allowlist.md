@@ -432,9 +432,7 @@ spec:
 
 Watch this [video](https://youtu.be/j99RN_nxExA?t=1108) on how to apply access control list for service invocation.
 
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="688" height="430" src="https://www.youtube-nocookie.com/embed/j99RN_nxExA?start=1108" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
+{{< youtube id=j99RN_nxExA start=1108 >}}
 
 ## Next steps
 

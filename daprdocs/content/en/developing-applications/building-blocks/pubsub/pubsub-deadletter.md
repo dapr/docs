@@ -117,8 +117,7 @@ scopes:
 
 Watch [this video for an overview of the dead letter topics](https://youtu.be/wLYYOJLt_KQ?t=69):
 
-<iframe width="360" height="315" src="https://www.youtube-nocookie.com/embed/wLYYOJLt_KQ?start=69" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
+{{< youtube id=wLYYOJLt_KQ start=69 >}}
 
 ## Next steps
 

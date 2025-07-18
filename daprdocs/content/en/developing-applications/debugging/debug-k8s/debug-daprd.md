@@ -141,7 +141,7 @@ This causes the `replicaset` controller to restart the pod after the delete.
 
 See the presentation on troubleshooting Dapr on Kubernetes in the [Dapr Community Call #36](https://youtu.be/pniLPRbuLD8?si=bGid7oYSp9cThtiI&t=838). 
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/pniLPRbuLD8?si=bGid7oYSp9cThtiI&amp;start=838" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{{< youtube id=pniLPRbuLD8 start=838 >}}
 
 ## Related links
 

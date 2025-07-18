@@ -20,7 +20,7 @@ Dapr's dedicated secrets building block API makes it easier for developers to co
 
 [The following overview video and demo](https://www.youtube.com/live/0y7ne6teHT4?si=3bmNSSyIEIVSF-Ej&t=9931) demonstrates how Dapr secrets management works. 
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/0y7ne6teHT4?si=3bmNSSyIEIVSF-Ej&amp;start=9931" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{{< youtube id=0y7ne6teHT4 start=9931 >}}
 
 ## Features
 
@@ -30,7 +30,7 @@ The secrets management API building block brings several features to your applic
 
 You can call the secrets API in your application code to retrieve and use secrets from Dapr supported secret stores. Watch [this video](https://www.youtube.com/watch?v=OtbYCBt9C34&t=1818) for an example of how the secrets management API can be used in your application.
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/OtbYCBt9C34?start=1818" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{{< youtube id=OtbYCBt9C34 start=1818 >}}
 
 For example, the diagram below shows an application requesting the secret called "mysecret" from a secret store called "vault" from a configured cloud secret store.
 

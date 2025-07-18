@@ -38,7 +38,7 @@ With input bindings, you can trigger your application when an event from an exte
 
 [The following overview video and demo](https://www.youtube.com/live/0y7ne6teHT4?si=wlmAi7BJBWS8KNK7&t=8261) demonstrates how Dapr input binding works. 
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/0y7ne6teHT4?si=wlmAi7BJBWS8KNK7&amp;start=8261" title="YouTube video player" style="padding-bottom:25px;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>  
+{{< youtube id=0y7ne6teHT4 start=8261 >}}
 
 To receive events from an input binding:
 

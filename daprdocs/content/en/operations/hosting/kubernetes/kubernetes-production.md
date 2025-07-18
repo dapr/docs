@@ -347,8 +347,7 @@ Refer to [the Arguments and Annotations overview]({{% ref "arguments-annotations
 
 Watch this video for a deep dive into the best practices for running Dapr in production with Kubernetes.
 
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="360" height="315" src="https://www.youtube-nocookie.com/embed/_U9wJqq-H1g" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{{< youtube id=_U9wJqq-H1g >}}
 
 ## Related links
 

@@ -510,9 +510,9 @@ Unpack what happened in the [`job-service`]({{% ref "#job-service-app" %}}) and 
 
 ## Watch the demo
 
-See the jobs API in action using a Go HTTP example, recorded during the [Dapr Community Call #107(https://www.youtube.com/live/WHGOc7Ec_YQ?si=JlOlcJKkhRuhf5R1&t=849)].
+See the jobs API in action using a Go HTTP example, recorded during the [Dapr Community Call #107](https://www.youtube.com/live/WHGOc7Ec_YQ?si=JlOlcJKkhRuhf5R1&t=849).
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/WHGOc7Ec_YQ?si=JlOlcJKkhRuhf5R1&amp;start=849" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+{{< youtube id=WHGOc7Ec_YQ start=849 >}}
 
 ## Tell us what you think!
 

@@ -1241,7 +1241,7 @@ The `Activities` directory holds the four workflow activities used by the workfl
 
 Watch [this video to walk through the Dapr Workflow .NET demo](https://youtu.be/BxiKpEmchgQ?t=2564):
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/BxiKpEmchgQ?start=2564" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{{< youtube id=BxiKpEmchgQ start=2564 >}}
 
 {{% /tab %}}
 

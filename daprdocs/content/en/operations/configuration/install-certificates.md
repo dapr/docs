@@ -107,10 +107,7 @@ After following these steps, all the certificates in the directory pointed by `S
 
 Watch the demo on using installing SSL certificates and securely using the HTTP binding in community call 64:
 
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/M0VM7GlphAU?start=800" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
-
+{{< youtube id=M0VM7GlphAU start=800 >}}
 
 ## Related links
 - [HTTP binding spec]({{% ref http.md %}})
