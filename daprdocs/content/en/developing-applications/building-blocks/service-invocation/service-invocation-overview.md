@@ -27,7 +27,7 @@ Dapr uses a sidecar architecture. To invoke an application using Dapr:
 
 [The following overview video and demo](https://www.youtube.com/live/0y7ne6teHT4?si=mtLMrajE5wVXJYz8&t=3598) demonstrates how Dapr service invocation works. 
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/0y7ne6teHT4?si=Flsd8PRlF8nYu693&amp;start=3598" title="YouTube video player" style="padding-bottom:25px;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{{< youtube id=0y7ne6teHT4 start=3598 >}}
 
 The diagram below is an overview of how Dapr's service invocation works between two Dapr-ized applications.
 

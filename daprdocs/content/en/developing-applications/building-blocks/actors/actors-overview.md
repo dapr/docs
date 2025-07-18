@@ -24,7 +24,7 @@ Every actor is defined as an instance of an actor type, identical to the way an 
 
 [The following overview video and demo](https://www.youtube.com/live/0y7ne6teHT4?si=dWNgtsp61f3Sjq0n&t=10797) demonstrates how actors in Dapr work. 
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/0y7ne6teHT4?si=dWNgtsp61f3Sjq0n&amp;start=10797" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{{< youtube id=0y7ne6teHT4 start=10797 >}}
 
 ## Dapr actors vs. Dapr Workflow
 

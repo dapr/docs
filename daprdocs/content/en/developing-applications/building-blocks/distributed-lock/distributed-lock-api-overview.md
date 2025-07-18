@@ -41,8 +41,7 @@ Dapr distributed locks use a lease-based locking mechanism. If an application ac
 
 Watch [this video for an overview of the distributed lock API](https://youtu.be/wLYYOJLt_KQ?t=583):
 
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="360" height="315" src="https://www.youtube-nocookie.com/embed/wLYYOJLt_KQ?start=583" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{{< youtube id=wLYYOJLt_KQ start=583 >}}
 
 ## Next steps
 

@@ -108,7 +108,7 @@ Want to skip the quickstarts? Not a problem. You can try out the workflow buildi
 
 Watch [this video for an overview on Dapr Workflow](https://youtu.be/s1p9MNl4VGo?t=131):
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/s1p9MNl4VGo?start=131" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{{< youtube id=s1p9MNl4VGo start=131 >}}
 
 ## Next steps
 

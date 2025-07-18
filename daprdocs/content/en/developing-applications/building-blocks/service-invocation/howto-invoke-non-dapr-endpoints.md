@@ -131,6 +131,5 @@ spec:
 
 ## Community call demo
 Watch this [video](https://youtu.be/BEXJgLsO4hA?t=364) on how to use service invocation to call non-Dapr endpoints.
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/BEXJgLsO4hA?t=364" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
+
+{{< youtube id=BEXJgLsO4hA start=364 >}}

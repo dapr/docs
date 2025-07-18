@@ -44,7 +44,7 @@ Want to skip the quickstarts? Not a problem. You can try out the configuration b
 
 Watch [this demo of using the Dapr Configuration building block](https://youtu.be/tNq-n1XQuLA?t=496)
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/tNq-n1XQuLA?start=496" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{{< youtube id=tNq-n1XQuLA start=496 >}}
 
 ## Next steps
 Follow these guides on:

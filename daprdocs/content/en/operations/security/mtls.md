@@ -297,7 +297,7 @@ You will experience potential downtime due to mismatching certificates until all
 ### Kubernetes video demo 
 Watch this video to show how to update mTLS certificates on Kubernetes
 
-<iframe width="1280" height="720" src="https://www.youtube-nocookie.com/embed/_U9wJqq-H1g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{{< youtube id=_U9wJqq-H1g start=872 >}}
 
 ### Set up monitoring for Dapr control plane mTLS certificate expiration
 
@@ -491,9 +491,7 @@ By default, system services will look for the credentials in `/var/run/dapr/cred
 ## Community call video on certificate rotation
 Watch this [video](https://www.youtube.com/watch?v=Hkcx9kBDrAc&feature=youtu.be&t=1400) on how to perform certificate rotation if your certificates are expiring.
 
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/Hkcx9kBDrAc?start=1400"></iframe>
-</div>
+{{< youtube id=Hkcx9kBDrAc start=1400 >}}
 
 ## Sentry Token Validators
 

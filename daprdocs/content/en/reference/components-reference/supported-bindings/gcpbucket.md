@@ -237,7 +237,7 @@ The metadata parameters are:
 
 #### Example
 
-{{% tabpane text=true %}}
+{{< tabpane text=true >}}
 
   {{% tab header="Windows" %}}
   ```bash
@@ -252,7 +252,7 @@ The metadata parameters are:
   ```
   {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 #### Response
 

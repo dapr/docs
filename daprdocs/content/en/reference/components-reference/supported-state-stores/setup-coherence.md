@@ -85,7 +85,7 @@ efficient as possible. You will receive an error if you try to set the TTL to a 
 
 ## Setup Coherence
 
-{{% tabpane text=true %}}
+{{< tabpane text=true >}}
 
 {{% tab header="Self-Hosted" %}}
 Run Coherence locally using Docker:
@@ -149,7 +149,7 @@ For example, if installing using the example above, the Coherence host address w
 `my-cluster-grpc`
 {{% /tab %}}
 
-{{% /tabpane %}}
+{{< /tabpane >}}
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})

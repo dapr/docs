@@ -67,7 +67,7 @@ If you add the namespace consumer group to your metadata afterwards, Dapr update
 
 Watch [this video for an overview on pub/sub multi-tenancy](https://youtu.be/eK463jugo0c?t=1188):
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/eK463jugo0c?start=1188" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{{< youtube id=eK463jugo0c start=1188 >}}
 
 ## Next steps
 
