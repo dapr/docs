@@ -207,3 +207,14 @@
     etag: true
     ttl: false
     query: false
+- component: RavenDB
+  link: setup-ravendb
+  state: Stable
+  version: v1
+  since: "1.16"
+  features:
+    crud: true
+    transactions: true
+    etag: true
+    ttl: true
+    query: false
