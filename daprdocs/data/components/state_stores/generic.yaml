@@ -211,7 +211,7 @@
   link: setup-ravendb
   state: Stable
   version: v1
-  since: "1.0"
+  since: "1.16"
   features:
     crud: true
     transactions: true
