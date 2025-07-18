@@ -11,12 +11,12 @@ aliases:
 {{% alert title="Note" color="primary" %}}
 This is the v2 of the PostgreSQL state store component, which contains some improvements to performance and reliability. New applications are encouraged to use v2.
 
-The PostgreSQL v2 state store component is not compatible with the [v1 component]({{< ref setup-postgresql-v1.md >}}), and data cannot be migrated between the two components. The v2 component does not offer support for state store query APIs.
+The PostgreSQL v2 state store component is not compatible with the [v1 component]({{% ref setup-postgresql-v1.md %}}), and data cannot be migrated between the two components. The v2 component does not offer support for state store query APIs.
 
 There are no plans to deprecate the v1 component.
 {{% /alert %}}
 
-This component allows using PostgreSQL (Postgres) as state store for Dapr, using the "v2" component. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+This component allows using PostgreSQL (Postgres) as state store for Dapr, using the "v2" component. See [this guide]({{% ref "howto-get-save-state.md#step-1-setup-a-state-store" %}}) on how to create and apply a state store configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -73,7 +73,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -147,9 +147,9 @@ The AWS authentication token will be dynamically rotated before it's expiration 
 
 ## Setup PostgreSQL
 
-{{< tabs "Self-Hosted" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 
 1. Run an instance of PostgreSQL. You can run a local instance of PostgreSQL in Docker with the following command:
 
@@ -168,18 +168,18 @@ The AWS authentication token will be dynamically rotated before it's expiration 
     CREATE DATABASE my_dapr;
     ```
   
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% /tabs %}}
+{{< /tabpane >}}
 
 ## Advanced
 
 ### Differences between v1 and v2
 
-The PostgreSQL state store v2 was introduced in Dapr 1.13. The [pre-existing v1]({{< ref setup-postgresql-v1.md >}}) remains available and is not deprecated.
+The PostgreSQL state store v2 was introduced in Dapr 1.13. The [pre-existing v1]({{% ref setup-postgresql-v1.md %}}) remains available and is not deprecated.
 
 In the v2 component, the table schema has been changed significantly, with the goal of increasing performance and reliability. Most notably, the value stored by Dapr is now of type _BYTEA_, which allows faster queries and, in some cases, is more space-efficient than the previously-used _JSONB_ column.  
-However, due to this change, the v2 component does not support the [Dapr state store query APIs]({{< ref howto-state-query-api.md >}}).
+However, due to this change, the v2 component does not support the [Dapr state store query APIs]({{% ref howto-state-query-api.md %}}).
 
 Also, in the v2 component, ETags are now random UUIDs, which ensures better compatibility with other PostgreSQL-compatible databases, such as CockroachDB.
 
@@ -198,7 +198,7 @@ SELECT *, convert_from(value, 'utf-8') FROM state;
 
 ### TTLs and cleanups
 
-This state store supports [Time-To-Live (TTL)]({{< ref state-store-ttl.md >}}) for records stored with Dapr. When storing data using Dapr, you can set the `ttlInSeconds` metadata property to indicate after how many seconds the data should be considered "expired".
+This state store supports [Time-To-Live (TTL)]({{% ref state-store-ttl.md %}}) for records stored with Dapr. When storing data using Dapr, you can set the `ttlInSeconds` metadata property to indicate after how many seconds the data should be considered "expired".
 
 Because PostgreSQL doesn't have built-in support for TTLs, this is implemented in Dapr by adding a column in the state table indicating when the data is to be considered "expired". Records that are "expired" are not returned to the caller, even if they're still physically stored in the database. A background "garbage collector" periodically scans the state table for expired rows and deletes them.
 
@@ -209,6 +209,6 @@ You can set the deletion interval of expired records with the `cleanupInterval` 
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
-- [State management building block]({{< ref state-management >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" %}}) for instructions on configuring state store components
+- [State management building block]({{% ref state-management %}})

@@ -13,7 +13,7 @@ You'll use the Dapr CLI as the main tool for various Dapr-related tasks. You can
 - List running services.
 - Run the Dapr dashboard.
 
-The Dapr CLI works with both [self-hosted]({{< ref self-hosted >}}) and [Kubernetes]({{< ref Kubernetes >}}) environments.
+The Dapr CLI works with both [self-hosted]({{% ref self-hosted %}}) and [Kubernetes]({{% ref Kubernetes %}}) environments.
 
 {{% alert title="Before you begin" color="primary" %}}
 In Docker Desktop's advanced options, verify you've allowed the default Docker socket to be used. This option is not available if you are using WSL integration on Windows.
@@ -22,9 +22,9 @@ In Docker Desktop's advanced options, verify you've allowed the default Docker s
 
 ### Step 1: Install the Dapr CLI
 
-{{< tabs Linux Windows MacOS Binaries>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab header="Linux" text=true %}}
 
 #### Install from Terminal
 
@@ -59,9 +59,9 @@ The following example shows how to install CLI version `{{% dapr-latest-version 
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | DAPR_INSTALL_DIR="$HOME/dapr" /bin/bash -s {{% dapr-latest-version cli="true" %}}
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab header="Windows" text=true %}}
 
 #### Install from Command Prompt
 
@@ -124,9 +124,9 @@ Each release of the Dapr CLI also includes an installer for Windows. You can man
 3. Follow the installation prompts to accept the license and the installation directory. The selected folder is added to the user PATH environment variable. The default value is set to `$Env:SystemDrive\dapr`.
 4. Click `Install` to start the installation. You will see a final message once the installation is complete.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab header="MacOS" text=true %}}
 
 ### Install from Terminal
 
@@ -185,9 +185,9 @@ The following example shows how to install CLI version `{{% dapr-latest-version 
 curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | DAPR_INSTALL_DIR="$HOME/dapr" -s {{% dapr-latest-version cli="true" %}}
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab header="Binaries" text=true %}}
 Each release of Dapr CLI includes various OSes and architectures. You can manually download and install these binary versions.
 
 1. Download the desired Dapr CLI from the latest [Dapr Release](https://github.com/dapr/cli/releases).
@@ -198,9 +198,10 @@ Each release of Dapr CLI includes various OSes and architectures. You can manual
      - Create a directory called `C:\dapr`.
      - Add your newly created directory to your User PATH, by editing your system environment variable.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
+
 
 ### Step 2: Verify the installation
 
@@ -252,4 +253,4 @@ Flags:
 Use "dapr [command] --help" for more information about a command.
 ```
 
-{{< button text="Next step: Initialize Dapr >>" page="install-dapr-selfhost" >}}
+{{< button text="Next step: Initialize Dapr >>" page="install-dapr-selfhost.md" >}}

@@ -21,7 +21,7 @@ To enable state sharing, Dapr supports the following key prefixes strategies:
 | ------------ | ----------- |
 | `appid` | The default strategy allowing you to manage state only by the app with the specified `appid`. All state keys will be prefixed with the `appid`, and are scoped for the application. |
 | `name` | Uses the name of the state store component as the prefix. Multiple applications can share the same state for a given state store. |
-| `namespace` |  If set, this setting prefixes the `appid` key with the configured namespace, resulting in a key that is scoped to a given namespace. This allows apps in different namespace with the same `appid` to reuse the same state store. If a namespace is not configured, the setting fallbacks to the `appid` strategy. For more information on namespaces in Dapr see [How-To: Scope components to one or more applications]({{< ref component-scopes.md >}}) |
+| `namespace` |  If set, this setting prefixes the `appid` key with the configured namespace, resulting in a key that is scoped to a given namespace. This allows apps in different namespace with the same `appid` to reuse the same state store. If a namespace is not configured, the setting fallbacks to the `appid` strategy. For more information on namespaces in Dapr see [How-To: Scope components to one or more applications]({{% ref component-scopes.md %}}) |
 | `none` | Uses no prefixing. Multiple applications share state across different state stores. |
 
 ## Specifying a state prefix strategy

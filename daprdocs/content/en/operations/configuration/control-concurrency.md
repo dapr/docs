@@ -17,15 +17,13 @@ While this guide focuses on `app-max-concurrency`, you can also limit request ra
 - `middleware.http.ratelimit`: Time bound and limits the number of requests per second
 - `app-max-concurrency`: Specifies the max number of concurrent requests (and events) at any point of time. 
 
-See [Rate limit middleware]({{< ref middleware-rate-limit.md >}}) for more information about that approach.
+See [Rate limit middleware]({{% ref middleware-rate-limit.md %}}) for more information about that approach.
 
 ## Demo
 
 Watch this [video](https://youtu.be/yRI5g6o_jp8?t=1710) on how to control concurrency and rate limiting.
 
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="764" height="430" src="https://www.youtube-nocookie.com/embed/yRI5g6o_jp8?t=1710" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
+{{< youtube id=yRI5g6o_jp8 start=1710 >}}
 
 ## Configure `app-max-concurrency`
 
@@ -35,10 +33,10 @@ Using Dapr, you don't need to make any code changes to your application.
 
 Select how you'd like to configure `app-max-concurrency`.
 
-{{< tabs "CLI" Kubernetes >}}
+{{< tabpane text=true >}}
 
  <!-- CLI -->
-{{% codetab %}}
+{{% tab "CLI" %}}
 
 To set concurrency limits with the Dapr CLI for running on your local dev machine, add the `app-max-concurrency` flag:
 
@@ -48,10 +46,10 @@ dapr run --app-max-concurrency 1 --app-port 5000 python ./app.py
 
 The above example effectively turns your app into a sequential processing service.
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Kubernetes -->
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
 To configure concurrency limits in Kubernetes, add the following annotation to your pod:
 
@@ -80,9 +78,9 @@ spec:
 #...
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Limitations
 
@@ -91,8 +89,8 @@ Rate limiting is guaranteed for every event coming _from_ Dapr, including pub/su
 
 ## Related links
 
-[Arguments and annotations]({{< ref arguments-annotations-overview.md >}})
+[Arguments and annotations]({{% ref arguments-annotations-overview.md %}})
 
 ## Next steps
 
-{{< button text="Limit secret store access" page="secret-scope" >}}
+{{< button text="Limit secret store access" page="secret-scope.md" >}}

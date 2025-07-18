@@ -10,12 +10,12 @@ aliases:
 
 {{% alert title="Warning" color="warning" %}}
 This feature is only relevant when using state store actor reminders, no longer enabled by default.
-As of v1.15, Dapr uses the far more performant [Scheduler Actor Reminders]({{< ref "scheduler.md#actor-reminders" >}}) by default.
-This page is only relevant if you are using the legacy state store actor reminders, enabled via setting the [`SchedulerReminders` feature flag]({{< ref "support-preview-features.md#current-preview-features" >}}) to false.
+As of v1.15, Dapr uses the far more performant [Scheduler Actor Reminders]({{% ref "scheduler#actor-reminders" %}}) by default.
+This page is only relevant if you are using the legacy state store actor reminders, enabled via setting the [`SchedulerReminders` feature flag]({{% ref "support-preview-features#current-preview-features" %}}) to false.
 It is highly recommended you use using the Scheduler Actor Reminders feature.
 {{% /alert %}}
 
-[Actor reminders]({{< ref "actors-timers-reminders.md#actor-reminders" >}}) are persisted and continue to be triggered after sidecar restarts. Applications with multiple reminders registered can experience the following issues:
+[Actor reminders]({{% ref "actors-timers-reminders#actor-reminders" %}}) are persisted and continue to be triggered after sidecar restarts. Applications with multiple reminders registered can experience the following issues:
 
 - Low throughput on reminders registration and de-registration
 - Limited number of reminders registered based on the single record size limit on the state store
@@ -37,9 +37,9 @@ If you need to change the number of partitions, Dapr's sidecar will automaticall
 
 Similar to other actor configuration elements, the actor runtime provides the appropriate configuration to partition actor reminders via the actor's endpoint for `GET /dapr/config`. Select your preferred language for an actor runtime configuration example.
 
-{{< tabs ".NET" JavaScript Python Java Go >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 <!--dotnet-->
 
@@ -64,11 +64,11 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
-[See the .NET SDK documentation on registering actors]({{< ref "dotnet-actors-usage.md#registring-actors" >}}).
+[See the .NET SDK documentation on registering actors]({{% ref "dotnet-actors-usage#registring-actors" %}}).
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 <!--javascript-->
 
 ```js
@@ -96,11 +96,11 @@ await actor.registerActorReminder(
 await actor.unregisterActorReminder("reminder-id");
 ```
 
-[See the documentation on writing actors with the JavaScript SDK]({{< ref "js-actors.md#registering-actors" >}}).
+[See the documentation on writing actors with the JavaScript SDK]({{% ref "js-actors#registering-actors" %}}).
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 <!--python-->
 
@@ -116,11 +116,11 @@ ActorRuntime.set_actor_config(
 )
 ```
 
-[See the documentation on running actors with the Python SDK]({{< ref "python-actor.md" >}})
+[See the documentation on running actors with the Python SDK]({{% ref "python-actor" %}})
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 <!--java-->
 
 ```java
@@ -132,11 +132,11 @@ ActorRuntime.getInstance().getConfig().setActorScanInterval(Duration.ofSeconds(3
 ActorRuntime.getInstance().getConfig().setRemindersStoragePartitions(7);
 ```
 
-[See the documentation on writing actors with the Java SDK]({{< ref "java.md#actors" >}}).
+[See the documentation on writing actors with the Java SDK]({{% ref "java#actors" %}}).
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 <!--go-->
 
 ```go
@@ -167,9 +167,9 @@ func configHandler(w http.ResponseWriter, r *http.Request) {
 
 [See an example for using actors with the Go SDK](https://github.com/dapr/go-sdk/tree/main/examples/actor).
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 The following is an example of a valid configuration for reminder partitioning:
 
@@ -190,8 +190,7 @@ In addition, **you can only increase the number of partitions**, not decrease. T
 
 Watch [this video for a demo of actor reminder partitioning](https://youtu.be/ZwFOEUYe1WA?t=1493):
 
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/ZwFOEUYe1WA?start=1495" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{{< youtube id=ZwFOEUYe1WA start=1495 >}}
 
 ## Next steps
 
@@ -199,5 +198,5 @@ Watch [this video for a demo of actor reminder partitioning](https://youtu.be/Zw
 
 ## Related links
 
-- [Actors API reference]({{< ref actors_api.md >}})
-- [Actors overview]({{< ref actors-overview.md >}})
+- [Actors API reference]({{% ref actors_api %}})
+- [Actors overview]({{% ref actors-overview %}})

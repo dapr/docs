@@ -16,9 +16,9 @@ Observe Dapr resiliency capabilities by simulating a system failure. In this Qui
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{< tabs "Python" "JavaScript" ".NET" "Java" "Go" >}}
+{{< tabpane text=true >}}
  <!-- Python -->
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ### Pre-requisites
 
@@ -145,9 +145,29 @@ Since the `resiliency.yaml` spec defines the `order-processor` service as a resi
 
 In the `order-processor` window, stop the service:
 
+{{< tabpane text=true >}}
+
+ <!-- MacOS -->
+
+{{% tab "MacOs" %}}
+
+```script
+CMD + C
+```
+
+{{% /tab %}}
+
+ <!-- Windows -->
+
+{{% tab "Windows" %}}
+
 ```script
 CTRL + C
 ```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
 
 Once the first request fails, the retry policy titled `retryForever` is applied:
 
@@ -221,10 +241,10 @@ dapr run --app-port 8001 --app-id order-processor --app-protocol http --dapr-htt
 == APP == Order received: {"orderId": 10}
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- JavaScript -->
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ### Pre-requisites
 
@@ -354,29 +374,29 @@ Since the `resiliency.yaml` spec defines the `order-processor` service as a resi
 
 In the `order-processor` window, stop the service:
 
-{{< tabs "MacOs" "Windows" >}}
+{{< tabpane text=true >}}
 
  <!-- MacOS -->
 
-{{% codetab %}}
+{{% tab "MacOs" %}}
 
 ```script
 CMD + C
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Windows -->
 
-{{% codetab %}}
+{{% tab "Windows" %}}
 
 ```script
 CTRL + C
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 Once the first request fails, the retry policy titled `retryForever` is applied:
@@ -451,10 +471,10 @@ dapr run --app-port 5001 --app-id order-processor --resources-path ../../../reso
 == APP == Order received: {"orderId": 10}
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- .NET -->
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ### Pre-requisites
 
@@ -586,29 +606,29 @@ Since the `resiliency.yaml` spec defines the `order-processor` service as a resi
 
 In the `order-processor` window, stop the service:
 
-{{< tabs "MacOs" "Windows" >}}
+{{< tabpane text=true >}}
 
  <!-- MacOS -->
 
-{{% codetab %}}
+{{% tab "MacOs" %}}
 
 ```script
 CMD + C
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Windows -->
 
-{{% codetab %}}
+{{% tab "Windows" %}}
 
 ```script
 CTRL + C
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 Once the first request fails, the retry policy titled `retryForever` is applied:
@@ -683,10 +703,10 @@ dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-htt
 == APP == Order received: {"orderId": 10}
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Java -->
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ### Pre-requisites
 
@@ -819,29 +839,29 @@ Since the `resiliency.yaml` spec defines the `order-processor` service as a resi
 
 In the `order-processor` window, stop the service:
 
-{{< tabs "MacOs" "Windows" >}}
+{{< tabpane text=true >}}
 
  <!-- MacOS -->
 
-{{% codetab %}}
+{{% tab "MacOs" %}}
 
 ```script
 CMD + C
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Windows -->
 
-{{% codetab %}}
+{{% tab "Windows" %}}
 
 ```script
 CTRL + C
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 Once the first request fails, the retry policy titled `retryForever` is applied:
@@ -916,10 +936,10 @@ dapr run --app-id order-processor --resources-path ../../../resources/ --app-por
 == APP == Order received: {"orderId": 10}
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Go -->
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ### Pre-requisites
 
@@ -1049,29 +1069,29 @@ Since the `resiliency.yaml` spec defines the `order-processor` service as a resi
 
 In the `order-processor` window, stop the service:
 
-{{< tabs "MacOs" "Windows" >}}
+{{< tabpane text=true >}}
 
  <!-- MacOS -->
 
-{{% codetab %}}
+{{% tab "MacOs" %}}
 
 ```script
 CMD + C
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Windows -->
 
-{{% codetab %}}
+{{% tab "Windows" %}}
 
 ```script
 CTRL + C
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 Once the first request fails, the retry policy titled `retryForever` is applied:
@@ -1146,9 +1166,9 @@ dapr run --app-port 6001 --app-id order-processor --resources-path ../../../reso
 == APP == Order received: {"orderId": 10}
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Tell us what you think!
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this quickstart helpful? Do you have suggestions for improvement?

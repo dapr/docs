@@ -101,9 +101,9 @@ Dapr then authenticates to AWS without specifying credentials in the Dapr compon
 
 ### Authenticate to AWS when running dapr locally in stand-alone mode
 
-{{< tabs "Linux/MacOS" "Windows" >}}
+{{< tabpane text=true >}}
  <!-- linux -->
-{{% codetab %}}
+{{% tab "Linux/MacOS" %}}
 
 When running Dapr (or the Dapr runtime directly) in stand-alone mode, you can inject environment variables into the process, like the following example: 
 
@@ -125,16 +125,16 @@ AWS_PROFILE=myprofile daprd...
 
 You can use any of the [supported environment variables](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html#envvars-list) to configure Dapr in this manner.
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- windows -->
-{{% codetab %}}
+{{% tab "Windows" %}}
 
 On Windows, the environment variable needs to be set before starting the `dapr` or `daprd` command, doing it inline (like in Linux/MacOS) is not supported.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### Authenticate to AWS if using AWS SSO based profiles
 
@@ -142,9 +142,9 @@ If you authenticate to AWS using [AWS SSO](https://aws.amazon.com/single-sign-on
 - [AwsHelper](https://pypi.org/project/awshelper/) 
 - [aws-sso-util](https://github.com/benkehoe/aws-sso-util)
 
-{{< tabs "Linux/MacOS" "Windows" >}}
+{{< tabpane text=true >}}
  <!-- linux -->
-{{% codetab %}}
+{{% tab "Linux/MacOS" %}}
 
 If using AwsHelper, start Dapr like this:
 
@@ -157,20 +157,20 @@ or
 ```bash
 AWS_PROFILE=myprofile awshelper daprd...
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- windows -->
-{{% codetab %}}
+{{% tab "Windows" %}}
 
 On Windows, the environment variable needs to be set before starting the `awshelper` command; doing it inline (like in Linux/MacOS) is not supported.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Next steps
 
-{{< button text="Refer to AWS component specs >>" page="components-reference" >}}
+{{< button text="Refer to AWS component specs >>" page="components-reference.md" >}}
 
 ## Related links
 

@@ -93,6 +93,6 @@ when you rotate a key, data encrypted with the old key is not automatically re-e
 
 ## Related links
 
-- [Security overview]({{< ref "security-concept.md" >}})
+- [Security overview]({{% ref "security-concept" %}})
 - [State store query API implementation guide](https://github.com/dapr/components-contrib/blob/master/state/README.md#implementing-state-query-api)
-- [State store components]({{< ref "supported-state-stores.md" >}})
+- [State store components]({{% ref "supported-state-stores" %}})

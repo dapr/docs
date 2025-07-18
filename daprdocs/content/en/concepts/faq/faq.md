@@ -7,17 +7,17 @@ description: "Common questions asked about Dapr"
 ---
 
 ## How does Dapr compare to service meshes such as Istio, Linkerd or OSM?
-Dapr is not a service mesh. While service meshes focus on fine-grained network control, Dapr is focused on helping developers build distributed applications. Both Dapr and service meshes use the sidecar pattern and run alongside the application. They do have some overlapping features, but also offer unique benefits. For more information please read the [Dapr & service meshes]({{<ref service-mesh>}}) concept page.
+Dapr is not a service mesh. While service meshes focus on fine-grained network control, Dapr is focused on helping developers build distributed applications. Both Dapr and service meshes use the sidecar pattern and run alongside the application. They do have some overlapping features, but also offer unique benefits. For more information please read the [Dapr & service meshes]({{%ref service-mesh%}}) concept page.
 
 ## Performance Benchmarks
-The Dapr project is focused on performance due to the inherent discussion of Dapr being a sidecar to your application. See [here]({{< ref perf-service-invocation.md >}}) for updated performance numbers.
+The Dapr project is focused on performance due to the inherent discussion of Dapr being a sidecar to your application. See [here]({{% ref perf-service-invocation %}}) for updated performance numbers.
 
 ## Actors
 
 ### What is the relationship between Dapr, Orleans and Service Fabric Reliable Actors?
 
 The actors in Dapr are based on the same virtual actor concept that [Orleans](https://www.microsoft.com/research/project/orleans-virtual-actors/) started, meaning that they are activated when called and deactivated after a period of time. If you are familiar with Orleans, Dapr C# actors will be familiar. Dapr C# actors are based on [Service Fabric Reliable Actors](https://docs.microsoft.com/azure/service-fabric/service-fabric-reliable-actors-introduction) (which also came from Orleans) and enable you to take Reliable Actors in Service Fabric and migrate them to other hosting platforms such as Kubernetes or other on-premises environments.
-Moreover, Dapr is about more than just actors. It provides you with a set of best-practice building blocks to build into any microservices application. See [Dapr overview]({{< ref overview.md >}}).
+Moreover, Dapr is about more than just actors. It provides you with a set of best-practice building blocks to build into any microservices application. See [Dapr overview]({{% ref overview %}}).
 
 ### Differences between Dapr and an actor framework
 
@@ -29,7 +29,7 @@ The Dapr runtime SDKs have language-specific actor frameworks. For example, the 
 
 ## Does Dapr have any SDKs I can use if I want to work with a particular programming language or framework?
 
-To make using Dapr more natural for different languages, it includes [language specific SDKs]({{<ref sdks>}}) for Go, Java, JavaScript, .NET,  Python, PHP, Rust and C++. These SDKs expose the functionality in the Dapr building blocks, such as saving state, publishing an event or creating an actor, through a typed language API rather than calling the http/gRPC API. This enables you to write a combination of stateless and stateful functions and actors all in the language of your choice. And because these SDKs share the Dapr runtime, you get cross-language actor and functions support.
+To make using Dapr more natural for different languages, it includes [language specific SDKs]({{%ref sdks%}}) for Go, Java, JavaScript, .NET,  Python, PHP, Rust and C++. These SDKs expose the functionality in the Dapr building blocks, such as saving state, publishing an event or creating an actor, through a typed language API rather than calling the http/gRPC API. This enables you to write a combination of stateless and stateful functions and actors all in the language of your choice. And because these SDKs share the Dapr runtime, you get cross-language actor and functions support.
 
 ## What frameworks does Dapr integrate with?
 Dapr can be integrated with any developer framework. For example, in the Dapr .NET SDK you can find ASP.NET Core integration, which brings stateful routing controllers that respond to pub/sub events from other services.

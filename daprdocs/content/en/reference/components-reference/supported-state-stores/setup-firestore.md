@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup GCP Firestore state store create a component of type `state.gcp.firestore`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+To setup GCP Firestore state store create a component of type `state.gcp.firestore`. See [this guide]({{% ref "howto-get-save-state.md#step-1-setup-a-state-store" %}}) on how to create and apply a state store configuration.
 
 
 ```yaml
@@ -23,6 +23,8 @@ spec:
   metadata:
   - name: project_id
     value: <REPLACE-WITH-PROJECT-ID> # Required.
+  - name: type 
+    value: <REPLACE-WITH-CREDENTIALS-TYPE> # Required.
   - name: endpoint # Optional. 
     value: "http://localhost:8432"
   - name: private_key_id
@@ -45,12 +47,10 @@ spec:
     value: <REPLACE-WITH-ENTITY-KIND> # Optional. default: "DaprState"
   - name: noindex
     value: <REPLACE-WITH-BOOLEAN> # Optional. default: "false"
-  - name: type 
-    value: <REPLACE-WITH-CREDENTIALS-TYPE> # Deprecated.
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -58,6 +58,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | project_id         | Y        | The ID of the GCP project to use | `"project-id"`
+| type                 | Y      | The credentials type | `"service_account"`
 | endpoint       | N  | GCP endpoint for the component to use. Only used for local development with (for example) [GCP Datastore Emulator](https://cloud.google.com/datastore/docs/tools/datastore-emulator). The `endpoint` is unnecessary when running against the GCP production API. | `"localhost:8432"`
 | private_key_id     | N        | The ID of the prvate key to use  | `"private-key-id"`
 | privateKey         | N |  If using explicit credentials, this field should contain the `private_key` field from the service account json | `-----BEGIN PRIVATE KEY-----MIIBVgIBADANBgkqhkiG9w0B`
@@ -69,7 +70,6 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | client_x509_cert_url | N      | The client certificate URL | `"https://www.googleapis.com/robot/v1/metadata/x509/x"`
 | entity_kind          | N      | The entity name in Filestore. Defaults to `"DaprState"` | `"DaprState"`
 | noindex              | N      | Whether to disable indexing of state entities. Use this setting if you encounter Firestore index size limitations. Defaults to `"false"` | `"true"`
-| type                 | N       | **DEPRECATED** The credentials type | `"serviceaccount"`
 
 
 ## GCP Credentials
@@ -77,22 +77,22 @@ Since the GCP Firestore component uses the GCP Go Client Libraries, by default i
 
 ## Setup GCP Firestore
 
-{{< tabs "Self-Hosted" "Google Cloud" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 You can use the GCP Datastore emulator to run locally using the instructions [here](https://cloud.google.com/datastore/docs/tools/datastore-emulator).
 
 You can then interact with the server using `http://localhost:8432`.
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Google Cloud" %}}
 Follow the instructions [here](https://cloud.google.com/datastore/docs/quickstart) to get started with setting up Firestore in Google Cloud.
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 ## Related links
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
-- [State management building block]({{< ref state-management >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" %}}) for instructions on configuring state store components
+- [State management building block]({{% ref state-management %}})

@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To set up Apache Pulsar pub/sub, create a component of type `pubsub.pulsar`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration. 
+To set up Apache Pulsar pub/sub, create a component of type `pubsub.pulsar`. See the [pub/sub broker component file]({{% ref setup-pubsub.md %}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{% ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" %}}) on how to create and apply a pub/sub configuration. 
 
 For more information on Apache Pulsar, [read the official docs](https://pulsar.apache.org/docs/en/concepts-overview/).
 
@@ -65,7 +65,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a [secret store for the secrets]({{< ref component-secrets.md >}}). This component supports storing the `token` parameter and any other sensitive parameter and data as Kubernetes Secrets.
+The above example uses secrets as plain strings. It is recommended to use a [secret store for the secrets]({{% ref component-secrets.md %}}). This component supports storing the `token` parameter and any other sensitive parameter and data as Kubernetes Secrets.
 {{% /alert %}}
 
 
@@ -76,7 +76,7 @@ The above example uses secrets as plain strings. It is recommended to use a [sec
 | host               | Y  | Address of the Pulsar broker. Default is `"localhost:6650"` | `"localhost:6650"` OR `"http://pulsar-pj54qwwdpz4b-pulsar.ap-sg.public.pulsar.com:8080"`|
 | enableTLS          | N  | Enable TLS.  Default: `"false"` | `"true"`, `"false"` |
 | tenant             | N  | The topic tenant within the instance. Tenants are essential to multi-tenancy in Pulsar, and spread across clusters.  Default: `"public"` | `"public"` |
-| consumerID         | N  | Used to set the subscription name or consumer ID.  | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{< ref "component-schema.md#templated-metadata-values" >}})
+| consumerID         | N  | Used to set the subscription name or consumer ID.  | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{% ref "component-schema.md#templated-metadata-values" %}})
 | namespace          | N  | The administrative unit of the topic, which acts as a grouping mechanism for related topics.  Default: `"default"` | `"default"`
 | persistent         | N  | Pulsar supports two kinds of topics: [persistent](https://pulsar.apache.org/docs/en/concepts-architecture-overview#persistent-storage) and [non-persistent](https://pulsar.apache.org/docs/en/concepts-messaging/#non-persistent-topics). With persistent topics, all messages are durably persisted on disks (if the broker is not standalone, messages are durably persisted on multiple disks), whereas data for non-persistent topics is not persisted to storage disks.
 | disableBatching | N | disable batching.When batching enabled default batch delay is set to 10 ms and default batch size is 1000 messages,Setting `disableBatching: true` will make the producer to send messages individually. Default: `"false"` | `"true"`, `"false"`|
@@ -169,7 +169,7 @@ spec:
 
 ### Enabling message delivery retries
 
-The Pulsar pub/sub component has no built-in support for retry strategies. This means that sidecar sends a message to the service only once and is not retried in case of failures. To make Dapr use more spohisticated retry policies, you can apply a [retry resiliency policy]({{< ref "retries-overview.md" >}}) to the Pulsar pub/sub component. Note that it will be the same Dapr sidecar retrying the redelivery the message to the same app instance and not other instances.
+The Pulsar pub/sub component has no built-in support for retry strategies. This means that sidecar sends a message to the service only once and is not retried in case of failures. To make Dapr use more spohisticated retry policies, you can apply a [retry resiliency policy]({{% ref "retries-overview.md" %}}) to the Pulsar pub/sub component. Note that it will be the same Dapr sidecar retrying the redelivery the message to the same app instance and not other instances.
 
 ### Delay queue
 
@@ -248,7 +248,7 @@ spec:
 
 #### Enabling publisher encryption from value
 
-> Note: It is recommended to [reference the public key from a secret]({{< ref component-secrets.md >}}).
+> Note: It is recommended to [reference the public key from a secret]({{% ref component-secrets.md %}}).
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -269,7 +269,7 @@ spec:
 
 #### Enabling consumer encryption from value
 
-> Note: It is recommended to [reference the public and private keys from a secret]({{< ref component-secrets.md >}}).
+> Note: It is recommended to [reference the public and private keys from a secret]({{% ref component-secrets.md %}}).
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -330,9 +330,9 @@ To ensure that messages arrive in order for each consumer subscribed to a specif
 
 ## Create a Pulsar instance
 
-{{< tabs "Self-Hosted" "Kubernetes">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 
 ```
 docker run -it \
@@ -345,16 +345,16 @@ docker run -it \
 
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 Refer to the following [Helm chart](https://pulsar.apache.org/docs/helm-overview) Documentation.
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
-- [Pub/Sub building block]({{< ref pubsub >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-publish-subscribe.md#step-2-publish-a-topic" %}}) for instructions on configuring pub/sub components
+- [Pub/Sub building block]({{% ref pubsub %}})

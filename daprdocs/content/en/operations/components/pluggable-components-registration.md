@@ -10,7 +10,7 @@ description: "Learn how to register a pluggable component"
 
 ## Component registration process
 
-[Pluggable, gRPC-based components]({{< ref pluggable-components-overview >}}) are typically run as containers or processes that need to communicate with the Dapr runtime via [Unix Domain Sockets][uds] (or UDS for short). They are automatically discovered and registered in the runtime with the following steps:
+[Pluggable, gRPC-based components]({{% ref pluggable-components-overview %}}) are typically run as containers or processes that need to communicate with the Dapr runtime via [Unix Domain Sockets][uds] (or UDS for short). They are automatically discovered and registered in the runtime with the following steps:
 
 1. The component listens to an [Unix Domain Socket][uds] placed on the shared volume.
 2. The Dapr runtime lists all [Unix Domain Socket][uds] in the shared volume.
@@ -35,9 +35,9 @@ As a prerequisite the operating system must supports Unix Domain Sockets, any UN
 
 Select your environment to begin making your component discoverable.
 
-{{< tabs "Standalone" "Kubernetes" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Standalone" %}}
 [uds]: https://en.wikipedia.org/wiki/Unix_domain_socket
 
 ## Run the component
@@ -59,11 +59,11 @@ Typically, a pluggable component implements a single component API for packaging
 
 ## Define the component
 
-Define your component using a [component spec]({{< ref component-schema.md >}}). Your component's `spec.type` value is made by concatenating the following 2 parts with a `.`:
+Define your component using a [component spec]({{% ref component-schema.md %}}). Your component's `spec.type` value is made by concatenating the following 2 parts with a `.`:
 1. The component's API (`state`, `pubsub`, `bindings` etc)
 2. The component's **name**, which is derived from the [Unix Domain Socket][uds] filename, without the file extension. 
 
-You will need to define one [component spec]({{< ref component-schema.md >}}) for each API exposed by your pluggable component's [Unix Domain Socket][uds]. The Unix Domain Socket `my-component.sock` from the previous example exposes a pluggable component named `my-component` with both a `state` and a `pubsub` API. Two components specs, each in their own YAML file, placed in the `resources-path`, will be required: one for `state.my-component` and another for `pubsub.my-component`.
+You will need to define one [component spec]({{% ref component-schema.md %}}) for each API exposed by your pluggable component's [Unix Domain Socket][uds]. The Unix Domain Socket `my-component.sock` from the previous example exposes a pluggable component named `my-component` with both a `state` and a `pubsub` API. Two components specs, each in their own YAML file, placed in the `resources-path`, will be required: one for `state.my-component` and another for `pubsub.my-component`.
 
 For instance, the component spec for `state.my-component` could be:
 
@@ -86,7 +86,7 @@ Save this file as `component.yaml` in Dapr's component configuration folder. Jus
 
 ## Run Dapr
 
-[Initialize Dapr]({{< ref get-started-api.md >}}), and make sure that your component file is placed in the right folder.
+[Initialize Dapr]({{% ref get-started-api.md %}}), and make sure that your component file is placed in the right folder.
 
 {{% alert title="Note" color="primary" %}}
 Dapr 1.9.0 is the minimum version that supports pluggable components. As of version 1.11.0, automatic injection of the containers is supported for pluggable components.
@@ -106,9 +106,9 @@ Retrieve the value, replacing `$PORT` with the Dapr HTTP port:
 curl http://localhost:$PORT/v1.0/state/prod-mystore/name
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
 [uds]: https://en.wikipedia.org/wiki/Unix_domain_socket
 
@@ -118,7 +118,7 @@ Make sure your component is running as a container, published first and accessib
 
 ## Deploy Dapr on a Kubernetes cluster
 
-Follow the steps provided in the [Deploy Dapr on a Kubernetes cluster]({{< ref kubernetes-deploy.md >}}) docs.
+Follow the steps provided in the [Deploy Dapr on a Kubernetes cluster]({{% ref kubernetes-deploy.md %}}) docs.
 
 ## Add the pluggable component container in your deployments
 
@@ -198,7 +198,7 @@ Before applying the deployment, let's add one more configuration: the component 
 
 ## Define a component
 
-Pluggable components are defined using a [component spec]({{< ref component-schema.md >}}). The component `type` is derived from the socket name (without the file extension). In the following example YAML, replace:
+Pluggable components are defined using a [component spec]({{% ref component-schema.md %}}). The component `type` is derived from the socket name (without the file extension). In the following example YAML, replace:
 
 - `your_socket_goes_here` with your component socket name (no extension)
 - `your_component_type` with your component type
@@ -224,7 +224,7 @@ scopes:
 ```
 The `dapr.io/component-container` annotation is mandatory on Kubernetes when you want Dapr's sidecar injector to handle the container and volume injection for the pluggable component. At minimum, you'll need the `name` and `image` attributes for the Dapr's sidecar injector to successfully add the container to the Application's pod. Volume for Unix Domain Socket is automatically created and mounted by Dapr's sidecar injector.
 
-[Scope]({{< ref component-scopes >}}) your component to make sure that only the target application can connect with the pluggable component, since it will only be running in its deployment. Otherwise the runtime fails when initializing the component.
+[Scope]({{% ref component-scopes %}}) your component to make sure that only the target application can connect with the pluggable component, since it will only be running in its deployment. Otherwise the runtime fails when initializing the component.
 
 That's it! **[Apply the created manifests to your Kubernetes cluster](https://kubernetes.io/docs/reference/kubectl/cheatsheet/#kubectl-apply)**, and call the state store APIs via Dapr API.
 
@@ -242,8 +242,8 @@ Retrieve the value, replacing `$PORT` with the Dapr HTTP port:
 curl http://localhost:$PORT/v1.0/state/prod-mystore/name
 ```
 
-{{% /codetab %}}
-{{< /tabs >}}
+{{% /tab %}}
+{{< /tabpane >}}
 
 ## Next Steps
 

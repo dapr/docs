@@ -29,9 +29,9 @@ The `maxStackDepth` parameter sets a value that controls how many reentrant call
 
 The reentrant actor must provide the appropriate configuration. This is done by the actor's endpoint for `GET /dapr/config`, similar to other actor configuration elements.
 
-{{< tabs ".NET" JavaScript Python Java Go >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 <!--dotnet-->
 
 ```csharp
@@ -53,9 +53,9 @@ public class Startup
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 <!--javascript-->
 
 ```js
@@ -72,9 +72,9 @@ const clientOptions = {
 };
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 <!--python-->
 
 ```python
@@ -100,19 +100,18 @@ def do_something_reentrant():
 	# invoke another actor here, reentrancy will be handled automatically
 	return
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 <!--java-->
 
 ```java
 
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-
-{{% codetab %}}
+{{% tab "Go" %}}
 
 Here is a snippet of an actor written in Golang providing the reentrancy configuration via the HTTP API. Reentrancy has not yet been included into the Go SDK.
 
@@ -168,23 +167,21 @@ func reentrantCallHandler(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Demo
 
 Watch this [video](https://www.youtube.com/watch?v=QADHQ5v-gww&list=PLcip_LgkYwzuF-OV6zKRADoiBvUvGhkao&t=674s) on how to use actor reentrancy.
 
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/QADHQ5v-gww?start=674" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
+{{< youtube id=QADHQ5v-gww start=674 >}}
 
 ## Next steps
 
-{{< button text="Actors in the Dapr SDKs" page="developing-applications/sdks/#sdk-languages" >}}
+{{< button text="Actors in the Dapr SDKs" page="developing-applications/sdks/_index.md#sdk-languages" >}}
 
 ## Related links
 
-- [Actors API reference]({{< ref actors_api.md >}})
-- [Actors overview]({{< ref actors-overview.md >}})
+- [Actors API reference]({{% ref actors_api %}})
+- [Actors overview]({{% ref actors-overview %}})

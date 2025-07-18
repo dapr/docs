@@ -10,7 +10,7 @@ Pub/sub routing is an implementation of [content-based routing](https://www.ente
 
 While routing can be implemented with code, keeping routing rules external from the application can improve portability.
 
-This feature is available to both the [declarative and programmatic subscription approaches]({{< ref subscription-methods.md >}}), however does not apply to streaming subscriptions.
+This feature is available to both the [declarative and programmatic subscription approaches]({{% ref subscription-methods %}}), however does not apply to streaming subscriptions.
 
 ## Declarative subscription
 
@@ -40,9 +40,9 @@ scopes:
 
 In the programmatic approach, the `routes` structure is returned instead of `route`. The JSON structure matches the declarative YAML:
 
-{{< tabs Python JavaScript ".NET" Go PHP>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 ```python
 import flask
 from flask import request, jsonify
@@ -82,9 +82,9 @@ def ds_subscriber():
 app.run()
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 ```javascript
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -122,9 +122,9 @@ app.post('/products', (req, res) => {
 
 app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 ```csharp
         [Topic("pubsub", "inventory", "event.type ==\"widget\"", 1)]
         [HttpPost("widgets")]
@@ -150,9 +150,9 @@ app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
             return stock;
         }
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 ```golang
 package main
 
@@ -216,9 +216,9 @@ func main() {
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", appPort), router))
 }
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "PHP" %}}
 ```php
 <?php
 
@@ -243,9 +243,9 @@ $app->post('/products', function(
 );
 $app->start();
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Common Expression Language (CEL)
 
@@ -255,7 +255,7 @@ In these examples, depending on the `event.type`, the application will be called
 - `/gadgets`
 - `/products`
 
-The expressions are written as [Common Expression Language (CEL)](https://github.com/google/cel-spec) where `event` represents the cloud event. Any of the attributes from the [CloudEvents core specification](https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#required-attributes) can be referenced in the expression.
+The expressions are written as [Common Expression Language (CEL)](https://github.com/google/cel-spec) where `event` represents the cloud event. Any of the attributes from the [CloudEvents core specification](https://github.com/cloudevents/spec/blob/v1.0.1/spec#required-attributes) can be referenced in the expression.
 
 ### Example expressions
 
@@ -271,7 +271,7 @@ Match deposits greater than $10,000:
 event.type == "deposit" && int(event.data.amount) > 10000
 ```
 {{% alert title="Note" color="primary" %}}
-By default the numeric values ​​are written as double-precision floating-point. There are no automatic arithmetic conversions for numeric values. In this case, if `event.data.amount` is not cast as integer, the match is not performed. For more information, see the [CEL documentation](https://github.com/google/cel-spec/blob/master/doc/langdef.md).
+By default the numeric values ​​are written as double-precision floating-point. There are no automatic arithmetic conversions for numeric values. In this case, if `event.data.amount` is not cast as integer, the match is not performed. For more information, see the [CEL documentation](https://github.com/google/cel-spec/blob/master/doc/langdef).
 {{% /alert %}}
 
 Match multiple versions of a message:
@@ -449,14 +449,12 @@ Currently, comparisons to time (e.g. before or after "now") are not supported.
 
 Watch [this video](https://www.youtube.com/watch?v=QqJgRmbH82I&t=1063s) on how to use message routing with pub/sub:
 
-<p class="embed-responsive embed-responsive-16by9">
-<iframe width="688" height="430" src="https://www.youtube-nocookie.com/embed/QqJgRmbH82I?start=1063" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</p>
+{{< youtube id=QqJgRmbH82I start=1063 >}}
 
 ## Next steps
 
 - Try the [pub/sub routing sample](https://github.com/dapr/samples/tree/master/pub-sub-routing).
-- Learn about [topic scoping]({{< ref pubsub-scopes.md >}}) and [message time-to-live]({{< ref pubsub-message-ttl.md >}}).
-- [Configure pub/sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}}).
-- Review the list of [pub/sub components]({{< ref setup-pubsub >}}).
-- Read the [API reference]({{< ref pubsub_api.md >}}).
+- Learn about [topic scoping]({{% ref pubsub-scopes %}}) and [message time-to-live]({{% ref pubsub-message-ttl %}}).
+- [Configure pub/sub components with multiple namespaces]({{% ref pubsub-namespaces %}}).
+- Review the list of [pub/sub components]({{% ref setup-pubsub %}}).
+- Read the [API reference]({{% ref pubsub_api %}}).

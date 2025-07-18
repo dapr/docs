@@ -17,5 +17,5 @@ For HTTP calls made to Dapr runtime, when an error is encountered, an error JSON
 
 ## Related
 
-- [Error code reference list]({{< ref error-codes-reference.md >}})
-- [Handling gRPC error codes]({{< ref grpc-error-codes.md >}})
+- [Error code reference list]({{% ref error-codes-reference.md %}})
+- [Handling gRPC error codes]({{% ref grpc-error-codes.md %}})

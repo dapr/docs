@@ -10,8 +10,8 @@ aliases:
 ## Component format
 
 To setup Azure Key Vault secret store, create a component of type `secretstores.azure.keyvault`. 
-- See [the secret store components guide]({{< ref "setup-secret-store.md#apply-the-configuration" >}}) on how to create and apply a secret store configuration. 
-- See [the guide on referencing secrets]({{< ref component-secrets.md >}}) to retrieve and use the secret with Dapr components.
+- See [the secret store components guide]({{% ref "setup-secret-store.md#apply-the-configuration" %}}) on how to create and apply a secret store configuration. 
+- See [the guide on referencing secrets]({{% ref component-secrets.md %}}) to retrieve and use the secret with Dapr components.
 - See [the Configure the component section](#configure-the-component) below.
 
 ```yaml
@@ -39,7 +39,7 @@ spec:
 ## Authenticating with Microsoft Entra ID
 
 The Azure Key Vault secret store component supports authentication with Microsoft Entra ID only. Before you enable this component:
-1. Read the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document.
+1. Read the [Authenticating to Azure]({{% ref authenticating-azure.md %}}) document.
 1. Create an Microsoft Entra ID application (also called Service Principal). 
 1. Alternatively, create a managed identity for your application platform.
 
@@ -49,13 +49,13 @@ The Azure Key Vault secret store component supports authentication with Microsof
 |--------------------|:--------:|---------|---------|
 | `vaultName` | Y | The name of the Azure Key Vault | `"mykeyvault"` |
 | `azureEnvironment` | N | Optional name for the Azure environment if using a different Azure cloud | `"AZUREPUBLICCLOUD"` (default value), `"AZURECHINACLOUD"`, `"AZUREUSGOVERNMENTCLOUD"`, `"AZUREGERMANCLOUD"` |
-| Auth metadata | | See [Authenticating to Azure]({{< ref authenticating-azure.md >}}) for more information
+| Auth metadata | | See [Authenticating to Azure]({{% ref authenticating-azure.md %}}) for more information
 
-Additionally, you must provide the authentication fields as explained in the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document.
+Additionally, you must provide the authentication fields as explained in the [Authenticating to Azure]({{% ref authenticating-azure.md %}}) document.
 
 ## Optional per-request metadata properties
 
-The following [optional query parameters]({{< ref "secrets_api#query-parameters" >}}) can be provided when retrieving secrets from this secret store:
+The following [optional query parameters]({{% ref "secrets_api#query-parameters" %}}) can be provided when retrieving secrets from this secret store:
 
 Query Parameter | Description
 --------- | -----------
@@ -70,7 +70,7 @@ Query Parameter | Description
 - [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli)
 - [jq](https://stedolan.github.io/jq/download/)
 - You are using bash or zsh shell
-- You've created an Microsoft Entra ID application (Service Principal) per the instructions in [Authenticating to Azure]({{< ref authenticating-azure.md >}}). You will need the following values:
+- You've created an Microsoft Entra ID application (Service Principal) per the instructions in [Authenticating to Azure]({{% ref authenticating-azure.md %}}). You will need the following values:
 
    | Value | Description |
    | ----- | ----------- |
@@ -123,17 +123,17 @@ Query Parameter | Description
     --scope "${RG_ID}/providers/Microsoft.KeyVault/vaults/${KEYVAULT_NAME}"
   ```
 
-Other less restrictive roles, like "Key Vault Secrets Officer" and "Key Vault Administrator", can be used, depending on your application. [See Microsoft Docs for more information about Azure built-in roles for Key Vault](https://docs.microsoft.com/azure/key-vault/general/rbac-guide?tabs=azure-cli#azure-built-in-roles-for-key-vault-data-plane-operations).
+Other less restrictive roles, like "Key Vault Secrets Officer" and "Key Vault Administrator", can be used, depending on your application. [See Microsoft Docs for more information about Azure built-in roles for Key Vault](https://docs.microsoft.com/azure/key-vault/general/rbac-guide?tabpane=azure-cli#azure-built-in-roles-for-key-vault-data-plane-operations).
 
 ### Configure the component
 
-{{< tabs "Self-Hosted" "Kubernetes">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 
 #### Using a client secret
 
-To use a **client secret**, create a file called `azurekeyvault.yaml` in the components directory. Use the following template, filling in [the Microsoft Entra ID application you created]({{< ref authenticating-azure.md >}}):
+To use a **client secret**, create a file called `azurekeyvault.yaml` in the components directory. Use the following template, filling in [the Microsoft Entra ID application you created]({{% ref authenticating-azure.md %}}):
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -156,7 +156,7 @@ spec:
 
 #### Using a certificate 
 
-If you want to use a **certificate** saved on the local disk instead, use the following template. Fill in the details of [the Microsoft Entra ID application you created]({{< ref authenticating-azure.md >}}):
+If you want to use a **certificate** saved on the local disk instead, use the following template. Fill in the details of [the Microsoft Entra ID application you created]({{% ref authenticating-azure.md %}}):
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -176,10 +176,10 @@ spec:
   - name: azureCertificateFile
     value : "[pfx_certificate_file_fully_qualified_local_path]"
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
-In Kubernetes, you store the client secret or the certificate into the Kubernetes Secret Store and then refer to those in the YAML file. Before you start, you need the details of [the Microsoft Entra ID application you created]({{< ref authenticating-azure.md >}}).
+{{% tab "Kubernetes" %}}
+In Kubernetes, you store the client secret or the certificate into the Kubernetes Secret Store and then refer to those in the YAML file. Before you start, you need the details of [the Microsoft Entra ID application you created]({{% ref authenticating-azure.md %}}).
 
 #### Using a client secret
 
@@ -305,7 +305,7 @@ In Kubernetes, you store the client secret or the certificate into the Kubernete
    **Important**: While both Microsoft Entra ID pod identity and workload identity are in preview, currently Microsoft Entra ID Workload Identity is planned for general availability (stable state).
 
 1. After creating a workload identity, give it `read` permissions:
-   - [On your desired KeyVault instance](https://docs.microsoft.com/azure/key-vault/general/assign-access-policy?tabs=azure-cli#assign-the-access-policy)
+   - [On your desired KeyVault instance](https://docs.microsoft.com/azure/key-vault/general/assign-access-policy?tabpane=azure-cli#assign-the-access-policy)
    - In your application deployment. Inject the pod identity both:
      - Via a label annotation
      - By specifying the Kubernetes service account associated with the desired workload identity 
@@ -325,15 +325,15 @@ When using **managed identity directly**, you can have multiple identities assoc
 
 However, when using **managed identity via Microsoft Entra ID workload identity**, `azureClientId` is not necessary and has no effect. The Azure identity to be used is inferred from the service account tied to an Azure identity via the Azure federated identity.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## References
 
-- [Authenticating to Azure]({{< ref authenticating-azure.md >}})
+- [Authenticating to Azure]({{% ref authenticating-azure.md %}})
 - [Azure CLI: keyvault commands](https://docs.microsoft.com/cli/azure/keyvault?view=azure-cli-latest#az-keyvault-create)
-- [Secrets building block]({{< ref secrets >}})
-- [How-To: Retrieve a secret]({{< ref "howto-secrets.md" >}})
-- [How-To: Reference secrets in Dapr components]({{< ref component-secrets.md >}})
-- [Secrets API reference]({{< ref secrets_api.md >}})
+- [Secrets building block]({{% ref secrets %}})
+- [How-To: Retrieve a secret]({{% ref "howto-secrets.md" %}})
+- [How-To: Reference secrets in Dapr components]({{% ref component-secrets.md %}})
+- [Secrets API reference]({{% ref secrets_api.md %}})

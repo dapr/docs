@@ -8,19 +8,19 @@ description: "Use the Dapr gRPC API in your application"
 
 Dapr implements both an HTTP and a gRPC API for local calls. [gRPC](https://grpc.io/) is useful for low-latency, high performance scenarios and has language integration using the proto clients.
 
-[Find a list of auto-generated clients in the Dapr SDK documentation]({{< ref sdks >}}).
+[Find a list of auto-generated clients in the Dapr SDK documentation]({{% ref sdks %}}).
 
 The Dapr runtime implements a [proto service](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto) that apps can communicate with via gRPC.
 
-In addition to calling Dapr via gRPC, Dapr supports service-to-service calls with gRPC by acting as a proxy. [Learn more in the gRPC service invocation how-to guide]({{< ref howto-invoke-services-grpc.md >}}).
+In addition to calling Dapr via gRPC, Dapr supports service-to-service calls with gRPC by acting as a proxy. [Learn more in the gRPC service invocation how-to guide]({{% ref howto-invoke-services-grpc.md %}}).
 
 This guide demonstrates configuring and invoking Dapr with gRPC using a Go SDK application.
 
 ## Configure Dapr to communicate with an app via gRPC
 
-{{< tabs "Self-hosted" "Kubernetes">}}
+{{< tabpane text=true >}}
 <!--selfhosted-->
-{{% codetab %}}
+{{% tab "Self-hosted" %}}
 
 When running in self-hosted mode, use the `--app-protocol` flag to tell Dapr to use gRPC to talk to the app.
 
@@ -30,10 +30,10 @@ dapr run --app-protocol grpc --app-port 5005 node app.js
 
 This tells Dapr to communicate with your app via gRPC over port `5005`.
 
-{{% /codetab %}}
+{{% /tab %}}
 
 <!--k8s-->
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
 On Kubernetes, set the following annotations in your deployment YAML:
 
@@ -62,9 +62,9 @@ spec:
 ...
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Invoke Dapr with gRPC
 
@@ -224,9 +224,9 @@ The following steps will show how to create an app that exposes a server for wit
 
 ## Run the application
 
-{{< tabs "Self-hosted" "Kubernetes">}}
+{{< tabpane text=true >}}
 <!--selfhosted-->
-{{% codetab %}}
+{{% tab "Self-hosted" %}}
 
 To run locally, use the Dapr CLI:
 
@@ -234,16 +234,16 @@ To run locally, use the Dapr CLI:
 dapr run --app-id goapp --app-port 50001 --app-protocol grpc go run main.go
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
 <!--k8s-->
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
 On Kubernetes, set the required `dapr.io/app-protocol: "grpc"` and `dapr.io/app-port: "50001` annotations in your pod spec template, as mentioned above.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
     
 
 ## Other languages
@@ -253,5 +253,5 @@ You can use Dapr with any language supported by Protobuf, and not just with the 
 Using the [protoc](https://developers.google.com/protocol-buffers/docs/downloads) tool, you can generate the Dapr clients for other languages like Ruby, C++, Rust, and others.
 
  ## Related Topics
-- [Service invocation building block]({{< ref service-invocation >}})
-- [Service invocation API specification]({{< ref service_invocation_api.md >}})
+- [Service invocation building block]({{% ref service-invocation %}})
+- [Service invocation API specification]({{% ref service_invocation_api.md %}})

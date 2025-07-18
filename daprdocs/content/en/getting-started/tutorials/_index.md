@@ -11,8 +11,8 @@ Now that you've already initialized Dapr and experimented with some of Dapr's bu
 
 #### Before you begin
 
-- [Set up your local Dapr environment]({{< ref "install-dapr-cli.md" >}}).
-- [Explore one of Dapr's building blocks via our quickstarts]({{< ref "getting-started/quickstarts/_index.md" >}}).
+- [Set up your local Dapr environment]({{% ref "install-dapr-cli.md" %}}).
+- [Explore one of Dapr's building blocks via our quickstarts]({{% ref "getting-started/quickstarts/_index.md" %}}).
 
 ## Tutorials
 
@@ -20,8 +20,8 @@ Thanks to our expansive Dapr community, we offer tutorials hosted both on Dapr D
 
 | Dapr Docs tutorials               | Description                                                                                                                                                                                    |
 |--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Define a component]({{< ref get-started-component.md >}})       | Create a component definition file to interact with the Secrets building block.
-| [Configure State & Pub/sub]({{< ref configure-state-pubsub.md >}}) | Configure State Store and Pub/sub message broker components for Dapr.
+| [Define a component]({{% ref get-started-component.md %}})       | Create a component definition file to interact with the Secrets building block.
+| [Configure State & Pub/sub]({{% ref configure-state-pubsub.md %}}) | Configure State Store and Pub/sub message broker components for Dapr.
 
 | GitHub tutorials               | Description                                                                                                                                                                                    |
 |--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

@@ -11,7 +11,7 @@ aliases:
 The `HTTPEndpoint` is a Dapr resource that is used to enable the invocation of non-Dapr endpoints from a Dapr application.
 
 {{% alert title="Note" color="primary" %}}
-Any HTTPEndpoint resource can be restricted to a particular [namepsace]({{< ref isolation-concept.md >}}) and restricted access through scopes to any particular set of applications.
+Any HTTPEndpoint resource can be restricted to a particular [namepsace]({{% ref isolation-concept.md %}}) and restricted access through scopes to any particular set of applications.
 {{% /alert %}}
 
 ## Format
@@ -59,4 +59,4 @@ auth: # Optional
 
 ## Related links
 
-[Learn how to invoke non-Dapr endpoints.]({{< ref howto-invoke-non-dapr-endpoints.md >}})
+[Learn how to invoke non-Dapr endpoints.]({{% ref howto-invoke-non-dapr-endpoints.md %}})

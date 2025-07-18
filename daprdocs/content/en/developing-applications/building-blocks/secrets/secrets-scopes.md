@@ -6,27 +6,25 @@ weight: 3000
 description: "Use scoping to limit the secrets that can be read by your application from secret stores"
 ---
 
-Once you [configure a secret store for your application]({{< ref setup-secret-store >}}), *any* secret defined within that store is accessible by default from the Dapr application. 
+Once you [configure a secret store for your application]({{% ref setup-secret-store %}}), *any* secret defined within that store is accessible by default from the Dapr application. 
 
-You can limit the Dapr application's access to specific secrets by defining secret scopes. Simply add a secret scope policy [to the application configuration]({{< ref configuration-concept.md >}}) with restrictive permissions.
+You can limit the Dapr application's access to specific secrets by defining secret scopes. Simply add a secret scope policy [to the application configuration]({{% ref configuration-concept %}}) with restrictive permissions.
 
-The secret scoping policy applies to any [secret store]({{< ref supported-secret-stores.md >}}), including:
+The secret scoping policy applies to any [secret store]({{% ref supported-secret-stores %}}), including:
 
 - A local secret store
 - A Kubernetes secret store
 - A public cloud secret store
 
-For details on how to set up a [secret store]({{< ref setup-secret-store.md >}}), read [How To: Retrieve a secret]({{< ref howto-secrets.md >}}).
+For details on how to set up a [secret store]({{% ref setup-secret-store %}}), read [How To: Retrieve a secret]({{% ref howto-secrets %}}).
 
 Watch [this video](https://youtu.be/j99RN_nxExA?start=2272) for a demo on how to use secret scoping with your application.
 
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="688" height="430" src="https://www.youtube-nocookie.com/embed/j99RN_nxExA?start=2272" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
+{{< youtube id=j99RN_nxExA start=2272 >}}
 
 ## Scenario 1 : Deny access to all secrets for a secret store
 
-In this example, all secret access is denied to an application running on a Kubernetes cluster, which has a configured [Kubernetes secret store]({{< ref kubernetes-secret-store >}}) named `mycustomsecretstore`. Aside from the user-defined custom store, the example also configures the Kubernetes default store (named `kubernetes`) to ensure all secrets are denied access. [Learn more about the Kubernetes default secret store]({{< ref "kubernetes-secret-store.md#default-kubernetes-secret-store-component" >}}).
+In this example, all secret access is denied to an application running on a Kubernetes cluster, which has a configured [Kubernetes secret store]({{% ref kubernetes-secret-store %}}) named `mycustomsecretstore`. Aside from the user-defined custom store, the example also configures the Kubernetes default store (named `kubernetes`) to ensure all secrets are denied access. [Learn more about the Kubernetes default secret store]({{% ref "kubernetes-secret-store#default-kubernetes-secret-store-component" %}}).
 
 Define the following `appconfig.yaml` configuration and apply it to the Kubernetes cluster using the command `kubectl apply -f appconfig.yaml`.
 
@@ -44,7 +42,7 @@ spec:
         defaultAccess: deny
 ```
 
-For applications that need to be denied access to the Kubernetes secret store, follow [these instructions]({{< ref kubernetes-overview.md >}}), and add the following annotation to the application pod:
+For applications that need to be denied access to the Kubernetes secret store, follow [these instructions]({{% ref kubernetes-overview %}}), and add the following annotation to the application pod:
 
 ```yaml
 dapr.io/config: appconfig
@@ -69,7 +67,7 @@ spec:
         allowedSecrets: ["secret1", "secret2"]
 ```
 
-The default access to the `vault` secret store is `deny`, while some secrets are accessible by the application, based on the `allowedSecrets` list. [Learn how to apply configuration to the sidecar]({{< ref configuration-concept.md >}}).
+The default access to the `vault` secret store is `deny`, while some secrets are accessible by the application, based on the `allowedSecrets` list. [Learn how to apply configuration to the sidecar]({{% ref configuration-concept %}}).
 
 ## Scenario 3: Deny access to certain sensitive secrets in a secret store
 
@@ -88,7 +86,7 @@ spec:
         deniedSecrets: ["secret1", "secret2"]
 ```
 
-This example configuration explicitly denies access to `secret1` and `secret2` from the secret store named `vault` while allowing access to all other secrets. [Learn how to apply configuration to the sidecar]({{< ref configuration-concept.md >}}).
+This example configuration explicitly denies access to `secret1` and `secret2` from the secret store named `vault` while allowing access to all other secrets. [Learn how to apply configuration to the sidecar]({{% ref configuration-concept %}}).
 
 ## Permission priority
 
@@ -105,5 +103,5 @@ Scenarios | defaultAccess | allowedSecrets | deniedSecrets | permission
 
 ## Related links
 
-- List of [secret stores]({{< ref supported-secret-stores.md >}})
-- Overview of [secret stores]({{< ref setup-secret-store.md >}})
+- List of [secret stores]({{% ref supported-secret-stores %}})
+- Overview of [secret stores]({{% ref setup-secret-store %}})

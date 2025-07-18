@@ -8,7 +8,7 @@ aliases:
   - "/developing-applications/building-blocks/actors/actors-background"
 ---
 
-Now that you've learned about the [actor building block]({{< ref "actors-overview.md" >}}) at a high level, let's deep dive into the features and concepts included with actors in Dapr. 
+Now that you've learned about the [actor building block]({{% ref "actors-overview" %}}) at a high level, let's deep dive into the features and concepts included with actors in Dapr. 
 
 ## Actor lifetime
 
@@ -52,7 +52,7 @@ This simplifies some choices, but also carries some consideration:
 - Because actors are randomly placed, it should be expected that actor operations always require network communication, including serialization and deserialization of method call data, incurring latency and overhead.
 
 {{% alert title="Note" color="primary" %}}
- Note: The Dapr actor Placement service is only used for actor placement and therefore is not needed if your services are not using Dapr actors. The Placement service can run in all [hosting environments]({{< ref hosting >}}), including self-hosted and Kubernetes.
+ Note: The Dapr actor Placement service is only used for actor placement and therefore is not needed if your services are not using Dapr actors. The Placement service can run in all [hosting environments]({{% ref hosting %}}), including self-hosted and Kubernetes.
 {{% /alert %}}
 
 ## Actor communication
@@ -65,9 +65,9 @@ POST/GET/PUT/DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/<met
 
 You can provide any data for the actor method in the request body, and the response for the request would be in the response body which is the data from actor call.
 
-Another, and perhaps more convenient, way of interacting with actors is via SDKs. Dapr currently supports actors SDKs in [.NET]({{< ref "dotnet-actors" >}}), [Java]({{< ref "java#actors" >}}), and [Python]({{< ref "python-actor" >}}).
+Another, and perhaps more convenient, way of interacting with actors is via SDKs. Dapr currently supports actors SDKs in [.NET]({{% ref "dotnet-actors" %}}), [Java]({{% ref "java#actors" %}}), and [Python]({{% ref "python-actor" %}}).
 
-Refer to [Dapr Actor Features]({{< ref howto-actors.md >}}) for more details.
+Refer to [Dapr Actor Features]({{% ref howto-actors %}}) for more details.
 
 ### Concurrency
 
@@ -81,7 +81,7 @@ Actors can deadlock on each other if there is a circular request between two act
 
 #### Reentrancy
 
-To allow actors to "re-enter" and invoke methods on themselves, see [Actor Reentrancy]({{<ref actor-reentrancy.md>}}).
+To allow actors to "re-enter" and invoke methods on themselves, see [Actor Reentrancy]({{%ref actor-reentrancy%}}).
 
 ### Turn-based access
 
@@ -99,6 +99,6 @@ The following example illustrates the above concepts. Consider an actor type tha
 
 ## Related links
 
-- [Actors API reference]({{< ref actors_api.md >}})
-- [Actors overview]({{< ref actors-overview.md >}})
-- [How to: Use virtual actors in Dapr]({{< ref howto-actors.md >}})
+- [Actors API reference]({{% ref actors_api %}})
+- [Actors overview]({{% ref actors-overview %}})
+- [How to: Use virtual actors in Dapr]({{% ref howto-actors %}})

@@ -103,12 +103,12 @@ You can remove the actor timer by calling
 DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/timers/<name>
 ```
 
-Refer [api spec]({{< ref "actors_api.md#invoke-timer" >}}) for more details.
+Refer [api spec]({{% ref "actors_api#invoke-timer" %}}) for more details.
 
 ## Actor reminders
 
 {{% alert title="Note" color="primary" %}}
-In Dapr v1.15, actor reminders are stored by default in the [Scheduler service]({{< ref "scheduler.md#actor-reminders" >}}). When upgrading to Dapr v1.15 all existing reminders are automatically migrated to the Scheduler service with no loss of reminders as a one time operation for each actor type.
+In Dapr v1.15, actor reminders are stored by default in the [Scheduler service]({{% ref "scheduler#actor-reminders" %}}). When upgrading to Dapr v1.15 all existing reminders are automatically migrated to the Scheduler service with no loss of reminders as a one time operation for each actor type.
 {{% /alert %}}
 
 Reminders are a mechanism to trigger *persistent* callbacks on an actor at specified times. Their functionality is similar to timers. But unlike timers, reminders are triggered under all circumstances until the actor explicitly unregisters them or the actor is explicitly deleted or the number in invocations is exhausted. Specifically, reminders are triggered across actor deactivations and failovers because the Dapr actor runtime persists the information about the actors' reminders using Dapr actor state provider.
@@ -119,7 +119,7 @@ You can create a persistent reminder for an actor by calling the HTTP/gRPC reque
 POST/PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
 
-The request structure for reminders is identical to those of actors. Please refer to the [actor timers examples]({{< ref "#actor-timers" >}}).
+The request structure for reminders is identical to those of actors. Please refer to the [actor timers examples]({{% ref "#actor-timers" %}}).
 
 ### Retrieve actor reminder
 
@@ -139,9 +139,9 @@ DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 
 If an actor reminder is triggered and the app does not return a 2** code to the runtime (for example, because of a connection issue),
 actor reminders will be retried up to three times with a backoff interval of one second between each attempt. There may be 
-additional retries attempted in accordance with any optionally applied [actor resiliency policy]({{< ref "override-default-retries.md" >}}). 
+additional retries attempted in accordance with any optionally applied [actor resiliency policy]({{% ref "override-default-retries" %}}). 
 
-Refer [api spec]({{< ref "actors_api.md#invoke-reminder" >}}) for more details.
+Refer [api spec]({{% ref "actors_api#invoke-reminder" %}}) for more details.
 
 ## Error handling
 
@@ -192,5 +192,5 @@ To use protobuf serialization for actor reminders on self-hosted, use the follow
 
 ## Related links
 
-- [Actors API reference]({{< ref actors_api.md >}})
-- [Actors overview]({{< ref actors-overview.md >}})
+- [Actors API reference]({{% ref actors_api %}})
+- [Actors overview]({{% ref actors-overview %}})

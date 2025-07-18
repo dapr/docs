@@ -7,11 +7,11 @@ description: "Detailed information on the run CLI command"
 
 ### Description
 
-Run Dapr and (optionally) your application side by side. A full list comparing daprd arguments, CLI arguments, and Kubernetes annotations can be found [here]({{< ref arguments-annotations-overview.md >}}).
+Run Dapr and (optionally) your application side by side. A full list comparing daprd arguments, CLI arguments, and Kubernetes annotations can be found [here]({{% ref arguments-annotations-overview.md %}}).
 
 ### Supported platforms
 
-- [Self-Hosted]({{< ref self-hosted >}})
+- [Self-Hosted]({{% ref self-hosted %}})
 
 ### Usage
 
@@ -27,7 +27,7 @@ dapr run [flags] [command]
 | `--app-max-concurrency`        |                      | `unlimited`                                                                        | The concurrency level of the application; default is unlimited                                       |
 | `--app-port`, `-p`             | `APP_PORT`           |                                                                                    | The port your application is listening on                                                            |
 | `--app-protocol`, `-P` | | `http` | The protocol Dapr uses to talk to the application. Valid values are: `http`, `grpc`, `https` (HTTP with TLS), `grpcs` (gRPC with TLS), `h2c` (HTTP/2 Cleartext) |
-| `--resources-path`, `-d`      |                      | Linux/Mac: `$HOME/.dapr/components` <br/>Windows: `%USERPROFILE%\.dapr\components`   | The path for resources directory. If you've organized your resources into multiple folders (for example, components in one folder, resiliency policies in another), you can define multiple resource paths. See [example]({{< ref "#examples" >}}) below.                                                                 |
+| `--resources-path`, `-d`      |                      | Linux/Mac: `$HOME/.dapr/components` <br/>Windows: `%USERPROFILE%\.dapr\components`   | The path for resources directory. If you've organized your resources into multiple folders (for example, components in one folder, resiliency policies in another), you can define multiple resource paths. See [example]({{% ref "#examples" %}}) below.                                                                 |
 | `--app-channel-address` | | `127.0.0.1` | The network address the application listens on |
 | `--runtime-path`                  |        |  | Dapr runtime install path |
 | `--config`, `-c`               |                      | Linux/Mac: `$HOME/.dapr/config.yaml` <br/>Windows: `%USERPROFILE%\.dapr\config.yaml` | Dapr configuration file                                                                            |
@@ -36,7 +36,7 @@ dapr run [flags] [command]
 | `--dapr-http-port`, `-H`       | `DAPR_HTTP_PORT`     | `3500`                                                                             | The HTTP port for Dapr to listen on                                                                  |
 | `--enable-profiling`           |                      | `false`                                                                            | Enable "pprof" profiling via an HTTP endpoint                                                        |
 | `--help`, `-h`                 |                      |                                                                                    | Print the help message                                                                              |
-| `--run-file`, `-f`                 |                      |  Linux/MacOS: `$HOME/.dapr/dapr.yaml`                              | Run multiple applications at once using a Multi-App Run template file. Currently in [alpha]({{< ref "support-preview-features.md" >}}) and only available in Linux/MacOS                                                                     |
+| `--run-file`, `-f`                 |                      |  Linux/MacOS: `$HOME/.dapr/dapr.yaml`                              | Run multiple applications at once using a Multi-App Run template file. Currently in [alpha]({{% ref "support-preview-features.md" %}}) and only available in Linux/MacOS                                                                     |
 | `--image`                      |                      |                                                                                    | Use a custom Docker image. Format is `repository/image` for Docker Hub, or `example.com/repository/image` for a custom registry. |
 | `--log-level`                  |                      | `info`                                                                             | The log verbosity. Valid values are: `debug`, `info`, `warn`, `error`, `fatal`, or `panic`           |
 | `--enable-api-logging`         |                      | `false`                                                                            | Enable the logging of all API calls from application to Dapr      |
@@ -52,7 +52,7 @@ dapr run [flags] [command]
 | `--unix-domain-socket`, `-u`   |                      |                                                                                    |  Path to a unix domain socket dir mount. If specified, communication with the Dapr sidecar uses unix domain sockets for lower latency and greater throughput when compared to using TCP ports. Not available on Windows. |
 | `--dapr-http-max-request-size` |                      | `4`                                                                                | Max size of the request body in MB. |
 | `--dapr-http-read-buffer-size` |                      | `4`                                                                                | Max size of the HTTP read buffer in KB. This also limits the maximum size of HTTP headers. The default 4 KB |
-| `--kubernetes`, `-k`             |            |                                                                                    | Running Dapr on Kubernetes, and used for [Multi-App Run template files on Kubernetes]({{< ref multi-app-dapr-run >}}).                                                            |
+| `--kubernetes`, `-k`             |            |                                                                                    | Running Dapr on Kubernetes, and used for [Multi-App Run template files on Kubernetes]({{% ref multi-app-dapr-run %}}).                                                            |
 | `--components-path`, `-d`      |                      | Linux/Mac: `$HOME/.dapr/components` <br/>Windows: `%USERPROFILE%\.dapr\components` | **Deprecated** in favor of `--resources-path`                                                      |
 
 ### Examples

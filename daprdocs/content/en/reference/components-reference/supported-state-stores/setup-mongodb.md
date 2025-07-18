@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup MongoDB state store create a component of type `state.mongodb`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+To setup MongoDB state store create a component of type `state.mongodb`. See [this guide]({{% ref "howto-get-save-state.md#step-1-setup-a-state-store" %}}) on how to create and apply a state store configuration.
 
 
 ```yaml
@@ -48,7 +48,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ### Actor state store and transactions support
@@ -84,9 +84,9 @@ If you wish to use MongoDB as an actor store, add this metadata option to your C
 
 ## Setup MongoDB
 
-{{< tabs "Self-Hosted" "Kubernetes" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 You can run a single MongoDB instance locally using Docker:
 
 ```sh
@@ -96,9 +96,9 @@ docker run --name some-mongo -d -p 27017:27017 mongo
 You can then interact with the server at `localhost:27017`. If you do not specify a `databaseName` value in your component definition, make sure to create a database named `daprStore`.
 
 In order to use the MongoDB state store for transactions and as an actor state store, you need to run MongoDB as a Replica Set. Refer to [the official documentation](https://www.mongodb.com/compatibility/deploying-a-mongodb-cluster-with-docker) for how to create a 3-node Replica Set using Docker.
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 You can conveniently install MongoDB on Kubernetes using the [Helm chart packaged by Bitnami](https://github.com/bitnami/charts/tree/main/bitnami/mongodb/). Refer to the documentation for the Helm chart for deploying MongoDB, both as a standalone server, and with a Replica Set (required for using transactions and actors).
 This installs MongoDB into the `default` namespace.
 To interact with MongoDB, find the service with: `kubectl get svc mongo-mongodb`.
@@ -106,16 +106,16 @@ For example, if installing using the Helm defaults above, the MongoDB host addre
 `mongo-mongodb.default.svc.cluster.local:27017`
 Follow the on-screen instructions to get the root password for MongoDB.
 The username is typically `admin` by default.
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### TTLs and cleanups
 
-This state store supports [Time-To-Live (TTL)]({{< ref state-store-ttl.md >}}) for records stored with Dapr. When storing data using Dapr, you can set the `ttlInSeconds` metadata property to indicate when the data should be considered "expired".
+This state store supports [Time-To-Live (TTL)]({{% ref state-store-ttl.md %}}) for records stored with Dapr. When storing data using Dapr, you can set the `ttlInSeconds` metadata property to indicate when the data should be considered "expired".
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
-- [State management building block]({{< ref state-management >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" %}}) for instructions on configuring state store components
+- [State management building block]({{% ref state-management %}})

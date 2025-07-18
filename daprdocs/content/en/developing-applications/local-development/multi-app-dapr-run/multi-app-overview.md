@@ -17,9 +17,9 @@ Let's say you want to run several applications locally to test them together, si
 
 The Multi-App Run template file describes how to start multiple applications as if you had run many separate CLI `run` commands. By default, this template file is called `dapr.yaml`.
 
-{{< tabs Self-hosted Kubernetes>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-hosted" %}}
 <!--selfhosted-->
 
 ## Multi-App Run template file
@@ -46,7 +46,7 @@ apps:
     command: ["go","run", "app.go"]
 ```
 
-For a more in-depth example and explanation of the template properties, see [Multi-app template]({{< ref multi-app-template.md >}}).
+For a more in-depth example and explanation of the template properties, see [Multi-app template]({{% ref multi-app-template.md %}}).
 
 ## Locations for resources and configuration files
 
@@ -87,11 +87,11 @@ Even if you've decided to rename your resources folder to something other than `
 
 Watch [this video for an overview on Multi-App Run](https://youtu.be/s1p9MNl4VGo?t=2456):
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/s1p9MNl4VGo?start=2456" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{{< youtube id=s1p9MNl4VGo start=2456 >}}
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 <!--kubernetes-->
 
 ## Multi-App Run template file
@@ -138,7 +138,7 @@ apps:
 > - The containerImagePullPolicy indicates that a new container image is always downloaded for this app.
 > - The `createService` field defines a basic service in Kubernetes (ClusterIP or LoadBalancer) that targets the `--app-port` specified in the template. If `createService` isn't specified, the application is not accessible from outside the cluster.
 
-For a more in-depth example and explanation of the template properties, see [Multi-app template]({{< ref multi-app-template.md >}}).
+For a more in-depth example and explanation of the template properties, see [Multi-app template]({{% ref multi-app-template.md %}}).
 
 ## Logs
 
@@ -161,14 +161,14 @@ Even if you've decided to rename your resources folder to something other than `
 
 Watch [this video for an overview on Multi-App Run in Kubernetes](https://youtu.be/nWatANwaAik?si=O8XR-TUaiY0gclgO&t=1024):
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/nWatANwaAik?si=O8XR-TUaiY0gclgO&amp;start=1024" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+ {{< youtube id=nWatANwaAik start=1024 >}}
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Next steps
 
-- [Learn the Multi-App Run template file structure and its properties]({{< ref multi-app-template.md >}})
-- [Try out the self-hosted Multi-App Run template with the Service Invocation quickstart]({{< ref serviceinvocation-quickstart.md >}})
+- [Learn the Multi-App Run template file structure and its properties]({{% ref multi-app-template.md %}})
+- [Try out the self-hosted Multi-App Run template with the Service Invocation quickstart]({{% ref serviceinvocation-quickstart.md %}})
 - [Try out the Kubernetes Multi-App Run template with the `hello-kubernetes` tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-kubernetes)

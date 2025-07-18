@@ -11,7 +11,7 @@ The Dapr SDKs are the easiest way for you to get Dapr into your application. Cho
 
 ## SDK packages
 
-Select your [preferred language below]({{< ref "#sdk-languages" >}}) to learn more about client, server, actor, and workflow packages. 
+Select your [preferred language below]({{% ref "#sdk-languages" %}}) to learn more about client, server, actor, and workflow packages. 
 
 - **Client**: The Dapr client allows you to invoke Dapr building block APIs and perform each building block's actions
 - **Server extensions**: The Dapr service extensions allow you to create services that can be invoked by other services and subscribe to topics
@@ -22,15 +22,15 @@ Select your [preferred language below]({{< ref "#sdk-languages" >}}) to learn mo
 
 | Language | Status | Client | Server extensions | Actor | Workflow |
 |----------|:------|:----------:|:-----------:|:---------:|:---------:|
-| [.NET]({{< ref dotnet >}}) | Stable | ✔ |  [ASP.NET Core](https://github.com/dapr/dotnet-sdk/tree/master/examples/AspNetCore) | ✔ | ✔ |
-| [Python]({{< ref python >}}) | Stable | ✔ | [gRPC]({{< ref python-grpc.md >}}) <br />[FastAPI]({{< ref python-fastapi.md >}})<br />[Flask]({{< ref python-flask.md >}})| ✔ | ✔ |
-| [Java]({{< ref java >}}) | Stable | ✔ | Spring Boot  <br /> Quarkus| ✔ | ✔ |
-| [Go]({{< ref go >}}) | Stable | ✔ | ✔ | ✔ | ✔ |
-| [PHP]({{< ref php >}}) | Stable | ✔ | ✔ | ✔ | |
-| [JavaScript]({{< ref js >}}) | Stable| ✔ | | ✔ | ✔  |
+| [.NET]({{% ref dotnet %}}) | Stable | ✔ |  [ASP.NET Core](https://github.com/dapr/dotnet-sdk/tree/master/examples/AspNetCore) | ✔ | ✔ |
+| [Python]({{% ref python %}}) | Stable | ✔ | [gRPC]({{% ref python-grpc.md %}}) <br />[FastAPI]({{% ref python-fastapi.md %}})<br />[Flask]({{% ref python-flask.md %}})| ✔ | ✔ |
+| [Java]({{% ref java %}}) | Stable | ✔ | Spring Boot  <br /> Quarkus| ✔ | ✔ |
+| [Go]({{% ref go %}}) | Stable | ✔ | ✔ | ✔ | ✔ |
+| [PHP]({{% ref php %}}) | Stable | ✔ | ✔ | ✔ | |
+| [JavaScript]({{% ref js %}}) | Stable| ✔ | | ✔ | ✔  |
 | [C++](https://github.com/dapr/cpp-sdk) | In development | ✔ | | |
-| [Rust]({{< ref rust >}}) | In development | ✔ | | ✔ | |
+| [Rust]({{% ref rust %}}) | In development | ✔ | | ✔ | |
 
 ## Further reading
 
-- [Serialization in the Dapr SDKs]({{< ref sdk-serialization.md >}})
+- [Serialization in the Dapr SDKs]({{% ref sdk-serialization.md %}})
