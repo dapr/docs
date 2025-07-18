@@ -50,7 +50,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | EnableTTL          | N        | Boolean value to enable TTL capability. Defaults to `"true"` | `"true"`
 | TTLFrequency       | N | Additional parameters to use | `"5s"`
 
-> <sup>[1]</sup> The `certPath` and `keyPath` fields are not mandatory if server url is http, however if server url is https and no certPath and keyPath is present dapr returns an error.
+> <sup>[1]</sup> The `certPath` and `keyPath` fields are not mandatory if server url is `http`. However if the server url is `https` and no certPath and keyPath is present, then Dapr returns an error.
 
 ### TTLs and cleanups
 
