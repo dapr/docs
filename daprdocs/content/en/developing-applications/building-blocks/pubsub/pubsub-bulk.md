@@ -22,9 +22,9 @@ The bulk publish operation also does not guarantee any ordering of messages.
 
 ### Example
 
-{{< tabs Java JavaScript ".NET" Python Go "HTTP API (Bash)" "HTTP API (PowerShell)" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ```java
 import io.dapr.client.DaprClientBuilder;
@@ -54,9 +54,9 @@ class BulkPublisher {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ```typescript
 
@@ -105,9 +105,9 @@ start().catch((e) => {
 });
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using System;
@@ -143,9 +143,9 @@ else
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ```python
 import requests
@@ -173,9 +173,9 @@ response = requests.post(base_url.format(pubsub_name, topic_name), json=payload)
 print(response.status_code)
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 package main
@@ -220,9 +220,9 @@ func main() {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 ```bash
 curl -X POST http://localhost:3500/v1.0-alpha1/publish/bulk/my-pubsub-name/topic-a \
@@ -243,9 +243,9 @@ curl -X POST http://localhost:3500/v1.0-alpha1/publish/bulk/my-pubsub-name/topic
       ]'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Uri 'http://localhost:3500/v1.0-alpha1/publish/bulk/my-pubsub-name/topic-a' `
@@ -265,14 +265,14 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Uri 'http://loca
       ]'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Subscribing messages in bulk
 
 The bulk subscribe API allows you to subscribe multiple messages from a topic in a single request.
-As we know from [How to: Publish & Subscribe to topics]({{< ref howto-publish-subscribe.md >}}), there are three ways to subscribe to topic(s):
+As we know from [How to: Publish & Subscribe to topics]({{% ref howto-publish-subscribe %}}), there are three ways to subscribe to topic(s):
 
 - **Declaratively** - subscriptions are defined in an external file.
 - **Programmatically** - subscriptions are defined in code.
@@ -302,10 +302,10 @@ scopes:
 In the example above, `bulkSubscribe` is _optional_. If you use `bulkSubscribe`, then:
 - `enabled` is mandatory and enables or disables bulk subscriptions on this topic
 - You can optionally configure the max number of messages (`maxMessagesCount`) delivered in a bulk message.
-Default value of `maxMessagesCount` for components not supporting bulk subscribe is 100 i.e. for default bulk events between App and Dapr. Please refer [How components handle publishing and subscribing to bulk messages]({{< ref pubsub-bulk >}}).
+Default value of `maxMessagesCount` for components not supporting bulk subscribe is 100 i.e. for default bulk events between App and Dapr. Please refer [How components handle publishing and subscribing to bulk messages]({{% ref pubsub-bulk %}}).
 If a component supports bulk subscribe, then default value for this parameter can be found in that component doc.
 - You can optionally provide the max duration to wait (`maxAwaitDurationMs`) before a bulk message is sent to the app.
-Default value of `maxAwaitDurationMs` for components not supporting bulk subscribe is 1000 i.e. for default bulk events between App and Dapr. Please refer [How components handle publishing and subscribing to bulk messages]({{< ref pubsub-bulk >}}).
+Default value of `maxAwaitDurationMs` for components not supporting bulk subscribe is 1000 i.e. for default bulk events between App and Dapr. Please refer [How components handle publishing and subscribing to bulk messages]({{% ref pubsub-bulk %}}).
 If a component supports bulk subscribe, then default value for this parameter can be found in that component doc.
 
 The application receives an `EntryId` associated with each entry (individual message) in the bulk message. This `EntryId` must be used by the app to communicate the status of that particular entry. If the app fails to notify on an `EntryId` status, it's considered a `RETRY`.
@@ -336,14 +336,14 @@ Status | Description
 `RETRY` | Message to be retried by Dapr
 `DROP` | Warning is logged and message is dropped
 
-Refer to [Expected HTTP Response for Bulk Subscribe]({{< ref pubsub_api.md >}}) for further insights on response.
+Refer to [Expected HTTP Response for Bulk Subscribe]({{% ref pubsub_api %}}) for further insights on response.
 
 ### Example
 
 The following code examples demonstrate how to use Bulk Subscribe.
 
-{{< tabs "Java" "JavaScript" ".NET" "Python" >}}
-{{% codetab %}}
+{{< tabpane text=true >}}
+{{% tab "Java" %}}
 
 ```java
 import io.dapr.Topic;
@@ -383,9 +383,9 @@ class BulkSubscriber {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ```typescript
 
@@ -418,9 +418,9 @@ async function start() {
 
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using Microsoft.AspNetCore.Mvc;
@@ -468,9 +468,9 @@ public class BulkMessageController : ControllerBase
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 Currently, you can only bulk subscribe in Python using an HTTP client. 
 
 ```python
@@ -510,9 +510,9 @@ if __name__ == '__main__':
 
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## How components handle publishing and subscribing to bulk messages
 
@@ -542,13 +542,14 @@ Watch the following demos and presentations about bulk pub/sub.
 
 ### [KubeCon Europe 2023 presentation](https://youtu.be/WMBAo-UNg6o)
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/WMBAo-UNg6o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{{< youtube id=WMBAo-UNg6o >}}
+
 
 ### [Dapr Community Call #77 presentation](https://youtu.be/BxiKpEmchgQ?t=1170)
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/BxiKpEmchgQ?start=1170" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{{< youtube id=BxiKpEmchgQ start=1170 >}}
 
 ## Related links
 
-- List of [supported pub/sub components]({{< ref supported-pubsub >}})
-- Read the [API reference]({{< ref pubsub_api.md >}})
+- List of [supported pub/sub components]({{% ref supported-pubsub %}})
+- Read the [API reference]({{% ref pubsub_api %}})

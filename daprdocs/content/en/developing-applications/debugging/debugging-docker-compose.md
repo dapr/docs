@@ -78,4 +78,4 @@ You should now find that the dapr sidecar and your debugging app will have bi-di
 
 **Demo** : Watch this video on how to debug local Dapr apps with Docker Compose
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/nWatANwaAik?start=1738" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{{< youtube id=nWatANwaAik start=1738 >}}

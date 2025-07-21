@@ -31,7 +31,7 @@ spec:
 
 The type of binding is determined by the `type` field, and things like connection strings and other metadata are put in the `.metadata` section.
 
-Different [supported bindings]({{< ref supported-bindings >}}) will have different specific fields that would need to be configured. For example, when configuring a binding for [Azure Blob Storage]({{< ref blobstorage>}}), the file would look like this:
+Different [supported bindings]({{% ref supported-bindings %}}) will have different specific fields that would need to be configured. For example, when configuring a binding for [Azure Blob Storage]({{% ref blobstorage%}}), the file would look like this:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -59,26 +59,26 @@ spec:
 Once you have created the component's YAML file, follow these instructions to apply it based on your hosting environment:
 
 
-{{< tabs "Self-Hosted" "Kubernetes" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--resources-path`.
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 To deploy in Kubernetes, assuming your component file is named `mybinding.yaml`, run:
 
 ```bash
 kubectl apply -f mybinding.yaml
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Supported bindings
 
-Visit the [bindings reference]({{< ref supported-bindings >}}) for a full list of supported resources.
+Visit the [bindings reference]({{% ref supported-bindings %}}) for a full list of supported resources.
 
 ## Related links
-- [Bindings building block]({{< ref bindings >}})
-- [Supported bindings]({{<ref supported-bindings >}})
+- [Bindings building block]({{% ref bindings %}})
+- [Supported bindings]({{%ref supported-bindings %}})

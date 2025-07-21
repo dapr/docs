@@ -6,14 +6,14 @@ weight: 76
 description: "Get started with Dapr's Actors building block"
 ---
 
-Let's take a look at Dapr's [Actors building block]({{< ref actors >}}). In this Quickstart, you will run a smart device microservice and a simple console client to demonstrate the stateful object patterns in Dapr Actors.  
+Let's take a look at Dapr's [Actors building block]({{% ref actors %}}). In this Quickstart, you will run a smart device microservice and a simple console client to demonstrate the stateful object patterns in Dapr Actors.  
 
 Currently, you can experience this actors quickstart using the .NET SDK.
 
-{{< tabs ".NET" >}}
+{{< tabpane text=true >}}
 
  <!-- .NET -->
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 As a quick overview of the .NET actors quickstart:
 
@@ -242,10 +242,10 @@ For full context of the sample, take a look at the following code:
 - [`ISmartDevice`](https://github.com/dapr/quickstarts/blob/master/actors/csharp/sdk/interfaces/ISmartDevice.cs): The method definitions and shared data types for each `SmokeDetectorActor`
 - [`IController`](https://github.com/dapr/quickstarts/blob/master/actors/csharp/sdk/interfaces/IController.cs): The method definitions and shared data types for the `ControllerActor`
 
-{{% /codetab %}}
+{{% /tab %}}
 
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Tell us what you think!
 
@@ -255,6 +255,6 @@ Join the discussion in our [discord channel](https://discord.com/channels/778680
 
 ## Next steps
 
-Learn more about [the Actor building block]({{< ref actors >}})
+Learn more about [the Actor building block]({{% ref actors %}})
 
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}

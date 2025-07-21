@@ -7,7 +7,7 @@ description: Detailed information on the HashiCorp Consul name resolution compon
 
 ## Configuration format
 
-Hashicorp Consul is setup within the [Dapr Configuration]({{< ref configuration-overview.md >}}).
+Hashicorp Consul is setup within the [Dapr Configuration]({{% ref configuration-overview.md %}}).
 
 Within the config, add a `nameResolution` spec and set the `component` field to `"consul"`.
 
@@ -139,17 +139,17 @@ spec:
 ```
 
 ## Setup HashiCorp Consul
-{{< tabs "Self-Hosted" "Kubernetes" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 HashiCorp offer in depth guides on how to setup Consul for different hosting models. Check out the [self-hosted guide here](https://learn.hashicorp.com/collections/consul/getting-started)
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 HashiCorp offer in depth guides on how to setup Consul for different hosting models. Check out the [Kubernetes guide here](https://learn.hashicorp.com/collections/consul/kubernetes)
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Related links
-- [Service invocation building block]({{< ref service-invocation >}})
+- [Service invocation building block]({{% ref service-invocation %}})

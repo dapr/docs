@@ -41,7 +41,7 @@ The following Dapr control plane deployments are optional:
 
 ## Sidecar resource settings
 
-[Set the resource assignments for the Dapr sidecar using the supported annotations]({{< ref "arguments-annotations-overview.md" >}}). The specific annotations related to **resource constraints** are:
+[Set the resource assignments for the Dapr sidecar using the supported annotations]({{% ref "arguments-annotations-overview.md" %}}). The specific annotations related to **resource constraints** are:
 
 - `dapr.io/sidecar-cpu-limit`
 - `dapr.io/sidecar-memory-limit`
@@ -56,7 +56,7 @@ Example settings for the Dapr sidecar in a production-ready setup:
 |-----|--------|
 | Limit: 300m, Request: 100m | Limit: 1000Mi, Request: 250Mi
 
-The CPU and memory limits above account for Dapr supporting a high number of I/O bound operations. Use a [monitoring tool]({{< ref observability >}}) to get a baseline for the sidecar (and app) containers and tune these settings based on those baselines.
+The CPU and memory limits above account for Dapr supporting a high number of I/O bound operations. Use a [monitoring tool]({{% ref observability %}}) to get a baseline for the sidecar (and app) containers and tune these settings based on those baselines.
 
 For more details on configuring resource in Kubernetes, see the following Kubernetes guides:
 - [Assign Memory Resources to Containers and Pods](https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/) 
@@ -90,10 +90,10 @@ The `GOMEMLIMIT` environment variable [allows certain suffixes for the memory si
 When deploying Dapr in a production-ready configuration, it's best to deploy with a high availability (HA) configuration of the control plane. This creates three replicas of each control plane pod in the `dapr-system` namespace, allowing the Dapr control plane to retain three running instances and survive individual node failures and other outages.
 
 For a new Dapr deployment, HA mode can be set with both: 
-- The [Dapr CLI]({{< ref "kubernetes-deploy.md#install-in-highly-available-mode" >}}), and
-- [Helm charts]({{< ref "kubernetes-deploy.md#add-and-install-dapr-helm-chart" >}})
+- The [Dapr CLI]({{% ref "kubernetes-deploy.md#install-in-highly-available-mode" %}}), and
+- [Helm charts]({{% ref "kubernetes-deploy.md#add-and-install-dapr-helm-chart" %}})
 
-For an existing Dapr deployment, [you can enable HA mode in a few extra steps]({{< ref "#enable-high-availability-in-an-existing-dapr-deployment" >}}).
+For an existing Dapr deployment, [you can enable HA mode in a few extra steps]({{% ref "#enable-high-availability-in-an-existing-dapr-deployment" %}}).
 
 ### Individual service HA Helm configuration
 
@@ -159,7 +159,7 @@ spec:
 
 ## Deploy Dapr with Helm
 
-[Visit the full guide on deploying Dapr with Helm]({{< ref "kubernetes-deploy.md#install-with-helm" >}}).
+[Visit the full guide on deploying Dapr with Helm]({{% ref "kubernetes-deploy.md#install-with-helm" %}}).
 
 ### Parameters file
 
@@ -204,7 +204,7 @@ kubectl get pods --namespace dapr-system
 The example above uses `helm install` and `helm upgrade`. You can also run `helm upgrade --install` to dynamically determine whether to install or upgrade.
 {{% /alert %}}
 
-The Dapr Helm chart automatically deploys with affinity for nodes with the label `kubernetes.io/os=linux`. You can deploy the Dapr control plane to Windows nodes. For more information, see [Deploying to a Hybrid Linux/Windows K8s Cluster]({{< ref "kubernetes-hybrid-clusters.md" >}}).
+The Dapr Helm chart automatically deploys with affinity for nodes with the label `kubernetes.io/os=linux`. You can deploy the Dapr control plane to Windows nodes. For more information, see [Deploying to a Hybrid Linux/Windows K8s Cluster]({{% ref "kubernetes-hybrid-clusters.md" %}}).
 
 ## Upgrade Dapr with Helm
 
@@ -219,7 +219,7 @@ Upgrading the CLI is optional, but recommended.
 
 ### Upgrade the control plane
 
-[Upgrade Dapr on a Kubernetes cluster]({{< ref "kubernetes-upgrade.md#helm" >}}).
+[Upgrade Dapr on a Kubernetes cluster]({{% ref "kubernetes-upgrade.md#helm" %}}).
 
 ### Update the data plane (sidecars)
 
@@ -268,21 +268,21 @@ When properly configured, Dapr ensures secure communication and can make your ap
 
 Verify your production-ready deployment includes the following settings:
 
-1. **Mutual Authentication (mTLS)** is enabled. Dapr has mTLS on by default. [Learn more about how to bring your own certificates]({{< ref "mtls.md#bringing-your-own-certificates" >}}).
+1. **Mutual Authentication (mTLS)** is enabled. Dapr has mTLS on by default. [Learn more about how to bring your own certificates]({{% ref "mtls.md#bringing-your-own-certificates" %}}).
 
-1. **App to Dapr API authentication** is enabled. This is the communication between your application and the Dapr sidecar. To secure the Dapr API from unauthorized application access, [enable Dapr's token-based authentication]({{< ref "api-token.md" >}}).
+1. **App to Dapr API authentication** is enabled. This is the communication between your application and the Dapr sidecar. To secure the Dapr API from unauthorized application access, [enable Dapr's token-based authentication]({{% ref "api-token.md" %}}).
 
-1. **Dapr to App API authentication** is enabled. This is the communication between Dapr and your application. [Let Dapr know that it is communicating with an authorized application using token authentication]({{< ref "app-api-token.md" >}}).
+1. **Dapr to App API authentication** is enabled. This is the communication between Dapr and your application. [Let Dapr know that it is communicating with an authorized application using token authentication]({{% ref "app-api-token.md" %}}).
 
-1. **Component secret data is configured in a secret store** and not hard-coded in the component YAML file. [Learn how to use secrets with Dapr components]({{< ref "component-secrets.md" >}}).
+1. **Component secret data is configured in a secret store** and not hard-coded in the component YAML file. [Learn how to use secrets with Dapr components]({{% ref "component-secrets.md" %}}).
 
 1. The Dapr **control plane is installed on a dedicated namespace**, such as `dapr-system`.
 
-1. Dapr supports and is enabled to **scope components for certain applications**. This is not a required practice. [Learn more about component scopes]({{< ref "component-scopes.md" >}}).
+1. Dapr supports and is enabled to **scope components for certain applications**. This is not a required practice. [Learn more about component scopes]({{% ref "component-scopes.md" %}}).
 
 ## Recommended Placement service configuration
 
-The [Placement service]({{< ref "placement.md" >}}) is a component in Dapr, responsible for disseminating information about actor addresses to all Dapr sidecars via a placement table (more information on this can be found [here]({{< ref "actors-features-concepts.md#actor-placement-service" >}})). 
+The [Placement service]({{% ref "placement.md" %}}) is a component in Dapr, responsible for disseminating information about actor addresses to all Dapr sidecars via a placement table (more information on this can be found [here]({{% ref "actors-features-concepts.md#actor-placement-service" %}})). 
 
 When running in production, it's recommended to configure the Placement service with the following values:
 
@@ -305,12 +305,12 @@ When creating a new Pod (or a Deployment, StatefulSet, Job, etc), you can disabl
 It's recommended that you consider deploying your apps with `automountServiceAccountToken: false` to improve the security posture of your pods, unless your apps depend on having a Service Account token. For example, you may need a Service Account token if:
 
 - Your application needs to interact with the Kubernetes APIs.
-- You are using Dapr components that interact with the Kubernetes APIs; for example, the [Kubernetes secret store]({{< ref "kubernetes-secret-store.md" >}}) or the [Kubernetes Events binding]({{< ref "kubernetes-binding.md" >}}).  
+- You are using Dapr components that interact with the Kubernetes APIs; for example, the [Kubernetes secret store]({{% ref "kubernetes-secret-store.md" %}}) or the [Kubernetes Events binding]({{% ref "kubernetes-binding.md" %}}).  
 
 Thus, Dapr does not set `automountServiceAccountToken: false` automatically for you. However, in all situations where the Service Account is not required by your solution, it's recommended that you set this option in the pods spec.
 
 {{% alert title="Note" color="primary" %}}
-Initializing Dapr components using [component secrets]({{< ref "component-secrets.md" >}}) stored as Kubernetes secrets does **not** require a Service Account token, so you can still set `automountServiceAccountToken: false` in this case. Only calling the Kubernetes secret store at runtime, using the [Secrets management]({{< ref "secrets-overview.md" >}}) building block, is impacted.
+Initializing Dapr components using [component secrets]({{% ref "component-secrets.md" %}}) stored as Kubernetes secrets does **not** require a Service Account token, so you can still set `automountServiceAccountToken: false` in this case. Only calling the Kubernetes secret store at runtime, using the [Secrets management]({{% ref "secrets-overview.md" %}}) building block, is impacted.
 {{% /alert %}}
 
 ## Tracing and metrics configuration
@@ -321,13 +321,13 @@ If you already have your own observability setup, you can disable tracing and me
 
 ### Tracing
 
-[Configure a tracing backend for Dapr]({{< ref "setup-tracing.md" >}}).
+[Configure a tracing backend for Dapr]({{% ref "setup-tracing.md" %}}).
 
 ### Metrics
 
 For metrics, Dapr exposes a Prometheus endpoint listening on port 9090, which can be scraped by Prometheus.
 
-[Set up Prometheus, Grafana, and other monitoring tools with Dapr]({{< ref "observability" >}}).
+[Set up Prometheus, Grafana, and other monitoring tools with Dapr]({{% ref "observability" %}}).
 
 ## Injector watchdog
 
@@ -335,22 +335,21 @@ The Dapr Operator service includes an **injector watchdog**, which can be used t
 
 The injector watchdog is disabled by default when running Dapr in Kubernetes mode. However, you should consider enabling it with the appropriate values for your specific situation.
 
-Refer to the [Dapr operator service documentation]({{< ref operator >}}) for more details on the injector watchdog and how to enable it.
+Refer to the [Dapr operator service documentation]({{% ref operator %}}) for more details on the injector watchdog and how to enable it.
 
 ## Configure `seccompProfile` for sidecar containers
 
 By default, the Dapr sidecar injector injects a sidecar without any `seccompProfile`. However, for the Dapr sidecar container to run successfully in a namespace with the [Restricted](https://kubernetes.io/docs/concepts/security/pod-security-standards/#restricted) profile, the sidecar container needs `securityContext.seccompProfile.Type` to not be `nil`. 
 
-Refer to [the Arguments and Annotations overview]({{< ref "arguments-annotations-overview.md" >}}) to set the appropriate `seccompProfile` on the sidecar container.
+Refer to [the Arguments and Annotations overview]({{% ref "arguments-annotations-overview.md" %}}) to set the appropriate `seccompProfile` on the sidecar container.
 
 ## Best Practices 
 
 Watch this video for a deep dive into the best practices for running Dapr in production with Kubernetes.
 
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="360" height="315" src="https://www.youtube-nocookie.com/embed/_U9wJqq-H1g" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{{< youtube id=_U9wJqq-H1g >}}
 
 ## Related links
 
-- [Deploy Dapr on Kubernetes]({{< ref kubernetes-deploy.md >}})
-- [Upgrade Dapr on Kubernetes]({{< ref kubernetes-upgrade.md >}})
+- [Deploy Dapr on Kubernetes]({{% ref kubernetes-deploy.md %}})
+- [Upgrade Dapr on Kubernetes]({{% ref kubernetes-upgrade.md %}})

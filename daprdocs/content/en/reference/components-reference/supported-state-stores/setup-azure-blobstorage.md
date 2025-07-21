@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup the Azure Blob Storage state store create a component of type `state.azure.blobstorage`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+To setup the Azure Blob Storage state store create a component of type `state.azure.blobstorage`. See [this guide]({{% ref "howto-get-save-state.md#step-1-setup-a-state-store" %}}) on how to create and apply a state store configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -31,14 +31,14 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Versioning
 
 Dapr has 2 versions of the Azure Blob Storage state store component: `v1` and `v2`. It is recommended to use `v2` for all new applications. `v1` is considered legacy and is preserved for compatibility with existing applications only.
 
-In `v1`, a longstanding implementation issue was identified, where the [key prefix]({{< ref howto-share-state.md >}}) was incorrectly stripped by the component, essentially behaving as if `keyPrefix` was always set to `none`.  
+In `v1`, a longstanding implementation issue was identified, where the [key prefix]({{% ref howto-share-state.md %}}) was incorrectly stripped by the component, essentially behaving as if `keyPrefix` was always set to `none`.  
 The updated `v2` of the component fixes the incorrect behavior and makes the state store correctly respect the `keyPrefix` property.
 
 While `v1` and `v2` have the same metadata fields, they are otherwise incompatible, with no automatic data migration path for `v1` to `v2`.
@@ -63,7 +63,7 @@ If you are using `v1` of this component, you should continue to use `v1` until y
 
 ## Setup Azure Blob Storage
 
-[Follow the instructions](https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal) from the Azure documentation on how to create an Azure Storage Account.
+[Follow the instructions](https://docs.microsoft.com/azure/storage/common/storage-account-create?tabpane=azure-portal) from the Azure documentation on how to create an Azure Storage Account.
 
 If you wish to create a container for Dapr to use, you can do so beforehand. However, the Blob Storage state provider will create one for you automatically if it doesn't exist.
 
@@ -84,7 +84,7 @@ This component supports authentication with Microsoft Entra ID as an alternative
 >
 > You must also be authenticated with Azure in your Azure CLI.
 
-1. To get started with using Microsoft Entra ID for authenticating the Blob Storage state store component, make sure you've created an Microsoft Entra ID application and a Service Principal as explained in the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document.  
+1. To get started with using Microsoft Entra ID for authenticating the Blob Storage state store component, make sure you've created an Microsoft Entra ID application and a Service Principal as explained in the [Authenticating to Azure]({{% ref authenticating-azure.md %}}) document.  
   Once done, set a variable with the ID of the Service Principal that you created:
 
   ```sh
@@ -109,7 +109,7 @@ This component supports authentication with Microsoft Entra ID as an alternative
     --scope "${RG_ID}/providers/Microsoft.Storage/storageAccounts/${STORAGE_ACCOUNT_NAME}"
   ```
 
-When authenticating your component using Microsoft Entra ID, the `accountKey` field is not required. Instead, please specify the required credentials in the component's metadata (if any) according to the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document.
+When authenticating your component using Microsoft Entra ID, the `accountKey` field is not required. Instead, please specify the required credentials in the component's metadata (if any) according to the [Authenticating to Azure]({{% ref authenticating-azure.md %}}) document.
 
 For example:
 
@@ -171,6 +171,6 @@ Azure Blob Storage state concurrency is achieved by using `ETag`s according to [
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
-- [State management building block]({{< ref state-management >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" %}}) for instructions on configuring state store components
+- [State management building block]({{% ref state-management %}})

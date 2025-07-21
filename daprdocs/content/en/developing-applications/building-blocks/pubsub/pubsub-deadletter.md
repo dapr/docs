@@ -14,7 +14,7 @@ Dead letter topics are typically used in along with a retry resiliency policy an
 
 When a dead letter topic is set, any message that failed to be delivered to an app for a configured topic is put on the dead letter topic to be forwarded to a subscription that handles these messages. This could be the same app or a completely different one.
 
-Dapr enables dead letter topics for all of it's pub/sub components, even if the underlying system does not support this feature natively. For example the [AWS SNS Component]({{< ref "setup-aws-snssqs" >}}) has a dead letter queue and [RabbitMQ]({{< ref "setup-rabbitmq" >}}) has the dead letter topics. You will need to ensure that you configure components like this appropriately.
+Dapr enables dead letter topics for all of it's pub/sub components, even if the underlying system does not support this feature natively. For example the [AWS SNS Component]({{% ref "setup-aws-snssqs" %}}) has a dead letter queue and [RabbitMQ]({{% ref "setup-rabbitmq" %}}) has the dead letter topics. You will need to ensure that you configure components like this appropriately.
 
 The diagram below is an example of how dead letter topics work. First a message is sent from a publisher on an `orders` topic. Dapr receives the message on behalf of a subscriber application, however the orders topic message fails to be delivered to the `/checkout` endpoint on the application, even after retries. As a result of the failure to deliver, the message is forwarded to the `poisonMessages` topic which delivers this to the `/failedMessages` endpoint to be processed, in this case on the same application. The `failedMessages` processing code could drop the message or resend a new message.
 
@@ -70,7 +70,7 @@ app.get('/dapr/subscribe', (_req, res) => {
 ## Retries and dead letter topics
 
 By default, when a dead letter topic is set, any failing message immediately goes to the dead letter topic.  As a result it is recommend to always have a retry policy set when using dead letter topics in a subscription.
-To enable the retry of a message before sending it to the dead letter topic, apply a [retry resiliency policy]({{< ref "retries-overview.md" >}}) to the pub/sub component.
+To enable the retry of a message before sending it to the dead letter topic, apply a [retry resiliency policy]({{% ref "retries-overview" %}}) to the pub/sub component.
 
 This example shows how to set a constant retry policy named `pubsubRetry`, with 10 maximum delivery attempts applied every 5 seconds for the `pubsub` pub/sub component.
 
@@ -117,10 +117,9 @@ scopes:
 
 Watch [this video for an overview of the dead letter topics](https://youtu.be/wLYYOJLt_KQ?t=69):
 
-<iframe width="360" height="315" src="https://www.youtube-nocookie.com/embed/wLYYOJLt_KQ?start=69" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
+{{< youtube id=wLYYOJLt_KQ start=69 >}}
 
 ## Next steps
 
-- For more information on resiliency policies, read [Resiliency overview]({{< ref resiliency-overview.md >}}).
-- For more information on topic subscriptions, read [Declarative, streaming, and programmatic subscription methods]({{< ref "pubsub-overview.md#message-subscription" >}}).
+- For more information on resiliency policies, read [Resiliency overview]({{% ref resiliency-overview %}}).
+- For more information on topic subscriptions, read [Declarative, streaming, and programmatic subscription methods]({{% ref "pubsub-overview#message-subscription" %}}).

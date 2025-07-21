@@ -33,19 +33,19 @@ With Dapr Workflow, you can write activities and then orchestrate those activiti
 - The basic unit of work in a workflow
 - Used for calling other (Dapr) services, interacting with state stores, and pub/sub brokers.
 
-[Learn more about workflow activities.]({{< ref "workflow-features-concepts.md##workflow-activities" >}})
+[Learn more about workflow activities.]({{% ref "workflow-features-concepts.md##workflow-activities" %}})
 
 ### Child workflows
 
 In addition to activities, you can write workflows to schedule other workflows as child workflows. A child workflow has its own instance ID, history, and status that is independent of the parent workflow that started it, except for the fact that terminating the parent workflow terminates all of the child workflows created by it. Child workflow also supports automatic retry policies.
 
-[Learn more about child workflows.]({{< ref "workflow-features-concepts.md#child-workflows" >}})
+[Learn more about child workflows.]({{% ref "workflow-features-concepts.md#child-workflows" %}})
 
 ### Timers and reminders
 
 Same as Dapr actors, you can schedule reminder-like durable delays for any time range.
 
-[Learn more about workflow timers]({{< ref "workflow-features-concepts.md#durable-timers" >}}) and [reminders]({{< ref "workflow-architecture.md#reminder-usage-and-execution-guarantees" >}})
+[Learn more about workflow timers]({{% ref "workflow-features-concepts.md#durable-timers" %}}) and [reminders]({{% ref "workflow-architecture.md#reminder-usage-and-execution-guarantees" %}})
 
 ### Workflow HTTP calls to manage a workflow
 
@@ -57,13 +57,13 @@ When you create an application with workflow code and run it with Dapr, you can 
 - Purged from your state store through a POST request
 - Queried for workflow status through a GET request
 
-[Learn more about how manage a workflow using HTTP calls.]({{< ref workflow_api.md >}})
+[Learn more about how manage a workflow using HTTP calls.]({{% ref workflow_api.md %}})
 
 ## Workflow patterns
 
 Dapr Workflow simplifies complex, stateful coordination requirements in microservice architectures. The following sections describe several application patterns that can benefit from Dapr Workflow. 
 
-Learn more about [different types of workflow patterns]({{< ref workflow-patterns.md >}})
+Learn more about [different types of workflow patterns]({{% ref workflow-patterns.md %}})
 
 ## Workflow SDKs
 
@@ -89,7 +89,7 @@ Want to put workflows to the test? Walk through the following quickstart and tut
 
 | Quickstart/tutorial | Description |
 | ------------------- | ----------- |
-| [Workflow quickstart]({{< ref workflow-quickstart.md >}}) | Run a workflow application with four workflow activities to see Dapr Workflow in action  |
+| [Workflow quickstart]({{% ref workflow-quickstart.md %}}) | Run a workflow application with four workflow activities to see Dapr Workflow in action  |
 | [Workflow Python SDK example](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow) | Learn how to create a Dapr Workflow and invoke it using the Python `dapr-ext-workflow` package. |
 | [Workflow JavaScript SDK example](https://github.com/dapr/js-sdk/tree/main/examples/workflow) | Learn how to create a Dapr Workflow and invoke it using the JavaScript SDK. |
 | [Workflow .NET SDK example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow) | Learn how to create a Dapr Workflow and invoke it using ASP.NET Core web APIs. |
@@ -98,7 +98,7 @@ Want to put workflows to the test? Walk through the following quickstart and tut
 
 ### Start using workflows directly in your app
 
-Want to skip the quickstarts? Not a problem. You can try out the workflow building block directly in your application. After [Dapr is installed]({{< ref install-dapr-cli.md >}}), you can begin using  workflows, starting with [how to author a workflow]({{< ref howto-author-workflow.md >}}).
+Want to skip the quickstarts? Not a problem. You can try out the workflow building block directly in your application. After [Dapr is installed]({{% ref install-dapr-cli.md %}}), you can begin using  workflows, starting with [how to author a workflow]({{% ref howto-author-workflow.md %}}).
 
 ## Limitations
 
@@ -108,7 +108,7 @@ Want to skip the quickstarts? Not a problem. You can try out the workflow buildi
 
 Watch [this video for an overview on Dapr Workflow](https://youtu.be/s1p9MNl4VGo?t=131):
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/s1p9MNl4VGo?start=131" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{{< youtube id=s1p9MNl4VGo start=131 >}}
 
 ## Next steps
 
@@ -116,7 +116,7 @@ Watch [this video for an overview on Dapr Workflow](https://youtu.be/s1p9MNl4VGo
 
 ## Related links
 
-- [Workflow API reference]({{< ref workflow_api.md >}})
+- [Workflow API reference]({{% ref workflow_api.md %}})
 - Try out the full SDK examples:
   - [Python example](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
   - [JavaScript example](https://github.com/dapr/js-sdk/tree/main/examples/workflow)

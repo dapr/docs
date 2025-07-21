@@ -11,12 +11,12 @@ description: "How to debug the Dapr sidecar (daprd) on your Kubernetes cluster"
 
 Sometimes it is necessary to understand what's going on in the Dapr sidecar (daprd), which runs as a sidecar next to your application, especially when you diagnose your Dapr application and wonder if there's something wrong in Dapr itself. Additionally, you may be developing a new feature for Dapr on Kubernetes and want to debug your code.
 
-This guide covers how to use built-in Dapr debugging to debug the Dapr sidecar in your Kubernetes pods. To learn how to view logs and troubleshoot Dapr in Kubernetes, see the [Configure and view Dapr logs guide]({{< ref "logs-troubleshooting.md#logs-in-kubernetes-mode" >}})
+This guide covers how to use built-in Dapr debugging to debug the Dapr sidecar in your Kubernetes pods. To learn how to view logs and troubleshoot Dapr in Kubernetes, see the [Configure and view Dapr logs guide]({{% ref "logs-troubleshooting.md#logs-in-kubernetes-mode" %}})
 
 ## Pre-requisites
 
-- Refer to [this guide]({{< ref kubernetes-deploy.md >}}) to learn how to deploy Dapr to your Kubernetes cluster.
-- Follow [this guide]({{< ref "debug-dapr-services.md">}}) to build the Dapr debugging binaries you will be deploying in the next step.
+- Refer to [this guide]({{% ref kubernetes-deploy.md %}}) to learn how to deploy Dapr to your Kubernetes cluster.
+- Follow [this guide]({{% ref "debug-dapr-services.md"%}}) to build the Dapr debugging binaries you will be deploying in the next step.
 
 
 ## Initialize Dapr in debug mode
@@ -26,7 +26,7 @@ If Dapr has already been installed in your Kubernetes cluster, uninstall it firs
 ```bash
 dapr uninstall -k
 ```
-We will use 'helm' to install Dapr debugging binaries. For more information refer to [Install with Helm]({{< ref "kubernetes-deploy.md#install-with-helm-advanced" >}}).
+We will use 'helm' to install Dapr debugging binaries. For more information refer to [Install with Helm]({{% ref "kubernetes-deploy.md#install-with-helm-advanced" %}}).
 
 First configure a values file named `values.yml` with these options:
 
@@ -141,11 +141,11 @@ This causes the `replicaset` controller to restart the pod after the delete.
 
 See the presentation on troubleshooting Dapr on Kubernetes in the [Dapr Community Call #36](https://youtu.be/pniLPRbuLD8?si=bGid7oYSp9cThtiI&t=838). 
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/pniLPRbuLD8?si=bGid7oYSp9cThtiI&amp;start=838" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{{< youtube id=pniLPRbuLD8 start=838 >}}
 
 ## Related links
 
-- [Overview of Dapr on Kubernetes]({{< ref kubernetes-overview >}})
-- [Deploy Dapr to a Kubernetes cluster]({{< ref kubernetes-deploy >}})
-- [Debug Dapr services on Kubernetes]({{< ref debug-dapr-services >}})
+- [Overview of Dapr on Kubernetes]({{% ref kubernetes-overview %}})
+- [Deploy Dapr to a Kubernetes cluster]({{% ref kubernetes-deploy %}})
+- [Debug Dapr services on Kubernetes]({{% ref debug-dapr-services %}})
 - [Dapr Kubernetes Quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-kubernetes)

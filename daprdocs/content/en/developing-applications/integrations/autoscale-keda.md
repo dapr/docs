@@ -6,11 +6,11 @@ description: "How to configure your Dapr application to autoscale using KEDA"
 weight: 3000
 ---
 
-Dapr, with its building-block API approach, along with the many [pub/sub components]({{< ref pubsub >}}), makes it easy to write message processing applications. Since Dapr can run in many environments (for example VMs, bare-metal, Cloud or Edge Kubernetes) the autoscaling of Dapr applications is managed by the hosting layer.
+Dapr, with its building-block API approach, along with the many [pub/sub components]({{% ref pubsub %}}), makes it easy to write message processing applications. Since Dapr can run in many environments (for example VMs, bare-metal, Cloud or Edge Kubernetes) the autoscaling of Dapr applications is managed by the hosting layer.
 
 For Kubernetes, Dapr integrates with [KEDA](https://github.com/kedacore/keda), an event driven autoscaler for Kubernetes. Many of Dapr's pub/sub components overlap with the scalers provided by [KEDA](https://github.com/kedacore/keda), so it's easy to configure your Dapr deployment on Kubernetes to autoscale based on the back pressure using KEDA.
 
-In this guide, you configure a scalable Dapr application, along with the back pressure on Kafka topic. However, you can apply this approach to _any_ [pub/sub components]({{< ref pubsub >}}) offered by Dapr.
+In this guide, you configure a scalable Dapr application, along with the back pressure on Kafka topic. However, you can apply this approach to _any_ [pub/sub components]({{% ref pubsub %}}) offered by Dapr.
 
 {{% alert title="Note" color="primary" %}}
  If you're working with Azure Container Apps, refer to the official Azure documentation for [scaling Dapr applications using KEDA scalers](https://learn.microsoft.com/azure/container-apps/dapr-keda-scaling).
@@ -88,9 +88,9 @@ spec:
       value: autoscaling-subscriber
 ```
 
-The above YAML defines the pub/sub component that your application subscribes to and that [you created earlier (`demo-topic`)]({{< ref "#create-the-kakfa-topic" >}}). 
+The above YAML defines the pub/sub component that your application subscribes to and that [you created earlier (`demo-topic`)]({{% ref "#create-the-kakfa-topic" %}}). 
 
-If you used the [Kafka Helm install instructions]({{< ref "#install-and-deploy-kafka" >}}), you can leave the `brokers` value as-is. Otherwise, change this value to the connection string to your Kafka brokers.
+If you used the [Kafka Helm install instructions]({{% ref "#install-and-deploy-kafka" %}}), you can leave the `brokers` value as-is. Otherwise, change this value to the connection string to your Kafka brokers.
 
 Notice the `autoscaling-subscriber` value set for `consumerID`. This value is used later to ensure that KEDA and your deployment use the same [Kafka partition offset](https://cloudurable.com/blog/kafka-architecture-topics/index.html#:~:text=Kafka%20continually%20appended%20to%20partitions,fit%20on%20a%20single%20server.).
 
@@ -158,7 +158,7 @@ All done!
 
 Now that the `ScaledObject` KEDA object is configured, your deployment will scale based on the lag of the Kafka topic. [Learn more about configuring KEDA for Kafka topics](https://keda.sh/docs/2.0/scalers/apache-kafka/).
 
-As defined in the KEDA scaler manifest, you can now start publishing messages to your Kafka topic `demo-topic` and watch the pods autoscale when the lag threshold is higher than `5` topics. Publish messages to the Kafka Dapr component by using the Dapr [Publish]({{< ref dapr-publish >}}) CLI command.
+As defined in the KEDA scaler manifest, you can now start publishing messages to your Kafka topic `demo-topic` and watch the pods autoscale when the lag threshold is higher than `5` topics. Publish messages to the Kafka Dapr component by using the Dapr [Publish]({{% ref dapr-publish %}}) CLI command.
 
 ## Next steps
 

@@ -12,7 +12,7 @@ aliases:
 
 This output binding for Dapr allows interacting with [Cloudflare Queues](https://developers.cloudflare.com/queues/) to **publish** new messages. It is currently not possible to consume messages from a Queue using Dapr.
 
-To setup a Cloudflare Queues binding, create a component of type `bindings.cloudflare.queues`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup a Cloudflare Queues binding, create a component of type `bindings.cloudflare.queues`. See [this guide]({{% ref "howto-bindings.md#1-create-a-binding" %}}) on how to create and apply a binding configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -49,7 +49,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -99,9 +99,9 @@ Dapr can manage the Worker for you automatically, or you can pre-provision a Wor
 Use a separate Worker for each Dapr component. Do not use the same Worker script for different Cloudflare Queues bindings, and do not use the same Worker script for different Cloudflare components in Dapr (for example, the Workers KV state store and the Queues binding).
 {{% /alert %}}
 
-{{< tabs "Let Dapr manage the Worker" "Manually provision the Worker script" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Let Dapr manage the Worker" %}}
 <!-- Let Dapr manage the Worker -->
 
 If you want to let Dapr manage the Worker for you, you will need to provide these 3 metadata options:
@@ -117,9 +117,9 @@ If you want to let Dapr manage the Worker for you, you will need to provide thes
 
 When Dapr is configured to manage the Worker for you, when a Dapr Runtime is started it checks that the Worker exists and it's up-to-date. If the Worker doesn't exist, or if it's using an outdated version, Dapr creates or upgrades it for you automatically.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Manually provision the Worker script" %}}
 <!-- Manually provision the Worker script -->
 
 If you'd rather not give Dapr permissions to deploy Worker scripts for you, you can manually provision a Worker for Dapr to use. Note that if you have multiple Dapr components that interact with Cloudflare services via a Worker, you will need to create a separate Worker for each one of them.
@@ -175,9 +175,9 @@ Once your Worker has been deployed, you will need to initialize the component wi
 - **`workerName`**: Name of the Worker script. This is the value you set in the `name` property in the `wrangler.toml` file.
 - **`workerUrl`**: URL of the deployed Worker. The `npx wrangler command` will show the full URL to you, for example `https://mydaprqueue.mydomain.workers.dev`.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Generate an Ed25519 key pair
 
@@ -189,9 +189,9 @@ All Cloudflare Workers listen on the public Internet, so Dapr needs to use addit
 
 To let Dapr issue bearer tokens, and have your Worker validate them, you will need to generate a new Ed25519 key pair. Here are examples of generating the key pair using OpenSSL or the step CLI.
 
-{{< tabs "Generate with OpenSSL" "Generate with the step CLI" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Generate with OpenSSL" %}}
 <!-- Generate with OpenSSL -->
 
 > Support for generating Ed25519 keys is available since OpenSSL 1.1.0, so the commands below will not work if you're using an older version of OpenSSL.
@@ -212,9 +212,9 @@ openssl pkey -in private.pem -pubout -out public.pem
 > $(brew --prefix)/opt/openssl@3/bin/openssl pkey -in private.pem -pubout -out public.pem
 > ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Generate with the step CLI" %}}
 <!-- Generate with the step CLI -->
 
 If you don't have the step CLI already, install it following the [official instructions](https://smallstep.com/docs/step-cli/installation).
@@ -228,9 +228,9 @@ step crypto keypair \
   --insecure --no-password
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 Regardless of how you generated your key pair, with the instructions above you'll have two files:
 
@@ -243,8 +243,8 @@ Protect the private part of your key and treat it as a secret value!
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Bindings building block]({{< ref bindings >}})
-- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
-- [Bindings API reference]({{< ref bindings_api.md >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Bindings building block]({{% ref bindings %}})
+- [How-To: Use bindings to interface with external resources]({{% ref howto-bindings.md %}})
+- [Bindings API reference]({{% ref bindings_api.md %}})
 - Documentation for [Cloudflare Queues](https://developers.cloudflare.com/queues/)

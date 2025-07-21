@@ -6,7 +6,7 @@ weight: 2000
 description: "Use Redis as a state store"
 ---
 
-Dapr doesn't transform state values while saving and retrieving states. Dapr requires all state store implementations to abide by a certain key format scheme (see [the state management spec]({{< ref state_api.md >}}). You can directly interact with the underlying store to manipulate the state data, such as:
+Dapr doesn't transform state values while saving and retrieving states. Dapr requires all state store implementations to abide by a certain key format scheme (see [the state management spec]({{% ref state_api.md %}}). You can directly interact with the underlying store to manipulate the state data, such as:
 
 - Querying states.
 - Creating aggregated views.

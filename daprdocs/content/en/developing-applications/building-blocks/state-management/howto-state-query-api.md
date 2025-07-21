@@ -150,25 +150,25 @@ ORDER BY
 
 Execute the query with the following command:
 
-{{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 ```bash
 curl -s -X POST -H "Content-Type: application/json" -d @query-api-examples/query1.json http://localhost:3500/v1.0-alpha1/state/statestore/query | jq .
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -InFile query-api-examples/query1.json -Uri 'http://localhost:3500/v1.0-alpha1/state/statestore/query'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 The query result is an array of matching key/value pairs in the requested order:
 
@@ -250,25 +250,25 @@ SELECT * FROM c WHERE
 
 Execute the query with the following command:
 
-{{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 ```bash
 curl -s -X POST -H "Content-Type: application/json" -d @query-api-examples/query2.json http://localhost:3500/v1.0-alpha1/state/statestore/query | jq .
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -InFile query-api-examples/query2.json -Uri 'http://localhost:3500/v1.0-alpha1/state/statestore/query'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 Similar to the previous example, the result is an array of matching key/value pairs.
 
@@ -331,25 +331,25 @@ LIMIT 3
 
 Execute the query with the following command:
 
-{{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 ```bash
 curl -s -X POST -H "Content-Type: application/json" -d @query-api-examples/query3.json http://localhost:3500/v1.0-alpha1/state/statestore/query | jq .
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -InFile query-api-examples/query3.json -Uri 'http://localhost:3500/v1.0-alpha1/state/statestore/query'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 Upon successful execution, the state store returns a JSON object with a list of matching records and the pagination token:
 
@@ -434,25 +434,25 @@ The pagination token is used "as is" in the [subsequent query](../query-api-exam
 }
 ```
 
-{{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 ```bash
 curl -s -X POST -H "Content-Type: application/json" -d @query-api-examples/query3-token.json http://localhost:3500/v1.0-alpha1/state/statestore/query | jq .
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -InFile query-api-examples/query3-token.json -Uri 'http://localhost:3500/v1.0-alpha1/state/statestore/query'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 And the result of this query is:
 
@@ -506,14 +506,14 @@ That way you can update the pagination token in the query and iterate through th
 
 The state query API has the following limitations:
 
-- To query actor states stored in a state store, you need to use the query API for the specific database. See [querying actor state]({{< ref "state-management-overview.md#querying-actor-state" >}}).
-- The API does not work with Dapr [encrypted state stores]({{< ref howto-encrypt-state >}}) capability. Since the encryption is done by the Dapr runtime and stored as encrypted data, then this effectively prevents server side querying.
+- To query actor states stored in a state store, you need to use the query API for the specific database. See [querying actor state]({{% ref "state-management-overview.md#querying-actor-state" %}}).
+- The API does not work with Dapr [encrypted state stores]({{% ref howto-encrypt-state %}}) capability. Since the encryption is done by the Dapr runtime and stored as encrypted data, then this effectively prevents server side querying.
 
-You can find additional information in the [related links]({{< ref "#related-links" >}}) section.
+You can find additional information in the [related links]({{% ref "#related-links" %}}) section.
 
 ## Related links
 
-- Refer to the [query API reference]({{< ref "state_api.md#state-query" >}}).
-- See the [state store components that implement query support]({{< ref supported-state-stores.md >}}).
+- Refer to the [query API reference]({{% ref "state_api.md#state-query" %}}).
+- See the [state store components that implement query support]({{% ref supported-state-stores.md %}}).
 - View the [state store query API implementation guide](https://github.com/dapr/components-contrib/blob/master/state/README.md#implementing-state-query-api).
-- See how to [query Redis state store]({{< ref "setup-redis.md#querying-json-objects" >}}).
+- See how to [query Redis state store]({{% ref "setup-redis.md#querying-json-objects" %}}).

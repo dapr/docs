@@ -11,7 +11,7 @@ This example uses the Redis configuration store component to demonstrate how to 
 <img src="/images/building-block-configuration-example.png" width=1000 alt="Diagram showing get configuration of example service">
 
 {{% alert title="Note" color="primary" %}}
- If you haven't already, [try out the configuration quickstart]({{< ref configuration-quickstart.md >}}) for a quick walk-through on how to use the configuration API.
+ If you haven't already, [try out the configuration quickstart]({{% ref configuration-quickstart %}}) for a quick walk-through on how to use the configuration API.
 
 {{% /alert %}}
 
@@ -42,7 +42,7 @@ MSET orderId1 "101||1" orderId2 "102||1"
 
 ## Configure a Dapr configuration store
 
-Save the following component file to the [default components folder]({{< ref "install-dapr-selfhost.md#step-5-verify-components-directory-has-been-initialized" >}}) on your machine. You can use this as the Dapr component YAML:
+Save the following component file to the [default components folder]({{% ref "install-dapr-selfhost#step-5-verify-components-directory-has-been-initialized" %}}) on your machine. You can use this as the Dapr component YAML:
 
 - For Kubernetes using `kubectl`.
 - When running with the Dapr CLI.
@@ -71,9 +71,9 @@ spec:
 
 The following example shows how to get a saved configuration item using the Dapr Configuration API.
 
-{{< tabs ".NET" Java Python Go JavaScript "HTTP API (BASH)" "HTTP API (Powershell)">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using System;
@@ -93,9 +93,9 @@ var configuration = await client.GetConfiguration(CONFIG_STORE_NAME, [ "orderId1
 Console.WriteLine($"Got key=\n{configuration[0].Key} -> {configuration[0].Value}\n{configuration[1].Key} -> {configuration[1].Value}");
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ```java
 //dependencies
@@ -126,9 +126,9 @@ public static void main(String[] args) throws Exception {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ```python
 #dependencies
@@ -143,9 +143,9 @@ with DaprClient() as d:
         print(f"Got key={configuration.items[0].key} value={configuration.items[0].value} version={configuration.items[0].version}")
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 package main
@@ -173,9 +173,9 @@ func main() {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ```js
 import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr";
@@ -205,9 +205,9 @@ async function main() {
 main().catch((e) => console.error(e));
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (BASH)" %}}
 
 Launch a dapr sidecar:
 
@@ -221,9 +221,9 @@ In a separate terminal, get the configuration item saved earlier:
 curl http://localhost:3601/v1.0/configuration/configstore?key=orderId1
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 Launch a Dapr sidecar:
 
@@ -237,18 +237,18 @@ In a separate terminal, get the configuration item saved earlier:
 Invoke-RestMethod -Uri 'http://localhost:3601/v1.0/configuration/configstore?key=orderId1'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 ### Subscribe to configuration item updates
 
 Below are code examples that leverage SDKs to subscribe to keys `[orderId1, orderId2]` using `configstore` store component.
 
-{{< tabs ".NET" "ASP.NET Core" Java Python Go JavaScript>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using System;
@@ -290,9 +290,9 @@ Navigate to the directory containing the above code, then run the following comm
 dapr run --app-id orderprocessing -- dotnet run
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "ASP.NET" %}}
 
 ```csharp
 using System;
@@ -328,9 +328,9 @@ Navigate to the directory containing the above code, then run the following comm
 dapr run --app-id orderprocessing -- dotnet run
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ```java
 import io.dapr.client.DaprClientBuilder;
@@ -375,9 +375,9 @@ Navigate to the directory containing the above code, then run the following comm
 ```bash
 dapr run --app-id orderprocessing -- -- mvn spring-boot:run
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ```python
 #dependencies
@@ -408,9 +408,9 @@ Navigate to the directory containing the above code,  then run the following com
 dapr run --app-id orderprocessing -- python3 OrderProcessingService.py
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 package main
@@ -447,9 +447,9 @@ Navigate to the directory containing the above code, then run the following comm
 dapr run --app-id orderprocessing -- go run main.go
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ```js
 import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr";
@@ -493,9 +493,9 @@ Navigate to the directory containing the above code, then run the following comm
 dapr run --app-id orderprocessing --app-protocol grpc --dapr-grpc-port 3500 -- node index.js
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 ### Unsubscribe from configuration item updates
@@ -504,9 +504,9 @@ After you've subscribed to watch configuration items, you will receive updates f
 
 Following are the code examples showing how you can unsubscribe to configuration updates using unsubscribe API.
 
-{{< tabs ".NET" Java Python Go JavaScript "HTTP API (BASH)" "HTTP API (Powershell)">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using System;
@@ -525,9 +525,9 @@ var client = app.Services.GetRequiredService<DaprClient>();
 await client.UnsubscribeConfiguration(DAPR_CONFIGURATION_STORE, SubscriptionId);
 Console.WriteLine("App unsubscribed from config changes");
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 ```java
 import io.dapr.client.DaprClientBuilder;
 import io.dapr.client.DaprClient;
@@ -557,9 +557,9 @@ public static void main(String[] args) throws Exception {
     }
 }
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 ```python
 import asyncio
 import time
@@ -571,9 +571,9 @@ with DaprClient() as d:
   isSuccess = d.unsubscribe_configuration(store_name='configstore', id=subscriptionID)
   print(f"Unsubscribed successfully? {isSuccess}", flush=True)
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 ```go
 package main
 
@@ -603,9 +603,9 @@ func main() {
   }
 }
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 ```js
 import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr";
 
@@ -642,22 +642,22 @@ async function main() {
 
 main().catch((e) => console.error(e));
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (BASH)" %}}
 ```bash
 curl 'http://localhost:<DAPR_HTTP_PORT>/v1.0/configuration/configstore/<subscription-id>/unsubscribe'
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 ```powershell
 Invoke-RestMethod -Uri 'http://localhost:<DAPR_HTTP_PORT>/v1.0/configuration/configstore/<subscription-id>/unsubscribe'
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Next steps
 
-* Read [configuration API overview]({{< ref configuration-api-overview.md >}})
+* Read [configuration API overview]({{% ref configuration-api-overview %}})

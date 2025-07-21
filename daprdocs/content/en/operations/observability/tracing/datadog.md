@@ -12,7 +12,7 @@ Dapr captures metrics and traces that can be sent directly to Datadog through th
 
 Using the OpenTelemetry Collector Datadog exporter, you can configure Dapr to create traces for each application in your Kubernetes cluster and collect them in Datadog.
 
-> Before you begin, [set up the OpenTelemetry Collector]({{< ref "open-telemetry-collector.md#setting-opentelemetry-collector" >}}).
+> Before you begin, [set up the OpenTelemetry Collector]({{% ref "open-telemetry-collector.md#setting-opentelemetry-collector" %}}).
 
 1. Add your Datadog API key to the `./deploy/opentelemetry-collector-generic-datadog.yaml` file in the `datadog` exporter configuration section:
     ```yaml

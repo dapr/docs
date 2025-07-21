@@ -27,7 +27,7 @@ Dapr produces logs based on the following schema:
 | app_id | Dapr App ID | `dapr-app` |
 | ver | Dapr Runtime Version | `1.9.0` |
 
-API logging may add other structured fields, as described in the [documentation for API logging]({{< ref "api-logs-troubleshooting.md" >}}).
+API logging may add other structured fields, as described in the [documentation for API logging]({{% ref "api-logs-troubleshooting.md" %}}).
 
 ## Plain text and JSON formatted logs
 
@@ -111,23 +111,23 @@ spec:
 
 API logging enables you to see the API calls your application makes to the Dapr sidecar, to debug issues or monitor the behavior of your application. You can combine both Dapr API logging with Dapr log events.
 
-See [configure and view Dapr Logs]({{< ref "logs-troubleshooting.md" >}}) and [configure and view Dapr API Logs]({{< ref "api-logs-troubleshooting.md" >}}) for more information.
+See [configure and view Dapr Logs]({{% ref "logs-troubleshooting.md" %}}) and [configure and view Dapr API Logs]({{% ref "api-logs-troubleshooting.md" %}}) for more information.
 
 ## Log collectors
 
-If you run Dapr in a Kubernetes cluster, [Fluentd](https://www.fluentd.org/) is a popular container log collector. You can use Fluentd with a [JSON parser plugin](https://docs.fluentd.org/parser/json) to parse Dapr JSON-formatted logs. This [how-to]({{< ref fluentd.md >}}) shows how to configure Fluentd in your cluster.
+If you run Dapr in a Kubernetes cluster, [Fluentd](https://www.fluentd.org/) is a popular container log collector. You can use Fluentd with a [JSON parser plugin](https://docs.fluentd.org/parser/json) to parse Dapr JSON-formatted logs. This [how-to]({{% ref fluentd.md %}}) shows how to configure Fluentd in your cluster.
 
 If you are using Azure Kubernetes Service, you can use the built-in agent to collect logs with Azure Monitor without needing to install Fluentd.
 
 ## Search engines
 
-If you use [Fluentd](https://www.fluentd.org/), we recommend using Elastic Search and Kibana. This [how-to]({{< ref fluentd.md >}}) shows how to set up Elastic Search and Kibana in your Kubernetes cluster.
+If you use [Fluentd](https://www.fluentd.org/), we recommend using Elastic Search and Kibana. This [how-to]({{% ref fluentd.md %}}) shows how to set up Elastic Search and Kibana in your Kubernetes cluster.
 
 If you are using the Azure Kubernetes Service, you can use [Azure Monitor for containers](https://docs.microsoft.com/azure/azure-monitor/insights/container-insights-overview) without installing any additional monitoring tools. Also read [How to enable Azure Monitor for containers](https://docs.microsoft.com/azure/azure-monitor/insights/container-insights-onboard)
 
 ## References
 
-- [How-to: Set up Fluentd, Elastic search, and Kibana]({{< ref fluentd.md >}})
-- [How-to: Set up Azure Monitor in Azure Kubernetes Service]({{< ref azure-monitor.md >}})
-- [Configure and view Dapr Logs]({{< ref "logs-troubleshooting.md" >}})
-- [Configure and view Dapr API Logs]({{< ref "api-logs-troubleshooting.md" >}})
+- [How-to: Set up Fluentd, Elastic search, and Kibana]({{% ref fluentd.md %}})
+- [How-to: Set up Azure Monitor in Azure Kubernetes Service]({{% ref azure-monitor.md %}})
+- [Configure and view Dapr Logs]({{% ref "logs-troubleshooting.md" %}})
+- [Configure and view Dapr API Logs]({{% ref "api-logs-troubleshooting.md" %}})

@@ -85,9 +85,9 @@ efficient as possible. You will receive an error if you try to set the TTL to a 
 
 ## Setup Coherence
 
-{{< tabs "Self-Hosted" "Kubernetes" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab header="Self-Hosted" %}}
 Run Coherence locally using Docker:
 
 ```
@@ -95,9 +95,9 @@ docker run -d -p 1408:1408 -p 30000:30000 ghcr.io/oracle/coherence-ce:25.03.1
 ```
 
 You can then interact with the server using `localhost:1408`.
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab header="Kubernetes" %}}
 The easiest way to install Coherence on Kubernetes is by using the [Coherence Operator](https://docs.coherence.community/coherence-operator/docs/latest/docs/about/03_quickstart):
 
 **Install the Operator:**
@@ -147,9 +147,9 @@ my-cluster-wka          ClusterIP   None           <none>        7/TCP,7575/TCP,
 For example, if installing using the example above, the Coherence host address would be:
 
 `my-cluster-grpc`
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})

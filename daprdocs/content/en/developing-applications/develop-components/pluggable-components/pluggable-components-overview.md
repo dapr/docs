@@ -45,7 +45,7 @@ In order to implement a pluggable component, you need to implement a gRPC servic
 1. Create service scaffolding
 1. Define the service
 
-Learn more about [how to develop and implement a pluggable component]({{< ref develop-pluggable.md >}})
+Learn more about [how to develop and implement a pluggable component]({{% ref develop-pluggable.md %}})
 
 ### Leverage multiple building blocks for a component
 
@@ -55,11 +55,11 @@ While exposing multiple component interfaces on the same pluggable component low
 
 ## Operationalize a pluggable component
 
-Built-in components and pluggable components share one thing in common: both need a [component specification]({{< ref "components-concept.md#component-specification" >}}). Built-in components do not require any extra steps to be used: Dapr is ready to use them automatically.
+Built-in components and pluggable components share one thing in common: both need a [component specification]({{% ref "components-concept.md#component-specification" %}}). Built-in components do not require any extra steps to be used: Dapr is ready to use them automatically.
 
 In contrast, pluggable components require additional steps before they can communicate with Dapr. You need to first run the component and facilitate Dapr-component communication to kick off the registration process.
 
 ## Next steps
 
-- [Implement a pluggable component]({{< ref develop-pluggable.md >}})
-- [Pluggable component registration]({{< ref "pluggable-components-registration" >}})
+- [Implement a pluggable component]({{% ref develop-pluggable.md %}})
+- [Pluggable component registration]({{% ref "pluggable-components-registration" %}})

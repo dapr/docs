@@ -29,7 +29,7 @@ In the above diagram:
 Bindings are developed independently of Dapr runtime. You can [view and contribute to the bindings](https://github.com/dapr/components-contrib/tree/master/bindings).
 
 {{% alert title="Note" color="primary" %}}
-If you are using the HTTP Binding, then it is preferable to use [service invocation]({{< ref service_invocation_api.md >}}) instead. Read [How-To: Invoke Non-Dapr Endpoints using HTTP]({{< ref "howto-invoke-non-dapr-endpoints.md" >}}) for more information.
+If you are using the HTTP Binding, then it is preferable to use [service invocation]({{% ref service_invocation_api %}}) instead. Read [How-To: Invoke Non-Dapr Endpoints using HTTP]({{% ref "howto-invoke-non-dapr-endpoints" %}}) for more information.
 {{% /alert %}}
 
 ## Input bindings
@@ -38,7 +38,7 @@ With input bindings, you can trigger your application when an event from an exte
 
 [The following overview video and demo](https://www.youtube.com/live/0y7ne6teHT4?si=wlmAi7BJBWS8KNK7&t=8261) demonstrates how Dapr input binding works. 
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/0y7ne6teHT4?si=wlmAi7BJBWS8KNK7&amp;start=8261" title="YouTube video player" style="padding-bottom:25px;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>  
+{{< youtube id=0y7ne6teHT4 start=8261 >}}
 
 To receive events from an input binding:
 
@@ -48,11 +48,11 @@ To receive events from an input binding:
    - The gRPC proto library to get incoming events.
 
 {{% alert title="Note" color="primary" %}}
- On startup, Dapr sends [an OPTIONS request]({{< ref "bindings_api.md#invoking-service-code-through-input-bindings" >}}) for all defined input bindings to the application. If the application wants to subscribe to the binding, Dapr expects a status code of 2xx or 405.
+ On startup, Dapr sends [an OPTIONS request]({{% ref "bindings_api#invoking-service-code-through-input-bindings" %}}) for all defined input bindings to the application. If the application wants to subscribe to the binding, Dapr expects a status code of 2xx or 405.
 
 {{% /alert %}}
 
-Read the [Create an event-driven app using input bindings guide]({{< ref howto-triggers.md >}}) to get started with input bindings.
+Read the [Create an event-driven app using input bindings guide]({{% ref howto-triggers %}}) to get started with input bindings.
 
 ## Output bindings
 
@@ -72,7 +72,7 @@ To invoke an output binding:
    - `"delete"`
    - `"exec"` 
 
-Read the [Use output bindings to interface with external resources guide]({{< ref howto-bindings.md >}}) to get started with output bindings.
+Read the [Use output bindings to interface with external resources guide]({{% ref howto-bindings %}}) to get started with output bindings.
 
 ## Binding directions (optional)
 
@@ -86,7 +86,7 @@ You can provide the `direction` metadata field to indicate the direction(s) supp
 It is highly recommended that all input bindings should include the `direction` property.
 {{% /alert %}}
 
-[See a full example of the bindings `direction` metadata.]({{< ref "bindings_api.md#binding-direction-optional" >}})
+[See a full example of the bindings `direction` metadata.]({{% ref "bindings_api#binding-direction-optional" %}})
 
 ## Try out bindings
 
@@ -96,17 +96,17 @@ Want to put the Dapr bindings API to the test? Walk through the following quicks
 
 | Quickstart/tutorial | Description |
 | ------------------- | ----------- |
-| [Bindings quickstart]({{< ref bindings-quickstart.md >}}) | Work with external systems using input bindings to respond to events and output bindings to call operations. |
+| [Bindings quickstart]({{% ref bindings-quickstart %}}) | Work with external systems using input bindings to respond to events and output bindings to call operations. |
 | [Bindings tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/bindings) | Demonstrates how to use Dapr to create input and output bindings to other components. Uses bindings to Kafka. |
 
 ### Start using bindings directly in your app
 
-Want to skip the quickstarts? Not a problem. You can try out the bindings building block directly in your application to invoke output bindings and trigger input bindings. After [Dapr is installed]({{< ref "getting-started/_index.md" >}}), you can begin using the bindings API starting with [the input bindings how-to guide]({{< ref howto-triggers.md >}}).
+Want to skip the quickstarts? Not a problem. You can try out the bindings building block directly in your application to invoke output bindings and trigger input bindings. After [Dapr is installed]({{% ref "getting-started/_index.md" %}}), you can begin using the bindings API starting with [the input bindings how-to guide]({{% ref howto-triggers %}}).
 
 ## Next Steps
 
 - Follow these guides on:
-  - [How-To: Trigger a service from different resources with input bindings]({{< ref howto-triggers.md >}})
-  - [How-To: Use output bindings to interface with external resources]({{< ref howto-bindings.md >}})
+  - [How-To: Trigger a service from different resources with input bindings]({{% ref howto-triggers %}})
+  - [How-To: Use output bindings to interface with external resources]({{% ref howto-bindings %}})
 - Try out the [bindings tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/bindings/README.md) to experiment with binding to a Kafka queue.
-- Read the [bindings API specification]({{< ref bindings_api.md >}})
+- Read the [bindings API specification]({{% ref bindings_api %}})

@@ -74,7 +74,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use [a secret store for the secrets]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use [a secret store for the secrets]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -84,7 +84,7 @@ The above example uses secrets as plain strings. It is recommended to use [a sec
 | accessKey          | Y  | ID of the AWS account/role with appropriate permissions to SNS and SQS (see below) | `"AKIAIOSFODNN7EXAMPLE"`
 | secretKey          | Y  | Secret for the AWS user/role. If using an `AssumeRole` access, you will also need to provide a `sessionToken` |`"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"`
 | region             | Y  | The AWS region where the SNS/SQS assets are located or be created in. See [this page](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/?p=ugi&l=na) for valid regions. Ensure that SNS and SQS are available in that region | `"us-east-1"`
-| consumerID       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{< ref "component-schema.md#templated-metadata-values" >}})
+| consumerID       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. See the [pub/sub broker component file]({{% ref setup-pubsub.md %}}) to learn how ConsumerID is automatically generated. | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{% ref "component-schema.md#templated-metadata-values" %}})
 | endpoint          | N  | AWS endpoint for the component to use. Only used for local development with, for example, [localstack](https://github.com/localstack/localstack). The `endpoint` is unnecessary when running against production AWS | `"http://localhost:4566"`
 | sessionToken      | N  | AWS session token to use.  A session token is only required if you are using temporary security credentials | `"TOKEN"`
 | messageReceiveLimit | N  | Number of times a message is received, after processing of that message fails, that once reached, results in removing of that message from the queue. If `sqsDeadLettersQueueName` is specified, `messageReceiveLimit` is the number of times a message is received, after processing of that message fails, that once reached, results in moving of the message to the SQS dead-letters queue. Default: `10` | `10`
@@ -155,9 +155,9 @@ Consider potential contention scenarios when using SNS/SQS with Dapr, and config
 
 ## Create an SNS/SQS instance
 
-{{< tabs "Self-Hosted" "Kubernetes" "AWS" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 For local development, the [localstack project](https://github.com/localstack/localstack) is used to integrate AWS SNS/SQS. Follow [these instructions](https://github.com/localstack/localstack#running) to run localstack.
 
 To run localstack locally from the command line using Docker, apply the following cmd:
@@ -168,7 +168,7 @@ docker run --rm -it -p 4566:4566 -p 4571:4571 -e SERVICES="sts,sns,sqs" -e AWS_D
 
 In order to use localstack with your pub/sub binding, you need to provide the `endpoint` configuration in the component metadata. The `endpoint` is unnecessary when running against production AWS.
 
-See [Authenticating to AWS]({{< ref authenticating-aws.md >}}) for information about authentication-related attributes.
+See [Authenticating to AWS]({{% ref authenticating-aws.md %}}) for information about authentication-related attributes.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -190,9 +190,9 @@ spec:
       value: us-east-1
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 To run localstack on Kubernetes, you can apply the configuration below. Localstack is then reachable at the DNS name `http://localstack.default.svc.cluster.local:4566` (assuming this was applied to the default namespace), which should be used as the `endpoint`.
 
 ```yaml
@@ -236,9 +236,9 @@ spec:
 
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "AWS" %}}
 In order to run in AWS, create or assign an IAM user with permissions to the SNS and SQS services, with a policy like:
 
 ```json
@@ -305,15 +305,15 @@ Alternatively, let's say you want to provision the SNS and SQS assets using your
 ```
 
 In the above example, you are running your applications on an EKS cluster with dynamic assets creation (the default Dapr behavior).
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Pub/Sub building block overview and how-to guides]({{< ref pubsub >}})
-- [Authenticating to AWS]({{< ref authenticating-aws.md >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Pub/Sub building block overview and how-to guides]({{% ref pubsub %}})
+- [Authenticating to AWS]({{% ref authenticating-aws.md %}})
 - AWS docs:
   - [AWS SQS as subscriber to SNS](https://docs.aws.amazon.com/sns/latest/dg/sns-sqs-as-subscriber.html)
   - [AWS SNS API reference](https://docs.aws.amazon.com/sns/latest/api/Welcome.html)

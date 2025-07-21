@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup Azure Service Bus Queues binding create a component of type `bindings.azure.servicebusqueues`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup Azure Service Bus Queues binding create a component of type `bindings.azure.servicebusqueues`. See [this guide]({{% ref "howto-bindings.md#1-create-a-binding" %}}) on how to create and apply a binding configuration.
 
 ### Connection String Authentication
 
@@ -60,7 +60,7 @@ spec:
   #   value: "input, output"
 ```
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -92,7 +92,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ### Microsoft Entra ID authentication
 
-The Azure Service Bus Queues binding component supports authentication using all Microsoft Entra ID mechanisms, including Managed Identities. For further information and the relevant component metadata fields to provide depending on the choice of Microsoft Entra ID authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+The Azure Service Bus Queues binding component supports authentication using all Microsoft Entra ID mechanisms, including Managed Identities. For further information and the relevant component metadata fields to provide depending on the choice of Microsoft Entra ID authentication mechanism, see the [docs for authenticating to Azure]({{% ref authenticating-azure.md %}}).
 
 #### Example Configuration
 
@@ -135,7 +135,7 @@ Azure Service Bus messages extend the Dapr message format with additional contex
 
 ### Sending a message with metadata
 
-To set Azure Service Bus metadata when sending a message, set the query parameters on the HTTP request or the gRPC metadata as documented [here]({{< ref "bindings_api.md" >}}).
+To set Azure Service Bus metadata when sending a message, set the query parameters on the HTTP request or the gRPC metadata as documented [here]({{% ref "bindings_api.md" %}}).
 
 - `metadata.MessageId`
 - `metadata.CorrelationId`
@@ -178,9 +178,9 @@ Time to live can be defined on a per-queue level (as illustrated above) or at th
 
 To set time to live at message level use the `metadata` section in the request body during the binding invocation: the field name is `ttlInSeconds`.
 
-{{< tabs "Linux">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Linux" %}}
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/bindings/myServiceBusQueue \
@@ -195,9 +195,9 @@ curl -X POST http://localhost:3500/v1.0/bindings/myServiceBusQueue \
         "operation": "create"
       }'
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Schedule a message
 
@@ -207,9 +207,9 @@ To schedule a message, use the `metadata` section in the request body during the
 
 The supported timestamp formats are [RFC1123](https://www.rfc-editor.org/rfc/rfc1123) and [RFC3339](https://www.rfc-editor.org/rfc/rfc3339).
 
-{{< tabs "Linux">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Linux" %}}
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/bindings/myServiceBusQueue \
@@ -225,14 +225,14 @@ curl -X POST http://localhost:3500/v1.0/bindings/myServiceBusQueue \
       }'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Bindings building block]({{< ref bindings >}})
-- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
-- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
-- [Bindings API reference]({{< ref bindings_api.md >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Bindings building block]({{% ref bindings %}})
+- [How-To: Trigger application with input binding]({{% ref howto-triggers.md %}})
+- [How-To: Use bindings to interface with external resources]({{% ref howto-bindings.md %}})
+- [Bindings API reference]({{% ref bindings_api.md %}})

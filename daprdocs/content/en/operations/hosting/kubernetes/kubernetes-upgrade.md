@@ -9,20 +9,20 @@ description: "Follow these steps to upgrade Dapr on Kubernetes and ensure a smoo
 You can upgrade the Dapr control plane on a Kubernetes cluster using either the Dapr CLI or Helm.
 
 {{% alert title="Note" color="primary" %}}
-Refer to the [Dapr version policy]({{< ref "support-release-policy.md#upgrade-paths" >}}) for guidance on Dapr's upgrade path.
+Refer to the [Dapr version policy]({{% ref "support-release-policy.md#upgrade-paths" %}}) for guidance on Dapr's upgrade path.
 {{% /alert %}}
 
-{{< tabs "Dapr CLI" "Helm" >}}
+{{< tabpane text=true >}}
  <!-- Dapr CLI -->
-{{% codetab %}}
+{{% tab "Dapr CLI" %}}
 ## Upgrade using the Dapr CLI
 
-You can upgrade Dapr using the [Dapr CLI]({{< ref install-dapr-cli.md >}}).
+You can upgrade Dapr using the [Dapr CLI]({{% ref install-dapr-cli.md %}}).
 
 ### Prerequisites
 
-- [Install the Dapr CLI]({{< ref install-dapr-cli.md >}})
-- An existing [Kubernetes cluster running with Dapr]({{< ref cluster >}})
+- [Install the Dapr CLI]({{% ref install-dapr-cli.md %}})
+- An existing [Kubernetes cluster running with Dapr]({{% ref cluster %}})
 
 ### Upgrade existing cluster to {{% dapr-latest-version long="true" %}}
 
@@ -54,10 +54,10 @@ The CustomResourceDefinition "configurations.dapr.io" is invalid: spec.preserveU
 
 1. Proceed with the `dapr upgrade --runtime-version {{% dapr-latest-version long="true" %}} -k` command.
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Helm -->
-{{% codetab %}}
+{{% tab "Helm" %}}
 ## Upgrade using Helm
 
 You can upgrade Dapr using a Helm v3 chart.
@@ -67,7 +67,7 @@ You can upgrade Dapr using a Helm v3 chart.
 ### Prerequisites
 
 - [Install Helm v3](https://github.com/helm/helm/releases)
-- An existing [Kubernetes cluster running with Dapr]({{< ref cluster >}})
+- An existing [Kubernetes cluster running with Dapr]({{% ref cluster %}})
 
 ### Upgrade existing cluster to {{% dapr-latest-version long="true" %}}
 
@@ -113,17 +113,17 @@ As of version 1.0.0 onwards, existing certificate values will automatically be r
    kubectl rollout restart deploy/<DEPLOYMENT-NAME>
    ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 ## Upgrade existing Dapr deployment to enable high availability mode
 
-[Enable high availability mode in an existing Dapr deployment with a few additional steps.]({{< ref "kubernetes-production.md#enabling-high-availability-in-an-existing-dapr-deployment" >}})
+[Enable high availability mode in an existing Dapr deployment with a few additional steps.]({{% ref "kubernetes-production.md#enabling-high-availability-in-an-existing-dapr-deployment" %}})
 
 ## Related links
 
-- [Dapr on Kubernetes]({{< ref kubernetes-overview.md >}})
-- [More on upgrading Dapr with Helm]({{< ref "kubernetes-production.md#upgrade-dapr-with-helm" >}})
-- [Dapr production guidelines]({{< ref kubernetes-production.md >}})
+- [Dapr on Kubernetes]({{% ref kubernetes-overview.md %}})
+- [More on upgrading Dapr with Helm]({{% ref "kubernetes-production.md#upgrade-dapr-with-helm" %}})
+- [Dapr production guidelines]({{% ref kubernetes-production.md %}})

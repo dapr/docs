@@ -34,7 +34,7 @@ WASI.
 
 Wasm binaries are loaded from a URL. For example, the URL `file://rewrite.wasm`
 loads `rewrite.wasm` from the current directory of the process. On Kubernetes,
-see [How to: Mount Pod volumes to the Dapr sidecar]({{< ref kubernetes-volume-mounts.md >}})
+see [How to: Mount Pod volumes to the Dapr sidecar]({{% ref kubernetes-volume-mounts.md %}})
 to configure a filesystem mount that can contain Wasm binaries.
 It is also possible to fetch the Wasm binary from a remote URL. In this case,
 the URL must point exactly to one Wasm binary. For example:
@@ -53,13 +53,13 @@ You can find example code for making HTTP calls in a variety of languages here:
 * [TypeScript](https://github.com/dev-wasm/dev-wasm-ts/tree/main/http)
 
 {{% alert title="Note" color="primary" %}}
-If you just want to make an HTTP call, it is simpler to use the [service invocation API]({{< ref howto-invoke-non-dapr-endpoints.md >}}). However, if you need to add your own logic - for example, filtering or calling to multiple API endpoints - consider using Wasm.
+If you just want to make an HTTP call, it is simpler to use the [service invocation API]({{% ref howto-invoke-non-dapr-endpoints.md %}}). However, if you need to add your own logic - for example, filtering or calling to multiple API endpoints - consider using Wasm.
 {{% /alert %}}
 
 ## Component format
 
 To configure a Wasm binding, create a component of type
-`bindings.wasm`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}})
+`bindings.wasm`. See [this guide]({{% ref "howto-bindings.md#1-create-a-binding" %}})
 on how to create and apply a binding configuration.
 
 ```yaml
@@ -131,8 +131,8 @@ $ curl -X POST http://localhost:3500/v1.0/bindings/wasm -d'
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Bindings building block]({{< ref bindings >}})
-- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
-- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
-- [Bindings API reference]({{< ref bindings_api.md >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Bindings building block]({{% ref bindings %}})
+- [How-To: Trigger application with input binding]({{% ref howto-triggers.md %}})
+- [How-To: Use bindings to interface with external resources]({{% ref howto-bindings.md %}})
+- [Bindings API reference]({{% ref bindings_api.md %}})

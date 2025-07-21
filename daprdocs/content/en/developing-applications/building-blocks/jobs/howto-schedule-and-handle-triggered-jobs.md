@@ -6,7 +6,7 @@ weight: 5000
 description: "Learn how to use the jobs API to schedule and handle triggered jobs"
 ---
 
-Now that you've learned what the [jobs building block]({{< ref jobs-overview.md >}}) provides, let's look at an example of how to use the API. The code example below describes an application that schedules jobs for a database backup application and handles them at trigger time, also known as the time the job was sent back to the application because it reached it's dueTime.
+Now that you've learned what the [jobs building block]({{% ref jobs-overview %}}) provides, let's look at an example of how to use the API. The code example below describes an application that schedules jobs for a database backup application and handles them at trigger time, also known as the time the job was sent back to the application because it reached it's dueTime.
 
 <!-- 
 Include a diagram or image, if possible. 
@@ -14,15 +14,15 @@ Include a diagram or image, if possible.
 
 ## Start the Scheduler service
 
-When you [run `dapr init` in either self-hosted mode or on Kubernetes]({{< ref install-dapr-selfhost.md >}}), the Dapr Scheduler service is started.
+When you [run `dapr init` in either self-hosted mode or on Kubernetes]({{% ref install-dapr-selfhost %}}), the Dapr Scheduler service is started.
 
 ## Set up the Jobs API
 
 In your code, set up and schedule jobs within your application.
 
-{{< tabs ".NET" "Go" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 <!-- .NET -->
 
@@ -116,9 +116,9 @@ await daprJobsClient.ScheduleJobAsync("prod-db-backup", DaprJobSchedule.FromDura
     serializedJobData, repeats: 10);
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 <!--go-->
 
@@ -221,17 +221,17 @@ func prodDBBackupHandler(ctx context.Context, job *common.JobEvent) error {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Run the Dapr sidecar 
 
 Once you've set up the Jobs API in your application, in a terminal window run the Dapr sidecar with the following command. 
 
-{{< tabs "Go" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```bash
 dapr run --app-id=distributed-scheduler \
@@ -243,12 +243,12 @@ dapr run --app-id=distributed-scheduler \
                 go run ./main.go
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 ## Next steps
 
-- [Learn more about the Scheduler control plane service]({{< ref "concepts/dapr-services/scheduler.md" >}})
-- [Jobs API reference]({{< ref jobs_api.md >}})
+- [Learn more about the Scheduler control plane service]({{% ref "concepts/dapr-services/scheduler" %}})
+- [Jobs API reference]({{% ref jobs_api %}})

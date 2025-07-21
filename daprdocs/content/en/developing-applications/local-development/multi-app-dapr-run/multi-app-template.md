@@ -26,9 +26,9 @@ When you provide a directory path, the CLI will try to locate the Multi-App Run 
 
 Execute the following CLI command to read the Multi-App Run template file, named `dapr.yaml` by default:
 
-{{< tabs Self-hosted Kubernetes>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-hosted" %}}
 <!--selfhosted-->
 
 ```cmd
@@ -36,75 +36,75 @@ Execute the following CLI command to read the Multi-App Run template file, named
 
 dapr run -f <dir_path>
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 <!--kubernetes-->
 
 ```cmd
 dapr run -f <dir_path> -k 
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### Execute by providing a file path
 
 If the Multi-App Run template file is named something other than `dapr.yaml`, then you can provide the relative or absolute file path to the command:
 
-{{< tabs Self-hosted Kubernetes>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-hosted" %}}
 <!--selfhosted-->
 
 ```cmd
 dapr run -f ./path/to/<your-preferred-file-name>.yaml
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 <!--kubernetes-->
 
 ```cmd
 dapr run -f ./path/to/<your-preferred-file-name>.yaml -k 
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## View the started applications
 
 Once the multi-app template is running, you can view the started applications with the following command:
 
-{{< tabs Self-hosted Kubernetes>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-hosted" %}}
 <!--selfhosted-->
 
 ```cmd
 dapr list
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 <!--kubernetes-->
 
 ```cmd
 dapr list -k 
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Stop the multi-app template
 
 Stop the multi-app run template anytime with either of the following commands:
 
-{{< tabs Self-hosted Kubernetes>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-hosted" %}}
 <!--selfhosted-->
 
 ```cmd
@@ -118,9 +118,9 @@ or:
 dapr stop -f ./path/to/<your-preferred-file-name>.yaml
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 <!--kubernetes-->
 
 ```cmd
@@ -134,18 +134,18 @@ or:
 dapr stop -f ./path/to/<your-preferred-file-name>.yaml -k 
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 ## Template file structure
 
 The Multi-App Run template file can include the following properties. Below is an example template showing two applications that are configured with some of the properties.
 
-{{< tabs Self-hosted Kubernetes>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-hosted" %}}
 <!--selfhosted-->
 
 ```yaml
@@ -183,9 +183,9 @@ The following rules apply for all the paths present in the template file:
  - `appDirPath` under apps section should be provided relative to the template file path.
  - All other relative paths under apps section should be provided relative to the `appDirPath`.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 <!--kubernetes-->
 
 ```yaml
@@ -219,20 +219,20 @@ The following rules apply for all the paths present in the template file:
  - `appDirPath` under apps section should be provided relative to the template file path.
  - All relative paths under app section should be provided relative to the `appDirPath`.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Template properties
 
-{{< tabs Self-hosted Kubernetes>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-hosted" %}}
 <!--selfhosted-->
 
-The properties for the Multi-App Run template align with the `dapr run` CLI flags, [listed in the CLI reference documentation]({{< ref "dapr-run.md#flags" >}}).
+The properties for the Multi-App Run template align with the `dapr run` CLI flags, [listed in the CLI reference documentation]({{% ref "dapr-run.md#flags" %}}).
 
-{{< table "table table-white table-striped table-bordered" >}}
+{{% table "table table-white table-striped table-bordered" %}}
 
 | Properties               | Required | Details | Example |
 |--------------------------|:--------:|--------|---------|
@@ -270,21 +270,22 @@ The properties for the Multi-App Run template align with the `dapr run` CLI flag
 | `appLogDestination`                    | N        | Log destination for outputting app logs; Its value can be file, console or fileAndConsole. Default is fileAndConsole | `file`, `console`, `fileAndConsole` |
 | `daprdLogDestination`                    | N        | Log destination for outputting daprd logs; Its value can be file, console or fileAndConsole. Default is file | `file`, `console`, `fileAndConsole` |
 
-{{< /table >}}
+{{% /table %}}
 
 ## Next steps
 
 Watch [this video for an overview on Multi-App Run](https://youtu.be/s1p9MNl4VGo?t=2456):
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/s1p9MNl4VGo?start=2456" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-{{% /codetab %}}
+{{< youtube id=s1p9MNl4VGo start=2456 >}}
 
-{{% codetab %}}
+{{% /tab %}}
+
+{{% tab "Kubernetes" %}}
 <!--kubernetes-->
 
-The properties for the Multi-App Run template align with the `dapr run -k` CLI flags, [listed in the CLI reference documentation]({{< ref "dapr-run.md#flags" >}}).
+The properties for the Multi-App Run template align with the `dapr run -k` CLI flags, [listed in the CLI reference documentation]({{% ref "dapr-run.md#flags" %}}).
 
-{{< table "table table-white table-striped table-bordered" >}}
+{{% table "table table-white table-striped table-bordered" %}}
 
 | Properties                 | Required | Details                                                                                                                                                                                                                 | Example                                        |
 |----------------------------|:--------:|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------|
@@ -321,16 +322,14 @@ The properties for the Multi-App Run template align with the `dapr run -k` CLI f
 | `containerImagePullPolicy` |    N     | The container image pull policy (default to `Always`).                                                                                                                                                                  | `Always`, `IfNotPresent`, `Never`              |
 | `createService`            |    N     | Create a Kubernetes service for the application when deploying to dev/test environment.                                                                                                                                 | `true`, `false`                                |
 
-{{< /table >}}
+{{% /table %}}
 
 ## Next steps
 
 Watch [this video for an overview on Multi-App Run in Kubernetes](https://youtu.be/nWatANwaAik?si=O8XR-TUaiY0gclgO&t=1024):
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/nWatANwaAik?si=O8XR-TUaiY0gclgO&amp;start=1024" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{{< youtube id=nWatANwaAik start=1024 >}}
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
-
-
+{{< /tabpane >}}

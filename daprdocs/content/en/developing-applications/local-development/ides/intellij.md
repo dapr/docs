@@ -28,31 +28,31 @@ First, quit IntelliJ before modifying the configurations file directly.
 ### IntelliJ configuration file location
 For versions [2020.1](https://www.jetbrains.com/help/idea/2020.1/tuning-the-ide.html#config-directory) and above the configuration files for tools should be located in:
 
-{{< tabs Windows Linux  MacOS >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Windows" %}}
 
 ```powershell
 %USERPROFILE%\AppData\Roaming\JetBrains\IntelliJIdea2020.1\tools\
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
 
-{{% codetab %}}
+{{% tab "Linux" %}}
  ```shell
  $HOME/.config/JetBrains/IntelliJIdea2020.1/tools/
  ```
-{{% /codetab %}}
+{{% /tab %}}
 
 
-{{% codetab %}}
+{{% tab "MacOS" %}}
 ```shell
 ~/Library/Application\ Support/JetBrains/IntelliJIdea2020.1/tools/
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 > The configuration file location is different for version 2019.3 or prior. See [here](https://www.jetbrains.com/help/idea/2019.3/tuning-the-ide.html#config-directory) for more details.
 

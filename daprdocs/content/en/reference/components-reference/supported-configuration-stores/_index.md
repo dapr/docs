@@ -9,6 +9,6 @@ aliases:
 no_list: true
 ---
 
-{{< partial "components/description.html" >}}
+{{% partial "components/description.html" %}}
 
-{{< partial "components/configuration-stores.html" >}}
+{{% partial "components/configuration-stores.html" %}}

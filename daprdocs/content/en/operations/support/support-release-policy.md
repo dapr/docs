@@ -35,9 +35,9 @@ The Dapr's sidecar image is published to both [GitHub Container Registry](https:
 * Default sidecar images: `daprio/daprd:<version>` or `ghcr.io/dapr/daprd:<version>` (for example `ghcr.io/dapr/daprd:1.11.1`)
 * Sidecar images for stable components: `daprio/daprd:<version>-stablecomponents` or `ghcr.io/dapr/daprd:<version>-stablecomponents` (for example `ghcr.io/dapr/daprd:1.11.1-stablecomponents`)
 
-On Kubernetes, the sidecar image can be overwritten for the application Deployment resource with the `dapr.io/sidecar-image` annotation. See more about [Dapr's arguments and annotations]({{< ref "arguments-annotations-overview.md" >}}). The default 'daprio/daprd:latest' image is used if not specified.
+On Kubernetes, the sidecar image can be overwritten for the application Deployment resource with the `dapr.io/sidecar-image` annotation. See more about [Dapr's arguments and annotations]({{% ref "arguments-annotations-overview.md" %}}). The default 'daprio/daprd:latest' image is used if not specified.
 
-Learn more about [Dapr components' certification lifecycle]({{< ref "certification-lifecycle.md" >}}).
+Learn more about [Dapr components' certification lifecycle]({{% ref "certification-lifecycle.md" %}}).
 
 ## Supported versions
 
@@ -126,7 +126,7 @@ Dapr only has a seamless guarantee when upgrading patch versions in a single min
 
 The table below shows the tested upgrade paths for the Dapr runtime. Any other combinations of upgrades have not been tested.
 
-General guidance on upgrading can be found for [self hosted mode]({{< ref self-hosted-upgrade >}}) and [Kubernetes]({{< ref kubernetes-upgrade >}}) deployments. It is best to review the target version release notes for specific guidance.
+General guidance on upgrading can be found for [self hosted mode]({{% ref self-hosted-upgrade %}}) and [Kubernetes]({{% ref kubernetes-upgrade %}}) deployments. It is best to review the target version release notes for specific guidance.
 
 |  Current Runtime version | Must upgrade through  | Target Runtime version   |
 |--------------------------|-----------------------|------------------------- |
@@ -154,7 +154,7 @@ General guidance on upgrading can be found for [self hosted mode]({{< ref self-h
 
 ## Upgrade on Hosting platforms
 
-Dapr can support multiple hosting platforms for production. With the 1.0 release the two supported platforms are Kubernetes and physical machines. For Kubernetes upgrades see [Production guidelines on Kubernetes]({{< ref kubernetes-production.md >}})
+Dapr can support multiple hosting platforms for production. With the 1.0 release the two supported platforms are Kubernetes and physical machines. For Kubernetes upgrades see [Production guidelines on Kubernetes]({{% ref kubernetes-production.md %}})
 
 ### Supported versions of dependencies
 
@@ -168,5 +168,5 @@ Below is a list of software that the latest version of Dapr (v{{% dapr-latest-ve
 
 ## Related links
 
-- Read the [Versioning Policy]({{< ref support-versioning.md >}})
-- Read the [Breaking Changes and Deprecation Policy]({{< ref breaking-changes-and-deprecations.md >}})
+- Read the [Versioning Policy]({{% ref support-versioning.md %}})
+- Read the [Breaking Changes and Deprecation Policy]({{% ref breaking-changes-and-deprecations.md %}})

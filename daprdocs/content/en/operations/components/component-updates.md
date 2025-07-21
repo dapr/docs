@@ -23,8 +23,8 @@ Unless the [`HotReload` feature gate is enabled](#hot-reloading-preview-feature)
 
 ## Hot Reloading (Preview Feature)
 
-> This feature is currently in [preview]({{< ref "preview-features.md" >}}).
-> Hot reloading is enabled by via the [`HotReload` feature gate]({{< ref "support-preview-features.md" >}}).
+> This feature is currently in [preview]({{% ref "preview-features.md" %}}).
+> Hot reloading is enabled by via the [`HotReload` feature gate]({{% ref "support-preview-features.md" %}}).
 
 Dapr can be made to "hot reload" components whereby component updates are picked up automatically without the need to restart the Dapr sidecar process or Kubernetes pod.
 This means creating, updating, or deleting a component manifest will be reflected in the Dapr sidecar during runtime.
@@ -35,7 +35,7 @@ This causes the component to be unavailable for a short period of time during th
 {{% /alert %}}
 
 {{% alert title="Initialization Errors" color="warning" %}}
-If the initialization processes errors when a component is created or updated through hot reloading, the Dapr sidecar respects the component field [`spec.ignoreErrors`]({{< ref component-schema.md>}}).
+If the initialization processes errors when a component is created or updated through hot reloading, the Dapr sidecar respects the component field [`spec.ignoreErrors`]({{% ref component-schema.md%}}).
 That is, the behaviour is the same as when the sidecar loads components on boot.
 - `spec.ignoreErrors=false` (*default*): the sidecar gracefully shuts down.
 - `spec.ignoreErrors=true`: the sidecar continues to run with neither the old or new component configuration registered.
@@ -43,14 +43,14 @@ That is, the behaviour is the same as when the sidecar loads components on boot.
 
 All components are supported for hot reloading except for the following types.
 Any create, update, or deletion of these component types is ignored by the sidecar with a restart required to pick up changes.
-- [Actor State Stores]({{< ref "state_api.md#configuring-state-store-for-actors" >}})
-- [Workflow Backends]({{< ref "workflow-architecture.md#workflow-backend" >}})
+- [Actor State Stores]({{% ref "state_api.md#configuring-state-store-for-actors" %}})
+- [Workflow Backends]({{% ref "workflow-architecture.md#workflow-backend" %}})
 
 ## Further reading
-- [Components concept]({{< ref components-concept.md >}})
-- [Reference secrets in component definitions]({{< ref component-secrets.md >}})
-- [Supported state stores]({{< ref supported-state-stores >}})
-- [Supported pub/sub brokers]({{< ref supported-pubsub >}})
-- [Supported secret stores]({{< ref supported-secret-stores >}})
-- [Supported bindings]({{< ref supported-bindings >}})
-- [Set component scopes]({{< ref component-scopes.md >}})
+- [Components concept]({{% ref components-concept.md %}})
+- [Reference secrets in component definitions]({{% ref component-secrets.md %}})
+- [Supported state stores]({{% ref supported-state-stores %}})
+- [Supported pub/sub brokers]({{% ref supported-pubsub %}})
+- [Supported secret stores]({{% ref supported-secret-stores %}})
+- [Supported bindings]({{% ref supported-bindings %}})
+- [Set component scopes]({{% ref component-scopes.md %}})

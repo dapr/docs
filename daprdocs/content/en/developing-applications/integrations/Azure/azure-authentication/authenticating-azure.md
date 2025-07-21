@@ -106,7 +106,7 @@ When running on Kubernetes, you can also use references to Kubernetes secrets fo
 |-----------------|----------|----------------------------|------------------------------------------|
 | `azureClientId` | N        | Client ID (application ID) | `"c7dd251f-811f-4ba2-a905-acd4d3f8f08b"` |
 
-[Using Managed Identities]({{< ref howto-mi.md >}}), the `azureClientId` field is generally recommended. The field is optional when using a system-assigned identity, but may be required when using user-assigned identities.
+[Using Managed Identities]({{% ref howto-mi.md %}}), the `azureClientId` field is generally recommended. The field is optional when using a system-assigned identity, but may be required when using user-assigned identities.
 
 #### Authenticating with Workload Identity on AKS
 
@@ -129,9 +129,9 @@ Using this authentication method does not require setting any metadata option.
 
 In this example, you will set up an Azure Key Vault secret store component that uses Microsoft Entra ID to authenticate.
 
-{{< tabs "Self-Hosted" "Kubernetes">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 
 To use a **client secret**, create a file called `azurekeyvault.yaml` in the components directory, filling in with the details from the above setup process:
 
@@ -176,9 +176,9 @@ spec:
   - name: azureCertificateFile
     value : "[pfx_certificate_file_fully_qualified_local_path]"
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 In Kubernetes, you store the client secret or the certificate into the Kubernetes Secret Store and then refer to those in the YAML file.
 
 To use a **client secret**:
@@ -273,9 +273,9 @@ To use a **certificate**:
     kubectl apply -f azurekeyvault.yaml
     ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Next steps
 
@@ -285,7 +285,7 @@ To use a **certificate**:
 
 - [Microsoft Entra ID app credential: Azure CLI reference](https://docs.microsoft.com/cli/azure/ad/app/credential)
 - [Azure Managed Service Identity (MSI) overview](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview)
-- [Secrets building block]({{< ref secrets >}})
-- [How-To: Retrieve a secret]({{< ref "howto-secrets.md" >}})
-- [How-To: Reference secrets in Dapr components]({{< ref component-secrets.md >}})
-- [Secrets API reference]({{< ref secrets_api.md >}})
+- [Secrets building block]({{% ref secrets %}})
+- [How-To: Retrieve a secret]({{% ref "howto-secrets.md" %}})
+- [How-To: Reference secrets in Dapr components]({{% ref component-secrets.md %}})
+- [Secrets API reference]({{% ref secrets_api.md %}})

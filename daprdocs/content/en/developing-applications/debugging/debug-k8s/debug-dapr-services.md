@@ -16,7 +16,7 @@ This guide will cover how to use Dapr debugging binaries to debug the Dapr servi
 
 ### Pre-requisites
 
-- Familiarize yourself with [this guide]({{< ref kubernetes-deploy.md >}}) to learn how to deploy Dapr to your Kubernetes cluster.
+- Familiarize yourself with [this guide]({{% ref kubernetes-deploy.md %}}) to learn how to deploy Dapr to your Kubernetes cluster.
 - Setup your [dev environment](https://github.com/dapr/dapr/blob/master/docs/development/developing-dapr.md)
 -  [Helm](https://github.com/helm/helm/releases)
 
@@ -109,6 +109,6 @@ All done. Now you can point to port 40000 and start a remote debug session from 
 
 ## Related links
 
-- [Overview of Dapr on Kubernetes]({{< ref kubernetes-overview >}})
-- [Deploy Dapr to a Kubernetes cluster]({{< ref kubernetes-deploy >}})
+- [Overview of Dapr on Kubernetes]({{% ref kubernetes-overview %}})
+- [Deploy Dapr to a Kubernetes cluster]({{% ref kubernetes-deploy %}})
 - [Dapr Kubernetes Quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-kubernetes)
