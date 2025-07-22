@@ -46,7 +46,7 @@ dapr init [flags]
 |  `--container-runtime`  |              |    `docker`      | Used to pass in a different container runtime other than Docker. Supported container runtimes are: `docker`, `podman` |
 |  `--dev`  |              |          | Creates Redis and Zipkin deployments when run in Kubernetes. |
 |  `--scheduler-volume`  |              |          | Self-hosted only. Optionally, you can specify a volume for the scheduler service data directory. By default, without this flag, scheduler data is not persisted and not resilient to restarts. |
-|  `--scheduler-override-broadcast-host-port`  |  |  | Self-hosted only. Specify the scheduler broadcast host and port, for example: 192.168.42.42:50006. If not specified, it uses localhost:50006 (6060 for Windows). |
+|  `--scheduler-override-broadcast-host-port`  |  |  localhost:50006 (6060 for Windows)  | Self-hosted only. Specify the scheduler broadcast host and port, for example: 192.168.42.42:50006. |
 
 
 ### Examples
@@ -164,7 +164,7 @@ You can specify the scheduler broadcast host and port, for example: 192.168.42.4
 
 This is necessary when you have to connect to the scheduler using a different host and port, as the scheduler only allows connections matching this host and port.
 
-By default, the scheduler will use localhost:50006 (6060 for Windows), as it's the most common way to connect to the scheduler.
+By default, the scheduler will use localhost:50006 (6060 for Windows).
 
 ```bash
 dapr init --scheduler-override-broadcast-host-port 192.168.42.42:50006
