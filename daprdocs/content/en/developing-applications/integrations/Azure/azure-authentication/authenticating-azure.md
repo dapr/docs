@@ -31,7 +31,7 @@ Some Azure components offer alternative authentication methods, such as systems 
 
 ### Managed Identities and Workload Identity
 
-With Managed Identities (MI), your application can authenticate with Microsoft Entra ID and obtain an access token to make requests to Azure services. When your application is running on a supported Azure service (such as Azure VMs, Azure Container Apps, Azure Web Apps, etc), an identity for your application can be assigned at the infrastructure level. You can also setup Microsoft Entra ID to federate trust to your Dapr application identity directly by using a [Federated Identity Credential](https://learn.microsoft.com/en-us/graph/api/resources/federatedidentitycredentials-overview?view=graph-rest-1.0). This allows you to configure access to your Microsoft resources even when not running on Microsoft infrastructure. To see how to configure Dapr to use a federated identity, see the section on [Authenticating with a Federated Identity Credential](#authenticating-with-a-federated-identity-credential).
+With Managed Identities (MI), your application can authenticate with Microsoft Entra ID and obtain an access token to make requests to Azure services. When your application is running on a supported Azure service (such as Azure VMs, Azure Container Apps, Azure Web Apps, etc), an identity for your application can be assigned at the infrastructure level. You can also setup Microsoft Entra ID to federate trust to your Dapr application identity directly by using a [Federated Identity Credential](https://learn.microsoft.com/graph/api/resources/federatedidentitycredentials-overview?view=graph-rest-1.0). This allows you to configure access to your Microsoft resources even when not running on Microsoft infrastructure. To see how to configure Dapr to use a federated identity, see the section on [Authenticating with a Federated Identity Credential](#authenticating-with-a-federated-identity-credential).
 
 Once using MI, your code doesn't have to deal with credentials, which:
 
@@ -114,7 +114,7 @@ When running on Azure Kubernetes Service (AKS), you can authenticate components 
 
 #### Authenticating with a Federated Identity Credential
 
-You can use a [Federated Identity Credential](https://learn.microsoft.com/en-us/graph/api/resources/federatedidentitycredentials-overview?view=graph-rest-1.0) in Microsoft Entra ID to federate trust directly to your Dapr installation regardless of where it is running. This allows you to easily configure access rules against your Dapr application's [SPIFFE](https://spiffe.io/) ID consistently across different clouds.
+You can use a [Federated Identity Credential](https://learn.microsoft.com/graph/api/resources/federatedidentitycredentials-overview?view=graph-rest-1.0) in Microsoft Entra ID to federate trust directly to your Dapr installation regardless of where it is running. This allows you to easily configure access rules against your Dapr application's [SPIFFE](https://spiffe.io/) ID consistently across different clouds.
 
 In order to federate trust, you must be running Dapr Sentry with JWT issuing and OIDC discovery enabled. These can be configured using the following Dapr Sentry helm values:
 
