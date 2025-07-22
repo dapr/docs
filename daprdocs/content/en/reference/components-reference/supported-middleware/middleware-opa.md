@@ -7,7 +7,7 @@ aliases:
 - /developing-applications/middleware/supported-middleware/middleware-opa/
 ---
 
-The Open Policy Agent (OPA) [HTTP middleware]({{< ref middleware.md >}}) applies [OPA Policies](https://www.openpolicyagent.org/) to incoming Dapr HTTP requests. This can be used to apply reusable authorization policies to app endpoints.
+The Open Policy Agent (OPA) [HTTP middleware]({{% ref middleware.md %}}) applies [OPA Policies](https://www.openpolicyagent.org/) to incoming Dapr HTTP requests. This can be used to apply reusable authorization policies to app endpoints.
 
 ## Component format
 
@@ -84,7 +84,7 @@ You can prototype and experiment with policies using the [official OPA playgroun
 
 ## Dapr configuration
 
-To be applied, the middleware must be referenced in [configuration]({{< ref configuration-concept.md >}}). See [middleware pipelines]({{< ref "middleware.md#customize-processing-pipeline">}}).
+To be applied, the middleware must be referenced in [configuration]({{% ref configuration-concept.md %}}). See [middleware pipelines]({{% ref "middleware.md#customize-processing-pipeline"%}}).
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -217,6 +217,6 @@ type Result struct {
 
 - [Open Policy Agent](https://www.openpolicyagent.org)
 - [HTTP API example](https://www.openpolicyagent.org/docs/latest/http-api-authorization/)
-- [Middleware]({{< ref middleware.md >}})
-- [Configuration concept]({{< ref configuration-concept.md >}})
-- [Configuration overview]({{< ref configuration-overview.md >}})
+- [Middleware]({{% ref middleware.md %}})
+- [Configuration concept]({{% ref configuration-concept.md %}})
+- [Configuration overview]({{% ref configuration-overview.md %}})

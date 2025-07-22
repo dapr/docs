@@ -6,7 +6,7 @@ weight: 5000
 description: "Learn how to use the metadata-based namespace consumer group in your component" 
 ---
 
-You've set up [Dapr's pub/sub API building block]({{< ref pubsub-overview >}}), and your applications are publishing and subscribing to topics smoothly, using a centralized message broker. What if you'd like to perform simple A/B testing, blue/green deployments, or even canary deployments for your applications? Even with using Dapr, this can prove difficult.
+You've set up [Dapr's pub/sub API building block]({{% ref pubsub-overview %}}), and your applications are publishing and subscribing to topics smoothly, using a centralized message broker. What if you'd like to perform simple A/B testing, blue/green deployments, or even canary deployments for your applications? Even with using Dapr, this can prove difficult.
 
 Dapr solves multi-tenancy at-scale with its pub/sub namespace consumer groups construct. 
 
@@ -67,8 +67,8 @@ If you add the namespace consumer group to your metadata afterwards, Dapr update
 
 Watch [this video for an overview on pub/sub multi-tenancy](https://youtu.be/eK463jugo0c?t=1188):
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/eK463jugo0c?start=1188" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{{< youtube id=eK463jugo0c start=1188 >}}
 
 ## Next steps
 
-- Learn more about configuring Pub/Sub components with multiple namespaces [pub/sub namespaces]({{< ref pubsub-namespaces >}}).
+- Learn more about configuring Pub/Sub components with multiple namespaces [pub/sub namespaces]({{% ref pubsub-namespaces %}}).

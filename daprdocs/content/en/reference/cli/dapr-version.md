@@ -11,7 +11,7 @@ Print the version for `dapr` CLI and `daprd` executables either in normal or JSO
 
 ### Supported platforms
 
-- [Self-Hosted]({{< ref self-hosted >}})
+- [Self-Hosted]({{% ref self-hosted %}})
 
 ### Usage
 

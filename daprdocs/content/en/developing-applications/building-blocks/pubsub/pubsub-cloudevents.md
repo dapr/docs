@@ -6,7 +6,7 @@ weight: 2100
 description: "Learn why Dapr uses CloudEvents, how they work in Dapr pub/sub, and how to create CloudEvents."
 ---
 
-To enable message routing and provide additional context with each message, Dapr uses the [CloudEvents 1.0 specification](https://github.com/cloudevents/spec/tree/v1.0) as its message format. Any message sent by an application to a topic using Dapr is automatically wrapped in a CloudEvents envelope, using the [`Content-Type` header value]({{< ref "pubsub-overview.md#content-types" >}}) for `datacontenttype` attribute.
+To enable message routing and provide additional context with each message, Dapr uses the [CloudEvents 1.0 specification](https://github.com/cloudevents/spec/tree/v1.0) as its message format. Any message sent by an application to a topic using Dapr is automatically wrapped in a CloudEvents envelope, using the [`Content-Type` header value]({{% ref "pubsub-overview#content-types" %}}) for `datacontenttype` attribute.
 
 Dapr uses CloudEvents to provide additional context to the event payload, enabling features like:
 
@@ -93,11 +93,11 @@ The ability to replace CloudEvents properties using these metadata properties ap
 
 ### Example
 
-For example, to replace the `source` and `id` values from [the CloudEvent example above]({{< ref "#cloudevents-example" >}}) in code:
+For example, to replace the `source` and `id` values from [the CloudEvent example above]({{% ref "#cloudevents-example" %}}) in code:
 
-{{< tabs "Python" ".NET" >}}
+{{< tabpane text=true >}}
  <!-- Python -->
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ```python
 with DaprClient() as client:
@@ -130,10 +130,10 @@ with DaprClient() as client:
     )
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- .NET -->
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 var order = new Order(i);
@@ -152,9 +152,9 @@ Console.WriteLine("Published data: " + order);
 await Task.Delay(TimeSpan.FromSeconds(1));
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 The JSON payload then reflects the new `source` and `id` values:
@@ -180,14 +180,14 @@ The JSON payload then reflects the new `source` and `id` values:
 ```
 
 {{% alert title="Important" color="warning" %}}
-While you can replace `traceid`/`traceparent` and `tracestate`, doing this may interfere with tracing events and report inconsistent results in tracing tools. It's recommended to use Open Telemetry for distributed traces. [Learn more about distributed tracing.]({{< ref tracing-overview.md >}})  
+While you can replace `traceid`/`traceparent` and `tracestate`, doing this may interfere with tracing events and report inconsistent results in tracing tools. It's recommended to use Open Telemetry for distributed traces. [Learn more about distributed tracing.]({{% ref tracing-overview %}})  
 
 {{% /alert %}}
 
 
 ## Publish your own CloudEvent
 
-If you want to use your own CloudEvent, make sure to specify the [`datacontenttype`]({{< ref "pubsub-overview.md#setting-message-content-types" >}}) as `application/cloudevents+json`.
+If you want to use your own CloudEvent, make sure to specify the [`datacontenttype`]({{% ref "pubsub-overview#setting-message-content-types" %}}) as `application/cloudevents+json`.
 
 If the CloudEvent that was authored by the app does not contain the [minimum required fields](https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md#required-attributes) in the CloudEvent specification, the message is rejected. Dapr adds the following fields to the CloudEvent if they are missing:
 
@@ -205,9 +205,9 @@ You can add additional fields to a custom CloudEvent that are not part of the of
 
 ### Example
 
-{{< tabs "Dapr CLI" "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Dapr CLI" %}}
 
 Publish a CloudEvent to the `orders` topic:
 
@@ -215,9 +215,9 @@ Publish a CloudEvent to the `orders` topic:
 dapr publish --publish-app-id orderprocessing --pubsub order-pub-sub --topic orders --data '{\"orderId\": \"100\"}'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 Publish a CloudEvent to the `orders` topic:
 
@@ -225,9 +225,9 @@ Publish a CloudEvent to the `orders` topic:
 curl -X POST http://localhost:3601/v1.0/publish/order-pub-sub/orders -H "Content-Type: application/cloudevents+json" -d '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 Publish a CloudEvent to the `orders` topic:
 
@@ -235,9 +235,9 @@ Publish a CloudEvent to the `orders` topic:
 Invoke-RestMethod -Method Post -ContentType 'application/cloudevents+json' -Body '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}' -Uri 'http://localhost:3601/v1.0/publish/order-pub-sub/orders'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Event deduplication
 
@@ -245,8 +245,8 @@ When using cloud events created by Dapr, the envelope contains an `id` field whi
 
 ## Next steps
 
-- Learn why you might [not want to use CloudEvents]({{< ref pubsub-raw.md >}})
-- Try out the [pub/sub Quickstart]({{< ref pubsub-quickstart.md >}})
-- List of [pub/sub components]({{< ref setup-pubsub >}})
-- Read the [API reference]({{< ref pubsub_api.md >}})
+- Learn why you might [not want to use CloudEvents]({{% ref pubsub-raw %}})
+- Try out the [pub/sub Quickstart]({{% ref pubsub-quickstart %}})
+- List of [pub/sub components]({{% ref setup-pubsub %}})
+- Read the [API reference]({{% ref pubsub_api %}})
 

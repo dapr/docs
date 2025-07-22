@@ -6,7 +6,7 @@ weight: 3000
 description: "Understand how API logging works in Dapr and how to view logs"
 ---
 
-API logging enables you to see the API calls your application makes to the Dapr sidecar. This is useful to monitor your application's behavior or for other debugging purposes. You can also combine Dapr API logging with Dapr log events (see [configure and view Dapr Logs]({{< ref "logs-troubleshooting.md" >}}) into the output if you want to use the logging capabilities together.
+API logging enables you to see the API calls your application makes to the Dapr sidecar. This is useful to monitor your application's behavior or for other debugging purposes. You can also combine Dapr API logging with Dapr log events (see [configure and view Dapr Logs]({{% ref "logs-troubleshooting.md" %}}) into the output if you want to use the logging capabilities together.
 
 ## Overview
 
@@ -80,7 +80,7 @@ time="2022-03-16T18:32:03.359097916Z" level=info msg="HTTP API Called" method="P
 
 ## API logging configuration
 
-Using the [Dapr Configuration spec]({{< ref "configuration-overview.md" >}}#sidecar-configuration), you can configure the default behavior of API logging in Dapr runtimes.
+Using the [Dapr Configuration spec]({{% ref "configuration-overview.md" %}}#sidecar-configuration), you can configure the default behavior of API logging in Dapr runtimes.
 
 ### Enable API logging by default
 

@@ -149,4 +149,4 @@ curl http://localhost:3500/v1.0/invoke/http://mathServiceURL.com/method/add \
 ```
 
 ## Next Steps
-- [How-To: Invoke and discover services]({{< ref howto-invoke-discover-services.md >}})
+- [How-To: Invoke and discover services]({{% ref howto-invoke-discover-services.md %}})

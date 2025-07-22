@@ -14,10 +14,10 @@ In these cases, configuring `retries` can either:
 
 Retries and timeouts work together, with timeouts ensuring your system fails fast when needed, and retries recovering from temporary glitches.  
 
-Dapr provides [default resiliency policies]({{< ref default-policies.md >}}), which you can [overwrite with user-defined retry policies.]({{< ref override-default-retries.md >}})
+Dapr provides [default resiliency policies]({{% ref default-policies.md %}}), which you can [overwrite with user-defined retry policies.]({{% ref override-default-retries.md %}})
 
 {{% alert title="Important" color="warning" %}}
-Each [pub/sub component]({{< ref supported-pubsub >}}) has its own built-in retry behaviors. Explicity applying a Dapr resiliency policy doesn't override these implicit retry policies. Rather, the resiliency policy augments the built-in retry, which can cause repetitive clustering of messages.
+Each [pub/sub component]({{% ref supported-pubsub %}}) has its own built-in retry behaviors. Explicity applying a Dapr resiliency policy doesn't override these implicit retry policies. Rather, the resiliency policy augments the built-in retry, which can cause repetitive clustering of messages.
 {{% /alert %}}
 
 ## Retry policy format
@@ -136,18 +136,18 @@ Field values for status codes must follow the format specified above. An incorre
 
 Watch a demo presented during [Diagrid's Dapr v1.15 celebration](https://www.diagrid.io/videos/dapr-1-15-deep-dive) to see how to set retry status code filters using Diagrid Conductor
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/NTnwoDhHIcQ?si=8k1IhRazjyrIJE3P&amp;start=4565" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+{{< youtube id=NTnwoDhHIcQ start=4565 >}}
 
 ## Next steps
 
 - [Learn how to override default retry policies for specific APIs.]({[< ref override-default-retries.md >]})
-- [Learn how to target your retry policies from the resiliency spec.]({{< ref targets.md >}})
+- [Learn how to target your retry policies from the resiliency spec.]({{% ref targets.md %}})
 - Learn more about:
-  - [Timeout policies]({{< ref timeouts.md >}})
-  - [Circuit breaker policies]({{< ref circuit-breakers.md >}})
+  - [Timeout policies]({{% ref timeouts.md %}})
+  - [Circuit breaker policies]({{% ref circuit-breakers.md %}})
 
 ## Related links
 
 Try out one of the Resiliency quickstarts:
-- [Resiliency: Service-to-service]({{< ref resiliency-serviceinvo-quickstart.md >}})
-- [Resiliency: State Management]({{< ref resiliency-state-quickstart.md >}})
+- [Resiliency: Service-to-service]({{% ref resiliency-serviceinvo-quickstart.md %}})
+- [Resiliency: State Management]({{% ref resiliency-state-quickstart.md %}})

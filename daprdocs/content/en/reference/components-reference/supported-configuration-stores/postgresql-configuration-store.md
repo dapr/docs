@@ -27,6 +27,21 @@ spec:
     # Name of the table which holds configuration information
     - name: table
       value: "[your_configuration_table_name]" 
+    # Individual connection parameters - can be used instead to override connectionString parameters
+    #- name: host
+    #  value: "localhost"
+    #- name: hostaddr
+    #  value: "127.0.0.1"
+    #- name: port
+    #  value: "5432"
+    #- name: database
+    #  value: "my_db"
+    #- name: user
+    #  value: "postgres"
+    #- name: password
+    #  value: "example"
+    #- name: sslRootCert
+    #  value: "/path/to/ca.crt"
     # Timeout for database operations, in seconds (optional)
     #- name: timeoutInSeconds
     #  value: 20
@@ -54,7 +69,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -66,6 +81,24 @@ The following metadata options are **required** to authenticate using a PostgreS
 | Field  | Required | Details | Example |
 |--------|:--------:|---------|---------|
 | `connectionString` | Y | The connection string for the PostgreSQL database. See the PostgreSQL [documentation on database connections](https://www.postgresql.org/docs/current/libpq-connect.html) for information on how to define a connection string. | `"host=localhost user=postgres password=example port=5432 connect_timeout=10 database=my_db"`
+
+#### Authenticate using individual connection parameters
+
+In addition to using a connection string, you can optionally specify individual connection parameters. These parameters are equivalent to the standard PostgreSQL connection parameters.
+
+| Field  | Required | Details | Example |
+|--------|:--------:|---------|---------|
+| `host` | Y | The host name or IP address of the PostgreSQL server | `"localhost"` |
+| `hostaddr` | N | The IP address of the PostgreSQL server (alternative to host) | `"127.0.0.1"` |
+| `port` | Y | The port number of the PostgreSQL server | `"5432"` |
+| `database` | Y | The name of the database to connect to | `"my_db"` |
+| `user` | Y | The PostgreSQL user to connect as | `"postgres"` |
+| `password` | Y | The password for the PostgreSQL user | `"example"` |
+| `sslRootCert` | N | Path to the SSL root certificate file | `"/path/to/ca.crt"` |
+
+{{% alert title="Note" color="primary" %}}
+When using individual connection parameters, these will override the ones present in the `connectionString`.
+{{% /alert %}}
 
 ### Authenticate using Microsoft Entra ID
 
@@ -187,5 +220,5 @@ curl -l 'http://<host>:<dapr-http-port>/configuration/mypostgresql/subscribe?key
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Configuration building block]({{< ref configuration-api-overview >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Configuration building block]({{% ref configuration-api-overview %}})

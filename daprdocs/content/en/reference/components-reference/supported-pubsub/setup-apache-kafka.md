@@ -9,10 +9,10 @@ aliases:
 
 ## Component format
 
-To set up Apache Kafka pub/sub, create a component of type `pubsub.kafka`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
+To set up Apache Kafka pub/sub, create a component of type `pubsub.kafka`. See the [pub/sub broker component file]({{% ref setup-pubsub.md %}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{% ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" %}}) on how to create and apply a pub/sub configuration.
 
-All component metadata field values can carry [templated metadata values]({{< ref "component-schema.md#templated-metadata-values" >}}), which are resolved on Dapr sidecar startup.
-For example, you can choose to use `{namespace}` as the `consumerGroup` to enable using the same `appId` in different namespaces using the same topics as described in [this article]({{< ref "howto-namespace.md#with-namespace-consumer-groups">}}).
+All component metadata field values can carry [templated metadata values]({{% ref "component-schema.md#templated-metadata-values" %}}), which are resolved on Dapr sidecar startup.
+For example, you can choose to use `{namespace}` as the `consumerGroup` to enable using the same `appId` in different namespaces using the same topics as described in [this article]({{% ref "howto-namespace.md#with-namespace-consumer-groups"%}}).
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -59,6 +59,8 @@ spec:
     value: 2097152
   - name: channelBufferSize # Optional. Advanced setting. The number of events to buffer in internal and external channels.
     value: 512
+  - name: consumerGroupRebalanceStrategy # Optional. Advanced setting. The strategy to use for consumer group rebalancing.
+    value: sticky
   - name: schemaRegistryURL # Optional. When using Schema Registry Avro serialization/deserialization. The Schema Registry URL.
     value: http://localhost:8081
   - name: schemaRegistryAPIKey # Optional. When using Schema Registry Avro serialization/deserialization. The Schema Registry API Key.
@@ -69,12 +71,14 @@ spec:
     value: true
   - name: schemaLatestVersionCacheTTL # Optional. When using Schema Registry Avro serialization/deserialization. The TTL for schema caching when publishing a message with latest schema available.
     value: 5m
+  - name: useAvroJson # Optional. Enables Avro JSON schema for serialization as opposed to Standard JSON default. Only applicable when the subscription uses valueSchemaType=Avro
+    value: "true"
   - name: escapeHeaders # Optional.
     value: false
   
 ```
 
-> For details on using `secretKeyRef`, see the guide on [how to reference secrets in components]({{< ref component-secrets.md >}}).
+> For details on using `secretKeyRef`, see the guide on [how to reference secrets in components]({{% ref component-secrets.md %}}).
 
 ## Spec metadata fields
 
@@ -82,12 +86,12 @@ spec:
 |--------------------|:--------:|---------|---------|
 | brokers             | Y | A comma-separated list of Kafka brokers. | `"localhost:9092,dapr-kafka.myapp.svc.cluster.local:9093"`
 | consumerGroup       | N | A kafka consumer group to listen on. Each record published to a topic is delivered to one consumer within each consumer group subscribed to the topic. If a value for `consumerGroup` is provided, any value for `consumerID` is ignored - a combination of the consumer group and a random unique identifier will be set for the `consumerID` instead. | `"group1"`
-| consumerID       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. If a value for `consumerGroup` is provided, any value for `consumerID` is ignored - a combination of the consumer group and a random unique identifier will be set for the `consumerID` instead.  | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{< ref "component-schema.md#templated-metadata-values" >}})
+| consumerID       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. If a value for `consumerGroup` is provided, any value for `consumerID` is ignored - a combination of the consumer group and a random unique identifier will be set for the `consumerID` instead.  | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{% ref "component-schema.md#templated-metadata-values" %}})
 | clientID            | N | A user-provided string sent with every request to the Kafka brokers for logging, debugging, and auditing purposes. Defaults to `"namespace.appID"` for Kubernetes mode or `"appID"` for Self-Hosted mode. | `"my-namespace.my-dapr-app"`, `"my-dapr-app"`
 | authRequired        | N | *Deprecated* Enable [SASL](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) authentication with the Kafka brokers. | `"true"`, `"false"`
 | authType            | Y | Configure or disable authentication. Supported values: `none`, `password`, `mtls`, `oidc` or `awsiam` | `"password"`, `"none"`
 | saslUsername        | N | The SASL username used for authentication. Only required if `authType` is set to `"password"`. | `"adminuser"`
-| saslPassword        | N | The SASL password used for authentication. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}). Only required if `authType is set to `"password"`. | `""`, `"KeFg23!"`
+| saslPassword        | N | The SASL password used for authentication. Can be `secretKeyRef` to use a [secret reference]({{% ref component-secrets.md %}}). Only required if `authType is set to `"password"`. | `""`, `"KeFg23!"`
 | saslMechanism      | N | The SASL Authentication Mechanism you wish to use. Only required if `authType` is set to `"password"`. Defaults to `PLAINTEXT` | `"SHA-512", "SHA-256", "PLAINTEXT"`
 | initialOffset       | N | The initial offset to use if no offset was previously committed. Should be "newest" or "oldest". Defaults to "newest". | `"oldest"`
 | maxMessageBytes     | N | The maximum size in bytes allowed for a single Kafka message. Defaults to 1024. | `2048`
@@ -115,6 +119,7 @@ spec:
 | schemaRegistryAPISecret | N | When using Schema Registry Avro serialization/deserialization. The Schema Registry credentials API Secret. | `ABCDEFGMEADFF` |
 | schemaCachingEnabled | N | When using Schema Registry Avro serialization/deserialization. Enables caching for schemas. Default is `true` | `true` |
 | schemaLatestVersionCacheTTL | N | When using Schema Registry Avro serialization/deserialization. The TTL for schema caching when publishing a message with latest schema available. Default is 5 min | `5m` |
+| useAvroJson | N | Enables Avro JSON schema for serialization as opposed to Standard JSON default. Only applicable when the subscription uses valueSchemaType=Avro. Default is `"false"` | `"true"` |
 | clientConnectionTopicMetadataRefreshInterval | N | The interval for the client connection's topic metadata to be refreshed with the broker as a Go duration. Defaults to `9m`. | `"4m"` |
 | clientConnectionKeepAliveInterval | N | The maximum time for the client connection to be kept alive with the broker, as a Go duration, before closing the connection. A zero value (default) means keeping alive indefinitely. | `"4m"` |
 | consumerFetchMin | N | The minimum number of message bytes to fetch in a request - the broker will wait until at least this many are available. The default is `1`, as `0` causes the consumer to spin when no messages are available. Equivalent to the JVM's `fetch.min.bytes`. | `"2"` |
@@ -122,9 +127,10 @@ spec:
 | channelBufferSize | N | The number of events to buffer in internal and external channels. This permits the producer and consumer to continue processing some messages in the background while user code is working, greatly improving throughput. Defaults to `256`. | `"512"` |
 | heartbeatInterval | N | The interval between heartbeats to the consumer coordinator. At most, the value should be set to a 1/3 of the `sessionTimeout` value. Defaults to "3s". | `"5s"` |
 | sessionTimeout | N | The timeout used to detect client failures when using Kafka’s group management facility. If the broker fails to receive any heartbeats from the consumer before the expiration of this session timeout, then the consumer is removed and initiates a rebalance. Defaults to "10s". | `"20s"` |
+| consumerGroupRebalanceStrategy | N | The strategy to use for consumer group rebalancing. Supported values: `range`, `sticky`, `roundrobin`. Default is `range` | `"sticky"` |
 | escapeHeaders | N | Enables URL escaping of the message header values received by the consumer. Allows receiving content with special characters that are usually not allowed in HTTP headers. Default is `false`. | `true` |
 
-The `secretKeyRef` above is referencing  a [kubernetes secrets store]({{< ref kubernetes-secret-store.md >}}) to access the tls information. Visit [here]({{< ref setup-secret-store.md >}}) to learn more about how to configure a secret store component.
+The `secretKeyRef` above is referencing  a [kubernetes secrets store]({{% ref kubernetes-secret-store.md %}}) to access the tls information. Visit [here]({{% ref setup-secret-store.md %}}) to learn more about how to configure a secret store component.
 
 #### Note
 The metadata `version` must be set to `1.0.0` when using Azure EventHubs with Kafka.
@@ -453,7 +459,7 @@ Apache Kafka component supports sending and receiving multiple messages in a sin
 
 ### Configuring bulk subscribe
 
-When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to [Subscribing messages in bulk]({{< ref "pubsub-bulk#subscribing-messages-in-bulk" >}}) for more details. Learn more about [the bulk subscribe API]({{< ref pubsub-bulk.md >}}).
+When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to [Subscribing messages in bulk]({{% ref "pubsub-bulk#subscribing-messages-in-bulk" %}}) for more details. Learn more about [the bulk subscribe API]({{% ref pubsub-bulk.md %}}).
 
 Apache Kafka supports the following bulk metadata options:
 
@@ -505,9 +511,9 @@ When consuming messages, special message metadata are being automatically passed
 - `__timestamp`: the timestamp for the message
 
 You can access them within the consumer endpoint as follows:
-{{< tabs "Python (FastAPI)" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Python (FastAPI)" %}}
 
 ```python
 from fastapi import APIRouter, Body, Response, status
@@ -539,9 +545,9 @@ app.include_router(router)
 
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Receiving message headers with special characters
 
@@ -583,7 +589,12 @@ You can configure pub/sub to publish or consume data encoded using [Avro binary 
 
 {{% alert title="Important" color="warning" %}}
 Currently, only message value serialization/deserialization is supported. Since cloud events are not supported, the `rawPayload=true` metadata must be passed when publishing Avro messages.
+
 Please note that `rawPayload=true` should NOT be set for consumers, as the message value will be wrapped into a CloudEvent and base64-encoded. Leaving `rawPayload` as default (i.e. `false`) will send the Avro-decoded message to the application as a JSON payload.
+
+When setting the `useAvroJson` component metadata to `true`, the inbound/outbound Avro binary is converted into/from Avro JSON encoding. 
+This can be preferable when accurate type mapping is desirable. 
+The default is standard JSON which is typically easier to bind to a native type in an application. 
 {{% /alert %}}
 
 When configuring the Kafka pub/sub component metadata, you must define:
@@ -599,15 +610,15 @@ Date/Datetime fields must be passed as their [Epoch Unix timestamp](https://en.w
 ### Publishing Avro messages
 In order to indicate to the Kafka pub/sub component that the message should be using Avro serialization, the `valueSchemaType` metadata must be set to `Avro`.
 
-{{< tabs curl "Python SDK">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "curl" %}}
 ```bash
 curl -X "POST" http://localhost:3500/v1.0/publish/pubsub/my-topic?metadata.rawPayload=true&metadata.valueSchemaType=Avro -H "Content-Type: application/json" -d '{"order_number": "345", "created_date": 1704861365986}'
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python SDK" %}}
 ```python
 from dapr.clients import DaprClient
 
@@ -626,17 +637,17 @@ with DaprClient() as d:
     # Print the request
     print(req_data, flush=True)
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 ### Subscribing to Avro topics
 In order to indicate to the Kafka pub/sub component that the message should be deserialized using Avro, the `valueSchemaType` metadata must be set to `Avro` in the subscription metadata.
 
-{{< tabs "Python (FastAPI)" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Python (FastAPI)" %}}
 
 ```python
 from fastapi import APIRouter, Body, Response, status
@@ -667,29 +678,47 @@ app.include_router(router)
 
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}} 
+{{< /tabpane >}} 
 
+### Overriding default consumer group rebalancing
+In Kafka, rebalancing strategies determine how partitions are assigned to consumers within a consumer group. The default strategy is "range", but "roundrobin" and "sticky" are also available. 
+- `Range`:
+Partitions are assigned to consumers based on their lexicographical order. 
+If you have three partitions (0, 1, 2) and two consumers (A, B), consumer A might get partitions 0 and 1, while consumer B gets partition 2. 
+- `RoundRobin`:
+Partitions are assigned to consumers in a round-robin fashion. 
+With the same example above, consumer A might get partitions 0 and 2, while consumer B gets partition 1. 
+- `Sticky`:
+This strategy aims to preserve previous assignments as much as possible while still maintaining a balanced distribution. 
+If a consumer leaves or joins the group, only the affected partitions are reassigned, minimizing disruption. 
 
+#### Choosing a Strategy:
+- `Range`:
+Simple to understand and implement, but can lead to uneven distribution if partition sizes vary significantly. 
+- `RoundRobin`:
+Provides a good balance in many cases, but might not be optimal if message keys are unevenly distributed. 
+- `Sticky`:
+Generally preferred for its ability to minimize disruption during rebalances, especially when dealing with a large number of partitions or frequent consumer group changes. 
 
 ## Create a Kafka instance
 
-{{< tabs "Self-Hosted" "Kubernetes">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 You can run Kafka locally using [this](https://github.com/wurstmeister/kafka-docker) Docker image.
 To run without Docker, see the getting started guide [here](https://kafka.apache.org/quickstart).
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 To run Kafka on Kubernetes, you can use any Kafka operator, such as [Strimzi](https://strimzi.io/quickstarts/).
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 ## Related links
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-publish-subscribe.md##step-1-setup-the-pubsub-component" >}}) for instructions on configuring pub/sub components
-- [Pub/Sub building block]({{< ref pubsub >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-publish-subscribe.md##step-1-setup-the-pubsub-component" %}}) for instructions on configuring pub/sub components
+- [Pub/Sub building block]({{% ref pubsub %}})

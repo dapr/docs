@@ -7,10 +7,10 @@ description: "Learn how to abstract the complexities of interacting with large l
 ---
 
 {{% alert title="Alpha" color="primary" %}}
-The conversation API is currently in [alpha]({{< ref "certification-lifecycle.md#certification-levels" >}}).
+The conversation API is currently in [alpha]({{% ref "certification-lifecycle#certification-levels" %}}).
 {{% /alert %}}
 
-Let's get started using the [conversation API]({{< ref conversation-overview.md >}}). In this guide, you'll learn how to:
+Let's get started using the [conversation API]({{% ref conversation-overview %}}). In this guide, you'll learn how to:
 
 - Set up one of the available Dapr components (echo) that work with the conversation API.   
 - Add the conversation client to your application.
@@ -20,7 +20,7 @@ Let's get started using the [conversation API]({{< ref conversation-overview.md 
 
 Create a new configuration file called `conversation.yaml` and save to a components or config sub-folder in your application directory. 
 
-Select your [preferred conversation component spec]({{< ref supported-conversation >}}) for your `conversation.yaml` file.
+Select your [preferred conversation component spec]({{% ref supported-conversation %}}) for your `conversation.yaml` file.
 
 For this scenario, we use a simple echo component.
 
@@ -36,7 +36,7 @@ spec:
 
 ### Use the OpenAI component
 
-To interface with a real LLM, use one of the other [supported conversation components]({{< ref "supported-conversation" >}}), including OpenAI, Hugging Face, Anthropic, DeepSeek, and more.
+To interface with a real LLM, use one of the other [supported conversation components]({{% ref "supported-conversation" %}}), including OpenAI, Hugging Face, Anthropic, DeepSeek, and more.
 
 For example, to swap out the `echo` mock component with an `OpenAI` component, replace the `conversation.yaml` file with the following. You'll need to copy your API key into the component file.
 
@@ -56,13 +56,13 @@ spec:
 
 ## Connect the conversation client
 
-The following examples use an HTTP client to send a POST request to Dapr's sidecar HTTP endpoint. You can also use [the Dapr SDK client instead]({{< ref "#related-links" >}}).
+The following examples use an HTTP client to send a POST request to Dapr's sidecar HTTP endpoint. You can also use [the Dapr SDK client instead]({{% ref "#related-links" %}}).
 
-{{< tabs ".NET" "Go" "Rust" >}}
+{{< tabpane text=true >}}
 
 
  <!-- .NET -->
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using Dapr.AI.Conversation;
@@ -90,10 +90,10 @@ foreach (var resp in response.Outputs)
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Go -->
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 package main
@@ -132,10 +132,10 @@ func main() {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Rust -->
-{{% codetab %}}
+{{% tab "Rust" %}}
 
 ```rust
 use dapr::client::{ConversationInputBuilder, ConversationRequestBuilder};
@@ -170,27 +170,27 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Run the conversation connection
 
 Start the connection using the `dapr run` command. For example, for this scenario, we're running `dapr run` on an application with the app ID `conversation` and pointing to our conversation YAML file in the `./config` directory. 
 
-{{< tabs ".NET" "Go" "Rust" >}}
+{{< tabpane text=true >}}
 
  <!-- .NET -->
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```bash
 dapr run --app-id conversation --dapr-grpc-port 50001 --log-level debug --resources-path ./config -- dotnet run
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Go -->
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```bash
 dapr run --app-id conversation --dapr-grpc-port 50001 --log-level debug --resources-path ./config -- go run ./main.go
@@ -202,10 +202,10 @@ dapr run --app-id conversation --dapr-grpc-port 50001 --log-level debug --resour
   - '== APP == conversation output: Please write a witty haiku about the Dapr distributed programming framework at dapr.io'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Rust -->
-{{% codetab %}}
+{{% tab "Rust" %}}
 
 ```bash
 dapr run --app-id=conversation --resources-path ./config --dapr-grpc-port 3500 -- cargo run --example conversation
@@ -218,9 +218,9 @@ dapr run --app-id=conversation --resources-path ./config --dapr-grpc-port 3500 -
   - 'conversation output: hello world'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Advanced features
 
@@ -230,40 +230,40 @@ The conversation API supports the following features:
 
 1. **PII scrubbing:** Allows for the obfuscation of data going in and out of the LLM.
 
-To learn how to enable these features, see the [conversation API reference guide]({{< ref conversation_api.md >}}).
+To learn how to enable these features, see the [conversation API reference guide]({{% ref conversation_api %}}).
 
 ## Related links
 
 Try out the conversation API using the full examples provided in the supported SDK repos.
 
 
-{{< tabs ".NET" "Go" "Rust" >}}
+{{< tabpane text=true >}}
 
  <!-- .NET -->
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 [Dapr conversation example with the .NET SDK](https://github.com/dapr/dotnet-sdk/tree/master/examples/AI/ConversationalAI)
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Go -->
-{{% codetab %}}
+{{% tab "Go" %}}
 
 [Dapr conversation example with the Go SDK](https://github.com/dapr/go-sdk/tree/main/examples/conversation)
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Rust -->
-{{% codetab %}}
+{{% tab "Rust" %}}
 
 [Dapr conversation example with the Rust SDK](https://github.com/dapr/rust-sdk/tree/main/examples/src/conversation)
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 ## Next steps
 
-- [Conversation API reference guide]({{< ref conversation_api.md >}})
-- [Available conversation components]({{< ref supported-conversation >}})
+- [Conversation API reference guide]({{% ref conversation_api %}})
+- [Available conversation components]({{% ref supported-conversation %}})

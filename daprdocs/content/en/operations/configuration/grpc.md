@@ -6,7 +6,7 @@ weight: 5000
 description: "Configure Dapr to use gRPC for low-latency, high performance scenarios"
 ---
 
-Dapr implements both an HTTP and a gRPC API for local calls. gRPC is useful for low-latency, high performance scenarios and has language integration using the proto clients. [You can see the full list of auto-generated clients (Dapr SDKs)]({{< ref sdks >}}).
+Dapr implements both an HTTP and a gRPC API for local calls. gRPC is useful for low-latency, high performance scenarios and has language integration using the proto clients. [You can see the full list of auto-generated clients (Dapr SDKs)]({{% ref sdks %}}).
 
 The Dapr runtime implements a [proto service](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto) that apps can communicate with via gRPC.
 
@@ -14,10 +14,10 @@ Not only can you call Dapr via gRPC, Dapr can communicate with an application vi
 
 ## Configuring Dapr to communicate with an app via gRPC
 
-{{< tabs "Self-hosted" Kubernetes >}}
+{{< tabpane text=true >}}
 
  <!-- Self hosted -->
-{{% codetab %}}
+{{% tab "Self-hosted" %}}
 
 When running in self hosted mode, use the `--app-protocol` flag to tell Dapr to use gRPC to talk to the app:
 
@@ -26,10 +26,10 @@ dapr run --app-protocol grpc --app-port 5005 node app.js
 ```
 This tells Dapr to communicate with your app via gRPC over port `5005`.
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Kubernetes -->
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
 On Kubernetes, set the following annotations in your deployment YAML:
 
@@ -58,10 +58,10 @@ spec:
 #...
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Next steps
 
-{{< button text="Handle large HTTP header sizes" page="increase-read-buffer-size" >}}
+{{< button text="Handle large HTTP header sizes" page="increase-read-buffer-size.md" >}}

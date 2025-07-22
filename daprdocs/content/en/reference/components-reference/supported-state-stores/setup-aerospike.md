@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup Aerospike state store create a component of type `state.Aerospike`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+To setup Aerospike state store create a component of type `state.Aerospike`. See [this guide]({{% ref "howto-get-save-state.md#step-1-setup-a-state-store" %}}) on how to create and apply a state store configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -29,7 +29,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -42,9 +42,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Setup Aerospike
 
-{{< tabs "Self-Hosted" "Kubernetes" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 You can run Aerospike locally using Docker:
 
 ```
@@ -52,9 +52,9 @@ docker run -d --name aerospike -p 3000:3000 -p 3001:3001 -p 3002:3002 -p 3003:30
 ```
 
 You can then interact with the server using `localhost:3000`.
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 The easiest way to install Aerospike on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/aerospike):
 
 ```
@@ -68,11 +68,11 @@ To interact with Aerospike, find the service with: `kubectl get svc aerospike -n
 For example, if installing using the example above, the Aerospike host address would be:
 
 `aerospike-my-aerospike.aerospike.svc.cluster.local:3000`
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Related links
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
-- [State management building block]({{< ref state-management >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" %}}) for instructions on configuring state store components
+- [State management building block]({{% ref state-management %}})

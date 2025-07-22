@@ -38,13 +38,13 @@ spec:
 
 ## Next steps
 
-- [Learn more about default resiliency policies]({{< ref default-policies.md >}})
+- [Learn more about default resiliency policies]({{% ref default-policies.md %}})
 - Learn more about:
-  - [Retry policies]({{< ref retries-overview.md >}})
-  - [Circuit breaker policies]({{< ref circuit-breakers.md >}})
+  - [Retry policies]({{% ref retries-overview.md %}})
+  - [Circuit breaker policies]({{% ref circuit-breakers.md %}})
 
 ## Related links
 
 Try out one of the Resiliency quickstarts:
-- [Resiliency: Service-to-service]({{< ref resiliency-serviceinvo-quickstart.md >}})
-- [Resiliency: State Management]({{< ref resiliency-state-quickstart.md >}})
+- [Resiliency: Service-to-service]({{% ref resiliency-serviceinvo-quickstart.md %}})
+- [Resiliency: State Management]({{% ref resiliency-state-quickstart.md %}})

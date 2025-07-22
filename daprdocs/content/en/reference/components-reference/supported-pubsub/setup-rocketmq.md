@@ -8,7 +8,7 @@ aliases:
 ---
 
 ## Component format
-To set up RocketMQ pub/sub, create a component of type `pubsub.rocketmq`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
+To set up RocketMQ pub/sub, create a component of type `pubsub.rocketmq`. See the [pub/sub broker component file]({{% ref setup-pubsub.md %}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{% ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" %}}) on how to create and apply a pub/sub configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -40,7 +40,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -49,7 +49,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | instanceName                          |    N     | Instance name                                                | `time.Now().String()`                                       | `dapr-rocketmq-test`                                         |
 | consumerGroup                         |    N     | Consumer group name. Recommend. If `producerGroup` is `null`，`groupName` is used. |                                                             | `dapr-rocketmq-test-g-c `                                    |
 | producerGroup (consumerID)            |    N     | Producer group name. Recommended. If `producerGroup` is `null`，`consumerID` is used. If `consumerID` also is null, `groupName` is used. |                                                             | `dapr-rocketmq-test-g-p`                                     |
-| consumerID        |    N     | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{< ref "component-schema.md#templated-metadata-values" >}})
+| consumerID        |    N     | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{% ref "component-schema.md#templated-metadata-values" %}})
 | groupName                             |    N     | Consumer/Producer group name. **Depreciated**.               |                                                             | `dapr-rocketmq-test-g`                                       |
 | nameSpace                             |    N     | RocketMQ namespace                                           |                                                             | `dapr-rocketmq`                                              |
 | nameServerDomain                      |    N     | RocketMQ name server domain                                  |                                                             | `https://my-app.net:8080/nsaddr`                             |
@@ -156,6 +156,6 @@ If the `ShardingKey` does not exist, the `RoundRobin` algorithm is used to deter
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Pub/Sub building block]({{< ref pubsub >}})
-- Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Pub/Sub building block]({{% ref pubsub %}})
+- Read [this guide]({{% ref "howto-publish-subscribe.md#step-2-publish-a-topic" %}}) for instructions on configuring pub/sub components

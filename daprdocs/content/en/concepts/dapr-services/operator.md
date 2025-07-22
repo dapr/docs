@@ -5,11 +5,11 @@ linkTitle: "Operator"
 description: "Overview of the Dapr operator service"
 ---
 
-When running Dapr in [Kubernetes mode]({{< ref kubernetes >}}), a pod running the Dapr Operator service manages [Dapr component]({{< ref components >}}) updates and provides Kubernetes services endpoints for Dapr.
+When running Dapr in [Kubernetes mode]({{% ref kubernetes %}}), a pod running the Dapr Operator service manages [Dapr component]({{% ref components %}}) updates and provides Kubernetes services endpoints for Dapr.
 
 ## Running the operator service
 
-The operator service is deployed as part of `dapr init -k`, or via the Dapr Helm charts. For more information on running Dapr on Kubernetes, visit the [Kubernetes hosting page]({{< ref kubernetes >}}).
+The operator service is deployed as part of `dapr init -k`, or via the Dapr Helm charts. For more information on running Dapr on Kubernetes, visit the [Kubernetes hosting page]({{% ref kubernetes %}}).
 
 ## Additional configuration options
 
@@ -17,7 +17,7 @@ The operator service includes additional configuration options.
 
 ### Injector watchdog
 
-The operator service includes an _injector watchdog_ feature which periodically polls all pods running in your Kubernetes cluster and confirms that the Dapr sidecar is injected in those which have the `dapr.io/enabled=true` annotation. It is primarily meant to address situations where the [Injector service]({{< ref sidecar-injector >}}) did not successfully inject the sidecar (the `daprd` container) into pods.
+The operator service includes an _injector watchdog_ feature which periodically polls all pods running in your Kubernetes cluster and confirms that the Dapr sidecar is injected in those which have the `dapr.io/enabled=true` annotation. It is primarily meant to address situations where the [Injector service]({{% ref sidecar-injector %}}) did not successfully inject the sidecar (the `daprd` container) into pods.
 
 
 The injector watchdog can be useful in a few situations, including:

@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup Cassandra state store create a component of type `state.cassandra`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+To setup Cassandra state store create a component of type `state.cassandra`. See [this guide]({{% ref "howto-get-save-state.md#step-1-setup-a-state-store" %}}) on how to create and apply a state store configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -39,7 +39,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -58,9 +58,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Setup Cassandra
 
-{{< tabs "Self-Hosted" "Kubernetes" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 You can run Cassandra locally with the Datastax Docker image:
 
 ```
@@ -68,9 +68,9 @@ docker run -e DS_LICENSE=accept --memory 4g --name my-dse -d datastax/dse-server
 ```
 
 You can then interact with the server using `localhost:9042`.
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 The easiest way to install Cassandra on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/incubator/cassandra):
 
 ```
@@ -84,11 +84,19 @@ To interact with Cassandra, find the service with: `kubectl get svc -n cassandra
 For example, if installing using the example above, the Cassandra DNS would be:
 
 `cassandra.cassandra.svc.cluster.local`
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
+
+## Apache Ignite
+
+[Apache Ignite](https://ignite.apache.org/)'s integration with Cassandra as a caching layer is not supported by this component.
+
+## Apache Ignite
+
+[Apache Ignite](https://ignite.apache.org/)'s integration with Cassandra as a caching layer is not supported by this component.
 
 ## Related links
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
-- [State management building block]({{< ref state-management >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" %}}) for instructions on configuring state store components
+- [State management building block]({{% ref state-management %}})

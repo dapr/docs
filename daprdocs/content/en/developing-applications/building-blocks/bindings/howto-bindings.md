@@ -11,15 +11,15 @@ With output bindings, you can invoke external resources. An optional payload and
 
 <img src="/images/howto-bindings/kafka-output-binding.png" width=1000 alt="Diagram showing bindings of example service">
 
-This guide uses a Kafka binding as an example. You can find your preferred binding spec from [the list of bindings components]({{< ref setup-bindings >}}). In this guide:
+This guide uses a Kafka binding as an example. You can find your preferred binding spec from [the list of bindings components]({{% ref setup-bindings %}}). In this guide:
 
 1. The example invokes the `/binding` endpoint with `checkout`, the name of the binding to invoke.
 1. The payload goes inside the mandatory `data` field, and can be any JSON serializable value.
-1. The `operation` field tells the binding what action it needs to take. For example, [the Kafka binding supports the `create` operation]({{< ref "kafka.md#binding-support" >}}).
-   - You can check [which operations (specific to each component) are supported for every output binding]({{< ref supported-bindings >}}).
+1. The `operation` field tells the binding what action it needs to take. For example, [the Kafka binding supports the `create` operation]({{% ref "kafka#binding-support" %}}).
+   - You can check [which operations (specific to each component) are supported for every output binding]({{% ref supported-bindings %}}).
 
 {{% alert title="Note" color="primary" %}}
- If you haven't already, [try out the bindings quickstart]({{< ref bindings-quickstart.md >}}) for a quick walk-through on how to use the bindings API.
+ If you haven't already, [try out the bindings quickstart]({{% ref bindings-quickstart %}}) for a quick walk-through on how to use the bindings API.
 
 {{% /alert %}}
 
@@ -32,11 +32,11 @@ Create a new binding component named `checkout`. Within the `metadata` section, 
 - The topic to which you'll publish the message
 - The broker
 
-When creating the binding component, [specify the supported `direction` of the binding]({{< ref "bindings_api.md#binding-direction-optional" >}}). 
+When creating the binding component, [specify the supported `direction` of the binding]({{% ref "bindings_api#binding-direction-optional" %}}). 
 
-{{< tabs "Self-Hosted (CLI)" Kubernetes >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted (CLI)" %}}
 
 Use the `--resources-path` flag with `dapr run` to point to your custom resources directory.
 
@@ -66,9 +66,9 @@ spec:
     value: output
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
 To deploy the following `binding.yaml` file into a Kubernetes cluster, run `kubectl apply -f binding.yaml`.
 
@@ -98,57 +98,49 @@ spec:
     value: output
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Send an event (output binding)
 
 The code examples below leverage Dapr SDKs to invoke the output bindings endpoint on a running Dapr instance. 
 
-{{< tabs ".NET" Java Python Go JavaScript>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
+
+Here's an example of using a console app with top-level statements in .NET 6+:
+
+Here's an example of using a console app with top-level statements in .NET 6+:
 
 ```csharp
-//dependencies
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using Dapr.Client;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading;
 
-//code
-namespace EventService
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDaprClient();
+var app = builder.Build();
+
+const string BINDING_NAME = "checkout";
+const string BINDING_OPERATION = "create";
+
+var random = new Random();
+using var daprClient = app.Services.GetRequiredService<DaprClient>();
+
+while (true)
 {
-    class Program
-    {
-        static async Task Main(string[] args)
-        {
-            string BINDING_NAME = "checkout";
-            string BINDING_OPERATION = "create";
-            while(true)
-            {
-                System.Threading.Thread.Sleep(5000);
-                Random random = new Random();
-                int orderId = random.Next(1,1000);
-                using var client = new DaprClientBuilder().Build();
-                //Using Dapr SDK to invoke output binding
-                await client.InvokeBindingAsync(BINDING_NAME, BINDING_OPERATION, orderId);
-                Console.WriteLine("Sending message: " + orderId);
-            }
-        }
-    }
+    await Task.Delay(TimeSpan.FromSeconds(5));
+    var orderId = random.Next(1, 1000);
+    await client.InvokeBindingAsync(BINDING_NAME, BINDING_OPERATION, orderId);
+    Console.WriteLine($"Sending message: {orderId}"); 
 }
-
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ```java
 //dependencies
@@ -184,9 +176,9 @@ public class OrderProcessingServiceApplication {
 
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ```python
 #dependencies
@@ -212,9 +204,9 @@ while True:
     
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 //dependencies
@@ -250,9 +242,9 @@ func main() {
     
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript%}}" %}}
 
 ```javascript
 //dependencies
@@ -292,9 +284,9 @@ function sleep(ms) {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 You can also invoke the output bindings endpoint using HTTP:
 
@@ -304,12 +296,10 @@ curl -X POST -H 'Content-Type: application/json' http://localhost:3601/v1.0/bind
 
 Watch this [video](https://www.youtube.com/watch?v=ysklxm81MTs&feature=youtu.be&t=1960) on how to use bi-directional output bindings.
 
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/ysklxm81MTs?start=1960" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
+{{< youtube id=ysklxm81MTs start=1960 >}}
 
 ## References
 
-- [Binding API]({{< ref bindings_api.md >}})
-- [Binding components]({{< ref bindings >}})
-- [Binding detailed specifications]({{< ref supported-bindings >}})
+- [Binding API]({{% ref bindings_api %}})
+- [Binding components]({{% ref bindings %}})
+- [Binding detailed specifications]({{% ref supported-bindings %}})

@@ -56,12 +56,12 @@ Given the following JSON loaded from `secretsFile`:
 }
 ```
 
-The flag `multiValued` determines whether the secret store presents a [name/value behavior or a multiple key-value per secret behavior]({{< ref "secrets_api.md#response-body" >}}).
+The flag `multiValued` determines whether the secret store presents a [name/value behavior or a multiple key-value per secret behavior]({{% ref "secrets_api.md#response-body" %}}).
 
 ### Name/Value semantics
 
 
-If `multiValued` is `false`, the store loads [the JSON file]({{< ref "#setup-json-file-to-hold-the-secrets" >}}) and create a map with the following key-value pairs:
+If `multiValued` is `false`, the store loads [the JSON file]({{% ref "#setup-json-file-to-hold-the-secrets" %}}) and create a map with the following key-value pairs:
 
 | flattened key           | value                           |
 | ---                     | ---                             |
@@ -99,7 +99,7 @@ $ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings:s
 
 If `multiValued` is `true`, the secret store enables multiple key-value per secret behavior:
 - Nested structures after the top level will be flattened.
-- It parses the [same JSON file]({{< ref "#setup-json-file-to-hold-the-secrets" >}}) into this table:
+- It parses the [same JSON file]({{% ref "#setup-json-file-to-hold-the-secrets" %}}) into this table:
 
 | key                | value                           |
 | ---                | ---                             |
@@ -108,7 +108,7 @@ If `multiValued` is `true`, the secret store enables multiple key-value per secr
 
 Notice that in the above table:
 - `connectionStrings` is now a JSON object with two keys: `mysql` and `sql`. 
-- The `connectionStrings:sql` and `connectionStrings:mysql` flattened keys from the [table mapped for name/value semantics]({{< ref "#namevalue-semantics" >}}) are missing.
+- The `connectionStrings:sql` and `connectionStrings:mysql` flattened keys from the [table mapped for name/value semantics]({{% ref "#namevalue-semantics" %}}) are missing.
 
 Invoking a `GET` request on the key `connectionStrings` now results in a successful HTTP response similar to the following:
 
@@ -174,7 +174,7 @@ $ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings
 This is useful in order to mimic secret stores like Vault or Kubernetes that return multiple key/value pairs per secret key.
 
 ## Related links
-- [Secrets building block]({{< ref secrets >}})
-- [How-To: Retrieve a secret]({{< ref "howto-secrets.md" >}})
-- [How-To: Reference secrets in Dapr components]({{< ref component-secrets.md >}})
-- [Secrets API reference]({{< ref secrets_api.md >}})
+- [Secrets building block]({{% ref secrets %}})
+- [How-To: Retrieve a secret]({{% ref "howto-secrets.md" %}})
+- [How-To: Reference secrets in Dapr components]({{% ref component-secrets.md %}})
+- [Secrets API reference]({{% ref secrets_api.md %}})

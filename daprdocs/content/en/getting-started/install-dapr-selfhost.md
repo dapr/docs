@@ -8,7 +8,7 @@ aliases:
   - /getting-started/set-up-dapr/install-dapr/
 ---
 
-Now that you've [installed the Dapr CLI]({{<ref install-dapr-cli.md>}}), use the CLI to initialize Dapr on your local machine.
+Now that you've [installed the Dapr CLI]({{%ref install-dapr-cli.md%}}), use the CLI to initialize Dapr on your local machine.
 
 Dapr runs as a sidecar alongside your application. In self-hosted mode, this means it is a process on your local machine. By initializing Dapr, you:
 
@@ -24,44 +24,44 @@ Dapr initialization includes:
 1. Running a **Dapr scheduler service container instance** for job scheduling.
 
 {{% alert title="Kubernetes Development Environment" color="primary" %}}
-To initialize Dapr in your local or remote **Kubernetes** cluster for development (including the Redis and Zipkin containers listed above), see [how to initialize Dapr for development on Kubernetes]({{<ref "kubernetes-deploy.md#install-dapr-from-the-official-dapr-helm-chart-with-development-flag" >}})
+To initialize Dapr in your local or remote **Kubernetes** cluster for development (including the Redis and Zipkin containers listed above), see [how to initialize Dapr for development on Kubernetes]({{%ref "kubernetes-deploy.md#install-dapr-from-the-official-dapr-helm-chart-with-development-flag" %}})
 {{% /alert %}}
 
 {{% alert title="Docker" color="primary" %}}
-The recommended development environment requires [Docker](https://docs.docker.com/install/). While you can [initialize Dapr without a dependency on Docker]({{< ref self-hosted-no-docker.md >}}), the next steps in this guide assume the recommended Docker development environment.
+The recommended development environment requires [Docker](https://docs.docker.com/install/). While you can [initialize Dapr without a dependency on Docker]({{% ref self-hosted-no-docker.md %}}), the next steps in this guide assume the recommended Docker development environment.
 
-You can also install [Podman](https://podman.io/) in place of Docker. Read more about [initializing Dapr using Podman]({{< ref dapr-init.md >}}).
+You can also install [Podman](https://podman.io/) in place of Docker. Read more about [initializing Dapr using Podman]({{% ref dapr-init.md %}}).
 {{% /alert %}}
 
 ### Step 1: Open an elevated terminal
 
-{{< tabs "Linux/MacOS" "Windows">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Linux/MacOS" %}}
 
 You will need to use `sudo` for this quickstart if:
 
 - You run your Docker commands with `sudo`, or
 - The install path is `/usr/local/bin` (default install path).
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Windows" %}}
 
 Run Windows Terminal or command prompt as administrator.
 
 1. Right click on the Windows Terminal or command prompt icon.
 1. Select **Run as administrator**.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### Step 2: Run the init CLI command
 
-{{< tabs "Linux/MacOS" "Windows">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Linux/MacOS" %}}
 
 Install the latest Dapr runtime binaries:
 
@@ -79,9 +79,9 @@ If you are installing on **Mac OS Silicon** with Docker, you may need to perform
 1. Navigate to **Docker Desktop** > **Settings** > **Advanced**.
 1. Select the **Allow the default Docker socket to be used (requires password)** checkbox.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Windows" %}}
 
 Install the latest Dapr runtime binaries:
 
@@ -89,16 +89,16 @@ Install the latest Dapr runtime binaries:
 dapr init
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 **Expected output:**
 
 <img src="/images/install-dapr-selfhost/dapr-init-output.png" style=
 "padding-bottom: 5px" >
 
-[See the troubleshooting guide if you encounter any error messages regarding Docker not being installed or running.]({{< ref "common_issues.md#dapr-cant-connect-to-docker-when-installing-the-dapr-cli" >}})
+[See the troubleshooting guide if you encounter any error messages regarding Docker not being installed or running.]({{% ref "common_issues.md#dapr-cant-connect-to-docker-when-installing-the-dapr-cli" %}})
 
 ### Step 3: Verify Dapr version
 
@@ -135,9 +135,9 @@ Verify by opening your components directory:
 - On Windows, under `%UserProfile%\.dapr`
 - On Linux/MacOS, under `~/.dapr`
 
-{{< tabs "Linux/MacOS" "Windows">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Linux/MacOS" %}}
 
 ```bash
 ls $HOME/.dapr
@@ -149,9 +149,9 @@ ls $HOME/.dapr
 
 <br>
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Windows" %}}
 You can verify using either PowerShell or command line. If using PowerShell, run:
 ```powershell
 explorer "$env:USERPROFILE\.dapr"
@@ -166,15 +166,15 @@ explorer "%USERPROFILE%\.dapr"
 
 <img src="/images/install-dapr-selfhost/windows-view-components.png" width=600>
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 <br>
 
 ### Slim init
 
-To install the CLI without any default configuration files or Docker containers, use the `--slim` flag. [Learn more about the `init` command and its flags.]({{< ref dapr-init.md >}})
+To install the CLI without any default configuration files or Docker containers, use the `--slim` flag. [Learn more about the `init` command and its flags.]({{% ref dapr-init.md %}})
 
 ```bash
 dapr init --slim

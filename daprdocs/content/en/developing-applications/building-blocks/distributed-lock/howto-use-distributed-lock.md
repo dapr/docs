@@ -22,7 +22,7 @@ The diagram below shows two instances of different applications, acquiring diffe
 
 ### Configure a lock component
 
-Save the following component file to the [default components folder]({{< ref "install-dapr-selfhost.md#step-5-verify-components-directory-has-been-initialized" >}}) on your machine.
+Save the following component file to the [default components folder]({{% ref "install-dapr-selfhost#step-5-verify-components-directory-has-been-initialized" %}}) on your machine.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -41,9 +41,9 @@ spec:
 
 ### Acquire lock
 
-{{< tabs HTTP ".NET" Go >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "HTTP" %}}
 
 ```bash
 curl -X POST http://localhost:3500/v1.0-alpha1/lock/lockstore
@@ -51,9 +51,9 @@ curl -X POST http://localhost:3500/v1.0-alpha1/lock/lockstore
    -d '{"resourceId":"my_file_name", "lockOwner":"random_id_abc123", "expiryInSeconds": 60}'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using System;
@@ -86,9 +86,9 @@ namespace LockService
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 package main
@@ -116,15 +116,15 @@ func main() {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### Unlock existing lock
 
-{{< tabs HTTP ".NET" Go >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "HTTP" %}}
 
 ```bash
 curl -X POST http://localhost:3500/v1.0-alpha1/unlock/lockstore
@@ -132,9 +132,9 @@ curl -X POST http://localhost:3500/v1.0-alpha1/unlock/lockstore
    -d '{"resourceId":"my_file_name", "lockOwner":"random_id_abc123"}'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using System;
@@ -156,9 +156,9 @@ namespace LockService
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 package main
@@ -185,10 +185,10 @@ func main() {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Next steps
 
-Read [the distributed lock API overview]({{< ref distributed-lock-api-overview.md >}}) to learn more.
+Read [the distributed lock API overview]({{% ref distributed-lock-api-overview %}}) to learn more.

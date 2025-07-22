@@ -6,21 +6,21 @@ weight: 74
 description: "Get started with Dapr's State Management building block"
 ---
 
-Let's take a look at Dapr's [State Management building block]({{< ref state-management >}}). In this Quickstart, you will save, get, and delete state using a Redis state store by either:
-- [Running all applications simultaneously with the Multi-App Run template file]({{< ref "#run-using-multi-app-run" >}}), or
-- [Running a single application at a time]({{< ref "#run-one-application-at-a-time" >}})
+Let's take a look at Dapr's [State Management building block]({{% ref state-management %}}). In this Quickstart, you will save, get, and delete state using a Redis state store by either:
+- [Running all applications simultaneously with the Multi-App Run template file]({{% ref "#run-using-multi-app-run" %}}), or
+- [Running a single application at a time]({{% ref "#run-one-application-at-a-time" %}})
 
 <img src="/images/state-management-quickstart.png" width=1000 style="padding-bottom:15px;">
 
-While this sample uses Redis, you can swap it out for any one of the [supported state stores]({{< ref supported-state-stores.md >}}). 
+While this sample uses Redis, you can swap it out for any one of the [supported state stores]({{% ref supported-state-stores.md %}}). 
 
 ## Run using Multi-App Run
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{< tabs "Python" "JavaScript" ".NET" "Java" "Go" >}}
+{{< tabpane text=true >}}
  <!-- Python -->
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ### Pre-requisites
 
@@ -54,14 +54,14 @@ Install the dependencies:
 pip3 install -r requirements.txt 
 ```
 
-Run the `order-processor` service alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}).
+Run the `order-processor` service alongside a Dapr sidecar using [Multi-App Run]({{% ref multi-app-dapr-run %}}).
 
 ```bash
 dapr run -f .
 ```
-> **Note**: Since Python3.exe is not defined in Windows, you may need to change  `python3` to `python` in the  [`dapr.yaml`]({{< ref "#dapryaml-multi-app-run-template-file" >}}) file before running `dapr run -f .`
+> **Note**: Since Python3.exe is not defined in Windows, you may need to change  `python3` to `python` in the  [`dapr.yaml`]({{% ref "#dapryaml-multi-app-run-template-file" %}}) file before running `dapr run -f .`
 
-The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
+The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{% ref "#statestoreyaml-component-file" %}}). As soon as the service starts, it performs a loop.
 
 ```python
 with DaprClient() as client:
@@ -101,7 +101,7 @@ Order-processor output:
 
 ##### `dapr.yaml` Multi-App Run template file
 
-When you run `dapr init`, Dapr creates a default [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) named `dapr.yaml`. Running `dapr run -f` starts all applications in your project. In this sample, the `dapr.yaml` file contains the following:
+When you run `dapr init`, Dapr creates a default [Multi-App Run template file]({{% ref multi-app-dapr-run %}}) named `dapr.yaml`. Running `dapr run -f` starts all applications in your project. In this sample, the `dapr.yaml` file contains the following:
 
 ```yml
 version: 1
@@ -146,10 +146,10 @@ In the YAML file:
 - `metadata/name` is how your application talks to the component (called `DAPR_STORE_NAME` in the code sample).
 - `spec/metadata` defines the connection to the Redis instance used by the component.
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- JavaScript -->
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ### Pre-requisites
 
@@ -189,7 +189,7 @@ Run the `order-processor` service alongside a Dapr sidecar.
 dapr run -f .
 ```
 
-The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
+The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{% ref "#statestoreyaml-component-file" %}}). As soon as the service starts, it performs a loop.
 
 ```js
 const client = new DaprClient()
@@ -278,10 +278,10 @@ In the YAML file:
 - `metadata/name` is how your application talks to the component (called `DAPR_STORE_NAME` in the code sample).
 - `spec/metadata` defines the connection to the Redis instance used by the component.
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- .NET -->
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ### Pre-requisites
 
@@ -325,7 +325,7 @@ Run the `order-processor` service alongside a Dapr sidecar.
 dapr run -f .
 ```
 
-The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
+The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{% ref "#statestoreyaml-component-file" %}}). As soon as the service starts, it performs a loop.
 
 ```cs
 var client = new DaprClientBuilder().Build();
@@ -412,10 +412,10 @@ In the YAML file:
 - `metadata/name` is how your application talks to the component (called `DAPR_STORE_NAME` in the code sample).
 - `spec/metadata` defines the connection to the Redis instance used by the component.
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Java -->
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ### Pre-requisites
 
@@ -458,7 +458,7 @@ Run the `order-processor` service alongside a Dapr sidecar.
 dapr run -f .
 ```
 
-The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
+The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{% ref "#statestoreyaml-component-file" %}}). As soon as the service starts, it performs a loop.
 
 ```java
 try (DaprClient client = new DaprClientBuilder().build()) {
@@ -548,10 +548,10 @@ In the YAML file:
 - `metadata/name` is how your application talks to the component (called `DAPR_STORE_NAME` in the code sample).
 - `spec/metadata` defines the connection to the Redis instance used by the component.
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Go -->
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ### Pre-requisites
 
@@ -591,7 +591,7 @@ Run the `order-processor` service alongside a Dapr sidecar.
 dapr run -f .
 ```
 
-The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
+The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{% ref "#statestoreyaml-component-file" %}}). As soon as the service starts, it performs a loop.
 
 ```go
   client, err := dapr.NewClient()
@@ -680,18 +680,18 @@ In the YAML file:
 - `metadata/name` is how your application talks to the component (called `DAPR_STORE_NAME` in the code sample).
 - `spec/metadata` defines the connection to the Redis instance used by the component.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 ## Run one application at a time
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{< tabs "Python" "JavaScript" ".NET" "Java" "Go" >}}
+{{< tabpane text=true >}}
  <!-- Python -->
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ### Pre-requisites
 
@@ -733,7 +733,7 @@ dapr run --app-id order-processor --resources-path ../../../resources/ -- python
 
 > **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
 
-The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
+The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{% ref "#statestoreyaml-component-file" %}}). As soon as the service starts, it performs a loop.
 
 ```python
 with DaprClient() as client:
@@ -804,10 +804,10 @@ In the YAML file:
 - `metadata/name` is how your application talks to the component (called `DAPR_STORE_NAME` in the code sample).
 - `spec/metadata` defines the connection to the Redis instance used by the component.
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- JavaScript -->
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ### Pre-requisites
 
@@ -851,7 +851,7 @@ Run the `order-processor` service alongside a Dapr sidecar.
 ```bash
 dapr run --app-id order-processor --resources-path ../../../resources/ -- npm run start
 ```
-The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
+The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{% ref "#statestoreyaml-component-file" %}}). As soon as the service starts, it performs a loop.
 
 ```js
 const client = new DaprClient()
@@ -926,10 +926,10 @@ In the YAML file:
 - `metadata/name` is how your application talks to the component (called `DAPR_STORE_NAME` in the code sample).
 - `spec/metadata` defines the connection to the Redis instance used by the component.
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- .NET -->
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ### Pre-requisites
 
@@ -970,7 +970,7 @@ Run the `order-processor` service alongside a Dapr sidecar.
 dapr run --app-id order-processor --resources-path ../../../resources/ -- dotnet run
 ```
 
-The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
+The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{% ref "#statestoreyaml-component-file" %}}). As soon as the service starts, it performs a loop.
 
 ```cs
 var client = new DaprClientBuilder().Build();
@@ -1043,10 +1043,10 @@ In the YAML file:
 - `metadata/name` is how your application talks to the component (called `DAPR_STORE_NAME` in the code sample).
 - `spec/metadata` defines the connection to the Redis instance used by the component.
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Java -->
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ### Pre-requisites
 
@@ -1089,7 +1089,7 @@ Run the `order-processor` service alongside a Dapr sidecar.
 dapr run --app-id order-processor --resources-path ../../../resources -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
-The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
+The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{% ref "#statestoreyaml-component-file" %}}). As soon as the service starts, it performs a loop.
 
 ```java
 try (DaprClient client = new DaprClientBuilder().build()) {
@@ -1165,10 +1165,10 @@ In the YAML file:
 - `metadata/name` is how your application talks to the component (called `DAPR_STORE_NAME` in the code sample).
 - `spec/metadata` defines the connection to the Redis instance used by the component.
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Go -->
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ### Pre-requisites
 
@@ -1208,7 +1208,7 @@ Run the `order-processor` service alongside a Dapr sidecar.
 dapr run --app-id order-processor --resources-path ../../../resources -- go run .
 ```
 
-The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
+The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{% ref "#statestoreyaml-component-file" %}}). As soon as the service starts, it performs a loop.
 
 ```go
   client, err := dapr.NewClient()
@@ -1283,9 +1283,9 @@ In the YAML file:
 - `metadata/name` is how your application talks to the component (called `DAPR_STORE_NAME` in the code sample).
 - `spec/metadata` defines the connection to the Redis instance used by the component.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Tell us what you think!
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this quickstart helpful? Do you have suggestions for improvement?
@@ -1300,6 +1300,6 @@ Join the discussion in our [discord channel](https://discord.com/channels/778680
   - [.NET](https://github.com/dapr/quickstarts/tree/master/state_management/csharp/http)
   - [Java](https://github.com/dapr/quickstarts/tree/master/state_management/java/http)
   - [Go](https://github.com/dapr/quickstarts/tree/master/state_management/go/http)
-- Learn more about [State Management building block]({{< ref state-management >}})
+- Learn more about [State Management building block]({{% ref state-management %}})
 
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}

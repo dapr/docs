@@ -31,16 +31,16 @@ spec:
 ```
 
 The type of database is determined by the `type` field, and things like connection strings and other metadata are put in the `.metadata` section.
-Even though metadata values can contain secrets in plain text, it is recommended you use a [secret store]({{< ref component-secrets.md >}}).
+Even though metadata values can contain secrets in plain text, it is recommended you use a [secret store]({{% ref component-secrets.md %}}).
 
-Visit [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to configure a state store component.
+Visit [this guide]({{% ref "howto-get-save-state.md#step-1-setup-a-state-store" %}}) on how to configure a state store component.
 
 ## Supported state stores
 
-Visit [this reference]({{< ref supported-state-stores >}}) to see all of the supported state stores in Dapr.
+Visit [this reference]({{% ref supported-state-stores %}}) to see all of the supported state stores in Dapr.
 
 ## Related topics
-- [Component concept]({{< ref components-concept.md >}})
-- [State management overview]({{< ref state-management >}})
-- [State management API specification]({{< ref state_api.md >}})
-- [Supported state stores]({{< ref supported-state-stores >}})
+- [Component concept]({{% ref components-concept.md %}})
+- [State management overview]({{% ref state-management %}})
+- [State management API specification]({{% ref state_api.md %}})
+- [Supported state stores]({{% ref supported-state-stores %}})

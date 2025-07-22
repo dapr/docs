@@ -15,7 +15,7 @@ Using the SQLite nameresolver with a database file accessed over the network (in
 
 ## Configuration format
 
-Name resolution is configured via the [Dapr Configuration]({{< ref configuration-overview.md >}}).
+Name resolution is configured via the [Dapr Configuration]({{% ref configuration-overview.md %}}).
 
 Within the Configuration YAML, set the `spec.nameResolution.component` property to `"sqlite"`, then pass configuration options in the `spec.nameResolution.configuration` dictionary.
 
@@ -51,4 +51,4 @@ When using the SQLite name resolver component, the `spec.nameResolution.configur
 
 ## Related links
 
-- [Service invocation building block]({{< ref service-invocation >}})
+- [Service invocation building block]({{% ref service-invocation %}})

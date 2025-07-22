@@ -11,7 +11,7 @@ Publish a pub-sub event.
 
 ### Supported platforms
 
-- [Self-Hosted]({{< ref self-hosted >}})
+- [Self-Hosted]({{% ref self-hosted %}})
 
 ### Usage
 

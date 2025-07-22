@@ -11,7 +11,7 @@ Check if mTLS is enabled.
 
 ### Supported platforms
 
-- [Kubernetes]({{< ref kubernetes >}})
+- [Kubernetes]({{% ref kubernetes %}})
 
 ### Usage
 
@@ -39,9 +39,9 @@ renew-certificate   Rotates the existing root Certificate Authority (CA), issuer
 
 You can learn more about each sub command from the links below.
 
-- [`dapr mtls expiry`]({{< ref dapr-mtls-expiry.md >}})
-- [`dapr mtls export`]({{< ref dapr-mtls-export.md >}})
-- [`dapr mtls renew-certificate`]({{< ref dapr-mtls-renew-certificate.md >}})
+- [`dapr mtls expiry`]({{% ref dapr-mtls-expiry.md %}})
+- [`dapr mtls export`]({{% ref dapr-mtls-export.md %}})
+- [`dapr mtls renew-certificate`]({{% ref dapr-mtls-renew-certificate.md %}})
 
 ### Examples
 

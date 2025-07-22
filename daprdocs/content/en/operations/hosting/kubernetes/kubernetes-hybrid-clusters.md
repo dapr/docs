@@ -40,7 +40,7 @@ Before you begin, set up a Kubernetes cluster with Windows nodes. Many Kubernete
 
 ## Install the Dapr control plane
 
-If you are installing using the Dapr CLI or via a Helm chart, simply follow the normal deployment procedures: [Installing Dapr on a Kubernetes cluster]({{< ref "install-dapr-selfhost.md#installing-Dapr-on-a-kubernetes-cluster" >}})
+If you are installing using the Dapr CLI or via a Helm chart, simply follow the normal deployment procedures: [Installing Dapr on a Kubernetes cluster]({{% ref "install-dapr-selfhost.md#installing-Dapr-on-a-kubernetes-cluster" %}})
 
 Affinity will be automatically set for `kubernetes.io/os=linux`. This will be sufficient for most users, as Kubernetes requires at least one Linux node pool.
 
@@ -58,7 +58,7 @@ helm install dapr dapr/dapr --set global.daprControlPlaneOs=windows
 
 ### Windows applications
 
-1. [Follow the Microsoft documentation to create a Docker Windows container with your application installed](https://learn.microsoft.com/virtualization/windowscontainers/quick-start/set-up-environment?tabs=dockerce). 
+1. [Follow the Microsoft documentation to create a Docker Windows container with your application installed](https://learn.microsoft.com/virtualization/windowscontainers/quick-start/set-up-environment?tabpane=dockerce). 
 
 1. Once you've created a Docker container with your application, create a deployment YAML file with the node affinity set to `kubernetes.io/os: windows`. In the example `deploy_windows.yaml` deployment file below:
 

@@ -10,7 +10,7 @@ description: "Use time-to-live in pub/sub messages."
 
 Dapr enables per-message time-to-live (TTL). This means that applications can set time-to-live per message, and subscribers do not receive those messages after expiration.
 
-All Dapr [pub/sub components]({{< ref supported-pubsub >}}) are compatible with message TTL, as Dapr handles the TTL logic within the runtime. Simply set the `ttlInSeconds` metadata when publishing a message.
+All Dapr [pub/sub components]({{% ref supported-pubsub %}}) are compatible with message TTL, as Dapr handles the TTL logic within the runtime. Simply set the `ttlInSeconds` metadata when publishing a message.
 
 In some components, such as Kafka, time-to-live can be configured in the topic via `retention.ms` as per [documentation](https://kafka.apache.org/documentation/#topicconfigs_retention.ms). With message TTL in Dapr, applications using Kafka can now set time-to-live per message in addition to per topic.
 
@@ -39,15 +39,15 @@ When non-Dapr subscribers use components such as Azure Service Bus, which native
 
 Message TTL can be set in the metadata as part of the publishing request:
 
-{{< tabs curl "Python SDK" "PHP SDK">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "curl" %}}
 ```bash
 curl -X "POST" http://localhost:3500/v1.0/publish/pubsub/TOPIC_A?metadata.ttlInSeconds=120 -H "Content-Type: application/json" -d '{"order-number": "345"}'
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python SDK" %}}
 ```python
 from dapr.clients import DaprClient
 
@@ -65,9 +65,9 @@ with DaprClient() as d:
     # Print the request
     print(req_data, flush=True)
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "PHP SDK" %}}
 
 ```php
 <?php
@@ -81,15 +81,15 @@ $app->run(function(\DI\FactoryInterface $factory) {
 });
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
-See [this guide]({{< ref pubsub_api.md >}}) for a reference on the pub/sub API.
+See [this guide]({{% ref pubsub_api %}}) for a reference on the pub/sub API.
 
 ## Next steps
 
-- Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
-- Learn [how to configure pub/sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
-- List of [pub/sub components]({{< ref supported-pubsub >}})
-- Read the [API reference]({{< ref pubsub_api.md >}})
+- Learn about [topic scoping]({{% ref pubsub-scopes %}})
+- Learn [how to configure pub/sub components with multiple namespaces]({{% ref pubsub-namespaces %}})
+- List of [pub/sub components]({{% ref supported-pubsub %}})
+- Read the [API reference]({{% ref pubsub_api %}})

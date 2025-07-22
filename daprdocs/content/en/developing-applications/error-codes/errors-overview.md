@@ -29,7 +29,7 @@ Some of the most common errors returned include:
 - ERR_STATE_STORE_NOT_FOUND
 - ERR_HEALTH_NOT_READY
 
-> **Note:** [See a full list of error codes in Dapr.]({{< ref error-codes-reference.md >}})
+> **Note:** [See a full list of error codes in Dapr.]({{% ref error-codes-reference.md %}})
 
 An error returned for a state store not found might look like the following:
 
@@ -49,14 +49,14 @@ The returned error includes:
 
 ## Dapr error code metrics
 
-Metrics help you see when exactly errors are occuring from within the runtime. Error code metrics are collected using the `error_code_total` endpoint. This endpoint is disabled by default. You can [enable it using the `recordErrorCodes` field in your configuration file]({{< ref "metrics-overview.md#configuring-metrics-for-error-codes" >}}). 
+Metrics help you see when exactly errors are occuring from within the runtime. Error code metrics are collected using the `error_code_total` endpoint. This endpoint is disabled by default. You can [enable it using the `recordErrorCodes` field in your configuration file]({{% ref "metrics-overview.md#configuring-metrics-for-error-codes" %}}). 
 
 ## Demo
 
 Watch a demo presented during [Diagrid's Dapr v1.15 celebration](https://www.diagrid.io/videos/dapr-1-15-deep-dive) to see how to enable error code metrics and handle error codes returned in the runtime.
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/NTnwoDhHIcQ?si=I2uCB_TINGxlu-9v&amp;start=2812" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+{{< youtube id=NTnwoDhHIcQ start=2812 >}}
 
 ## Next step
 
-{{< button text="See a list of all Dapr error codes" page="error-codes-reference" >}}
+{{< button text="See a list of all Dapr error codes" page="error-codes-reference.md" >}}

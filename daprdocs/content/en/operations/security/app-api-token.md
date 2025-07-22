@@ -135,5 +135,5 @@ export APP_API_TOKEN=<my-app-token>
 
 ## Related Links
 
-- Learn about [Dapr security concepts]({{< ref security-concept.md >}})
-- Learn [HowTo Enable API token authentication in Dapr]({{< ref api-token.md >}})
+- Learn about [Dapr security concepts]({{% ref security-concept.md %}})
+- Learn [HowTo Enable API token authentication in Dapr]({{% ref api-token.md %}})
