@@ -59,7 +59,7 @@ These patterns exist along a spectrum of autonomy, from predictable workflow-bas
  
 ## Developer Experience
 
-Dapr Agents is a Python framework built on top of the [Python Dapr SDK](https://docs.dapr.io/developing-applications/sdks/python/), providing a comprehensive development experience for building agentic systems.
+Dapr Agents is a Python framework built on top of the [Python Dapr SDK]({{% ref "developing-applications/sdks/python/_index.md" %}}), providing a comprehensive development experience for building agentic systems.
 
 ### Getting Started
 
