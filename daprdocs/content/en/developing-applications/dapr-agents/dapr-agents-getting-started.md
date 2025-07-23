@@ -7,45 +7,17 @@ description: "How to install Dapr Agents and run your first agent"
 ---
 
 {{% alert title="Dapr Agents Concepts" color="primary" %}}
-If you are looking for an introductory overview of Dapr Agents and want to learn more about basic Dapr Agents terminology, we recommend starting with the [introduction](dapr-agents-introduction.md) and [concepts](dapr-agents-core-concepts.md) sections.
+If you are looking for an introductory overview of Dapr Agents and want to learn more about basic Dapr Agents terminology, we recommend starting with the [introduction]({{% ref dapr-agents-introduction.md %}}) and [concepts]({{% ref dapr-agents-core-concepts.md %}}) sections.
 {{% /alert %}}
 
-## Install Dapr CLI
+## Install & Initialize Dapr CLI
 
-While simple examples in Dapr Agents can be used without the sidecar, the recommended mode is with the Dapr sidecar. To benefit from the full power of Dapr Agents, install the Dapr CLI for running Dapr locally or on Kubernetes for development purposes. For a complete step-by-step guide, follow the  [Dapr CLI installation page](https://docs.dapr.io/getting-started/install-dapr-cli/).
+While simple examples in Dapr Agents can be used without the sidecar, the recommended mode is with the Dapr sidecar. To benefit from the full power of Dapr Agents, install the Dapr CLI for running Dapr locally or on Kubernetes for development purposes. Follow the instructions on the [Install Dapr CLI page]({{% ref install-dapr-cli.md %}}) and the [Init Dapr locally page]({{% ref install-dapr-selfhost.md %}}). After installing the CLI and initializing Dapr, come back to this page.
 
-
-Verify the CLI is installed by restarting your terminal/command prompt and running the following:
-
-```bash
-dapr -h
-```
-
-## Initialize Dapr in Local Mode
-
-{{% alert title="Note" color="info" %}}
-Make sure you have [Docker](https://docs.docker.com/get-started/get-docker/) already installed.
-{{% /alert %}}
-
-Initialize Dapr locally to set up a self-hosted environment for development. This process fetches and installs the Dapr sidecar binaries, runs essential services as Docker containers, and prepares a default components folder for your application. For detailed steps, see the official [guide on initializing Dapr locally](https://docs.dapr.io/getting-started/install-dapr-selfhost/).
-
-![Dapr Initialization](/images/dapr-agents/home_installation_init.png)
-
-To initialize the Dapr control plane containers and create a default configuration file, run:
-
-```bash
-dapr init
-```
-
-Verify you have container instances with `daprio/dapr`, `openzipkin/zipkin`, and `redis` images running:
-
-```bash
-docker ps
-```
 
 ## Install Python
 
-{{% alert title="Note" color="info" %}}
+{{% alert title="Note" color="primary" %}}
 Make sure you have Python already installed. `Python >=3.10`. For installation instructions, visit the official [Python installation guide](https://www.python.org/downloads/).
 {{% /alert %}}
 

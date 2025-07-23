@@ -10,7 +10,7 @@ description: "Get started with Dapr Agents through practical step-by-step exampl
 
 #### Before you begin
 
-- [Set up your local Dapr environment]({{< ref "install-dapr-cli.md" >}}).
+- [Set up your local Dapr environment]({{% ref "install-dapr-cli.md" %}}).
 
 
 ## Quickstarts

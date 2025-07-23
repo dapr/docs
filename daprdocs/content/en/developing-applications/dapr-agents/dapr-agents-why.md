@@ -32,7 +32,7 @@ Dapr Agents builds on Dapr's Workflow API, which represents each agent as an act
 
 ### Data-Centric AI Agents
 
-With built-in connectivity to over 50 enterprise data sources, Dapr Agents efficiently handles structured and unstructured data. From basic [PDF extraction]({{< ref "/developing-applications/dapr-agents/dapr-agents-integrations.md" >}}) to large-scale database interactions, it enables data-driven AI workflows with minimal code changes. Dapr's [bindings](https://docs.dapr.io/developing-applications/building-blocks/bindings/bindings-overview/) and [state stores](https://docs.dapr.io/reference/components-reference/supported-state-stores/), along with MCP support, provide access to numerous data sources for agent data ingestion.
+With built-in connectivity to over 50 enterprise data sources, Dapr Agents efficiently handles structured and unstructured data. From basic [PDF extraction]({{% ref "/developing-applications/dapr-agents/dapr-agents-integrations.md" %}}) to large-scale database interactions, it enables data-driven AI workflows with minimal code changes. Dapr's [bindings](https://docs.dapr.io/developing-applications/building-blocks/bindings/bindings-overview/) and [state stores](https://docs.dapr.io/reference/components-reference/supported-state-stores/), along with MCP support, provide access to numerous data sources for agent data ingestion.
 
 ### Accelerated Development
 
