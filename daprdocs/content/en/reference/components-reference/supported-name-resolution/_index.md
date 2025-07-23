@@ -11,6 +11,6 @@ The following components provide name resolution for the service invocation buil
 
 Name resolution components are configured via the [configuration]({{% ref configuration-overview.md %}}).
 
-{{% partial "components/description.html" %}}
+{{< partial "components/description.html" >}}
 
-{{% partial "components/name-resolution.html" %}}
+{{< partial "components/name-resolution.html" >}}
