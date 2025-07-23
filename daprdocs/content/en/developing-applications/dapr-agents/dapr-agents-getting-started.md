@@ -116,7 +116,7 @@ This command starts a Dapr sidecar with the conversation component and launches 
 
 ### 5. Enable Redis Insights (Optional)
 
-Dapr uses [Redis](https://docs.dapr.io/reference/components-reference/supported-state-stores/setup-redis/) by default for state management and pub/sub messaging, which are fundamental to Dapr Agents's agentic workflows. These capabilities enable the following:
+Dapr uses [Redis]({{% ref setup-redis.md %}}) by default for state management and pub/sub messaging, which are fundamental to Dapr Agents's agentic workflows. These capabilities enable the following:
 
 * Viewing Pub/Sub Messages: Monitor and inspect messages exchanged between agents in event-driven workflows.
 * Inspecting State Information: Access and analyze workflow state, conversation state, and other shared data among agents.
@@ -143,5 +143,5 @@ Here you can browse the state store used in the agent and explore its data.
  
 ## Next Steps
 
-Now that you have Dapr Agents installed and running, explore more advanced examples and patterns in the [quickstarts](dapr-agents-quickstarts.md) section to learn about multi-agent workflows, durable agents, and integration with Dapr's powerful distributed capabilities.
+Now that you have Dapr Agents installed and running, explore more advanced examples and patterns in the [quickstarts]({{% ref dapr-agents-quickstarts.md %}}) section to learn about multi-agent workflows, durable agents, and integration with Dapr's powerful distributed capabilities.
  
