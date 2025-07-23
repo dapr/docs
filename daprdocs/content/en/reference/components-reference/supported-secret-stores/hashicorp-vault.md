@@ -9,7 +9,7 @@ aliases:
 
 ## Create the Vault component
 
-To setup HashiCorp Vault secret store create a component of type `secretstores.hashicorp.vault`. See [this guide]({{< ref "setup-secret-store.md#apply-the-configuration" >}}) on how to create and apply a secretstore configuration. See this guide on [referencing secrets]({{< ref component-secrets.md >}}) to retrieve and use the secret with Dapr components.
+To setup HashiCorp Vault secret store create a component of type `secretstores.hashicorp.vault`. See [this guide]({{% ref "setup-secret-store.md#apply-the-configuration" %}}) on how to create and apply a secretstore configuration. See this guide on [referencing secrets]({{% ref component-secrets.md %}}) to retrieve and use the secret with Dapr components.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -46,7 +46,7 @@ spec:
     value: "map"
 ```
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a local secret store such as [Kubernetes secret store]({{< ref kubernetes-secret-store.md >}}) or a [local file]({{< ref file-secret-store.md >}}) to bootstrap secure key storage.
+The above example uses secrets as plain strings. It is recommended to use a local secret store such as [Kubernetes secret store]({{% ref kubernetes-secret-store.md %}}) or a [local file]({{% ref file-secret-store.md %}}) to bootstrap secure key storage.
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -68,7 +68,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 
 ## Optional per-request metadata properties
 
-The following [optional query parameters]({{< ref "secrets_api#query-parameters" >}}) can be provided to Hashicorp Vault secret store component:
+The following [optional query parameters]({{% ref "secrets_api#query-parameters" %}}) can be provided to Hashicorp Vault secret store component:
 
 Query Parameter | Description
 --------- | -----------
@@ -76,17 +76,17 @@ Query Parameter | Description
 
 ## Setup Hashicorp Vault instance
 
-{{< tabs "Self-Hosted" "Kubernetes" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 Setup Hashicorp Vault using the Vault documentation: https://www.vaultproject.io/docs/install/index.html.
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 For Kubernetes, you can use the Helm Chart: <https://github.com/hashicorp/vault-helm>.
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 ## Multiple key-values per secret
@@ -149,7 +149,7 @@ spec:
 ```
 
 ## Related links
-- [Secrets building block]({{< ref secrets >}})
-- [How-To: Retrieve a secret]({{< ref "howto-secrets.md" >}})
-- [How-To: Reference secrets in Dapr components]({{< ref component-secrets.md >}})
-- [Secrets API reference]({{< ref secrets_api.md >}})
+- [Secrets building block]({{% ref secrets %}})
+- [How-To: Retrieve a secret]({{% ref "howto-secrets.md" %}})
+- [How-To: Reference secrets in Dapr components]({{% ref component-secrets.md %}})
+- [Secrets API reference]({{% ref secrets_api.md %}})

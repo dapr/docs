@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup GCP Storage Bucket binding create a component of type `bindings.gcp.bucket`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup GCP Storage Bucket binding create a component of type `bindings.gcp.bucket`. See [this guide]({{% ref "howto-bindings.md#1-create-a-binding" %}}) on how to create and apply a binding configuration.
 
 
 ```yaml
@@ -50,7 +50,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -109,42 +109,42 @@ The metadata parameters are:
 #### Examples
 ##### Save text to a random generated UUID file
 
-{{< tabs Windows Linux >}}
-  {{% codetab %}}
+{{< tabpane text=true >}}
+  {{% tab %}}
   On Windows, utilize cmd prompt (PowerShell has different escaping mechanism)
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\" }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "create", "data": "Hello World" }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ##### Save text to a specific file
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\", \"metadata\": { \"key\": \"my-test-file.txt\" } }" \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "create", "data": "Hello World", "metadata": { "key": "my-test-file.txt" } }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 ##### Upload a file
@@ -153,22 +153,22 @@ To upload a file, pass the file contents as the data payload; you may want to en
 
 Then you can upload it as you would normally:
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"(YOUR_FILE_CONTENTS)\", \"metadata\": { \"key\": \"my-test-file.jpg\" } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "create", "data": "$(cat my-test-file.jpg)", "metadata": { "key": "my-test-file.jpg" } }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 #### Response
 
 The response body will contain the following JSON:
@@ -200,22 +200,22 @@ The metadata parameters are:
 
 #### Example
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ \"operation\": \"get\", \"metadata\": { \"key\": \"my-test-file.txt\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "get", "metadata": { "key": "my-test-file.txt" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -237,22 +237,22 @@ The metadata parameters are:
 
 #### Example
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab header="Windows" %}}
   ```bash
   curl -d '{ \"operation\": \"bulkget\"}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab header="Linux" %}}
   ```bash
   curl -d '{ "operation": "bulkget"}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -310,22 +310,22 @@ The metadata parameters are:
 
 ##### Delete object
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ \"operation\": \"delete\", \"metadata\": { \"key\": \"my-test-file.txt\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "delete", "metadata": { "key": "my-test-file.txt" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Response
 An HTTP 204 (No Content) and empty body will be retuned if successful.
@@ -446,8 +446,8 @@ The metadata parameters are:
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Bindings building block]({{< ref bindings >}})
-- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
-- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
-- [Bindings API reference]({{< ref bindings_api.md >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Bindings building block]({{% ref bindings %}})
+- [How-To: Trigger application with input binding]({{% ref howto-triggers.md %}})
+- [How-To: Use bindings to interface with external resources]({{% ref howto-bindings.md %}})
+- [Bindings API reference]({{% ref bindings_api.md %}})

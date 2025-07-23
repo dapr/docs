@@ -9,9 +9,9 @@ aliases:
 
 ## Component format
 
-To setup AWS SSM Parameter Store secret store create a component of type `secretstores.aws.parameterstore`. See [this guide]({{< ref "setup-secret-store.md#apply-the-configuration" >}}) on how to create and apply a secretstore configuration. See this guide on [referencing secrets]({{< ref component-secrets.md >}}) to retrieve and use the secret with Dapr components.
+To setup AWS SSM Parameter Store secret store create a component of type `secretstores.aws.parameterstore`. See [this guide]({{% ref "setup-secret-store.md#apply-the-configuration" %}}) on how to create and apply a secretstore configuration. See this guide on [referencing secrets]({{% ref component-secrets.md %}}) to retrieve and use the secret with Dapr components.
 
-See [Authenticating to AWS]({{< ref authenticating-aws.md >}}) for information about authentication-related attributes.
+See [Authenticating to AWS]({{% ref authenticating-aws.md %}}) for information about authentication-related attributes.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -34,7 +34,7 @@ spec:
     value: "[secret_name]"
 ```
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a local secret store such as [Kubernetes secret store]({{< ref kubernetes-secret-store.md >}}) or a [local file]({{< ref file-secret-store.md >}}) to bootstrap secure key storage.
+The above example uses secrets as plain strings. It is recommended to use a local secret store such as [Kubernetes secret store]({{% ref kubernetes-secret-store.md %}}) or a [local file]({{% ref file-secret-store.md %}}) to bootstrap secure key storage.
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -56,8 +56,8 @@ When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernet
 Setup AWS SSM Parameter Store using the AWS documentation: https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html.
 
 ## Related links
-- [Secrets building block]({{< ref secrets >}})
-- [How-To: Retrieve a secret]({{< ref "howto-secrets.md" >}})
-- [How-To: Reference secrets in Dapr components]({{< ref component-secrets.md >}})
-- [Secrets API reference]({{< ref secrets_api.md >}})
-- [Authenticating to AWS]({{< ref authenticating-aws.md >}})
+- [Secrets building block]({{% ref secrets %}})
+- [How-To: Retrieve a secret]({{% ref "howto-secrets.md" %}})
+- [How-To: Reference secrets in Dapr components]({{% ref component-secrets.md %}})
+- [Secrets API reference]({{% ref secrets_api.md %}})
+- [Authenticating to AWS]({{% ref authenticating-aws.md %}})

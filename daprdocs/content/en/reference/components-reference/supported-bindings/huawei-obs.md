@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup Huawei Object Storage Service (OBS) (output) binding create a component of type `bindings.huawei.obs`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup Huawei Object Storage Service (OBS) (output) binding create a component of type `bindings.huawei.obs`. See [this guide]({{% ref "howto-bindings.md#1-create-a-binding" %}}) on how to create and apply a binding configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -33,7 +33,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -72,42 +72,42 @@ To perform a create operation, invoke the Huawei OBS binding with a `POST` metho
 #### Examples
 ##### Save text to a random generated UUID file
 
-{{< tabs Windows Linux >}}
-  {{% codetab %}}
+{{< tabpane text=true >}}
+  {{% tab %}}
   On Windows, utilize cmd prompt (PowerShell has different escaping mechanism)
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\" }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "create", "data": "Hello World" }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ##### Save text to a specific file
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\", \"metadata\": { \"key\": \"my-test-file.txt\" } }" \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "create", "data": "Hello World", "metadata": { "key": "my-test-file.txt" } }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -133,23 +133,23 @@ To upload a binary file (for example, _.jpg_, _.zip_), invoke the Huawei OBS bin
 
 #### Example
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d "{ \"operation\": \"upload\", \"data\": { \"sourceFile\": \".\my-test-file.jpg\" }, \"metadata\": { \"key\": \"my-test-file.jpg\" } }" \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "upload", "data": { "sourceFile": "./my-test-file.jpg" }, "metadata": { "key": "my-test-file.jpg" } }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -174,22 +174,22 @@ The metadata parameters are:
 
 #### Example
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ \"operation\": \"get\", \"metadata\": { \"key\": \"my-test-file.txt\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "get", "metadata": { "key": "my-test-file.txt" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -218,22 +218,22 @@ The metadata parameters are:
 
 ##### Delete object
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ \"operation\": \"delete\", \"metadata\": { \"key\": \"my-test-file.txt\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "delete", "metadata": { "key": "my-test-file.txt" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -265,22 +265,22 @@ The data parameters are:
 
 #### Example
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ \"operation\": \"list\", \"data\": { \"maxResults\": 5, \"prefix\": \"dapr-\", \"marker\": \"obstest\", \"delimiter\": \"jpg\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "list", "data": { "maxResults": 5, "prefix": "dapr-", "marker": "obstest", "delimiter": "jpg" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -288,8 +288,8 @@ The response body contains the list of found objects.
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Bindings building block]({{< ref bindings >}})
-- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
-- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
-- [Bindings API reference]({{< ref bindings_api.md >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Bindings building block]({{% ref bindings %}})
+- [How-To: Trigger application with input binding]({{% ref howto-triggers.md %}})
+- [How-To: Use bindings to interface with external resources]({{% ref howto-bindings.md %}})
+- [Bindings API reference]({{% ref bindings_api.md %}})

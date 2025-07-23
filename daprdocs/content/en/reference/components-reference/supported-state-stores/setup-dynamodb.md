@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup a DynamoDB state store create a component of type `state.aws.dynamodb`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+To setup a DynamoDB state store create a component of type `state.aws.dynamodb`. See [this guide]({{% ref "howto-get-save-state.md#step-1-setup-a-state-store" %}}) on how to create and apply a state store configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -42,12 +42,12 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Primary Key
 
-In order to use DynamoDB as a Dapr state store, the table must have a primary key named `key`. See the section [Partition Keys]({{< ref "setup-dynamodb.md#partition-keys" >}}) for an option to change this behavior.
+In order to use DynamoDB as a Dapr state store, the table must have a primary key named `key`. See the section [Partition Keys]({{% ref "setup-dynamodb.md#partition-keys" %}}) for an option to change this behavior.
 
 ## Spec metadata fields
 
@@ -60,7 +60,7 @@ In order to use DynamoDB as a Dapr state store, the table must have a primary ke
 | endpoint          | N  |AWS endpoint for the component to use. Only used for local development. The `endpoint` is unncessary when running against production AWS   | `"http://localhost:4566"`
 | sessionToken      | N  |AWS session token to use.  A session token is only required if you are using temporary security credentials. | `"TOKEN"`
 | ttlAttributeName  | N  |The table attribute name which should be used for TTL. | `"expiresAt"`
-| partitionKey      | N  |The table primary key or partition key attribute name. This field is used to replace the default primary key attribute name `"key"`. See the section [Partition Keys]({{< ref "setup-dynamodb.md#partition-keys" >}}).  | `"ContractID"`
+| partitionKey      | N  |The table primary key or partition key attribute name. This field is used to replace the default primary key attribute name `"key"`. See the section [Partition Keys]({{% ref "setup-dynamodb.md#partition-keys" %}}).  | `"ContractID"`
 | actorStateStore      | N  | Consider this state store for actors. Defaults to "false" | `"true"`, `"false"`
 
 {{% alert title="Important" color="warning" %}}
@@ -69,7 +69,7 @@ When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernet
 
 ## Setup AWS DynamoDB
 
-See [Authenticating to AWS]({{< ref authenticating-aws.md >}}) for information about authentication-related attributes
+See [Authenticating to AWS]({{% ref authenticating-aws.md %}}) for information about authentication-related attributes
 
 ## Time to live (TTL)
 
@@ -160,7 +160,7 @@ $ aws dynamodb get-item \
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
-- [State management building block]({{< ref state-management >}})
-- [Authenticating to AWS]({{< ref authenticating-aws.md >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" %}}) for instructions on configuring state store components
+- [State management building block]({{% ref state-management %}})
+- [Authenticating to AWS]({{% ref authenticating-aws.md %}})

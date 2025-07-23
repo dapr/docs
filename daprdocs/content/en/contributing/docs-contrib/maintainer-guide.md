@@ -8,7 +8,7 @@ description: "Get started as a Dapr docs maintainer and approver."
 
 In this guide, you’ll learn how to perform routine Dapr docs maintainer and approver responsibilities. In order to successfully accomplish these tasks, you need either approver or maintainer status in the [`dapr/docs`](https://github.com/dapr/docs) repo. 
 
-To learn how to contribute to Dapr docs, review the [Contributor guide]({{< ref contributing-docs.md >}}).
+To learn how to contribute to Dapr docs, review the [Contributor guide]({{% ref contributing-docs %}}).
 
 ## Branch guidance
 
@@ -16,7 +16,7 @@ The Dapr docs handles branching differently than most code repositories. Instead
 
 For the full list, visit the [Docs repo](https://github.com/dapr/docs#branch-guidance).
 
-Read the [contributor's guide]({{< ref "contributing-docs.md#branch-guidance" >}}) for more information about release branches.
+Read the [contributor's guide]({{% ref "contributing-docs#branch-guidance" %}}) for more information about release branches.
 
 ## Upmerge from current release branch to the pre-release branch
 
@@ -298,7 +298,7 @@ Next, create a new website for the future Dapr release. To do this, you'll need 
 #### Prerequisites
 - Docs maintainer status in the `dapr/docs` repo.
 - Access to the active Dapr Azure Subscription with Contributor or Owner access to create resources.
-- [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd?tabs=winget-windows%2Cbrew-mac%2Cscript-linux&pivots=os-windows) installed on your machine.
+- [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd?tabpane=winget-windows%2Cbrew-mac%2Cscript-linux&pivots=os-windows) installed on your machine.
 - Your own fork of the [`dapr/docs` repo](https://github.com/dapr/docs) cloned to your machine.
 
 #### Deploy Azure Static Web App
@@ -408,4 +408,3 @@ To bring updates to the SDK docs live to the Dapr docs site, you need to perform
 
 ## Next steps
 
-For guidance on contributing to Dapr docs, read the [Contributor Guide]({{< ref contributing-docs.md >}}).

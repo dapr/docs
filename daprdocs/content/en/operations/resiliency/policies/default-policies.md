@@ -40,7 +40,7 @@ If none exists, the policies are applied from most specific to most broad.
 
 ## How default policies and built-in retries work together
 
-In the case of the [built-in retries]({{< ref override-default-retries.md >}}), default policies do not stop the built-in retry policies from running. Both are used together but only under specific circumstances.
+In the case of the [built-in retries]({{% ref override-default-retries.md %}}), default policies do not stop the built-in retry policies from running. Both are used together but only under specific circumstances.
  
 For service and actor invocation, the built-in retries deal specifically with issues connecting to the remote sidecar (when needed). As these are important to the stability of the Dapr runtime, they are not disabled **unless** a named policy is specifically referenced for an operation. In some instances, there may be additional retries from both the built-in retry and the default retry policy, but this prevents an overly weak default policy from reducing the sidecar's availability/success rate. 
 
@@ -164,10 +164,10 @@ The table below is a break down of which policies are applied when attempting to
 
 ## Next steps
 
-[Learn how to override default retry policies.]({{< ref override-default-retries.md >}})
+[Learn how to override default retry policies.]({{% ref override-default-retries.md %}})
 
 ## Related links
 
 Try out one of the Resiliency quickstarts:
-- [Resiliency: Service-to-service]({{< ref resiliency-serviceinvo-quickstart.md >}})
-- [Resiliency: State Management]({{< ref resiliency-state-quickstart.md >}})
+- [Resiliency: Service-to-service]({{% ref resiliency-serviceinvo-quickstart.md %}})
+- [Resiliency: State Management]({{% ref resiliency-state-quickstart.md %}})

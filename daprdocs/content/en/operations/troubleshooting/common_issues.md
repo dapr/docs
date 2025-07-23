@@ -19,7 +19,7 @@ When installing and initializing the Dapr CLI, if you see the following error me
 
 Troubleshoot the error by ensuring:
 
-1. [The correct containers are running.]({{< ref "install-dapr-selfhost.md#step-4-verify-containers-are-running" >}})
+1. [The correct containers are running.]({{% ref "install-dapr-selfhost.md#step-4-verify-containers-are-running" %}})
 1. In Docker Desktop, verify the **Allow the default Docker socket to be used (requires password)** option is selected.
 
    <img src="/images/docker-desktop-setting.png" width=800 style="padding-bottom:15px;">
@@ -74,7 +74,7 @@ There are some known cases where this might not properly work:
 
   If this is the case, restarting the pods will fix the issue.
 
-- If you are deploying Dapr on a private GKE cluster, sidecar injection does not work without extra steps. See [Setup a Google Kubernetes Engine cluster]({{< ref setup-gke.md >}}).
+- If you are deploying Dapr on a private GKE cluster, sidecar injection does not work without extra steps. See [Setup a Google Kubernetes Engine cluster]({{% ref setup-gke.md %}}).
 
   In order to further diagnose any issue, check the logs of the Dapr sidecar injector:
 
@@ -144,9 +144,9 @@ The most common cause of this failure is that a component (such as a state store
 
 To diagnose the root cause:
 
-- Significantly increase the liveness probe delay - [link]({{< ref "arguments-annotations-overview.md" >}})
-- Set the log level of the sidecar to debug - [link]({{< ref "logs-troubleshooting.md#setting-the-sidecar-log-level" >}})
-- Watch the logs for meaningful information - [link]({{< ref "logs-troubleshooting.md#viewing-logs-on-kubernetes" >}})
+- Significantly increase the liveness probe delay - [link]({{% ref "arguments-annotations-overview.md" %}})
+- Set the log level of the sidecar to debug - [link]({{% ref "logs-troubleshooting.md#setting-the-sidecar-log-level" %}})
+- Watch the logs for meaningful information - [link]({{% ref "logs-troubleshooting.md#viewing-logs-on-kubernetes" %}})
 
 > Remember to configure the liveness check delay and log level back to your desired values after solving the problem.
 
@@ -161,7 +161,7 @@ kubectl get components
 ```
 
 If there isn't a state store component, it means you need to set one up.
-Visit [here]({{< ref "state-management" >}}) for more details.
+Visit [here]({{% ref "state-management" %}}) for more details.
 
 If everything's set up correctly, make sure you got the credentials right.
 Search the Dapr runtime logs and look for any state store errors:
@@ -181,7 +181,7 @@ kubectl get components
 ```
 
 If there isn't a pub/sub component, it means you need to set one up.
-Visit [here]({{< ref "pubsub" >}}) for more details.
+Visit [here]({{% ref "pubsub" %}}) for more details.
 
 If everything is set up correctly, make sure you got the credentials right.
 Search the Dapr runtime logs and look for any pub/sub errors:
@@ -202,7 +202,7 @@ kubectl logs <name-of-pod> daprd
 ## I'm getting 404 Not Found responses when calling Dapr
 
 This means you're trying to call an Dapr API endpoint that either doesn't exist or the URL is malformed.
-Look at the Dapr API reference [here]({{< ref "api" >}}) and make sure you're calling the right endpoint.
+Look at the Dapr API reference [here]({{% ref "api" %}}) and make sure you're calling the right endpoint.
 
 ## I don't see any incoming events or calls from other services
 
@@ -221,7 +221,7 @@ If using Dapr Standalone and the Dapr CLI, make sure you pass the `--app-port` f
 ## My Dapr-enabled app isn't behaving correctly
 
 The first thing to do is inspect the HTTP error code returned from the Dapr API, if any.
-If you still can't find the issue, try enabling `debug` log levels for the Dapr runtime. See [here]({{< ref "logs.md" >}}) how to do so.
+If you still can't find the issue, try enabling `debug` log levels for the Dapr runtime. See [here]({{% ref "logs.md" %}}) how to do so.
 
 You might also want to look at error logs from your own process. If running on Kubernetes, find the pod containing your app, and execute the following:
 
@@ -251,9 +251,9 @@ export DAPR_HOST_IP=127.0.0.1
 
 This is usually due to one of the following issues
 
-- You may have defined the `NAMESPACE` environment variable locally or deployed your components into a different namespace in Kubernetes. Check which namespace your app and the components are deployed to. Read [scoping components to one or more applications]({{< ref "component-scopes.md" >}}) for more information.
-- You may have not provided a `--resources-path` with the Dapr `run` commands or not placed your components into the default components folder for your OS. Read [define a component]({{< ref "get-started-component.md" >}}) for more information.
-- You may have a syntax issue in component YAML file. Check your component YAML with the component [YAML samples]({{< ref "components.md" >}}).
+- You may have defined the `NAMESPACE` environment variable locally or deployed your components into a different namespace in Kubernetes. Check which namespace your app and the components are deployed to. Read [scoping components to one or more applications]({{% ref "component-scopes.md" %}}) for more information.
+- You may have not provided a `--resources-path` with the Dapr `run` commands or not placed your components into the default components folder for your OS. Read [define a component]({{% ref "get-started-component.md" %}}) for more information.
+- You may have a syntax issue in component YAML file. Check your component YAML with the component [YAML samples]({{% ref "components.md" %}}).
 
 ## Service invocation is failing and my Dapr service is missing an appId (macOS)
 

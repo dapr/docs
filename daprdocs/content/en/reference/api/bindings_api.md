@@ -35,7 +35,7 @@ If running self hosted locally, place this file in your `components` folder next
 
 If running on kubernetes apply the component to your cluster.
 
-> **Note:** In production never place passwords or secrets within Dapr component files. For information on securely storing and retrieving secrets using secret stores refer to [Setup Secret Store]({{< ref setup-secret-store >}})
+> **Note:** In production never place passwords or secrets within Dapr component files. For information on securely storing and retrieving secrets using secret stores refer to [Setup Secret Store]({{% ref setup-secret-store %}})
 
 ### Binding direction (optional)
 
@@ -203,7 +203,7 @@ If `concurrency` is not set, it is sent out sequential (the example below shows 
 This endpoint lets you invoke a Dapr output binding.
 Dapr bindings support various operations, such as `create`.
 
-See the [different specs]({{< ref supported-bindings >}}) on each binding to see the list of supported operations.
+See the [different specs]({{% ref supported-bindings %}}) on each binding to see the list of supported operations.
 
 ### HTTP Request
 

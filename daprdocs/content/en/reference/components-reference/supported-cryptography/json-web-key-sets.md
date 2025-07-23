@@ -64,7 +64,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets, as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets, as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -76,4 +76,4 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `minRefreshInterval` | N        | Minimum interval to wait before subsequent refreshes of the JWKS document from a HTTP(S) source, as a Go duration. Default: "10m" | `"1h"`
 
 ## Related links
-[Cryptography building block]({{< ref cryptography >}})
+[Cryptography building block]({{% ref cryptography %}})

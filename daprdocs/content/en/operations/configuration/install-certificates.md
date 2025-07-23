@@ -12,10 +12,10 @@ The Dapr sidecar can be configured to trust certificates for communicating with 
 
 Both certificate authority (CA) certificates and leaf certificates are supported.
 
-{{< tabs Self-hosted Kubernetes >}}
+{{< tabpane text=true >}}
 
 <!--self-hosted-->
-{{% codetab %}}
+{{% tab "Self-hosted" %}}
 
 You can make the following configurations when the sidecar is running as a container.
 
@@ -47,10 +47,10 @@ services:
 
 > **Note:** When the sidecar is not running inside a container, certificates must be directly installed on the host operating system. 
 
-{{% /codetab %}}
+{{% /tab %}}
 
 <!--kubernetes-->
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
 On Kubernetes:
 
@@ -94,9 +94,9 @@ spec:
 
 > **Note**: When using Windows containers, the sidecar container is started with admin privileges, which is required to install the certificates. This does not apply to Linux containers.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 After following these steps, all the certificates in the directory pointed by `SSL_CERT_DIR` are installed.
 
@@ -107,16 +107,13 @@ After following these steps, all the certificates in the directory pointed by `S
 
 Watch the demo on using installing SSL certificates and securely using the HTTP binding in community call 64:
 
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/M0VM7GlphAU?start=800" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
-
+{{< youtube id=M0VM7GlphAU start=800 >}}
 
 ## Related links
-- [HTTP binding spec]({{< ref http.md >}})
-- [(Kubernetes) How-to: Mount Pod volumes to the Dapr sidecar]({{< ref kubernetes-volume-mounts.md >}})
-- [Dapr Kubernetes pod annotations spec]({{< ref arguments-annotations-overview.md >}})
+- [HTTP binding spec]({{% ref http.md %}})
+- [(Kubernetes) How-to: Mount Pod volumes to the Dapr sidecar]({{% ref kubernetes-volume-mounts.md %}})
+- [Dapr Kubernetes pod annotations spec]({{% ref arguments-annotations-overview.md %}})
 
 ## Next steps
 
-{{< button text="Enable preview features" page="preview-features" >}}
+{{< button text="Enable preview features" page="preview-features.md" >}}

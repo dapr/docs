@@ -37,13 +37,13 @@ spec:
 | `trip` | A [Common Expression Language (CEL)](https://github.com/google/cel-spec) statement that is evaluated by the circuit breaker. When the statement evaluates to true, the circuit breaker trips and becomes open. Defaults to `consecutiveFailures > 5`. Other possible values are `requests` and `totalFailures` where `requests` represents the number of either successful or failed calls before the circuit opens and `totalFailures` represents the total (not necessarily consecutive) number of failed attempts before the circuit opens. Example: `requests > 5` and `totalFailures >3`.|
 
 ## Next steps
-- [Learn more about default resiliency policies]({{< ref default-policies.md >}})
+- [Learn more about default resiliency policies]({{% ref default-policies.md %}})
 - Learn more about:
-  - [Retry policies]({{< ref retries-overview.md >}})
-  - [Timeout policies]({{< ref timeouts.md >}})
+  - [Retry policies]({{% ref retries-overview.md %}})
+  - [Timeout policies]({{% ref timeouts.md %}})
 
 ## Related links
 
 Try out one of the Resiliency quickstarts:
-- [Resiliency: Service-to-service]({{< ref resiliency-serviceinvo-quickstart.md >}})
-- [Resiliency: State Management]({{< ref resiliency-state-quickstart.md >}})
+- [Resiliency: Service-to-service]({{% ref resiliency-serviceinvo-quickstart.md %}})
+- [Resiliency: State Management]({{% ref resiliency-state-quickstart.md %}})

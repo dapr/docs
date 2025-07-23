@@ -10,21 +10,21 @@ description: Get started with the Dapr jobs building block
 The jobs building block is currently in **alpha**. 
 {{% /alert %}}
 
-Let's take a look at the [Dapr jobs building block]({{< ref jobs-overview.md >}}), which schedules and runs jobs at a specific time or interval. In this Quickstart, you'll schedule, get, and delete a job using Dapr's Job API.
+Let's take a look at the [Dapr jobs building block]({{% ref jobs-overview %}}), which schedules and runs jobs at a specific time or interval. In this Quickstart, you'll schedule, get, and delete a job using Dapr's Job API.
 
 You can try out this jobs quickstart by either:
 
-- [Running all applications in this sample simultaneously with the Multi-App Run template file]({{< ref "#run-using-multi-app-run" >}}), or
-- [Running one application at a time]({{< ref "#run-one-job-application-at-a-time" >}})
+- [Running all applications in this sample simultaneously with the Multi-App Run template file]({{% ref "#run-using-multi-app-run" %}}), or
+- [Running one application at a time]({{% ref "#run-one-job-application-at-a-time" %}})
 
 ## Run using Multi-App Run
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart. Currently, you can experiment with the jobs API with the Go SDK.
 
-{{< tabs Go >}}
+{{< tabpane text=true >}}
 
  <!-- Go -->
-{{% codetab %}}
+{{% tab "Go" %}}
 
 This quickstart includes two apps:
 
@@ -106,7 +106,7 @@ dapr stop -f .
 When you ran `dapr init` during Dapr install:
 
 - The `dapr_scheduler` control plane was started alongside other Dapr services.
-- [The `dapr.yaml` Multi-App Run template file]({{< ref "#dapryaml-multi-app-run-template-file" >}}) was generated in the `.dapr/components` directory.
+- [The `dapr.yaml` Multi-App Run template file]({{% ref "#dapryaml-multi-app-run-template-file" %}}) was generated in the `.dapr/components` directory.
 
 Running `dapr run -f .` in this Quickstart started both the `job-scheduler` and the `job-service`. In the terminal output, you can see the following jobs being scheduled, retrieved, and deleted.
 
@@ -121,7 +121,7 @@ Running `dapr run -f .` in this Quickstart started both the `job-scheduler` and 
 
 #### `dapr.yaml` Multi-App Run template file
 
-Running the [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
+Running the [Multi-App Run template file]({{% ref multi-app-dapr-run %}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
 
 ```yml
 version: 1
@@ -414,16 +414,16 @@ func delete(droidJob DroidJob) error {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Run one job application at a time
 
-{{< tabs Go >}}
+{{< tabpane text=true >}}
 
  <!-- Go -->
-{{% codetab %}}
+{{% tab "Go" %}}
 
 This quickstart includes two apps:
 
@@ -501,18 +501,18 @@ Return to the `job-service` app terminal window. The output should be:
 == APP == Executing maintenance job: Memory Wipe
 ```
 
-Unpack what happened in the [`job-service`]({{< ref "#job-service-app" >}}) and [`job-scheduler`]({{< ref "#job-scheduler-app" >}}) applications when you ran `dapr run`.
+Unpack what happened in the [`job-service`]({{% ref "#job-service-app" %}}) and [`job-scheduler`]({{% ref "#job-scheduler-app" %}}) applications when you ran `dapr run`.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 ## Watch the demo
 
-See the jobs API in action using a Go HTTP example, recorded during the [Dapr Community Call #107(https://www.youtube.com/live/WHGOc7Ec_YQ?si=JlOlcJKkhRuhf5R1&t=849)].
+See the jobs API in action using a Go HTTP example, recorded during the [Dapr Community Call #107](https://www.youtube.com/live/WHGOc7Ec_YQ?si=JlOlcJKkhRuhf5R1&t=849).
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/WHGOc7Ec_YQ?si=JlOlcJKkhRuhf5R1&amp;start=849" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+{{< youtube id=WHGOc7Ec_YQ start=849 >}}
 
 ## Tell us what you think!
 
@@ -524,7 +524,7 @@ Join the discussion in our [discord channel](https://discord.com/channels/778680
 
 - HTTP samples of this quickstart:
   - [Go](https://github.com/dapr/quickstarts/tree/master/jobs/go/http)
-- Learn more about [the jobs building block]({{< ref jobs-overview.md >}})
-- Learn more about [the scheduler control plane]({{< ref scheduler.md >}})
+- Learn more about [the jobs building block]({{% ref jobs-overview %}})
+- Learn more about [the scheduler control plane]({{% ref scheduler %}})
 
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}

@@ -14,12 +14,12 @@ Now that you've learned what the Dapr pub/sub building block provides, learn how
 
 <img src="/images/pubsub-howto-overview.png" width=1000 alt="Diagram showing state management of example service">
 
-Dapr automatically wraps the user payload in a CloudEvents v1.0 compliant envelope, using `Content-Type` header value for `datacontenttype` attribute. [Learn more about messages with CloudEvents.]({{< ref pubsub-cloudevents.md >}})
+Dapr automatically wraps the user payload in a CloudEvents v1.0 compliant envelope, using `Content-Type` header value for `datacontenttype` attribute. [Learn more about messages with CloudEvents.]({{% ref pubsub-cloudevents %}})
 
 The following example demonstrates how your applications publish and subscribe to a topic called `orders`.
 
 {{% alert title="Note" color="primary" %}}
- If you haven't already, [try out the pub/sub quickstart]({{< ref pubsub-quickstart.md >}}) for a quick walk-through on how to use pub/sub.
+ If you haven't already, [try out the pub/sub quickstart]({{% ref pubsub-quickstart %}}) for a quick walk-through on how to use pub/sub.
 
 {{% /alert %}}
 
@@ -27,9 +27,9 @@ The following example demonstrates how your applications publish and subscribe t
 
 The first step is to set up the pub/sub component:
 
-{{< tabs "Self-Hosted (CLI)" Kubernetes >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted (CLI)" %}}
 When you run `dapr init`, Dapr creates a default Redis `pubsub.yaml` and runs a Redis container on your local machine, located:
 
 - On Windows, under `%UserProfile%\.dapr\components\pubsub.yaml`
@@ -63,55 +63,13 @@ scopes:
   - checkout
 ```
 
-You can override this file with another [pubsub component]({{< ref setup-pubsub >}}) by creating a components directory (in this example, `myComponents`) containing the file and using the flag `--resources-path` with the `dapr run` CLI command.
+You can override this file with another [pubsub component]({{% ref setup-pubsub %}}) by creating a components directory (in this example, `myComponents`) containing the file and using the flag `--resources-path` with the `dapr run` CLI command.
 
-{{< tabs ".NET" Java Python Go JavaScript >}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
-```bash
-dapr run --app-id myapp --resources-path ./myComponents -- dotnet run
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-```bash
-dapr run --app-id myapp --resources-path ./myComponents -- mvn spring-boot:run
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-```bash
-dapr run --app-id myapp --resources-path ./myComponents -- python3 app.py
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-```bash
-dapr run --app-id myapp --resources-path ./myComponents -- go run app.go
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-```bash
-dapr run --app-id myapp --resources-path ./myComponents -- npm start
-```
-{{% /codetab %}}
-
-{{< /tabs >}}
-
-{{% /codetab %}}
-
-{{% codetab %}}
-To deploy this into a Kubernetes cluster, fill in the `metadata` connection details of the [pub/sub component]({{< ref setup-pubsub >}}) in the YAML below, save as `pubsub.yaml`, and run `kubectl apply -f pubsub.yaml`.
+To deploy this into a Kubernetes cluster, fill in the `metadata` connection details of the [pub/sub component]({{% ref setup-pubsub %}}) in the YAML below, save as `pubsub.yaml`, and run `kubectl apply -f pubsub.yaml`.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -147,9 +105,53 @@ scopes:
   - checkout
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
+
+{{< tabpane text=true >}}
+
+{{% tab ".NET" %}}
+
+```bash
+dapr run --app-id myapp --resources-path ./myComponents -- dotnet run
+```
+
+{{% /tab %}}
+
+{{% tab "Java" %}}
+
+```bash
+dapr run --app-id myapp --resources-path ./myComponents -- mvn spring-boot:run
+```
+
+{{% /tab %}}
+
+{{% tab "Python" %}}
+
+```bash
+dapr run --app-id myapp --resources-path ./myComponents -- python3 app.py
+```
+
+{{% /tab %}}
+
+{{% tab "Go" %}}
+
+```bash
+dapr run --app-id myapp --resources-path ./myComponents -- go run app.go
+```
+
+{{% /tab %}}
+
+{{% tab "JavaScript" %}}
+
+```bash
+dapr run --app-id myapp --resources-path ./myComponents -- npm start
+```
+{{% /tab %}}
+
+{{< /tabpane >}}
+
 
 ## Subscribe to topics
 
@@ -159,7 +161,7 @@ Dapr provides three methods by which you can subscribe to topics:
 - **Streaming**, where subscriptions are defined in user code.
 - **Programmatically**, where subscriptions are defined in user code.
 
-Learn more in the [declarative, streaming, and programmatic subscriptions doc]({{< ref subscription-methods.md >}}). This example demonstrates a **declarative** subscription.
+Learn more in the [declarative, streaming, and programmatic subscriptions doc]({{% ref subscription-methods %}}). This example demonstrates a **declarative** subscription.
 
 Create a file named `subscription.yaml` and paste the following:
 
@@ -188,15 +190,15 @@ Place `subscription.yaml` in the same directory as your `pubsub.yaml` component.
 {{% alert title="Note" color="primary" %}}
 This feature is currently in preview.
 Dapr can be made to "hot reload" declarative subscriptions, whereby updates are picked up automatically without needing a restart.
-This is enabled by via the [`HotReload` feature gate]({{< ref "support-preview-features.md" >}}).
+This is enabled by via the [`HotReload` feature gate]({{% ref "support-preview-features" %}}).
 To prevent reprocessing or loss of unprocessed messages, in-flight messages between Dapr and your application are unaffected during hot reload events.
 {{% /alert %}}
 
 Below are code examples that leverage Dapr SDKs to subscribe to the topic you defined in `subscription.yaml`.
 
-{{< tabs ".NET" Java Python Go JavaScript>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using System.Collections.Generic;
@@ -227,9 +229,9 @@ Navigate to the directory containing the above code, then run the following comm
 dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-protocol https dotnet run
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ```java
 //dependencies
@@ -267,9 +269,9 @@ Navigate to the directory containing the above code, then run the following comm
 dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 mvn spring-boot:run
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ```python
 #dependencies
@@ -296,9 +298,9 @@ Navigate to the directory containing the above code, then run the following comm
 dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --app-protocol grpc -- python3 CheckoutService.py
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 //dependencies
@@ -341,9 +343,9 @@ Navigate to the directory containing the above code, then run the following comm
 dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 go run CheckoutService.go
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 //dependencies
@@ -383,9 +385,9 @@ Navigate to the directory containing the above code, then run the following comm
 dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 npm start
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Publish a message
 
@@ -397,39 +399,39 @@ dapr run --app-id orderprocessing --dapr-http-port 3601
 
 Then publish a message to the `orders` topic:
 
-{{< tabs "Dapr CLI" "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Dapr CLI" %}}
 
 ```bash
 dapr publish --publish-app-id orderprocessing --pubsub order-pub-sub --topic orders --data '{"orderId": "100"}'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 ```bash
 curl -X POST http://localhost:3601/v1.0/publish/order-pub-sub/orders -H "Content-Type: application/json" -d '{"orderId": "100"}'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"orderId": "100"}' -Uri 'http://localhost:3601/v1.0/publish/order-pub-sub/orders'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 Below are code examples that leverage Dapr SDKs to publish a topic.
 
-{{< tabs ".NET" Java Python Go JavaScript>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using System;
@@ -469,9 +471,9 @@ Navigate to the directory containing the above code, then run the following comm
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-protocol https dotnet run
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ```java
 //dependencies
@@ -519,9 +521,9 @@ Navigate to the directory containing the above code, then run the following comm
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ```python
 #dependencies  
@@ -556,9 +558,9 @@ Navigate to the directory containing the above code, then run the following comm
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --app-protocol grpc python3 OrderProcessingService.py
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 //dependencies
@@ -604,9 +606,9 @@ Navigate to the directory containing the above code, then run the following comm
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run OrderProcessingService.go
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 //dependencies
@@ -651,9 +653,9 @@ Navigate to the directory containing the above code, then run the following comm
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Message acknowledgement and retries
 
@@ -663,11 +665,11 @@ In order to tell Dapr that a message was processed successfully, return a `200 O
 
 Watch [this demo video](https://youtu.be/1dqe1k-FXJQ?si=s3gvWxRxeOsmXuE1) to learn more about pub/sub messaging with Dapr.
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/1dqe1k-FXJQ?si=s3gvWxRxeOsmXuE1" title="YouTube video player" style="padding-bottom:25px;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{{< youtube id=1dqe1k-FXJQ >}}
 
 ## Next steps
 
 - Try the [pub/sub tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/pub-sub).
-- Learn about [messaging with CloudEvents]({{< ref pubsub-cloudevents.md >}}) and when you might want to [send messages without CloudEvents]({{< ref pubsub-raw.md >}}).
-- Review the list of [pub/sub components]({{< ref setup-pubsub >}}).
-- Read the [API reference]({{< ref pubsub_api.md >}}).
+- Learn about [messaging with CloudEvents]({{% ref pubsub-cloudevents %}}) and when you might want to [send messages without CloudEvents]({{% ref pubsub-raw %}}).
+- Review the list of [pub/sub components]({{% ref setup-pubsub %}}).
+- Read the [API reference]({{% ref pubsub_api %}}).

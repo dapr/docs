@@ -17,6 +17,7 @@ Most observability tools support OTEL, including:
 - [Zipkin](https://zipkin.io/)
 - [Jaeger](https://www.jaegertracing.io/)
 - [SignalFX](https://www.signalfx.com/)
+- [Dash0](https://www.dash0.com/)
 
 The following diagram demonstrates how Dapr (using OTEL and Zipkin protocols) integrates with multiple observability tools.
 
@@ -59,7 +60,7 @@ For example, `from a gateway service to a Dapr-enabled service A`.
 
 An external gateway ingress calls Dapr, which generates the trace headers and calls `service A`. `Service A` then calls `service B` and further Dapr-enabled services. 
 
-You must propagate the headers from `service A` to `service B`. For example: `Ingress -> service A -> propagate trace headers -> service B`. This is similar to [case 2]({{< ref "tracing-overview.md#multiple-sequential-service-invocation-calls" >}}).
+You must propagate the headers from `service A` to `service B`. For example: `Ingress -> service A -> propagate trace headers -> service B`. This is similar to [case 2]({{% ref "tracing-overview.md#multiple-sequential-service-invocation-calls" %}}).
 
 ##### Pub/sub messages
 
@@ -108,11 +109,11 @@ If you decide to generate trace headers yourself, there are three ways this can 
 
    You can handcraft a trace context following [W3C trace context specifications](https://www.w3.org/TR/trace-context/) and pass them to a Dapr-enabled service. 
    
-   Read [the trace context overview]({{< ref w3c-tracing-overview >}}) for more background and examples on W3C trace context and headers.
+   Read [the trace context overview]({{% ref w3c-tracing-overview %}}) for more background and examples on W3C trace context and headers.
 
 ## Related Links
 
-- [Observability concepts]({{< ref observability-concept.md >}})
-- [W3C Trace Context for distributed tracing]({{< ref w3c-tracing-overview >}})
+- [Observability concepts]({{% ref observability-concept.md %}})
+- [W3C Trace Context for distributed tracing]({{% ref w3c-tracing-overview %}})
 - [W3C Trace Context specification](https://www.w3.org/TR/trace-context/)
 - [Observability quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/observability)

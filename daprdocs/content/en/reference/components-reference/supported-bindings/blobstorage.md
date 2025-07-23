@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup Azure Blob Storage binding create a component of type `bindings.azure.blobstorage`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup Azure Blob Storage binding create a component of type `bindings.azure.blobstorage`. See [this guide]({{% ref "howto-bindings.md#1-create-a-binding" %}}) on how to create and apply a binding configuration.
 
 
 ```yaml
@@ -35,7 +35,7 @@ spec:
 #   value: <publicAccessLevel>
 ```
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -52,7 +52,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ### Microsoft Entra ID authentication
 
-The Azure Blob Storage binding component supports authentication using all Microsoft Entra ID mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of Microsoft Entra ID authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+The Azure Blob Storage binding component supports authentication using all Microsoft Entra ID mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of Microsoft Entra ID authentication mechanism, see the [docs for authenticating to Azure]({{% ref authenticating-azure.md %}}).
 
 ## Binding support
 
@@ -63,7 +63,7 @@ This component supports **output binding** with the following operations:
 - `delete` : [Delete blob](#delete-blob)
 - `list`: [List blobs](#list-blobs)
 
-The Blob storage component's **input binding** triggers and pushes events using [Azure Event Grid]({{< ref eventgrid.md >}}). 
+The Blob storage component's **input binding** triggers and pushes events using [Azure Event Grid]({{% ref eventgrid.md %}}). 
  
 Refer to the [Reacting to Blob storage events](https://learn.microsoft.com/azure/storage/blobs/storage-blob-event-overview) guide for more set up and more information.
 
@@ -85,42 +85,42 @@ To perform a create blob operation, invoke the Azure Blob Storage binding with a
 
 ##### Save text to a random generated UUID blob
 
-{{< tabs Windows Linux >}}
-  {{% codetab %}}
+{{< tabpane text=true >}}
+  {{% tab %}}
   On Windows, utilize cmd prompt (PowerShell has different escaping mechanism)
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\" }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "create", "data": "Hello World" }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ##### Save text to a specific blob
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\", \"metadata\": { \"blobName\": \"my-test-file.txt\" } }" \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "create", "data": "Hello World", "metadata": { "blobName": "my-test-file.txt" } }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 ##### Save a file to a blob
@@ -148,22 +148,22 @@ spec:
 
 Then you can upload it as you would normally:
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"YOUR_BASE_64_CONTENT\", \"metadata\": { \"blobName\": \"my-test-file.jpg\" } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "create", "data": "YOUR_BASE_64_CONTENT", "metadata": { "blobName": "my-test-file.jpg" } }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -197,22 +197,22 @@ The metadata parameters are:
 
 #### Example
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ \"operation\": \"get\", \"metadata\": { \"blobName\": \"myblob\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "get", "metadata": { "blobName": "myblob" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -245,60 +245,60 @@ The metadata parameters are:
 
 ##### Delete blob
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ \"operation\": \"delete\", \"metadata\": { \"blobName\": \"myblob\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "delete", "metadata": { "blobName": "myblob" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ##### Delete blob snapshots only
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ \"operation\": \"delete\", \"metadata\": { \"blobName\": \"myblob\", \"deleteSnapshots\": \"only\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "delete", "metadata": { "blobName": "myblob", "deleteSnapshots": "only" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ##### Delete blob including snapshots
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ \"operation\": \"delete\", \"metadata\": { \"blobName\": \"myblob\", \"deleteSnapshots\": \"include\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "delete", "metadata": { "blobName": "myblob", "deleteSnapshots": "include" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -427,8 +427,8 @@ Applications publishing to an Azure Blob Storage output binding should send a me
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Bindings building block]({{< ref bindings >}})
-- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
-- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
-- [Bindings API reference]({{< ref bindings_api.md >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Bindings building block]({{% ref bindings %}})
+- [How-To: Trigger application with input binding]({{% ref howto-triggers.md %}})
+- [How-To: Use bindings to interface with external resources]({{% ref howto-bindings.md %}})
+- [Bindings API reference]({{% ref bindings_api.md %}})

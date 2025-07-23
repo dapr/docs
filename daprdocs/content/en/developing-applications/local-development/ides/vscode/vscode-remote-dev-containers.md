@@ -101,6 +101,4 @@ Then, using the VS Code command palette (`CTRL + SHIFT + P` or `CMD + SHIFT + P`
 
 Watch this [video](https://www.youtube.com/watch?v=D2dO4aGpHcg&t=120) on how to use the Dapr Dev Containers with your application.
 
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/D2dO4aGpHcg?start=120" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
+{{< youtube id=D2dO4aGpHcg start=120 >}}

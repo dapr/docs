@@ -128,4 +128,4 @@ Since any type of Kubernetes Volume can be attached to the sidecar, you can use 
 
 ## Related links
 
-[Dapr Kubernetes pod annotations spec]({{< ref arguments-annotations-overview.md >}})
+[Dapr Kubernetes pod annotations spec]({{% ref arguments-annotations-overview.md %}})

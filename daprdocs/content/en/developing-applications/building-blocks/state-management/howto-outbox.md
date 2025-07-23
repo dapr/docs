@@ -14,7 +14,7 @@ For example, you can use the outbox pattern to:
 1. Write a new user record to an account database. 
 1. Send a notification message that the account was successfully created. 
 
-With Dapr's outbox support, you can notify subscribers when an application's state is created or updated when calling Dapr's [transactions API]({{< ref "state_api.md#state-transactions" >}}).
+With Dapr's outbox support, you can notify subscribers when an application's state is created or updated when calling Dapr's [transactions API]({{% ref "state_api.md#state-transactions" %}}).
 
 The diagram below is an overview of how the outbox feature works:
 
@@ -26,12 +26,12 @@ The diagram below is an overview of how the outbox feature works:
 
 ## Requirements
 
-The outbox feature can be used with using any [transactional state store]({{< ref supported-state-stores >}}) supported by Dapr. All [pub/sub brokers]({{< ref supported-pubsub >}}) are supported with the outbox feature.
+The outbox feature can be used with using any [transactional state store]({{% ref supported-state-stores %}}) supported by Dapr. All [pub/sub brokers]({{% ref supported-pubsub %}}) are supported with the outbox feature.
 
-[Learn more about the transactional methods you can use.]({{< ref "howto-get-save-state.md#perform-state-transactions" >}})
+[Learn more about the transactional methods you can use.]({{% ref "howto-get-save-state.md#perform-state-transactions" %}})
 
 {{% alert title="Note" color="primary" %}} 
-Message brokers that work with the competing consumer pattern (for example, [Apache Kafka]({{< ref setup-apache-kafka>}})) are encouraged to reduce the chances of duplicate events.
+Message brokers that work with the competing consumer pattern (for example, [Apache Kafka]({{% ref setup-apache-kafka%}})) are encouraged to reduce the chances of duplicate events.
 {{% /alert %}}
 
 ## Enable the outbox pattern
@@ -116,11 +116,11 @@ To use correctly, the `key` values must match between the operation on the state
 
 If you have two or more `outbox.projection` enabled state items for the same key, the first one defined is used and the others are ignored. 
 
-[Learn more about default and custom CloudEvent messages.]({{< ref pubsub-cloudevents.md >}})
+[Learn more about default and custom CloudEvent messages.]({{% ref pubsub-cloudevents.md %}})
 
-{{< tabs Python JavaScript ".NET" Java Go HTTP >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 <!--python-->
 
@@ -161,9 +161,9 @@ By setting the metadata item `"outbox.projection"` to `"true"` and making sure t
 - The first operation is written to the state store and no message is written to the message broker.
 - The second operation value is published to the configured pub/sub topic.   
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 <!--javascript-->
 
@@ -216,9 +216,9 @@ By setting the metadata item `"outbox.projection"` to `"true"` and making sure t
 - The second operation value is published to the configured pub/sub topic.   
 
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 <!--dotnet-->
 
@@ -266,9 +266,9 @@ By setting the metadata item `"outbox.projection"` to `"true"` and making sure t
 - The first operation is written to the state store and no message is written to the message broker.
 - The second operation value is published to the configured pub/sub topic.    
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 <!--java-->
 
@@ -318,9 +318,9 @@ By setting the metadata item `"outbox.projection"` to `"true"` and making sure t
 - The second operation value is published to the configured pub/sub topic.   
 
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 <!--go-->
 
@@ -356,9 +356,9 @@ By setting the metadata item `"outbox.projection"` to `"true"` and making sure t
 - The first operation is written to the state store and no message is written to the message broker.
 - The second operation value is published to the configured pub/sub topic.   
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP" %}}
 
 <!--http-->
 
@@ -401,17 +401,17 @@ By setting the metadata item `"outbox.projection"` to `"true"` and making sure t
 - The first operation is written to the state store and no message is written to the message broker.
 - The second operation value is published to the configured pub/sub topic.   
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### Override Dapr-generated CloudEvent fields
 
-You can override the [Dapr-generated CloudEvent fields]({{< ref "pubsub-cloudevents.md#dapr-generated-cloudevents-example" >}}) on the published outbox event with custom CloudEvent metadata.
+You can override the [Dapr-generated CloudEvent fields]({{% ref "pubsub-cloudevents.md#dapr-generated-cloudevents-example" %}}) on the published outbox event with custom CloudEvent metadata.
 
-{{< tabs Python JavaScript ".NET" Java Go HTTP >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 <!--python-->
 
@@ -450,9 +450,9 @@ async def execute_state_transaction():
 if __name__ == "__main__":
     asyncio.run(execute_state_transaction())
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 <!--javascript-->
 
@@ -490,9 +490,9 @@ async function executeStateTransaction() {
 
 executeStateTransaction();
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 <!--csharp-->
 
@@ -541,9 +541,9 @@ public class StateOperationExample
     }
 }
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 <!--java-->
 
@@ -589,9 +589,9 @@ public class StateOperationExample {
     }
 }
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 <!--go-->
 
@@ -638,9 +638,9 @@ func main() {
 	log.Println("State transaction executed.")
 }
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP" %}}
 
 <!--http-->
 
@@ -667,9 +667,9 @@ curl -X POST http://localhost:3500/v1.0/state/starwars/transaction \
       }'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 {{% alert title="Note" color="primary" %}}
@@ -681,5 +681,4 @@ The `data` CloudEvent field is reserved for Dapr's use only, and is non-customiz
 
 Watch [this video for an overview of the outbox pattern](https://youtu.be/rTovKpG0rhY?t=1338):
 
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="360" height="315" src="https://www.youtube-nocookie.com/embed/rTovKpG0rhY?si=1xlS54vcdYnLLtOL&amp;start=1338" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{{< youtube id=rTovKpG0rhY start=1338 >}}

@@ -47,9 +47,9 @@ When a request arrives without a trace ID, Dapr creates a new one. Otherwise, it
 ### W3C trace headers
 These are the specific trace context headers that are generated and propagated by Dapr for HTTP and gRPC.
 
-{{< tabs "HTTP" "gRPC" >}}
+{{< tabpane text=true >}}
  <!-- HTTP -->
-{{% codetab %}}
+{{% tab "HTTP" %}}
 
 Copy these headers when propagating a trace context header from an HTTP response to an HTTP request:
 
@@ -73,18 +73,18 @@ tracestate: congo=t61rcWkgMzE
 
 [Learn more about the tracestate fields details](https://www.w3.org/TR/trace-context/#tracestate-header).
 
-{{% /codetab %}}
+{{% /tab %}}
 
 
  <!-- gRPC -->
-{{% codetab %}}
+{{% tab "gRPC" %}}
 
 In the gRPC API calls, trace context is passed through `grpc-trace-bin` header.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Related Links
-- [Learn more about distributed tracing in Dapr]({{< ref tracing-overview.md >}})
+- [Learn more about distributed tracing in Dapr]({{% ref tracing-overview.md %}})
 - [W3C Trace Context specification](https://www.w3.org/TR/trace-context/)

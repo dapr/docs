@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To set up the Local Storage binding, create a component of type `bindings.localstorage`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To set up the Local Storage binding, create a component of type `bindings.localstorage`. See [this guide]({{% ref "howto-bindings.md#1-create-a-binding" %}}) on how to create and apply a binding configuration.
 
 
 ```yaml
@@ -58,64 +58,64 @@ To perform a create file operation, invoke the Local Storage binding with a `POS
 
 ##### Save text to a random generated UUID file
 
-{{< tabs Windows Linux >}}
-  {{% codetab %}}
+{{< tabpane text=true >}}
+  {{% tab %}}
   On Windows, utilize cmd prompt (PowerShell has different escaping mechanism)
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\" }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "create", "data": "Hello World" }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ##### Save text to a specific file
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\", \"metadata\": { \"fileName\": \"my-test-file.txt\" } }" \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "create", "data": "Hello World", "metadata": { "fileName": "my-test-file.txt" } }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 ##### Save a binary file
 
 To upload a file, encode it as Base64. The binding should automatically detect the Base64 encoding.
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"YOUR_BASE_64_CONTENT\", \"metadata\": { \"fileName\": \"my-test-file.jpg\" } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "create", "data": "YOUR_BASE_64_CONTENT", "metadata": { "fileName": "my-test-file.jpg" } }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -143,22 +143,22 @@ To perform a get file operation, invoke the Local Storage binding with a `POST` 
 
 #### Example
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ \"operation\": \"get\", \"metadata\": { \"fileName\": \"myfile\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "get", "metadata": { "fileName": "myfile" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -187,22 +187,22 @@ If you only want to list the files beneath a particular directory below the `roo
 
 #### Example
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ \"operation\": \"list\", \"metadata\": { \"fileName\": \"my/cool/directory\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "list", "metadata": { "fileName": "my/cool/directory" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -223,22 +223,22 @@ To perform a delete file operation, invoke the Local Storage binding with a `POS
 
 #### Example
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ \"operation\": \"delete\", \"metadata\": { \"fileName\": \"myfile\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "delete", "metadata": { "fileName": "myfile" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -260,7 +260,7 @@ By default the Local Storage output binding auto generates a UUID as the file na
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Bindings building block]({{< ref bindings >}})
-- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
-- [Bindings API reference]({{< ref bindings_api.md >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Bindings building block]({{% ref bindings %}})
+- [How-To: Use bindings to interface with external resources]({{% ref howto-bindings.md %}})
+- [Bindings API reference]({{% ref bindings_api.md %}})

@@ -48,12 +48,12 @@ spec:
 
 By default, there is a single configuration file called `daprsystem` installed with the Dapr control plane system services. This configuration file applies global control plane settings and is set up when Dapr is deployed to Kubernetes.
 
-[Learn more about configuration options.]({{< ref "configuration-overview.md" >}})
+[Learn more about configuration options.]({{% ref "configuration-overview" %}})
 
 {{% alert title="Important" color="warning" %}}
-Dapr application and control plane configurations should not be confused with the [configuration building block API]({{< ref configuration-api-overview >}}), which enables applications to retrieve key/value data from configuration store components. 
+Dapr application and control plane configurations should not be confused with the [configuration building block API]({{% ref configuration-api-overview %}}), which enables applications to retrieve key/value data from configuration store components. 
 {{% /alert %}}
 
 ## Next steps
 
-{{< button text="Learn more about configuration" page="configuration-overview" >}}
+{{< button text="Learn more about configuration" page="configuration-overview.md" >}}

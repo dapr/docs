@@ -8,7 +8,7 @@ weight: 30
 
 This article describe how to use Dapr to connect services using gRPC.
 
-By using Dapr's gRPC proxying capability, you can use your existing proto-based gRPC services and have the traffic go through the Dapr sidecar. Doing so yields the following [Dapr service invocation]({{< ref service-invocation-overview.md >}}) benefits to developers:
+By using Dapr's gRPC proxying capability, you can use your existing proto-based gRPC services and have the traffic go through the Dapr sidecar. Doing so yields the following [Dapr service invocation]({{% ref service-invocation-overview %}}) benefits to developers:
 
 1. Mutual authentication
 2. Tracing
@@ -126,9 +126,9 @@ ctx = metadata.AppendToOutgoingContext(ctx, "dapr-app-id", "server")
 
 All languages supported by gRPC allow for adding metadata. Here are a few examples:
 
-{{< tabs Java ".NET" Python JavaScript Ruby "C++">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 ```java
 Metadata headers = new Metadata();
 Metadata.Key<String> jwtKey = Metadata.Key.of("dapr-app-id", "server");
@@ -137,9 +137,9 @@ GreeterService.ServiceBlockingStub stub = GreeterService.newBlockingStub(channel
 stub = MetadataUtils.attachHeaders(stub, header);
 stub.SayHello(new HelloRequest() { Name = "Darth Malak" });
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 ```csharp
 var metadata = new Metadata
 {
@@ -148,39 +148,39 @@ var metadata = new Metadata
 
 var call = client.SayHello(new HelloRequest { Name = "Darth Nihilus" }, metadata);
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 ```python
 metadata = (('dapr-app-id', 'server'),)
 response = stub.SayHello(request={ name: 'Darth Revan' }, metadata=metadata)
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 ```javascript
 const metadata = new grpc.Metadata();
 metadata.add('dapr-app-id', 'server');
 
 client.sayHello({ name: "Darth Malgus" }, metadata)
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Ruby" %}}
 ```ruby
 metadata = { 'dapr-app-id' : 'server' }
 response = service.sayHello({ 'name': 'Darth Bane' }, metadata)
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "C++" %}}
 ```c++
 grpc::ClientContext context;
 context.AddMetadata("dapr-app-id", "server");
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### Run the client using the Dapr CLI
 
@@ -223,11 +223,11 @@ spec:
 
 The `dapr.io/app-protocol: "grpc"` annotation tells Dapr to invoke the app using gRPC.
 
-If your app uses a TLS connection, you can tell Dapr to invoke your app over TLS with the `app-protocol: "grpcs"` annotation (full list [here]({{< ref arguments-annotations-overview.md >}})). Note that Dapr does not validate TLS certificates presented by the app.
+If your app uses a TLS connection, you can tell Dapr to invoke your app over TLS with the `app-protocol: "grpcs"` annotation (full list [here]({{% ref arguments-annotations-overview %}})). Note that Dapr does not validate TLS certificates presented by the app.
 
 ### Namespaces
 
-When running on [namespace supported platforms]({{< ref "service_invocation_api.md#namespace-supported-platforms" >}}), you include the namespace of the target app in the app ID: `myApp.production`
+When running on [namespace supported platforms]({{% ref "service_invocation_api#namespace-supported-platforms" %}}), you include the namespace of the target app in the app ID: `myApp.production`
 
 For example, invoking the gRPC server on a different namespace:
 
@@ -235,13 +235,13 @@ For example, invoking the gRPC server on a different namespace:
 ctx = metadata.AppendToOutgoingContext(ctx, "dapr-app-id", "server.production")
 ```
 
-See the [Cross namespace API spec]({{< ref "service_invocation_api.md#cross-namespace-invocation" >}}) for more information on namespaces.
+See the [Cross namespace API spec]({{% ref "service_invocation_api#cross-namespace-invocation" %}}) for more information on namespaces.
 
 ## Step 3: View traces and logs
 
 The example above showed you how to directly invoke a different service running locally or in Kubernetes. Dapr outputs metrics, tracing and logging information allowing you to visualize a call graph between services, log errors and optionally log the payload body.
 
-For more information on tracing and logs see the [observability]({{< ref observability-concept.md >}}) article.
+For more information on tracing and logs see the [observability]({{% ref observability-concept %}}) article.
 
 ## Proxying of streaming RPCs
 
@@ -249,24 +249,24 @@ When using Dapr to proxy streaming RPC calls using gRPC, you must set an additio
 
 For example:
 
-{{< tabs Go Java ".NET" Python JavaScript Ruby "C++">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 ```go
 ctx = metadata.AppendToOutgoingContext(ctx, "dapr-app-id", "server")
 ctx = metadata.AppendToOutgoingContext(ctx, "dapr-stream", "true")
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 ```java
 Metadata headers = new Metadata();
 Metadata.Key<String> jwtKey = Metadata.Key.of("dapr-app-id", "server");
 Metadata.Key<String> jwtKey = Metadata.Key.of("dapr-stream", "true");
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 ```csharp
 var metadata = new Metadata
 {
@@ -274,44 +274,44 @@ var metadata = new Metadata
 	{ "dapr-stream", "true" }
 };
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 ```python
 metadata = (('dapr-app-id', 'server'), ('dapr-stream', 'true'),)
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 ```javascript
 const metadata = new grpc.Metadata();
 metadata.add('dapr-app-id', 'server');
 metadata.add('dapr-stream', 'true');
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Ruby" %}}
 ```ruby
 metadata = { 'dapr-app-id' : 'server' }
 metadata = { 'dapr-stream' : 'true' }
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "C++" %}}
 ```c++
 grpc::ClientContext context;
 context.AddMetadata("dapr-app-id", "server");
 context.AddMetadata("dapr-stream", "true");
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### Streaming gRPCs and Resiliency
 
 > Currently, resiliency policies are not supported for service invocation via gRPC.
 
-When proxying streaming gRPCs, due to their long-lived nature, [resiliency]({{< ref "resiliency-overview.md" >}}) policies are applied on the "initial handshake" only. As a consequence:
+When proxying streaming gRPCs, due to their long-lived nature, [resiliency]({{% ref "resiliency-overview" %}}) policies are applied on the "initial handshake" only. As a consequence:
 
 - If the stream is interrupted after the initial handshake, it will not be automatically re-established by Dapr. Your application will be notified that the stream has ended, and will need to recreate it.
 - Retry policies only impact the initial connection "handshake". If your resiliency policy includes retries, Dapr will detect failures in establishing the initial connection to the target app and will retry until it succeeds (or until the number of retries defined in the policy is exhausted).
@@ -319,15 +319,12 @@ When proxying streaming gRPCs, due to their long-lived nature, [resiliency]({{< 
 
 ## Related Links
 
-* [Service invocation overview]({{< ref service-invocation-overview.md >}})
-* [Service invocation API specification]({{< ref service_invocation_api.md >}})
+* [Service invocation overview]({{% ref service-invocation-overview %}})
+* [Service invocation API specification]({{% ref service_invocation_api %}})
 * [gRPC proxying community call video](https://youtu.be/B_vkXqptpXY?t=70)
 
 ## Community call demo
 
 Watch this [video](https://youtu.be/B_vkXqptpXY?t=69) on how to use Dapr's gRPC proxying capability:
 
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/B_vkXqptpXY?start=69" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/B_vkXqptpXY?start=69" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
+{{< youtube id=B_vkXqptpXY start=69 >}}

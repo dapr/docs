@@ -26,6 +26,6 @@ spec:
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}}) in the Related links section
-- Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
-- [Pub/Sub building block]({{< ref pubsub >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}}) in the Related links section
+- Read [this guide]({{% ref "howto-publish-subscribe.md#step-2-publish-a-topic" %}}) for instructions on configuring pub/sub components
+- [Pub/Sub building block]({{% ref pubsub %}})
