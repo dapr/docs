@@ -8,7 +8,7 @@ description: "Inject Environment Variables from Kubernetes Secrets into Dapr sid
 In special cases, the Dapr sidecar needs an environment variable injected into it. This use case may be required by a component, a 3rd party library, or a module that uses environment variables to configure the said component or customize its behavior. This can be useful for both production and non-production environments.
 
 ## Overview
-In Dapr 1.15, the new `dapr.io/env-from-secret` annotation was introduced, [similar to `dapr.io/env`]({{< ref arguments-annotations-overview >}}).
+In Dapr 1.15, the new `dapr.io/env-from-secret` annotation was introduced, [similar to `dapr.io/env`]({{% ref arguments-annotations-overview %}}).
 With this annotation, you can inject an environment variable into the Dapr sidecar, with a value from a secret.
 
 ### Annotation format

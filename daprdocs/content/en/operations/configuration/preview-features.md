@@ -6,7 +6,7 @@ weight: 7000
 description: "How to specify and enable preview features"
 ---
 
-[Preview features]({{< ref support-preview-features >}}) in Dapr are considered experimental when they are first released. These preview features require you to explicitly opt-in to use them. You specify this opt-in in Dapr's Configuration file.
+[Preview features]({{% ref support-preview-features %}}) in Dapr are considered experimental when they are first released. These preview features require you to explicitly opt-in to use them. You specify this opt-in in Dapr's Configuration file.
 
 Preview features are enabled on a per application basis by setting configuration when running an application instance.
 
@@ -40,10 +40,10 @@ spec:
       enabled: true
 ```
 
-{{< tabs Self-hosted Kubernetes >}}
+{{< tabpane text=true >}}
 
 <!--self-hosted-->
-{{% codetab %}}
+{{% tab "Self-hosted" %}}
 
 To enable preview features when running Dapr locally, either update the default configuration or specify a separate config file using `dapr run`.
 
@@ -57,10 +57,10 @@ Alternately, you can update preview features on all apps run locally by specifyi
 dapr run --app-id myApp --config ./previewConfig.yaml ./app
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
 <!--kubernetes-->
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
 In Kubernetes mode, the configuration must be provided via a configuration component. Using the same configuration as above, apply it via `kubectl`:
 
@@ -100,10 +100,10 @@ spec:
         imagePullPolicy: Always
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Next steps
 
-{{< button text="Configuration schema" page="configuration-schema" >}}
+{{< button text="Configuration schema" page="configuration-schema.md" >}}

@@ -59,18 +59,18 @@ The full list of options are listed in this table:
 | CLI flags                     | Kubernetes deployment annotation    | Description | Default value |
 | ----------------------------- | ----------------------------------- | ----------- | ------------- |
 | `--enable-app-health-check`   | `dapr.io/enable-app-health-check`   | Boolean that enables the health checks | Disabled  |
-| [`--app-health-check-path`]({{< ref "app-health.md#health-check-paths" >}})     | `dapr.io/app-health-check-path`     | Path that Dapr invokes for health probes when the app channel is HTTP (this value is ignored if the app channel is using gRPC) | `/healthz` |
-| [`--app-health-probe-interval`]({{< ref "app-health.md#intervals-timeouts-and-thresholds" >}}) | `dapr.io/app-health-probe-interval` | Number of *seconds* between each health probe | `5` |
-| [`--app-health-probe-timeout`]({{< ref "app-health.md#intervals-timeouts-and-thresholds" >}})  | `dapr.io/app-health-probe-timeout`  | Timeout in *milliseconds* for health probe requests | `500` |
-| [`--app-health-threshold`]({{< ref "app-health.md#intervals-timeouts-and-thresholds" >}})      | `dapr.io/app-health-threshold`     | Max number of consecutive failures before the app is considered unhealthy | `3` |
+| [`--app-health-check-path`]({{% ref "app-health.md#health-check-paths" %}})     | `dapr.io/app-health-check-path`     | Path that Dapr invokes for health probes when the app channel is HTTP (this value is ignored if the app channel is using gRPC) | `/healthz` |
+| [`--app-health-probe-interval`]({{% ref "app-health.md#intervals-timeouts-and-thresholds" %}}) | `dapr.io/app-health-probe-interval` | Number of *seconds* between each health probe | `5` |
+| [`--app-health-probe-timeout`]({{% ref "app-health.md#intervals-timeouts-and-thresholds" %}})  | `dapr.io/app-health-probe-timeout`  | Timeout in *milliseconds* for health probe requests | `500` |
+| [`--app-health-threshold`]({{% ref "app-health.md#intervals-timeouts-and-thresholds" %}})      | `dapr.io/app-health-threshold`     | Max number of consecutive failures before the app is considered unhealthy | `3` |
 
-> See the [full Dapr arguments and annotations reference]({{< ref arguments-annotations-overview >}}) for all options and how to enable them.
+> See the [full Dapr arguments and annotations reference]({{% ref arguments-annotations-overview %}}) for all options and how to enable them.
 
 Additionally, app health checks are impacted by the protocol used for the app channel, which is configured with the following flag or annotation:
 
 | CLI flag                     | Kubernetes deployment annotation    | Description | Default value |
 | ----------------------------- | ----------------------------------- | ----------- | ------------- |
-| [`--app-protocol`]({{< ref "app-health.md#health-check-paths" >}})   | `dapr.io/app-protocol`   | Protocol used for the app channel. supported values are `http`, `grpc`, `https`, `grpcs`, and `h2c` (HTTP/2 Cleartext). | `http`  |
+| [`--app-protocol`]({{% ref "app-health.md#health-check-paths" %}})   | `dapr.io/app-protocol`   | Protocol used for the app channel. supported values are `http`, `grpc`, `https`, `grpcs`, and `h2c` (HTTP/2 Cleartext). | `http`  |
 
 {{% alert title="Note" color="primary" %}}
 A low app health probe timeout value can classify an application as unhealthy if it experiences a sudden high load, causing the response time to degrade. If this happens, increase the `dapr.io/app-health-probe-timeout` value.
@@ -109,9 +109,9 @@ Thresholds only apply to failures. A single successful response is enough for Da
 
 ## Example
 
-{{< tabs "Self-Hosted (CLI)" Kubernetes >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted (CLI)" %}}
 
 Use the CLI flags with the `dapr run` command to enable app health checks:
 
@@ -129,9 +129,9 @@ dapr run \
     <command to execute>
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
 To enable app health checks in Kubernetes, add the relevant annotations to your Deployment:
 
@@ -159,12 +159,12 @@ spec:
         dapr.io/app-health-threshold: "2"
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Demo
 
 Watch this video for an [overview of using app health checks](https://youtu.be/srczBuOsAkI?t=533):
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/srczBuOsAkI?start=533" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{{< youtube id=srczBuOsAkI start=533 >}}

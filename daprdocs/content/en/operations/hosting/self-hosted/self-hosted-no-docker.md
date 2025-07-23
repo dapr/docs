@@ -8,7 +8,7 @@ description: "How to deploy and run Dapr in self-hosted mode without Docker inst
 
 ## Prerequisites
 
-- [Install the Dapr CLI]({{< ref "install-dapr-selfhost.md#installing-dapr-cli" >}})
+- [Install the Dapr CLI]({{% ref "install-dapr-selfhost.md#installing-dapr-cli" %}})
 
 ## Initialize Dapr without containers
 
@@ -22,9 +22,9 @@ Two different binaries are installed:
 - `daprd` 
 - `placement`
 
-The `placement` binary is needed to enable [actors]({{< ref "actors-overview.md" >}}) in a Dapr self-hosted installation.
+The `placement` binary is needed to enable [actors]({{% ref "actors-overview.md" %}}) in a Dapr self-hosted installation.
 
-In slim init mode, no default components (such as Redis) are installed for state management or pub/sub. This means that, aside from [service invocation]({{< ref "service-invocation-overview.md" >}}), no other building block functionality is available "out-of-the-box" on install. Instead, you can set up your own environment and custom components. 
+In slim init mode, no default components (such as Redis) are installed for state management or pub/sub. This means that, aside from [service invocation]({{% ref "service-invocation-overview.md" %}}), no other building block functionality is available "out-of-the-box" on install. Instead, you can set up your own environment and custom components. 
 
 Actor-based service invocation is possible if a state store is configured, as explained in the following sections.
 
@@ -39,16 +39,16 @@ See documentation around [configuring Redis in self-hosted mode without Docker](
 
 To enable actor placement:
 - Run the placement service locally. 
-- Enable a [transactional state store that supports ETags]({{< ref "supported-state-stores.md" >}}) to use actors. For example, [Redis configured in self-hosted mode](https://redis.io/topics/quickstart).
+- Enable a [transactional state store that supports ETags]({{% ref "supported-state-stores.md" %}}) to use actors. For example, [Redis configured in self-hosted mode](https://redis.io/topics/quickstart).
 
 By default, the `placement` binary is installed in:
 
 - For Linux/MacOS: `/$HOME/.dapr/bin`
 - For Windows: `%USERPROFILE%\.dapr\bin`
 
-{{< tabs "Linux/MacOS" "Windows">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Linux/MacOS" %}}
 
 ```bash
 $ $HOME/.dapr/bin/placement
@@ -64,9 +64,9 @@ INFO[0001] leader is established.                        instance=Nicoletaz-L10.
 
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Windows" %}}
 
 When running standalone placement on Windows, specify port 6050:
 
@@ -84,14 +84,14 @@ time="2022-10-17T14:56:56.8232286-05:00" level=info msg="leader is established."
 
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 Now, to run an application with actors enabled, you can follow the sample example created for:
 - [java-sdk](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/actors)
 - [python-sdk](https://github.com/dapr/python-sdk/tree/master/examples/demo_actor)
-- [dotnet-sdk]({{< ref "dotnet-actors-howto.md" >}}) 
+- [dotnet-sdk]({{% ref "dotnet-actors-howto.md" %}}) 
 
 Update the state store configuration files to match the Redis host and password with your setup. 
 
@@ -104,8 +104,8 @@ Enable it as a actor state store by making the metadata piece similar to the [sa
 
 ## Clean up
 
-When finished, remove the binaries by following [Uninstall Dapr in a self-hosted environment]({{< ref self-hosted-uninstall >}}) to remove the binaries.
+When finished, remove the binaries by following [Uninstall Dapr in a self-hosted environment]({{% ref self-hosted-uninstall %}}) to remove the binaries.
 
 ## Next steps
-- Run Dapr with [Podman]({{< ref self-hosted-with-podman.md >}}), using the default [Docker]({{< ref install-dapr-selfhost.md >}}), or in an [airgap environment]({{< ref self-hosted-airgap.md >}})
-- [Upgrade Dapr in self-hosted mode]({{< ref self-hosted-upgrade >}})
+- Run Dapr with [Podman]({{% ref self-hosted-with-podman.md %}}), using the default [Docker]({{% ref install-dapr-selfhost.md %}}), or in an [airgap environment]({{% ref self-hosted-airgap.md %}})
+- [Upgrade Dapr in self-hosted mode]({{% ref self-hosted-upgrade %}})

@@ -24,11 +24,11 @@ Every actor is defined as an instance of an actor type, identical to the way an 
 
 [The following overview video and demo](https://www.youtube.com/live/0y7ne6teHT4?si=dWNgtsp61f3Sjq0n&t=10797) demonstrates how actors in Dapr work. 
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/0y7ne6teHT4?si=dWNgtsp61f3Sjq0n&amp;start=10797" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{{< youtube id=0y7ne6teHT4 start=10797 >}}
 
 ## Dapr actors vs. Dapr Workflow
 
-Dapr actors builds on the state management and service invocation APIs to create stateful, long running objects with identity. [Dapr Workflow]({{< ref workflow-overview.md >}}) and Dapr Actors are related, with workflows building on actors to provide a higher level of abstraction to orchestrate a set of actors, implementing common workflow patterns and managing the lifecycle of actors on your behalf.
+Dapr actors builds on the state management and service invocation APIs to create stateful, long running objects with identity. [Dapr Workflow]({{% ref workflow-overview %}}) and Dapr Actors are related, with workflows building on actors to provide a higher level of abstraction to orchestrate a set of actors, implementing common workflow patterns and managing the lifecycle of actors on your behalf.
 
 Dapr actors are designed to provide a way to encapsulate state and behavior within a distributed system. An actor can be activated on demand by a client application. When an actor is activated, it is assigned a unique identity, which allows it to maintain its state across multiple invocations. This makes actors useful for building stateful, scalable, and fault-tolerant distributed applications.
 
@@ -48,9 +48,9 @@ Generally speaking, consider the actor pattern to model your problem or scenario
 
 ### When to use Dapr Workflow
 
-You would use Dapr Workflow when you need to define and orchestrate complex workflows that involve multiple services and components. For example, using the [chat application example earlier]({{< ref "#when-to-use-dapr-actors" >}}), you might use Dapr Workflows to define the overall workflow of the application, such as how new users are registered, how messages are sent and received, and how the application handles errors and exceptions.
+You would use Dapr Workflow when you need to define and orchestrate complex workflows that involve multiple services and components. For example, using the [chat application example earlier]({{% ref "#when-to-use-dapr-actors" %}}), you might use Dapr Workflows to define the overall workflow of the application, such as how new users are registered, how messages are sent and received, and how the application handles errors and exceptions.
 
-[Learn more about Dapr Workflow and how to use workflows in your application.]({{< ref workflow-overview.md >}})
+[Learn more about Dapr Workflow and how to use workflows in your application.]({{% ref workflow-overview %}})
 
 ## Actor types and actor IDs
 
@@ -64,7 +64,7 @@ Each actor is uniquely identified by an actor ID. An actor ID can be _any_ strin
 
 Dapr supports namespaced actors. An actor type can be deployed into different namespaces. You can call instances of these actors in the same namespace. 
  
-[Learn more about namespaced actors and how they work.]({{< ref namespaced-actors.md >}})
+[Learn more about namespaced actors and how they work.]({{% ref namespaced-actors %}})
 
 ### Actor lifetime
 
@@ -75,13 +75,13 @@ Since Dapr actors are virtual, they do not need to be explicitly created or dest
 
 An actor's state outlives the object's lifetime, as state is stored in the configured state provider for Dapr runtime.
 
-[Learn more about actor lifetimes.]({{< ref "actors-features-concepts.md#actor-lifetime" >}})
+[Learn more about actor lifetimes.]({{% ref "actors-features-concepts#actor-lifetime" %}})
 
 ### Distribution and failover
 
 To provide scalability and reliability, actors instances are  throughout the cluster and Dapr distributes actor instances throughout the cluster and automatically migrates them to healthy nodes.
 
-[Learn more about Dapr actor placement.]({{< ref "actors-features-concepts.md#actor-placement-service" >}})
+[Learn more about Dapr actor placement.]({{% ref "actors-features-concepts#actor-placement-service" %}})
 
 ### Actor communication
 
@@ -93,18 +93,18 @@ You can invoke actor methods by calling them over HTTP, as shown in the general 
 1. With the cached partitioning information from the placement service, the sidecar determines which actor service instance will host actor ID **3**. The call is forwarded to the appropriate sidecar.
 1. The sidecar instance in pod 2 calls the service instance to invoke the actor and execute the actor method.
 
-[Learn more about calling actor methods.]({{< ref "actors-features-concepts.md#actor-communication" >}})
+[Learn more about calling actor methods.]({{% ref "actors-features-concepts#actor-communication" %}})
 
 #### Concurrency
 
 The Dapr actor runtime provides a simple turn-based access model for accessing actor methods. Turn-based access greatly simplifies concurrent systems as there is no need for synchronization mechanisms for data access. 
 
-- [Learn more about actor reentrancy]({{< ref "actor-reentrancy.md" >}})
-- [Learn more about the turn-based access model]({{< ref "actors-features-concepts.md#turn-based-access" >}})
+- [Learn more about actor reentrancy]({{% ref "actor-reentrancy" %}})
+- [Learn more about the turn-based access model]({{% ref "actors-features-concepts#turn-based-access" %}})
 
 ### State
 
-Transactional state stores can be used to store actor state. Regardless of whether you intend to store any state in your actor, you must specify a value for property `actorStateStore` as `true` in the state store component's metadata section. Actors state is stored with a specific scheme in transactional state stores, allowing for consistent querying. Only a single state store component can be used as the state store for all actors. Read the [state API reference]({{< ref state_api.md >}}) and the [actors API reference]({{< ref actors_api.md >}}) to learn more about state stores for actors.
+Transactional state stores can be used to store actor state. Regardless of whether you intend to store any state in your actor, you must specify a value for property `actorStateStore` as `true` in the state store component's metadata section. Actors state is stored with a specific scheme in transactional state stores, allowing for consistent querying. Only a single state store component can be used as the state store for all actors. Read the [state API reference]({{% ref state_api %}}) and the [actors API reference]({{% ref actors_api %}}) to learn more about state stores for actors.
 
 ### Actor timers and reminders
 
@@ -118,9 +118,9 @@ This distinction allows users to trade off between light-weight but stateless ti
 
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/0y7ne6teHT4?si=73VqYUUvNfFw3x5_&amp;start=12184" title="YouTube video player" style="padding-bottom:25px;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-- [Learn more about actor timers.]({{< ref "actors-features-concepts.md#timers" >}})
-- [Learn more about actor reminders.]({{< ref "actors-features-concepts.md#reminders" >}})
-- [Learn more about timer and reminder error handling and failover.]({{< ref "actors-features-concepts.md#timers-and-reminders-error-handling" >}})
+- [Learn more about actor timers.]({{% ref "actors-features-concepts#timers" %}})
+- [Learn more about actor reminders.]({{% ref "actors-features-concepts#reminders" %}})
+- [Learn more about timer and reminder error handling and failover.]({{% ref "actors-features-concepts#timers-and-reminders-error-handling" %}})
 
 ## Next steps
 
@@ -128,5 +128,5 @@ This distinction allows users to trade off between light-weight but stateless ti
 
 ## Related links
 
-- [Actors API reference]({{< ref actors_api.md >}})
-- Refer to the [Dapr SDK documentation and examples]({{< ref "developing-applications/sdks/#sdk-languages" >}}).
+- [Actors API reference]({{% ref actors_api %}})
+- Refer to the [Dapr SDK documentation and examples]({{% ref "developing-applications/sdks/_index.md#sdk-languages" %}}).

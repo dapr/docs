@@ -11,7 +11,7 @@ aliases:
 
 This state store component can be used with both [Microsoft SQL Server](https://learn.microsoft.com/sql/) and [Azure SQL](https://learn.microsoft.com/azure/azure-sql/).
 
-To set up this state store, create a component of type `state.sqlserver`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+To set up this state store, create a component of type `state.sqlserver`. See [this guide]({{% ref "howto-get-save-state.md#step-1-setup-a-state-store" %}}) on how to create and apply a state store configuration.
 
 
 ```yaml
@@ -58,10 +58,10 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
-If you wish to use SQL server as an [actor state store]({{< ref "state_api.md#configuring-state-store-for-actors" >}}), append the following to the metadata:
+If you wish to use SQL server as an [actor state store]({{% ref "state_api.md#configuring-state-store-for-actors" %}}), append the following to the metadata:
 
 ```yaml
   - name: actorStateStore
@@ -100,13 +100,13 @@ Authenticating with Microsoft Entra ID is supported with Azure SQL only. All aut
 | `keyLength`          | N        | The max length of key. Ignored if "keyType" is not `string`. Defaults to `"200"` | `"200"`
 | `schema`             | N        | The schema to use. Defaults to `"dbo"` | `"dapr"`,`"dbo"`
 | `indexedProperties`  | N        | List of indexed properties, as a string containing a JSON document. |  `'[{"column": "transactionid", "property": "id", "type": "int"}, {"column": "customerid", "property": "customer", "type": "nvarchar(100)"}]'`
-| `actorStateStore` | N | Indicates that Dapr should configure this component for the actor state store ([more information]({{< ref "state_api.md#configuring-state-store-for-actors" >}})). | `"true"`
+| `actorStateStore` | N | Indicates that Dapr should configure this component for the actor state store ([more information]({{% ref "state_api.md#configuring-state-store-for-actors" %}})). | `"true"`
 | `cleanupIntervalInSeconds` | N | Interval, in seconds, to clean up rows with an expired TTL. Default: `"3600"` (i.e. 1 hour). Setting this to values <=0 disables the periodic cleanup. | `"1800"`, `"-1"`
 
 
 ## Create a Microsoft SQL Server/Azure SQL instance
 
-[Follow the instructions](https://docs.microsoft.com/azure/azure-sql/database/single-database-create-quickstart?view=azuresql&tabs=azure-portal) from the Azure documentation on how to create a SQL database. The database must be created before Dapr consumes it.
+[Follow the instructions](https://docs.microsoft.com/azure/azure-sql/database/single-database-create-quickstart?view=azuresql&tabpane=azure-portal) from the Azure documentation on how to create a SQL database. The database must be created before Dapr consumes it.
 
 In order to setup SQL Server as a state store, you need the following properties:
 
@@ -124,7 +124,7 @@ When connecting with a dedicated user (not `sa`), these authorizations are requi
 
 ### TTLs and cleanups
 
-This state store supports [Time-To-Live (TTL)]({{< ref state-store-ttl.md >}}) for records stored with Dapr. When storing data using Dapr, you can set the `ttlInSeconds` metadata property to indicate after how many seconds the data should be considered "expired".
+This state store supports [Time-To-Live (TTL)]({{% ref state-store-ttl.md %}}) for records stored with Dapr. When storing data using Dapr, you can set the `ttlInSeconds` metadata property to indicate after how many seconds the data should be considered "expired".
 
 Because SQL Server doesn't have built-in support for TTLs, Dapr implements this by adding a column in the state table indicating when the data should be considered "expired". "Expired" records are not returned to the caller, even if they're still physically stored in the database. A background "garbage collector" periodically scans the state table for expired rows and deletes them.
 
@@ -141,6 +141,6 @@ CREATE CLUSTERED INDEX expiredate_idx ON state(ExpireDate ASC)
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
-- [State management building block]({{< ref state-management >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" %}}) for instructions on configuring state store components
+- [State management building block]({{% ref state-management %}})

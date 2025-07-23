@@ -23,7 +23,7 @@ Configuration data is read-only from the application API perspective, with updat
 <img src="/images/configuration-api-overview.png" width=900>
 
 {{% alert title="Note" color="primary" %}}
- The Configuration API should not be confused with the [Dapr sidecar and control plane configuration]({{< ref "configuration-overview" >}}), which is used to set policies and settings on Dapr sidecar instances or the installed Dapr control plane.
+ The Configuration API should not be confused with the [Dapr sidecar and control plane configuration]({{% ref "configuration-overview" %}}), which is used to set policies and settings on Dapr sidecar instances or the installed Dapr control plane.
 {{% /alert %}}
 
 ## Try out configuration
@@ -34,19 +34,19 @@ Want to put the Dapr configuration API to the test? Walk through the following q
 
 | Quickstart | Description |
 | ---------- | ----------- |
-| [Configuration quickstart]({{< ref configuration-quickstart.md >}}) | Get configuration items or subscribe to configuration changes using the configuration API. |
+| [Configuration quickstart]({{% ref configuration-quickstart %}}) | Get configuration items or subscribe to configuration changes using the configuration API. |
 
 ### Start using the configuration API directly in your app
 
-Want to skip the quickstarts? Not a problem. You can try out the configuration building block directly in your application to read and manage configuration data. After [Dapr is installed]({{< ref "getting-started/_index.md" >}}), you can begin using the configuration API starting with [the configuration how-to guide]({{< ref howto-manage-configuration.md >}}).
+Want to skip the quickstarts? Not a problem. You can try out the configuration building block directly in your application to read and manage configuration data. After [Dapr is installed]({{% ref "getting-started/_index.md" %}}), you can begin using the configuration API starting with [the configuration how-to guide]({{% ref howto-manage-configuration %}}).
 
 ## Watch the demo
 
 Watch [this demo of using the Dapr Configuration building block](https://youtu.be/tNq-n1XQuLA?t=496)
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/tNq-n1XQuLA?start=496" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{{< youtube id=tNq-n1XQuLA start=496 >}}
 
 ## Next steps
 Follow these guides on:
-- [How-To: Read application configuration from a configuration store]({{< ref howto-manage-configuration.md >}})
+- [How-To: Read application configuration from a configuration store]({{% ref howto-manage-configuration %}})
 

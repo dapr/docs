@@ -28,7 +28,7 @@ The patterns in this documentation start with the Augmented LLM, then progress t
 
 The Augmented LLM pattern is the foundational building block for any kind of agentic system. It enhances a language model with external capabilities like memory and tools, providing a basic but powerful foundation for AI-driven applications.
 
-<img src="/images/dapr-agents/agents-augmented-llm.png" width=800 alt="Diagram showing how the augmented LLM pattern works">
+<img src="/images/dapr-agents/agents-augmented-llm.png" width=600 alt="Diagram showing how the augmented LLM pattern works">
 
 This pattern is ideal for scenarios where you need an LLM with enhanced capabilities but don't require complex orchestration or autonomous decision-making. The augmented LLM can access external tools, maintain conversation history, and provide consistent responses across interactions.
 
@@ -111,11 +111,11 @@ Dapr Agents' workflow orchestration provides:
 - **Workflow Persistence** - Long-running chained tasks survive process restarts
 - **Hybrid Execution** - Easily mix prompts, agent calls, and tool-equipped agents
 
-## Routing Pattern
+## Routing
 
 The Routing pattern addresses diverse request types by classifying inputs and directing them to specialized follow-up tasks. This allows for separation of concerns and creates specialized experts for different types of queries.
 
-<img src="/images/dapr-agents/agents-routing.png" width=800 alt="Diagram showing how the routing pattern works">
+<img src="/images/dapr-agents/agents-routing.png" width=600 alt="Diagram showing how the routing pattern works">
 
 **Use Cases:**
 - Resource optimization (sending simple queries to smaller models)
@@ -165,7 +165,7 @@ The advantages of Dapr's approach include:
 
 The Parallelization pattern enables processing multiple dimensions of a problem simultaneously, with outputs aggregated programmatically. This pattern improves efficiency for complex tasks with independent subtasks that can be processed concurrently.
 
-<img src="/images/dapr-agents/agents-parallelization.png" width=800 alt="Diagram showing how the parallelization pattern works">
+<img src="/images/dapr-agents/agents-parallelization.png" width=600 alt="Diagram showing how the parallelization pattern works">
 
 **Use Cases:**
 - Complex research (processing different aspects of a topic in parallel)
@@ -219,7 +219,7 @@ The benefits of using Dapr for parallelization include:
 
 For highly complex tasks where the number and nature of subtasks can't be known in advance, the Orchestrator-Workers pattern offers a powerful solution. This pattern features a central orchestrator LLM that dynamically breaks down tasks, delegates them to worker LLMs, and synthesizes their results.
 
-<img src="/images/dapr-agents/agents-orchestrator-workers.png" width=800 alt="Diagram showing how the orchestrator-workers pattern works">
+<img src="/images/dapr-agents/agents-orchestrator-workers.png" width=600 alt="Diagram showing how the orchestrator-workers pattern works">
 
 Unlike previous patterns where workflows are predefined, the orchestrator determines the workflow dynamically based on the specific input.
 
@@ -277,7 +277,7 @@ The advantages of Dapr for the Orchestrator-Workers pattern include:
 
 Quality is often achieved through iteration and refinement. The Evaluator-Optimizer pattern implements a dual-LLM process where one model generates responses while another provides evaluation and feedback in an iterative loop.
 
-<img src="/images/dapr-agents/agents-evaluator-optimizer.png" width=800 alt="Diagram showing how the evaluator-optimizer pattern works">
+<img src="/images/dapr-agents/agents-evaluator-optimizer.png" width=600 alt="Diagram showing how the evaluator-optimizer pattern works">
 
 **Use Cases:**
 - Content creation requiring adherence to specific style guidelines
@@ -344,7 +344,7 @@ Moving to the far end of the agentic spectrum, the Durable Agent pattern represe
 
 Enterprise applications often need durable execution and reliability that go beyond in-memory capabilities. Dapr's `DurableAgent` class helps you implement autonomous agents with the reliability of workflows, as these agents are backed by Dapr workflows behind the scenes. The `DurableAgent` extends the basic `Agent` class by adding durability to agent execution.
 
-<img src="/images/dapr-agents/agents-stateful-llm.png" width=800 alt="Diagram showing how the durable agent pattern works">
+<img src="/images/dapr-agents/agents-stateful-llm.png" width=600 alt="Diagram showing how the durable agent pattern works">
 
 This pattern doesn't just persist message history – it dynamically creates workflows with durable activities for each interaction, where LLM calls and tool executions are stored reliably in Dapr's state stores. This makes it ideal for production environments where reliability is critical.
 

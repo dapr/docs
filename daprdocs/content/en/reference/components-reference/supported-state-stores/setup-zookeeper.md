@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup Zookeeper state store create a component of type `state.zookeeper`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+To setup Zookeeper state store create a component of type `state.zookeeper`. See [this guide]({{% ref "howto-get-save-state.md#step-1-setup-a-state-store" %}}) on how to create and apply a state store configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -33,7 +33,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -48,9 +48,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Setup Zookeeper
 
-{{< tabs "Self-Hosted" "Kubernetes" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 You can run Zookeeper locally using Docker:
 
 ```
@@ -58,9 +58,9 @@ docker run --name some-zookeeper --restart always -d zookeeper
 ```
 
 You can then interact with the server using `localhost:2181`.
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 The easiest way to install Zookeeper on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/incubator/zookeeper):
 
 ```
@@ -74,12 +74,12 @@ To interact with Zookeeper, find the service with: `kubectl get svc zookeeper`.
 For example, if installing using the example above, the Zookeeper host address would be:
 
 `zookeeper.default.svc.cluster.local:2181`
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 ## Related links
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
-- [State management building block]({{< ref state-management >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" %}}) for instructions on configuring state store components
+- [State management building block]({{% ref state-management %}})

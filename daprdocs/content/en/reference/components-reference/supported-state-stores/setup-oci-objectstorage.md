@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup OCI Object Storage state store create a component of type `state.oci.objectstorage`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+To setup OCI Object Storage state store create a component of type `state.oci.objectstorage`. See [this guide]({{% ref "howto-get-save-state.md#step-1-setup-a-state-store" %}}) on how to create and apply a state store configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -49,7 +49,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -144,7 +144,7 @@ will create the following object:
 You will be able to inspect all state stored through the OCI Object Storage state store by inspecting the contents of the bucket through the console, the APIs, CLI or SDKs. By going directly to the bucket, you can prepare state that will be available as state to your application at runtime.
 
 ## Time To Live and State Expiration
-The OCI Object Storage state store supports Dapr's Time To Live logic that ensure that state cannot be retrieved after it has expired. See [this How To on Setting State Time To Live]({{< ref "state-store-ttl.md" >}}) for details.
+The OCI Object Storage state store supports Dapr's Time To Live logic that ensure that state cannot be retrieved after it has expired. See [this How To on Setting State Time To Live]({{% ref "state-store-ttl.md" %}}) for details.
 
 OCI Object Storage does not have native support for a Time To Live setting. The implementation in this component uses a meta data tag put on each object for which a TTL has been specified. The tag is called **expiry-time-from-ttl** and it contains a string in ISO date time format with the UTC based expiry time. When state is retrieved through a call to Get, this component checks if it has the **expiry-time-from-ttl** set and if so it checks whether it is in the past. In that case, no state is returned. 
 
@@ -186,6 +186,6 @@ OCI Object Storage state does not support the Query API.
 
 
 ## Related links
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
-- [State management building block]({{< ref state-management >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" %}}) for instructions on configuring state store components
+- [State management building block]({{% ref state-management %}})

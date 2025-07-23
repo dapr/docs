@@ -11,7 +11,7 @@ aliases:
 
 The MySQL state store components allows connecting to both MySQL and MariaDB databases. In this document, we refer to "MySQL" to indicate both databases.
 
-To setup MySQL state store create a component of type `state.mysql`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+To setup MySQL state store create a component of type `state.mysql`. See [this guide]({{% ref "howto-get-save-state.md#step-1-setup-a-state-store" %}}) on how to create and apply a state store configuration.
 
 
 ```yaml
@@ -41,7 +41,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 If you wish to use MySQL as an actor store, append the following to the yaml.
@@ -68,9 +68,9 @@ If you wish to use MySQL as an actor store, append the following to the yaml.
 
 Dapr can use any MySQL instance - containerized, running on your local dev machine, or a managed cloud service.
 
-{{< tabs "Self-Hosted" "Kubernetes" "Azure" "AWS" "GCP" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 <!-- Self-Hosted -->
 
 Run an instance of MySQL. You can run a local instance of MySQL in Docker CE with the following command:
@@ -81,9 +81,9 @@ This example does not describe a production configuration because it sets the pa
 docker run --name dapr-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:latest
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 <!-- Kubernetes -->
 
 We can use [Helm](https://helm.sh/) to quickly create a MySQL instance in our Kubernetes cluster. This approach requires [Installing Helm](https://github.com/helm/helm#install).
@@ -104,32 +104,32 @@ We can use [Helm](https://helm.sh/) to quickly create a MySQL instance in our Ku
 
 1. With the password you can construct your connection string.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Azure" %}}
 <!-- Azure -->
 
 [Azure MySQL](http://bit.ly/AzureMySQL)
 
 If you are using [MySQL on Azure](http://bit.ly/AzureMySQLSSL) see the Azure [documentation on SSL database connections](http://bit.ly/MySQLSSL), for information on how to download the required certificate.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "AWS" %}}
 <!-- AWS -->
 
 [AWS MySQL](https://aws.amazon.com/rds/mysql/)
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "GCP" %}}
 <!-- GCP -->
 
 [GCP MySQL](https://cloud.google.com/sql/docs/mysql/features)
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### Non SSL connection
 
@@ -141,7 +141,7 @@ If your server requires SSL your connection string must end with `&tls=custom` f
 
 ### TTLs and cleanups
 
-This state store supports [Time-To-Live (TTL)]({{< ref state-store-ttl.md >}}) for records stored with Dapr. When storing data using Dapr, you can set the `ttlInSeconds` metadata property to indicate when the data should be considered "expired".
+This state store supports [Time-To-Live (TTL)]({{% ref state-store-ttl.md %}}) for records stored with Dapr. When storing data using Dapr, you can set the `ttlInSeconds` metadata property to indicate when the data should be considered "expired".
 
 Because MySQL doesn't have built-in support for TTLs, this is implemented in Dapr by adding a column in the state table indicating when the data is to be considered "expired". Records that are "expired" are not returned to the caller, even if they're still physically stored in the database. A background "garbage collector" periodically scans the state table for expired rows and deletes them.
 
@@ -151,6 +151,6 @@ The interval at which the deletion of expired records happens is set with the `c
 - If you do not plan to use TTLs with Dapr and the MySQL state store, you should consider setting `cleanupIntervalInSeconds` to a value <= 0 (e.g. `0` or `-1`) to disable the periodic cleanup and reduce the load on the database.
 
 ## Related links
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
-- [State management building block]({{< ref state-management >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" %}}) for instructions on configuring state store components
+- [State management building block]({{% ref state-management %}})

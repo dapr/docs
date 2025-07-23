@@ -22,7 +22,7 @@ If your application is a collection of microservices, each with a Dapr sidecar, 
 
 ## Prerequisites
 
-- Install the [Dapr extension]({{< ref vscode-dapr-extension.md >}}). You will be using the [tasks](https://code.visualstudio.com/docs/editor/tasks) it offers later on.
+- Install the [Dapr extension]({{% ref vscode-dapr-extension.md %}}). You will be using the [tasks](https://code.visualstudio.com/docs/editor/tasks) it offers later on.
 - Optionally clone the [hello world quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-world)
 
 ## Step 1: Configure launch.json
@@ -30,9 +30,9 @@ If your application is a collection of microservices, each with a Dapr sidecar, 
 The file `.vscode/launch.json` contains [launch configurations](https://code.visualstudio.com/Docs/editor/debugging#_launch-configurations) for a VS Code debug run. This file defines what will launch and how it is configured when the user begins debugging. Configurations are available for each programming language in the [Visual Studio Code marketplace](https://marketplace.visualstudio.com/VSCode).
 
 {{% alert title="Scaffold debugging configuration" color="primary" %}}
-The [Dapr VSCode extension]({{< ref vscode-dapr-extension.md >}}) offers built-in scaffolding to generate `launch.json` and `tasks.json` for you.
+The [Dapr VSCode extension]({{% ref vscode-dapr-extension.md %}}) offers built-in scaffolding to generate `launch.json` and `tasks.json` for you.
 
-{{< button text="Learn more" page="vscode-dapr-extension#scaffold-dapr-components" >}}
+{{< button text="Learn more" page="vscode-dapr-extension.md#scaffold-dapr-components" >}}
 {{% /alert %}}
 
 In the case of the hello world quickstart, two applications are launched, each with its own Dapr sidecar. One is written in Node.JS, and the other in Python. You'll notice each configuration contains a `daprd run` preLaunchTask and a `daprd stop` postDebugTask.
@@ -165,7 +165,7 @@ You are now debugging multiple applications with Dapr!
 
 ## Daprd parameter table
 
-Below are the supported parameters for VS Code tasks. These parameters are equivalent to `daprd` arguments as detailed in [this reference]({{< ref arguments-annotations-overview.md >}}):
+Below are the supported parameters for VS Code tasks. These parameters are equivalent to `daprd` arguments as detailed in [this reference]({{% ref arguments-annotations-overview.md %}}):
 
 | Parameter    | Description   | Required    | Example |
 |--------------|---------------|-------------|---------|
@@ -195,5 +195,5 @@ Below are the supported parameters for VS Code tasks. These parameters are equiv
 
 ## Related Links
 
-- [Visual Studio Code Extension Overview]({{< ref vscode-dapr-extension.md >}})
+- [Visual Studio Code Extension Overview]({{% ref vscode-dapr-extension.md %}})
 - [Visual Studio Code Debugging](https://code.visualstudio.com/docs/editor/debugging)

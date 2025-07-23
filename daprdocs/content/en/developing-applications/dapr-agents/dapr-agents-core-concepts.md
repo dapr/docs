@@ -18,7 +18,7 @@ Dapr Agents is designed to place agents, powered by LLMs, at the core of task ex
 
 While Dapr Agents centers around agents, it also recognizes the versatility of using LLMs directly in deterministic workflows or simpler task sequences. In scenarios where the agent's built-in task-handling patterns, like `tool calling` or `ReAct` loops, are unnecessary, LLMs can act as core components for reasoning and decision-making. This flexibility ensures users can adapt Dapr Agents to suit diverse needs without being confined to a single approach.
 
-{{% alert title="Note" color="info" %}}
+{{% alert title="Note" color="primary" %}}
 Agents are not standalone; they are building blocks in larger, orchestrated workflows.
 {{% /alert %}}
 
@@ -29,7 +29,7 @@ Dapr Agents ensures a clean separation between agents and the underlying infrast
 * **Agent Simplicity**: Agents focus purely on reasoning and task execution, while Pub/Sub messaging, routing, and validation are managed externally by modular infrastructure components.
 * **Scalable and Adaptable Systems**: By offloading non-agent-specific responsibilities, Dapr Agents allows agents to scale independently and adapt seamlessly to new use cases or integrations.
 
-{{% alert title="Note" color="info" %}}
+{{% alert title="Note" color="primary" %}}
 Decoupling infrastructure keeps agents focused on tasks while enabling seamless scalability and integration across systems.
 {{% /alert %}}
 
@@ -37,14 +37,14 @@ Decoupling infrastructure keeps agents focused on tasks while enabling seamless 
 
 ### Modular Component Model
 
-Dapr Agents utilizes [Dapr's pluggable component framework](https://docs.dapr.io/concepts/components-concept/) and building blocks to simplify development and enhance flexibility:
+Dapr Agents utilizes [Dapr's component framework]({{% ref components-concept.md %}}) and building blocks to simplify development and enhance flexibility:
 
 * **Building Blocks for Core Functionality**: Dapr provides API building blocks, such as Pub/Sub messaging, state management, service invocation, and more, to address common microservice challenges and promote best practices.
 * **Interchangeable Components**: Each building block operates on swappable components (e.g., Redis, Kafka, Azure CosmosDB), allowing you to replace implementations without changing application code.
 * **Seamless Transitions**: Develop locally with default configurations and deploy effortlessly to cloud environments by simply updating component definitions.
 * **Scalable Foundations**: Build resilient and adaptable architectures using Dapr's modular, production-ready building blocks.
 
-{{% alert title="Note" color="info" %}}
+{{% alert title="Note" color="primary" %}}
 Developers can easily switch between different components (e.g., Redis to DynamoDB) based on their deployment environment, ensuring portability and adaptability.
 {{% /alert %}}
 
@@ -58,7 +58,7 @@ Dapr Agents emphasizes the use of Pub/Sub messaging for event-driven communicati
 * **Real-Time Adaptability**: Agents react dynamically to events for faster, more flexible task execution.
 * **Seamless Collaboration**: Agents share updates, distribute tasks, and respond to events in a highly coordinated way.
 
-{{% alert title="Note" color="info" %}}
+{{% alert title="Note" color="primary" %}}
 Pub/Sub messaging serves as the backbone for Dapr Agents' event-driven workflows, enabling agents to communicate and collaborate in real time.
 {{% /alert %}}
 
@@ -66,14 +66,14 @@ Pub/Sub messaging serves as the backbone for Dapr Agents' event-driven workflows
 
 ### Workflow-Oriented Design
 
-Dapr Agents embraces workflows as a foundational concept, integrating [Dapr Workflows](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-overview/) to support both deterministic and event-driven task orchestration. This dual approach enables robust and adaptive systems:
+Dapr Agents embraces workflows as a foundational concept, integrating [Dapr Workflows]({{% ref workflow-overview.md %}}) to support both deterministic and event-driven task orchestration. This dual approach enables robust and adaptive systems:
 
 * **Deterministic Workflows**: Dapr Agents uses Dapr Workflows for stateful, predictable task sequences. These workflows ensure reliable execution, fault tolerance, and state persistence, making them ideal for structured, multi-step processes that require clear, repeatable logic.
 * **Event-Driven Workflows**: By combining Dapr Workflows with Pub/Sub messaging, Dapr Agents supports workflows that adapt to real-time events. This facilitates decentralized, asynchronous collaboration between agents, allowing workflows to dynamically adjust to changing scenarios.
 
 By integrating these paradigms, Dapr Agents enables workflows that combine the reliability of deterministic execution with the adaptability of event-driven processes, ensuring flexibility and resilience in a wide range of applications.
 
-{{% alert title="Note" color="info" %}}
+{{% alert title="Note" color="primary" %}}
 Dapr Agents workflows blend structured, predictable logic with the dynamic responsiveness of event-driven systems, empowering both centralized and decentralized workflows.
 {{% /alert %}}
 
@@ -113,15 +113,15 @@ Dapr Agents supports flexible prompt templates to shape agent behavior and reaso
 
 #### 7. Agent Services
 
-Agents are exposed as independent services using [FastAPI and Dapr applications](https://docs.dapr.io/developing-applications/sdks/python/python-sdk-extensions/python-fastapi/). This modular approach separates the agent's logic from its service layer, enabling seamless reuse, deployment, and integration into multi-agent systems.
+Agents are exposed as independent services using [FastAPI and Dapr applications]({{% ref python-fastapi.md %}}). This modular approach separates the agent's logic from its service layer, enabling seamless reuse, deployment, and integration into multi-agent systems.
 
 #### 8. Message-Driven Communication
 
-Agents collaborate through [Pub/Sub messaging](https://docs.dapr.io/developing-applications/building-blocks/pubsub/pubsub-overview/), enabling event-driven communication and task distribution. This message-driven architecture allows agents to work asynchronously, share updates, and respond to real-time events, ensuring effective collaboration in distributed systems.
+Agents collaborate through [Pub/Sub messaging]({{% ref pubsub-overview.md %}}), enabling event-driven communication and task distribution. This message-driven architecture allows agents to work asynchronously, share updates, and respond to real-time events, ensuring effective collaboration in distributed systems.
 
 #### 9. Workflow Orchestration
 
-Dapr Agents supports both deterministic and event-driven workflows to manage multi-agent systems via [Dapr Workflows](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-overview/). Deterministic workflows provide clear, repeatable processes, while event-driven workflows allow for dynamic, adaptive collaboration between agents in centralized or decentralized architectures.
+Dapr Agents supports both deterministic and event-driven workflows to manage multi-agent systems via [Dapr Workflows]({{% ref workflow-overview.md %}}). Deterministic workflows provide clear, repeatable processes, while event-driven workflows allow for dynamic, adaptive collaboration between agents in centralized or decentralized architectures.
 
 ### Agent Types
 

@@ -7,11 +7,11 @@ weight: 3000
 ---
 
 ### Description
-This command can be used to renew expiring Dapr certificates. For example the Dapr Sentry service can generate default root and issuer certificates used by applications. For more information see [secure Dapr to Dapr communication]({{< ref "#secure-dapr-to-dapr-communication" >}})
+This command can be used to renew expiring Dapr certificates. For example the Dapr Sentry service can generate default root and issuer certificates used by applications. For more information see [secure Dapr to Dapr communication]({{% ref "#secure-dapr-to-dapr-communication" %}})
 
 ### Supported platforms
 
-- [Kubernetes]({{< ref kubernetes >}})
+- [Kubernetes]({{% ref kubernetes %}})
 
 ### Usage
 

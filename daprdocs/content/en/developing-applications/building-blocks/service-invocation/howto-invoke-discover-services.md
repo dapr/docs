@@ -11,7 +11,7 @@ This article demonstrates how to deploy services each with an unique application
 <img src="/images/building-block-service-invocation-example.png" width=1000 height=500 alt="Diagram showing service invocation of example service">
 
 {{% alert title="Note" color="primary" %}}
- If you haven't already, [try out the service invocation quickstart]({{< ref serviceinvocation-quickstart.md >}}) for a quick walk-through on how to use the service invocation API.
+ If you haven't already, [try out the service invocation quickstart]({{% ref serviceinvocation-quickstart %}}) for a quick walk-through on how to use the service invocation API.
 
 {{% /alert %}}
 
@@ -19,9 +19,9 @@ This article demonstrates how to deploy services each with an unique application
 
 Dapr allows you to assign a global, unique ID for your app. This ID encapsulates the state for your application, regardless of the number of instances it may have.
 
-{{< tabs Python JavaScript ".NET" Java Go Kubernetes >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ```bash
 dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- python3 checkout/app.py
@@ -37,9 +37,9 @@ dapr run --app-id checkout --app-protocol https --dapr-http-port 3500 -- python3
 dapr run --app-id order-processor --app-port 8001 --app-protocol https --dapr-http-port 3501 -- python3 order-processor/app.py
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ```bash
 dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm start
@@ -55,9 +55,9 @@ dapr run --app-id checkout --dapr-http-port 3500 --app-protocol https -- npm sta
 dapr run --app-id order-processor --app-port 5001 --dapr-http-port 3501 --app-protocol https -- npm start
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```bash
 dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- dotnet run
@@ -73,9 +73,9 @@ dapr run --app-id checkout --dapr-http-port 3500 --app-protocol https -- dotnet 
 dapr run --app-id order-processor --app-port 7001 --dapr-http-port 3501 --app-protocol https -- dotnet run
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ```bash
 dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
@@ -91,9 +91,9 @@ dapr run --app-id checkout --dapr-http-port 3500 --app-protocol https -- java -j
 dapr run --app-id order-processor --app-port 9001 --dapr-http-port 3501 --app-protocol https -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```bash
 dapr run --app-id checkout --dapr-http-port 3500 -- go run .
@@ -109,9 +109,9 @@ dapr run --app-id checkout --dapr-http-port 3500 --app-protocol https -- go run 
 dapr run --app-id order-processor --app-port 6006 --dapr-http-port 3501 --app-protocol https -- go run .
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
 ### Set an app-id when deploying to Kubernetes
 
@@ -141,11 +141,11 @@ spec:
 ...
 ```
 
-If your app uses a TLS connection, you can tell Dapr to invoke your app over TLS with the `app-protocol: "https"` annotation (full list [here]({{< ref arguments-annotations-overview.md >}})). Note that Dapr does not validate TLS certificates presented by the app.
+If your app uses a TLS connection, you can tell Dapr to invoke your app over TLS with the `app-protocol: "https"` annotation (full list [here]({{% ref arguments-annotations-overview %}})). Note that Dapr does not validate TLS certificates presented by the app.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Invoke the service
 
@@ -153,9 +153,9 @@ To invoke an application using Dapr, you can use the `invoke` API on any Dapr in
 
 Below are code examples that leverage Dapr SDKs for service invocation.
 
-{{< tabs Python JavaScript ".NET" Java  Go >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ```python
 #dependencies
@@ -180,9 +180,9 @@ while True:
     logging.info('Result: ' + str(result))
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 //dependencies
@@ -215,9 +215,9 @@ function sleep(ms) {
 main();
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 //dependencies
@@ -256,9 +256,9 @@ namespace EventService
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ```java
 //dependencies
@@ -311,9 +311,9 @@ public class CheckoutServiceApplication {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 package main
@@ -367,9 +367,9 @@ func main() {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### Additional URL formats
 
@@ -418,7 +418,7 @@ curl 'http://dapr-app-id:checkout@localhost:3602/checkout/100?basket=1234&key=ab
 
 ### Namespaces
 
-When running on [namespace supported platforms]({{< ref "service_invocation_api.md#namespace-supported-platforms" >}}), you include the namespace of the target app in the app ID. For example, following the `<app>.<namespace>` format, use `checkout.production`.
+When running on [namespace supported platforms]({{% ref "service_invocation_api#namespace-supported-platforms" %}}), you include the namespace of the target app in the app ID. For example, following the `<app>.<namespace>` format, use `checkout.production`.
 
 Using this example, invoking the service with a namespace would look like:
 
@@ -426,7 +426,7 @@ Using this example, invoking the service with a namespace would look like:
 curl http://localhost:3602/v1.0/invoke/checkout.production/method/checkout/100 -X POST
 ```
 
-See the [Cross namespace API spec]({{< ref "service_invocation_api.md#cross-namespace-invocation" >}}) for more information on namespaces.
+See the [Cross namespace API spec]({{% ref "service_invocation_api#cross-namespace-invocation" %}}) for more information on namespaces.
 
 ## View traces and logs
 
@@ -436,9 +436,9 @@ Our example above showed you how to directly invoke a different service running 
 - Allows you to visualize a call graph between services and log errors, and
 - Optionally, log the payload body.
 
-For more information on tracing and logs, see the [observability]({{< ref observability-concept.md >}}) article.
+For more information on tracing and logs, see the [observability]({{% ref observability-concept %}}) article.
 
 ## Related Links
 
-- [Service invocation overview]({{< ref service-invocation-overview.md >}})
-- [Service invocation API specification]({{< ref service_invocation_api.md >}})
+- [Service invocation overview]({{% ref service-invocation-overview %}})
+- [Service invocation API specification]({{% ref service_invocation_api %}})

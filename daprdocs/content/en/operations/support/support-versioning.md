@@ -12,7 +12,7 @@ Dapr is designed for future changes in the runtime, APIs and components with ver
 ## Versioning
 Versioning is the process of assigning either unique version names or unique version numbers to unique states of computer software.
 - Versioning provides compatibility, explicit change control and handling changes, in particular breaking changes.
-- Dapr strives to be backwards compatible. If a breaking change is needed it’ll be [announced in advance]({{< ref "support-release-policy#feature-and-deprecations" >}}).
+- Dapr strives to be backwards compatible. If a breaking change is needed it’ll be [announced in advance]({{% ref "support-release-policy#feature-and-deprecations" %}}).
 - Deprecated features are done over multiple releases with both new and deprecated features working side-by-side.
 
 
@@ -38,13 +38,13 @@ The definition of a breaking change to the API can be viewed [here](https://gith
 - Experimental APIs include an “alpha” suffix to denote for their alpha status. For example v1.0alpha, v2.0alpha, etc.
 
 ## Dapr runtime
-Dapr releases use `MAJOR.MINOR.PATCH` versioning. For example 1.0.0. Read [Supported releases]({{< ref support-release-policy.md >}}) for more on the versioning of releases.
+Dapr releases use `MAJOR.MINOR.PATCH` versioning. For example 1.0.0. Read [Supported releases]({{% ref support-release-policy.md %}}) for more on the versioning of releases.
 
 ## Helm Charts
-Helm charts in the [helm-charts repo](https://github.com/dapr/helm-charts) are versioned with the Dapr runtime. The Helm charts are used in the [Kubernetes deployment]({{< ref "kubernetes-deploy#install-with-helm-advanced" >}})
+Helm charts in the [helm-charts repo](https://github.com/dapr/helm-charts) are versioned with the Dapr runtime. The Helm charts are used in the [Kubernetes deployment]({{% ref "kubernetes-deploy#install-with-helm-advanced" %}})
 
 ## Language SDKs, CLI and dashboard
-The Dapr language SDKs, CLI and dashboard are versioned independently from the Dapr runtime and can be released at different schedules. See this [table]({{< ref "support-release-policy#supported-versions" >}}) to show the compatibility between versions of the SDKs, CLI, dashboard and runtime. Each new release on the runtime lists the corresponding supported SDKs, CLI and Dashboard.
+The Dapr language SDKs, CLI and dashboard are versioned independently from the Dapr runtime and can be released at different schedules. See this [table]({{% ref "support-release-policy#supported-versions" %}}) to show the compatibility between versions of the SDKs, CLI, dashboard and runtime. Each new release on the runtime lists the corresponding supported SDKs, CLI and Dashboard.
 
 SDKs, CLIs and Dashboard are versioning follows a `MAJOR.MINOR.PATCH` format. A major version is incremented when there’s a non-backwards compatible change in an SDK (for example, changing a parameter on a client method. A minor version is updated for new features and bug fixes and the patch version is incremented in case of bug or security hot fixes.
 
@@ -56,14 +56,14 @@ Components are implemented in the components-contrib repository and follow a `MA
 The [components-contrib](https://github.com/dapr/components-contrib/) repo release is a flat version across all components inside.  That is, a version for the components-contrib repo release is made up of all the schemas for the components inside it. A new version of Dapr does not mean there is a new release of components-contrib if there are no component changes.
 
 Note: Components have a production usage lifecycle status: Alpha, Beta and Stable. These statuses are not related to their versioning. The tables of supported components shows both their versions and their status.
-* List of [state store components]({{< ref supported-state-stores.md >}})
-* List of [pub/sub components]({{< ref supported-pubsub.md >}})
-* List of [binding components]({{< ref supported-bindings.md >}})
-* List of [secret store components]({{< ref supported-secret-stores.md >}})
-* List of [configuration store components]({{< ref supported-configuration-stores.md >}})
-* List of [lock components]({{< ref supported-locks.md >}})
-* List of [crytpography components]({{< ref supported-cryptography.md >}})
-* List of [middleware components]({{< ref supported-middleware.md >}})
+* List of [state store components]({{% ref supported-state-stores.md %}})
+* List of [pub/sub components]({{% ref supported-pubsub.md %}})
+* List of [binding components]({{% ref supported-bindings.md %}})
+* List of [secret store components]({{% ref supported-secret-stores.md %}})
+* List of [configuration store components]({{% ref supported-configuration-stores.md %}})
+* List of [lock components]({{% ref supported-locks.md %}})
+* List of [crytpography components]({{% ref supported-cryptography.md %}})
+* List of [middleware components]({{% ref supported-middleware.md %}})
 
 For more information on component versioning  read [Version 2 and beyond of a component](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md#version-2-and-beyond-of-a-component)
 
@@ -108,5 +108,5 @@ Quickstarts in the [Quickstarts repo](https://github.com/dapr/quickstarts) are v
 Samples in the [Samples repo](https://github.com/dapr/samples) are each versioned on a case by case basis depending on the sample maintainer. Samples that become very out of date with the runtime releases (many versions behind) or have not been maintained for more than 1 year will be removed.
 
 ## Related links
-* Read the [Supported releases]({{< ref support-release-policy.md >}})
-* Read the [Breaking Changes and Deprecation Policy]({{< ref breaking-changes-and-deprecations.md >}})
+* Read the [Supported releases]({{% ref support-release-policy.md %}})
+* Read the [Breaking Changes and Deprecation Policy]({{% ref breaking-changes-and-deprecations.md %}})

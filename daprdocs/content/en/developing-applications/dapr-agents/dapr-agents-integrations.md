@@ -13,9 +13,9 @@ Dapr Agents integrates with popular Python frameworks and tools.
 
 | Framework | Integration | Description |
 |-----------|-------------|-------------|
-| [**FastAPI**]({{< ref "dapr-agents-getting-started.md#fastapi-integration" >}}) | Native | Expose agents as REST APIs with automatic documentation and validation
-| [**Chainlit**]({{< ref "dapr-agents-quickstarts.md#chainlit-integration" >}}) | Supported | Build conversational UIs for agent interactions with file upload and chat capabilities
-| [**Pydantic**]({{< ref "dapr-agents-core-concepts.md#pydantic-integration" >}}) | Built-in | Type-safe configuration and structured outputs for agents and tools
+| [**FastAPI**]({{% ref "dapr-agents-getting-started.md#fastapi-integration" %}}) | Native | Expose agents as REST APIs with automatic documentation and validation
+| [**Chainlit**]({{% ref "dapr-agents-quickstarts.md#chainlit-integration" %}}) | Supported | Build conversational UIs for agent interactions with file upload and chat capabilities
+| [**Pydantic**]({{% ref "dapr-agents-core-concepts.md#pydantic-integration" %}}) | Built-in | Type-safe configuration and structured outputs for agents and tools
 
 
 
@@ -115,7 +115,7 @@ if not local_pdf_path.exists():
 
 For this example, we use Dapr Agents' `PyPDFReader`.
 
-{{% alert title="Note" color="info" %}}
+{{% alert title="Note" color="primary" %}}
 The PyPDF Reader relies on the [pypdf python library](https://pypi.org/project/pypdf/), which is not included in the Dapr Agents core module. This design choice helps maintain modularity and avoids adding unnecessary dependencies for users who may not require this functionality. To use the PyPDF Reader, ensure that you install the library separately.
 {{% /alert %}}
 
@@ -177,7 +177,7 @@ The Arxiv Fetcher simplifies the process of accessing research papers, offering 
 
 #### Step 1: Install Required Modules
 
-{{% alert title="Note" color="info" %}}
+{{% alert title="Note" color="primary" %}}
 The Arxiv Fetcher relies on a [lightweight Python wrapper](https://github.com/lukasschwab/arxiv.py) for the arXiv API, which is not included in the Dapr Agents core module. This design choice helps maintain modularity and avoids adding unnecessary dependencies for users who may not require this functionality. To use the Arxiv Fetcher, ensure you install the [library](https://pypi.org/project/arxiv/) separately.
 {{% /alert %}}
 

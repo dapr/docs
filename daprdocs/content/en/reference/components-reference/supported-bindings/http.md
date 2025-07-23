@@ -9,7 +9,7 @@ aliases:
 
 ## Alternative
 
-The [service invocation API]({{< ref service_invocation_api.md >}}) allows invoking non-Dapr HTTP endpoints and is the recommended approach. Read ["How-To: Invoke Non-Dapr Endpoints using HTTP"]({{< ref howto-invoke-non-dapr-endpoints.md >}}) for more information.
+The [service invocation API]({{% ref service_invocation_api.md %}}) allows invoking non-Dapr HTTP endpoints and is the recommended approach. Read ["How-To: Invoke Non-Dapr Endpoints using HTTP"]({{% ref howto-invoke-non-dapr-endpoints.md %}}) for more information.
 
 ## Setup Dapr component
 
@@ -87,7 +87,7 @@ The values for **MTLSRootCA**, **MTLSClientCert** and **MTLSClientKey** can be p
 
 {{% alert title="Note" color="primary" %}}
 Metadata fields **MTLSRootCA**, **MTLSClientCert** and **MTLSClientKey** are used to configure (m)TLS authentication.
-To use mTLS authentication, you must provide all three fields. See [mTLS]({{< ref "#using-mtls-or-enabling-client-tls-authentication-along-with-https" >}}) for more details. You can also provide only **MTLSRootCA**, to enable **HTTPS** connection with a certificate signed by a custom CA. See [HTTPS]({{< ref "#install-the-ssl-certificate-in-the-sidecar" >}}) section for more details.
+To use mTLS authentication, you must provide all three fields. See [mTLS]({{% ref "#using-mtls-or-enabling-client-tls-authentication-along-with-https" %}}) for more details. You can also provide only **MTLSRootCA**, to enable **HTTPS** connection with a certificate signed by a custom CA. See [HTTPS]({{% ref "#install-the-ssl-certificate-in-the-sidecar" %}}) section for more details.
 {{% /alert %}}
 
 
@@ -151,43 +151,43 @@ The response body contains the data returned by the HTTP endpoint.  The `data` f
 
 **Requesting the base URL**
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Windows" %}}
 ```bash
 curl -d "{ \"operation\": \"get\" }" \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Linux" %}}
 ```bash
 curl -d '{ "operation": "get" }' \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 **Requesting a specific path**
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Windows" %}}
 ```sh
 curl -d "{ \"operation\": \"get\", \"metadata\": { \"path\": \"/things/1234\" } }" \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Linux" %}}
 ```sh
 curl -d '{ "operation": "get", "metadata": { "path": "/things/1234" } }' \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### Sending and updating data
 
@@ -213,30 +213,30 @@ For example, the default content type is `application/json; charset=utf-8`. This
 
 **Posting a new record**
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Windows" %}}
 ```sh
 curl -d "{ \"operation\": \"post\", \"data\": \"YOUR_BASE_64_CONTENT\", \"metadata\": { \"path\": \"/things\" } }" \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Linux" %}}
 ```sh
 curl -d '{ "operation": "post", "data": "YOUR_BASE_64_CONTENT", "metadata": { "path": "/things" } }' \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Using HTTPS
 
 The HTTP binding can also be used with HTTPS endpoints by configuring the Dapr sidecar to trust the server's SSL certificate.
 
 1. Update the binding URL to use `https` instead of `http`.
-1. If you need to add a custom TLS certificate, refer [How-To: Install certificates in the Dapr sidecar]({{< ref install-certificates >}}), to install the TLS certificates in the sidecar.
+1. If you need to add a custom TLS certificate, refer [How-To: Install certificates in the Dapr sidecar]({{% ref install-certificates %}}), to install the TLS certificates in the sidecar.
 
 ### Example
 
@@ -258,9 +258,9 @@ spec:
 
 #### Install the TLS certificate in the sidecar
 
-{{< tabs Self-Hosted Kubernetes >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 When the sidecar is not running inside a container, the TLS certificate can be directly installed on the host operating system.
 
 Below is an example when the sidecar is running as a container. The SSL certificate is located on the host computer at `/tmp/ssl/cert.pem`.
@@ -286,11 +286,11 @@ services:
       - my-app
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
-The sidecar can read the TLS certificate from a variety of sources. See [How-to: Mount Pod volumes to the Dapr sidecar]({{< ref kubernetes-volume-mounts >}}) for more. In this example, we store the TLS certificate as a Kubernetes secret.
+The sidecar can read the TLS certificate from a variety of sources. See [How-to: Mount Pod volumes to the Dapr sidecar]({{% ref kubernetes-volume-mounts %}}) for more. In this example, we store the TLS certificate as a Kubernetes secret.
 
 ```bash
 kubectl create secret generic myapp-cert --from-file /tmp/ssl/cert.pem
@@ -329,32 +329,32 @@ spec:
 ...
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Invoke the binding securely
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Windows" %}}
 ```bash
 curl -d "{ \"operation\": \"get\" }" \
       https://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Linux" %}}
 ```bash
 curl -d '{ "operation": "get" }' \
       https://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 {{% alert title="Note" color="primary" %}}
-HTTPS binding support can also be configured using the **MTLSRootCA** metadata option. This will add the specified certificate to the list of trusted certificates for the binding. There's no specific preference for either method. While the **MTLSRootCA** option is easy to use and doesn't require any changes to the sidecar, it accepts only one certificate. If you need to trust multiple certificates, you need to [install them in the sidecar by following the steps above]({{< ref "#install-the-ssl-certificate-in-the-sidecar" >}}).
+HTTPS binding support can also be configured using the **MTLSRootCA** metadata option. This will add the specified certificate to the list of trusted certificates for the binding. There's no specific preference for either method. While the **MTLSRootCA** option is easy to use and doesn't require any changes to the sidecar, it accepts only one certificate. If you need to trust multiple certificates, you need to [install them in the sidecar by following the steps above]({{% ref "#install-the-ssl-certificate-in-the-sidecar" %}}).
 {{% /alert %}}
 
 ## Using mTLS or enabling client TLS authentication along with HTTPS
@@ -380,9 +380,9 @@ You can use this when the server with which the HTTP binding is configured to co
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Bindings building block]({{< ref bindings >}})
-- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
-- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
-- [Bindings API reference]({{< ref bindings_api.md >}})
-- [How-To: Install certificates in the Dapr sidecar]({{< ref install-certificates >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Bindings building block]({{% ref bindings %}})
+- [How-To: Trigger application with input binding]({{% ref howto-triggers.md %}})
+- [How-To: Use bindings to interface with external resources]({{% ref howto-bindings.md %}})
+- [Bindings API reference]({{% ref bindings_api.md %}})
+- [How-To: Install certificates in the Dapr sidecar]({{% ref install-certificates %}})

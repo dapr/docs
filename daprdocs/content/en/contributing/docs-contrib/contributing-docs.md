@@ -8,13 +8,13 @@ description: Get started with contributing to the Dapr docs
 
 In this guide, you'll learn how to contribute to the [Dapr docs repository](https://github.com/dapr/docs). Since Dapr docs are published to [docs.dapr.io](https://docs.dapr.io), you must make sure your contributions compile and publish correctly.
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/uPYuXcaEs-c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{{< youtube id=uPYuXcaEs-c >}}
 
 ## Prerequisites
 
 Before contributing to the Dapr docs: 
 
-- Review the [guidance around general Dapr project contributions]({{< ref contributing-overview>}}).
+- Review the [guidance around general Dapr project contributions]({{% ref contributing-overview%}}).
 - Install and set up your local environment with [Hugo](https://gohugo.io/) with the [Docsy](https://docsy.dev) theme. Follow the instructions in the repository [README.md](https://github.com/dapr/docs/blob/master/README.md#environment-setup).
 - Fork and clone the [docs repository](https://github.com/dapr/docs).
 
@@ -66,9 +66,9 @@ Select the topic type below to view a suggested template to help you get started
 
 | Topic type | What is it? |
 | ---------- | ----------- |
-| [Concept]({{< ref "concept-template.md" >}}) | Answers the question, "What problems does this help me solve?" Avoid repeating the API or component spec; provide more details. |
-| [Quickstart]({{< ref "quickstart-template.md" >}}) | Provides a "Five minutes to _wow_" experience. Walk the reader quickly through a feature or API and how it works in a controlled example. |
-| [How-to]({{< ref "howto-template.md" >}}) | Provides a detailed, practical step-by-step through a Dapr feature or technology. Encourage the reader to try with their own scenario, rather than the controlled scenario provided in a quickstart. |
+| [Concept]({{% ref "concept-template" %}}) | Answers the question, "What problems does this help me solve?" Avoid repeating the API or component spec; provide more details. |
+| [Quickstart]({{% ref "quickstart-template" %}}) | Provides a "Five minutes to _wow_" experience. Walk the reader quickly through a feature or API and how it works in a controlled example. |
+| [How-to]({{% ref "howto-template" %}}) | Provides a detailed, practical step-by-step through a Dapr feature or technology. Encourage the reader to try with their own scenario, rather than the controlled scenario provided in a quickstart. |
 
 ## Requirements for docs.dapr.io
 
@@ -128,13 +128,13 @@ Hugo `ref` and `relref` [shortcodes](https://gohugo.io/content-management/cross-
 For example, this shortcode, written inline with the rest of the markdown page, will link to the _index.md of the section/folder name:
 
 ```md
-{{</* ref "folder" */>}}
+{{%/* ref "folder" */%}}
 ```
 
 While this shortcode will link to a specific page:
 
 ```md
-{{</* ref "page.md" */>}}
+{{%/* ref "page" */%}}
 ```
 
 All pages and folders need to have _globally unique names_ in order for the ref shortcode to work properly. If there are duplicate names, the build will break and an error will be thrown.
@@ -153,7 +153,7 @@ As a general rule, the section short name is the text of the section title, all 
 As an example, for this specific section, the complete reference to the page and section would be:
 
 ```md
-{{</* ref "contributing-docs.md#referencing-sections-in-other-pages" */>}}
+{{%/* ref "contributing-docs#referencing-sections-in-other-pages" */%}}
 ```
 
 ## Shortcodes
@@ -189,17 +189,17 @@ Tabs are made possible through [Hugo shortcodes](https://gohugo.io/content-manag
 The overall format is:
 
 ```
-{{</* tabs [Tab1] [Tab2]>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab header="Tab1" %}}
 [Content for Tab1]
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab header="Tab2" %}}
 [Content for Tab2]
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs */>}}
+{{< /tabpane >}}
 ```
 
 All content you author will be rendered to markdown, so you can include images, code blocks, YouTube videos, and more.
@@ -207,164 +207,65 @@ All content you author will be rendered to markdown, so you can include images, 
 #### Example
 
 ````
-{{</* tabs Windows Linux MacOS>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab header="Windows" %}}
 ```powershell
 powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1 | iex"
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab header="Linux" %}}
 ```bash
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab header="MacOS" %}}
 ```bash
 brew install dapr/tap/dapr-cli
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs */>}}
+{{< /tabpane >}}
 ````
 
 This example will render to this:
 
-{{< tabs Windows Linux MacOS>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab header="Windows" %}}
 
 ```powershell
 powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1 | iex"
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab header="Linux" %}}
 
 ```bash
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab header="MacOS" %}}
 
 ```bash
 brew install dapr/tap/dapr-cli
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
-
-### Embedded code snippets
-
-Use the `code-snippet` shortcode to reference code snippets from the `static/code` directory.
-
-```
-{{</* code-snippet file="myfile.py" lang="python" */>}}
-```
-
-{{% alert title="Warning" color="warning" %}}
-All Dapr sample code should be self-contained in separate files, not in markdown. Use these techniques to highlight the parts of the sample code users should focus on.
-{{% /alert %}}
-
-Use the `lang` (default `txt`) parameter to configure the language used for syntax highlighting.
-
-Use the `marker` parameter to limit the embedded snipped to a portion of the sample file. This is useful when you want to show just a portion of a larger file. Typically, you'd do this by:
-
-1. Surrounding the interesting code with comments.
-1. Passing the comment text into `marker`.
-
-The shortcode below and code sample:
-
-```
-{{</* code-snippet file="./contributing-1.py" lang="python" marker="#SAMPLE" */>}}
-```
-
-```python
-import json
-import time
-
-from dapr.clients import DaprClient
-
-#SAMPLE
-with DaprClient() as d:
-    req_data = {
-        'id': 1,
-        'message': 'hello world'
-    }
-
-    while True:
-        # Create a typed message with content type and body
-        resp = d.invoke_method(
-            'invoke-receiver',
-            'my-method',
-            data=json.dumps(req_data),
-        )
-
-        # Print the response
-        print(resp.content_type, flush=True)
-        print(resp.text(), flush=True)
-
-        time.sleep(2)
-#SAMPLE
-```
-
-Will result in the following output:
-
-{{< code-snippet file="contributing-1.py" lang="python" marker="#SAMPLE" >}}
-
-Use the `replace-key-[token]` and `replace-value-[token]` parameters to limit the embedded snipped to a portion of the sample file. This is useful when you want abbreviate a portion of the code sample. Multiple replacements are supported with multiple values of `token`.
-
-The shortcode below and code sample:
-
-```
-{{</* code-snippet file="./contributing-2.py" lang="python" replace-key-imports="#IMPORTS" replace-value-imports="# Import statements"  */>}}
-```
-
-```python
-#IMPORTS
-import json
-import time
-#IMPORTS
-
-from dapr.clients import DaprClient
-
-with DaprClient() as d:
-    req_data = {
-        'id': 1,
-        'message': 'hello world'
-    }
-
-    while True:
-        # Create a typed message with content type and body
-        resp = d.invoke_method(
-            'invoke-receiver',
-            'my-method',
-            data=json.dumps(req_data),
-        )
-
-        # Print the response
-        print(resp.content_type, flush=True)
-        print(resp.text(), flush=True)
-
-        time.sleep(2)
-```
-
-Will result in the following output:
-
-{{< code-snippet file="./contributing-2.py" lang="python" replace-key-imports="#IMPORTS" replace-value-imports="# Import statements"  >}}
+{{< /tabpane >}}
 
 ### YouTube videos
 
 Hugo can automatically embed YouTube videos using a shortcode:
 
 ```
-{{</* youtube [VIDEO ID] */>}}
+{{%/* youtube [VIDEO ID] */%}}
 ```
 
 #### Example
@@ -374,7 +275,7 @@ Given the video https://youtu.be/dQw4w9WgXcQ
 The shortcode would be:
 
 ```
-{{</* youtube dQw4w9WgXcQ */>}}
+{{%/* youtube dQw4w9WgXcQ */%}}
 ```
 
 ### Buttons
@@ -386,7 +287,7 @@ An optional "newtab" parameter will indicate if the page should open in a new ta
 #### Link to an external page
 
 ```
-{{</* button text="My Button" link="https://example.com" */>}}
+{{%/* button text="My Button" link="https://example.com" */%}}
 ```
 
 {{< button text="My Button" link="https://example.com" >}}
@@ -396,30 +297,30 @@ An optional "newtab" parameter will indicate if the page should open in a new ta
 You can also reference pages in your button as well:
 
 ```
-{{</* button text="My Button" page="contributing" newtab="true" */>}}
+{{%/* button text="My Button" page="contributing" newtab="true" */%}}
 ```
 
-{{< button text="My Button" page="contributing" newtab="true" >}}
+{{< button text="My Button" page="contributing.md" newtab="true" >}}
 
 #### Button colors
 
 You can customize the colors using the Bootstrap colors:
 
 ```
-{{</* button text="My Button" link="https://example.com" color="primary" */>}}
-{{</* button text="My Button" link="https://example.com" color="secondary" */>}}
-{{</* button text="My Button" link="https://example.com" color="success" */>}}
-{{</* button text="My Button" link="https://example.com" color="danger" */>}}
-{{</* button text="My Button" link="https://example.com" color="warning" */>}}
-{{</* button text="My Button" link="https://example.com" color="info" */>}}
+{{%/* button text="My Button" link="https://example.com" color="primary" */%}}
+{{%/* button text="My Button" link="https://example.com" color="secondary" */%}}
+{{%/* button text="My Button" link="https://example.com" color="success" */%}}
+{{%/* button text="My Button" link="https://example.com" color="danger" */%}}
+{{%/* button text="My Button" link="https://example.com" color="warning" */%}}
+{{%/* button text="My Button" link="https://example.com" color="info" */%}}
 ```
 
-{{< button text="My Button" link="https://example.com" color="primary" >}}
-{{< button text="My Button" link="https://example.com" color="secondary" >}}
-{{< button text="My Button" link="https://example.com" color="success" >}}
-{{< button text="My Button" link="https://example.com" color="danger" >}}
-{{< button text="My Button" link="https://example.com" color="warning" >}}
-{{< button text="My Button" link="https://example.com" color="info" >}}
+{{% button text="My Button" link="https://example.com" color="primary" %}}
+{{% button text="My Button" link="https://example.com" color="secondary" %}}
+{{% button text="My Button" link="https://example.com" color="success" %}}
+{{% button text="My Button" link="https://example.com" color="danger" %}}
+{{% button text="My Button" link="https://example.com" color="warning" %}}
+{{% button text="My Button" link="https://example.com" color="info" %}}
 
 ### References
 
@@ -463,4 +364,4 @@ Steps to add a language:
 
 ## Next steps
 
-Get started by copying and working from one of [the Dapr doc templates]({{< ref docs-templates >}}).
+Get started by copying and working from one of [the Dapr doc templates]({{% ref docs-templates %}}).

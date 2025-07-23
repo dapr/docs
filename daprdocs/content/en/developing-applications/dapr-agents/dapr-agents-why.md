@@ -16,7 +16,7 @@ These frameworks require developers to adopt entirely new paradigms or recreate 
 
 ### Dapr Agents' Approach
 
-Dapr Agents takes a different approach by building on Dapr, leveraging its proven APIs and patterns including [workflows](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-overview/), [Pub/Sub messaging](https://docs.dapr.io/developing-applications/building-blocks/pubsub/pubsub-overview/), [state management](https://docs.dapr.io/developing-applications/building-blocks/state-management/state-management-overview/), and [service communication](https://docs.dapr.io/developing-applications/building-blocks/service-invocation/service-invocation-overview/). This integration eliminates the need to recreate foundational components from scratch.
+Dapr Agents takes a different approach by building on Dapr, leveraging its proven APIs and patterns including [workflows]({{% ref workflow-overview.md %}}), [pub/sub messaging]({{% ref pubsub-overview.md %}}), [state management]({{% ref state-management-overview %}}), and [service communication]({{% ref service-invocation-overview.md %}}). This integration eliminates the need to recreate foundational components from scratch.
 
 By integrating with Dapr's runtime and modular components, Dapr Agents empowers developers to build and deploy agents that work as collaborative services within larger systems. Whether experimenting with a single agent or orchestrating workflows involving multiple agents, Dapr Agents allows teams to concentrate on the intelligence and behavior of LLM-powered agents while leveraging a proven framework for scalability and reliability.
 
@@ -24,7 +24,7 @@ By integrating with Dapr's runtime and modular components, Dapr Agents empowers 
 
 ### Scalable Workflows as First-Class Citizens
 
-Dapr Agents uses a [durable-execution workflow engine](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-overview/) that guarantees each agent task executes to completion despite network interruptions, node crashes, and other disruptive failures. Developers do not need to understand the underlying workflow engine concepts—simply write an agent that performs any number of tasks and these will be automatically distributed across the cluster. If any task fails, it will be retried and recover its state from where it left off.
+Dapr Agents uses a [durable-execution workflow engine]({{% ref workflow-overview.md %}}) that guarantees each agent task executes to completion despite network interruptions, node crashes, and other disruptive failures. Developers do not need to understand the underlying workflow engine concepts—simply write an agent that performs any number of tasks and these will be automatically distributed across the cluster. If any task fails, it will be retried and recover its state from where it left off.
 
 ### Cost-Effective AI Adoption
 
@@ -32,7 +32,7 @@ Dapr Agents builds on Dapr's Workflow API, which represents each agent as an act
 
 ### Data-Centric AI Agents
 
-With built-in connectivity to over 50 enterprise data sources, Dapr Agents efficiently handles structured and unstructured data. From basic [PDF extraction]({{< ref "/developing-applications/dapr-agents/dapr-agents-integrations.md" >}}) to large-scale database interactions, it enables data-driven AI workflows with minimal code changes. Dapr's [bindings](https://docs.dapr.io/developing-applications/building-blocks/bindings/bindings-overview/) and [state stores](https://docs.dapr.io/reference/components-reference/supported-state-stores/), along with MCP support, provide access to numerous data sources for agent data ingestion.
+With built-in connectivity to over 50 enterprise data sources, Dapr Agents efficiently handles structured and unstructured data. From basic [PDF extraction]({{% ref "/developing-applications/dapr-agents/dapr-agents-integrations.md" %}}) to large-scale database interactions, it enables data-driven AI workflows with minimal code changes. Dapr's [bindings]({{% ref bindings-overview.md %}}) and [state stores]({{% ref supported-state-stores.md %}}), along with MCP support, provide access to numerous data sources for agent data ingestion.
 
 ### Accelerated Development
 
@@ -48,7 +48,7 @@ Dapr Agents provides AI features that give developers a complete API surface to 
 
 ### Integrated Security and Reliability
 
-By building on Dapr, platform and infrastructure teams can apply Dapr's [resiliency policies](https://docs.dapr.io/operations/resiliency/policies/) to the database and message broker components used by Dapr Agents. These policies include timeouts, retry/backoff strategies, and circuit breakers. For [security](https://docs.dapr.io/concepts/security-concept/), Dapr provides options to scope access to specific databases or message brokers to one or more agentic app deployments. Additionally, Dapr Agents uses mTLS to encrypt communication between its underlying components.
+By building on Dapr, platform and infrastructure teams can apply Dapr's [resiliency policies]({{% ref "operations/resiliency/policies/_index.md" %}}) to the database and message broker components used by Dapr Agents. These policies include timeouts, retry/backoff strategies, and circuit breakers. For [security]({{% ref security-concept.md %}}), Dapr provides options to scope access to specific databases or message brokers to one or more agentic app deployments. Additionally, Dapr Agents uses mTLS to encrypt communication between its underlying components.
 
 ### Built-in Messaging and State Infrastructure
 
@@ -56,7 +56,7 @@ By building on Dapr, platform and infrastructure teams can apply Dapr's [resilie
 - **Publish and Subscribe**: Supports loosely coupled collaboration between agents through a shared message bus. This enables real-time, event-driven interactions for task distribution and coordination.
 - **Durable Workflow**: Defines long-running, persistent workflows that combine deterministic processes with LLM-based decision-making. Dapr Agents uses this to orchestrate complex multi-step agentic workflows.
 - **State Management**: Provides a flexible key-value store for agents to retain context across interactions, ensuring continuity and adaptability during workflows.
-- **LLM Integration**: Uses Dapr [Conversation API](https://docs.dapr.io/developing-applications/building-blocks/conversation/conversation-overview/) to abstract LLM inference APIs for chat completion, and provides native clients for other LLM integrations such as embeddings and audio processing.
+- **LLM Integration**: Uses Dapr [Conversation API]({{% ref conversation-overview.md %}}) to abstract LLM inference APIs for chat completion, and provides native clients for other LLM integrations such as embeddings and audio processing.
 
 ### Vendor-Neutral and Open Source
 

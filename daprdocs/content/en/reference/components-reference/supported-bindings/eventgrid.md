@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup an Azure Event Grid binding create a component of type `bindings.azure.eventgrid`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup an Azure Event Grid binding create a component of type `bindings.azure.eventgrid`. See [this guide]({{% ref "howto-bindings.md#1-create-a-binding" %}}) on how to create and apply a binding configuration.
 
 See [this](https://docs.microsoft.com/azure/event-grid/) for the documentation for Azure Event Grid.
 
@@ -52,7 +52,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -98,12 +98,12 @@ In the following table, you can find the list of Dapr components that can raise 
 
 | Event sources | Dapr components |
 | ------------- | --------------- |
-| [Azure Blob Storage](https://learn.microsoft.com/azure/storage/blobs/) | [Azure Blob Storage binding]({{< ref blobstorage.md >}}) <br/>[Azure Blob Storage state store]({{< ref setup-azure-blobstorage.md >}}) |
-| [Azure Cache for Redis](https://learn.microsoft.com/azure/azure-cache-for-redis/cache-overview) | [Redis binding]({{< ref redis.md >}}) <br/>[Redis pub/sub]({{< ref setup-redis-pubsub.md >}}) |
-| [Azure Event Hubs](https://learn.microsoft.com/azure/event-hubs/event-hubs-about) | [Azure Event Hubs pub/sub]({{< ref setup-azure-eventhubs.md >}}) <br/>[Azure Event Hubs binding]({{< ref eventhubs.md >}}) |
-| [Azure IoT Hub](https://learn.microsoft.com/azure/iot-hub/iot-concepts-and-iot-hub) | [Azure Event Hubs pub/sub]({{< ref setup-azure-eventhubs.md >}}) <br/>[Azure Event Hubs binding]({{< ref eventhubs.md >}}) |
-| [Azure Service Bus](https://learn.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview) | [Azure Service Bus binding]({{< ref servicebusqueues.md >}}) <br/>[Azure Service Bus pub/sub topics]({{< ref setup-azure-servicebus-topics.md >}}) and [queues]({{< ref setup-azure-servicebus-queues.md >}}) |
-| [Azure SignalR Service](https://learn.microsoft.com/azure/azure-signalr/signalr-overview) | [SignalR binding]({{< ref signalr.md >}}) |
+| [Azure Blob Storage](https://learn.microsoft.com/azure/storage/blobs/) | [Azure Blob Storage binding]({{% ref blobstorage.md %}}) <br/>[Azure Blob Storage state store]({{% ref setup-azure-blobstorage.md %}}) |
+| [Azure Cache for Redis](https://learn.microsoft.com/azure/azure-cache-for-redis/cache-overview) | [Redis binding]({{% ref redis.md %}}) <br/>[Redis pub/sub]({{% ref setup-redis-pubsub.md %}}) |
+| [Azure Event Hubs](https://learn.microsoft.com/azure/event-hubs/event-hubs-about) | [Azure Event Hubs pub/sub]({{% ref setup-azure-eventhubs.md %}}) <br/>[Azure Event Hubs binding]({{% ref eventhubs.md %}}) |
+| [Azure IoT Hub](https://learn.microsoft.com/azure/iot-hub/iot-concepts-and-iot-hub) | [Azure Event Hubs pub/sub]({{% ref setup-azure-eventhubs.md %}}) <br/>[Azure Event Hubs binding]({{% ref eventhubs.md %}}) |
+| [Azure Service Bus](https://learn.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview) | [Azure Service Bus binding]({{% ref servicebusqueues.md %}}) <br/>[Azure Service Bus pub/sub topics]({{% ref setup-azure-servicebus-topics.md %}}) and [queues]({{% ref setup-azure-servicebus-queues.md %}}) |
+| [Azure SignalR Service](https://learn.microsoft.com/azure/azure-signalr/signalr-overview) | [SignalR binding]({{% ref signalr.md %}}) |
 
 ## Microsoft Entra ID credentials
 
@@ -315,8 +315,8 @@ $ kubectl delete pod nginx-nginx-ingress-controller-649df94867-fp6mg
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Bindings building block]({{< ref bindings >}})
-- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
-- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
-- [Bindings API reference]({{< ref bindings_api.md >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Bindings building block]({{% ref bindings %}})
+- [How-To: Trigger application with input binding]({{% ref howto-triggers.md %}})
+- [How-To: Use bindings to interface with external resources]({{% ref howto-bindings.md %}})
+- [Bindings API reference]({{% ref bindings_api.md %}})

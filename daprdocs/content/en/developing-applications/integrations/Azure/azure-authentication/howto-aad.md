@@ -37,9 +37,9 @@ APP_ID=$(az ad app create --display-name "${APP_NAME}"  | jq -r .appId)
 
 Select how you'd prefer to pass credentials.
 
-{{< tabs "Client secret" "PFX certificate">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Client secret" %}}
 
 To create a **client secret**, run the following command. 
 
@@ -67,9 +67,9 @@ When adding the returned values to your Dapr component's metadata:
 - `password` is the value for `azureClientSecret` (this was randomly-generated)
 - `tenant` is the value for `azureTenantId`
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "PFX certificate" %}}
 For a **PFX (PKCS#12) certificate**, run the following command to create a self-signed certificate:
 
 ```sh
@@ -101,9 +101,9 @@ When adding the returned values to your Dapr component's metadata:
 
 > **Note:** While the generated file has the `.pem` extension, it contains a certificate and private key encoded as PFX (PKCS#12).
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### Create a Service Principal
 

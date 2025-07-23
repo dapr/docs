@@ -32,7 +32,7 @@ spec:
 
 The type of secret store is determined by the `type` field, and things like connection strings and other metadata are put in the `.metadata` section.
 
-Different [supported secret stores]({{< ref supported-secret-stores >}}) will have different specific fields that would need to be configured. For example, when configuring a secret store which uses AWS Secrets Manager the file would look like this:
+Different [supported secret stores]({{% ref supported-secret-stores %}}) will have different specific fields that would need to be configured. For example, when configuring a secret store which uses AWS Secrets Manager the file would look like this:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -62,28 +62,28 @@ When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernet
 Once you have created the component's YAML file, follow these instructions to apply it based on your hosting environment:
 
 
-{{< tabs "Self-Hosted" "Kubernetes" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--resources-path`.
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 To deploy in Kubernetes, assuming your component file is named `secret-store.yaml`, run:
 
 ```bash
 kubectl apply -f secret-store.yaml
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Supported secret stores
 
-Visit the [secret stores reference]({{< ref supported-secret-stores >}}) for a full list of supported secret stores.
+Visit the [secret stores reference]({{% ref supported-secret-stores %}}) for a full list of supported secret stores.
 
 
 ## Related links
 
-- [Supported secret store components]({{< ref supported-secret-stores >}})
-- [Secrets building block]({{< ref secrets >}})
+- [Supported secret store components]({{% ref supported-secret-stores %}})
+- [Secrets building block]({{% ref secrets %}})

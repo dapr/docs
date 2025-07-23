@@ -45,7 +45,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -63,12 +63,12 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Authenticating with Connection String 
 
-Access an App Configuration instance using its connection string, which is available in the Azure portal. Since connection strings contain credential information, you should treat them as secrets and [use a secret store]({{< ref component-secrets.md >}}).
+Access an App Configuration instance using its connection string, which is available in the Azure portal. Since connection strings contain credential information, you should treat them as secrets and [use a secret store]({{% ref component-secrets.md %}}).
 
 ## Authenticating with Microsoft Entra ID
 
 The Azure App Configuration configuration store component also supports authentication with Microsoft Entra ID. Before you enable this component:
-- Read the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document.
+- Read the [Authenticating to Azure]({{% ref authenticating-azure.md %}}) document.
 - Create an Microsoft Entra ID application (also called Service Principal). 
 - Alternatively, create a managed identity for your application platform.
 
@@ -86,7 +86,7 @@ You need an Azure subscription to set up Azure App Configuration.
    Set the `host` key to `[Endpoint]` or the `connectionString` key to the values you saved earlier.
    
    {{% alert title="Note" color="primary" %}}
-   In a production-grade application, follow [the secret management]({{< ref component-secrets.md >}}) instructions to securely manage your secrets.
+   In a production-grade application, follow [the secret management]({{% ref component-secrets.md %}}) instructions to securely manage your secrets.
    {{% /alert %}}
 
 ## Azure App Configuration request metadata 
@@ -104,5 +104,5 @@ GET curl http://localhost:<daprPort>/v1.0/configuration/<store-name>?key=<key na
 ```
 
 ## Related links
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Configuration building block]({{< ref configuration-api-overview >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Configuration building block]({{% ref configuration-api-overview %}})

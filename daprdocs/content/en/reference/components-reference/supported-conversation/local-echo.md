@@ -25,4 +25,4 @@ This component is only meant for local validation and testing of a Conversation 
 
 ## Related links
 
-- [Conversation API overview]({{< ref conversation-overview.md >}})
+- [Conversation API overview]({{% ref conversation-overview.md %}})

@@ -13,9 +13,9 @@ When Dapr runs, it matches it's own configured namespace with the namespace of t
 ## Namespaces
 Namespaces can be used to limit component access to particular Dapr instances.
 
-{{< tabs "Self-Hosted" "Kubernetes">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 In self hosted mode, a developer can specify the namespace to a Dapr instance by setting the `NAMESPACE` environment variable.
 If the `NAMESPACE` environment variable is set, Dapr does not load any component that does not specify the same namespace in its metadata.
 
@@ -48,9 +48,9 @@ Windows:
 setx NAMESPACE "production"
 # run Dapr as usual
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 Let's consider the following component in Kubernetes:
 
 ```yaml
@@ -68,14 +68,14 @@ spec:
 ```
 
 In this example, the Redis component is only accessible to Dapr instances running inside the `production` namespace.
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 {{% alert title="Note" color="primary" %}}
 The component YAML applied to namespace "A" can *reference* the implementation in namespace "B". For example, a component YAML for Redis in namespace "production-A" can point the Redis host address to the Redis instance deployed in namespace "production-B". 
 
-See [Configure Pub/Sub components with multiple namespaces]({{< ref "pubsub-namespaces.md" >}}) for an example.
+See [Configure Pub/Sub components with multiple namespaces]({{% ref "pubsub-namespaces.md" %}}) for an example.
 {{% /alert %}}
 
 ## Application access to components with scopes
@@ -102,18 +102,16 @@ scopes:
 ```
 ### Community call demo
 
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/8W-iBDNvCUM?start=1763" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
+{{< youtube id=8W-iBDNvCUM start=1763 >}}
 
 ## Using namespaces with service invocation
-Read [Service invocation across namespaces]({{< ref "service-invocation-namespaces.md" >}}) for more information on using namespaces when calling between services.
+Read [Service invocation across namespaces]({{% ref "service-invocation-namespaces.md" %}}) for more information on using namespaces when calling between services.
 
 ## Using namespaces with pub/sub
-Read [Configure Pub/Sub components with multiple namespaces]({{< ref "pubsub-namespaces.md" >}}) for more information on using namespaces with pub/sub.
+Read [Configure Pub/Sub components with multiple namespaces]({{% ref "pubsub-namespaces.md" %}}) for more information on using namespaces with pub/sub.
 
 ## Related links
 
-- [Configure Pub/Sub components with multiple namespaces]({{< ref "pubsub-namespaces.md" >}})
-- [Use secret scoping]({{< ref "secrets-scopes.md" >}})
-- [Limit the secrets that can be read from secret stores]({{< ref "secret-scope.md" >}})
+- [Configure Pub/Sub components with multiple namespaces]({{% ref "pubsub-namespaces.md" %}})
+- [Use secret scoping]({{% ref "secrets-scopes.md" %}})
+- [Limit the secrets that can be read from secret stores]({{% ref "secret-scope.md" %}})

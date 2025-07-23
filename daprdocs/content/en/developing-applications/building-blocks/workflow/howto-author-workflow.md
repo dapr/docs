@@ -9,7 +9,7 @@ description: "Learn how to develop and author workflows"
 This article provides a high-level overview of how to author workflows that are executed by the Dapr Workflow engine.
 
 {{% alert title="Note" color="primary" %}}
- If you haven't already, [try out the workflow quickstart]({{< ref workflow-quickstart.md >}}) for a quick walk-through on how to use workflows.
+ If you haven't already, [try out the workflow quickstart]({{% ref workflow-quickstart.md %}}) for a quick walk-through on how to use workflows.
 
 {{% /alert %}}
 
@@ -28,11 +28,11 @@ The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar si
 
 ## Write the workflow activities
 
-[Workflow activities]({{< ref "workflow-features-concepts.md#workflow-activites" >}}) are the basic unit of work in a workflow and are the tasks that get orchestrated in the business process.
+[Workflow activities]({{% ref "workflow-features-concepts.md#workflow-activites" %}}) are the basic unit of work in a workflow and are the tasks that get orchestrated in the business process.
 
-{{< tabs Python JavaScript ".NET" Java Go >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 <!--python-->
 
@@ -49,9 +49,9 @@ def hello_act(ctx: WorkflowActivityContext, wf_input):
 [See the task chaining workflow activity in context.](https://github.com/dapr/python-sdk/blob/main/examples/workflow/simple.py)
 
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 <!--javascript-->
 
@@ -80,9 +80,9 @@ export default class WorkflowActivityContext {
 [See the workflow activity in context.](https://github.com/dapr/js-sdk/blob/main/src/workflow/runtime/WorkflowActivityContext.ts)
 
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 <!--csharp-->
 
@@ -148,9 +148,9 @@ public class ProcessPaymentActivity : WorkflowActivity<PaymentRequest, object>
 
 [See the full `ProcessPaymentActivity.cs` workflow activity example.](https://github.com/dapr/dotnet-sdk/blob/master/examples/Workflow/WorkflowConsoleApp/Activities/ProcessPaymentActivity.cs)
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 <!--java-->
 
@@ -191,9 +191,9 @@ public class DemoWorkflowActivity implements WorkflowActivity {
 
 [See the Java SDK workflow activity example in context.](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/workflows/DemoWorkflowActivity.java)
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 <!--go-->
 
@@ -213,17 +213,17 @@ func TestActivity(ctx workflow.ActivityContext) (any, error) {
 
 [See the Go SDK workflow activity example in context.](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Write the workflow
 
 Next, register and call the activites in a workflow. 
 
-{{< tabs Python JavaScript ".NET" Java Go >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 <!--python-->
 
@@ -255,9 +255,9 @@ def hello_world_wf(ctx: DaprWorkflowContext, wf_input):
 [See the `hello_world_wf` workflow in context.](https://github.com/dapr/python-sdk/blob/main/examples/workflow/simple.py)
 
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 <!--javascript-->
 
@@ -300,9 +300,9 @@ export default class WorkflowRuntime {
 [See the `WorkflowRuntime` in context.](https://github.com/dapr/js-sdk/blob/main/src/workflow/runtime/WorkflowRuntime.ts)
 
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 <!--csharp-->
 
@@ -343,9 +343,9 @@ The `OrderProcessingWorkflow` class is derived from a base class called `Workflo
 [See the full workflow example in `OrderProcessingWorkflow.cs`.](https://github.com/dapr/dotnet-sdk/blob/master/examples/Workflow/WorkflowConsoleApp/Workflows/OrderProcessingWorkflow.cs)
 
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 <!--java-->
 
@@ -374,9 +374,9 @@ public class DemoWorkflowWorker {
 [See the Java SDK workflow in context.](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/workflows/DemoWorkflowWorker.java)
 
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 <!--go-->
 
@@ -405,17 +405,17 @@ func TestWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 
 [See the Go SDK workflow in context.](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Write the application
 
 Finally, compose the application using the workflow.
 
-{{< tabs Python JavaScript ".NET" Java Go >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 <!--python-->
 
@@ -424,8 +424,8 @@ Finally, compose the application using the workflow.
 - A Python package called `DaprClient` to receive the Python SDK capabilities.
 - A builder with extensions called:
   - `WorkflowRuntime`: Allows you to register the workflow runtime. 
-  - `DaprWorkflowContext`: Allows you to [create workflows]({{< ref "#write-the-workflow" >}})
-  - `WorkflowActivityContext`: Allows you to [create workflow activities]({{< ref "#write-the-workflow-activities" >}})
+  - `DaprWorkflowContext`: Allows you to [create workflows]({{% ref "#write-the-workflow" %}})
+  - `WorkflowActivityContext`: Allows you to [create workflow activities]({{% ref "#write-the-workflow-activities" %}})
 - API calls. In the example below, these calls start, pause, resume, purge, and completing the workflow.
  
 ```python
@@ -590,9 +590,9 @@ if __name__ == '__main__':
     main()
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 <!--javascript-->
 
@@ -600,8 +600,8 @@ if __name__ == '__main__':
 
 - A builder with extensions called:
   - `WorkflowRuntime`: Allows you to register workflows and workflow activities
-  - `DaprWorkflowContext`: Allows you to [create workflows]({{< ref "#write-the-workflow" >}})
-  - `WorkflowActivityContext`: Allows you to [create workflow activities]({{< ref "#write-the-workflow-activities" >}})
+  - `DaprWorkflowContext`: Allows you to [create workflows]({{% ref "#write-the-workflow" %}})
+  - `WorkflowActivityContext`: Allows you to [create workflow activities]({{% ref "#write-the-workflow-activities" %}})
 - API calls. In the example below, these calls start, terminate, get status, pause, resume, raise event, and purge the workflow.
  
 ```javascript
@@ -737,9 +737,9 @@ export default class DaprWorkflowClient {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 <!--csharp-->
 
@@ -808,9 +808,9 @@ app.MapGet("/orders/{orderId}", async (string orderId, DaprWorkflowClient client
 app.Run();
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 <!--java-->
 
@@ -855,9 +855,9 @@ public class DemoWorkflow extends Workflow {
 
 [See the full Java SDK workflow example in context.](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/workflows/DemoWorkflow.java)
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 <!--go-->
 
@@ -1186,9 +1186,9 @@ func TestActivity(ctx workflow.ActivityContext) (any, error) {
 
 [See the full Go SDK workflow example in context.](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 {{% alert title="Important" color="warning" %}}
@@ -1203,8 +1203,8 @@ Now that you've authored a workflow, learn how to manage it.
 {{< button text="Manage workflows >>" page="howto-manage-workflow.md" >}}
 
 ## Related links
-- [Workflow overview]({{< ref workflow-overview.md >}})
-- [Workflow API reference]({{< ref workflow_api.md >}})
+- [Workflow overview]({{% ref workflow-overview.md %}})
+- [Workflow API reference]({{% ref workflow_api.md %}})
 - Try out the full SDK examples:
   - [Python example](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
   - [JavaScript example](https://github.com/dapr/js-sdk/tree/main/examples/workflow)

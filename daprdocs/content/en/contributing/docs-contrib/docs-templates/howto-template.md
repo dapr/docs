@@ -22,7 +22,7 @@ When naming your how-to document, include the sub-directory name in the file nam
 This template is only a suggestion. Feel free to change based on your document's purpose.
 {{% /alert %}}
 
-Learn more about [contributing to the Dapr docs]({{< ref contributing-docs.md >}}), like [front-matter]({{< ref "contributing-docs.md#front-matter" >}}) and [shortcodes]({{< ref "contributing-docs.md#shortcodes" >}}).
+Learn more about [contributing to the Dapr docs]({{% ref contributing-docs %}}), like [front-matter]({{% ref "contributing-docs#front-matter" %}}) and [shortcodes]({{% ref "contributing-docs#shortcodes" %}}).
 
 ### Template
 

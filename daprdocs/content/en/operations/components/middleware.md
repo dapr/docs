@@ -13,7 +13,7 @@ Dapr allows custom processing pipelines to be defined by chaining a series of mi
 
 ## Configure API middleware pipelines
 
-When launched, a Dapr sidecar constructs a middleware processing pipeline for incoming HTTP calls. By default, the pipeline consists of the [tracing]({{< ref tracing-overview.md >}}) and CORS middlewares. Additional middlewares, configured by a Dapr [Configuration]({{< ref configuration-concept.md >}}), can be added to the pipeline in the order they are defined. The pipeline applies to all Dapr API endpoints, including state, pub/sub, service invocation, bindings, secrets, configuration, distributed lock, etc.
+When launched, a Dapr sidecar constructs a middleware processing pipeline for incoming HTTP calls. By default, the pipeline consists of the [tracing]({{% ref tracing-overview.md %}}) and CORS middlewares. Additional middlewares, configured by a Dapr [Configuration]({{% ref configuration-concept.md %}}), can be added to the pipeline in the order they are defined. The pipeline applies to all Dapr API endpoints, including state, pub/sub, service invocation, bindings, secrets, configuration, distributed lock, etc.
 
 A request goes through all the defined middleware components before it's routed to user code, and then goes through the defined middleware, in reverse order, before it's returned to the client, as shown in the following diagram.
 
@@ -21,7 +21,7 @@ A request goes through all the defined middleware components before it's routed 
 
 HTTP middleware components are executed when invoking Dapr HTTP APIs using the `httpPipeline` configuration.
 
-The following configuration example defines a custom pipeline that uses an [OAuth 2.0 middleware]({{< ref middleware-oauth2.md >}}) and an [uppercase middleware component]({{< ref middleware-uppercase.md >}}). In this case, all requests are authorized through the OAuth 2.0 protocol, and transformed to uppercase text, before they are forwarded to user code.
+The following configuration example defines a custom pipeline that uses an [OAuth 2.0 middleware]({{% ref middleware-oauth2.md %}}) and an [uppercase middleware component]({{% ref middleware-uppercase.md %}}). In this case, all requests are authorized through the OAuth 2.0 protocol, and transformed to uppercase text, before they are forwarded to user code.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -38,9 +38,9 @@ spec:
         type: middleware.http.uppercase
 ```
 
-As with other components, middleware components can be found in the [supported Middleware reference]({{< ref supported-middleware >}}) and in the [`dapr/components-contrib` repo](https://github.com/dapr/components-contrib/tree/master/middleware/http).
+As with other components, middleware components can be found in the [supported Middleware reference]({{% ref supported-middleware %}}) and in the [`dapr/components-contrib` repo](https://github.com/dapr/components-contrib/tree/master/middleware/http).
 
-{{< button page="supported-middleware" text="See all middleware components">}}
+{{< button page="supported-middleware.md" text="See all middleware components" >}}
 
 ## Configure app middleware pipelines
 
@@ -67,7 +67,7 @@ spec:
 
 ## Related links
 
-- [Learn how to author middleware components]({{< ref develop-middleware.md >}})
-- [Component schema]({{< ref component-schema.md >}})
-- [Configuration overview]({{< ref configuration-overview.md >}})
+- [Learn how to author middleware components]({{% ref develop-middleware.md %}})
+- [Component schema]({{% ref component-schema.md %}})
+- [Configuration overview]({{% ref configuration-overview.md %}})
 - [API middleware sample](https://github.com/dapr/samples/tree/master/middleware-oauth-google)

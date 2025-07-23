@@ -11,7 +11,7 @@ Get the version and git commit data for `dapr` and `daprd` executables.
 
 ### Supported platforms
 
-- [Self-Hosted]({{< ref self-hosted >}})
+- [Self-Hosted]({{% ref self-hosted %}})
 
 ### Usage
 
