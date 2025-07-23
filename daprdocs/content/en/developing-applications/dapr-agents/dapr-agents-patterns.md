@@ -344,7 +344,7 @@ Moving to the far end of the agentic spectrum, the Durable Agent pattern represe
 
 Enterprise applications often need durable execution and reliability that go beyond in-memory capabilities. Dapr's `DurableAgent` class helps you implement autonomous agents with the reliability of workflows, as these agents are backed by Dapr workflows behind the scenes. The `DurableAgent` extends the basic `Agent` class by adding durability to agent execution.
 
-<img src="/images/dapr-agents/agents-durable-agent.png" width=800 alt="Diagram showing how the durable agent pattern works">
+<img src="/images/dapr-agents/agents-stateful-llm.png" width=800 alt="Diagram showing how the durable agent pattern works">
 
 This pattern doesn't just persist message history – it dynamically creates workflows with durable activities for each interaction, where LLM calls and tool executions are stored reliably in Dapr's state stores. This makes it ideal for production environments where reliability is critical.
 

@@ -3,7 +3,7 @@ type: docs
 title: "Getting Started"
 linkTitle: "Getting Started"
 weight: 20
-description: "How to install and run Dapr Agents"
+description: "How to install Dapr Agents and run your first agent"
 ---
 
 {{% alert title="Dapr Agents Concepts" color="primary" %}}
@@ -69,6 +69,8 @@ Create a `.env` file with your OpenAI API key:
 OPENAI_API_KEY=your_api_key_here
 ```
 
+This API key is essential for agents to communicate with the LLM, as the default LLM client in the agent uses OpenAI's services. If you don't have an API key, you can [create one here](https://platform.openai.com/api-keys).
+
 ### 2. Create the Dapr component
 
 Create a `components` directory and add `historystore.yaml`:
@@ -87,6 +89,8 @@ spec:
   - name: redisPassword
     value: ""
 ```
+
+This component will be used to store the conversation history, as LLMs are stateless and every chat interaction needs to send all the previous conversations to maintain context.
 
 ### 3. Create the agent with weather tool
 
@@ -126,7 +130,8 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
- 
+
+This code creates an agent with a single weather tool and uses Dapr for memory persistence. Notice how in the agent's responses, it remembers the user's name from the first chat interaction, demonstrating the conversation memory in action.
 
 ### 4. Run with Dapr
 
@@ -134,26 +139,25 @@ if __name__ == "__main__":
 dapr run --app-id weatheragent --resources-path ./components -- python weather_agent.py
 ```
 
-This example demonstrates an agent that uses tools to fetch weather information while persisting conversation history through Dapr's state management.
+This command starts a Dapr sidecar with the conversation component and launches the agent that communicates with the sidecar for state persistence.
 
 
-## Enable Redis Insights (Optional)
+### 5. Enable Redis Insights (Optional)
 
 Dapr uses [Redis](https://docs.dapr.io/reference/components-reference/supported-state-stores/setup-redis/) by default for state management and pub/sub messaging, which are fundamental to Dapr Agents's agentic workflows. These capabilities enable the following:
 
 * Viewing Pub/Sub Messages: Monitor and inspect messages exchanged between agents in event-driven workflows.
-* Inspecting State Information: Access and analyze shared state data among agents.
+* Inspecting State Information: Access and analyze workflow state, conversation state, and other shared data among agents.
 * Debugging and Monitoring Events: Track workflow events in real time to ensure smooth operations and identify issues.
 
-To make these insights more accessible, you can leverage Redis Insight for debugging purposes.
+To inspect the Redis instance, a great tool to use is Redis Insight, and you can use it to inspect the agent memory populated earlier.
 
 ```bash
 docker run --rm -d --name redisinsight -p 5540:5540 redis/redisinsight:latest
 ```
 
 Once running, access the Redis Insight interface at `http://localhost:5540/`
-
-### Connection Configuration
+Inside Redis Insight, you can connect to a Redis instance, so let's connect to the one used by the agent:
 
 * Port: 6379
 * Host (Linux): 172.17.0.1
@@ -163,7 +167,8 @@ Redis Insight makes it easy to visualize and manage the data powering your agent
 
 ![Redis Dashboard](/images/dapr-agents/home_installation_redis_dashboard.png)
 
-
+Here you can browse the state store used in the agent and explore its data.
+ 
 ## Next Steps
 
 Now that you have Dapr Agents installed and running, explore more advanced examples and patterns in the [quickstarts](dapr-agents-quickstarts.md) section to learn about multi-agent workflows, durable agents, and integration with Dapr's powerful distributed capabilities.
