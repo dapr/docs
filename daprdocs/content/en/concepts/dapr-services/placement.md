@@ -93,6 +93,19 @@ updatedAt | timestamp | Timestamp of the actor registered/updated.
 }
 ```
 
+## Disabling the Placement Service
+
+The dapr placement service can be disabled with the following setting:
+
+```
+global.actors.enabled=false
+```
+
+Keep in mind that this will not only disable actors, but also prevent workflows from working.
+
+Also note that this setting does not apply when running dapr in self-hosted mode.
+
+
 ## Related links
 
 [Learn more about the Placement API.]({{< ref placement_api.md >}})
