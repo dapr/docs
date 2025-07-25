@@ -96,7 +96,8 @@ updatedAt | timestamp | Timestamp of the actor registered/updated.
 ## Disabling the Placement service
 
 
-The dapr placement service can be disabled with the following setting:
+The Placement service can be disabled with the following setting:
+
 
 ```
 global.actors.enabled=false
