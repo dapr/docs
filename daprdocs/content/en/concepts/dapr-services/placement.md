@@ -103,7 +103,7 @@ The Placement service can be disabled with the following setting:
 global.actors.enabled=false
 ```
 
-Keep in mind that this will not only disable the Actors API, but also disable the Workflow API, given that workflows are powered by actors. That this setting only applies in Kubernetes mode, however initializing Dapr with `--slim` excludes the Placement service from being deployed in self-hosted mode. 
+Keep in mind that this will not only disable the Actors API, but also disable the Workflow API, given that workflows are powered by actors. This setting only applies in Kubernetes mode, however initializing Dapr with `--slim` excludes the Placement service from being deployed in self-hosted mode. 
 
 For more information on running Dapr on Kubernetes, visit the [Kubernetes hosting page](https://docs.dapr.io/operations/hosting/kubernetes/).
 
