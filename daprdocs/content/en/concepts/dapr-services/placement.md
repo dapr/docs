@@ -93,7 +93,8 @@ updatedAt | timestamp | Timestamp of the actor registered/updated.
 }
 ```
 
-## Disabling the Placement Service
+## Disabling the Placement service
+
 
 The dapr placement service can be disabled with the following setting:
 
