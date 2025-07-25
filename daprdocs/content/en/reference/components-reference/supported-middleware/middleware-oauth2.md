@@ -36,6 +36,8 @@ spec:
     value: "authorization"
   - name: forceHTTPS
     value: "false"
+  - name: pathFilter
+    value: ".*/users/.*"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -54,6 +56,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | redirectURL | The URL of your web application that the authorization server should redirect to once the user has authenticated | `"https://myapp.com"`
 | authHeaderName | The authorization header name to forward to your application | `"authorization"`
 | forceHTTPS | If true, enforces the use of TLS/SSL | `"true"`,`"false"`                                           |
+| pathFilter | Applies the middleware only to requests matching the given path pattern | `".*/users/.*"`
 
 ## Dapr configuration
 

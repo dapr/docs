@@ -30,6 +30,8 @@ spec:
     value: "https://accounts.google.com/o/oauth2/token"
   - name: headerName
     value: "authorization"
+  - name: pathFilter
+    value: ".*/users/.*"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -47,6 +49,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | headerName | The authorization header name to forward to your application | `"authorization"`
 | endpointParamsQuery | Specifies additional parameters for requests to the token endpoint | `true`
 | authStyle | Optionally specifies how the endpoint wants the client ID & client secret sent. See the table of possible values below | `0`
+| pathFilter | Applies the middleware only to requests matching the given path pattern | `".*/users/.*"`
 
 ### Possible values for `authStyle`
 
