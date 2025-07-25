@@ -3,24 +3,10 @@ type: docs
 title: "Integrations"
 linkTitle: "Integrations"
 weight: 60
-description: "Various integrations available in Dapr Agents"
+description: "Various integrations and tools available in Dapr Agents"
 ---
 
-# Integrations
-
-
-Dapr Agents integrates with popular Python frameworks and tools.  
-
-| Framework | Integration | Description |
-|-----------|-------------|-------------|
-| [**FastAPI**]({{% ref "dapr-agents-getting-started.md#fastapi-integration" %}}) | Native | Expose agents as REST APIs with automatic documentation and validation
-| [**Chainlit**]({{% ref "dapr-agents-quickstarts.md#chainlit-integration" %}}) | Supported | Build conversational UIs for agent interactions with file upload and chat capabilities
-| [**Pydantic**]({{% ref "dapr-agents-core-concepts.md#pydantic-integration" %}}) | Built-in | Type-safe configuration and structured outputs for agents and tools
-
-
-
 # Out-of-the-box Tools
-
 
 ## Text Splitter
 

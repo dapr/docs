@@ -8,17 +8,89 @@ description: "Understanding the benefits and use cases for Dapr Agents"
 
 Dapr Agents is an open-source framework for building and orchestrating LLM-based autonomous agents that leverages Dapr's proven distributed systems foundation. Unlike other agentic frameworks that require developers to build infrastructure from scratch, Dapr Agents enables teams to focus on agent intelligence by providing enterprise-grade scalability, state management, and messaging capabilities out of the box. This approach eliminates the complexity of recreating distributed system fundamentals while delivering production-ready agentic workflows.RetryClaude can make mistakes. Please double-check responses.
  
-### The Problem
+### Challenges with Existing Frameworks
 
 Many agentic frameworks today attempt to redefine how microservices are built and orchestrated by developing their own platforms for core distributed system capabilities. While these efforts showcase innovation, they often lead to steep learning curves, fragmented systems, and unnecessary complexity when scaling or adapting to new environments.
 
 These frameworks require developers to adopt entirely new paradigms or recreate foundational infrastructure, rather than building on existing solutions that are proven to handle these challenges at scale. This added complexity diverts focus from the primary goal: designing and implementing intelligent, effective agents.
 
-### Dapr Agents' Approach
+### How Dapr Agents Solves It
 
 Dapr Agents takes a different approach by building on Dapr, leveraging its proven APIs and patterns including [workflows]({{% ref workflow-overview.md %}}), [pub/sub messaging]({{% ref pubsub-overview.md %}}), [state management]({{% ref state-management-overview %}}), and [service communication]({{% ref service-invocation-overview.md %}}). This integration eliminates the need to recreate foundational components from scratch.
 
 By integrating with Dapr's runtime and modular components, Dapr Agents empowers developers to build and deploy agents that work as collaborative services within larger systems. Whether experimenting with a single agent or orchestrating workflows involving multiple agents, Dapr Agents allows teams to concentrate on the intelligence and behavior of LLM-powered agents while leveraging a proven framework for scalability and reliability.
+
+
+## Principles
+
+### Agent-Centric Design
+
+Dapr Agents is designed to place agents, powered by LLMs, at the core of task execution and workflow orchestration. This principle emphasizes:
+
+* **LLM-Powered Agents**: Dapr Agents enables the creation of agents that leverage LLMs for reasoning, dynamic decision-making, and natural language interactions.
+* **Adaptive Task Handling**: Agents in Dapr Agents are equipped with flexible patterns like tool calling and reasoning loops (e.g., ReAct), allowing them to autonomously tackle complex and evolving tasks.
+* **Multi-agent Systems**: Dapr Agents' framework allows agents to act as modular, reusable building blocks that integrate seamlessly into workflows, whether they operate independently or collaboratively.
+
+While Dapr Agents centers around agents, it also recognizes the versatility of using LLMs directly in deterministic workflows or simpler task sequences. In scenarios where the agent's built-in task-handling patterns, like `tool calling` or `ReAct` loops, are unnecessary, LLMs can act as core components for reasoning and decision-making. This flexibility ensures users can adapt Dapr Agents to suit diverse needs without being confined to a single approach.
+
+{{% alert title="Note" color="info" %}}
+Agents can be used standalone and create workflows behind the scene, or act as autonomous steps in deterministic workflows.
+{{% /alert %}}
+
+![Modular Principles](/images/dapr-agents/home_concepts_principles_modular.png)
+
+### Backed by Durable Workflows
+
+Dapr Agents places durability at the core of its architecture, leveraging [Dapr Workflows](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-overview/) as the foundation for durable agent execution and deterministic multi-agent orchestration.
+
+* **Durable Agent Execution**: DurableAgents are fundamentally workflow-backed, ensuring all LLM calls and tool executions remain durable, auditable, and resumable. Workflow checkpointing guarantees agents can recover from any point of failure while maintaining state consistency.
+* **Deterministic Multi-Agent Orchestration**: Workflows provide centralized control over task dependencies and coordination between multiple agents. Dapr's code-first workflow engine enables reliable orchestration of complex business processes while preserving agent autonomy where appropriate.
+
+By integrating workflows as the foundational layer, Dapr Agents enables systems that combine the reliability of deterministic execution with the intelligence of LLM-powered agents, ensuring production-grade reliability and scalability.
+
+{{% alert title="Note" color="info" %}}
+Workflows in Dapr Agents provide the foundation for building production-ready agentic systems that combine reliable execution with LLM-powered intelligence.
+{{% /alert %}}
+
+### Modular Component Model
+
+Dapr Agents utilizes [Dapr's pluggable component framework](https://docs.dapr.io/concepts/components-concept/) and building blocks to simplify development and enhance flexibility:
+
+* **Building Blocks for Core Functionality**: Dapr provides API building blocks, such as Pub/Sub messaging, state management, service invocation, and more, to address common microservice challenges and promote best practices.
+* **Interchangeable Components**: Each building block operates on swappable components (e.g., Redis, Kafka, Azure CosmosDB), allowing you to replace implementations without changing application code.
+* **Seamless Transitions**: Develop locally with default configurations and deploy effortlessly to cloud environments by simply updating component definitions.
+
+{{% alert title="Note" color="info" %}}
+Developers can easily switch between different components (e.g., Redis to DynamoDB, OpenAI, Anthropic) based on their deployment environment, ensuring portability and adaptability.
+{{% /alert %}}
+
+### Message-Driven Communication
+
+Dapr Agents emphasizes the use of Pub/Sub messaging for event-driven communication between agents. This principle ensures:
+
+* **Decoupled Architecture**: Asynchronous communication for scalability and modularity.
+* **Real-Time Adaptability**: Agents react dynamically to events for faster, more flexible task execution.
+* **Event-Driven Workflows**: : By combining Pub/Sub messaging with workflow capabilities, agents can collaborate through event streams while participating in larger orchestrated workflows, enabling both autonomous coordination and structured task execution.
+
+{{% alert title="Note" color="info" %}}
+Pub/Sub messaging serves as the backbone for Dapr Agents' event-driven workflows, enabling agents to communicate and collaborate in real time while maintaining loose coupling.
+{{% /alert %}}
+
+![Message Principles](/images/dapr-agents/home_concepts_principles_message.png)
+
+### Decoupled Infrastructure Design
+
+Dapr Agents ensures a clean separation between agents and the underlying infrastructure, emphasizing simplicity, scalability, and adaptability:
+
+* **Agent Simplicity**: Agents focus purely on reasoning and task execution, while Pub/Sub messaging, routing, and validation are managed externally by modular infrastructure components.
+* **Scalable and Adaptable Systems**: By offloading non-agent-specific responsibilities, Dapr Agents allows agents to scale independently and adapt seamlessly to new use cases or integrations.
+
+{{% alert title="Note" color="info" %}}
+Decoupling infrastructure keeps agents focused on tasks while enabling seamless scalability and integration across systems.
+{{% /alert %}}
+
+![Decoupled Principles](/images/dapr-agents/home_concepts_principles_decoupled.png)
+
 
 ## Dapr Agents Benefits
 
