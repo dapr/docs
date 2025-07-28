@@ -163,7 +163,7 @@ This command starts a Dapr sidecar with the conversation component and launches 
 
 ### 6. Enable Redis Insights (Optional)
 
-Dapr uses [Redis](https://docs.dapr.io/reference/components-reference/supported-state-stores/setup-redis/) by default for state management and pub/sub messaging, which are fundamental to Dapr Agents's agentic workflows. To inspect the Redis instance, a great tool to use is Redis Insight, and you can use it to inspect the agent memory populated earlier. To run Redis Insights, run:
+Dapr uses [Redis]({{% ref setup-redis.md %}}) by default for state management and pub/sub messaging, which are fundamental to Dapr Agents's agentic workflows. To inspect the Redis instance, a great tool to use is Redis Insight, and you can use it to inspect the agent memory populated earlier. To run Redis Insights, run:
 
 ```bash
 docker run --rm -d --name redisinsight -p 5540:5540 redis/redisinsight:latest
