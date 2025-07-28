@@ -30,7 +30,7 @@ Dapr integrates with the [Dynatrace Collector](https://docs.dynatrace.com/docs/i
 1. Use the Dynatrace OpenTelemetry Collector distribution for better defaults and support. Download and inspect the [`collector-helm-values.yaml`](https://github.com/Dynatrace/dynatrace-otel-collector/blob/main/config_examples/collector-helm-values.yaml) file. This is based on the [k8s enrichment demo](https://docs.dynatrace.com/docs/ingest-from/opentelemetry/collector/use-cases/kubernetes/k8s-enrich#demo-configuration) and includes Kubernetes metadata enrichment for proper pod/namespace/cluster context.
 
 
-1. Deploy the Dynatrace Collector
+1. Deploy the Dynatrace Collector with Helm.
 
    ```sh
    helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
