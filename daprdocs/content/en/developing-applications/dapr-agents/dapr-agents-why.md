@@ -54,7 +54,7 @@ Workflows in Dapr Agents provide the foundation for building production-ready ag
 
 ### Modular Component Model
 
-Dapr Agents utilizes [Dapr's pluggable component framework]({{% components-concept.md %}}) and building blocks to simplify development and enhance flexibility:
+Dapr Agents utilizes [Dapr's pluggable component framework]({{% "components-concept.md" %}}) and building blocks to simplify development and enhance flexibility:
 
 * **Building Blocks for Core Functionality**: Dapr provides API building blocks, such as Pub/Sub messaging, state management, service invocation, and more, to address common microservice challenges and promote best practices.
 * **Interchangeable Components**: Each building block operates on swappable components (e.g., Redis, Kafka, Azure CosmosDB), allowing you to replace implementations without changing application code.
