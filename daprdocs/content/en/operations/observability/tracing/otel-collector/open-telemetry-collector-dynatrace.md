@@ -93,7 +93,7 @@ That's it! There's no need to include any SDKs or instrument your application co
 
 ## View traces
 
-Deploy and run some applications. After a few minutes, you should see tracing logs appearing in your Dynatrace tenant:
+Deploy and run some applications. After a few minutes, you should see traces appearing in your Dynatrace tenant:
 
 1. Navigate to **Search > Distributed tracinng** in your Dynatrace UI.
 2. Filter by service names to see your Dapr applications and their associated tracing spans.
