@@ -3,150 +3,71 @@ type: docs
 title: "Core Concepts"
 linkTitle: "Core Concepts"
 weight: 40
-description: "Learn about the core concepts and principles of Dapr Agents"
+description: "Learn about the core concepts of Dapr Agents"
 ---
 
-## Principles
-
-### Agent-Centric Design
-
-Dapr Agents is designed to place agents, powered by LLMs, at the core of task execution and workflow orchestration. This principle emphasizes:
-
-* **LLM-Powered Agents**: Dapr Agents enables the creation of agents that leverage LLMs for reasoning, dynamic decision-making, and natural language interactions.
-* **Adaptive Task Handling**: Agents in Dapr Agents are equipped with flexible patterns like tool calling and reasoning loops (e.g., ReAct), allowing them to autonomously tackle complex and evolving tasks.
-* **Seamless Integration**: Dapr Agents' framework allows agents to act as modular, reusable building blocks that integrate seamlessly into workflows, whether they operate independently or collaboratively.
-
-While Dapr Agents centers around agents, it also recognizes the versatility of using LLMs directly in deterministic workflows or simpler task sequences. In scenarios where the agent's built-in task-handling patterns, like `tool calling` or `ReAct` loops, are unnecessary, LLMs can act as core components for reasoning and decision-making. This flexibility ensures users can adapt Dapr Agents to suit diverse needs without being confined to a single approach.
-
-{{% alert title="Note" color="primary" %}}
-Agents are not standalone; they are building blocks in larger, orchestrated workflows.
-{{% /alert %}}
-
-### Decoupled Infrastructure Design
-
-Dapr Agents ensures a clean separation between agents and the underlying infrastructure, emphasizing simplicity, scalability, and adaptability:
-
-* **Agent Simplicity**: Agents focus purely on reasoning and task execution, while Pub/Sub messaging, routing, and validation are managed externally by modular infrastructure components.
-* **Scalable and Adaptable Systems**: By offloading non-agent-specific responsibilities, Dapr Agents allows agents to scale independently and adapt seamlessly to new use cases or integrations.
-
-{{% alert title="Note" color="primary" %}}
-Decoupling infrastructure keeps agents focused on tasks while enabling seamless scalability and integration across systems.
-{{% /alert %}}
-
-![Decoupled Principles](/images/dapr-agents/home_concepts_principles_decoupled.png)
-
-### Modular Component Model
-
-Dapr Agents utilizes [Dapr's component framework]({{% ref components-concept.md %}}) and building blocks to simplify development and enhance flexibility:
-
-* **Building Blocks for Core Functionality**: Dapr provides API building blocks, such as Pub/Sub messaging, state management, service invocation, and more, to address common microservice challenges and promote best practices.
-* **Interchangeable Components**: Each building block operates on swappable components (e.g., Redis, Kafka, Azure CosmosDB), allowing you to replace implementations without changing application code.
-* **Seamless Transitions**: Develop locally with default configurations and deploy effortlessly to cloud environments by simply updating component definitions.
-* **Scalable Foundations**: Build resilient and adaptable architectures using Dapr's modular, production-ready building blocks.
-
-{{% alert title="Note" color="primary" %}}
-Developers can easily switch between different components (e.g., Redis to DynamoDB) based on their deployment environment, ensuring portability and adaptability.
-{{% /alert %}}
-
-![Modular Principles](/images/dapr-agents/home_concepts_principles_modular.png)
-
-### Message-Driven Communication
-
-Dapr Agents emphasizes the use of Pub/Sub messaging for event-driven communication between agents. This principle ensures:
-
-* **Decoupled Architecture**: Asynchronous communication for scalability and modularity.
-* **Real-Time Adaptability**: Agents react dynamically to events for faster, more flexible task execution.
-* **Seamless Collaboration**: Agents share updates, distribute tasks, and respond to events in a highly coordinated way.
-
-{{% alert title="Note" color="primary" %}}
-Pub/Sub messaging serves as the backbone for Dapr Agents' event-driven workflows, enabling agents to communicate and collaborate in real time.
-{{% /alert %}}
-
-![Message Principles](/images/dapr-agents/home_concepts_principles_message.png)
-
-### Workflow-Oriented Design
-
-Dapr Agents embraces workflows as a foundational concept, integrating [Dapr Workflows]({{% ref workflow-overview.md %}}) to support both deterministic and event-driven task orchestration. This dual approach enables robust and adaptive systems:
-
-* **Deterministic Workflows**: Dapr Agents uses Dapr Workflows for stateful, predictable task sequences. These workflows ensure reliable execution, fault tolerance, and state persistence, making them ideal for structured, multi-step processes that require clear, repeatable logic.
-* **Event-Driven Workflows**: By combining Dapr Workflows with Pub/Sub messaging, Dapr Agents supports workflows that adapt to real-time events. This facilitates decentralized, asynchronous collaboration between agents, allowing workflows to dynamically adjust to changing scenarios.
-
-By integrating these paradigms, Dapr Agents enables workflows that combine the reliability of deterministic execution with the adaptability of event-driven processes, ensuring flexibility and resilience in a wide range of applications.
-
-{{% alert title="Note" color="primary" %}}
-Dapr Agents workflows blend structured, predictable logic with the dynamic responsiveness of event-driven systems, empowering both centralized and decentralized workflows.
-{{% /alert %}}
-
-![Workflow Principles](/images/dapr-agents/home_concepts_principles_workflows.png)
+Dapr Agents provides a structured way to build and orchestrate applications that use LLMs without getting bogged down in infrastructure details. The primary goal is to make AI development by abstracting away the complexities of working with LLMs, tools, memory management, and distributed systems, allowing developers to focus on the business logic of their AI applications. Agents in this framework are the fundamental building blocks.
 
 ## Agents
 
-Agents in `Dapr Agents` are autonomous systems powered by Large Language Models (LLMs), designed to execute tasks, reason through problems, and collaborate within workflows. Acting as intelligent building blocks, agents seamlessly combine LLM-driven reasoning with tool integration, memory, and collaboration features to enable scalable, production-grade agentic systems.
+Agents are autonomous units powered by Large Language Models (LLMs), designed to execute tasks, reason through problems, and collaborate within workflows. Acting as intelligent building blocks, agents combine reasoning with tool integration, memory, and collaboration features to get to the desired outcome.
 
 ![Concepts Agents](/images/dapr-agents/concepts-agents.png)
 
-### Core Features
-
-#### 1. LLM Integration
-
-Dapr Agents provides a unified interface to connect with LLM inference APIs. This abstraction allows developers to seamlessly integrate their agents with cutting-edge language models for reasoning and decision-making.
-
-#### 2. Structured Outputs
-
-Agents in Dapr Agents leverage structured output capabilities, such as [OpenAI's Function Calling](https://platform.openai.com/docs/guides/function-calling), to generate predictable and reliable results. These outputs follow [JSON Schema Draft 2020-12](https://json-schema.org/draft/2020-12/release-notes.html) and [OpenAPI Specification v3.1.0](https://github.com/OAI/OpenAPI-Specification) standards, enabling easy interoperability and tool integration.
-
-#### 3. Tool Selection
-
-Agents dynamically select the appropriate tool for a given task, using LLMs to analyze requirements and choose the best action. This is supported directly through LLM parametric knowledge and enhanced by [Function Calling](https://platform.openai.com/docs/guides/function-calling), ensuring tools are invoked efficiently and accurately.
-
-#### 4. MCP Support
-
-Dapr Agents includes built-in support for the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/), enabling agents to dynamically discover and invoke external tools through a standardized interface. Using the provided MCPClient, agents can connect to MCP servers via two transport options: stdio for local development and sse for remote or distributed environments.
-
-#### 5. Memory
-
-Agents retain context across interactions, enhancing their ability to provide coherent and adaptive responses. Memory options range from simple in-memory lists for managing chat history to vector databases for semantic search and retrieval.
-
-#### 6. Prompt Flexibility
-
-Dapr Agents supports flexible prompt templates to shape agent behavior and reasoning. Users can define placeholders within prompts, enabling dynamic input of context for inference calls.
-
-#### 7. Agent Services
-
-Agents are exposed as independent services using [FastAPI and Dapr applications]({{% ref python-fastapi.md %}}). This modular approach separates the agent's logic from its service layer, enabling seamless reuse, deployment, and integration into multi-agent systems.
-
-#### 8. Message-Driven Communication
-
-Agents collaborate through [Pub/Sub messaging]({{% ref pubsub-overview.md %}}), enabling event-driven communication and task distribution. This message-driven architecture allows agents to work asynchronously, share updates, and respond to real-time events, ensuring effective collaboration in distributed systems.
-
-#### 9. Workflow Orchestration
-
-Dapr Agents supports both deterministic and event-driven workflows to manage multi-agent systems via [Dapr Workflows]({{% ref workflow-overview.md %}}). Deterministic workflows provide clear, repeatable processes, while event-driven workflows allow for dynamic, adaptive collaboration between agents in centralized or decentralized architectures.
-
-### Agent Types
-
 Dapr Agents provides two agent types, each designed for different use cases:
 
-#### Agent
+### Agent
+The standard `Agent` class is a conversational agent that manages tool calls and conversations using a language model. It provides, synchronous execution with built-in conversation memory.
 
-The `Agent` class is a conversational agent that manages tool calls and conversations using a language model. It provides immediate, synchronous execution with built-in conversation memory and tool integration capabilities.
+```python
+@tool
+def my_weather_func() -> str:
+    """Get current weather."""
+    return "It's 72°F and sunny"
 
-**Key Characteristics:**
-- Synchronous execution with immediate responses
-- Built-in conversation memory and tool history tracking
-- Iterative conversation processing with max iteration limits
-- Direct tool execution and result processing
-- Graceful shutdown support with cancellation handling
+async def main():
+    weather_agent = Agent(
+        name="WeatherAgent",
+        role="Weather Assistant",
+        instructions=["Help users with weather information"],
+        tools=[my_weather_func],
+        memory=ConversationDaprStateMemory(store_name="historystore", session_id="some-id"),
+    )
 
-**When to use:**
-- Building conversational assistants that need immediate responses
-- Scenarios requiring real-time tool execution and conversation flow
-- When you need direct control over the conversation loop
-- Quick prototyping and development of agent interactions
+    response1 = await weather_agent.run("What's the weather?")
+    response2 = await weather_agent.run("How about now?")
+```
 
-#### DurableAgent
+This example shows how to create a simple agent with tool integration. The agent processes queries synchronously and maintains conversation context across multiple interactions using Dapr State Store API.
+
+### Durable Agent
 
 The `DurableAgent` class is a workflow-based agent that extends the standard Agent with Dapr Workflows for long-running, fault-tolerant, and durable execution. It provides persistent state management, automatic retry mechanisms, and deterministic execution across failures.
+
+```python
+
+travel_planner = DurableAgent(
+        name="TravelBuddy",
+        role="Travel Planner",
+        instructions=["Help users find flights and remember preferences"],
+        tools=[search_flights],
+        memory=ConversationDaprStateMemory(
+            store_name="conversationstore", session_id="my-unique-id"
+        ),
+        
+        # DurableAgent Configurations
+        message_bus_name="messagepubsub",
+        state_store_name="workflowstatestore",
+        state_key="workflow_state",
+        agents_registry_store_name="registrystatestore",
+        agents_registry_key="agents_registry",
+    )
+
+    travel_planner.as_service(port=8001)
+    await travel_planner.start()
+
+```
+This example demonstrates creating a workflow-backed agent that runs autonomously in the background. The agent can be triggered once and continues execution even across system restarts.
 
 **Key Characteristics:**
 - Workflow-based execution using Dapr Workflows
@@ -163,13 +84,74 @@ The `DurableAgent` class is a workflow-based agent that extends the standard Age
 - Complex agent orchestration and multi-agent collaboration
 - Production systems requiring fault tolerance and scalability
 
-### Agent Patterns
+In Summary:
 
-In Dapr Agents, Agent Patterns define the built-in loops that allow agents to dynamically handle tasks. These patterns enable agents to iteratively reason, act, and adapt, making them flexible and capable problem-solvers.
+| Agent Type      | Memory Type             | Execution                 | Interaction Mode             |
+|-----------------|-------------------------|---------------------------|------------------------------|
+| `Agent`         | In-memory or Persistent | Ephemeral                 | Synchronous / Conversational |
+| `Durable Agent` | In-memory or Persistent | Durable (Workflow-backed) | Asynchronous / Headless      |
 
-#### Tool Calling
 
-Tool Calling is an essential pattern in autonomous agent design, allowing AI agents to interact dynamically with external tools based on user input. One reliable method for enabling this is through [OpenAI's Function Calling](https://platform.openai.com/docs/guides/function-calling) capability.
+- Regular `Agent`: Interaction is synchronous—you send conversational prompts and receive responses immediately. The conversation can be stored in memory or persisted, but the execution is ephemeral and does not survive restarts.
+
+- `DurableAgent` (Workflow-backed): Interaction is asynchronous—you trigger the agent once, and it runs autonomously in the background until completion. The conversation state can also be in memory or persisted, but the execution is durable and can resume across failures or restarts.
+
+
+## Core Agent Features
+An agentic system is a distributed system that requires a variety of behaviors and supporting infrastructure.
+
+### LLM Integration
+
+Dapr Agents provides a unified interface to connect with LLM inference APIs. This abstraction allows developers to seamlessly integrate their agents with cutting-edge language models for reasoning and decision-making. The framework includes multiple LLM clients for different providers and modalities:
+
+- `OpenAIChatClient`: Full spectrum support for OpenAI models including chat, embeddings, and audio
+- `HFHubChatClient`: For Hugging Face models supporting both chat and embeddings
+- `NVIDIAChatClient`: For NVIDIA AI Foundation models supporting local inference and chat
+- `ElevenLabs`: Support for speech and voice capabilities
+- `DaprChatClient`: Unified API for LLM interactions via Dapr's Conversation API with built-in security (scopes, secrets, PII obfuscation), resiliency (timeouts, retries, circuit breakers), and observability via OpenTelemetry & Prometheus
+
+### Prompt Flexibility
+
+Dapr Agents supports flexible prompt templates to shape agent behavior and reasoning. Users can define placeholders within prompts, enabling dynamic input of context for inference calls. By leveraging prompt formatting with [Jinja templates](https://jinja.palletsprojects.com/en/stable/templates/), users can include loops, conditions, and variables, providing precise control over the structure and content of prompts. This flexibility ensures that LLM responses are tailored to the task at hand, offering modularity and adaptability for diverse use cases.
+
+### Structured Outputs
+
+Agents in Dapr Agents leverage structured output capabilities, such as [OpenAI’s Function Calling](https://platform.openai.com/docs/guides/function-calling), to generate predictable and reliable results. These outputs follow [JSON Schema Draft 2020-12](https://json-schema.org/draft/2020-12/release-notes.html) and [OpenAPI Specification v3.1.0](https://github.com/OAI/OpenAPI-Specification) standards, enabling easy interoperability and tool integration.
+
+```python
+# Define our data model
+class Dog(BaseModel):
+    name: str
+    breed: str
+    reason: str
+
+# Initialize the chat client
+llm = OpenAIChatClient()
+
+# Get structured response
+response = llm.generate(
+    messages=[UserMessage("One famous dog in history.")], response_format=Dog
+)
+
+print(json.dumps(response.model_dump(), indent=2))
+```
+This demonstrates how LLMs generate structured data according to a schema. The Pydantic model (Dog) specifies the exact structure and data types expected, while the response_format parameter instructs the LLM to return data matching the model, ensuring consistent and predictable outputs for downstream processing.
+
+
+### Tool Calling
+
+Tool Calling is an essential pattern in autonomous agent design, allowing AI agents to interact dynamically with external tools based on user input. Agents dynamically select the appropriate tool for a given task, using LLMs to analyze requirements and choose the best action.
+
+```python
+@tool(args_model=GetWeatherSchema)
+def get_weather(location: str) -> str:
+    """Get weather information based on location."""
+    import random
+    temperature = random.randint(60, 80)
+    return f"{location}: {temperature}F."
+```
+
+Each tool has a descriptive docstring that helps the LLM understand when to use it. The `@tool` decorator marks a function as a tool, while the Pydantic model (`GetWeatherSchema`) defines input parameters for structured validation.
 
 ![Tool Call Flow](/images/dapr-agents/concepts_agents_toolcall_flow.png)
 
@@ -179,21 +161,208 @@ Tool Calling is an essential pattern in autonomous agent design, allowing AI age
 4. The AI agent parses the JSON, executes the tool with the provided arguments, and sends the results back as a tool message.
 5. The LLM then summarizes the tool's execution results within the user's context to deliver a comprehensive final response.
 
-#### ReAct
+This is supported directly through LLM parametric knowledge and enhanced by [Function Calling](https://platform.openai.com/docs/guides/function-calling), ensuring tools are invoked efficiently and accurately.
 
-The [ReAct (Reason + Act)](https://arxiv.org/pdf/2210.03629.pdf) pattern was introduced in 2022 to enhance the capabilities of LLM-based AI agents by combining reasoning with action. This approach allows agents not only to reason through complex tasks but also to interact with the environment, taking actions based on their reasoning and observing the outcomes.
 
-![ReAct Flow](/images/dapr-agents/concepts_agents_react_flow.png)
+### MCP Support
+Dapr Agents includes built-in support for the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/), enabling agents to dynamically discover and invoke external tools through a standardized interface. Using the provided MCPClient, agents can connect to MCP servers via two transport options: stdio for local development and sse for remote or distributed environments.
 
-* **Thought (Reasoning)**: The agent analyzes the situation and generates a thought or a plan based on the input.
-* **Action**: The agent takes an action based on its reasoning.
-* **Observation**: After the action is executed, the agent observes the results or feedback from the environment, assessing the effectiveness of its action.
+```python
+client = MCPClient()
+await client.connect_sse("local", url="http://localhost:8000/sse")
 
-## Messaging
+# Convert MCP tools to AgentTool list
+tools = client.get_all_tools()
+```
 
-Messaging is how agents communicate, collaborate, and adapt in workflows. It enables them to share updates, execute tasks, and respond to events seamlessly. Messaging is one of the main components of `event-driven` agentic workflows, ensuring tasks remain scalable, adaptable, and decoupled. Built entirely around the `Pub/Sub (publish/subscribe)` model, messaging leverages a message bus to facilitate communication across agents, services, and workflows.
+Once connected, the MCP client fetches all available tools from the server and prepares them for immediate use within the agent’s toolset. This allows agents to incorporate capabilities exposed by external processes—such as local Python scripts or remote services without hardcoding or preloading them. Agents can invoke these tools at runtime, expanding their behavior based on what’s offered by the active MCP server.
 
-### Key Role of Messaging in Agentic Workflows
+### Memory
+Agents retain context across interactions, enhancing their ability to provide coherent and adaptive responses. Memory options range from simple in-memory lists for managing chat history to vector databases for semantic search, and also integrates with [Dapr state stores](https://docs.dapr.io/developing-applications/building-blocks/state-management/howto-get-save-state/), for scalable and persistent memory for advanced use cases from 28 different state store providers.
+
+
+```python
+# ConversationListMemory (Simple In-Memory) - Default
+memory_list = ConversationListMemory()
+
+# ConversationVectorMemory (Vector Store)
+memory_vector = ConversationVectorMemory(
+    vector_store=your_vector_store_instance,
+    distance_metric="cosine"
+)
+
+# 3. ConversationDaprStateMemory (Dapr State Store)
+memory_dapr = ConversationDaprStateMemory(
+    store_name="historystore",  # Maps to Dapr component name
+    session_id="some-id"
+)
+
+# Using with an agent
+agent = Agent(
+    name="MyAgent",
+    role="Assistant",
+    memory=memory_dapr  # Pass any memory implementation
+)
+
+```
+`ConversationListMemory` is the default memory implementation when none is specified. It provides fast, temporary storage in Python lists for development and testing. The Dapr's memory implementations are interchangeable, allowing you to switch between them without modifying your agent logic.
+
+| Memory Implementation | Type | Persistence | Search | Use Case |
+|---|---|---|---|---|
+| `ConversationListMemory` (Default) | In-Memory | ❌ | Linear | Development |
+| `ConversationVectorMemory` | Vector Store | ✅ | Semantic | RAG/AI Apps |
+| `ConversationDaprStateMemory` | Dapr State Store | ✅ | Query | Production |
+
+
+### Agent Services
+
+`DurableAgents` are exposed as independent services using [FastAPI and Dapr applications](https://docs.dapr.io/developing-applications/sdks/python/python-sdk-extensions/python-fastapi/). This modular approach separates the agent's logic from its service layer, enabling seamless reuse, deployment, and integration into multi-agent systems.
+
+```python
+travel_planner.as_service(port=8001)
+await travel_planner.start()
+```
+This exposes the agent as a REST service, allowing other systems to interact with it through standard HTTP requests such as this one:
+
+```
+curl -i -X POST http://localhost:8001/start-workflow \
+-H "Content-Type: application/json" \
+-d '{"task": "I want to find flights to Paris"}'
+```
+Unlike conversational agents that provide immediate synchronous responses, durable agents operate as headless services that are triggered asynchronously. You trigger it, receive a workflow instance ID, and can track progress over time. This enables long-running, fault-tolerant operations that can span multiple systems and survive restarts, making them ideal for complex multi-step processes in production environments.
+
+## Multi-agent Systems (MAS)
+
+While it's tempting to build a fully autonomous agent capable of handling many tasks, in practice, it's more effective to break this down into specialized agents equipped with appropriate tools and instructions, then coordinate interactions between multiple agents.
+
+Multi-agent systems (MAS) distribute workflow execution across multiple coordinated agents to efficiently achieve shared objectives. This approach, called agent orchestration, enables better specialization, scalability, and maintainability compared to monolithic agent designs.
+
+![Agent Orchestration](/images/dapr-agents/home_concepts_principles_workflows.png)
+
+Dapr Agents supports two primary orchestration approaches via [Dapr Workflows](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-overview/) and [Dapr PubSub](https://docs.dapr.io/developing-applications/building-blocks/pubsub/pubsub-overview/):
+
+- **Deterministic Workflow-based Orchestration** - Provides clear, repeatable processes with predefined sequences and decision points
+- **Event-driven Orchestration** - Enables dynamic, adaptive collaboration through message-based coordination among agents
+
+Both approaches utilize a central orchestrator that coordinates multiple specialized agents, each handling specific tasks or domains, ensuring efficient task distribution and seamless collaboration across the system.
+
+## Deterministic Workflows
+
+Workflows are structured processes where LLM agents and tools collaborate in predefined sequences to accomplish complex tasks. Unlike fully autonomous agents that make all decisions independently, workflows provide a balance of structure and predictability from the workflow definition, intelligence and flexibility from LLM agents, and reliability and durability from Dapr's workflow engine.
+
+This approach is particularly suitable for business-critical applications where you need both the intelligence of LLMs and the reliability of traditional software systems.
+
+```python
+# Define Workflow logic
+@workflow(name="task_chain_workflow")
+def task_chain_workflow(ctx: DaprWorkflowContext):
+    result1 = yield ctx.call_activity(get_character)
+    result2 = yield ctx.call_activity(get_line, input={"character": result1})
+    return result2
+
+@task(description="Pick a random character from The Lord of the Rings and respond with the character's name only")
+def get_character() -> str:
+    pass
+
+@task(description="What is a famous line by {character}")
+def get_line(character: str) -> str:
+    pass
+```
+
+This workflow demonstrates sequential task execution where the output of one task becomes the input for the next, enabling complex multi-step processes with clear dependencies and data flow.
+
+Dapr Agents supports coordination of LLM interactions at different levels of granularity:
+
+### Prompt Tasks
+Tasks created from prompts that leverage LLM reasoning capabilities for specific, well-defined operations.
+
+```python
+@task(description="Pick a random character from The Lord of the Rings and respond with the character's name only")
+def get_character() -> str:
+    pass
+```
+
+While technically not full agents (as they lack tools and memory), prompt tasks serve as lightweight agentic building blocks that perform focused LLM interactions within the broader workflow context.
+
+### Agent Tasks
+Tasks based on agents with tools, providing greater flexibility and capability for complex operations requiring external integrations.
+
+```python
+@task(agent=custom_agent, description="Retrieve stock data for {ticker}")
+def get_stock_data(ticker: str) -> dict:
+    pass
+```
+Agent tasks enable workflows to leverage specialized agents with their own tools, memory, and reasoning capabilities while maintaining the structured coordination benefits of workflow orchestration.
+
+> **Note:** Agent tasks must use regular `Agent` instances, not `DurableAgent` instances, as workflows manage the execution context and durability through the Dapr workflow engine.
+
+### Workflow Patterns
+
+Workflows enable the implementation of various agentic patterns through structured orchestration, including Prompt Chaining, Routing, Parallelization, Orchestrator-Workers, Evaluator-Optimizer, Human-in-the-loop, and others. For detailed implementations and examples of these patterns, see the [Patterns documentation]({{< ref "dapr-agents-patterns.md" >}}).
+
+### Workflows vs. Durable Agents
+
+Both DurableAgent and workflow-based agent orchestration use Dapr workflows behind the scenes for durability and reliability, but they differ in how control flow is determined.
+
+| Aspect | Workflows | Durable Agents           |
+|--------|-----------|------------------------------------|
+| Control | Developer-defined process flow | Agent determines next steps        |
+| Predictability | Higher | Lower                              |
+| Flexibility | Fixed overall structure, flexible within steps | Completely flexible                |
+| Reliability | Very high (workflow engine guarantees) | Depends on agent implementation    |
+| Complexity | Simpler to reason about | Harder to debug and understand     |
+| Use Cases | Business processes, regulated domains | Open-ended research, creative tasks |
+
+The key difference lies in control flow determination: with DurableAgent, the workflow is created dynamically by the LLM's planning decisions, executing entirely within a single agent context. In contrast, with deterministic workflows, the developer explicitly defines the coordination between one or more LLM interactions, providing structured orchestration across multiple tasks or agents.
+
+
+## Event-driven Orchestration
+Event-driven agent orchestration enables multiple specialized agents to collaborate through asynchronous [Pub/Sub messaging](https://docs.dapr.io/developing-applications/building-blocks/pubsub/pubsub-overview/). This approach provides powerful collaborative problem-solving, parallel processing, and division of responsibilities among specialized agents through independent scaling, resilience via service isolation, and clear separation of responsibilities.
+
+### Core Participants
+The core participants in this multi-agent coordination systems are the following.
+
+#### Durable Agents
+
+Each agent runs as an independent service with its own lifecycle, configured as a standard DurableAgent with pub/sub enabled:
+
+```python
+hobbit_service = DurableAgent(
+    name="Frodo",
+    instructions=["Speak like Frodo, with humility and determination."],
+    message_bus_name="messagepubsub",
+    state_store_name="workflowstatestore",
+    state_key="workflow_state",
+    agents_registry_store_name="agentstatestore",
+    agents_registry_key="agents_registry", 
+)
+```
+
+#### Orchestrator
+
+The orchestrator coordinates interactions between agents and manages conversation flow by selecting appropriate agents, managing interaction sequences, and tracking progress. Dapr Agents offers three orchestration strategies: Random, RoundRobin, and LLM-based orchestration.
+
+```python
+llm_orchestrator = LLMOrchestrator(
+    name="LLMOrchestrator",
+    message_bus_name="messagepubsub",
+    state_store_name="agenticworkflowstate",
+    state_key="workflow_state",
+    agents_registry_store_name="agentstatestore",
+    agents_registry_key="agents_registry",
+    max_iterations=3
+)
+```
+
+The LLM-based orchestrator uses intelligent agent selection for context-aware decision making, while Random and RoundRobin provide alternative coordination strategies for simpler use cases.
+
+### Communication Flow
+
+Agents communicate through an event-driven pub/sub system that enables asynchronous communication, decoupled architecture, scalable interactions, and reliable message delivery. The typical collaboration flow involves client query submission, orchestrator-driven agent selection, agent response processing, and iterative coordination until task completion.
+
+This approach is particularly effective for complex problem solving requiring multiple expertise areas, creative collaboration from diverse perspectives, role-playing scenarios, and distributed processing of large tasks.
+
+### How Messaging Works
 
 Messaging connects agents in workflows, enabling real-time communication and coordination. It acts as the backbone of event-driven interactions, ensuring that agents work together effectively without requiring direct connections.
 
@@ -205,10 +374,6 @@ Through messaging, agents can:
 
 By using messaging, workflows remain modular and scalable, with agents focusing on their specific roles while seamlessly participating in the broader system.
 
-### How Messaging Works
-
-Messaging relies on the `Pub/Sub` model, which organizes communication into topics. These topics act as channels where agents can publish and subscribe to messages, enabling efficient and decoupled communication.
-
 #### Message Bus and Topics
 
 The message bus serves as the central system that manages topics and message delivery. Agents interact with the message bus to send and receive messages:
@@ -217,24 +382,13 @@ The message bus serves as the central system that manages topics and message del
 * **Subscribing to Topics**: Agents subscribe to topics relevant to their roles, ensuring they only receive the messages they need.
 * **Broadcasting Updates**: Multiple agents can subscribe to the same topic, allowing them to act on shared events or updates.
 
-#### Scalability and Adaptability
-
-The message bus ensures that communication scales effortlessly, whether you are adding new agents, expanding workflows, or adapting to changing requirements. Agents remain loosely coupled, allowing workflows to evolve without disruptions.
-
-### Messaging in Event-Driven Workflows
-
-Event-driven workflows depend on messaging to enable dynamic and real-time interactions. Unlike deterministic workflows, which follow a fixed sequence of tasks, event-driven workflows respond to the messages and events flowing through the system.
-
-* **Real-Time Triggers**: Agents can initiate tasks or workflows by publishing specific events.
-* **Asynchronous Execution**: Tasks are coordinated through messages, allowing agents to operate independently and in parallel.
-* **Dynamic Adaptation**: Agents adjust their behavior based on the messages they receive, ensuring workflows remain flexible and resilient.
-
-### Why Pub/Sub Messaging for Agentic Workflows?
+#### Why Pub/Sub Messaging for Agentic Workflows?
 
 Pub/Sub messaging is essential for event-driven agentic workflows because it:
 
 * **Decouples Components**: Agents publish messages without needing to know which agents will receive them, promoting modular and scalable designs.
 * **Enables Real-Time Communication**: Messages are delivered as events occur, allowing agents to react instantly.
 * **Fosters Collaboration**: Multiple agents can subscribe to the same topic, making it easy to share updates or divide responsibilities.
+* **Enables Scalability**:The message bus ensures that communication scales effortlessly, whether you are adding new agents, expanding workflows, or adapting to changing requirements. Agents remain loosely coupled, allowing workflows to evolve without disruptions.
 
 This messaging framework ensures that agents operate efficiently, workflows remain flexible, and systems can scale dynamically. 

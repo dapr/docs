@@ -7,27 +7,47 @@ description: "How to install Dapr Agents and run your first agent"
 ---
 
 {{% alert title="Dapr Agents Concepts" color="primary" %}}
-If you are looking for an introductory overview of Dapr Agents and want to learn more about basic Dapr Agents terminology, we recommend starting with the [introduction]({{% ref dapr-agents-introduction.md %}}) and [concepts]({{% ref dapr-agents-core-concepts.md %}}) sections.
+If you are looking for an introductory overview of Dapr Agents and want to learn more about basic Dapr Agents terminology, we recommend starting with the [introduction](dapr-agents-introduction.md) and [concepts](dapr-agents-core-concepts.md) sections.
 {{% /alert %}}
 
-## Install & Initialize Dapr CLI
+## Install Dapr CLI
 
-While simple examples in Dapr Agents can be used without the sidecar, the recommended mode is with the Dapr sidecar. To benefit from the full power of Dapr Agents, install the Dapr CLI for running Dapr locally or on Kubernetes for development purposes. Follow the instructions on the [Install Dapr CLI page]({{% ref install-dapr-cli.md %}}) and the [Init Dapr locally page]({{% ref install-dapr-selfhost.md %}}). After installing the CLI and initializing Dapr, come back to this page.
+While simple examples in Dapr Agents can be used without the sidecar, the recommended mode is with the Dapr sidecar. To benefit from the full power of Dapr Agents, install the Dapr CLI for running Dapr locally or on Kubernetes for development purposes. For a complete step-by-step guide, follow the  [Dapr CLI installation page]({{% ref install-dapr-cli.md %}}).
 
+
+Verify the CLI is installed by restarting your terminal/command prompt and running the following:
+
+```bash
+dapr -h
+```
+
+## Initialize Dapr in Local Mode
+
+{{% alert title="Note" color="info" %}}
+Make sure you have [Docker](https://docs.docker.com/get-started/get-docker/) already installed.
+{{% /alert %}}
+
+Initialize Dapr locally to set up a self-hosted environment for development. This process fetches and installs the Dapr sidecar binaries, runs essential services as Docker containers, and prepares a default components folder for your application. For detailed steps, see the official [guide on initializing Dapr locally]({{% ref install-dapr-selfhost.md %}}).
+
+![Dapr Initialization](/images/dapr-agents/home_installation_init.png)
+
+To initialize the Dapr control plane containers and create a default configuration file, run:
+
+```bash
+dapr init
+```
+
+Verify you have container instances with `daprio/dapr`, `openzipkin/zipkin`, and `redis` images running:
+
+```bash
+docker ps
+```
 
 ## Install Python
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Make sure you have Python already installed. `Python >=3.10`. For installation instructions, visit the official [Python installation guide](https://www.python.org/downloads/).
 {{% /alert %}}
-
-## Install Dapr Agents
-
-Install the Dapr Agents Python package using pip. For the latest version, check the [PyPI page](https://pypi.org/project/dapr-agents/).
-
-```bash
-pip install dapr-agents
-```
 
 ## Create Your First Dapr Agent
 
@@ -103,26 +123,47 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-This code creates an agent with a single weather tool and uses Dapr for memory persistence. Notice how in the agent's responses, it remembers the user's name from the first chat interaction, demonstrating the conversation memory in action.
+This code creates an agent with a single weather tool and uses Dapr for memory persistence.
 
-### 4. Run with Dapr
+### 4. Set up virtual environment to install dapr-agent
+
+For the latest version of Dapr Agents, check the [PyPI page](https://pypi.org/project/dapr-agents/).
+
+Create a `requirements.txt` file with the necessary dependencies:
+
+```txt
+dapr-agents
+python-dotenv
+```
+
+Create and activate a virtual environment, then install the dependencies:
+
+```bash
+# Create a virtual environment
+python3.10 -m venv .venv
+
+# Activate the virtual environment 
+# On Windows:
+.venv\Scripts\activate
+# On macOS/Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### 5. Run with Dapr
 
 ```bash
 dapr run --app-id weatheragent --resources-path ./components -- python weather_agent.py
 ```
 
-This command starts a Dapr sidecar with the conversation component and launches the agent that communicates with the sidecar for state persistence.
+This command starts a Dapr sidecar with the conversation component and launches the agent that communicates with the sidecar for state persistence. Notice how in the agent's responses, it remembers the user's name from the first chat interaction, demonstrating the conversation memory in action.
 
 
-### 5. Enable Redis Insights (Optional)
+### 6. Enable Redis Insights (Optional)
 
-Dapr uses [Redis]({{% ref setup-redis.md %}}) by default for state management and pub/sub messaging, which are fundamental to Dapr Agents's agentic workflows. These capabilities enable the following:
-
-* Viewing Pub/Sub Messages: Monitor and inspect messages exchanged between agents in event-driven workflows.
-* Inspecting State Information: Access and analyze workflow state, conversation state, and other shared data among agents.
-* Debugging and Monitoring Events: Track workflow events in real time to ensure smooth operations and identify issues.
-
-To inspect the Redis instance, a great tool to use is Redis Insight, and you can use it to inspect the agent memory populated earlier.
+Dapr uses [Redis]({{% ref setup-redis.md %}}) by default for state management and pub/sub messaging, which are fundamental to Dapr Agents's agentic workflows. To inspect the Redis instance, a great tool to use is Redis Insight, and you can use it to inspect the agent memory populated earlier. To run Redis Insights, run:
 
 ```bash
 docker run --rm -d --name redisinsight -p 5540:5540 redis/redisinsight:latest
@@ -137,10 +178,10 @@ Inside Redis Insight, you can connect to a Redis instance, so let's connect to t
 
 Redis Insight makes it easy to visualize and manage the data powering your agentic workflows, ensuring efficient debugging, monitoring, and optimization.
 
-![Redis Dashboard](/images/dapr-agents/home_installation_redis_dashboard.png)
+![Redis Dashboard](/images/dapr-agents/redis_dashboard.png)
 
 Here you can browse the state store used in the agent and explore its data.
- 
+
 ## Next Steps
 
 Now that you have Dapr Agents installed and running, explore more advanced examples and patterns in the [quickstarts]({{% ref dapr-agents-quickstarts.md %}}) section to learn about multi-agent workflows, durable agents, and integration with Dapr's powerful distributed capabilities.
