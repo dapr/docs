@@ -13,6 +13,7 @@ Dapr integrates with the [Dynatrace Collector](https://docs.dynatrace.com/docs/i
 
 - [Install Dapr on Kubernetes]({{< ref kubernetes >}})
 - Access to a Dynatrace tenant and an API token with `openTelemetryTrace.ingest`, `metrics.ingest`, and `logs.ingest` scopes
+- Helm 
 
 ## Set up Dynatrace OpenTelemetry Collector to push to your Dynatrace instance
 
