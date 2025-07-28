@@ -96,7 +96,7 @@ That's it! There's no need to include any SDKs or instrument your application co
 
 Deploy and run some applications. After a few minutes, you should see traces appearing in your Dynatrace tenant:
 
-1. Navigate to **Search > Distributed tracinng** in your Dynatrace UI.
+1. Navigate to **Search > Distributed tracing** in your Dynatrace UI.
 2. Filter by service names to see your Dapr applications and their associated tracing spans.
 
 <img src="/images/open-telemetry-collector-dynatrace-traces.png" width=1200 alt="Dynatrace showing tracing data.">
