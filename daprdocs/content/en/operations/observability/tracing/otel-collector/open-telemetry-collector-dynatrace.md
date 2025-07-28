@@ -6,7 +6,7 @@ weight: 1000
 description: "How to push trace events to Dynatrace, using the Dynatrace OpenTelemetry Collector."
 ---
 
-Dapr integrates with the [Dynatrace Collector](https://docs.dynatrace.com/docs/ingest-from/opentelemetry/collector) using the OpenTelemetry protocol (OTLP). This guide walks through an example using Dapr to push traces to Dynatrace, using the Dynatrace OpenTelemetry Collector.
+Dapr integrates with the [Dynatrace Collector](https://docs.dynatrace.com/docs/ingest-from/opentelemetry/collector) using the OpenTelemetry protocol (OTLP). This guide walks through an example using Dapr to push traces to Dynatrace, using the Dynatrace version of the OpenTelemetry Collector.
 
 
 ## Prerequisites
