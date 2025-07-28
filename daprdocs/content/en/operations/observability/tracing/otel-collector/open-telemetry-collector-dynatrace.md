@@ -106,7 +106,7 @@ Only operations going through Dapr API exposed by Dapr sidecar (for example, ser
 
 
 {{% alert title="Disable OneAgent daprd monitoring" color="warning" %}}
-If you are running Dynatrace OneAgent in your cluster, you should exclude the `daprd` container from OneAgent monitoring to prevent interferences in this configuration, excluding them prevents any injection attempts that could break functionality.
+If you are running Dynatrace OneAgent in your cluster, you should exclude the `daprd` sidecar container from OneAgent monitoring to prevent interferences in this configuration. Excluding it prevents any automatic injection attempts that could break functionality or result in confusing traces.
 
 
 Add this annotation to your application deployments or globally in your dynakube configuration file:
