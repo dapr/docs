@@ -12,7 +12,7 @@ If you are looking for an introductory overview of Dapr Agents and want to learn
 
 ## Install Dapr CLI
 
-While simple examples in Dapr Agents can be used without the sidecar, the recommended mode is with the Dapr sidecar. To benefit from the full power of Dapr Agents, install the Dapr CLI for running Dapr locally or on Kubernetes for development purposes. For a complete step-by-step guide, follow the  [Dapr CLI installation page](https://docs.dapr.io/getting-started/install-dapr-cli/).
+While simple examples in Dapr Agents can be used without the sidecar, the recommended mode is with the Dapr sidecar. To benefit from the full power of Dapr Agents, install the Dapr CLI for running Dapr locally or on Kubernetes for development purposes. For a complete step-by-step guide, follow the  [Dapr CLI installation page]({{% ref install-dapr-cli.md %}}).
 
 
 Verify the CLI is installed by restarting your terminal/command prompt and running the following:
