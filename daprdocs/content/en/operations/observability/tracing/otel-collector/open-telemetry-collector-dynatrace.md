@@ -19,54 +19,56 @@ This guide refers to the Dynatrace OpenTelemetry Collector, which uses the same 
 - Helm 
 
 ## Set up Dynatrace OpenTelemetry Collector to push to your Dynatrace instance
+
 To push traces to your Dynatrace instance, install the Dynatrace OpenTelemetry Collector on your Kubernetes cluster.
 
 1. Create a Kubernetes secret with your Dynatrace credentials:
 
-   ```sh
-   kubectl create secret generic dynatrace-otelcol-dt-api-credentials \
-     --from-literal=DT_ENDPOINT=https://YOUR_TENANT.live.dynatrace.com/api/v2/otlp \
-     --from-literal=DT_API_TOKEN=dt0s01.YOUR_TOKEN_HERE
-   ```
+    ```sh
+    kubectl create secret generic dynatrace-otelcol-dt-api-credentials \
+      --from-literal=DT_ENDPOINT=https://YOUR_TENANT.live.dynatrace.com/api/v2/otlp \
+      --from-literal=DT_API_TOKEN=dt0s01.YOUR_TOKEN_HERE
+    ```
 
-   Replace `YOUR_TENANT` with your Dynatrace tenant ID and `YOUR_TOKEN_HERE` with your Dynatrace API token.
+    Replace `YOUR_TENANT` with your Dynatrace tenant ID and `YOUR_TOKEN_HERE` with your Dynatrace API token.
 
 1. Use the Dynatrace OpenTelemetry Collector distribution for better defaults and support than the open source version. Download and inspect the [`collector-helm-values.yaml`](https://github.com/Dynatrace/dynatrace-otel-collector/blob/main/config_examples/collector-helm-values.yaml) file. This is based on the [k8s enrichment demo](https://docs.dynatrace.com/docs/ingest-from/opentelemetry/collector/use-cases/kubernetes/k8s-enrich#demo-configuration) and includes Kubernetes metadata enrichment for proper pod/namespace/cluster context.
 
 
 1. Deploy the Dynatrace Collector with Helm.
 
-   ```sh
-   helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
-   helm repo update
-   helm upgrade -i dynatrace-collector open-telemetry/opentelemetry-collector -f collector-helm-values.yaml
-   ```
+    ```sh
+    helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+    helm repo update
+    helm upgrade -i dynatrace-collector open-telemetry/opentelemetry-collector -f collector-helm-values.yaml
+    ```
 
 ## Set up Dapr to send traces to the Dynatrace Collector
+
 Create a Dapr configuration file to enable tracing and send traces to the OpenTelemetry Collector via [OTLP](https://opentelemetry.io/docs/specs/otel/protocol/).
 
 
 1. Update the following file to ensure the `endpointAddress` points to your Dynatrace OpenTelemetry Collector service in your Kubernetes cluster. If deployed in the `default` namespace, it's typically `dynatrace-collector.default.svc.cluster.local`.  
 
-**Important:** Ensure the `endpointAddress` does NOT include the `http://` prefix to avoid URL encoding issues:
+    **Important:** Ensure the `endpointAddress` does NOT include the `http://` prefix to avoid URL encoding issues:
 
-   ```yaml
-    apiVersion: dapr.io/v1alpha1
-    kind: Configuration
-    metadata:
-      name: tracing
-    spec:
-      tracing:
-        samplingRate: "1"
-        otel:
-          endpointAddress: "dynatrace-collector.default.svc.cluster.local:4318" # Update with your collector's service address
-   ```
+    ```yaml
+     apiVersion: dapr.io/v1alpha1
+     kind: Configuration
+     metadata:
+       name: tracing
+     spec:
+       tracing:
+         samplingRate: "1"
+         otel:
+           endpointAddress: "dynatrace-collector.default.svc.cluster.local:4318" # Update with your collector's service address
+    ```
 
 1. Apply the configuration with:
 
-   ```sh
-   kubectl apply -f collector-config-otel.yaml
-   ```
+    ```sh
+    kubectl apply -f collector-config-otel.yaml
+    ```
 
 ## Deploy your app with tracing
 
