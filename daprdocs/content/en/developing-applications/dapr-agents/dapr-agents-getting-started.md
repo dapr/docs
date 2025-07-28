@@ -184,5 +184,5 @@ Here you can browse the state store used in the agent and explore its data.
 
 ## Next Steps
 
-Now that you have Dapr Agents installed and running, explore more advanced examples and patterns in the [quickstarts](dapr-agents-quickstarts.md) section to learn about multi-agent workflows, durable agents, and integration with Dapr's powerful distributed capabilities.
+Now that you have Dapr Agents installed and running, explore more advanced examples and patterns in the [quickstarts]({{% ref dapr-agents-quickstarts.md %}}) section to learn about multi-agent workflows, durable agents, and integration with Dapr's powerful distributed capabilities.
  
