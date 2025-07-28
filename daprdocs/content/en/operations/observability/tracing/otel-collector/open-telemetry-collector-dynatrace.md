@@ -118,7 +118,7 @@ metadata:
     dapr.io/app-id: "MyApp"
     dapr.io/app-port: "8080"
     dapr.io/config: "tracing"
-    container.inject.dynatrace.com/daprd: "false"
+    container.inject.dynatrace.com/daprd: "false" # Exclude dapr sidecar from being auto-monitored by OneAgent
 
 ```
 {{% /alert %}}
