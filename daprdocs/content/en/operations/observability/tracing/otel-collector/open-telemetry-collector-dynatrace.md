@@ -127,5 +127,5 @@ metadata:
 - Try out the [observability quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/observability/README.md)
 - Learn how to set [tracing configuration options]({{< ref "configuration-overview.md#tracing" >}})
 - [Dynatrace OpenTelemetry documentation](https://docs.dynatrace.com/docs/ingest-from/opentelemetry)
-- Enrich traces with Kubernetes metadata [Enrich from Kubernetes
+- Enrich OTLP telemetry data [with Kubernetes metadata
 ](https://docs.dynatrace.com/docs/ingest-from/opentelemetry/collector/use-cases/kubernetes/k8s-enrich)
