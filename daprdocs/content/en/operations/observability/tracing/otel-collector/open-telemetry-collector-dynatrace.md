@@ -8,6 +8,9 @@ description: "How to push trace events to Dynatrace, using the Dynatrace OpenTel
 
 Dapr integrates with the [Dynatrace Collector](https://docs.dynatrace.com/docs/ingest-from/opentelemetry/collector) using the OpenTelemetry protocol (OTLP). This guide walks through an example using Dapr to push traces to Dynatrace, using the Dynatrace version of the OpenTelemetry Collector.
 
+{{% alert title="Note" color="primary" %}}
+This guide refers to the Dynatrace OpenTelemetry Collector, which uses the same Helm chart as the open-source collector but overridden with the Dynatrace-maintained image for better support and Dynatrace-specific features.
+{{% /alert %}}
 
 ## Prerequisites
 
@@ -16,6 +19,7 @@ Dapr integrates with the [Dynatrace Collector](https://docs.dynatrace.com/docs/i
 - Helm 
 
 ## Set up Dynatrace OpenTelemetry Collector to push to your Dynatrace instance
+To push traces to your Dynatrace instance, install the Dynatrace OpenTelemetry Collector on your Kubernetes cluster.
 
 1. Create a Kubernetes secret with your Dynatrace credentials:
 
@@ -39,6 +43,7 @@ Dapr integrates with the [Dynatrace Collector](https://docs.dynatrace.com/docs/i
    ```
 
 ## Set up Dapr to send traces to the Dynatrace Collector
+Create a Dapr configuration file to enable tracing and send traces to the OpenTelemetry Collector via [OTLP](https://opentelemetry.io/docs/specs/otel/protocol/).
 
 
 1. Update the following file to ensure the `endpointAddress` points to your Dynatrace OpenTelemetry Collector service in your Kubernetes cluster. If deployed in the `default` namespace, it's typically `dynatrace-collector.default.svc.cluster.local`.  
