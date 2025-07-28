@@ -41,7 +41,7 @@ Dapr integrates with the [Dynatrace Collector](https://docs.dynatrace.com/docs/i
 ## Set up Dapr to send traces to the Dynatrace Collector
 
 
-1. Create a Dapr configuration file to enable tracing and send traces to the Dynatrace OpenTelemetry Collector. Ensure the `endpointAddress` points to your Dynatrace OpenTelemetry Collector service in the cluster. If deployed in the `default` namespace, it's typically `dynatrace-collector.default.svc.cluster.local`.  
+1. Update the following file to ensure the `endpointAddress` points to your Dynatrace OpenTelemetry Collector service in your Kubernetes cluster. If deployed in the `default` namespace, it's typically `dynatrace-collector.default.svc.cluster.local`.  
 
 **Important:** Ensure the `endpointAddress` does NOT include the `http://` prefix to avoid URL encoding issues:
 
