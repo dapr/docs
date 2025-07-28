@@ -41,7 +41,7 @@ Agents can be used standalone and create workflows behind the scene, or act as a
 
 ### Backed by Durable Workflows
 
-Dapr Agents places durability at the core of its architecture, leveraging [Dapr Workflows](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-overview/) as the foundation for durable agent execution and deterministic multi-agent orchestration.
+Dapr Agents places durability at the core of its architecture, leveraging [Dapr Workflows]({{% ref workflow-overview.md %}}) as the foundation for durable agent execution and deterministic multi-agent orchestration.
 
 * **Durable Agent Execution**: DurableAgents are fundamentally workflow-backed, ensuring all LLM calls and tool executions remain durable, auditable, and resumable. Workflow checkpointing guarantees agents can recover from any point of failure while maintaining state consistency.
 * **Deterministic Multi-Agent Orchestration**: Workflows provide centralized control over task dependencies and coordination between multiple agents. Dapr's code-first workflow engine enables reliable orchestration of complex business processes while preserving agent autonomy where appropriate.
