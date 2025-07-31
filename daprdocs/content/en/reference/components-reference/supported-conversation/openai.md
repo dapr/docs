@@ -25,9 +25,9 @@ spec:
     value: 'https://api.openai.com/v1'
   - name: cacheTTL
     value: 10m
-  # - name: apiType # Optional: defaults to 'openai'
-  #   value: `openai`
-  # - name: apiVersion # Optional: required when apiType is set to `azure` 
+  # - name: apiType # Optional
+  #   value: `azure`
+  # - name: apiVersion # Optional
   #   value: '2025-01-01-preview'
 ```
 
@@ -43,7 +43,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `model` | N | The OpenAI LLM to use. Defaults to `gpt-4-turbo`.  | `gpt-4-turbo` |
 | `endpoint` | N | Custom API endpoint URL for OpenAI API-compatible services. If not specified, the default OpenAI API endpoint is used. Required when `apiType` is set to `azure`. | `https://api.openai.com/v1`, `https://example.openai.azure.com/` |
 | `cacheTTL` | N | A time-to-live value for a prompt cache to expire. Uses Golang duration format.  | `10m` |
-| `apiType` | N | Specifies the API provider type. Required when using a provider that does not follow the default OpenAI API endpoint conventions. Default: `openai`. | `openai`, `azure` |
+| `apiType` | N | Specifies the API provider type. Required when using a provider that does not follow the default OpenAI API endpoint conventions. | `azure` |
 | `apiVersion`| N | The API version to use. Required when the `apiType` is set to `azure`. | `2025-01-01-preview` |
 
 ## Related links
