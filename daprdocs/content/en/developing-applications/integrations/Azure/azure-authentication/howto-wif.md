@@ -10,7 +10,7 @@ This guide will help you configure your Kubernetes cluster to run dapr with Azur
 
 ## What is it?
 
-[Workload identity federation](https://learn.microsoft.com/en-us/entra/workload-id/workload-identities-overview) 
+[Workload identity federation](https://learn.microsoft.com/entra/workload-id/workload-identities-overview) 
 is a way for your applications to authenticate to Azure without having to store or manage credentials as part of 
 your releases.
 
@@ -22,11 +22,11 @@ with no extra configuration! 🎉
 Workload identity federation is one of a few ways Azure offers for your applications to gain access to Azure 
 resources.  Other options include:
 
- - [Pod Managed Identities]({{< ref howto-mi.md >}}) - [Deprecated](https://learn.microsoft.com/en-us/azure/aks/use-azure-ad-pod-identity) method 
+ - [Pod Managed Identities]({{< ref howto-mi.md >}}) - [Deprecated](https://learn.microsoft.com/azure/aks/use-azure-ad-pod-identity) method 
  for authenticating applications at a pod level.
  - [Client ID and secret]({{ < ref howto-aad.md >}}) - Less recommended as it requires you to maintian and associate credentials at application level.
 
-You can learn more about workload identity federation [over in the Azure documentation](https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation).
+You can learn more about workload identity federation [over in the Azure documentation](https://learn.microsoft.com/entra/workload-id/workload-identity-federation).
 
 ## Guide 
 
@@ -42,7 +42,7 @@ For this guide, we'll use [the official dapr AKS secrets sample app](https://git
 
 ### 1 - Enable workload identity federation
 
-Follow [the Azure documentation for enabling workload identity federation on your AKS cluster](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster#deploy-your-application4).
+Follow [the Azure documentation for enabling workload identity federation on your AKS cluster](https://learn.microsoft.com/azure/aks/workload-identity-deploy-cluster#deploy-your-application4).
 
 The guide will walk you through configuring your Azure Entra ID tenant to trust an identity that originates from your AKS cluster issuer.
 It will also guide you in setting up a [Kubernetes service account](https://kubernetes.io/docs/concepts/security/service-accounts/) which 
