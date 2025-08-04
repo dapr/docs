@@ -22,9 +22,9 @@ with no extra configuration! 🎉
 Workload identity federation is one of a few ways Azure offers for your applications to gain access to Azure 
 resources.  Other options include:
 
- - [Pod Managed Identities](./howto-mi.md) - [Deprecated](https://learn.microsoft.com/en-us/azure/aks/use-azure-ad-pod-identity) method 
+ - [Pod Managed Identities]({{< ref howto-mi.md >}}) - [Deprecated](https://learn.microsoft.com/en-us/azure/aks/use-azure-ad-pod-identity) method 
  for authenticating applications at a pod level.
- - [Client ID and secret](./howto-aad.md) - Less recommended as it requires you to maintian and associate credentials at application level.
+ - [Client ID and secret]({{ < ref howto-aad.md >}}) - Less recommended as it requires you to maintian and associate credentials at application level.
 
 You can learn more about workload identity federation [over in the Azure documentation](https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation).
 
