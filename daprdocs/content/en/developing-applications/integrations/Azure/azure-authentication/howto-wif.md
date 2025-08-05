@@ -78,6 +78,10 @@ You'll notice that we have not provided any details specific to authentication i
 
 ### 4 - Deploy the test application
 
+Head over to [our workload identity federation sample application](https://github.com/dapr/samples/dapr-aks-workload-identity-federation) and prepare a build of the image.
+
+Make sure the image is pushed up to a registry that your AKS cluster has visibility and permission to pull from.
+
 Next, create a deployment for our sample AKS secrets app container along with a dapr sidecar.
 
 Remember to update `dapr-wif-k8s-service-account` with your service account name and `dapraksworkloadidentityfederation` with an image your cluster can resolve:
