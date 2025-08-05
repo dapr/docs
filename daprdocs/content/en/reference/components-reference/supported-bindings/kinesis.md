@@ -38,6 +38,8 @@ spec:
     value: "*****************"
   - name: direction
     value: "input, output"
+  - name: endpoint
+    value: "http://localhost:4566" # Optional: Custom endpoint (e.g. for LocalStack)  
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
@@ -55,7 +57,11 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `secretKey`          | Y        | Output | The AWS Secret Access Key to access this resource                       | `"secretAccessKey"` |
 | `sessionToken`       | N        | Output | The AWS session token to use                                            | `"sessionToken"`    |
 | `direction`       | N        | Input/Output | The direction of the binding                                            | `"input"`, `"output"`, `"input, output"`    |
+<<<<<<< HEAD
 | `endpoint`        | N        | Input | Custom endpoint for Kinesis and DynamoDB (e.g., for LocalStack support) | `"http://localhost:4566"` |
+=======
+| `endpoint`        | N           | Input | Custom endpoint for Kinesis and DynamoDB (e.g., for LocalStack support) | `"http://localhost:4566"` |
+>>>>>>> 8d66ac72 (docs(bindings/aws.kinesis): document new  metadata for custom endpoint support e.g. LocalStack (see components-contrib#3931))
 
 
 {{% alert title="Important" color="warning" %}}
