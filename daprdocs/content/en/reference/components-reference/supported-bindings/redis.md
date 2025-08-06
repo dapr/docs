@@ -47,6 +47,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `clientKey`        | N | Output        | The content of the client private key, used in conjunction with `clientCert` for authentication. It is recommended to use a secret store as described [here]({{% ref component-secrets.md %}})  | `"----BEGIN PRIVATE KEY-----\nMIIE..."` |
 | `failover`           | N | Output         | Property to enable failover configuration. Needs sentinelMasterName to be set. Defaults to `"false"` | `"true"`, `"false"`
 | `sentinelMasterName` | N | Output         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/reference/sentinel-clients/) | `""`,  `"mymaster"`
+| `sentinelUsername`   | N | Output         | Username for Redis Sentinel. Applicable only when "failover" is true, and Redis Sentinel has authentication enabled | `"username"`
+| `sentinelPassword`   | N | Output         | Password for Redis Sentinel. Applicable only when "failover" is true, and Redis Sentinel has authentication enabled | `"password"`
 | `redeliverInterval`  | N | Output        | The interval between checking for pending messages to redelivery. Defaults to `"60s"`. `"0"` disables redelivery. | `"30s"`
 | `processingTimeout`  | N | Output        | The amount time a message must be pending before attempting to redeliver it. Defaults to `"15s"`. `"0"` disables redelivery. | `"30s"`
 | `redisType`        | N | Output        | The type of redis. There are two valid values, one is `"node"` for single node mode, the other is `"cluster"` for redis cluster mode. Defaults to `"node"`. | `"cluster"`

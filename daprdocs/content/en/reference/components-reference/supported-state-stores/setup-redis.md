@@ -44,6 +44,10 @@ spec:
     value: <bool> # Optional. Allowed: true, false.
   - name: sentinelMasterName
     value: <string> # Optional
+  - name: sentinelUsername
+    value: # Optional
+  - name: sentinelPassword
+    value: # Optional
   - name: redeliverInterval
     value: # Optional
   - name: processingTimeout
@@ -112,6 +116,8 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 | maxRetryBackoff    | N         | Maximum backoff between each retry. Defaults to `2` seconds; `"-1"` disables backoff. | `3000000000`
 | failover           | N         | Property to enable failover configuration. Needs sentinelMasterName to be set. The redisHost should be the sentinel host address. See [Redis Sentinel Documentation](https://redis.io/docs/manual/sentinel/). Defaults to `"false"` | `"true"`, `"false"`
 | sentinelMasterName | N         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/manual/sentinel/) | `""`,  `"mymaster"`
+| sentinelUsername   | N         | Username for Redis Sentinel. Applicable only when "failover" is true, and Redis Sentinel has authentication enabled | `"username"`
+| sentinelPassword   | N         | Password for Redis Sentinel. Applicable only when "failover" is true, and Redis Sentinel has authentication enabled | `"password"`
 | redeliverInterval  | N        | The interval between checking for pending messages to redelivery. Defaults to `"60s"`. `"0"` disables redelivery. | `"30s"`
 | processingTimeout  | N        | The amount time a message must be pending before attempting to redeliver it. Defaults to `"15s"`. `"0"` disables redelivery. | `"30s"`
 | redisType          | N        | The type of redis. There are two valid values, one is `"node"` for single node mode, the other is `"cluster"` for redis cluster mode. Defaults to `"node"`. | `"cluster"`
