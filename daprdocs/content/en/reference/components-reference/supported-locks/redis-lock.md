@@ -34,10 +34,6 @@ spec:
     value: # Optional
   - name: maxRetryBackoff
     value: # Optional
-  - name: failover
-    value: # Optional
-  - name: sentinelMasterName
-    value: # Optional
   - name: redeliverInterval
     value: # Optional
   - name: processingTimeout
