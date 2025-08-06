@@ -44,8 +44,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `endpoint` | N | Custom API endpoint URL for OpenAI API-compatible services. If not specified, the default OpenAI API endpoint is used. Required when `apiType` is set to `azure`. | `https://api.openai.com/v1`, `https://example.openai.azure.com/` |
 | `cacheTTL` | N | A time-to-live value for a prompt cache to expire. Uses Golang duration format.  | `10m` |
 | `apiType` | N | Specifies the API provider type. Required when using a provider that does not follow the default OpenAI API endpoint conventions. | `azure` |
-| `apiVersion`| N | The API version to use. Required when the `apiType` is set to `azure`. | `2025-01-01-preview` |
+| `apiVersion`| N | The API version to use. Required when the `apiType` is set to `azure`. | `2025-04-01-preview` |
 
 ## Related links
 
 - [Conversation API overview]({{% ref conversation-overview.md %}})
+- [Azure OpenAI in Azure AI Foundry Models API lifecycle](https://learn.microsoft.com/azure/ai-foundry/openai/api-version-lifecycle)
