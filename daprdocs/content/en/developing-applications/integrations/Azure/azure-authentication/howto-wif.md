@@ -1,12 +1,12 @@
 ---
 type: docs
-title: "How to: Configure dapr to use workload identity federation on Azure"
-linkTitle: "How to: Configure dapr to use workload identity federation on Azure"
+title: "How to: Configure Dapr to use workload identity federation on Azure"
+linkTitle: "How to: Configure Dapr to use workload identity federation on Azure"
 weight: 20000
-description: "Learn how to configure dapr to use workload identity federation on Azure."
+description: "Learn how to configure Dapr to use workload identity federation on Azure."
 ---
 
-This guide will help you configure your Kubernetes cluster to run dapr with Azure workload identity federation.
+This guide will help you configure your Kubernetes cluster to run Dapr with Azure workload identity federation.
 
 ## What is it?
 
@@ -14,26 +14,26 @@ This guide will help you configure your Kubernetes cluster to run dapr with Azur
 is a way for your applications to authenticate to Azure without having to store or manage credentials as part of 
 your releases.
 
-By using workload identity federation, any dapr components that target Azure will be able to authenticate transparently
-with no extra configuration! 🎉
+By using workload identity federation, any Dapr components that target Azure can authenticate transparently
+with no extra configuration.
 
 ### How does it differ?
 
-Workload identity federation is one of a few ways Azure offers for your applications to gain access to Azure 
+Workload identity federation is one way Azure enables your application to gain access to Azure 
 resources.  Other options include:
 
  - [Pod Managed Identities]({{< ref howto-mi.md >}}) - [Deprecated](https://learn.microsoft.com/azure/aks/use-azure-ad-pod-identity) method for authenticating applications at a pod level.
  - [System and user assigned managed identities](https://learn.microsoft.com/azure/aks/use-managed-identity) - Less granular than workload identity federation.
  - [Client ID and secret]({{ < ref howto-aad.md >}}) - Less recommended as it requires you to maintian and associate credentials at application level.
 
-You can learn more about workload identity federation [over in the Azure documentation](https://learn.microsoft.com/entra/workload-id/workload-identity-federation).
+You can learn more about [workload identity federation in Azure](https://learn.microsoft.com/entra/workload-id/workload-identity-federation).
 
 ## Guide 
 
-We'll show you how to configure an Azure Key Vault resource against your dapr cluster. You can adapt this guide for different 
-dapr Azure components by substituting component definitions as necessary.
+We'll show how to configure an Azure Key Vault resource against your AKS cluster. You can adapt this guide for different 
+Dapr Azure components by substituting component definitions as necessary.
 
-For this guide, we'll use [the official dapr AKS secrets sample app](https://github.com/dapr/samples/dapr-aks-workload-identity-federation).
+For this How To, we'll use this [Dapr AKS secrets sample app](https://github.com/dapr/samples/dapr-aks-workload-identity-federation).
 
 ### Prerequisites
 
@@ -44,15 +44,15 @@ For this guide, we'll use [the official dapr AKS secrets sample app](https://git
 
 Follow [the Azure documentation for enabling workload identity federation on your AKS cluster](https://learn.microsoft.com/azure/aks/workload-identity-deploy-cluster#deploy-your-application4).
 
-The guide will walk you through configuring your Azure Entra ID tenant to trust an identity that originates from your AKS cluster issuer.
-It will also guide you in setting up a [Kubernetes service account](https://kubernetes.io/docs/concepts/security/service-accounts/) which 
-will be associated with an Azure managed identity you create.
+The HowTo walks through configuring your Azure Entra ID tenant to trust an identity that originates from your AKS cluster issuer.
+It also guides you in setting up a [Kubernetes service account](https://kubernetes.io/docs/concepts/security/service-accounts/) which 
+is associated with an Azure managed identity you create.
 
-Once completed, return to this guide to continue with step 2.
+Once completed, return here to continue with step 2.
 
 ### 2 - Add a secret to Azure Key Vault
 
-Head into the Azure Key Vault you created and add a secret called `dapr` with the value of `Hello dapr!`.
+In the Azure Key Vault you created and add a secret called `dapr` with the value of `Hello Dapr!`.
 
 ### 3 - Configure the Azure Key Vault dapr component
 
@@ -74,15 +74,15 @@ spec:
     value: your-key-vault # Replace
 ```
 
-You'll notice that we have not provided any details specific to authentication in the component definition.  This is intentional, as dapr will be able to leverage the Kubernetes service account to transparently authenticate to Azure.
+You'll notice that we have not provided any details specific to authentication in the component definition.  This is intentional, as Dapr is able to leverage the Kubernetes service account to transparently authenticate to Azure.
 
 ### 4 - Deploy the test application
 
-Head over to [our workload identity federation sample application](https://github.com/dapr/samples/dapr-aks-workload-identity-federation) and prepare a build of the image.
+Go to the  [workload identity federation sample application](https://github.com/dapr/samples/dapr-aks-workload-identity-federation) and prepare a build of the image.
 
 Make sure the image is pushed up to a registry that your AKS cluster has visibility and permission to pull from.
 
-Next, create a deployment for our sample AKS secrets app container along with a dapr sidecar.
+Next, create a deployment for our sample AKS secrets app container along with a Dapr sidecar.
 
 Remember to update `dapr-wif-k8s-service-account` with your service account name and `dapraksworkloadidentityfederation` with an image your cluster can resolve:
 
@@ -106,7 +106,7 @@ spec:
         app: aks-dapr-wif-secrets
         azure.workload.identity/use: "true" # Important
       annotations:
-        dapr.io/enabled: "true" # Don't forget to enable dapr! ♥️
+        dapr.io/enabled: "true" # Enable Dapr
         dapr.io/app-id: "aks-dapr-wif-secrets"
     spec:
       serviceAccountName: dapr-wif-k8s-service-account # Remember to replace
