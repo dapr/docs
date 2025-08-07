@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "How to: Configure Dapr to use workload identity federation on Azure"
-linkTitle: "How to: Configure Dapr to use workload identity federation on Azure"
+title: "How to: Use workload identity federation"
+linkTitle: "How to: Use workload identity federation"
 weight: 20000
 description: "Learn how to configure Dapr to use workload identity federation on Azure."
 ---
@@ -14,7 +14,7 @@ This guide will help you configure your Kubernetes cluster to run Dapr with Azur
 is a way for your applications to authenticate to Azure without having to store or manage credentials as part of 
 your releases.
 
-By using workload identity federation, any Dapr components that target Azure can authenticate transparently
+By using workload identity federation, any Dapr components running on Kubernetes and AKS that target Azure can authenticate transparently
 with no extra configuration.
 
 ### How does it differ?
