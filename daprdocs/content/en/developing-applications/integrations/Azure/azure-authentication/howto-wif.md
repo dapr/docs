@@ -17,17 +17,6 @@ your releases.
 By using workload identity federation, any Dapr components running on Kubernetes and AKS that target Azure can authenticate transparently
 with no extra configuration.
 
-### How does it differ?
-
-Workload identity federation is one way Azure enables your application to gain access to Azure 
-resources.  Other options include:
-
- - [Pod Managed Identities]({{< ref howto-mi.md >}}) - [Deprecated](https://learn.microsoft.com/azure/aks/use-azure-ad-pod-identity) method for authenticating applications at a pod level.
- - [System and user assigned managed identities](https://learn.microsoft.com/azure/aks/use-managed-identity) - Less granular than workload identity federation.
- - [Client ID and secret]({{ < ref howto-aad.md >}}) - Less recommended as it requires you to maintian and associate credentials at application level.
-
-You can learn more about [workload identity federation in Azure](https://learn.microsoft.com/entra/workload-id/workload-identity-federation).
-
 ## Guide 
 
 We'll show how to configure an Azure Key Vault resource against your AKS cluster. You can adapt this guide for different 
@@ -38,7 +27,7 @@ For this How To, we'll use this [Dapr AKS secrets sample app](https://github.com
 ### Prerequisites
 
  - AKS cluster with workload identity enabled
- - Azure Entra ID tenant
+ - Microsoft Entra ID tenant
 
 ### 1 - Enable workload identity federation
 

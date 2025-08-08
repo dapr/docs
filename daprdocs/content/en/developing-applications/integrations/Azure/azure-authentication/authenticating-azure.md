@@ -24,23 +24,32 @@ Microsoft Entra ID is built on top of open standards such OAuth 2.0, which allow
 
 Some Azure components offer alternative authentication methods, such as systems based on "shared keys" or "access tokens". Although these are valid and supported by Dapr, you should authenticate your Dapr components using Microsoft Entra ID whenever possible to take advantage of many benefits, including:
 
-- [Managed Identities and Workload Identity](#managed-identities-and-workload-identity)
+- [Managed Identities and Workload Identity](#managed-identities-and-workload-identity-federation)
 - [Role-Based Access Control](#role-based-access-control)
 - [Auditing](#auditing)
 - [(Optional) Authentication using certificates](#optional-authentication-using-certificates)
 
-### Managed Identities and Workload Identity
+### Ways to implement managed identities
 
-With Managed Identities (MI), your application can authenticate with Microsoft Entra ID and obtain an access token to make requests to Azure services. When your application is running on a supported Azure service (such as Azure VMs, Azure Container Apps, Azure Web Apps, etc), an identity for your application can be assigned at the infrastructure level.
+An application can authenticate with Microsoft Entra ID and obtain an access token to make requests to Azure services through several methods:
 
-Once using MI, your code doesn't have to deal with credentials, which:
+ - [Workload Identity Federation]({{< ref howto-wif.md >}}) - The recommended way to configure your Microsoft Entra ID tenant to trust an external identity provider.  This includes service accounts from Kubernetes or AKS clusters.  [Learn more about workload identity federation](https://learn.microsoft.com/entra/workload-id/workload-identities-overview).
+ - [System and user assigned managed identities]({{< ref howto-mi.md >}}) - Less granular than workload identity federation, but retains some of the benefits.  [Learn more about system and user assigned managed identities](https://learn.microsoft.com/azure/aks/use-managed-identity).
+ - [Client ID and secret]({{ < ref howto-aad.md >}}) - Not recommended as it requires you to maintian and associate credentials at application level.
+ - Pod Managed Identities - [Deprecated approach for authenticating applications](https://learn.microsoft.com/azure/aks/use-azure-ad-pod-identity) at a pod level.  This should no longer be used as it is recommended to use workload identity federation instead.
+
+# Managed identities and workload identity federation
+
+When your application is running on a supported Azure service (such as Azure VMs, Azure Container Apps, Azure Web Apps, etc), an identity for your application can be assigned at the infrastructure level.
+
+Once using managed identities, your code doesn't have to deal with credentials, which:
 
 - Removes the challenge of managing credentials safely
 - Allows greater separation of concerns between development and operations teams
 - Reduces the number of people with access to credentials
 - Simplifies operational aspects–especially when multiple environments are used
 
-Applications running on Azure Kubernetes Service can similarly leverage [Workload Identity](https://learn.microsoft.com/azure/aks/workload-identity-overview) to automatically provide an identity to individual pods.
+It's recommended that applications running on Azure Kubernetes Service leverage [workload identity](https://learn.microsoft.com/entra/workload-id/workload-identity-federation) to automatically [provide an identity to individual pods](https://learn.microsoft.com/azure/aks/workload-identity-overview).
 
 ### Role-Based Access Control
 
