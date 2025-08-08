@@ -15,7 +15,7 @@ Dapr provides a way to determine its health using an [HTTP `/healthz` endpoint](
 In this guide, you learn how the Dapr `/healthz` endpoint integrates with health probes from the application hosting platform (for example, Kubernetes) as well as the Dapr SDKs. 
 
 {{% alert title="Important" color="warning" %}}
-**Do not depend on the `/healthz` endpoint in your application code**. Having your application depend on the `/healthz` endpoint will fail for some cases (such as actors and workflows) and is considered bad practice in others. The `/healthz` endpoint is designed for infrastructure health checks (like Kubernetes probes), not for application-level health validation.
+**Do not depend on the `/healthz` endpoint in your application code**. Having your application depend on the `/healthz` endpoint will fail for some cases (such as apps using Actor and Workflow APIs) and is considered bad practice in others as it creates a circular dependency. The `/healthz` endpoint is designed for infrastructure health checks (like Kubernetes probes), not for application-level health validation.
 {{% /alert %}}
 
 {{% alert title="Note" color="primary" %}}
