@@ -42,6 +42,8 @@ An application can authenticate with Microsoft Entra ID and obtain an access tok
 
 When your application is running on a supported Azure service (such as Azure VMs, Azure Container Apps, Azure Web Apps, etc), an identity for your application can be assigned at the infrastructure level.
 
+This is done through [system or user assigned managed identities]({{< ref howto-mi.md >}}), or [workload identity federation]({{< ref howto-wif.md >}}).
+
 Once using managed identities, your code doesn't have to deal with credentials, which:
 
 - Removes the challenge of managing credentials safely
@@ -49,7 +51,7 @@ Once using managed identities, your code doesn't have to deal with credentials, 
 - Reduces the number of people with access to credentials
 - Simplifies operational aspects–especially when multiple environments are used
 
-It's recommended that applications running on Azure Kubernetes Service leverage [workload identity](https://learn.microsoft.com/entra/workload-id/workload-identity-federation) to automatically [provide an identity to individual pods](https://learn.microsoft.com/azure/aks/workload-identity-overview).
+It's recommended that applications running on Azure Kubernetes Service leverage [workload identity federation](https://learn.microsoft.com/entra/workload-id/workload-identity-federation) to automatically [provide an identity to individual pods](https://learn.microsoft.com/azure/aks/workload-identity-overview).
 
 ### Role-Based Access Control
 
