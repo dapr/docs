@@ -9,7 +9,7 @@ description: Dapr sidecar health checks
 Dapr provides a way to determine its health using an [HTTP `/healthz` endpoint]({{% ref health_api.md %}}). With this endpoint, the *daprd* process, or sidecar, can be:
 
 - Probed for its overall health
-- Probed for Dapr sidecar readiness during initialization
+- Probed for Dapr sidecar readiness from infrastructure platforms
 - Determined for readiness and liveness with Kubernetes
 
 In this guide, you learn how the Dapr `/healthz` endpoint integrates with health probes from the application hosting platform (for example, Kubernetes) as well as the Dapr SDKs. 
