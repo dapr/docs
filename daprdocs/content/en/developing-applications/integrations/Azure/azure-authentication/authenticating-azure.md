@@ -13,14 +13,14 @@ weight: 10000
 
 Microsoft Entra ID is Azure's identity and access management (IAM) solution, which is used to authenticate and authorize users and services. It's built on top of open standards such OAuth 2.0, which allows services (applications) to obtain access tokens to make requests to Azure services, including Azure Storage, Azure Service Bus, Azure Key Vault, Azure Cosmos DB, Azure Database for Postgres, Azure SQL, etc.
 
-## Ways to authenticate
+## Options to authenticate
 
 Applications can authenticate with Microsoft Entra ID and obtain an access token to make requests to Azure services through several methods:
 
- - [Workload Identity Federation]({{< ref howto-wif.md >}}) - The recommended way to configure your Microsoft Entra ID tenant to trust an external identity provider.  This includes service accounts from Kubernetes or AKS clusters.  [Learn more about workload identity federation](https://learn.microsoft.com/entra/workload-id/workload-identities-overview).
+ - [Workload identity federation]({{< ref howto-wif.md >}}) - The recommended way to configure your Microsoft Entra ID tenant to trust an external identity provider.  This includes service accounts from Kubernetes or AKS clusters. [Learn more about workload identity federation](https://learn.microsoft.com/entra/workload-id/workload-identities-overview).
  - [System and user assigned managed identities]({{< ref howto-mi.md >}}) - Less granular than workload identity federation, but retains some of the benefits.  [Learn more about system and user assigned managed identities](https://learn.microsoft.com/azure/aks/use-managed-identity).
- - [Client ID and secret]({{ < ref howto-aad.md >}}) - Not recommended as it requires you to maintian and associate credentials at application level.
- - Pod Managed Identities - [Deprecated approach for authenticating applications](https://learn.microsoft.com/azure/aks/use-azure-ad-pod-identity) at a pod level.  This should no longer be used.
+ - [Client ID and secret]({{ < ref howto-aad.md >}}) - Not recommended as it requires you to maintian and associate credentials at the application level.
+ - Pod Identities - [Deprecated approach for authenticating applications running on Kubernetes pods](https://learn.microsoft.com/azure/aks/use-azure-ad-pod-identity) at a pod level.  This should no longer be used.
 
 If you are just getting started, it is recommended to use workload identity federation.
 
@@ -37,13 +37,13 @@ Once using managed identities, your code doesn't have to deal with credentials, 
 - Reduces the number of people with access to credentials
 - Simplifies operational aspects–especially when multiple environments are used
 
-It's recommended that applications running on Azure Kubernetes Service leverage [workload identity federation](https://learn.microsoft.com/entra/workload-id/workload-identity-federation) to automatically [provide an identity to individual pods](https://learn.microsoft.com/azure/aks/workload-identity-overview).
-
-Some Dapr Azure components offer alternative authentication methods, such as systems based on "shared keys" or "access tokens". Although these are valid and supported by Dapr, you should always try to authenticate your Dapr components using Microsoft Entra ID whenever possible to take advantage of many benefits, including:
+While some Dapr Azure components offer alternative authentication methods, such as systems based on "shared keys" or "access tokens", you should always try to authenticate your Dapr components using Microsoft Entra ID whenever possible. This offers many benefits, including:
 
 - [Role-Based Access Control](#role-based-access-control)
 - [Auditing](#auditing)
 - [(Optional) Authentication using certificates](#optional-authentication-using-certificates)
+
+It's recommended that applications running on Azure Kubernetes Service leverage [workload identity federation](https://learn.microsoft.com/entra/workload-id/workload-identity-federation) to automatically provide an identity to individual pods.
 
 ### Role-Based Access Control
 
