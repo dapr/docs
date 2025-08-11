@@ -75,6 +75,63 @@ spec:
       type: middleware.http.oauth2clientcredentials
 ```
 
+## Path Filtering for Least Privilege Security
+
+The `pathFilter` field allows you to apply OAuth2 client credentials authentication selectively based on request paths using regex patterns. This enables implementing the least privilege principle by configuring multiple OAuth2 middlewares with different scopes for different API endpoints, ensuring services only receive the minimum permissions necessary for their intended operations.
+
+### Example: Separate User and Admin Access
+
+```yaml
+# Read-only user access middleware
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: oauth2clientcredentials-users
+spec:
+  type: middleware.http.oauth2clientcredentials
+  version: v1
+  metadata:
+  - name: clientId
+    value: "<your client ID>"
+  - name: clientSecret
+    value: "<your client secret>"
+  - name: scopes
+    value: "user:read profile:read"
+  - name: tokenURL
+    value: "https://accounts.google.com/o/oauth2/token"
+  - name: headerName
+    value: "authorization"
+  - name: pathFilter
+    value: "^/api/users/.*"
+---
+# Full admin access middleware  
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: oauth2clientcredentials-admin
+spec:
+  type: middleware.http.oauth2clientcredentials
+  version: v1
+  metadata:
+  - name: clientId
+    value: "<your client ID>"
+  - name: clientSecret
+    value: "<your client secret>"
+  - name: scopes
+    value: "admin:read admin:write user:read user:write"
+  - name: tokenURL
+    value: "https://accounts.google.com/o/oauth2/token"
+  - name: headerName
+    value: "authorization"
+  - name: pathFilter
+    value: "^/api/admin/.*"
+```
+
+In this configuration:
+- Requests to `/api/users/*` endpoints receive tokens with limited user scopes
+- Requests to `/api/admin/*` endpoints receive tokens with full administrative privileges
+- This reduces security risk by preventing privilege escalation and limiting the blast radius of compromised tokens
+
 ## Related links
 - [Middleware]({{% ref middleware.md %}})
 - [Configuration concept]({{% ref configuration-concept.md %}})

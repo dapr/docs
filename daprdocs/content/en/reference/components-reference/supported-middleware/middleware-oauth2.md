@@ -74,6 +74,67 @@ spec:
       type: middleware.http.oauth2
 ```
 
+## Path Filtering for Least Privilege Security
+
+The `pathFilter` field allows you to apply OAuth2 authentication selectively based on request paths using regex patterns. This enables implementing the least privilege principle by configuring multiple OAuth2 middlewares with different scopes for different API endpoints, ensuring users only receive the minimum permissions necessary for their intended operations.
+
+### Example: Separate User and Admin Access
+
+```yaml
+# Read-only user access middleware
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: oauth2-users
+spec:
+  type: middleware.http.oauth2
+  version: v1
+  metadata:
+  - name: clientId
+    value: "<your client ID>"
+  - name: clientSecret
+    value: "<your client secret>"
+  - name: scopes
+    value: "user:read profile:read"
+  - name: authURL
+    value: "https://accounts.google.com/o/oauth2/v2/auth"
+  - name: tokenURL
+    value: "https://accounts.google.com/o/oauth2/token"
+  - name: redirectURL
+    value: "http://myapp.com/callback"
+  - name: pathFilter
+    value: "^/api/users/.*"
+---
+# Full admin access middleware  
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: oauth2-admin
+spec:
+  type: middleware.http.oauth2
+  version: v1
+  metadata:
+  - name: clientId
+    value: "<your client ID>"
+  - name: clientSecret
+    value: "<your client secret>"
+  - name: scopes
+    value: "admin:read admin:write user:read user:write"
+  - name: authURL
+    value: "https://accounts.google.com/o/oauth2/v2/auth"
+  - name: tokenURL
+    value: "https://accounts.google.com/o/oauth2/token"
+  - name: redirectURL
+    value: "http://myapp.com/callback"
+  - name: pathFilter
+    value: "^/api/admin/.*"
+```
+
+In this configuration:
+- Requests to `/api/users/*` endpoints receive tokens with limited user scopes
+- Requests to `/api/admin/*` endpoints receive tokens with full administrative privileges
+- This reduces security risk by preventing privilege escalation and limiting the blast radius of compromised tokens
+
 ## Related links
 
 - [Configure API authorization with OAuth]({{% ref oauth %}})
