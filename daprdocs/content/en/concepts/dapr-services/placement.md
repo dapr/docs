@@ -93,6 +93,22 @@ updatedAt | timestamp | Timestamp of the actor registered/updated.
 }
 ```
 
+## Disabling the Placement service
+
+
+The Placement service can be disabled with the following setting:
+
+
+```
+global.actors.enabled=false
+```
+
+The Placement service is not deployed with this setting in Kubernetes mode. This not only disables actor deployment, but also disables workflows, given that workflows use actors. This setting only applies in Kubernetes mode, however initializing Dapr with `--slim` excludes the Placement service from being deployed in self-hosted mode. 
+
+
+For more information on running Dapr on Kubernetes, visit the [Kubernetes hosting page](https://docs.dapr.io/operations/hosting/kubernetes/).
+
+
 ## Related links
 
 [Learn more about the Placement API.]({{< ref placement_api.md >}})
