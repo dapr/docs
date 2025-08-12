@@ -202,5 +202,4 @@ kubectl delete ns opentelemetry
 * [Dapr observability quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/observability)
 * [Dash0 documentation](https://www.dash0.com/docs)
 * [OpenTelemetry Collector documentation](https://opentelemetry.io/docs/collector/)
-* [Dapr tracing configuration options]({{< ref "configuration-overview.md#tracing" >}})
 
