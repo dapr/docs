@@ -196,6 +196,7 @@ metadata:
 spec:
   type: state.azure.blobstorage
   version: v2
+  initTimeout: 10s # Increase the init timeout to allow enough time for Azure to perform the token exchange
   metadata:
   - name: clientId
     value: $CLIENT_ID
