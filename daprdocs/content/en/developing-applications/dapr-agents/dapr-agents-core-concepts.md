@@ -298,7 +298,7 @@ Agent tasks enable workflows to leverage specialized agents with their own tools
 
 ### Workflow Patterns
 
-Workflows enable the implementation of various agentic patterns through structured orchestration, including Prompt Chaining, Routing, Parallelization, Orchestrator-Workers, Evaluator-Optimizer, Human-in-the-loop, and others. For detailed implementations and examples of these patterns, see the [Patterns documentation]({{< ref "developing-applications/dapr-agents/dapr-agents-patterns.md" >}}).
+Workflows enable the implementation of various agentic patterns through structured orchestration, including Prompt Chaining, Routing, Parallelization, Orchestrator-Workers, Evaluator-Optimizer, Human-in-the-loop, and others. For detailed implementations and examples of these patterns, see the [Patterns documentation]({{< ref dapr-agents-patterns.md >}}).
 
 ### Workflows vs. Durable Agents
 

@@ -64,7 +64,7 @@ Dapr Agents is a Python framework built on top of the [Python Dapr SDK]({{% ref 
 
 ### Getting Started
 
-Get started with Dapr Agents by following the instructions on the [Getting Started page]({{% ref "developing-applications/dapr-agents/dapr-agents-getting-started.md" %}}).
+Get started with Dapr Agents by following the instructions on the [Getting Started page]({{% ref dapr-agents-getting-started.md %}}).
 
 ### Framework Integrations
 
