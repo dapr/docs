@@ -138,9 +138,9 @@ On Windows, the environment variable needs to be set before starting the `dapr` 
 
 ### Authenticate to AWS if using AWS SSO based profiles
 
-If you authenticate to AWS using [AWS SSO](https://aws.amazon.com/single-sign-on/), some AWS SDKs (including the Go SDK) don't yet support this natively. There are several utilities you can use to "bridge the gap" between AWS SSO-based credentials and "legacy" credentials, such as:
-- [AwsHelper](https://pypi.org/project/awshelper/) 
-- [aws-sso-util](https://github.com/benkehoe/aws-sso-util)
+If you authenticate to AWS using [AWS SSO](https://aws.amazon.com/single-sign-on/), the AWS SDK for Go (both v1 and v2) provides native support for AWS SSO credential providers. This means you can use AWS SSO profiles directly without additional utilities.
+
+For more information about AWS SSO support in the AWS SDK for Go, see the [AWS blog post](https://aws.amazon.com/blogs/developer/aws-sso-support-in-the-aws-sdk-for-go/).
 
 {{< tabpane text=true >}}
  <!-- linux -->
