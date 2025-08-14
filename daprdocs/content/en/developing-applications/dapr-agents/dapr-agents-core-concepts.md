@@ -89,12 +89,12 @@ In Summary:
 | Agent Type      | Memory Type             | Execution                 | Interaction Mode             |
 |-----------------|-------------------------|---------------------------|------------------------------|
 | `Agent`         | In-memory or Persistent | Ephemeral                 | Synchronous / Conversational |
-| `Durable Agent` | In-memory or Persistent | Durable (Workflow-backed) | Synchronous / Asynchronous / Headless      |
+| `Durable Agent` | In-memory or Persistent | Durable (Workflow-backed) | Asynchronous / Headless      |
 
 
-- Regular `Agent`: Interaction is synchronous — you send conversational prompts and receive responses immediately. The conversation can be stored in memory or persisted, but the execution is ephemeral and does not survive restarts.
+- Regular `Agent`: Interaction is synchronous—you send conversational prompts and receive responses immediately. The conversation can be stored in memory or persisted, but the execution is ephemeral and does not survive restarts.
 
-- `DurableAgent` (Workflow-backed): Interaction is synchronous or asynchronous — you can trigger the agent once, and it runs autonomously in the background until completion. The conversation state can also be in memory or persisted, but the execution is durable and can resume across failures or restarts.
+- `DurableAgent` (Workflow-backed): Interaction is asynchronous—you trigger the agent once, and it runs autonomously in the background until completion. The conversation state can also be in memory or persisted, but the execution is durable and can resume across failures or restarts.
 
 
 ## Core Agent Features
