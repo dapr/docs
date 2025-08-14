@@ -544,7 +544,7 @@ curl -X POST http://localhost:3500/v1.0/state/starwars/transaction \
 
 ## Configuring state store for actors
 
-Actors don't support multiple state stores and require a transactional state store to be used with Dapr. [View which services currently implement the transactional state store interface]({{% ref "supported-state-stores.md" %}}).
+Actors don't support multiple state stores and require a transactional and strongly consistent state store to be used with Dapr. [View which services currently implement the transactional state store interface]({{% ref "supported-state-stores.md" %}}).
 
 Specify which state store to be used for actors with a `true` value for the property `actorStateStore` in the metadata section of the `statestore.yaml` component file.
 For example, the following components yaml will configure Redis to be used as the state store for Actors.
