@@ -86,6 +86,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | maxRetryBackoff    | N         | Maximum backoff between each retry. Defaults to `2` seconds; `"-1"` disables backoff. | `3000000000`
 | failover           | N         | Property to enable failover configuration. Needs sentinelMasterName to be set. The redisHost should be the sentinel host address. See [Redis Sentinel Documentation](https://redis.io/docs/manual/sentinel/). Defaults to `"false"` | `"true"`, `"false"`
 | sentinelMasterName | N         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/manual/sentinel/) | `"mymaster"`
+| sentinelPassword   | N         | Password for Redis sentinel. No Default. Can be `secretKeyRef` to use a secret reference  | `""`, `"KeFg23!"`
 | redeliverInterval  | N        | The interval between checking for pending messages to redelivery. Defaults to `"60s"`. `"0"` disables redelivery. | `"30s"`
 | processingTimeout  | N        | The amount time a message must be pending before attempting to redeliver it. Defaults to `"15s"`. `"0"` disables redelivery. | `"30s"`
 | redisType          | N        | The type of redis. There are two valid values, one is `"node"` for single node mode, the other is `"cluster"` for redis cluster mode. Defaults to `"node"`. | `"cluster"`
@@ -181,6 +182,18 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 
 {{< /tabpane >}}
 
+
+## Redis Sentinel Behavior
+
+Use `redisType: "node"` when connecting to Redis Sentinel. Additionally, set `failover` to `"true"` and `sentinelMasterName` to the name of the master node.
+
+**Failover Characteristics:**
+- **Lock Loss During Failover**: Locks may be lost during master failover if they weren't replicated to the promoted replica before the original master failed
+- **Failover Window**: Brief unavailability (typically seconds) during automatic master promotion  
+- **Consistency**: All operations route to the current master, maintaining lock consistency
+- **Trade-off**: High availability vs. potential lock loss during failover events
+
+⚠️ **Important**: Consider your application's tolerance for brief lock loss during failover scenarios.
 
 ## Related links
 - [Basic schema for a Dapr component]({{% ref component-schema %}})
