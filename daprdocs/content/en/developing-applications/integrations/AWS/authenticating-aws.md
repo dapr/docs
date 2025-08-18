@@ -142,32 +142,6 @@ If you authenticate to AWS using [AWS SSO](https://aws.amazon.com/single-sign-on
 
 For more information about AWS SSO support in the AWS SDK for Go, see the [AWS blog post](https://aws.amazon.com/blogs/developer/aws-sso-support-in-the-aws-sdk-for-go/).
 
-{{< tabpane text=true >}}
- <!-- linux -->
-{{% tab "Linux/MacOS" %}}
-
-If using AwsHelper, start Dapr like this:
-
-```bash
-AWS_PROFILE=myprofile awshelper dapr run...
-```
-
-or
-
-```bash
-AWS_PROFILE=myprofile awshelper daprd...
-```
-{{% /tab %}}
-
- <!-- windows -->
-{{% tab "Windows" %}}
-
-On Windows, the environment variable needs to be set before starting the `awshelper` command; doing it inline (like in Linux/MacOS) is not supported.
-
-{{% /tab %}}
-
-{{< /tabpane >}}
-
 ## Next steps
 
 {{< button text="Refer to AWS component specs >>" page="components-reference.md" >}}
