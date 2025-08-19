@@ -305,7 +305,7 @@ docker: Error response from daemon: Ports are not available: exposing port TCP 0
 To resolve this error, open a command prompt in an elevated terminal and run:
 
 ```bash
-nat stop winnat
+net stop winnat
 dapr init
 net start winnat
 ```
