@@ -33,6 +33,8 @@ spec:
 #   value: <integer>
 # - name: publicAccessLevel
 #   value: <publicAccessLevel>
+# - name: disableEntityManagement
+#   value: <bool>
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -45,10 +47,11 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `accountName` | Y | Input/Output | The name of the Azure Storage account | `"myexmapleaccount"` |
 | `accountKey` | Y* | Input/Output | The access key of the Azure Storage account. Only required when not using Microsoft Entra ID authentication. | `"access-key"` |
 | `containerName` | Y | Output | The name of the Blob Storage container to write to | `myexamplecontainer` |
-| `endpoint` | N | Input/Output | Optional custom endpoint URL. This is useful when using the [Azurite emulator](https://github.com/Azure/azurite) or when using custom domains for Azure Storage (although this is not officially supported). The endpoint must be the full base URL, including the protocol (`http://` or `https://`), the IP or FQDN, and optional port. | `"http://127.0.0.1:10000"`
+| `endpoint` | N | Input/Output | Optional custom endpoint URL. This is useful when using the [Azurite emulator](https://github.com/Azure/azurite) or when using custom domains for Azure Storage (although this is not officially supported). The endpoint must be the full base URL, including the protocol (`http://` or `https://`), the IP or FQDN, and optional port. | `"http://127.0.0.1:10000"` |
 | `decodeBase64` | N | Output | Configuration to decode base64 file content before saving to Blob Storage. (In case of saving a file with binary content). Defaults to `false` | `true`, `false` |
-| `getBlobRetryCount` | N | Output | Specifies the maximum number of HTTP GET requests that will be made while reading from a RetryReader Defaults to `10` | `1`, `2`
-| `publicAccessLevel` | N | Output | Specifies whether data in the container may be accessed publicly and the level of access (only used if the container is created by Dapr). Defaults to `none` | `blob`, `container`, `none`
+| `getBlobRetryCount` | N | Output | Specifies the maximum number of HTTP GET requests that will be made while reading from a RetryReader Defaults to `10` | `1`, `2` |
+| `publicAccessLevel` | N | Output | Specifies whether data in the container may be accessed publicly and the level of access (only used if the container is created by Dapr). Defaults to `none` | `blob`, `container`, `none` |
+| `disableEntityManagement` | N | Output | Configuration to disable entity management. When set to `true`, the binding skips the attempt to create the specified storage container. This is useful when operating with minimal Azure AD permissions. Defaults to `false` | `true`, `false` |
 
 ### Microsoft Entra ID authentication
 
