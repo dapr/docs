@@ -36,7 +36,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ### OpenAI Compatibility
 
-Ollama is compatible with [OpenAI's API](https://ollama.com/blog/openai-compatibility). So we can use the OpenAI component as a drop-in replacement with the following changes:
+Ollama is compatible with [OpenAI's API](https://ollama.com/blog/openai-compatibility). You can use the OpenAI component with Ollama models with the following changes:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
