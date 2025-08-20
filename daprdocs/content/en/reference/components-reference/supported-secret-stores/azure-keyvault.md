@@ -297,31 +297,14 @@ In Kubernetes, you store the client secret or the certificate into the Kubernete
     ```bash
     kubectl apply -f azurekeyvault.yaml
     ```
-1. Create and assign a managed identity at the pod-level via either:
-   - [Microsoft Entra ID workload identity](https://learn.microsoft.com/azure/aks/workload-identity-overview) (preferred method)
-   - [Microsoft Entra ID pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#create-a-pod-identity)  
-
-
-   **Important**: While both Microsoft Entra ID pod identity and workload identity are in preview, currently Microsoft Entra ID Workload Identity is planned for general availability (stable state).
+1. Create and assign a managed identity at the pod-level via [Microsoft Entra ID workload identity](https://learn.microsoft.com/azure/aks/workload-identity-overview)
 
 1. After creating a workload identity, give it `read` permissions:
    - [On your desired KeyVault instance](https://docs.microsoft.com/azure/key-vault/general/assign-access-policy?tabs=azure-cli#assign-the-access-policy)
-   - In your application deployment. Inject the pod identity both:
-     - Via a label annotation
-     - By specifying the Kubernetes service account associated with the desired workload identity 
-
-   ```yaml
-   apiVersion: v1
-   kind: Pod
-   metadata:
-     name: mydaprdemoapp
-     labels:
-       aadpodidbinding: $POD_IDENTITY_NAME
-   ```
 
 #### Using Azure managed identity directly vs. via Microsoft Entra ID workload identity
 
-When using **managed identity directly**, you can have multiple identities associated with an app, requiring `azureClientId` to specify which identity should be used. 
+When using **managed identity directly**, you can have multiple identities associated with an app, requiring `azureClientId` to specify which identity should be used.
 
 However, when using **managed identity via Microsoft Entra ID workload identity**, `azureClientId` is not necessary and has no effect. The Azure identity to be used is inferred from the service account tied to an Azure identity via the Azure federated identity.
 

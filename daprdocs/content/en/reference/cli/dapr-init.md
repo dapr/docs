@@ -46,6 +46,7 @@ dapr init [flags]
 |  `--container-runtime`  |              |    `docker`      | Used to pass in a different container runtime other than Docker. Supported container runtimes are: `docker`, `podman` |
 |  `--dev`  |              |          | Creates Redis and Zipkin deployments when run in Kubernetes. |
 |  `--scheduler-volume`  |              |          | Self-hosted only. Optionally, you can specify a volume for the scheduler service data directory. By default, without this flag, scheduler data is not persisted and not resilient to restarts. |
+|  `--scheduler-override-broadcast-host-port`  |  |  localhost:50006 (6060 for Windows)  | Self-hosted only. Specify the scheduler broadcast host and port, for example: 192.168.42.42:50006. |
 
 
 ### Examples
@@ -70,7 +71,7 @@ Dapr can also run [Slim self-hosted mode]({{< ref self-hosted-no-docker.md >}}),
 dapr init -s
 ```
 
-> To switch to Dapr Github container registry as the default registry, set the `DAPR_DEFAULT_IMAGE_REGISTRY` environment variable value to be `GHCR`. To switch back to Docker Hub as default registry, unset this environment variable. 
+> To switch to Dapr Github container registry as the default registry, set the `DAPR_DEFAULT_IMAGE_REGISTRY` environment variable value to be `GHCR`. To switch back to Docker Hub as default registry, unset this environment variable.
 
 **Specify a runtime version**
 
@@ -148,13 +149,25 @@ dapr init --network mynet
 Verify all containers are running in the specified network.
 
 ```bash
-docker ps 
+docker ps
 ```
 
 Uninstall Dapr from that Docker network.
 
 ```bash
 dapr uninstall --all --network mynet
+```
+
+**Specify scheduler broadcast host and port**
+
+You can specify the scheduler broadcast host and port, for example: 192.168.42.42:50006.
+
+This is necessary when you have to connect to the scheduler using a different host and port, as the scheduler only allows connections matching this host and port.
+
+By default, the scheduler will use localhost:50006 (6060 for Windows).
+
+```bash
+dapr init --scheduler-override-broadcast-host-port 192.168.42.42:50006
 ```
 
 {{% /codetab %}}
@@ -192,11 +205,11 @@ dapr init -k --set global.tag=1.0.0 --set dapr_operator.logLevel=error
 
 You can also specify a private registry to pull container images from. As of now `dapr init -k` does not use specific images for sentry, operator, placement, scheduler, and sidecar. It relies on only Dapr runtime container image `dapr` for all these images.
 
-Scenario 1 : dapr image hosted directly under root folder in private registry - 
+Scenario 1 : dapr image hosted directly under root folder in private registry -
 ```bash
 dapr init -k --image-registry docker.io/username
 ```
-Scenario 2 : dapr image hosted under a new/different directory in private registry - 
+Scenario 2 : dapr image hosted under a new/different directory in private registry -
 ```bash
 dapr init -k --image-registry docker.io/username/<directory-name>
 ```
