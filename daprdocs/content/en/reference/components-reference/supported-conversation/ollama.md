@@ -49,7 +49,7 @@ spec:
   - name: key
     value: 'ollama' # just any non-empty string
   - name: model
-    value: gpt-oss:20b  # an ollama model (https://ollama.com/search) in this case openai open source model
+    value: gpt-oss:20b  # an ollama model (https://ollama.com/search) in this case openai open source model. See https://ollama.com/library/gpt-oss
   - name: endpoint
     value: 'http://localhost:11434/v1' # ollama endpoint
 ```
