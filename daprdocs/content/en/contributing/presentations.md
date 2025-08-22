@@ -9,9 +9,10 @@ description: How to give a presentation on Dapr and examples
 We encourage community members to give presentations on Dapr. To get you started quickly, we offer two PowerPoint files:
 
 - *dapr-slidedeck.pptx*, this is a 150+ page slide deck and contains; an overview of Dapr, all of its building block APIs, cross-cutting concerns, hosting options, and assets to create your own architecture diagrams.
-- *dapr-workflow.pptx*, this is a dedicated slide deck about Dapr workflow and contains; durable execution concept, workflow authoring, workflow patterns, workflow management, and challenges & tips.
+- *dapr-workflow-slidedeck.pptx*, this is a dedicated slide deck about Dapr Workflow and contains; durable execution concept, workflow authoring, workflow patterns, workflow management, and challenges & tips.
+- *dapr-agents-slidedeck.pptx*, this is a dedicated slide deck about Dapr Agents and contains; AI agents explanation, Dapr Agent types, multi-agent systems, and agentic patterns.
 
-There is a downloadable zip file contains both slide decks.
+There is a downloadable zip file that contains all slide decks.
 
 {{< button text="Download the Dapr Presentation Decks" link="/presentations/dapr-slidedecks.zip" >}}
 
