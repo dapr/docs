@@ -134,6 +134,17 @@ In case you are invoking `mathService` on a different namespace, you can use the
 
 In this URL, `testing` is the namespace that `mathService` is running in.
 
+### Headers in Service Invocation Requests
+
+When Dapr invokes a service, it automatically adds the following headers to the request:
+
+| Header | Description | Example |
+|--------|-------------|---------|
+| `dapr-app-id` | The ID of the calling application | `myapp` |
+| `dapr-caller-namespace` | The namespace of the calling application | `production` |
+
+These headers are available in both HTTP and gRPC service invocation requests.
+
 #### Non-Dapr Endpoint Example
 
 If the `mathService` service was a non-Dapr application, then it could be invoked using service invocation via an `HTTPEndpoint`, as well as a Fully Qualified Domain Name (FQDN) URL.
