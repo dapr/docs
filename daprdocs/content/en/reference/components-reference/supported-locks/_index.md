@@ -7,6 +7,6 @@ description: The supported locks that interface with Dapr
 no_list: true
 ---
 
-{{% partial "components/description.html" %}}
+{{< partial "components/description.html" >}}
 
-{{% partial "components/locks.html" %}}
+{{< partial "components/locks.html" >}}

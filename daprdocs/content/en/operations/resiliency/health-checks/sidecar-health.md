@@ -9,10 +9,14 @@ description: Dapr sidecar health checks
 Dapr provides a way to determine its health using an [HTTP `/healthz` endpoint]({{% ref health_api.md %}}). With this endpoint, the *daprd* process, or sidecar, can be:
 
 - Probed for its overall health
-- Probed for Dapr sidecar readiness during initialization
+- Probed for Dapr sidecar readiness from infrastructure platforms
 - Determined for readiness and liveness with Kubernetes
 
 In this guide, you learn how the Dapr `/healthz` endpoint integrates with health probes from the application hosting platform (for example, Kubernetes) as well as the Dapr SDKs. 
+
+{{% alert title="Important" color="warning" %}}
+**Do not depend on the `/healthz` endpoint in your application code**. Having your application depend on the `/healthz` endpoint will fail for some cases (such as apps using Actor and Workflow APIs) and is considered bad practice in others as it creates a circular dependency. The `/healthz` endpoint is designed for infrastructure health checks (like Kubernetes probes), not for application-level health validation.
+{{% /alert %}}
 
 {{% alert title="Note" color="primary" %}}
 Dapr actors also have a health API endpoint where Dapr probes the application for a response to a signal from Dapr that the actor application is healthy and running. See [actor health API]({{% ref "actors_api.md#health-check" %}}).
@@ -47,7 +51,6 @@ Currently, the `v1.0/healthz/outbound` endpoint is supported in the:
 - [.NET SDK]({{% ref "dotnet-client.md#wait-for-sidecar" %}})
 - [Java SDK]({{% ref "java-client.md#wait-for-sidecar" %}})
 - [Python SDK]({{% ref "python-client.md#health-timeout" %}})
-- [JavaScript SDK](https://github.com/dapr/js-sdk/blob/4189a3d2ad6897406abd766f4ccbf2300c8f8852/src/interfaces/Client/IClientHealth.ts#L14)
 
 
 ## Health endpoint: Integration with Kubernetes
@@ -128,9 +131,9 @@ Dapr has its HTTP health endpoint `/v1.0/healthz` on port 3500. This can be used
 
 ## Delay graceful shutdown
 
-Dapr accepts a [`dapr.io/block-shutdown-duration` annotation or `--dapr-block-shutdown-duration` CLI flag]({{% ref arguments-annotations-overview.md %}}), which delays the full shutdown procedure for the specified duration, or until the app reports as unhealthy, whichever is sooner. 
+Dapr accepts a [`dapr.io/block-shutdown-duration` annotation or `--dapr-block-shutdown-duration` CLI flag]({{% ref arguments-annotations-overview.md %}}), which delays the full shutdown procedure for the specified duration, or until the app reports as unhealthy, whichever is sooner.
 
-During this period, all subscriptions and input bindings are closed. This is useful for applications that need to use the Dapr APIs as part of their own shutdown procedure. 
+During this period, all subscriptions and input bindings are closed. This is useful for applications that need to use the Dapr APIs as part of their own shutdown procedure.
 
 Applicable annotations or CLI flags include:
 
