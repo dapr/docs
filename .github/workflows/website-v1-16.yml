@@ -39,7 +39,7 @@ jobs:
       - name: Build Hugo Website
         run: |
           git config --global --add safe.directory /github/workspace
-          hugo
+          hugo --minify
       - name: Deploy Website
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
