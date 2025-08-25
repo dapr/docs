@@ -9,7 +9,7 @@ aliases:
 no_list: true
 ---
 
-The following table lists input and output bindings supported by the Dapr bindings building block. [Learn how to set up different input and output binding components for Dapr bindings.]({{< ref setup-bindings.md >}})
+The following table lists input and output bindings supported by the Dapr bindings building block. [Learn how to set up different input and output binding components for Dapr bindings.]({{% ref setup-bindings.md %}})
 
 {{< partial "components/description.html" >}}
 

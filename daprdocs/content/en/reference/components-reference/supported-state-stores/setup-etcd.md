@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup an Etcd state store create a component of type `state.etcd`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+To setup an Etcd state store create a component of type `state.etcd`. See [this guide]({{% ref "howto-get-save-state.md#step-1-setup-a-state-store" %}}) on how to create and apply a state store configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -40,7 +40,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 
@@ -48,7 +48,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 Dapr has 2 versions of the Etcd state store component: `v1` and `v2`. It is recommended to use `v2`, as `v1` is deprecated.
 
-While `v1` and `v2` have the same metadata fields, `v1` causes data inconsistencies in apps when using [Actor TTLs]({{< ref "actors_api.md#ttl" >}}) from Dapr v1.12.
+While `v1` and `v2` have the same metadata fields, `v1` causes data inconsistencies in apps when using [Actor TTLs]({{% ref "actors_api.md#ttl" %}}) from Dapr v1.12.
 `v1` and `v2` are incompatible with no data migration path for `v1` to `v2` on an existing active Etcd cluster and `keyPrefixPath`.
 If you are using `v1`, you should continue to use `v1` until you create a new Etcd cluster or use a different `keyPrefixPath`.
 
@@ -59,16 +59,16 @@ If you are using `v1`, you should continue to use `v1` until you create a new Et
 | `endpoints`        | Y        | Connection string to the Etcd cluster | `"192.168.0.1:2379,192.168.0.2:2379,192.168.0.3:2379"`
 | `keyPrefixPath`    | N        | Key prefix path in Etcd. Default is no prefix. | `"dapr"`
 | `tlsEnable`        | N        | Whether to enable TLS for connecting to Etcd. | `"false"`
-| `ca`               | N        | CA certificate for connecting to Etcd, PEM-encoded. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}).| `"-----BEGIN CERTIFICATE-----\nMIIC9TCCA..."`
-| `cert`             | N        | TLS certificate for connecting to Etcd, PEM-encoded. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}).| `"-----BEGIN CERTIFICATE-----\nMIIDUTCC..."`
-| `key`              | N        | TLS key for connecting to Etcd, PEM-encoded. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}).| `"-----BEGIN PRIVATE KEY-----\nMIIEpAIB..."`
+| `ca`               | N        | CA certificate for connecting to Etcd, PEM-encoded. Can be `secretKeyRef` to use a [secret reference]({{% ref component-secrets.md %}}).| `"-----BEGIN CERTIFICATE-----\nMIIC9TCCA..."`
+| `cert`             | N        | TLS certificate for connecting to Etcd, PEM-encoded. Can be `secretKeyRef` to use a [secret reference]({{% ref component-secrets.md %}}).| `"-----BEGIN CERTIFICATE-----\nMIIDUTCC..."`
+| `key`              | N        | TLS key for connecting to Etcd, PEM-encoded. Can be `secretKeyRef` to use a [secret reference]({{% ref component-secrets.md %}}).| `"-----BEGIN PRIVATE KEY-----\nMIIEpAIB..."`
 | `actorStateStore`    | N        | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 
 ## Setup Etcd
 
-{{< tabs "Self-Hosted" "Kubernetes" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 
 You can run Etcd database locally using Docker Compose. Create a new file called `docker-compose.yml` and add the following contents as an example:
 
@@ -94,20 +94,20 @@ This starts the Etcd server in the background and expose the default Etcd port o
 etcdctl --endpoints=localhost:2379 put mykey myvalue
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
 Use [Helm](https://helm.sh/) to quickly create an Etcd instance in your Kubernetes cluster. This approach requires [Installing Helm](https://github.com/helm/helm#install).
 
 Follow the [Bitnami instructions](https://github.com/bitnami/charts/tree/main/bitnami/etcd) to get started with setting up Etcd in Kubernetes.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
-- [State management building block]({{< ref state-management >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" %}}) for instructions on configuring state store components
+- [State management building block]({{% ref state-management %}})

@@ -16,9 +16,9 @@ Observe Dapr resiliency capabilities by simulating a system failure. In this Qui
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{< tabs "Python" "JavaScript" ".NET" "Java" "Go" >}}
+{{< tabpane text=true >}}
  <!-- Python -->
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ### Pre-requisites
 
@@ -90,7 +90,7 @@ Run the `order-processor` service alongside a Dapr sidecar. The Dapr sidecar the
 dapr run --app-id order-processor --resources-path ../../../resources/ -- python3
 ```
 
-Once the application has started, the `order-processor`service writes and reads `orderId` key/value pairs to the `statestore` Redis instance [defined in the `statestore.yaml` component]({{< ref "statemanagement-quickstart.md#statestoreyaml-component-file" >}}).
+Once the application has started, the `order-processor`service writes and reads `orderId` key/value pairs to the `statestore` Redis instance [defined in the `statestore.yaml` component]({{% ref "statemanagement-quickstart#statestoreyaml-component-file" %}}).
 
 ```bash
 == APP == Saving Order:  { orderId: '1' }
@@ -186,10 +186,10 @@ INFO[0036] Recovered processing operation component[statestore] output.
 == APP == Getting Order:  { orderId: '9' }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- JavaScript -->
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ### Pre-requisites
 
@@ -259,7 +259,7 @@ Run the `order-processor` service alongside a Dapr sidecar. The Dapr sidecar the
 dapr run --app-id order-processor --resources-path ../../../resources/ -- npm start
 ```
 
-Once the application has started, the `order-processor`service writes and reads `orderId` key/value pairs to the `statestore` Redis instance [defined in the `statestore.yaml` component]({{< ref "statemanagement-quickstart.md#statestoreyaml-component-file" >}}).
+Once the application has started, the `order-processor`service writes and reads `orderId` key/value pairs to the `statestore` Redis instance [defined in the `statestore.yaml` component]({{% ref "statemanagement-quickstart#statestoreyaml-component-file" %}}).
 
 ```bash
 == APP == Saving Order:  { orderId: '1' }
@@ -355,10 +355,10 @@ INFO[0036] Recovered processing operation component[statestore] output.
 == APP == Getting Order:  { orderId: '9' }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- .NET -->
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ### Pre-requisites
 
@@ -428,7 +428,7 @@ Run the `order-processor` service alongside a Dapr sidecar. The Dapr sidecar the
 dapr run --app-id order-processor --resources-path ../../../resources/ -- dotnet run
 ```
 
-Once the application has started, the `order-processor`service writes and reads `orderId` key/value pairs to the `statestore` Redis instance [defined in the `statestore.yaml` component]({{< ref "statemanagement-quickstart.md#statestoreyaml-component-file" >}}).
+Once the application has started, the `order-processor`service writes and reads `orderId` key/value pairs to the `statestore` Redis instance [defined in the `statestore.yaml` component]({{% ref "statemanagement-quickstart#statestoreyaml-component-file" %}}).
 
 ```bash
 == APP == Saving Order:  { orderId: '1' }
@@ -524,10 +524,10 @@ INFO[0036] Recovered processing operation component[statestore] output.
 == APP == Getting Order:  { orderId: '9' }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Java -->
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ### Pre-requisites
 
@@ -599,7 +599,7 @@ Run the `order-processor` service alongside a Dapr sidecar. The Dapr sidecar the
 dapr run --app-id order-processor --resources-path ../../../resources/ -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
-Once the application has started, the `order-processor`service writes and reads `orderId` key/value pairs to the `statestore` Redis instance [defined in the `statestore.yaml` component]({{< ref "statemanagement-quickstart.md#statestoreyaml-component-file" >}}).
+Once the application has started, the `order-processor`service writes and reads `orderId` key/value pairs to the `statestore` Redis instance [defined in the `statestore.yaml` component]({{% ref "statemanagement-quickstart#statestoreyaml-component-file" %}}).
 
 ```bash
 == APP == Saving Order:  { orderId: '1' }
@@ -695,10 +695,10 @@ INFO[0036] Recovered processing operation component[statestore] output.
 == APP == Getting Order:  { orderId: '9' }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Go -->
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ### Pre-requisites
 
@@ -767,7 +767,7 @@ Run the `order-processor` service alongside a Dapr sidecar. The Dapr sidecar the
 dapr run --app-id order-processor --resources-path ../../../resources -- go run .
 ```
 
-Once the application has started, the `order-processor`service writes and reads `orderId` key/value pairs to the `statestore` Redis instance [defined in the `statestore.yaml` component]({{< ref "statemanagement-quickstart.md#statestoreyaml-component-file" >}}).
+Once the application has started, the `order-processor`service writes and reads `orderId` key/value pairs to the `statestore` Redis instance [defined in the `statestore.yaml` component]({{% ref "statemanagement-quickstart#statestoreyaml-component-file" %}}).
 
 ```bash
 == APP == Saving Order:  { orderId: '1' }
@@ -863,9 +863,9 @@ INFO[0036] Recovered processing operation component[statestore] output.
 == APP == Getting Order:  { orderId: '9' }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Tell us what you think!
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this quickstart helpful? Do you have suggestions for improvement?
@@ -874,6 +874,6 @@ Join the discussion in our [discord channel](https://discord.com/channels/778680
 
 ## Next steps
 
-Learn more about [the resiliency feature]({{< ref resiliency-overview.md >}}) and how it works with Dapr's building block APIs.
+Learn more about [the resiliency feature]({{% ref resiliency-overview %}}) and how it works with Dapr's building block APIs.
 
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}

@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To set up RabbitMQ pub/sub, create a component of type `pubsub.rabbitmq`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
+To set up RabbitMQ pub/sub, create a component of type `pubsub.rabbitmq`. See the [pub/sub broker component file]({{% ref setup-pubsub.md %}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{% ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" %}}) on how to create and apply a pub/sub configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -66,10 +66,12 @@ spec:
     value: {podName}
   - name: heartBeat
     value: 10s
+  - name: publishMessagePropertiesToMetadata
+    value: "true"
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -81,7 +83,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | hostname | N* | The RabbitMQ hostname. *Mutally exclusive with connectionString field | `localhost` |
 | username | N* | The RabbitMQ username. *Mutally exclusive with connectionString field | `username` |
 | password | N* | The RabbitMQ password. *Mutally exclusive with connectionString field | `password` |
-| consumerID         | N        | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{< ref "component-schema.md#templated-metadata-values" >}})
+| consumerID         | N        | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{% ref "component-schema.md#templated-metadata-values" %}})
 | durable            | N        | Whether or not to use [durable](https://www.rabbitmq.com/queues.html#durability) queues. Defaults to `"false"`  | `"true"`, `"false"`
 | deletedWhenUnused  | N        | Whether or not the queue should be configured to [auto-delete](https://www.rabbitmq.com/queues.html) Defaults to `"true"` | `"true"`, `"false"`
 | autoAck  | N        | Whether or not the queue consumer should [auto-ack](https://www.rabbitmq.com/confirms.html) messages. Defaults to `"false"` | `"true"`, `"false"`
@@ -102,7 +104,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | clientKey | Required for using TLS  | TLS client key in PEM format. Must be used with `clientCert`. Can be `secretKeyRef` to use a secret reference. | `"-----BEGIN RSA PRIVATE KEY-----\n<base64-encoded PKCS8>\n-----END RSA PRIVATE KEY-----"`
 | clientName | N | This RabbitMQ [client-provided connection name](https://www.rabbitmq.com/connections.html#client-provided-names) is a custom identifier. If set, the identifier is mentioned in RabbitMQ server log entries and management UI. Can be set to {uuid}, {podName}, or {appID}, which is replaced by Dapr runtime to the real value. | `"app1"`, `{uuid}`, `{podName}`, `{appID}`
 | heartBeat  | N | Defines the heartbeat interval with the server, detecting the aliveness of the peer TCP connection with the RabbitMQ server. Defaults to `10s` . | `"10s"`
-
+| `publishMessagePropertiesToMetadata` | N | Whether to publish AMQP message properties (headers, message ID, etc.) to the metadata. | "true", "false"
 
 ## Communication using TLS
 
@@ -166,7 +168,7 @@ Note that while the `caCert` and `clientCert` values may not be secrets, they ca
 The RabbitMQ pub/sub component has no built-in support for retry strategies. This means that the sidecar sends a message to the service only once. When the service returns a result, the message will be marked as consumed regardless of whether it was processed correctly or not. Note that this is common among all Dapr PubSub components and not just RabbitMQ.
 Dapr can try redelivering a message a second time, when `autoAck` is set to `false` and `requeueInFailure` is set to `true`.
 
-To make Dapr use more sophisticated retry policies, you can apply a [retry resiliency policy]({{< ref "retries-overview.md" >}}) to the RabbitMQ pub/sub component.
+To make Dapr use more sophisticated retry policies, you can apply a [retry resiliency policy]({{% ref "retries-overview.md" %}}) to the RabbitMQ pub/sub component.
 
 There is a crucial difference between the two ways to retry messages:
 
@@ -175,9 +177,9 @@ There is a crucial difference between the two ways to retry messages:
 
 ## Create a RabbitMQ server
 
-{{< tabs "Self-Hosted" "Kubernetes" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 You can run a RabbitMQ server locally using Docker:
 
 ```bash
@@ -185,9 +187,9 @@ docker run -d --hostname my-rabbit --name some-rabbit rabbitmq:3
 ```
 
 You can then interact with the server using the client port: `localhost:5672`.
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 The easiest way to install RabbitMQ on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/rabbitmq):
 
 ```bash
@@ -201,9 +203,9 @@ This will install RabbitMQ into the `default` namespace. To interact with Rabbit
 For example, if installing using the example above, the RabbitMQ server client address would be:
 
 `rabbitmq.default.svc.cluster.local:5672`
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Use topic exchange to route messages
 
@@ -285,9 +287,9 @@ spec:
 
 ### Programmatic priority queue example
 
-{{< tabs Python JavaScript Go>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ```python
 @app.route('/dapr/subscribe', methods=['GET'])
@@ -305,9 +307,9 @@ def subscribe():
     return jsonify(subscriptions)
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 const express = require('express')
@@ -333,9 +335,9 @@ app.get('/dapr/subscribe', (req, res) => {
 })
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 package main
@@ -376,25 +378,25 @@ func configureSubscribeHandler(w http.ResponseWriter, _ *http.Request) {
 	json.NewEncoder(w).Encode(t)
 }
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### Setting a priority when publishing a message
 
 To set a priority on a message, add the publish metadata key `maxPriority` to the publish endpoint or SDK method.
 
-{{< tabs "HTTP API (Bash)" Python JavaScript Go>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 ```bash
 curl -X POST http://localhost:3601/v1.0/publish/order-pub-sub/orders?metadata.priority=3 -H "Content-Type: application/json" -d '{"orderId": "100"}'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ```python
 with DaprClient() as client:
@@ -406,28 +408,28 @@ with DaprClient() as client:
             metadata= { 'priority': '3' })
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 await client.pubsub.publish(PUBSUB_NAME, TOPIC_NAME, orderId, { 'priority': '3' });
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 client.PublishEvent(ctx, PUBSUB_NAME, TOPIC_NAME, []byte(strconv.Itoa(orderId)), map[string]string{"priority": "3"})
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Use quorum queues
 
-By default, Dapr creates `classic` queues. To create `quorum` queues, add the following metadata to your pub/sub [subscription]({{< ref subscription-schema.md >}})
+By default, Dapr creates `classic` queues. To create `quorum` queues, add the following metadata to your pub/sub [subscription]({{% ref subscription-schema.md %}})
 
 ```yaml
 apiVersion: dapr.io/v2alpha1
@@ -454,7 +456,7 @@ If you set both component-level and message-level TTL, the default component-lev
 ## Single Active Consumer
 
 The RabbitMQ [Single Active Consumer](https://www.rabbitmq.com/docs/consumers#single-active-consumer) setup ensures that only one consumer at a time processes messages from a queue and switches to another registered consumer if the active one is canceled or fails. This approach might be required when it is crucial for messages to be consumed in the exact order they arrive in the queue and if distributed processing with multiple instances is not supported.
-When this option is enabled on a queue by Dapr, an instance of the Dapr runtime will be the single active consumer. To allow another application instance to take over in case of failure, Dapr runtime must [probe the application's health]({{< ref "app-health.md" >}}) and unsubscribe from the pub/sub component.
+When this option is enabled on a queue by Dapr, an instance of the Dapr runtime will be the single active consumer. To allow another application instance to take over in case of failure, Dapr runtime must [probe the application's health]({{% ref "app-health.md" %}}) and unsubscribe from the pub/sub component.
 
 {{% alert title="Note" color="primary" %}}
 This pattern will prevent the application to scale as only one instance can process the load. While it might be interesting for Dapr integration with legacy or sensible applications, you should consider a design allowing distributed processing if you need scalability.
@@ -475,8 +477,13 @@ spec:
     singleActiveConsumer: "true"
 ```
 
+## Publishing message properties to metadata
+
+To enable [message properties](https://www.rabbitmq.com/docs/publishers#message-properties) being published in the metadata, set the `publishMessagePropertiesToMetadata` field to `"true"` in the component spec.
+This will include properties such as message ID, timestamp, and headers in the metadata of the published message.
+
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}}) in the Related links section
-- Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
-- [Pub/Sub building block]({{< ref pubsub >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}}) in the Related links section
+- Read [this guide]({{% ref "howto-publish-subscribe.md#step-2-publish-a-topic" %}}) for instructions on configuring pub/sub components
+- [Pub/Sub building block]({{% ref pubsub %}})

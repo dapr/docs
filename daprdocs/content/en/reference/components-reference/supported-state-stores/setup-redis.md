@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup Redis state store create a component of type `state.redis`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+To setup Redis state store create a component of type `state.redis`. See [this guide]({{% ref "howto-get-save-state.md#step-1-setup-a-state-store" %}}) on how to create and apply a state store configuration.
 
 {{% alert title="Limitations" color="warning" %}}
 Before using Redis and the Transactions API, make sure you're familiar with [Redis limitations regarding transactions](https://redis.io/docs/interact/transactions/#what-about-rollbacks).
@@ -44,6 +44,10 @@ spec:
     value: <bool> # Optional. Allowed: true, false.
   - name: sentinelMasterName
     value: <string> # Optional
+  - name: sentinelUsername
+    value: # Optional
+  - name: sentinelPassword
+    value: # Optional
   - name: redeliverInterval
     value: # Optional
   - name: processingTimeout
@@ -86,7 +90,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 
@@ -104,14 +108,16 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 | redisHost          | Y        | Connection-string for the redis host  | `localhost:6379`, `redis-master.default.svc.cluster.local:6379`
 | redisPassword      | N        | Password for Redis host. No Default. Can be `secretKeyRef` to use a secret reference  | `""`, `"KeFg23!"`
 | redisUsername      | N        | Username for Redis host. Defaults to empty. Make sure your redis server version is 6 or above, and have created acl rule correctly. | `""`, `"default"`
-| useEntraID | N | Implements EntraID support for Azure Cache for Redis. Before enabling this: <ul><li>The `redisHost` name must be specified in the form of `"server:port"`</li><li>TLS must be enabled</li></ul> Learn more about this setting under [Create a Redis instance > Azure Cache for Redis]({{< ref "#setup-redis" >}}) | `"true"`, `"false"` |
+| useEntraID | N | Implements EntraID support for Azure Cache for Redis. Before enabling this: <ul><li>The `redisHost` name must be specified in the form of `"server:port"`</li><li>TLS must be enabled</li></ul> Learn more about this setting under [Create a Redis instance > Azure Cache for Redis]({{% ref "#setup-redis" %}}) | `"true"`, `"false"` |
 | enableTLS          | N         | If the Redis instance supports TLS with public certificates, can be configured to be enabled or disabled. Defaults to `"false"` | `"true"`, `"false"`
-| clientCert         | N         | The content of the client certificate, used for Redis instances that require client-side certificates. Must be used with `clientKey` and `enableTLS` must be set to true. It is recommended to use a secret store as described [here]({{< ref component-secrets.md >}})   | `"----BEGIN CERTIFICATE-----\nMIIC..."` |
-| clientKey          | N         | The content of the client private key, used in conjunction with `clientCert` for authentication. It is recommended to use a secret store as described [here]({{< ref component-secrets.md >}}) | `"----BEGIN PRIVATE KEY-----\nMIIE..."` |
+| clientCert         | N         | The content of the client certificate, used for Redis instances that require client-side certificates. Must be used with `clientKey` and `enableTLS` must be set to true. It is recommended to use a secret store as described [here]({{% ref component-secrets.md %}})   | `"----BEGIN CERTIFICATE-----\nMIIC..."` |
+| clientKey          | N         | The content of the client private key, used in conjunction with `clientCert` for authentication. It is recommended to use a secret store as described [here]({{% ref component-secrets.md %}}) | `"----BEGIN PRIVATE KEY-----\nMIIE..."` |
 | maxRetries         | N         | Maximum number of retries before giving up. Defaults to `3` | `5`, `10`
 | maxRetryBackoff    | N         | Maximum backoff between each retry. Defaults to `2` seconds; `"-1"` disables backoff. | `3000000000`
-| failover           | N         | Property to enabled failover configuration. Needs sentinelMasterName to be set. The redisHost should be the sentinel host address. See [Redis Sentinel Documentation](https://redis.io/docs/manual/sentinel/). Defaults to `"false"` | `"true"`, `"false"`
-| sentinelMasterName | N         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/manual/sentinel/) | `""`,  `"127.0.0.1:6379"`
+| failover           | N         | Property to enable failover configuration. Needs sentinelMasterName to be set. The redisHost should be the sentinel host address. See [Redis Sentinel Documentation](https://redis.io/docs/manual/sentinel/). Defaults to `"false"` | `"true"`, `"false"`
+| sentinelMasterName | N         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/manual/sentinel/) | `""`,  `"mymaster"`
+| sentinelUsername   | N         | Username for Redis Sentinel. Applicable only when "failover" is true, and Redis Sentinel has authentication enabled | `"username"`
+| sentinelPassword   | N         | Password for Redis Sentinel. Applicable only when "failover" is true, and Redis Sentinel has authentication enabled | `"password"`
 | redeliverInterval  | N        | The interval between checking for pending messages to redelivery. Defaults to `"60s"`. `"0"` disables redelivery. | `"30s"`
 | processingTimeout  | N        | The amount time a message must be pending before attempting to redeliver it. Defaults to `"15s"`. `"0"` disables redelivery. | `"30s"`
 | redisType          | N        | The type of redis. There are two valid values, one is `"node"` for single node mode, the other is `"cluster"` for redis cluster mode. Defaults to `"node"`. | `"cluster"`
@@ -128,7 +134,7 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 | minIdleConns       | N        | Minimum number of idle connections to keep open in order to avoid the performance degradation associated with creating new connections. Defaults to `"0"`. | `"2"`
 | idleCheckFrequency        | N        | Frequency of idle checks made by idle connections reaper. Default is `"1m"`. `"-1"` disables idle connections reaper. | `"-1"`
 | idleTimeout        | N        | Amount of time after which the client closes idle connections. Should be less than server's timeout. Default is `"5m"`. `"-1"` disables idle timeout check. | `"10m"`
-| ttlInSeconds       | N         | Allows specifying a default Time-to-live (TTL) in seconds that will be applied to every state store request unless TTL is explicitly defined via the [request metadata]({{< ref "state-store-ttl.md" >}}). | `600`
+| ttlInSeconds       | N         | Allows specifying a default Time-to-live (TTL) in seconds that will be applied to every state store request unless TTL is explicitly defined via the [request metadata]({{% ref "state-store-ttl.md" %}}). | `600`
 | queryIndexes       | N         | Indexing schemas for querying JSON objects | see [Querying JSON objects](#querying-json-objects)
 | actorStateStore    | N        | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 
@@ -136,13 +142,13 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 
 Dapr can use any Redis instance: containerized, running on your local dev machine, or a managed cloud service.
 
-{{< tabs "Self-Hosted" "Kubernetes" "AWS" "Azure" "GCP" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 A Redis instance is automatically created as a Docker container when you run `dapr init`
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Kubernetes cluster. This approach requires [Installing Helm](https://github.com/helm/helm#install).
 
 1. Install Redis into your cluster. Note that we're explicitly setting an image tag to get a version greater than 5, which is what Dapr' pub/sub functionality requires. If you're intending on using Redis as just a state store (and not for pub/sub), you do not have to set the image version.
@@ -169,13 +175,13 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
         - name: redisPassword
           value: lhDOkwTlp0
     ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "AWS" %}}
 [AWS Redis](https://aws.amazon.com/redis/)
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Azure" %}}
 1. [Create an Azure Cache for Redis instance using the official Microsoft documentation.](https://docs.microsoft.com/azure/azure-cache-for-redis/quickstart-create-redis)
 
 1. Once your instance is created, grab the Host name (FQDN) and your access key from the Azure portal. 
@@ -192,7 +198,7 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
    
 1. Set the `redisHost` key to `[HOST NAME FROM PREVIOUS STEP]:6379` and the `redisPassword` key to the key you saved earlier. 
    
-   **Note:** In a production-grade application, follow [secret management]({{< ref component-secrets.md >}}) instructions to securely manage your secrets.
+   **Note:** In a production-grade application, follow [secret management]({{% ref component-secrets.md %}}) instructions to securely manage your secrets.
 
 1. Enable EntraID support:
    - Enable Entra ID authentication on your Azure Redis server. This may takes a few minutes.
@@ -200,15 +206,15 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 
 1. Set `enableTLS` to `"true"` to support TLS. 
 
-> **Note:**`useEntraID` assumes that either your UserPrincipal (via AzureCLICredential) or the SystemAssigned managed identity have the RedisDataOwner role permission. If a user-assigned identity is used, [you need to specify the `azureClientID` property]({{< ref "howto-mi.md#set-up-identities-in-your-component" >}}).
+> **Note:**`useEntraID` assumes that either your UserPrincipal (via AzureCLICredential) or the SystemAssigned managed identity have the RedisDataOwner role permission. If a user-assigned identity is used, [you need to specify the `azureClientID` property]({{% ref "howto-mi.md#set-up-identities-in-your-component" %}}).
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "GCP" %}}
 [GCP Cloud MemoryStore](https://cloud.google.com/memorystore/)
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Querying JSON objects (optional)
 
@@ -233,10 +239,10 @@ In addition to supporting storing and querying state data as key/value pairs, th
 ]
 ```
 3. When calling state management API, add the following metadata to the API calls:
-- [Save State]({{< ref "state_api.md#save-state" >}}), [Get State]({{< ref "state_api.md#get-state" >}}), [Delete State]({{< ref "state_api.md#delete-state" >}}):
+- [Save State]({{% ref "state_api.md#save-state" %}}), [Get State]({{% ref "state_api.md#get-state" %}}), [Delete State]({{% ref "state_api.md#delete-state" %}}):
   - add `metadata.contentType=application/json` URL query parameter to HTTP API request
   - add `"contentType": "application/json"` pair to the metadata of gRPC API request
-- [Query State]({{< ref "state_api.md#query-state" >}}):
+- [Query State]({{% ref "state_api.md#query-state" %}}):
   - add `metadata.contentType=application/json&metadata.queryIndexName=<indexing name>` URL query parameters to HTTP API request
   - add `"contentType" : "application/json"` and `"queryIndexName" : "<indexing name>"` pairs to the metadata of gRPC API request
 
@@ -300,12 +306,12 @@ spec:
 
 Consecutively, you can now store, retrieve, and query these documents.
 
-Consider the example from ["How-To: Query state"]({{< ref "howto-state-query-api.md#example-data-and-query" >}}) guide. Let's run it with Redis.
+Consider the example from ["How-To: Query state"]({{% ref "howto-state-query-api.md#example-data-and-query" %}}) guide. Let's run it with Redis.
 
 
-{{< tabs "Self-Hosted" "Kubernetes" "Azure" "AWS" "GCP" "Redis Enterprise Cloud" "Alibaba Cloud" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 If you are using a self-hosted deployment of Dapr, a Redis instance without the JSON module is automatically created as a Docker container when you run `dapr init`.
 
 Alternatively, you can create an instance of Redis by running the following command:
@@ -321,9 +327,9 @@ Use following command to create an instance of redis compatible with query API.
 ```bash
 docker run -p 9445:9445 --name rejson --rm redislabs/rejson:2.0.6
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 Follow instructions for [Redis deployment in Kubernetes](#setup-redis) with one extra detail.
 
 When installing Redis Helm package, provide a configuration file that specifies container image and enables required modules:
@@ -345,39 +351,39 @@ master:
    - /usr/lib/redis/modules/redisearch.so
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Azure" %}}
 {{% alert title="Note" color="warning" %}}
 Azure Redis managed service does not support the RedisJson module and cannot be used with query.
 {{% /alert %}}
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "AWS" %}}
 Follow instructions for [Redis deployment in AWS](#setup-redis).
 {{% alert title="Note" color="primary" %}}
 For query support you need to enable RediSearch and RedisJson.
 {{% /alert %}}
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "GCP" %}}
 {{% alert title="Note" color="warning" %}}
 Memory Store does not support modules and cannot be used with query.
 {{% /alert %}}
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Redis Enterprise Cloud" %}}
 [Redis Enterprise Cloud](https://docs.redis.com/latest/rc/)
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Alibaba Cloud" %}}
 <!-- IGNORE_LINKS -->
 [Alibaba Cloud](https://www.alibabacloud.com/product/apsaradb-for-redis)
 <!-- END_IGNORE -->
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 Next is to start a Dapr application. Refer to this [component configuration file](../../../../developing-applications/building-blocks/state-management/query-api-examples/components/redis/redis.yml), which contains query indexing schemas. Make sure to modify the `redisHost` to reflect the local forwarding port which `redislabs/rejson` uses.
 ```bash
@@ -486,9 +492,9 @@ The result will be:
 }
 ```
 
-The query syntax and documentation is available [here]({{< ref howto-state-query-api.md >}})
+The query syntax and documentation is available [here]({{% ref howto-state-query-api.md %}})
 
 ## Related links
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
-- [State management building block]({{< ref state-management >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" %}}) for instructions on configuring state store components
+- [State management building block]({{% ref state-management %}})

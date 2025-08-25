@@ -10,7 +10,7 @@ description: Get started with the Dapr Cryptography building block
 The cryptography building block is currently in **alpha**. 
 {{% /alert %}}
 
-Let's take a look at the Dapr [cryptography building block]({{< ref cryptography >}}). In this Quickstart, you'll create an application that encrypts and decrypts data using the Dapr cryptography APIs. You'll:
+Let's take a look at the Dapr [cryptography building block]({{% ref cryptography %}}). In this Quickstart, you'll create an application that encrypts and decrypts data using the Dapr cryptography APIs. You'll:
 
 - Encrypt and then decrypt a short string (using an RSA key), reading the result in-memory, in a Go byte slice.
 - Encrypt and then decrypt a large file (using an AES key), storing the encrypted and decrypted data to files using streams.
@@ -23,10 +23,10 @@ This example uses the Dapr SDK, which leverages gRPC and is **strongly** recomme
 
 Currently, you can experience the cryptography API using the Go SDK.
 
-{{< tabs "JavaScript" "Go" >}}
+{{< tabpane text=true >}}
 
  <!-- JavaScript -->
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 > This quickstart includes a JavaScript application called `crypto-quickstart`.
 
@@ -225,10 +225,10 @@ The application then decrypts the large image file:
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Go -->
-{{% codetab %}}
+{{% tab "Go" %}}
 
 > This quickstart includes a Go application called `crypto-quickstart`.
 
@@ -466,16 +466,16 @@ The application then decrypts the large image file:
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Watch the demo
 
 Watch this [demo video of the cryptography API from the Dapr Community Call #83](https://youtu.be/PRWYX4lb2Sg?t=1148):
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/PRWYX4lb2Sg?start=1148" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{{< youtube id=PRWYX4lb2Sg start=1148 >}}
 
 ## Tell us what you think!
 
@@ -485,7 +485,7 @@ Join the discussion in our [discord channel](https://discord.com/channels/778680
 
 ## Next steps
 
-- Walk through [more examples of encrypting and decrypting using the cryptography API]({{< ref howto-cryptography.md >}})
-- Learn more about [cryptography as a Dapr building block]({{< ref cryptography-overview.md >}})
+- Walk through [more examples of encrypting and decrypting using the cryptography API]({{% ref howto-cryptography %}})
+- Learn more about [cryptography as a Dapr building block]({{% ref cryptography-overview %}})
 
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}

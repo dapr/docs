@@ -22,11 +22,11 @@ When you run `dapr init` in self-hosted mode, Dapr creates a default Redis `stat
 
 With the `statestore.yaml` component, you can easily swap out underlying components without application code changes.
 
-See a [list of supported state stores]({{< ref supported-state-stores >}}).
+See a [list of supported state stores]({{% ref supported-state-stores %}}).
 
 ### Kubernetes
 
-See [how to setup different state stores on Kubernetes]({{<ref setup-state-store>}}).
+See [how to setup different state stores on Kubernetes]({{%ref setup-state-store%}}).
 
 ## Strong and eventual consistency
 

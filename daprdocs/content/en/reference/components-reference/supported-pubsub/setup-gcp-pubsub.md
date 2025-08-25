@@ -10,7 +10,7 @@ aliases:
 
 ## Create a Dapr component
 
-To set up GCP pub/sub, create a component of type `pubsub.gcp.pubsub`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
+To set up GCP pub/sub, create a component of type `pubsub.gcp.pubsub`. See the [pub/sub broker component file]({{% ref setup-pubsub.md %}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{% ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" %}}) on how to create and apply a pub/sub configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -69,7 +69,7 @@ spec:
     value: 10
 ```
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -78,7 +78,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|---------|---------|
 | projectId     | Y | GCP project ID | `myproject-123`
 | endpoint       | N  | GCP endpoint for the component to use. Only used for local development (for example) with [GCP Pub/Sub Emulator](https://cloud.google.com/pubsub/docs/emulator). The `endpoint` is unnecessary when running against the GCP production API. | `"http://localhost:8085"`
-| `consumerID`         | N        | The Consumer ID organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. The `consumerID`, along with the `topic` provided as part of the request, are used to build the Pub/Sub subscription ID | Can be set to string value (such as `"channel1"`) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{< ref "component-schema.md#templated-metadata-values" >}})
+| `consumerID`         | N        | The Consumer ID organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. The `consumerID`, along with the `topic` provided as part of the request, are used to build the Pub/Sub subscription ID | Can be set to string value (such as `"channel1"`) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{% ref "component-schema.md#templated-metadata-values" %}})
 | identityProjectId | N | If the GCP pubsub project is different from the identity project, specify the identity project using this attribute  | `"myproject-123"`
 | privateKeyId | N | If using explicit credentials, this field should contain the `private_key_id` field from the service account json document | `"my-private-key"`
 | privateKey    | N |  If using explicit credentials, this field should contain the `private_key` field from the service account json | `-----BEGIN PRIVATE KEY-----MIIBVgIBADANBgkqhkiG9w0B`
@@ -113,9 +113,9 @@ Since the GCP Pub/Sub component uses the GCP Go Client Libraries, by default it 
 
 ## Create a GCP Pub/Sub
 
-{{< tabs "Self-Hosted" "GCP" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 For local development, the [GCP Pub/Sub Emulator](https://cloud.google.com/pubsub/docs/emulator) is used to test the GCP Pub/Sub Component. Follow [these instructions](https://cloud.google.com/pubsub/docs/emulator#start) to run the GCP Pub/Sub Emulator.
 
 To run the GCP Pub/Sub Emulator locally using Docker, use the following `docker-compose.yaml`:
@@ -153,20 +153,20 @@ spec:
     value: "localhost:8085"
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
 
-{{% codetab %}}
+{{% tab "GCP" %}}
 
 You can use either "explicit" or "implicit" credentials to configure access to your GCP pubsub instance. If using explicit, most fields are required. Implicit relies on dapr running under a Kubernetes service account (KSA) mapped to a Google service account (GSA) which has the necessary permissions to access pubsub. In implicit mode, only the `projectId` attribute is needed, all other are optional.
 
 Follow the instructions [here](https://cloud.google.com/pubsub/docs/quickstart-console) on setting up Google Cloud Pub/Sub system.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Related links
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
-- [Pub/Sub building block]({{< ref pubsub >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-publish-subscribe.md#step-2-publish-a-topic" %}}) for instructions on configuring pub/sub components
+- [Pub/Sub building block]({{% ref pubsub %}})

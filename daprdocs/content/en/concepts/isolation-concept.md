@@ -12,15 +12,15 @@ Dapr supports namespacing in service invocation calls between applications, when
 
 To get started, create and configure your namespace.
 
-{{< tabs "Self-Hosted" "Kubernetes">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab header="Self-Hosted" %}}
 
 In self-hosted mode, specify the namespace for a Dapr instance by setting the `NAMESPACE` environment variable.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab header="Kubernetes" %}}
 
 On Kubernetes, create and configure the namespace:
 
@@ -31,15 +31,14 @@ kubectl config set-context --current --namespace=namespaceA
 
 Then deploy your applications into this namespace.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 Learn how to use namespacing throughout Dapr:
 
-- [Service Invocation namespaces]({{< ref service-invocation-namespaces.md >}})
-- [How to: Set up pub/sub namespace consumer groups]({{< ref howto-namespace.md >}})
+- [Service Invocation namespaces]({{% ref service-invocation-namespaces %}})
+- [How to: Set up pub/sub namespace consumer groups]({{% ref howto-namespace %}})
 - Components:
-  - [How to: Configure pub/sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
-  - [Scope components to one or more applications]({{< ref component-scopes.md >}})
-- [Namespaced actors]({{< ref namespaced-actors.md >}})
+  - [How to: Configure pub/sub components with multiple namespaces]({{% ref pubsub-namespaces %}})
+  - [Scope components to one or more applications]({{% ref component-scopes %}})

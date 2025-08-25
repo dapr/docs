@@ -6,7 +6,7 @@ weight: 2000
 description: "Learn more about the Dapr Jobs features and concepts"
 ---
 
-Now that you've learned about the [jobs building block]({{< ref jobs-overview.md >}}) at a high level, let's deep dive
+Now that you've learned about the [jobs building block]({{% ref jobs-overview %}}) at a high level, let's deep dive 
 into the features and concepts included with Dapr Jobs and the various SDKs. Dapr Jobs:
 - Provides a robust and scalable API for scheduling operations to be triggered in the future.
 - Exposes several capabilities which are common across all supported languages.

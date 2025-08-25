@@ -17,13 +17,13 @@ Copy and paste the following installer snippet into your application's YAML file
   uses: dapr/setup-dapr@v1
 ```
 
-The [`dapr/setup-dapr` action](https://github.com/dapr/setup-dapr) will install the specified version of the Dapr CLI on macOS, Linux, and Windows runners. Once installed, you can run any [Dapr CLI command]({{< ref cli >}}) to manage your Dapr environments.
+The [`dapr/setup-dapr` action](https://github.com/dapr/setup-dapr) will install the specified version of the Dapr CLI on macOS, Linux, and Windows runners. Once installed, you can run any [Dapr CLI command]({{% ref cli %}}) to manage your Dapr environments.
 
 Refer to the [`action.yml` metadata file](https://github.com/dapr/setup-dapr/blob/main/action.yml) for details about all the inputs.
 
 ## Example
 
-For example, for an application using the [Dapr extention for Azure Kubernetes Service (AKS)]({{< ref azure-kubernetes-service-extension.md >}}), your application YAML will look like the following:
+For example, for an application using the [Dapr extention for Azure Kubernetes Service (AKS)]({{% ref azure-kubernetes-service-extension.md %}}), your application YAML will look like the following:
 
 ```yaml
 - name: Install Dapr
@@ -50,4 +50,3 @@ For example, for an application using the [Dapr extention for Azure Kubernetes S
 ## Next steps
 
 - Learn more about [GitHub Actions](https://docs.github.com/en/actions).
-- Follow the tutorial to learn how [GitHub Actions works with your Dapr container app (Azure Container Apps)](https://learn.microsoft.com/azure/container-apps/dapr-github-actions?tabs=azure-cli)

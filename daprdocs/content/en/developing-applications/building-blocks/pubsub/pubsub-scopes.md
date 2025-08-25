@@ -8,7 +8,7 @@ description: "Use scopes to limit pub/sub topics to specific applications"
 
 ## Introduction
 
-[Namespaces or component scopes]({{< ref component-scopes.md >}}) can be used to limit component access to particular applications. These application scopes added to a component limit only the applications with specific IDs to be able to use the component.
+[Namespaces or component scopes]({{% ref component-scopes %}}) can be used to limit component access to particular applications. These application scopes added to a component limit only the applications with specific IDs to be able to use the component.
 
 In addition to this general component scope, the following can be limited for pub/sub components:
 - Which topics can be used (published or subscribed)
@@ -202,13 +202,11 @@ The table below shows which application is allowed to subscribe to the topics:
 
 ## Demo
 
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/7VdWBBGcbHQ?start=513" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
+{{< youtube id=7VdWBBGcbHQ start=513 >}}
 
 ## Next steps
 
-- Learn [how to configure pub/sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
-- Learn about [message time-to-live]({{< ref pubsub-message-ttl.md >}})
-- List of [pub/sub components]({{< ref supported-pubsub >}})
-- Read the [API reference]({{< ref pubsub_api.md >}})
+- Learn [how to configure pub/sub components with multiple namespaces]({{% ref pubsub-namespaces %}})
+- Learn about [message time-to-live]({{% ref pubsub-message-ttl %}})
+- List of [pub/sub components]({{% ref supported-pubsub %}})
+- Read the [API reference]({{% ref pubsub_api %}})

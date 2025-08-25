@@ -9,9 +9,9 @@ aliases:
 
 ## Component format
 
-To setup AWS Secrets Manager secret store create a component of type `secretstores.aws.secretmanager`. See [this guide]({{< ref "setup-secret-store.md#apply-the-configuration" >}}) on how to create and apply a secretstore configuration. See this guide on [referencing secrets]({{< ref component-secrets.md >}}) to retrieve and use the secret with Dapr components.
+To setup AWS Secrets Manager secret store create a component of type `secretstores.aws.secretmanager`. See [this guide]({{% ref "setup-secret-store.md#apply-the-configuration" %}}) on how to create and apply a secretstore configuration. See this guide on [referencing secrets]({{% ref component-secrets.md %}}) to retrieve and use the secret with Dapr components.
 
-See [Authenticating to AWS]({{< ref authenticating-aws.md >}}) for information about authentication-related attributes.
+See [Authenticating to AWS]({{% ref authenticating-aws.md %}}) for information about authentication-related attributes.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -32,7 +32,7 @@ spec:
     value: "[aws_session_token]"
 ```
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a local secret store such as [Kubernetes secret store]({{< ref kubernetes-secret-store.md >}}) or a [local file]({{< ref file-secret-store.md >}}) to bootstrap secure key storage.
+The above example uses secrets as plain strings. It is recommended to use a local secret store such as [Kubernetes secret store]({{% ref kubernetes-secret-store.md %}}) or a [local file]({{% ref file-secret-store.md %}}) to bootstrap secure key storage.
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -50,7 +50,7 @@ When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernet
 
 ## Optional per-request metadata properties
 
-The following [optional query parameters]({{< ref "secrets_api#query-parameters" >}}) can be provided when retrieving secrets from this secret store:
+The following [optional query parameters]({{% ref "secrets_api#query-parameters" %}}) can be provided when retrieving secrets from this secret store:
 
 Query Parameter | Description
 --------- | -----------
@@ -62,8 +62,8 @@ Query Parameter | Description
 Setup AWS Secrets Manager using the AWS documentation: https://docs.aws.amazon.com/secretsmanager/latest/userguide/tutorials_basic.html.
 
 ## Related links
-- [Secrets building block]({{< ref secrets >}})
-- [How-To: Retrieve a secret]({{< ref "howto-secrets.md" >}})
-- [How-To: Reference secrets in Dapr components]({{< ref component-secrets.md >}})
-- [Secrets API reference]({{< ref secrets_api.md >}})
-- [Authenticating to AWS]({{< ref authenticating-aws.md >}})
+- [Secrets building block]({{% ref secrets %}})
+- [How-To: Retrieve a secret]({{% ref "howto-secrets.md" %}})
+- [How-To: Reference secrets in Dapr components]({{% ref component-secrets.md %}})
+- [Secrets API reference]({{% ref secrets_api.md %}})
+- [Authenticating to AWS]({{% ref authenticating-aws.md %}})

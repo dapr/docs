@@ -91,9 +91,9 @@ Metadata can be sent via query parameters in the request's URL. It must be prefi
 
 Parameter | Description
 --------- | -----------
-`metadata.ttlInSeconds` | The number of seconds for the message to expire, as [described here]({{< ref state-store-ttl.md >}})
+`metadata.ttlInSeconds` | The number of seconds for the message to expire, as [described here]({{% ref state-store-ttl.md %}})
 
-> **TTL:** Only certain state stores support the TTL option, according the [supported state stores]({{< ref supported-state-stores.md >}}).
+> **TTL:** Only certain state stores support the TTL option, according the [supported state stores]({{% ref supported-state-stores.md %}}).
 
 ### HTTP Response
 
@@ -456,11 +456,11 @@ POST http://localhost:3500/v1.0-alpha1/state/myStore/query?metadata.partitionKey
 
 ## State transactions
 
-Persists the changes to the state store as a [transactional operation]({{< ref "state-management-overview.md#transactional-operations" >}}).
+Persists the changes to the state store as a [transactional operation]({{% ref "state-management-overview.md#transactional-operations" %}}).
 
 > This API depends on a state store component that supports transactions.
 
-Refer to the [state store component spec]({{< ref "supported-state-stores.md" >}}) for a full, current list of state stores that support transactions.
+Refer to the [state store component spec]({{% ref "supported-state-stores.md" %}}) for a full, current list of state stores that support transactions.
 
 #### HTTP Request
 
@@ -544,7 +544,7 @@ curl -X POST http://localhost:3500/v1.0/state/starwars/transaction \
 
 ## Configuring state store for actors
 
-Actors don't support multiple state stores and require a transactional state store to be used with Dapr. [View which services currently implement the transactional state store interface]({{< ref "supported-state-stores.md" >}}).
+Actors don't support multiple state stores and require a transactional state store to be used with Dapr. [View which services currently implement the transactional state store interface]({{% ref "supported-state-stores.md" %}}).
 
 Specify which state store to be used for actors with a `true` value for the property `actorStateStore` in the metadata section of the `statestore.yaml` component file.
 For example, the following components yaml will configure Redis to be used as the state store for Actors.
@@ -704,5 +704,5 @@ The following is an example walk-through of an ETag usage when *setting*/*deleti
 
 ## Next Steps
 
-- [State management overview]({{< ref state-management-overview.md >}})
-- [How-To: Save & get state]({{< ref howto-get-save-state.md >}})
+- [State management overview]({{% ref state-management-overview.md %}})
+- [How-To: Save & get state]({{% ref howto-get-save-state.md %}})

@@ -16,15 +16,15 @@ Input bindings are ideal for event-driven processing, data pipelines, or general
 
 <img src="/images/howto-triggers/kafka-input-binding.png" width=1000 alt="Diagram showing bindings of example service">
 
-This guide uses a Kafka binding as an example. You can find your preferred binding spec from [the list of bindings components]({{< ref setup-bindings >}}). In this guide:
+This guide uses a Kafka binding as an example. You can find your preferred binding spec from [the list of bindings components]({{% ref setup-bindings %}}). In this guide:
 
 1. The example invokes the `/binding` endpoint with `checkout`, the name of the binding to invoke.
 1. The payload goes inside the mandatory `data` field, and can be any JSON serializable value.
-1. The `operation` field tells the binding what action it needs to take. For example, [the Kafka binding supports the `create` operation]({{< ref "kafka.md#binding-support" >}}).
-   - You can check [which operations (specific to each component) are supported for every output binding]({{< ref supported-bindings >}}).
+1. The `operation` field tells the binding what action it needs to take. For example, [the Kafka binding supports the `create` operation]({{% ref "kafka#binding-support" %}}).
+   - You can check [which operations (specific to each component) are supported for every output binding]({{% ref supported-bindings %}}).
 
 {{% alert title="Note" color="primary" %}}
- If you haven't already, [try out the bindings quickstart]({{< ref bindings-quickstart.md >}}) for a quick walk-through on how to use the bindings API.
+ If you haven't already, [try out the bindings quickstart]({{% ref bindings-quickstart %}}) for a quick walk-through on how to use the bindings API.
 
 {{% /alert %}}
 
@@ -37,11 +37,11 @@ Create a new binding component named `checkout`. Within the `metadata` section, 
 - The topic to which you'll publish the message
 - The broker
 
-When creating the binding component, [specify the supported `direction` of the binding]({{< ref "bindings_api.md#binding-direction-optional" >}}). 
+When creating the binding component, [specify the supported `direction` of the binding]({{% ref "bindings_api#binding-direction-optional" %}}). 
 
-{{< tabs "Self-Hosted (CLI)" Kubernetes >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted (CLI)" %}}
 
 Use the `--resources-path` flag with the `dapr run` command to point to your custom resources directory.
 
@@ -71,9 +71,9 @@ spec:
     value: input
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
 To deploy into a Kubernetes cluster, run `kubectl apply -f binding.yaml`.
 
@@ -103,9 +103,9 @@ spec:
     value: input
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Listen for incoming events (input binding)
 
@@ -115,9 +115,11 @@ Configure your application to receive incoming events. If you're using HTTP, you
 
 Below are code examples that leverage Dapr SDKs to demonstrate an input binding.
 
-{{< tabs ".NET" Java Python Go JavaScript>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
+
+The following example demonstrates how to configure an input binding using ASP.NET Core controllers.
 
 The following example demonstrates how to configure an input binding using ASP.NET Core controllers.
 
@@ -150,9 +152,9 @@ app.MapPost("checkout", ([FromBody] int orderId) =>
 });
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ```java
 //dependencies
@@ -175,9 +177,9 @@ public class CheckoutServiceController {
 
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ```python
 #dependencies
@@ -196,9 +198,9 @@ app.run(6002)
 
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 //dependencies
@@ -230,9 +232,9 @@ func main() {
 
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript%}}" %}}
 
 ```javascript
 //dependencies 
@@ -265,9 +267,9 @@ async function start() {
 
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### ACK an event
 
@@ -296,7 +298,7 @@ Event delivery guarantees are controlled by the binding implementation. Dependin
 
 ## References
 
-- [Bindings building block]({{< ref bindings >}})
-- [Bindings API]({{< ref bindings_api.md >}})
-- [Components concept]({{< ref components-concept.md >}})
-- [Supported bindings]({{< ref supported-bindings >}})
+- [Bindings building block]({{% ref bindings %}})
+- [Bindings API]({{% ref bindings_api %}})
+- [Components concept]({{% ref components-concept %}})
+- [Supported bindings]({{% ref supported-bindings %}})

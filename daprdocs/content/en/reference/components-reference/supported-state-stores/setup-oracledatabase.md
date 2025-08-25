@@ -33,7 +33,7 @@ spec:
   #  value: "true"
 ```
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -77,7 +77,7 @@ You can easily inspect all state stored with SQL queries against the `tableName`
 
 
 ## Time To Live and State Expiration
-The Oracle Database state store component supports Dapr's Time To Live logic that ensures that state cannot be retrieved after it has expired. See [this How To on Setting State Time To Live]({{< ref "state-store-ttl.md" >}}) for details.
+The Oracle Database state store component supports Dapr's Time To Live logic that ensures that state cannot be retrieved after it has expired. See [this How To on Setting State Time To Live]({{% ref "state-store-ttl.md" %}}) for details.
 
 The Oracle Database does not have native support for a Time-To-Live setting. The implementation in this component uses a column called `EXPIRATION_TIME` to hold the time after which the record is considered *expired*. The value in this column is set only when a TTL was specified in a `Set` request. It is calculated as the current UTC timestamp with the TTL period added to it. When state is retrieved through a call to `Get`, this component checks if it has the `EXPIRATION_TIME` set and if so, it checks whether it is in the past. In that case, no state is returned. 
 
@@ -129,9 +129,9 @@ Oracle Database state store does not currently support the Query API.
 
 ## Create an Oracle Database and User Schema
 
-{{< tabs "Self-Hosted" "Autonomous Database on OCI">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 
 1. Run an instance of Oracle Database. You can run a local instance of Oracle Database in Docker CE with the following command - or of course use an existing Oracle Database:     
      ```bash
@@ -173,9 +173,9 @@ The Oracle Database state store component checks if the table for storing state 
 			update_time TIMESTAMP WITH TIME ZONE NULL
       )
     ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Autonomous Database on OCI" %}}
 
 1. Create a free (or paid for) Autonomous Transaction Processing (ATP) or ADW (Autonomous Data Warehouse) instance on Oracle Cloud Infrastructure, as described in the [OCI documentation for the always free autonomous database](https://docs.oracle.com/en/cloud/paas/autonomous-database/adbsa/autonomous-always-free.html#GUID-03F9F3E8-8A98-4792-AB9C-F0BACF02DC3E).
 
@@ -208,12 +208,12 @@ The Oracle Database state store component checks if the table for storing state 
       )
     ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
 
-{{% /tabs %}}
+{{< /tabpane >}}
 
 ## Related links
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
-- [State management building block]({{< ref state-management >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" %}}) for instructions on configuring state store components
+- [State management building block]({{% ref state-management %}})

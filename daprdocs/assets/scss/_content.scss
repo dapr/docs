@@ -12,6 +12,7 @@
     > h1 {
         font-weight: $font-weight-bold;
         margin-bottom: .5rem;
+        color: $secondary;
     }
 
     > h2 {
@@ -64,6 +65,27 @@
         @extend .td-max-width-on-larger-screens;
     }
 
+    a, a:visited {
+        color: $secondary;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: $primary;
+        text-decoration: none;;
+    }
+
+    .alert {
+        background-color: white;
+        border-color: $highlight2;
+    }
+
+    a.btn {
+        background-color: $highlight1;
+        text-decoration: none;
+        color: white;
+    }
+
     .alert:not(:first-child) {
         margin-top: 2 * $spacer;
         margin-bottom: 2 * $spacer;
@@ -73,6 +95,35 @@
         margin-bottom: 1.5rem;
         font-weight: $font-weight-bold;
     }
+
+    .highlight i.fas {
+        // To prevent the margin change when doing mouseover.
+        display: inline !important;
+    }
+
+    .highlight {
+        margin: 0.5rem 0;
+    }
+}
+
+.text-white a, .text-white a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+.text-white a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+.td-breadcrumbs a, .td-breadcrumbs a:visited {
+    color: $secondary;
+    text-decoration: none;
+}
+
+.td-breadcrumbs a:hover {
+    color: $primary;
+    text-decoration: none;
 }
 
 .td-title {
@@ -82,4 +133,62 @@
     @include media-breakpoint-up(sm) {
         font-size: 3rem;
     }
+}
+
+.card-deck {
+    display: flex;
+    flex-flow: row wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.card {
+    flex: 1 0;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    margin-left: 15px;
+}
+
+.card h5 {
+    color: $secondary;
+}
+
+.td-page-meta {
+    
+    a, a:visited {
+        color: $secondary;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: $primary;
+        text-decoration: none;
+    }
+}
+
+nav#TableOfContents {
+    margin-top: 1.5em;
+}
+
+.tab-content {
+    
+    max-width: 100%  !important;
+
+    .tab-pane {
+        background-color: white !important;
+        max-width: 100%  !important;
+        border-left: none !important;
+        border-right: none !important;
+        border-bottom: none !important;
+    }
+}
+
+.img-scarf {
+    height: 1px ;
+    width: 1px;
+}
+
+footer > .mx-sm-5 {
+    margin-left: auto !important;
+    margin-right: auto !important;
 }

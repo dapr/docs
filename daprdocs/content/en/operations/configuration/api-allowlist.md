@@ -8,7 +8,7 @@ description: "Choose which Dapr sidecar APIs are available to the app"
 
 In scenarios such as zero trust networks or when exposing the Dapr sidecar to external traffic through a frontend, it's recommended to only enable the Dapr sidecar APIs being used by the app. Doing so reduces the attack surface and helps keep the Dapr APIs scoped to the actual needs of the application.
 
-Dapr allows you to control which APIs are accessible to the application by setting an API allowlist or denylist using a [Dapr Configuration]({{< ref "configuration-schema.md" >}}).
+Dapr allows you to control which APIs are accessible to the application by setting an API allowlist or denylist using a [Dapr Configuration]({{% ref "configuration-schema.md" %}}).
 
 ### Default behavior
 
@@ -116,22 +116,22 @@ See this list of values corresponding to the different Dapr APIs:
 
 | API group | HTTP API | [gRPC API](https://github.com/dapr/dapr/tree/master/pkg/api/grpc) |
 | ----- | ----- | ----- |
-| [Service Invocation]({{< ref service_invocation_api.md >}}) | `invoke` (`v1.0`) | `invoke` (`v1`) |
-| [State]({{< ref state_api.md>}})| `state` (`v1.0` and `v1.0-alpha1`) | `state` (`v1` and `v1alpha1`) |
-| [Pub/Sub]({{< ref pubsub.md >}}) | `publish` (`v1.0` and `v1.0-alpha1`) | `publish` (`v1` and `v1alpha1`) |
-| [Output Bindings]({{< ref bindings_api.md >}})  | `bindings` (`v1.0`) |`bindings` (`v1`) |
+| [Service Invocation]({{% ref service_invocation_api.md %}}) | `invoke` (`v1.0`) | `invoke` (`v1`) |
+| [State]({{% ref state_api.md%}})| `state` (`v1.0` and `v1.0-alpha1`) | `state` (`v1` and `v1alpha1`) |
+| [Pub/Sub]({{% ref pubsub.md %}}) | `publish` (`v1.0` and `v1.0-alpha1`) | `publish` (`v1` and `v1alpha1`) |
+| [Output Bindings]({{% ref bindings_api.md %}})  | `bindings` (`v1.0`) |`bindings` (`v1`) |
 | Subscribe | n/a | `subscribe` (`v1alpha1`) |
-| [Secrets]({{< ref secrets_api.md >}})| `secrets` (`v1.0`) | `secrets` (`v1`) |
-| [Actors]({{< ref actors_api.md >}}) | `actors`  (`v1.0`) |`actors` (`v1`) |
-| [Metadata]({{< ref metadata_api.md >}}) | `metadata` (`v1.0`) |`metadata` (`v1`) |
-| [Configuration]({{< ref configuration_api.md >}}) | `configuration` (`v1.0` and `v1.0-alpha1`) | `configuration` (`v1` and `v1alpha1`) |
-| [Distributed Lock]({{< ref distributed_lock_api.md >}}) | `lock` (`v1.0-alpha1`)<br/>`unlock` (`v1.0-alpha1`) | `lock` (`v1alpha1`)<br/>`unlock` (`v1alpha1`) |
-| [Cryptography]({{< ref cryptography_api.md >}}) | `crypto` (`v1.0-alpha1`) | `crypto` (`v1alpha1`) |
-| [Workflow]({{< ref workflow_api.md >}}) | `workflows` (`v1.0`) |`workflows` (`v1`) |
-| [Conversation]({{< ref conversation_api.md >}}) | `conversation` (`v1.0-alpha1`) | `conversation` (`v1alpha1`) |
-| [Health]({{< ref health_api.md >}}) | `healthz`  (`v1.0`) | n/a |
+| [Secrets]({{% ref secrets_api.md %}})| `secrets` (`v1.0`) | `secrets` (`v1`) |
+| [Actors]({{% ref actors_api.md %}}) | `actors`  (`v1.0`) |`actors` (`v1`) |
+| [Metadata]({{% ref metadata_api.md %}}) | `metadata` (`v1.0`) |`metadata` (`v1`) |
+| [Configuration]({{% ref configuration_api.md %}}) | `configuration` (`v1.0` and `v1.0-alpha1`) | `configuration` (`v1` and `v1alpha1`) |
+| [Distributed Lock]({{% ref distributed_lock_api.md %}}) | `lock` (`v1.0-alpha1`)<br/>`unlock` (`v1.0-alpha1`) | `lock` (`v1alpha1`)<br/>`unlock` (`v1alpha1`) |
+| [Cryptography]({{% ref cryptography_api.md %}}) | `crypto` (`v1.0-alpha1`) | `crypto` (`v1alpha1`) |
+| [Workflow]({{% ref workflow_api.md %}}) | `workflows` (`v1.0`) |`workflows` (`v1`) |
+| [Conversation]({{% ref conversation_api.md %}}) | `conversation` (`v1.0-alpha1`) | `conversation` (`v1alpha1`) |
+| [Health]({{% ref health_api.md %}}) | `healthz`  (`v1.0`) | n/a |
 | Shutdown | `shutdown` (`v1.0`) | `shutdown` (`v1`) |
 
 ## Next steps
 
-{{< button text="Configure Dapr to use gRPC" page="grpc" >}}
+{{< button text="Configure Dapr to use gRPC" page="grpc.md" >}}

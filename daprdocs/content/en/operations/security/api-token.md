@@ -90,7 +90,7 @@ kubectl rollout restart deployment/<deployment-name> --namespace <namespace-name
 
 Once token authentication is configured in Dapr, all clients invoking Dapr API need to append the `dapr-api-token` token to every request. 
 
-> **Note:** The Dapr SDKs read the [DAPR_API_TOKEN]({{< ref environment >}}) environment variable and set it for you by default.
+> **Note:** The Dapr SDKs read the [DAPR_API_TOKEN]({{% ref environment %}}) environment variable and set it for you by default.
 
 <img src="/images/tokens-auth.png" width=800 style="padding-bottom:15px;">
 
@@ -143,5 +143,5 @@ export DAPR_API_TOKEN=<my-dapr-token>
 
 ## Related Links
 
-- Learn about [Dapr security concepts]({{< ref security-concept.md >}})
-- Learn [HowTo authenticate requests from Dapr using token authentication]({{< ref app-api-token.md >}})
+- Learn about [Dapr security concepts]({{% ref security-concept.md %}})
+- Learn [HowTo authenticate requests from Dapr using token authentication]({{% ref app-api-token.md %}})

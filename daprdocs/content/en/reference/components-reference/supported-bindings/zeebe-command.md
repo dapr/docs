@@ -7,7 +7,7 @@ description: "Detailed documentation on the Zeebe command binding component"
 
 ## Component format
 
-To setup Zeebe command binding create a component of type `bindings.zeebe.command`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup Zeebe command binding create a component of type `bindings.zeebe.command`. See [this guide]({{% ref "howto-bindings.md#1-create-a-binding" %}}) on how to create and apply a binding configuration.
 
 See [this](https://docs.camunda.io/docs/components/zeebe/zeebe-overview/) for Zeebe documentation.
 
@@ -147,9 +147,9 @@ The metadata parameters are:
 
 The binding returns a JSON with the following response:
 
-{{< tabs "BPMN" "DMN" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "BPMN" %}}
 
 ```json
 {
@@ -169,9 +169,9 @@ The binding returns a JSON with the following response:
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "DMN" %}}
 
 ```json
 {
@@ -204,9 +204,9 @@ The binding returns a JSON with the following response:
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 The response values are:
 
@@ -251,9 +251,9 @@ For more information please visit the [official documentation](https://docs.camu
 
 To perform a `create-instance` operation, invoke the Zeebe command binding with a `POST` method, and the following JSON body:
 
-{{< tabs "By BPMN process ID" "By process definition key" "Synchronous execution" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "By BPMN process ID" %}}
 
 ```json
 {
@@ -269,9 +269,9 @@ To perform a `create-instance` operation, invoke the Zeebe command binding with 
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "By process definition key" %}}
 
 ```json
 {
@@ -287,9 +287,9 @@ To perform a `create-instance` operation, invoke the Zeebe command binding with 
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Synchronous execution" %}}
 
 ```json
 {
@@ -308,9 +308,9 @@ To perform a `create-instance` operation, invoke the Zeebe command binding with 
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 The data parameters are:
 
@@ -703,8 +703,8 @@ The binding does not return a response body.
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Bindings building block]({{< ref bindings >}})
-- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
-- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
-- [Bindings API reference]({{< ref bindings_api.md >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Bindings building block]({{% ref bindings %}})
+- [How-To: Trigger application with input binding]({{% ref howto-triggers.md %}})
+- [How-To: Use bindings to interface with external resources]({{% ref howto-bindings.md %}})
+- [Bindings API reference]({{% ref bindings_api.md %}})

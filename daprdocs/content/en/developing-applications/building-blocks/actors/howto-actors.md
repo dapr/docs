@@ -18,10 +18,10 @@ POST/GET/PUT/DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/meth
 
 Provide data for the actor method in the request body. The response for the request, which is data from actor method call, is in the response body.
 
-Refer [to the Actors API spec]({{< ref "actors_api.md#invoke-actor-method" >}}) for more details.
+Refer [to the Actors API spec]({{% ref "actors_api#invoke-actor-method" %}}) for more details.
 
 {{% alert title="Note" color="primary" %}}
-Alternatively, you can use [Dapr SDKs to use actors]({{< ref "developing-applications/sdks/#sdk-languages" >}}).
+Alternatively, you can use [Dapr SDKs to use actors]({{% ref "developing-applications/sdks/#sdk-languages" %}}).
 {{% /alert %}}
 
 ## Save state with actors
@@ -30,7 +30,7 @@ You can interact with Dapr via HTTP/gRPC endpoints to save state reliably using 
 
 To use actors, your state store must support multi-item transactions. This means your state store component must implement the `TransactionalStore` interface. 
 
-[See the list of components that support transactions/actors]({{< ref supported-state-stores.md >}}). Only a single state store component can be used as the state store for all actors.
+[See the list of components that support transactions/actors]({{% ref supported-state-stores %}}). Only a single state store component can be used as the state store for all actors.
 
 ## Next steps
 
@@ -38,6 +38,6 @@ To use actors, your state store must support multi-item transactions. This means
 
 ## Related links
 
-- Refer to the [Dapr SDK documentation and examples]({{< ref "developing-applications/sdks/#sdk-languages" >}}).
-- [Actors API reference]({{< ref actors_api.md >}})
-- [Actors overview]({{< ref actors-overview.md >}})
+- Refer to the [Dapr SDK documentation and examples]({{% ref "developing-applications/sdks/_index.md#sdk-languages" %}}).
+- [Actors API reference]({{% ref actors_api %}})
+- [Actors overview]({{% ref actors-overview %}})

@@ -7,7 +7,7 @@ description: "The component certification lifecycle from submission to productio
 ---
 
 {{% alert title="Note" color="primary" %}}
-Certification lifecycle only applies to built-in components and does not apply to [pluggable components]({{<ref "components-concept.md#Built-in-and-pluggable-components" >}}).
+Certification lifecycle only applies to built-in components and does not apply to [pluggable components]({{%ref "components-concept.md#Built-in-and-pluggable-components" %}}).
 {{% /alert %}}
 
 ## Overview

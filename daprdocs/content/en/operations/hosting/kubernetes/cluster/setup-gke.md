@@ -80,7 +80,7 @@ kubectl create clusterrolebinding kubernetes-dashboard -n kube-system --clusterr
 
 ## Related links
 - [Learn more about GKE clusters](https://cloud.google.com/kubernetes-engine/docs)
-- [Try out a Dapr quickstart]({{< ref quickstarts.md >}})
-- Learn how to [deploy Dapr on your cluster]({{< ref kubernetes-deploy.md >}})
-- [Upgrade Dapr on Kubernetes]({{< ref kubernetes-upgrade.md >}})
-- [Kubernetes production guidelines]({{< ref kubernetes-production.md >}})
+- [Try out a Dapr quickstart]({{% ref quickstarts.md %}})
+- Learn how to [deploy Dapr on your cluster]({{% ref kubernetes-deploy.md %}})
+- [Upgrade Dapr on Kubernetes]({{% ref kubernetes-upgrade.md %}})
+- [Kubernetes production guidelines]({{% ref kubernetes-production.md %}})

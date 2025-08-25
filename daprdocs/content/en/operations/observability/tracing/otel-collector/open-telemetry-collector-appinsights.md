@@ -10,7 +10,7 @@ Dapr integrates with [OpenTelemetry (OTEL) Collector](https://github.com/open-te
 
 ## Prerequisites
 
-- [Install Dapr on Kubernetes]({{< ref kubernetes >}})
+- [Install Dapr on Kubernetes]({{% ref kubernetes %}})
 - [Create an Application Insights resource](https://learn.microsoft.com/azure/azure-monitor/app/create-workspace-resource) and make note of your Application Insights connection string.
 
 ## Set up OTEL Collector to push to your App Insights instance
@@ -80,4 +80,4 @@ Only operations going through Dapr API exposed by Dapr sidecar (for example, ser
 
 ## Related links
 - Try out the [observability quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/observability/README.md)
-- Learn how to set [tracing configuration options]({{< ref "configuration-overview.md#tracing" >}})
+- Learn how to set [tracing configuration options]({{% ref "configuration-overview.md#tracing" %}})

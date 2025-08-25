@@ -7,11 +7,11 @@ description: "Add Dapr annotatations to a Kubernetes configuration"
 
 ### Description
 
-Add Dapr annotations to a Kubernetes configuration. This enables you to add/change the Dapr annotations on a deployment files. See [Kubernetes annotations]({{< ref arguments-annotations-overview >}}) for a full description of each annotation available in the following list of flags.
+Add Dapr annotations to a Kubernetes configuration. This enables you to add/change the Dapr annotations on a deployment files. See [Kubernetes annotations]({{% ref arguments-annotations-overview %}}) for a full description of each annotation available in the following list of flags.
 
 ### Supported platforms
 
-- [Kubernetes]({{< ref kubernetes >}})
+- [Kubernetes]({{% ref kubernetes %}})
 
 ### Usage
 

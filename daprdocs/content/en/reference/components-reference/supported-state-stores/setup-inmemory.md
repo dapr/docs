@@ -11,7 +11,7 @@ The in-memory state store component maintains state in the Dapr sidecar's memory
 
 ## Component format
 
-To setup in-memory state store, create a component of type `state.in-memory`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+To setup in-memory state store, create a component of type `state.in-memory`. See [this guide]({{% ref "howto-get-save-state.md#step-1-setup-a-state-store" %}}) on how to create and apply a state store configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -31,6 +31,6 @@ spec:
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Learn [how to create and configure state store components]({{< ref howto-get-save-state.md >}}) 
-- Read more about the [state management building block]({{< ref state-management >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Learn [how to create and configure state store components]({{% ref howto-get-save-state.md %}}) 
+- Read more about the [state management building block]({{% ref state-management %}})

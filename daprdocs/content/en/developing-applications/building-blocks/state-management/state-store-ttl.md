@@ -8,7 +8,7 @@ description: "Manage state with TTL."
 
 Dapr enables per state set request time-to-live (TTL). This means that applications can set time-to-live per state stored, and these states cannot be retrieved after expiration.
 
-For [supported state stores]({{< ref supported-state-stores >}}), you simply set the `ttlInSeconds` metadata when publishing a message. Other state stores will ignore this value. For some state stores, you can specify a default expiration on a per-table/container basis.
+For [supported state stores]({{% ref supported-state-stores %}}), you simply set the `ttlInSeconds` metadata when publishing a message. Other state stores will ignore this value. For some state stores, you can specify a default expiration on a per-table/container basis.
 
 ## Native state TTL support
 
@@ -28,15 +28,15 @@ In addition, all state stores also support the option to _explicitly_ persist da
 
 ## Supported components
 
-Refer to the TTL column in the [state store components guide]({{< ref supported-state-stores >}}).
+Refer to the TTL column in the [state store components guide]({{% ref supported-state-stores %}}).
 
 ## Example
 
 You can set state TTL in the metadata as part of the state store set request:
 
-{{< tabs Python ".NET" Go "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 <!--python-->
 
@@ -62,9 +62,9 @@ To launch a Dapr sidecar and run the above example application, you'd then run a
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 <!--dotnet-->
 
@@ -88,9 +88,9 @@ To launch a Dapr sidecar and run the above example application, you'd then run a
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 <!--go-->
 
@@ -115,29 +115,29 @@ To launch a Dapr sidecar and run the above example application, you'd then run a
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run .
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (Bash)" %}}
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '[{ "key": "order_1", "value": "250", "metadata": { "ttlInSeconds": "120" } }]' http://localhost:3601/v1.0/state/statestore
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{"key": "order_1", "value": "250", "metadata": {"ttlInSeconds": "120"}}]' -Uri 'http://localhost:3601/v1.0/state/statestore'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Related links
 
-- See [the state API reference guide]({{< ref state_api.md >}}).
-- Learn [how to use key value pairs to persist a state]({{< ref howto-get-save-state.md >}}).
-- List of [state store components]({{< ref supported-state-stores >}}).
-- Read the [API reference]({{< ref state_api.md >}}).
+- See [the state API reference guide]({{% ref state_api.md %}}).
+- Learn [how to use key value pairs to persist a state]({{% ref howto-get-save-state.md %}}).
+- List of [state store components]({{% ref supported-state-stores %}}).
+- Read the [API reference]({{% ref state_api.md %}}).

@@ -11,8 +11,8 @@ Install Dapr on supported hosting platforms.
 
 ### Supported platforms
 
-- [Self-Hosted]({{< ref self-hosted >}})
-- [Kubernetes]({{< ref kubernetes >}})
+- [Self-Hosted]({{% ref self-hosted %}})
+- [Kubernetes]({{% ref kubernetes %}})
 
 ### Usage
 
@@ -50,9 +50,9 @@ dapr init [flags]
 
 ### Examples
 
-{{< tabs "Self-hosted" "Kubernetes" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-hosted" %}}
 
 **Install**
 
@@ -64,7 +64,7 @@ Install Dapr by pulling container images for Placement, Scheduler, Redis, and Zi
 dapr init
 ```
 
-Dapr can also run [Slim self-hosted mode]({{< ref self-hosted-no-docker.md >}}), without Docker.
+Dapr can also run [Slim self-hosted mode]({{% ref self-hosted-no-docker.md %}}), without Docker.
 
 ```bash
 dapr init -s
@@ -82,7 +82,7 @@ dapr init --runtime-version 1.13.4
 
 **Install with image variant**
 
-You can also install Dapr with a particular image variant, for example: [mariner]({{< ref "kubernetes-deploy.md#using-mariner-based-images" >}}).
+You can also install Dapr with a particular image variant, for example: [mariner]({{% ref "kubernetes-deploy.md#using-mariner-based-images" %}}).
 
 ```bash
 dapr init --image-variant mariner
@@ -157,9 +157,9 @@ Uninstall Dapr from that Docker network.
 dapr uninstall --all --network mynet
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
 ```bash
 dapr init -k
@@ -201,6 +201,6 @@ Scenario 2 : dapr image hosted under a new/different directory in private regist
 dapr init -k --image-registry docker.io/username/<directory-name>
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}

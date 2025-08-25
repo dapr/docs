@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup an Azure OpenAI binding create a component of type `bindings.azure.openai`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup an Azure OpenAI binding create a component of type `bindings.azure.openai`. See [this guide]({{% ref "howto-bindings.md#1-create-a-binding" %}}) on how to create and apply a binding configuration.
 See [this](https://learn.microsoft.com/azure/cognitive-services/openai/overview/) for the documentation for Azure OpenAI Service.
 
 
@@ -28,7 +28,7 @@ spec:
     value: "https://myopenai.openai.azure.com"
 ```
 {{% alert title="Warning" color="warning" %}}
-The above example uses `apiKey` as  a plain string. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses `apiKey` as  a plain string. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -43,7 +43,7 @@ The above example uses `apiKey` as  a plain string. It is recommended to use a s
 
 ### Microsoft Entra ID authentication
 
-The Azure OpenAI binding component supports authentication using all Microsoft Entra ID mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of Microsoft Entra ID authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+The Azure OpenAI binding component supports authentication using all Microsoft Entra ID mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of Microsoft Entra ID authentication mechanism, see the [docs for authenticating to Azure]({{% ref authenticating-azure.md %}}).
 
 #### Example Configuration
 
@@ -102,15 +102,15 @@ The data parameters are:
 Read more about the importance and usage of these parameters in the [Azure OpenAI API documentation](https://learn.microsoft.com/azure/ai-services/openai/reference).
 #### Examples
 
-{{< tabs Linux >}}
-  {{% codetab %}}
+{{< tabpane text=true >}}
+  {{% tab %}}
   ```bash
   curl -d '{ "data": {"deploymentId: "my-model" , "prompt": "A dog is ", "maxTokens":15}, "operation": "completion" }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -174,9 +174,9 @@ Each message is of the form:
 
 #### Example
 
-{{< tabs Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
 curl -d '{
     "data": {
@@ -199,9 +199,9 @@ curl -d '{
 }' \
 http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -251,9 +251,9 @@ The data parameters are:
 
 #### Example
 
-{{< tabs Linux >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Linux" %}}
   ```bash
 curl -d '{
     "data": {
@@ -264,9 +264,9 @@ curl -d '{
 }' \
 http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -280,13 +280,13 @@ The response body contains the following JSON:
 
 Watch [the following Community Call presentation](https://youtu.be/rTovKpG0rhY?si=g7hZTQSpSEXz4pV1&t=80) to learn more about the Azure OpenAI output binding.
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/rTovKpG0rhY?si=XP1S-80SIg1ptJuG&amp;start=80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{{< youtube id=rTovKpG0rhY start=80 >}}
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Bindings building block]({{< ref bindings >}})
-- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
-- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
-- [Bindings API reference]({{< ref bindings_api.md >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Bindings building block]({{% ref bindings %}})
+- [How-To: Trigger application with input binding]({{% ref howto-triggers.md %}})
+- [How-To: Use bindings to interface with external resources]({{% ref howto-bindings.md %}})
+- [Bindings API reference]({{% ref bindings_api.md %}})
 - [Azure OpenAI Rest examples](https://learn.microsoft.com/azure/ai-services/openai/reference)

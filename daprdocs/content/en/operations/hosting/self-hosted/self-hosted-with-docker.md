@@ -10,7 +10,7 @@ This article provides guidance on running Dapr with Docker on a Windows/Linux/ma
 
 ## Prerequisites
 
-- [Dapr CLI]({{< ref install-dapr-cli.md >}})
+- [Dapr CLI]({{% ref install-dapr-cli.md %}})
 - [Docker](https://docs.docker.com/get-docker/)
 - [Docker-Compose](https://docs.docker.com/compose/install/) (optional)
 
@@ -24,7 +24,7 @@ dapr init
 
 ## Run both app and sidecar as a process
 
-The [`dapr run` CLI command]({{< ref dapr-run.md >}}) can be used to launch a Dapr sidecar along with your application:
+The [`dapr run` CLI command]({{% ref dapr-run.md %}}) can be used to launch a Dapr sidecar along with your application:
 
 ```bash
 dapr run --app-id myapp --app-port 5000 -- dotnet run
@@ -162,11 +162,11 @@ The above example also includes a scheduler definition that uses a non-persisten
 ## Run on Kubernetes
 
 If your deployment target is Kubernetes please use Dapr's first-class integration. Refer to the
-[Dapr on Kubernetes docs]({{< ref "kubernetes-overview.md" >}}).
+[Dapr on Kubernetes docs]({{% ref "kubernetes-overview.md" %}}).
 
 ## Name resolution
 
-Dapr by default uses mDNS as the name resolution component in self-hosted mode for service invocation. If you are running Dapr on virtual machines or where mDNS is not available, then you can use the [HashiCorp Consul]({{< ref setup-nr-consul.md >}}) component for name resolution.
+Dapr by default uses mDNS as the name resolution component in self-hosted mode for service invocation. If you are running Dapr on virtual machines or where mDNS is not available, then you can use the [HashiCorp Consul]({{% ref setup-nr-consul.md %}}) component for name resolution.
 
 ## Docker images
 

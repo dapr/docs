@@ -14,8 +14,8 @@ To get up and running with the state and Pub/sub building blocks, you'll need tw
 - As pub/sub message broker component for async-style message delivery.
 
 A full list of supported components can be found here:
-- [Supported state stores]({{< ref supported-state-stores >}})
-- [Supported pub/sub message brokers]({{< ref supported-pubsub >}})
+- [Supported state stores]({{% ref supported-state-stores %}})
+- [Supported pub/sub message brokers]({{% ref supported-pubsub %}})
 
 For this tutorial, we describe how to get up and running with Redis.
 
@@ -28,13 +28,13 @@ Dapr can use any Redis instance, either:
 
 If you already have a Redis store, move on to the [configuration](#configure-dapr-components) section.
 
-{{< tabs "Self-Hosted" "Kubernetes" "Azure" "AWS" "GCP" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 Redis is automatically installed in self-hosted environments by the Dapr CLI as part of the initialization process. You are all set! Skip ahead to the [next steps](#next-steps).
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 You can use [Helm](https://helm.sh/) to create a Redis instance in our Kubernetes cluster. Before beginning, [install Helm v3](https://github.com/helm/helm#install).
 
 Install Redis into your cluster:
@@ -62,9 +62,9 @@ For Kubernetes:
 - The hostname is `redis-master.default.svc.cluster.local:6379`
 - The secret, `redis`, is created automatically.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Azure" %}}
 Verify you have an Azure subscription.
 
 1. Open and log into the [Azure portal](https://ms.portal.azure.com/#create/Microsoft.Cache) to start the Azure Redis Cache creation flow. 
@@ -81,9 +81,9 @@ Verify you have an Azure subscription.
       kubectl create secret generic redis --from-literal=redis-password=*********
       ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "AWS" %}}
 
 1. Deploy a Redis instance from [AWS Redis](https://aws.amazon.com/redis/).
 1. Note the Redis hostname in the AWS portal for later.
@@ -93,9 +93,9 @@ Verify you have an Azure subscription.
    kubectl create secret generic redis --from-literal=redis-password=*********
    ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "GCP" %}}
 
 1. Deploy a MemoryStore instance from [GCP Cloud MemoryStore](https://cloud.google.com/memorystore/).
 1. Note the Redis hostname in the GCP portal for later.
@@ -105,9 +105,9 @@ Verify you have an Azure subscription.
    kubectl create secret generic redis --from-literal=redis-password=*********
    ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### Step 2: Configure Dapr components
 
@@ -115,31 +115,31 @@ Dapr defines resources to use for building block functionality with components. 
 
 #### Locate your component files
 
-{{< tabs "Self-Hosted" "Kubernetes" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 
 In self-hosted mode, component files are automatically created under:
 - **Windows**: `%USERPROFILE%\.dapr\components\`
 - **Linux/MacOS**: `$HOME/.dapr/components`
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
 Since Kubernetes files are applied with `kubectl`, they can be created in any directory.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Create State store component
 
 Create a file named `redis-state.yaml`, and paste the following:
 
-{{< tabs "Self-Hosted" "Kubernetes" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -162,9 +162,9 @@ spec:
   #   value: true 
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -189,21 +189,21 @@ spec:
 
 Note the above code example uses the Kubernetes secret you created earlier when setting up a cluster.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 {{% alert title="Other stores" color="primary" %}}
-If using a state store other than Redis, refer to the [supported state stores]({{< ref supported-state-stores >}}) for information on options to set.
+If using a state store other than Redis, refer to the [supported state stores]({{% ref supported-state-stores %}}) for information on options to set.
 {{% /alert %}}
 
 #### Create Pub/sub message broker component
 
 Create a file called `redis-pubsub.yaml`, and paste the following:
 
-{{< tabs "Self-Hosted" "Kubernetes" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -226,9 +226,9 @@ spec:
   #   value: true 
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -253,12 +253,12 @@ spec:
 
 Note the above code example uses the Kubernetes secret you created earlier when setting up a cluster.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 {{% alert title="Other stores" color="primary" %}}
-If using a pub/sub message broker other than Redis, refer to the [supported pub/sub message brokers]({{< ref supported-pubsub >}}) for information on options to set.
+If using a pub/sub message broker other than Redis, refer to the [supported pub/sub message brokers]({{% ref supported-pubsub %}}) for information on options to set.
 {{% /alert %}}
 
 #### Hard coded passwords (not recommended)
@@ -305,9 +305,9 @@ spec:
 
 ### Step 3: Apply the configuration
 
-{{< tabs "Self-Hosted" "Kubernetes">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 
 When you run `dapr init`, Dapr creates a default redis `pubsub.yaml` on your local machine. Verify by opening your components directory:
 
@@ -319,11 +319,11 @@ For new component files:
 1. Create a new `components` directory in your app folder containing the YAML files.
 1. Provide the path to the `dapr run` command with the flag `--resources-path`
 
-If you initialized Dapr in [slim mode]({{< ref self-hosted-no-docker.md >}}) (without Docker), you need to manually create the default directory, or always specify a components directory using `--resources-path`.
+If you initialized Dapr in [slim mode]({{% ref self-hosted-no-docker.md %}}) (without Docker), you need to manually create the default directory, or always specify a components directory using `--resources-path`.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
 Run `kubectl apply -f <FILENAME>` for both state and pubsub files:
 
@@ -332,9 +332,9 @@ kubectl apply -f redis-state.yaml
 kubectl apply -f redis-pubsub.yaml
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Next steps
-[Try out a Dapr quickstart]({{< ref quickstarts.md >}})
+[Try out a Dapr quickstart]({{% ref quickstarts.md %}})
