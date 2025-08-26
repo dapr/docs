@@ -140,8 +140,9 @@ When Dapr invokes a service, it automatically adds the following headers to the 
 
 | Header | Description | Example |
 |--------|-------------|---------|
-| `dapr-app-id` | The ID of the calling application | `myapp` |
+| `dapr-caller-app-id` | The ID of the calling application | `myapp` |
 | `dapr-caller-namespace` | The namespace of the calling application | `production` |
+| `dapr-callee-app-id` | The ID of the called application | `mathService` |
 
 These headers are available in both HTTP and gRPC service invocation requests.
 
