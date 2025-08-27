@@ -66,6 +66,8 @@ spec:
     value: {podName}
   - name: heartBeat
     value: 10s
+  - name: publishMessagePropertiesToMetadata
+    value: "true"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -102,7 +104,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | clientKey | Required for using TLS  | TLS client key in PEM format. Must be used with `clientCert`. Can be `secretKeyRef` to use a secret reference. | `"-----BEGIN RSA PRIVATE KEY-----\n<base64-encoded PKCS8>\n-----END RSA PRIVATE KEY-----"`
 | clientName | N | This RabbitMQ [client-provided connection name](https://www.rabbitmq.com/connections.html#client-provided-names) is a custom identifier. If set, the identifier is mentioned in RabbitMQ server log entries and management UI. Can be set to {uuid}, {podName}, or {appID}, which is replaced by Dapr runtime to the real value. | `"app1"`, `{uuid}`, `{podName}`, `{appID}`
 | heartBeat  | N | Defines the heartbeat interval with the server, detecting the aliveness of the peer TCP connection with the RabbitMQ server. Defaults to `10s` . | `"10s"`
-
+| `publishMessagePropertiesToMetadata` | N | Whether to publish AMQP message properties (headers, message ID, etc.) to the metadata. | "true", "false"
 
 ## Communication using TLS
 
@@ -474,6 +476,11 @@ spec:
   metadata:
     singleActiveConsumer: "true"
 ```
+
+## Publishing message properties to metadata
+
+To enable [message properties](https://www.rabbitmq.com/docs/publishers#message-properties) being published in the metadata, set the `publishMessagePropertiesToMetadata` field to `"true"` in the component spec.
+This will include properties such as message ID, timestamp, and headers in the metadata of the published message.
 
 ## Related links
 
