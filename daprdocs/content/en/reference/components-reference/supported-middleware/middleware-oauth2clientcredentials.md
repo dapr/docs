@@ -104,7 +104,7 @@ spec:
   - name: pathFilter
     value: "^/api/users/.*"
 ---
-# Full admin access middleware  
+# User with full admin access scope
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
