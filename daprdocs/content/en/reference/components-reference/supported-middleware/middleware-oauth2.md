@@ -81,7 +81,7 @@ The `pathFilter` field allows you to apply OAuth2 authentication selectively bas
 ### Example: Separate read-only and admin user access
 
 ```yaml
-# Read-only user access middleware
+# User with read-only access scope
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
