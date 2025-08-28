@@ -198,6 +198,15 @@ Let's go over each of the security capabilities and describe how they are protec
 7. Service B is deployed to namespace "B", which further isolates it from other services. Even if the service invocation API was enabled on it, it could not be called accidentally by being in the same namespace as Service A. Service B must explicitly set the Redis Host namespace in its component YAML file to call onto the "Redis" namespace, otherwise this call also fails.
 8. The data in the Redis state store is encrypted at rest and can only be read using the correctly configured Dapr Redis state store component.
 
+## Run as non-root
+When running in Kubernetes, Dapr services will ensure each process is running as non-root.
+This is done by checking the UID & GID of the process is `65532`, and fatal erroring if it is not what is expected.
+If you must run a non-default UID & GID in Kubernetes, set the following env var to skip this check.
+
+```bash
+DAPR_UNSAFE_SKIP_CONTAINER_UID_GID_CHECK="true"
+```
+
 # Threat model
 
 Threat modeling is a process by which:
