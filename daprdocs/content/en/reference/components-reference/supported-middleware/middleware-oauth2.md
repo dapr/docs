@@ -130,7 +130,6 @@ spec:
     value: "^/api/admin/.*"
 ```
 
-In this configuration:
 - Requests to `/api/users/*` endpoints receive tokens with limited user scopes
 - Requests to `/api/admin/*` endpoints receive tokens with full administrative privileges
 - This reduces security risk by preventing privilege escalation and limiting the blast radius of compromised tokens
