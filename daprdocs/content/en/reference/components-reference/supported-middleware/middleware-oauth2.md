@@ -78,7 +78,7 @@ spec:
 
 The `pathFilter` field allows you to apply OAuth2 authentication selectively based on request paths using regex patterns. This enables implementing the least privilege principle by configuring multiple OAuth2 middlewares with different scopes for different API endpoints, ensuring users only receive the minimum permissions necessary for their intended operations.
 
-### Example: Separate User and Admin Access
+### Example: Separate read-only and admin user access
 
 ```yaml
 # Read-only user access middleware
