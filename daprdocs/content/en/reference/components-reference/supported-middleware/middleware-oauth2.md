@@ -135,7 +135,6 @@ spec:
 ```
 
 - Requests to `/api/users/*` endpoints receive tokens with limited user scopes
-- This reduces security risk by preventing privilege escalation and limiting the blast radius of compromised tokens
 
 ## Related links
 
