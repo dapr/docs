@@ -81,6 +81,10 @@ The `pathFilter` field allows you to selectively apply OAuth2 authentication bas
 
 ### Example: Separate read-only and admin user access
 
+In the following configuration:
+- Requests to `/api/users/*` endpoints receive tokens with a read-only user scopes
+- Requests to `/api/admin/*` endpoints receive tokens with full admin scopes
+This reduces security risk by preventing unnecessary privilege access and limiting the blast radius of compromised tokens.
 ```yaml
 # User with read-only access scope
 apiVersion: dapr.io/v1alpha1
