@@ -127,7 +127,6 @@ spec:
     value: "^/api/admin/.*"
 ```
 
-In this configuration:
 
 ## Related links
 - [Middleware]({{% ref middleware.md %}})
