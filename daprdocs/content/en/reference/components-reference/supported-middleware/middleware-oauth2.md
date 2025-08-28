@@ -79,7 +79,11 @@ spec:
 The `pathFilter` field allows you to selectively apply OAuth2 authentication based on the HTTP request path using a regex pattern. This enables scenarios such as configuring multiple OAuth2 middlewares with different scopes for different API endpoints, implementing the least privilege principle by ensuring users only receive the minimum permissions necessary for their intended operation.
 
 ### Example: Separate read-only and admin user access
+In the following configuration:
+- Requests to `/api/users/*` endpoints receive tokens with a read-only user scopes
+- Requests to `/api/admin/*` endpoints receive tokens with full admin scopes
 
+This reduces security risk by preventing unnecessary privilege access and limiting the blast radius of compromised tokens.
 ```yaml
 # User with read-only access scope
 apiVersion: dapr.io/v1alpha1
