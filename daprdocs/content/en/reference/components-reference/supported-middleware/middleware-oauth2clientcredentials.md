@@ -75,7 +75,7 @@ spec:
       type: middleware.http.oauth2clientcredentials
 ```
 
-## Path Filtering for Least Privilege Security
+## Request path filtering
 
 The `pathFilter` field allows you to apply OAuth2 client credentials authentication selectively based on request paths using regex patterns. This enables implementing the least privilege principle by configuring multiple OAuth2 middlewares with different scopes for different API endpoints, ensuring services only receive the minimum permissions necessary for their intended operations.
 
