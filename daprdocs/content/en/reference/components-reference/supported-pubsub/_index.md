@@ -16,6 +16,6 @@ Each pub/sub component has its own built-in retry behaviors, unique to the messa
 {{% /alert %}}
 
 
-{{% partial "components/description.html" %}}
+{{< partial "components/description.html" >}}
 
-{{% partial "components/pubsub.html" %}}
+{{< partial "components/pubsub.html" >}}
