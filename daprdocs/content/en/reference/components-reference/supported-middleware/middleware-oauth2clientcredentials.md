@@ -128,7 +128,6 @@ spec:
 ```
 
 In this configuration:
-- Requests to `/api/users/*` endpoints receive tokens with limited user scopes
 
 ## Related links
 - [Middleware]({{% ref middleware.md %}})
