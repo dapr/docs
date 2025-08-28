@@ -129,7 +129,6 @@ spec:
 
 In this configuration:
 - Requests to `/api/users/*` endpoints receive tokens with limited user scopes
-- Requests to `/api/admin/*` endpoints receive tokens with full administrative privileges
 
 ## Related links
 - [Middleware]({{% ref middleware.md %}})
