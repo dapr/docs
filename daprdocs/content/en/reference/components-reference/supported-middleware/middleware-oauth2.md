@@ -134,7 +134,6 @@ spec:
     value: "^/api/admin/.*"
 ```
 
-- Requests to `/api/users/*` endpoints receive tokens with limited user scopes
 
 ## Related links
 
