@@ -5,7 +5,7 @@ linkTitle: "Scheduler"
 description: "Overview of the Dapr scheduler service"
 ---
 
-The Dapr Scheduler service is used to schedule different types of jobs, running in [self-hosted mode]({{% ref self-hosted %}}) or on [Kubernetes]({{% ref kubernetes %}}). 
+The Dapr Scheduler service is used to schedule different types of jobs, running in [self-hosted mode]({{% ref self-hosted %}}) or on [Kubernetes]({{% ref kubernetes %}}).
 - Jobs created through the Jobs API
 - Actor reminder jobs (used by the actor reminders)
 - Actor reminder jobs created by the Workflow API (which uses actor reminders)
@@ -14,9 +14,12 @@ From Dapr v1.15, the Scheduler service is used by default to schedule actor remi
 
 There is no concept of a leader Scheduler instance. All Scheduler service replicas are considered peers. All receive jobs to be scheduled for execution and the jobs are allocated between the available Scheduler service replicas for load balancing of the trigger events.
 
-The diagram below shows how the Scheduler service is used via the jobs API when called from your application. All the jobs that are tracked by the Scheduler service are stored in an embedded etcd database. 
+The diagram below shows how the Scheduler service is used via the jobs API when called from your application. All the jobs that are tracked by the Scheduler service are stored in the Etcd database.
 
 <img src="/images/scheduler/scheduler-architecture.png" alt="Diagram showing the Scheduler control plane service and the jobs API">
+
+By default, Etcd is embedded in the Scheduler service, which means that the Scheduler service runs its own instance of Etcd.
+See [Scheduler service flags]({{% ref "#flag-tuning" %}}) for more information on how to configure the Scheduler service.
 
 ## Actor Reminders
 
@@ -73,6 +76,45 @@ The Scheduler service is deployed as part of `dapr init -k`, or via the Dapr Hel
 
 When a Kubernetes namespace is deleted, all the Job and Actor Reminders corresponding to that namespace are deleted.
 
+## Docker Compose Example
+
+Here's how to expose the etcd ports in a Docker Compose configuration for standalone mode.
+When running in HA mode, you only need to expose the ports for one scheduler instance to perform backup operations.
+
+```yaml
+version: "3.5"
+services:
+  scheduler-0:
+    image: "docker.io/daprio/scheduler:1.16.0"
+    command:
+    - "./scheduler"
+    - "--etcd-data-dir=/var/run/dapr/scheduler"
+    - "--id=scheduler-0"
+    - "--etcd-initial-cluster=scheduler-0=http://scheduler-0:2380,scheduler-1=http://scheduler-1:2380,scheduler-2=http://scheduler-2:2380"
+    ports:
+      - 2379:2379
+    volumes:
+      - ./dapr_scheduler/0:/var/run/dapr/scheduler
+  scheduler-1:
+    image: "docker.io/daprio/scheduler:1.16.0"
+    command:
+    - "./scheduler"
+    - "--etcd-data-dir=/var/run/dapr/scheduler"
+    - "--id=scheduler-1"
+    - "--etcd-initial-cluster=scheduler-0=http://scheduler-0:2380,scheduler-1=http://scheduler-1:2380,scheduler-2=http://scheduler-2:2380"
+    volumes:
+      - ./dapr_scheduler/1:/var/run/dapr/scheduler
+  scheduler-2:
+    image: "docker.io/daprio/scheduler:1.16.0"
+    command:
+    - "./scheduler"
+    - "--etcd-data-dir=/var/run/dapr/scheduler"
+    - "--id=scheduler-2"
+    - "--etcd-initial-cluster=scheduler-0=http://scheduler-0:2380,scheduler-1=http://scheduler-1:2380,scheduler-2=http://scheduler-2:2380"
+    volumes:
+      - ./dapr_scheduler/2:/var/run/dapr/scheduler
+```
+
 ## Back Up and Restore Scheduler Data
 
 In production environments, it's recommended to perform periodic backups of this data at an interval that aligns with your recovery point objectives.
@@ -88,32 +130,6 @@ Here's how to port forward and connect to the etcd instance:
 ```shell
 kubectl port-forward svc/dapr-scheduler-server 2379:2379 -n dapr-system
 ```
-
-#### Docker Compose Example
-
-Here's how to expose the etcd ports in a Docker Compose configuration for standalone mode:
-
-```yaml
-scheduler-1:
-    image: "diagrid/dapr/scheduler:dev110-linux-arm64"
-    command: ["./scheduler",
-      "--etcd-data-dir", "/var/run/dapr/scheduler",
-      "--replica-count", "3",
-      "--id","scheduler-1",
-      "--initial-cluster", "scheduler-1=http://scheduler-1:2380,scheduler-0=http://scheduler-0:2380,scheduler-2=http://scheduler-2:2380",
-      "--etcd-client-ports", "scheduler-0=2379,scheduler-1=2379,scheduler-2=2379",
-      "--etcd-client-http-ports", "scheduler-0=2330,scheduler-1=2330,scheduler-2=2330",
-      "--log-level=debug"
-    ]
-    ports:
-      - 2379:2379
-    volumes:
-      - ./dapr_scheduler/1:/var/run/dapr/scheduler
-    networks:
-      - network
-```
-
-When running in HA mode, you only need to expose the ports for one scheduler instance to perform backup operations.
 
 ### Performing Backup and Restore
 
@@ -134,6 +150,83 @@ Fine tune the embedded etcd to your needs by [reviewing and configuring the Sche
 If you are not using any features that require the Scheduler service (Jobs API, Actor Reminders, or Workflows), you can disable it by setting `global.scheduler.enabled=false`.
 
 For more information on running Dapr on Kubernetes, visit the [Kubernetes hosting page]({{% ref kubernetes %}}).
+
+## Flag tuning
+
+A number of Etcd flags are exposed on Scheduler which can be used to tune for your deployment use case.
+
+###  External Etcd database
+
+Scheduler can be configured to use an external Etcd database instead of the embedded one inside the Scheduler service replicas.
+It may be interesting to decouple the storage volume from the Scheduler StatefulSet or container, because of how the cluster or environment is administered or what storage backend is being used.
+It can also be the case that moving the persistent storage outside of the scheduler runtime completely is desirable, or there is some existing Etcd cluster provider which will be reused.
+Externalising the Etcd database also means that the Scheduler replicas can be horizontally scaled at will, however note that during scale events, job triggering will be paused.
+Scheduler replica count does not need to match the [Etcd node count constraints](https://etcd.io/docs/v3.3/faq/#what-is-maximum-cluster-size).
+
+To use an external Etcd cluster, set the `--etcd-embed` flag to `false` and provide the `--etcd-client-endpoints` flag with the endpoints of your Etcd cluster.
+Optionally also include `--etcd-client-username` and `--etcd-client-password` flags for authentication if the Etcd cluster requires it.
+
+```
+--etcd-embed              bool         When enabled, the Etcd database is embedded in the scheduler server. If false, the scheduler connects to an external Etcd cluster using the --etcd-client-endpoints flag. (default true)
+--etcd-client-endpoints   stringArray  Comma-separated list of etcd client endpoints to connect to. Only used when --etcd-embed is false.
+--etcd-client-username    string       Username for etcd client authentication. Only used when --etcd-embed is false.
+--etcd-client-password    string       Password for etcd client authentication. Only used when --etcd-embed is false.
+```
+
+Helm:
+
+```yaml
+dapr_scheduler.etcdEmbed=true
+dapr_scheduler.etcdClientEndpoints=[]
+dapr_scheduler.etcdClientUsername=""
+dapr_scheduler.etcdClientPassword=""
+```
+
+### Etcd leadership election tuning
+
+To improve the speed of election leadership of rescue nodes in the event of a failure, the following flag may be used to speed up the election process.
+
+```
+--etcd-initial-election-tick-advance  Whether to fast-forward initial election ticks on boot for faster election. When it is true, then local member fast-forwards election ticks to speed up “initial” leader election trigger. This benefits the case of larger election ticks. Disabling this would slow down initial bootstrap process for cross datacenter deployments. Make your own tradeoffs by configuring this flag at the cost of slow initial bootstrap.
+```
+
+Helm:
+
+```yaml
+dapr_scheduler.etcdInitialElectionTickAdvance=true
+```
+
+### Storage tuning
+
+The following options can be used to tune the embedded Etcd storage to the needs of your deployment.
+A deeper understanding of what these flags do can be found in the [Etcd documentation](https://etcd.io/docs/v3.5/op-guide/configuration/).
+
+{{% alert title="Note" color="primary" %}}
+Changing these flags can greatly change the performance and behaviour of the Scheduler, so caution is advised when modifying them from the default set by Dapr.
+Changing these settings should always been done first in a testing environment, and monitored closely before applying to production.
+{{% /alert %}}
+
+```
+--etcd-backend-batch-interval string                            Maximum time before committing the backend transaction. (default "50ms")
+--etcd-backend-batch-limit int                                  Maximum operations before committing the backend transaction. (default 5000)
+--etcd-compaction-mode string                                   Compaction mode for etcd. Can be 'periodic' or 'revision' (default "periodic")
+--etcd-compaction-retention string                              Compaction retention for etcd. Can express time  or number of revisions, depending on the value of 'etcd-compaction-mode' (default "10m")
+--etcd-experimental-bootstrap-defrag-threshold-megabytes uint   Minimum number of megabytes needed to be freed for etcd to consider running defrag during bootstrap. Needs to be set to non-zero value to take effect. (default 100)
+--etcd-max-snapshots uint                                       Maximum number of snapshot files to retain (0 is unlimited). (default 10)
+--etcd-max-wals uint                                            Maximum number of write-ahead logs to retain (0 is unlimited). (default 10)
+--etcd-snapshot-count uint                                      Number of committed transactions to trigger a snapshot to disk. (default 10000)
+```
+
+Helm:
+
+```yaml
+dapr_scheduler.etcdBackendBatchInterval="50ms"
+dapr_scheduler.etcdBackendBatchLimit=5000
+dapr_scheduler.etcdCompactionMode="periodic"
+dapr_scheduler.etcdCompactionRetention="10m"
+dapr_scheduler.etcdDefragThresholdMB=100
+dapr_scheduler.etcdMaxSnapshots=10
+```
 
 ## Related links
 

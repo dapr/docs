@@ -346,7 +346,7 @@ Enterprise applications often need durable execution and reliability that go bey
 
 <img src="/images/dapr-agents/agents-stateful-llm.png" width=600 alt="Diagram showing how the durable agent pattern works">
 
-This pattern doesn't just persist message history – it dynamically creates workflows with durable activities for each interaction, where LLM calls and tool executions are stored reliably in Dapr's state stores. This makes it ideal for production environments where reliability is critical.
+This pattern doesn't just persist message history – it dynamically creates workflows with durable activities for each interaction, where LLM calls and tool executions are stored reliably in Dapr's state stores. This makes it ideal for environments where reliability and durability is critical.
 
 The Durable Agent also enables the "headless agents" approach where autonomous systems that operate without direct user interaction. Dapr's Durable Agent exposes REST and Pub/Sub APIs, making it ideal for long-running operations that are triggered by other applications or external events.
 

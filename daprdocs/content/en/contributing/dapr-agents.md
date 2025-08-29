@@ -1,16 +1,16 @@
 ---
 type: docs
-title: "Contributing to Dapr agents"
-linkTitle: "Dapr agents"
+title: "Contributing to Dapr Agents"
+linkTitle: "Dapr Agents"
 weight: 85
-description: Guidelines for contributing to Dapr agents
+description: Guidelines for contributing to Dapr Agents
 ---
 
-When contributing to Dapr agents, the following rules and best-practices should be followed.
+When contributing to Dapr Agents, the following rules and best-practices should be followed.
 
 ## Examples
 
-The examples directory contains code samples for users to run to try out specific functionality of the various Dapr agents packages and extensions. When writing new and updated samples keep in mind:
+The examples directory contains code samples for users to run to try out specific functionality of the various Dapr Agents packages and extensions. When writing new and updated samples keep in mind:
 
 - All examples should be runnable on Windows, Linux, and MacOS. While Python code is consistent among operating systems, any pre/post example commands should provide options through [codetabs]({{< ref "contributing-docs.md#tabbed-content" >}})
 - Contain steps to download/install any required pre-requisites. Someone coming in with a fresh OS install should be able to start on the example and complete it without an error. Links to external download pages are fine.
