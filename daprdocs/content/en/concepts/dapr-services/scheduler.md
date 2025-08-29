@@ -167,7 +167,7 @@ To use an external Etcd cluster, set the `--etcd-embed` flag to `false` and prov
 Optionally also include `--etcd-client-username` and `--etcd-client-password` flags for authentication if the Etcd cluster requires it.
 
 ```
---etcd-embed              bool         When enabled, the Etcd database will be embedded in the scheduler server. If false, the scheduler will connect to an external Etcd cluster using the --etcd-client-endpoints flag. (default true)
+--etcd-embed              bool         When enabled, the Etcd database is embedded in the scheduler server. If false, the scheduler connects to an external Etcd cluster using the --etcd-client-endpoints flag. (default true)
 --etcd-client-endpoints   stringArray  Comma-separated list of etcd client endpoints to connect to. Only used when --etcd-embed is false.
 --etcd-client-username    string       Username for etcd client authentication. Only used when --etcd-embed is false.
 --etcd-client-password    string       Password for etcd client authentication. Only used when --etcd-embed is false.
