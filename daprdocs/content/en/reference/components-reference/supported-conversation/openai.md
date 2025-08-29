@@ -26,7 +26,7 @@ spec:
   - name: cacheTTL
     value: 10m
   # - name: apiType # Optional
-  #   value: `azure`
+  #   value: 'azure'
   # - name: apiVersion # Optional
   #   value: '2025-01-01-preview'
 ```
