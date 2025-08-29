@@ -111,6 +111,138 @@ If you decide to generate trace headers yourself, there are three ways this can 
    
    Read [the trace context overview]({{% ref w3c-tracing-overview %}}) for more background and examples on W3C trace context and headers.
 
+### Baggage Support
+
+Dapr supports two distinct mechanisms for propagating W3C Baggage alongside trace context:
+
+1. **Context Baggage (OpenTelemetry)**
+   - Follows OpenTelemetry conventions with decoded values
+   - Used when working with OpenTelemetry context propagation
+   - Values are stored and transmitted in their original, unencoded form
+   - Recommended for OpenTelemetry integrations and when working with application context
+
+2. **Header/Metadata Baggage**
+   - You must URL encode special characters (for example, `%20` for spaces, `%2F` for slashes) when setting header/metadata baggage
+   - Values remain percent-encoded in transport as required by the W3C Baggage spec
+   - Values stay encoded when inspecting raw headers/metadata
+   - Only OpenTelemetry APIs will decode the values
+   - Example: Use `serverNode=DF%2028` (not `serverNode=DF 28`) when setting header baggage
+
+For security purposes, context baggage and header baggage are strictly separated and never merged between domains. This ensures that baggage values maintain their intended format and security properties.
+
+#### Using Baggage with Dapr
+
+You can propagate baggage using either mechanism, depending on your use case.
+
+1. **In your application code**: Set the baggage in the context before making a Dapr API call
+2. **When calling Dapr**: Pass the context to any Dapr API call
+3. **Inside Dapr**: The Dapr runtime automatically picks up the baggage
+4. **Propagation**: Dapr automatically propagates the baggage to downstream services, maintaining the appropriate encoding for each mechanism
+
+Here are examples of both mechanisms:
+
+**1. Using Context Baggage (OpenTelemetry)**
+
+When using OpenTelemetry SDK:
+
+{{< tabpane text=true >}}
+
+{{% tab header="Go" %}}
+
+```go
+import 	otelbaggage "go.opentelemetry.io/otel/baggage"
+
+// Set baggage in context (values remain unencoded)
+baggage, err = otelbaggage.Parse("userId=cassie,serverNode=DF%2028")
+...
+ctx := otelbaggage.ContextWithBaggage(t.Context(), baggage)
+)
+
+// Pass this context to any Dapr API call
+client.InvokeMethodWithContent(ctx, "serviceB", ...)
+```
+
+**2. Using Header/Metadata Baggage**
+
+When using gRPC metadata:
+```go
+import "google.golang.org/grpc/metadata"
+
+// Set URL-encoded baggage in context
+ctx = metadata.AppendToOutgoingContext(ctx,
+    "baggage", "userId=cassie,serverNode=DF%2028",
+)
+
+// Pass this context to any Dapr API call
+client.InvokeMethodWithContent(ctx, "serviceB", ...)
+```
+
+**3. Receiving Baggage in Target Service**
+
+In your target service, you can access the propagated baggage:
+
+```go
+// Using OpenTelemetry (values are automatically decoded)
+import "go.opentelemetry.io/otel/baggage"
+
+bag := baggage.FromContext(ctx)
+userID := bag.Member("userId").Value()  // "cassie"
+```
+
+```go
+// Using raw gRPC metadata (values remain percent-encoded)
+import "google.golang.org/grpc/metadata"
+
+md, _ := metadata.FromIncomingContext(ctx)
+if values := md.Get("baggage"); len(values) > 0 {
+    // values[0] contains the percent-encoded string you set: "userId=cassie,serverNode=DF%2028"
+    // Remember: You must URL encode special characters when setting baggage
+    
+    // To decode the values, use OpenTelemetry APIs:
+    bag, err := baggage.Parse(values[0])
+    ...
+    userID := bag.Member("userId").Value()  // "cassie"
+}
+```
+
+*HTTP Example (URL-encoded):*
+```bash
+curl -X POST http://localhost:3500/v1.0/invoke/serviceB/method/hello \
+  -H "Content-Type: application/json" \
+  -H "baggage: userID=cassie,serverNode=DF%2028" \
+  -d '{"message": "Hello service B"}'
+```
+
+*gRPC Example (URL-encoded):*
+```go
+ctx = grpcMetadata.AppendToOutgoingContext(ctx,
+    "baggage", "userID=cassie,serverNode=DF%2028",
+)
+```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
+
+#### Common Use Cases
+
+Baggage is useful for:
+- Propagating user IDs or correlation IDs across services
+- Passing tenant or environment information
+- Maintaining consistent context across service boundaries
+- Debugging and troubleshooting distributed transactions
+
+#### Best Practices
+
+1. **Choose the Right Mechanism**
+   - Use Context Baggage when working with OpenTelemetry
+   - Use Header Baggage when working directly with HTTP/gRPC
+
+2. **Security Considerations**
+   - Be mindful that baggage is propagated across service boundaries
+   - Don't include sensitive information in baggage
+   - Remember that context and header baggage remain separate
+
 ## Related Links
 
 - [Observability concepts]({{% ref observability-concept.md %}})

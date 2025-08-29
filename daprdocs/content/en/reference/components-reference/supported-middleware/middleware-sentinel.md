@@ -60,7 +60,7 @@ Special note to `resource` field in each rule's definition. In Dapr, it follows 
 POST/GET/PUT/DELETE:Dapr HTTP API Request Path
 ```
 
-All concrete HTTP API information can be found from [Dapr API Reference]{{% ref "api" %}}. In the above sample config, the `resource` field is set to **POST:/v1.0/invoke/nodeapp/method/neworder**.
+All concrete HTTP API information can be found from [Dapr API Reference]({{% ref "api" %}}). In the above sample config, the `resource` field is set to **POST:/v1.0/invoke/nodeapp/method/neworder**.
 
 ## Dapr configuration
 

@@ -30,6 +30,8 @@ spec:
     value: "https://accounts.google.com/o/oauth2/token"
   - name: headerName
     value: "authorization"
+  - name: pathFilter
+    value: ".*/users/.*"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -47,6 +49,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | headerName | The authorization header name to forward to your application | `"authorization"`
 | endpointParamsQuery | Specifies additional parameters for requests to the token endpoint | `true`
 | authStyle | Optionally specifies how the endpoint wants the client ID & client secret sent. See the table of possible values below | `0`
+| pathFilter | Applies the middleware only to requests matching the given path pattern | `".*/users/.*"`
 
 ### Possible values for `authStyle`
 
@@ -71,6 +74,63 @@ spec:
     - name: oauth2clientcredentials
       type: middleware.http.oauth2clientcredentials
 ```
+
+## Request path filtering
+
+The `pathFilter` field allows you to selectively apply OAuth2 authentication based on the HTTP request path using a regex pattern. This enables scenarios such as configuring multiple OAuth2 middlewares with different scopes for different API endpoints, implementing the least privilege principle by ensuring users only receive the minimum permissions necessary for their intended operation.
+
+### Example: Separate read-only and admin user access
+
+In the following configuration:
+- Requests to `/api/users/*` endpoints receive tokens with a read-only user scopes
+- Requests to `/api/admin/*` endpoints receive tokens with full admin scopes
+This reduces security risk by preventing unnecessary privilege access and limiting the blast radius of compromised tokens.
+```yaml
+# User with read-only access scope
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: oauth2clientcredentials-users
+spec:
+  type: middleware.http.oauth2clientcredentials
+  version: v1
+  metadata:
+  - name: clientId
+    value: "<your client ID>"
+  - name: clientSecret
+    value: "<your client secret>"
+  - name: scopes
+    value: "user:read profile:read"
+  - name: tokenURL
+    value: "https://accounts.google.com/o/oauth2/token"
+  - name: headerName
+    value: "authorization"
+  - name: pathFilter
+    value: "^/api/users/.*"
+---
+# User with full admin access scope
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: oauth2clientcredentials-admin
+spec:
+  type: middleware.http.oauth2clientcredentials
+  version: v1
+  metadata:
+  - name: clientId
+    value: "<your client ID>"
+  - name: clientSecret
+    value: "<your client secret>"
+  - name: scopes
+    value: "admin:read admin:write user:read user:write"
+  - name: tokenURL
+    value: "https://accounts.google.com/o/oauth2/token"
+  - name: headerName
+    value: "authorization"
+  - name: pathFilter
+    value: "^/api/admin/.*"
+```
+
 
 ## Related links
 - [Middleware]({{% ref middleware.md %}})

@@ -6,8 +6,8 @@ weight: 50000
 description: "Configure Scheduler to persist its database to make it resilient to restarts"
 ---
 
-The [Scheduler]({{% ref scheduler.md %}}) service is responsible for writing jobs to its embedded Etcd database and scheduling them for execution.
-By default, the Scheduler service database writes data to a Persistent Volume Claim volume of size `1Gb`, using the cluster's default [storage class](https://kubernetes.io/docs/concepts/storage/storage-classes/).
+The [Scheduler]({{% ref scheduler.md %}}) service is responsible for writing jobs to its Etcd database and scheduling them for execution.
+By default, the Scheduler service database embeds Etcd and writes data to a Persistent Volume Claim volume of size `1Gb`, using the cluster's default [storage class](https://kubernetes.io/docs/concepts/storage/storage-classes/).
 This means that there is no additional parameter required to run the scheduler service reliably on most Kubernetes deployments, although you will need [additional configuration](#storage-class) if a default StorageClass is not available or when running a production environment.
 
 {{% alert title="Warning" color="warning" %}}
