@@ -123,6 +123,13 @@ spec:
         key: tls.key
 ```
 
+### Server-Sent Events
+
+HTTP endpoints support [Server-Sent Events (SSE)](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events).
+To use SSE, set the `Accept` header to `text/event-stream` in the `HTTPEndpoint` resource or in the service invocation request.
+
+```yaml
+
 ## Related Links
 
 - [HTTPEndpoint reference]({{% ref httpendpoints-schema %}})
