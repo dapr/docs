@@ -20,7 +20,7 @@ spec:
   - name: key
     value: mykey
   - name: model
-    value: gpt-4-turbo
+  value: '${{DAPR_CONVERSATION_OPENAI_MODEL}}'
   - name: cacheTTL
     value: 10m
 ```
@@ -34,7 +34,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | `key`   | Y | API key for OpenAI. | `mykey` |
-| `model` | N | The OpenAI LLM to use. Defaults to `gpt-4-turbo`.  | `gpt-4-turbo` |
+| `model` | N | The OpenAI LLM to use. Defaults to `gpt-5-nano` (configurable via `DAPR_CONVERSATION_OPENAI_MODEL` environment variable).  | `${{DAPR_CONVERSATION_OPENAI_MODEL}}` |
 | `cacheTTL` | N | A time-to-live value for a prompt cache to expire. Uses Golang duration format.  | `10m` |
 
 ## Related links

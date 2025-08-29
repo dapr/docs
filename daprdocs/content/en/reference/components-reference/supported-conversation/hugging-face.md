@@ -20,7 +20,7 @@ spec:
   - name: key
     value: mykey
   - name: model
-    value: meta-llama/Meta-Llama-3-8B
+  value: '${{DAPR_CONVERSATION_HUGGINGFACE_MODEL}}'
   - name: cacheTTL
     value: 10m
 ```
@@ -34,7 +34,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | `key`   | Y | API key for Huggingface. | `mykey` |
-| `model` | N | The Huggingface LLM to use. Defaults to `meta-llama/Meta-Llama-3-8B`.  | `meta-llama/Meta-Llama-3-8B` |
+| `model` | N | The Huggingface LLM to use. Defaults to `deepseek-ai/DeepSeek-R1-Distill-Qwen-32B` (configurable via `DAPR_CONVERSATION_HUGGINGFACE_MODEL` environment variable).  | `${{DAPR_CONVERSATION_HUGGINGFACE_MODEL}}` |
 | `cacheTTL` | N | A time-to-live value for a prompt cache to expire. Uses Golang duration format.  | `10m` |
 
 ## Related links
