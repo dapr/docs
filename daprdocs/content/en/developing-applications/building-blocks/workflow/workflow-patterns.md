@@ -1406,6 +1406,21 @@ Common use cases for the compensation pattern include:
 
 Dapr Workflow provides support for the compensation pattern, allowing you to register compensation activities for each step and execute them in reverse order when needed.
 
+Here's an example workflow for an e-commerce process:
+
+1. A workflow is triggered when an order is received.
+1. A reservation is made for the order in the inventory.
+1. The payment is processed.
+1. The order is shipped.
+1. If any of the above actions results in an error, the actions are compensated with another action:
+   - The shipment is cancelled.
+   - The payment is refunded.
+   - The inventory reservation is released.
+
+The following diagram illustrates this flow.
+
+<img src="/images/workflow-overview/workflows-compensation.png" width=600 alt="Diagram showing how the compensation pattern."/>
+
 {{< tabpane text=true >}}
 
 {{% tab "Java" %}}
