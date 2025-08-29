@@ -18,7 +18,7 @@ The diagram below shows how the Scheduler service is used via the jobs API when 
 
 <img src="/images/scheduler/scheduler-architecture.png" alt="Diagram showing the Scheduler control plane service and the jobs API">
 
-By default, Etcd is embedded in the Scheduler service, which means that the Scheduler service will run its own instance of Etcd.
+By default, Etcd is embedded in the Scheduler service, which means that the Scheduler service runs its own instance of Etcd.
 See [Scheduler service flags]({{% ref "#flag-tuning" %}}) for more information on how to configure the Scheduler service.
 
 ## Actor Reminders
