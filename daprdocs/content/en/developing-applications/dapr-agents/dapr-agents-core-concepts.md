@@ -6,7 +6,7 @@ weight: 40
 description: "Learn about the core concepts of Dapr Agents"
 ---
 
-Dapr Agents provides a structured way to build and orchestrate applications that use LLMs without getting bogged down in infrastructure details. The primary goal is to make AI development by abstracting away the complexities of working with LLMs, tools, memory management, and distributed systems, allowing developers to focus on the business logic of their AI applications. Agents in this framework are the fundamental building blocks.
+Dapr Agents provides a structured way to build and orchestrate applications that use LLMs without getting bogged down in infrastructure details. The primary goal is to enable AI development by abstracting away the complexities of working with LLMs, tools, memory management, and distributed systems, allowing developers to focus on the business logic of their AI applications. Agents in this framework are the fundamental building blocks.
 
 ## Agents
 
@@ -104,15 +104,15 @@ An agentic system is a distributed system that requires a variety of behaviors a
 
 Dapr Agents provides a unified interface to connect with LLM inference APIs. This abstraction allows developers to seamlessly integrate their agents with cutting-edge language models for reasoning and decision-making. The framework includes multiple LLM clients for different providers and modalities:
 
+- `DaprChatClient`: Unified API for LLM interactions via Dapr's Conversation API with built-in security (scopes, secrets, PII obfuscation), resiliency (timeouts, retries, circuit breakers), and observability via OpenTelemetry & Prometheus
 - `OpenAIChatClient`: Full spectrum support for OpenAI models including chat, embeddings, and audio
 - `HFHubChatClient`: For Hugging Face models supporting both chat and embeddings
 - `NVIDIAChatClient`: For NVIDIA AI Foundation models supporting local inference and chat
 - `ElevenLabs`: Support for speech and voice capabilities
-- `DaprChatClient`: Unified API for LLM interactions via Dapr's Conversation API with built-in security (scopes, secrets, PII obfuscation), resiliency (timeouts, retries, circuit breakers), and observability via OpenTelemetry & Prometheus
 
 ### Prompt Flexibility
 
-Dapr Agents supports flexible prompt templates to shape agent behavior and reasoning. Users can define placeholders within prompts, enabling dynamic input of context for inference calls. By leveraging prompt formatting with [Jinja templates](https://jinja.palletsprojects.com/en/stable/templates/), users can include loops, conditions, and variables, providing precise control over the structure and content of prompts. This flexibility ensures that LLM responses are tailored to the task at hand, offering modularity and adaptability for diverse use cases.
+Dapr Agents supports flexible prompt templates to shape agent behavior and reasoning. Users can define placeholders within prompts, enabling dynamic input of context for inference calls. By leveraging prompt formatting with [Jinja templates](https://jinja.palletsprojects.com/en/stable/templates/) and Python f-string formatting, users can include loops, conditions, and variables, providing precise control over the structure and content of prompts. This flexibility ensures that LLM responses are tailored to the task at hand, offering modularity and adaptability for diverse use cases.
 
 ### Structured Outputs
 
@@ -165,7 +165,7 @@ This is supported directly through LLM parametric knowledge and enhanced by [Fun
 
 
 ### MCP Support
-Dapr Agents includes built-in support for the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/), enabling agents to dynamically discover and invoke external tools through a standardized interface. Using the provided MCPClient, agents can connect to MCP servers via two transport options: stdio for local development and sse for remote or distributed environments.
+Dapr Agents includes built-in support for the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/), enabling agents to dynamically discover and invoke external tools through a standardized interface. Using the provided MCPClient, agents can connect to MCP servers via three transport options: stdio for local development, sse for remote or distributed environments, and via streamable HTTP transport.
 
 ```python
 client = MCPClient()
@@ -229,7 +229,7 @@ curl -i -X POST http://localhost:8001/start-workflow \
 -H "Content-Type: application/json" \
 -d '{"task": "I want to find flights to Paris"}'
 ```
-Unlike conversational agents that provide immediate synchronous responses, durable agents operate as headless services that are triggered asynchronously. You trigger it, receive a workflow instance ID, and can track progress over time. This enables long-running, fault-tolerant operations that can span multiple systems and survive restarts, making them ideal for complex multi-step processes in production environments.
+Unlike conversational agents that provide immediate synchronous responses, durable agents operate as headless services that are triggered asynchronously. You trigger it, receive a workflow instance ID, and can track progress over time. This enables long-running, fault-tolerant operations that can span multiple systems and survive restarts, making them ideal for complex multi-step processes in environments requiring high levels of durability and resiliency.
 
 ## Multi-agent Systems (MAS)
 
@@ -298,7 +298,7 @@ Agent tasks enable workflows to leverage specialized agents with their own tools
 
 ### Workflow Patterns
 
-Workflows enable the implementation of various agentic patterns through structured orchestration, including Prompt Chaining, Routing, Parallelization, Orchestrator-Workers, Evaluator-Optimizer, Human-in-the-loop, and others. For detailed implementations and examples of these patterns, see the [Patterns documentation]({{< ref "dapr-agents-patterns.md" >}}).
+Workflows enable the implementation of various agentic patterns through structured orchestration, including Prompt Chaining, Routing, Parallelization, Orchestrator-Workers, Evaluator-Optimizer, Human-in-the-loop, and others. For detailed implementations and examples of these patterns, see the [Patterns documentation]({{< ref dapr-agents-patterns.md >}}).
 
 ### Workflows vs. Durable Agents
 
@@ -309,14 +309,14 @@ Both DurableAgent and workflow-based agent orchestration use Dapr workflows behi
 | Control | Developer-defined process flow | Agent determines next steps        |
 | Predictability | Higher | Lower                              |
 | Flexibility | Fixed overall structure, flexible within steps | Completely flexible                |
-| Reliability | Very high (workflow engine guarantees) | Depends on agent implementation    |
-| Complexity | Simpler to reason about | Harder to debug and understand     |
+| Reliability | Very high (workflow engine guarantees) | Very high (underlying agent implementation guarantees)    |
+| Complexity | Structured workflow patterns | Dynamic, flexible execution paths     |
 | Use Cases | Business processes, regulated domains | Open-ended research, creative tasks |
 
-The key difference lies in control flow determination: with DurableAgent, the workflow is created dynamically by the LLM's planning decisions, executing entirely within a single agent context. In contrast, with deterministic workflows, the developer explicitly defines the coordination between one or more LLM interactions, providing structured orchestration across multiple tasks or agents.
+The key difference lies in control flow determination: with DurableAgent, the underlying workflow is created dynamically by the LLM's planning decisions, executing entirely within a single agent context. In contrast, with deterministic workflows, the developer explicitly defines the coordination between one or more LLM interactions, providing structured orchestration across multiple tasks or agents.
 
 
-## Event-driven Orchestration
+## Event-Driven Orchestration
 Event-driven agent orchestration enables multiple specialized agents to collaborate through asynchronous [Pub/Sub messaging](https://docs.dapr.io/developing-applications/building-blocks/pubsub/pubsub-overview/). This approach provides powerful collaborative problem-solving, parallel processing, and division of responsibilities among specialized agents through independent scaling, resilience via service isolation, and clear separation of responsibilities.
 
 ### Core Participants
