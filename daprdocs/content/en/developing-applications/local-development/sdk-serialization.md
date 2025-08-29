@@ -85,17 +85,8 @@ Content-Length: 12
 
 {{< /tabpane >}}
 
-In this example, `My Message` is saved. It is not quoted because Dapr's API internally parse the JSON request 
-object before saving it.
-
-```JSON
-[
-    {
-        "key": "MyKey",
-        "value": "My Message"
-    }
-]
-```
+In this example, `My Message` is saved. It is not quoted because Dapr's API internally serializes the string before 
+serving it.
 
 ## PubSub
 
@@ -109,7 +100,9 @@ object before saving it.
     await client.PublishEventAsync("MyPubSubName", "TopicName", "My Message");
 ```
 
-The event is published and the content is serialized to `byte[]` and sent to Dapr sidecar. The subscriber receives it as a [CloudEvent](https://github.com/cloudevents/spec). Cloud event defines `data` as String. The Dapr SDK also provides a built-in deserializer for `CloudEvent` object. 
+The event is published and the content is serialized to `byte[]` and sent to Dapr sidecar. The subscriber receives it 
+as a [CloudEvent](https://github.com/cloudevents/spec). Cloud event defines `data` as string. The Dapr SDK also provides a built-in deserializer 
+for the `CloudEvent` object. 
 
 ```csharp
 public async Task<IActionResult> HandleMessage(string message) 
