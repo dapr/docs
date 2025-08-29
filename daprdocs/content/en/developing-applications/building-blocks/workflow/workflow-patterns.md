@@ -28,7 +28,6 @@ Dapr Workflow solves these complexities by allowing you to implement the task ch
 {{< tabpane text=true >}}
 
 {{% tab "Python" %}}
-<!--python-->
 
 ```python
 import dapr.ext.workflow as wf
@@ -73,7 +72,6 @@ def error_handler(ctx, error):
 {{% /tab %}}
 
 {{% tab "JavaScript" %}}
-<!--javascript-->
 
 ```javascript
 import { DaprWorkflowClient, WorkflowActivityContext, WorkflowContext, WorkflowRuntime, TWorkflow } from "@dapr/dapr";
@@ -147,7 +145,6 @@ start().catch((e) => {
 {{% /tab %}}
 
 {{% tab ".NET" %}}
-<!--dotnet-->
 
 ```csharp
 // Expotential backoff retry policy that survives long outages
@@ -180,7 +177,6 @@ catch (TaskFailedException) // Task failures are surfaced as TaskFailedException
 {{% /tab %}}
 
 {{% tab "Java" %}}
-<!--java-->
 
 ```java
 public class ChainWorkflow extends Workflow {
@@ -235,7 +231,6 @@ public class ChainWorkflow extends Workflow {
 {{% /tab %}}
 
 {{% tab "Go" %}}
-<!--go-->
 
 ```go
 func TaskChainWorkflow(ctx *workflow.WorkflowContext) (any, error) {
@@ -314,7 +309,6 @@ Dapr Workflows provides a way to express the fan-out/fan-in pattern as a simple 
 {{< tabpane text=true >}}
 
 {{% tab "Python" %}}
-<!--python-->
 
 ```python
 import time
@@ -354,7 +348,6 @@ def process_results(ctx, final_result: int):
 {{% /tab %}}
 
 {{% tab "JavaScript" %}}
-<!--javascript-->
 
 ```javascript
 import {
@@ -462,7 +455,6 @@ start().catch((e) => {
 {{% /tab %}}
 
 {{% tab ".NET" %}}
-<!--dotnet-->
 
 ```csharp
 // Get a list of N work items to process in parallel.
@@ -487,7 +479,6 @@ await context.CallActivityAsync("PostResults", sum);
 {{% /tab %}}
 
 {{% tab "Java" %}}
-<!--java-->
 
 ```java
 public class FaninoutWorkflow extends Workflow {
@@ -513,7 +504,6 @@ public class FaninoutWorkflow extends Workflow {
 {{% /tab %}}
 
 {{% tab "Go" %}}
-<!--go-->
 
 ```go
 func BatchProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
@@ -593,7 +583,7 @@ It's possible to go further and limit the degree of concurrency using simple, la
 {{< tabpane text=true >}}
 
 {{% tab ".NET" %}}
-<!-- .NET -->
+
 ```csharp
 
 //Revisiting the earlier example...
@@ -630,7 +620,7 @@ concurrency by using the following extension methods on the `WorkflowContext`:
 {{< tabpane text=true >}}
 
 {{% tab header=".NET" %}}
-<!-- .NET -->
+
 ```csharp
 //Revisiting the earlier example...
 // Get a list of work items to process
@@ -742,7 +732,6 @@ Dapr Workflow supports this pattern natively by allowing you to implement _etern
 {{< tabpane text=true >}}
 
 {{% tab "Python" %}}
-<!--python-->
 
 ```python
 from dataclasses import dataclass
@@ -789,7 +778,6 @@ def send_alert(ctx, message: str):
 {{% /tab %}}
 
 {{% tab "JavaScript" %}}
-<!--javascript-->
 
 ```javascript
 const statusMonitorWorkflow: TWorkflow = async function* (ctx: WorkflowContext): any {
@@ -817,7 +805,6 @@ const statusMonitorWorkflow: TWorkflow = async function* (ctx: WorkflowContext):
 {{% /tab %}}
 
 {{% tab ".NET" %}}
-<!--dotnet-->
 
 ```csharp
 public override async Task<object> RunAsync(WorkflowContext context, MyEntityState myEntityState)
@@ -858,7 +845,6 @@ public override async Task<object> RunAsync(WorkflowContext context, MyEntitySta
 {{% /tab %}}
 
 {{% tab "Java" %}}
-<!--java-->
 
 ```java
 public class MonitorWorkflow extends Workflow {
@@ -900,7 +886,6 @@ public class MonitorWorkflow extends Workflow {
 {{% /tab %}}
 
 {{% tab "Go" %}}
-<!--go-->
 
 ```go
 type JobStatus struct {
@@ -983,7 +968,6 @@ The following example code shows how this pattern can be implemented using Dapr 
 {{< tabpane text=true >}}
 
 {{% tab "Python" %}}
-<!--python-->
 
 ```python
 from dataclasses import dataclass
@@ -1042,7 +1026,6 @@ def place_order(_, order: Order) -> None:
 {{% /tab %}}
 
 {{% tab "JavaScript" %}}
-<!--javascript-->
 
 ```javascript
 import {
@@ -1182,7 +1165,6 @@ start().catch((e) => {
 {{% /tab %}}
 
 {{% tab ".NET" %}}
-<!--dotnet-->
 
 ```csharp
 public override async Task<OrderResult> RunAsync(WorkflowContext context, OrderPayload order)
@@ -1226,7 +1208,6 @@ public override async Task<OrderResult> RunAsync(WorkflowContext context, OrderP
 {{% /tab %}}
 
 {{% tab "Java" %}}
-<!--java-->
 
 ```java
 public class ExternalSystemInteractionWorkflow extends Workflow {
@@ -1263,7 +1244,6 @@ public class ExternalSystemInteractionWorkflow extends Workflow {
 {{% /tab %}}
 
 {{% tab "Go" %}}
-<!--go-->
 
 ```go
 type Order struct {
@@ -1326,7 +1306,6 @@ The code that delivers the event to resume the workflow execution is external to
 {{< tabpane text=true >}}
 
 {{% tab "Python" %}}
-<!--python-->
 
 ```python
 from dapr.clients import DaprClient
@@ -1343,7 +1322,6 @@ with DaprClient() as d:
 {{% /tab %}}
 
 {{% tab "JavaScript" %}}
-<!--javascript-->
 
 ```javascript
 import { DaprClient } from "@dapr/dapr";
@@ -1356,7 +1334,6 @@ import { DaprClient } from "@dapr/dapr";
 {{% /tab %}}
 
 {{% tab ".NET" %}}
-<!--dotnet-->
 
 ```csharp
 // Raise the workflow event to the waiting workflow
@@ -1370,7 +1347,6 @@ await daprClient.RaiseWorkflowEventAsync(
 {{% /tab %}}
 
 {{% tab "Java" %}}
-<!--java-->
 
 ```java
 System.out.println("**SendExternalMessage: RestartEvent**");
@@ -1380,7 +1356,6 @@ client.raiseEvent(restartingInstanceId, "RestartEvent", "RestartEventPayload");
 {{% /tab %}}
 
 {{% tab "Go" %}}
-<!--go-->
 
 ```go
 func raiseEvent() {
@@ -1431,10 +1406,9 @@ Common use cases for the compensation pattern include:
 
 Dapr Workflow provides support for the compensation pattern, allowing you to register compensation activities for each step and execute them in reverse order when needed.
 
-{{< tabs Java >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
-<!--java-->
+{{% tab "Java" %}}
 
 ```java
 public class PaymentProcessingWorkflow implements Workflow {
@@ -1461,12 +1435,6 @@ public class PaymentProcessingWorkflow implements Workflow {
                 String shipmentId = ctx.callActivity(ShipOrderActivity.class.getName(), orderId, String.class).await();
                 ctx.getLogger().info("Order shipped: {}", shipmentId);
                 compensations.add("CancelShipment");
-                
-                // Step 4: Send confirmation
-                ctx.callActivity(SendConfirmationActivity.class.getName(), orderId, Void.class).await();
-                ctx.getLogger().info("Confirmation sent for order: {}", orderId);
-                
-                ctx.complete("Order processed successfully: " + orderId);
                 
             } catch (TaskFailedException e) {
                 ctx.getLogger().error("Activity failed: {}", e.getMessage());
@@ -1506,6 +1474,12 @@ public class PaymentProcessingWorkflow implements Workflow {
                 }
                 ctx.complete("Order processing failed, compensation applied");
             }
+
+			// Step 4: Send confirmation
+			ctx.callActivity(SendConfirmationActivity.class.getName(), orderId, Void.class).await();
+            ctx.getLogger().info("Confirmation sent for order: {}", orderId);
+                
+            ctx.complete("Order processed successfully: " + orderId);
         };
     }
 }
@@ -1585,9 +1559,9 @@ class SendConfirmationActivity implements WorkflowActivity {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 The key benefits of using Dapr Workflow's compensation pattern include:
 
