@@ -6,7 +6,7 @@ weight: 50000
 description: "Configure Scheduler to persist its database to make it resilient to restarts"
 ---
 
-The [Scheduler]({{% ref scheduler.md %}}) service is responsible for writing jobs to its embedded database and scheduling them for execution.
+The [Scheduler]({{% ref scheduler.md %}}) service is responsible for writing jobs to its Etcd database and scheduling them for execution.
 By default, the Scheduler service database writes this data to the local volume `dapr_scheduler`, meaning that **this data is persisted across restarts**.
 
 The host file location for this local volume is typically located at either `/var/lib/docker/volumes/dapr_scheduler/_data` or `~/.local/share/containers/storage/volumes/dapr_scheduler/_data`, depending on your container runtime.
