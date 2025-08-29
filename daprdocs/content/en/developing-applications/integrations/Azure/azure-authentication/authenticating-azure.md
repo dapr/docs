@@ -150,7 +150,7 @@ Providing these settings exposes the following endpoints on your Dapr Sentry ins
 ```
 
 You also need to provide the Dapr runtime configuration to request a JWT token with the Azure audience `api://AzureADTokenExchange`.
-When running in standalone, this can be provided using the flag `--sentry-request-jwt-audiences=api://AzureADTokenExchange`.
+When running in standalone mode, this can be provided using the flag `--sentry-request-jwt-audiences=api://AzureADTokenExchange`.
 When running in Kubernetes, this can be provided by decorating the application Kubernetes manifest with the annotations `"dapr.io/sentry-request-jwt-audiences": "api://AzureADTokenExchange"`.
 This will ensure Sentry issues a JWT token with the correct audience, which is required for Microsoft Entra ID to validate the token.
 
