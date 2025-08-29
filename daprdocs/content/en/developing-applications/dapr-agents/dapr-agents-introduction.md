@@ -8,8 +8,8 @@ description: "Overview of Dapr Agents and its key features"
 
 ![Agent Overview](/images/dapr-agents/concepts-agents-overview.png)
 
-Dapr Agents is a developer framework for building production-grade, durable AI agent systems powered by Large Language Models (LLMs). Built on the battle-tested Dapr project, it enables developers to create autonomous systems that reason through problems, make dynamic decisions, and collaborate seamlessly. It includes built-in observability and stateful workflow execution to ensure agentic workflows complete successfully, regardless of complexity. Whether you're developing single-agent applications or complex multi-agent workflows, Dapr Agents provides the infrastructure for intelligent, adaptive systems that scale across environments.
 
+Dapr Agents is a developer framework for building durable and resilient AI agent systems powered by Large Language Models (LLMs). Built on the battle-tested Dapr project, it enables developers to create autonomous systems that reason through problems, make dynamic decisions, and collaborate seamlessly. It includes built-in observability and stateful workflow execution to ensure agentic workflows complete successfully, regardless of complexity. Whether you're developing single-agent applications or complex multi-agent workflows, Dapr Agents provides the infrastructure for intelligent, adaptive systems that scale across environments.
 
 ## Core Capabilities
 
@@ -72,16 +72,16 @@ Dapr Agents integrates with popular Python frameworks and tools. For detailed in
  
 ## Operational Support
 
-Dapr Agents inherits Dapr's enterprise-grade operational capabilities, providing comprehensive support for production deployments of agentic systems.
+Dapr Agents inherits Dapr's enterprise-grade operational capabilities, providing comprehensive support for durable and reliable deployments of agentic systems.
 
 ### Built-in Operational Features
 
 - **[Observability]({{% ref observability-concept.md %}})** - Distributed tracing, metrics collection, and logging for agent interactions and workflow execution
 - **[Security]({{% ref security-concept.md %}})** - mTLS encryption, access control, and secrets management for secure agent communication
 - **[Resiliency]({{% ref resiliency-concept.md %}})** - Automatic retries, circuit breakers, and timeout policies for fault-tolerant agent operations
-- **[Infrastructure Abstraction]({{% ref components-concept.md %}})** - Dapr components abstract LLM providers, memory stores, storage and messaging backends, enabling seamless transitions between development and production environments
+- **[Infrastructure Abstraction]({{% ref components-concept.md %}})** - Dapr components abstract LLM providers, memory stores, storage and messaging backends, enabling seamless transitions between different environments
 
-These capabilities enable teams to monitor agent performance, secure multi-agent communications, and ensure reliable execution of complex agentic workflows in production environments.
+These capabilities enable teams to monitor agent performance, secure multi-agent communications, and ensure reliable execution of complex agentic workflows.
 
 ## Contributing
 

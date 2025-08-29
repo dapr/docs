@@ -229,7 +229,7 @@ curl -i -X POST http://localhost:8001/start-workflow \
 -H "Content-Type: application/json" \
 -d '{"task": "I want to find flights to Paris"}'
 ```
-Unlike conversational agents that provide immediate synchronous responses, durable agents operate as headless services that are triggered asynchronously. You trigger it, receive a workflow instance ID, and can track progress over time. This enables long-running, fault-tolerant operations that can span multiple systems and survive restarts, making them ideal for complex multi-step processes in production environments.
+Unlike conversational agents that provide immediate synchronous responses, durable agents operate as headless services that are triggered asynchronously. You trigger it, receive a workflow instance ID, and can track progress over time. This enables long-running, fault-tolerant operations that can span multiple systems and survive restarts, making them ideal for complex multi-step processes in environments requiring high levels of durability and resiliency.
 
 ## Multi-agent Systems (MAS)
 
