@@ -3,6 +3,8 @@
 .idea/
 node_modules/
 daprdocs/public
+public
+resources/_gen
 daprdocs/resources/_gen
 .venv/
 .hugo_build.lock

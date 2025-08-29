@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup Azure Storage Queues binding create a component of type `bindings.azure.storagequeues`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup Azure Storage Queues binding create a component of type `bindings.azure.storagequeues`. See [this guide]({{% ref "howto-bindings.md#1-create-a-binding" %}}) on how to create and apply a binding configuration.
 
 
 ```yaml
@@ -39,12 +39,14 @@ spec:
 #   value: "http://127.0.0.1:10001"
 # - name: visibilityTimeout
 #   value: "30s"
+# - name: initialVisibilityDelay
+#   value: "30s"
 # - name: direction 
 #   value: "input, output"
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -59,12 +61,13 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `decodeBase64` | N | Input | Configuration to decode base64 content received from the Storage Queue into a string. Defaults to `false` | `true`, `false` |
 | `encodeBase64` | N | Output | If enabled base64 encodes the data payload before uploading to Azure storage queues. Default `false`. | `true`, `false` |
 | `endpoint` | N | Input/Output | Optional custom endpoint URL. This is useful when using the [Azurite emulator](https://github.com/Azure/azurite) or when using custom domains for Azure Storage (although this is not officially supported). The endpoint must be the full base URL, including the protocol (`http://` or `https://`), the IP or FQDN, and optional port. | `"http://127.0.0.1:10001"` or `"https://accountName.queue.example.com"` |
-| `visibilityTimeout` | N | Input | Allows setting a custom queue visibility timeout to avoid immediate retrying of recently failed messages. Defaults to 30 seconds. | `"100s"` |
+| `initialVisibilityDelay` | N | Input | Allows setting a custom queue visibility timeout to avoid immediate retrying of recently failed messages. Defaults to 30 seconds. | `"100s"` |
+| `visibilityTimeout` | N | Input | Sets a delay before a message becomes visible in the queue after being added. It can also be specified per message by setting the `initialVisibilityDelay` property in the invocation request's metadata. Defaults to 0 seconds. | `"30s"` |
 | `direction` | N | Input/Output | Direction of the binding. | `"input"`, `"output"`, `"input, output"` |
 
 ### Microsoft Entra ID authentication
 
-The Azure Storage Queue binding component supports authentication using all Microsoft Entra ID mechanisms. See the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}) to learn more about the relevant component metadata fields based on your choice of Microsoft Entra ID authentication mechanism.
+The Azure Storage Queue binding component supports authentication using all Microsoft Entra ID mechanisms. See the [docs for authenticating to Azure]({{% ref authenticating-azure.md %}}) to learn more about the relevant component metadata fields based on your choice of Microsoft Entra ID authentication mechanism.
 
 ## Binding support
 
@@ -98,10 +101,34 @@ curl -X POST http://localhost:3500/v1.0/bindings/myStorageQueue \
       }'
 ```
 
+## Specifying a Initial Visibility delay per message
+
+An initial visibility delay can be defined on queue level or at the message level. The value defined at message level overwrites any value set at a queue level.
+
+To set an initial visibility delay value at the message level, use the `metadata` section in the request body during the binding invocation.
+
+The field name is `initialVisbilityDelay`.
+
+Example.
+
+```shell
+curl -X POST http://localhost:3500/v1.0/bindings/myStorageQueue \
+  -H "Content-Type: application/json" \
+  -d '{
+        "data": {
+          "message": "Hi"
+        },
+        "metadata": {
+          "initialVisbilityDelay": "30"
+        },
+        "operation": "create"
+      }'
+```
+
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Bindings building block]({{< ref bindings >}})
-- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
-- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
-- [Bindings API reference]({{< ref bindings_api.md >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Bindings building block]({{% ref bindings %}})
+- [How-To: Trigger application with input binding]({{% ref howto-triggers.md %}})
+- [How-To: Use bindings to interface with external resources]({{% ref howto-bindings.md %}})
+- [Bindings API reference]({{% ref bindings_api.md %}})

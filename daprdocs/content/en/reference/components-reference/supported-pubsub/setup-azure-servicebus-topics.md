@@ -10,10 +10,10 @@ aliases:
 
 ## Component format
 
-To set up Azure Service Bus Topics pub/sub, create a component of type `pubsub.azure.servicebus.topics`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
+To set up Azure Service Bus Topics pub/sub, create a component of type `pubsub.azure.servicebus.topics`. See the [pub/sub broker component file]({{% ref setup-pubsub.md %}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{% ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" %}}) on how to create and apply a pub/sub configuration.
 
 > This component uses topics on Azure Service Bus; see the official documentation for the differences between [topics and queues](https://learn.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions).  
-> For using queues, see the [Azure Service Bus Queues pubsub component]({{< ref "setup-azure-servicebus-queues" >}}).
+> For using queues, see the [Azure Service Bus Queues pubsub component]({{% ref "setup-azure-servicebus-queues" %}}).
 
 ### Connection String Authentication
 
@@ -66,7 +66,7 @@ spec:
 > __NOTE:__ The above settings are shared across all topics that use this component.
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -75,7 +75,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|---------|---------|
 | `connectionString`   | Y  | Shared access policy connection string for the Service Bus. Required unless using Microsoft Entra ID authentication. | See example above
 | `namespaceName`| N | Parameter to set the address of the Service Bus namespace, as a fully-qualified domain name. Required if using Microsoft Entra ID authentication. | `"namespace.servicebus.windows.net"` |
-| `consumerID`         | N        | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. (`appID`) value. | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{< ref "component-schema.md#templated-metadata-values" >}})
+| `consumerID`         | N        | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. (`appID`) value. | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{% ref "component-schema.md#templated-metadata-values" %}})
 | `timeoutInSec`       | N  | Timeout for sending messages and for management operations. Default: `60` |`30`
 | `handlerTimeoutInSec`| N  |  Timeout for invoking the app's handler. Default: `60` | `30`
 | `lockRenewalInSec`      | N  | Defines the frequency at which buffered message locks will be renewed. Default: `20`. | `20`
@@ -94,7 +94,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ### Microsoft Entra ID authentication
 
-The Azure Service Bus Topics pubsub component supports authentication using all Microsoft Entra ID mechanisms, including Managed Identities. For further information and the relevant component metadata fields to provide depending on the choice of Microsoft Entra ID authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+The Azure Service Bus Topics pubsub component supports authentication using all Microsoft Entra ID mechanisms, including Managed Identities. For further information and the relevant component metadata fields to provide depending on the choice of Microsoft Entra ID authentication mechanism, see the [docs for authenticating to Azure]({{% ref authenticating-azure.md %}}).
 
 #### Example Configuration
 
@@ -175,6 +175,6 @@ Follow the instructions [here](https://docs.microsoft.com/azure/service-bus-mess
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Pub/Sub building block]({{< ref pubsub >}})
-- Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Pub/Sub building block]({{% ref pubsub %}})
+- Read [this guide]({{% ref "howto-publish-subscribe.md#step-2-publish-a-topic" %}}) for instructions on configuring pub/sub components

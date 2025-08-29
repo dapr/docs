@@ -186,4 +186,4 @@ description: "How to install Fluentd, Elastic Search, and Kibana to search logs 
 * [Elastic search helm chart](https://github.com/elastic/helm-charts/tree/master/elasticsearch)
 * [Kibana helm chart](https://github.com/elastic/helm-charts/tree/master/kibana)
 * [Kibana Query Language](https://www.elastic.co/guide/en/kibana/current/kuery-query.html)
-* [Troubleshooting using Logs]({{< ref "logs-troubleshooting.md" >}})
+* [Troubleshooting using Logs]({{% ref "logs-troubleshooting.md" %}})

@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup Azure Tablestorage state store create a component of type `state.azure.tablestorage`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+To setup Azure Tablestorage state store create a component of type `state.azure.tablestorage`. See [this guide]({{% ref "howto-get-save-state.md#step-1-setup-a-state-store" %}}) on how to create and apply a state store configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -31,7 +31,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -47,13 +47,13 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ### Microsoft Entra ID authentication
 
-The Azure Cosmos DB state store component supports authentication using all Microsoft Entra ID mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of Microsoft Entra ID authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+The Azure Cosmos DB state store component supports authentication using all Microsoft Entra ID mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of Microsoft Entra ID authentication mechanism, see the [docs for authenticating to Azure]({{% ref authenticating-azure.md %}}).
 
 You can read additional information for setting up Cosmos DB with Microsoft Entra ID authentication in the [section below](#setting-up-cosmos-db-for-authenticating-with-azure-ad).
 
 ## Option 1: Setup Azure Table Storage
 
-[Follow the instructions](https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal) from the Azure documentation on how to create an Azure Storage Account.
+[Follow the instructions](https://docs.microsoft.com/azure/storage/common/storage-account-create?tabpane=azure-portal) from the Azure documentation on how to create an Azure Storage Account.
 
 If you wish to create a table for Dapr to use, you can do so beforehand. However, Table Storage state provider will create one for you automatically if it doesn't exist, unless the `skipCreateTable` option is enabled.
 
@@ -65,7 +65,7 @@ In order to setup Azure Table Storage as a state store, you will need the follow
 
 ## Option 2: Setup Azure Cosmos DB Table API
 
-[Follow the instructions](https://docs.microsoft.com/azure/cosmos-db/table/how-to-use-python?tabs=azure-portal#1---create-an-azure-cosmos-db-account) from the Azure documentation on creating a Cosmos DB account with Table API.
+[Follow the instructions](https://docs.microsoft.com/azure/cosmos-db/table/how-to-use-python?tabpane=azure-portal#1---create-an-azure-cosmos-db-account) from the Azure documentation on creating a Cosmos DB account with Table API.
 
 If you wish to create a table for Dapr to use, you can do so beforehand. However, Table Storage state provider will create one for you automatically if it doesn't exist, unless the `skipCreateTable` option is enabled.
 
@@ -107,6 +107,6 @@ Azure Table Storage state concurrency is achieved by using `ETag`s according to 
 
 
 ## Related links
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
-- [State management building block]({{< ref state-management >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" %}}) for instructions on configuring state store components
+- [State management building block]({{% ref state-management %}})

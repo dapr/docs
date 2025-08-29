@@ -7,9 +7,9 @@ description: Detailed information on the Kubernetes DNS name resolution componen
 
 ## Configuration format
 
-Generally, Kubernetes DNS name resolution is configured automatically in [Kubernetes mode]({{< ref kubernetes >}}) by Dapr. There is no configuration needed to use Kubernetes DNS as your name resolution provider unless some overrides are necessary for the Kubernetes name resolution component.
+Generally, Kubernetes DNS name resolution is configured automatically in [Kubernetes mode]({{% ref kubernetes %}}) by Dapr. There is no configuration needed to use Kubernetes DNS as your name resolution provider unless some overrides are necessary for the Kubernetes name resolution component.
 
-In the scenario that an override is required, within a [Dapr Configuration]({{< ref configuration-overview.md >}}) CRD, add a `nameResolution` spec and set the `component` field to `"kubernetes"`. The other configuration fields can be set as needed in a `configuration` map, as seen below.
+In the scenario that an override is required, within a [Dapr Configuration]({{% ref configuration-overview.md %}}) CRD, add a `nameResolution` spec and set the `component` field to `"kubernetes"`. The other configuration fields can be set as needed in a `configuration` map, as seen below.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -40,5 +40,5 @@ The configuration spec is fixed to v1.3.0 of the Consul API
 
 ## Related links
 
-- [Service invocation building block]({{< ref service-invocation >}})
+- [Service invocation building block]({{% ref service-invocation %}})
 - [Kubernetes DNS docs](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/)

@@ -16,7 +16,7 @@ See the [Dapr community repository](https://github.com/dapr/community) for more 
 
  Below is a list of repositories under the Dapr organization where you can contribute:
 
-1. **Docs**: This [repository](https://github.com/dapr/docs) contains the documentation for Dapr. You can contribute by updating existing documentation, fixing errors, or adding new content to improve user experience and clarity. Please see the specific guidelines for [docs contributions]({{< ref contributing-docs >}}).
+1. **Docs**: This [repository](https://github.com/dapr/docs) contains the documentation for Dapr. You can contribute by updating existing documentation, fixing errors, or adding new content to improve user experience and clarity. Please see the specific guidelines for [docs contributions]({{% ref contributing-docs %}}).
 
 2. **Quickstarts**: The Quickstarts [repository](https://github.com/dapr/quickstarts) provides simple, step-by-step guides to help users get started with Dapr quickly. [Contributions in this repository](https://github.com/dapr/quickstarts/blob/master/CONTRIBUTING.md) involve creating new quickstarts, improving existing ones, or ensuring they stay up-to-date with the latest features.
 
@@ -24,7 +24,7 @@ See the [Dapr community repository](https://github.com/dapr/community) for more 
 
 4. **Components-contrib**: This [repository](https://github.com/dapr/components-contrib) hosts a collection of community-contributed components for Dapr. You can contribute by adding new components, improving existing ones, or reviewing and testing contributions from the community.
 
-5. **SDKs**: Dapr SDKs provide libraries for various programming languages to interact with Dapr. You can contribute by improving SDK functionalities, fixing bugs, or adding support for new features. Please see the [contribution guidelines]({{< ref sdk-contrib >}}) for specific SDKs.
+5. **SDKs**: Dapr SDKs provide libraries for various programming languages to interact with Dapr. You can contribute by improving SDK functionalities, fixing bugs, or adding support for new features. Please see the [contribution guidelines]({{% ref sdk-contrib %}}) for specific SDKs.
 
 6. **CLI**: Dapr cli sets up Dapr on a local dev machine or a Kubernetes cluster for launching and managing Dapr instances. Contributions to the CLI repository include adding new features, fixing bugs, improving usability, and ensuring compatibility with the latest Dapr releases. Please see the [Development Guide](https://github.com/dapr/cli/blob/master/docs/development/development.md) for help in getting started with developing the Dapr cli. 
 
@@ -52,7 +52,7 @@ Before you submit an issue, make sure you've checked the following:
         - 👎 down-vote
 1. For bugs
     - Check it's not an environment issue. For example, if running on Kubernetes, make sure prerequisites are in place. (state stores, bindings, etc.)
-    - You have as much data as possible. This usually comes in the form of logs and/or stacktrace. If running on Kubernetes or other environment, look at the logs of the Dapr services (runtime, operator, placement service). More details on how to get logs can be found [here]({{< ref "logs-troubleshooting.md" >}}).
+    - You have as much data as possible. This usually comes in the form of logs and/or stacktrace. If running on Kubernetes or other environment, look at the logs of the Dapr services (runtime, operator, placement service). More details on how to get logs can be found [here]({{% ref "logs-troubleshooting" %}}).
 1. For proposals
     - Many changes to the Dapr runtime may require changes to the API. In that case, the best place to discuss the potential feature is the main [Dapr repo](https://github.com/dapr/dapr).
     - Other examples could include bindings, state stores or entirely new components.
@@ -64,12 +64,12 @@ All contributions come through pull requests. To submit a proposed change, follo
 
 1. Make sure there's an issue (bug or proposal) raised, which sets the expectations for the contribution you are about to make.
 1. Fork the relevant repo and create a new branch
-    - Some Dapr repos support [Codespaces]({{< ref codespaces.md >}}) to provide an instant environment for you to build and test your changes.
+    - Some Dapr repos support [Codespaces]({{% ref codespaces %}}) to provide an instant environment for you to build and test your changes.
 	- See the [Developing Dapr docs](https://github.com/dapr/dapr/blob/master/docs/development/developing-dapr.md) for more information about setting up a Dapr development environment.
 1. Create your change
     - Code changes require tests
 1. Update relevant documentation for the change
-1. Commit with [DCO sign-off]({{< ref "contributing-overview.md#developer-certificate-of-origin-signing-your-work" >}}) and open a PR
+1. Commit with [DCO sign-off]({{% ref "contributing-overview#developer-certificate-of-origin-signing-your-work" %}}) and open a PR
 1. Wait for the CI process to finish and make sure all checks are green
 1. A maintainer of the project will be assigned, and you can expect a review within a few days
 

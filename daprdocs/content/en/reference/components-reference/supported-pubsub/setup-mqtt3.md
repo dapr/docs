@@ -10,7 +10,7 @@ aliases:
 
 ## Component format
 
-To set up a MQTT3 pub/sub, create a component of type `pubsub.mqtt3`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
+To set up a MQTT3 pub/sub, create a component of type `pubsub.mqtt3`. See the [pub/sub broker component file]({{% ref setup-pubsub.md %}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{% ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" %}}) on how to create and apply a pub/sub configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -35,7 +35,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -43,7 +43,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | `url`    | Y  | Address of the MQTT broker. Can be `secretKeyRef` to use a secret reference. <br> Use the **`tcp://`** URI scheme for non-TLS communication. <br> Use the **`ssl://`** URI scheme for TLS communication. | `"tcp://[username][:password]@host.domain[:port]"`
-| `consumerID` | N | The client ID used to connect to the MQTT broker. Defaults to the Dapr app ID. | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{< ref "component-schema.md#templated-metadata-values" >}})
+| `consumerID` | N | The client ID used to connect to the MQTT broker. Defaults to the Dapr app ID. | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{% ref "component-schema.md#templated-metadata-values" %}})
 | `retain` | N  | Defines whether the message is saved by the broker as the last known good value for a specified topic. Defaults to `"false"`. | `"true"`, `"false"`
 | `cleanSession` | N | Sets the `clean_session` flag in the connection message to the MQTT broker if `"true"` ([more info](http://www.steves-internet-guide.com/mqtt-clean-sessions-example/)). Defaults to `"false"`. | `"true"`, `"false"`
 | `caCert` | Required for using TLS | Certificate Authority (CA) certificate in PEM format for verifying server TLS certificates. | See example below
@@ -118,18 +118,18 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 Note that in the case, the value of the consumer ID is random every time Dapr restarts, so you should set `cleanSession` to `true` as well.
 
-It is recommended to use [StatefulSets]({{< ref "howto-subscribe-statefulset.md" >}}) with shared subscriptions.
+It is recommended to use [StatefulSets]({{% ref "howto-subscribe-statefulset.md" %}}) with shared subscriptions.
 
 ## Create a MQTT3 broker
 
-{{< tabs "Self-Hosted" "Kubernetes">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 You can run a MQTT broker like emqx [locally using Docker](https://hub.docker.com/_/emqx):
 
 ```bash
@@ -137,9 +137,9 @@ docker run -d -p 1883:1883 --name mqtt emqx:latest
 ```
 
 You can then interact with the server using the client port: `tcp://localhost:1883`
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 You can run a MQTT3 broker in kubernetes using following yaml:
 
 ```yaml
@@ -186,12 +186,12 @@ spec:
 ```
 
 You can then interact with the server using the client port: `tcp://mqtt-broker.default.svc.cluster.local:1883`
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
-- [Pub/Sub building block]({{< ref pubsub >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-publish-subscribe.md#step-2-publish-a-topic" %}}) for instructions on configuring pub/sub components
+- [Pub/Sub building block]({{% ref pubsub %}})

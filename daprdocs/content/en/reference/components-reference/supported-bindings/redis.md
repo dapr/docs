@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup Redis binding create a component of type `bindings.redis`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup Redis binding create a component of type `bindings.redis`. See [this guide]({{% ref "howto-bindings.md#1-create-a-binding" %}}) on how to create and apply a binding configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -31,7 +31,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -41,12 +41,14 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `redisHost` | Y | Output |  The Redis host address | `"localhost:6379"` |
 | `redisPassword` | N | Output | The Redis password | `"password"` |
 | `redisUsername` | N | Output | Username for Redis host. Defaults to empty. Make sure your redis server version is 6 or above, and have created acl rule correctly. | `"username"` |
-| `useEntraID` | N | Output | Implements EntraID support for Azure Cache for Redis. Before enabling this: <ul><li>The `redisHost` name must be specified in the form of `"server:port"`</li><li>TLS must be enabled</li></ul> Learn more about this setting under [Create a Redis instance > Azure Cache for Redis]({{< ref "#create-a-redis-instance" >}}) | `"true"`, `"false"` |
+| `useEntraID` | N | Output | Implements EntraID support for Azure Cache for Redis. Before enabling this: <ul><li>The `redisHost` name must be specified in the form of `"server:port"`</li><li>TLS must be enabled</li></ul> Learn more about this setting under [Create a Redis instance > Azure Cache for Redis]({{% ref "#create-a-redis-instance" %}}) | `"true"`, `"false"` |
 | `enableTLS` | N | Output |  If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS. Defaults to `"false"` | `"true"`, `"false"` |
-| `clientCert`        | N | Output        | The content of the client certificate, used for Redis instances that require client-side certificates. Must be used with `clientKey` and `enableTLS` must be set to true. It is recommended to use a secret store as described [here]({{< ref component-secrets.md >}})  | `"----BEGIN CERTIFICATE-----\nMIIC..."` |
-| `clientKey`        | N | Output        | The content of the client private key, used in conjunction with `clientCert` for authentication. It is recommended to use a secret store as described [here]({{< ref component-secrets.md >}})  | `"----BEGIN PRIVATE KEY-----\nMIIE..."` |
-| `failover`           | N | Output         | Property to enabled failover configuration. Needs sentinalMasterName to be set. Defaults to `"false"` | `"true"`, `"false"`
-| `sentinelMasterName` | N | Output         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/reference/sentinel-clients/) | `""`,  `"127.0.0.1:6379"`
+| `clientCert`        | N | Output        | The content of the client certificate, used for Redis instances that require client-side certificates. Must be used with `clientKey` and `enableTLS` must be set to true. It is recommended to use a secret store as described [here]({{% ref component-secrets.md %}})  | `"----BEGIN CERTIFICATE-----\nMIIC..."` |
+| `clientKey`        | N | Output        | The content of the client private key, used in conjunction with `clientCert` for authentication. It is recommended to use a secret store as described [here]({{% ref component-secrets.md %}})  | `"----BEGIN PRIVATE KEY-----\nMIIE..."` |
+| `failover`           | N | Output         | Property to enable failover configuration. Needs sentinelMasterName to be set. Defaults to `"false"` | `"true"`, `"false"`
+| `sentinelMasterName` | N | Output         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/reference/sentinel-clients/) | `""`,  `"mymaster"`
+| `sentinelUsername`   | N | Output         | Username for Redis Sentinel. Applicable only when "failover" is true, and Redis Sentinel has authentication enabled | `"username"`
+| `sentinelPassword`   | N | Output         | Password for Redis Sentinel. Applicable only when "failover" is true, and Redis Sentinel has authentication enabled | `"password"`
 | `redeliverInterval`  | N | Output        | The interval between checking for pending messages to redelivery. Defaults to `"60s"`. `"0"` disables redelivery. | `"30s"`
 | `processingTimeout`  | N | Output        | The amount time a message must be pending before attempting to redeliver it. Defaults to `"15s"`. `"0"` disables redelivery. | `"30s"`
 | `redisType`        | N | Output        | The type of redis. There are two valid values, one is `"node"` for single node mode, the other is `"cluster"` for redis cluster mode. Defaults to `"node"`. | `"cluster"`
@@ -165,14 +167,14 @@ Dapr can use any Redis instance - containerized, running on your local dev machi
 
 *Note: Dapr does not support Redis >= 7. It is recommended to use Redis 6*
 
-{{< tabs "Self-Hosted" "Kubernetes" "AWS" "Azure" "GCP" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 The Dapr CLI will automatically create and setup a Redis Streams instance for you.
 The Redis instance will be installed via Docker when you run `dapr init`, and the component file will be created in default directory. (`$HOME/.dapr/components` directory (Mac/Linux) or `%USERPROFILE%\.dapr\components` on Windows).
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Kubernetes cluster. This approach requires [Installing Helm](https://github.com/helm/helm#install).
 
 1. Install Redis into your cluster.
@@ -201,13 +203,13 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
         - name: redisPassword
           value: "lhDOkwTlp0"
     ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "AWS" %}}
 [AWS Redis](https://aws.amazon.com/redis/)
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Azure" %}}
 1. [Create an Azure Cache for Redis instance using the official Microsoft documentation.](https://docs.microsoft.com/azure/azure-cache-for-redis/quickstart-create-redis)
 
 1. Once your instance is created, grab the Host name (FQDN) and your access key from the Azure portal. 
@@ -224,7 +226,7 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
    
 1. Set the `redisHost` key to `[HOST NAME FROM PREVIOUS STEP]:6379` and the `redisPassword` key to the key you saved earlier. 
    
-   **Note:** In a production-grade application, follow [secret management]({{< ref component-secrets.md >}}) instructions to securely manage your secrets.
+   **Note:** In a production-grade application, follow [secret management]({{% ref component-secrets.md %}}) instructions to securely manage your secrets.
 
 1. Enable EntraID support:
    - Enable Entra ID authentication on your Azure Redis server. This may takes a few minutes.
@@ -232,15 +234,15 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 
 1. Set `enableTLS` to `"true"` to support TLS. 
 
-> **Note:**`useEntraID` assumes that either your UserPrincipal (via AzureCLICredential) or the SystemAssigned managed identity have the RedisDataOwner role permission. If a user-assigned identity is used, [you need to specify the `azureClientID` property]({{< ref "howto-mi.md#set-up-identities-in-your-component" >}}).
+> **Note:**`useEntraID` assumes that either your UserPrincipal (via AzureCLICredential) or the SystemAssigned managed identity have the RedisDataOwner role permission. If a user-assigned identity is used, [you need to specify the `azureClientID` property]({{% ref "howto-mi.md#set-up-identities-in-your-component" %}}).
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "GCP" %}}
 [GCP Cloud MemoryStore](https://cloud.google.com/memorystore/)
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 {{% alert title="Note" color="primary" %}}
@@ -250,7 +252,7 @@ The Dapr CLI automatically deploys a local redis instance in self hosted mode as
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Bindings building block]({{< ref bindings >}})
-- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
-- [Bindings API reference]({{< ref bindings_api.md >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Bindings building block]({{% ref bindings %}})
+- [How-To: Use bindings to interface with external resources]({{% ref howto-bindings.md %}})
+- [Bindings API reference]({{% ref bindings_api.md %}})

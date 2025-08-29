@@ -6,7 +6,7 @@ weight: 4000
 description: "The Dapr Workflow engine architecture"
 ---
 
-[Dapr Workflows]({{< ref "workflow-overview.md" >}}) allow developers to define workflows using ordinary code in a variety of programming languages. The workflow engine runs inside of the Dapr sidecar and orchestrates workflow code deployed as part of your application. Dapr Workflows are built on top of Dapr Actors providing durability and scalability for workflow execution.
+[Dapr Workflows]({{% ref "workflow-overview.md" %}}) allow developers to define workflows using ordinary code in a variety of programming languages. The workflow engine runs inside of the Dapr sidecar and orchestrates workflow code deployed as part of your application. Dapr Workflows are built on top of Dapr Actors providing durability and scalability for workflow execution.
 
 This article describes:
 
@@ -15,7 +15,7 @@ This article describes:
 - How the workflow engine fits into the overall Dapr architecture
 - How different workflow backends can work with workflow engine
 
-For more information on how to author Dapr Workflows in your application, see [How to: Author a workflow]({{< ref "workflow-overview.md" >}}).
+For more information on how to author Dapr Workflows in your application, see [How to: Author a workflow]({{% ref "workflow-overview.md" %}}).
 
 The Dapr Workflow engine is internally powered by Dapr's actor runtime. The following diagram illustrates the Dapr Workflow architecture in Kubernetes mode:
 
@@ -23,7 +23,7 @@ The Dapr Workflow engine is internally powered by Dapr's actor runtime. The foll
 
 To use the Dapr Workflow building block, you write workflow code in your application using the Dapr Workflow SDK, which internally connects to the sidecar using a gRPC stream. This registers the workflow and any workflow activities, or tasks that workflows can schedule.
 
-The engine is embedded directly into the sidecar and implemented using the [`durabletask-go`](https://github.com/microsoft/durabletask-go) framework library. This framework allows you to swap out different storage providers, including a storage provider created for Dapr that leverages internal actors behind the scenes. Since Dapr Workflows use actors, you can store workflow state in state stores.
+The engine is embedded directly into the sidecar and implemented using the [`durabletask-go`](https://github.com/dapr/durabletask-go) framework library. This framework allows you to swap out different storage providers, including a storage provider created for Dapr that leverages internal actors behind the scenes. Since Dapr Workflows use actors, you can store workflow state in state stores.
 
 ## Sidecar interactions
 
@@ -31,7 +31,7 @@ When a workflow application starts up, it uses a workflow authoring SDK to send 
 
 The workflow app executes the appropriate workflow code and then sends a gRPC request back to the sidecar with the execution results.
 
-<img src="/images/workflow-overview/workflow-engine-protocol.png" alt="Dapr Workflow Engine Protocol" />
+<img src="/images/workflow-overview/workflow-engine-protocol.png" width=500 alt="Dapr Workflow Engine Protocol" />
 
 All interactions happen over a single gRPC channel and are initiated by the application, which means the application doesn't need to open any inbound ports. The details of these interactions are internally handled by the language-specific Dapr Workflow authoring SDK.
 
@@ -91,7 +91,7 @@ Workflow actor state remains in the state store even after a workflow has comple
 
 The following diagram illustrates the typical lifecycle of a workflow actor.
 
-<img src="/images/workflow-overview/workflow-actor-flowchart.png" alt="Dapr Workflow Actor Flowchart"/>
+<img src="/images/workflow-overview/workflow-actor-flowchart.png" width=600 alt="Dapr Workflow Actor Flowchart"/>
 
 To summarize:
 
@@ -113,7 +113,7 @@ Each activity actor stores a single key into the state store:
 
 The following diagram illustrates the typical lifecycle of an activity actor.
 
-<img src="/images/workflow-overview/workflow-activity-actor-flowchart.png" alt="Workflow Activity Actor Flowchart"/>
+<img src="/images/workflow-overview/workflow-activity-actor-flowchart.png" width=600 alt="Workflow Activity Actor Flowchart"/>
 
 Activity actors are short-lived:
 
@@ -124,7 +124,7 @@ Activity actors are short-lived:
 
 ### Reminder usage and execution guarantees
 
-The Dapr Workflow ensures workflow fault-tolerance by using [actor reminders]({{< ref "../actors/actors-timers-reminders.md##actor-reminders" >}}) to recover from transient system failures. Prior to invoking application workflow code, the workflow or activity actor will create a new reminder. If the application code executes without interruption, the reminder is deleted. However, if the node or the sidecar hosting the associated workflow or activity crashes, the reminder will reactivate the corresponding actor and the execution will be retried.
+The Dapr Workflow ensures workflow fault-tolerance by using [actor reminders]({{% ref "../actors/actors-timers-reminders.md##actor-reminders" %}}) to recover from transient system failures. Prior to invoking application workflow code, the workflow or activity actor will create a new reminder. If the application code executes without interruption, the reminder is deleted. However, if the node or the sidecar hosting the associated workflow or activity crashes, the reminder will reactivate the corresponding actor and the execution will be retried.
 
 <img src="/images/workflow-overview/workflow-actor-reminder-flow.png" width=600 alt="Diagram showing the process of invoking workflow actors"/>
 
@@ -136,9 +136,9 @@ Too many active reminders in a cluster may result in performance issues. If your
 
 Dapr Workflows use actors internally to drive the execution of workflows. Like any actors, these internal workflow actors store their state in the configured state store. Any state store that supports actors implicitly supports Dapr Workflow.
 
-As discussed in the [workflow actors]({{< ref "workflow-architecture.md#workflow-actors" >}}) section, workflows save their state incrementally by appending to a history log. The history log for a workflow is distributed across multiple state store keys so that each "checkpoint" only needs to append the newest entries.
+As discussed in the [workflow actors]({{% ref "workflow-architecture.md#workflow-actors" %}}) section, workflows save their state incrementally by appending to a history log. The history log for a workflow is distributed across multiple state store keys so that each "checkpoint" only needs to append the newest entries.
 
-The size of each checkpoint is determined by the number of concurrent actions scheduled by the workflow before it goes into an idle state. [Sequential workflows]({{< ref "workflow-overview.md#task-chaining" >}}) will therefore make smaller batch updates to the state store, while [fan-out/fan-in workflows]({{< ref "workflow-overview.md#fan-outfan-in" >}}) will require larger batches. The size of the batch is also impacted by the size of inputs and outputs when workflows [invoke activities]({{< ref "workflow-features-concepts.md#workflow-activities" >}}) or [child workflows]({{< ref "workflow-features-concepts.md#child-workflows" >}}).
+The size of each checkpoint is determined by the number of concurrent actions scheduled by the workflow before it goes into an idle state. [Sequential workflows]({{% ref "workflow-overview.md#task-chaining" %}}) will therefore make smaller batch updates to the state store, while [fan-out/fan-in workflows]({{% ref "workflow-overview.md#fan-outfan-in" %}}) will require larger batches. The size of the batch is also impacted by the size of inputs and outputs when workflows [invoke activities]({{% ref "workflow-features-concepts.md#workflow-activities" %}}) or [child workflows]({{% ref "workflow-features-concepts.md#child-workflows" %}}).
 
 <img src="/images/workflow-overview/workflow-state-store-interactions.png" width=600 alt="Diagram of workflow actor state store interactions"/>
 
@@ -203,7 +203,7 @@ In order to provide guarantees around durability and resiliency, Dapr Workflows 
 - Latency caused by too many active reminders in the cluster.
 - Latency caused by high CPU usage in the cluster.
 
-See the [Reminder usage and execution guarantees section]({{< ref "workflow-architecture.md#reminder-usage-and-execution-guarantees" >}}) for more details on how the design of workflow actors may impact execution latency.
+See the [Reminder usage and execution guarantees section]({{% ref "workflow-architecture.md#reminder-usage-and-execution-guarantees" %}}) for more details on how the design of workflow actors may impact execution latency.
 
 ## Next steps
 
@@ -211,9 +211,9 @@ See the [Reminder usage and execution guarantees section]({{< ref "workflow-arch
 
 ## Related links
 
-- [Workflow overview]({{< ref workflow-overview.md >}})
-- [Workflow API reference]({{< ref workflow_api.md >}})
-- [Try out the Workflow quickstart]({{< ref workflow-quickstart.md >}})
+- [Workflow overview]({{% ref workflow-overview.md %}})
+- [Workflow API reference]({{% ref workflow_api.md %}})
+- [Try out the Workflow quickstart]({{% ref workflow-quickstart.md %}})
 - Try out the following examples: 
    - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
    - [JavaScript example](https://github.com/dapr/js-sdk/tree/main/examples/workflow)

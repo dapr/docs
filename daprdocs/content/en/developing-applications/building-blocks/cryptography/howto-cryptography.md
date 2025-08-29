@@ -6,7 +6,7 @@ weight: 2000
 description: "Learn how to encrypt and decrypt files"
 ---
 
-Now that you've read about [Cryptography as a Dapr building block]({{< ref cryptography-overview.md >}}), let's walk through using the cryptography APIs with the SDKs.
+Now that you've read about [Cryptography as a Dapr building block]({{% ref cryptography-overview %}}), let's walk through using the cryptography APIs with the SDKs.
 
 {{% alert title="Note" color="primary" %}}
 Dapr cryptography is currently in alpha.
@@ -15,9 +15,9 @@ Dapr cryptography is currently in alpha.
 
 ## Encrypt
 
-{{< tabs "Python" "JavaScript" ".NET" "Go" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 <!--Python-->
 
@@ -47,9 +47,9 @@ def encrypt_decrypt_string(dapr: DaprClient):
     print(f'Encrypted the message, got {len(encrypt_bytes)} bytes')
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 <!--JavaScript-->
 
@@ -87,9 +87,9 @@ await pipeline(
 );
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 <!-- .NET -->
 Using the Dapr SDK in your project, with the gRPC APIs, you can encrypt data in a string or a byte array:
@@ -107,9 +107,9 @@ var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
 var encryptedBytesResult = await client.EncryptAsync(componentName, plaintextBytes, keyName, new EncryptionOptions(KeyWrapAlgorithm.Rsa));
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 <!--go-->
 
@@ -186,16 +186,16 @@ if err != nil {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 ## Decrypt
 
-{{< tabs "Python" "JavaScript" ".NET" "Go" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 <!--python-->
 
@@ -226,9 +226,9 @@ def encrypt_decrypt_string(dapr: DaprClient):
     assert message == decrypt_bytes.decode()
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 <!--JavaScript-->
 
@@ -252,9 +252,9 @@ await pipeline(
 );
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 <!-- .NET -->
 To decrypt a string, use the 'DecryptAsync' gRPC API in your project.
@@ -275,9 +275,9 @@ public async Task<string> DecryptBytesAsync(byte[] encryptedBytes)
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 <!--go-->
 
@@ -292,9 +292,9 @@ out, err := sdkClient.Decrypt(context.Background(), rf, dapr.EncryptOptions{
 })
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Next steps
-[Cryptography component specs]({{< ref supported-cryptography >}})
+[Cryptography component specs]({{% ref supported-cryptography %}})

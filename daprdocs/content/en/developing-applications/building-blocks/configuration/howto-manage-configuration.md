@@ -11,7 +11,7 @@ This example uses the Redis configuration store component to demonstrate how to 
 <img src="/images/building-block-configuration-example.png" width=1000 alt="Diagram showing get configuration of example service">
 
 {{% alert title="Note" color="primary" %}}
- If you haven't already, [try out the configuration quickstart]({{< ref configuration-quickstart.md >}}) for a quick walk-through on how to use the configuration API.
+ If you haven't already, [try out the configuration quickstart]({{% ref configuration-quickstart %}}) for a quick walk-through on how to use the configuration API.
 
 {{% /alert %}}
 
@@ -42,7 +42,7 @@ MSET orderId1 "101||1" orderId2 "102||1"
 
 ## Configure a Dapr configuration store
 
-Save the following component file to the [default components folder]({{< ref "install-dapr-selfhost.md#step-5-verify-components-directory-has-been-initialized" >}}) on your machine. You can use this as the Dapr component YAML:
+Save the following component file to the [default components folder]({{% ref "install-dapr-selfhost#step-5-verify-components-directory-has-been-initialized" %}}) on your machine. You can use this as the Dapr component YAML:
 
 - For Kubernetes using `kubectl`.
 - When running with the Dapr CLI.
@@ -71,37 +71,31 @@ spec:
 
 The following example shows how to get a saved configuration item using the Dapr Configuration API.
 
-{{< tabs ".NET" Java Python Go JavaScript "HTTP API (BASH)" "HTTP API (Powershell)">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
-//dependencies
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapr.Client;
 
-//code
-namespace ConfigurationApi
-{
-    public class Program
-    {
-        private static readonly string CONFIG_STORE_NAME = "configstore";
+const string CONFIG_STORE_NAME = "configstore";
 
-        public static async Task Main(string[] args)
-        {
-            using var client = new DaprClientBuilder().Build();
-            var configuration = await client.GetConfiguration(CONFIG_STORE_NAME, new List<string>() { "orderId1", "orderId2" });
-            Console.WriteLine($"Got key=\n{configuration[0].Key} -> {configuration[0].Value}\n{configuration[1].Key} -> {configuration[1].Value}");
-        }
-    }
-}
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDaprClient();
+var app = builder.Build();
+
+using var client = app.Services.GetRequiredServices<DaprClient>();
+
+var configuration = await client.GetConfiguration(CONFIG_STORE_NAME, [ "orderId1", "orderId2" ]);
+Console.WriteLine($"Got key=\n{configuration[0].Key} -> {configuration[0].Value}\n{configuration[1].Key} -> {configuration[1].Value}");
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ```java
 //dependencies
@@ -132,9 +126,9 @@ public static void main(String[] args) throws Exception {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ```python
 #dependencies
@@ -149,9 +143,9 @@ with DaprClient() as d:
         print(f"Got key={configuration.items[0].key} value={configuration.items[0].value} version={configuration.items[0].version}")
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 package main
@@ -179,9 +173,9 @@ func main() {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ```js
 import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr";
@@ -211,9 +205,9 @@ async function main() {
 main().catch((e) => console.error(e));
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (BASH)" %}}
 
 Launch a dapr sidecar:
 
@@ -227,9 +221,9 @@ In a separate terminal, get the configuration item saved earlier:
 curl http://localhost:3601/v1.0/configuration/configstore?key=orderId1
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 Launch a Dapr sidecar:
 
@@ -243,31 +237,37 @@ In a separate terminal, get the configuration item saved earlier:
 Invoke-RestMethod -Uri 'http://localhost:3601/v1.0/configuration/configstore?key=orderId1'
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 ### Subscribe to configuration item updates
 
 Below are code examples that leverage SDKs to subscribe to keys `[orderId1, orderId2]` using `configstore` store component.
 
-{{< tabs ".NET" "ASP.NET Core" Java Python Go JavaScript>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapr.Client;
+using System.Text.Json;
 
 const string DAPR_CONFIGURATION_STORE = "configstore";
-var CONFIGURATION_KEYS = new List<string> { "orderId1", "orderId2" };
-var client = new DaprClientBuilder().Build();
+var CONFIGURATION_ITEMS = new List<string> { "orderId1", "orderId2" };
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDaprClient();
+var app = builder.Build();
+
+var client = app.Services.GetRequiredService<DaprClient>();
 
 // Subscribe for configuration changes
-SubscribeConfigurationResponse subscribe = await client.SubscribeConfiguration(DAPR_CONFIGURATION_STORE, CONFIGURATION_ITEMS);
+var subscribe = await client.SubscribeConfiguration(DAPR_CONFIGURATION_STORE, CONFIGURATION_ITEMS);
 
 // Print configuration changes
 await foreach (var items in subscribe.Source)
@@ -279,7 +279,7 @@ await foreach (var items in subscribe.Source)
     subscriptionId = subscribe.Id;
     continue;
   }
-  var cfg = System.Text.Json.JsonSerializer.Serialize(items);
+  var cfg = JsonSerializer.Serialize(items);
   Console.WriteLine("Configuration update " + cfg);
 }
 ```
@@ -290,9 +290,9 @@ Navigate to the directory containing the above code, then run the following comm
 dapr run --app-id orderprocessing -- dotnet run
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "ASP.NET" %}}
 
 ```csharp
 using System;
@@ -303,40 +303,23 @@ using Dapr.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace ConfigurationApi
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            Console.WriteLine("Starting application.");
-            CreateHostBuilder(args).Build().Run();
-            Console.WriteLine("Closing application.");
-        }
+Console.WriteLine("Starting application.");
+var builder = WebApplication.CreateBuilder(args);
 
-        /// <summary>
-        /// Creates WebHost Builder.
-        /// </summary>
-        /// <param name="args">Arguments.</param>
-        /// <returns>Returns IHostbuilder.</returns>
-        public static IHostBuilder CreateHostBuilder(string[] args)
-        {
-            var client = new DaprClientBuilder().Build();
-            return Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration(config =>
-                {
-                    // Get the initial value and continue to watch it for changes.
-                    config.AddDaprConfigurationStore("configstore", new List<string>() { "orderId1","orderId2" }, client, TimeSpan.FromSeconds(20));
-                    config.AddStreamingDaprConfigurationStore("configstore", new List<string>() { "orderId1","orderId2" }, client, TimeSpan.FromSeconds(20));
+// Unlike most other situations, we build a `DaprClient` here using its factory because we cannot rely on `IConfiguration`
+// or other injected services to configure it because we haven't yet built the DI container.
+var client = new DaprClientBuilder().Build();
 
-                })
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-        }
-    }
-}
+// In a real-world application, you'd also add the following line to register the `DaprClient` with the DI container so
+// it can be injected into other services. In this demonstration, it's not necessary as we're not injecting it anywhere.  
+// builder.Services.AddDaprClient();
+
+// Get the initial value and continue to watch it for changes 
+builder.Configuration.AddDaprConfigurationStore("configstore", new List<string>() { "orderId1","orderId2" }, client, TimeSpan.FromSeconds(20));
+builder.Configuration.AddStreamingDaprConfigurationStore("configstore", new List<string>() { "orderId1","orderId2" }, client, TimeSpan.FromSeconds(20));
+
+await builder.Build().RunAsync();
+Console.WriteLine("Closing application.");
 ```
 
 Navigate to the directory containing the above code, then run the following command to launch both a Dapr sidecar and the subscriber application:
@@ -345,9 +328,9 @@ Navigate to the directory containing the above code, then run the following comm
 dapr run --app-id orderprocessing -- dotnet run
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ```java
 import io.dapr.client.DaprClientBuilder;
@@ -392,9 +375,9 @@ Navigate to the directory containing the above code, then run the following comm
 ```bash
 dapr run --app-id orderprocessing -- -- mvn spring-boot:run
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ```python
 #dependencies
@@ -425,9 +408,9 @@ Navigate to the directory containing the above code,  then run the following com
 dapr run --app-id orderprocessing -- python3 OrderProcessingService.py
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 package main
@@ -464,9 +447,9 @@ Navigate to the directory containing the above code, then run the following comm
 dapr run --app-id orderprocessing -- go run main.go
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ```js
 import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr";
@@ -510,9 +493,9 @@ Navigate to the directory containing the above code, then run the following comm
 dapr run --app-id orderprocessing --app-protocol grpc --dapr-grpc-port 3500 -- node index.js
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 ### Unsubscribe from configuration item updates
@@ -521,36 +504,30 @@ After you've subscribed to watch configuration items, you will receive updates f
 
 Following are the code examples showing how you can unsubscribe to configuration updates using unsubscribe API.
 
-{{< tabs ".NET" Java Python Go JavaScript "HTTP API (BASH)" "HTTP API (Powershell)">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
+
 ```csharp
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapr.Client;
 
+var builder = WebApplication.CreateBuilder();
+builder.Services.AddDaprClient();
+var app = builder.Build();
+
 const string DAPR_CONFIGURATION_STORE = "configstore";
-var client = new DaprClientBuilder().Build();
+const string SubscriptionId = "abc123"; //Replace with the subscription identifier to unsubscribe from
+var client = app.Services.GetRequiredService<DaprClient>();
 
-// Unsubscribe to config updates and exit the app
-async Task unsubscribe(string subscriptionId)
-{
-  try
-  {
-    await client.UnsubscribeConfiguration(DAPR_CONFIGURATION_STORE, subscriptionId);
-    Console.WriteLine("App unsubscribed from config changes");
-    Environment.Exit(0);
-  }
-  catch (Exception ex)
-  {
-    Console.WriteLine("Error unsubscribing from config updates: " + ex.Message);
-  }
-}
+await client.UnsubscribeConfiguration(DAPR_CONFIGURATION_STORE, SubscriptionId);
+Console.WriteLine("App unsubscribed from config changes");
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 ```java
 import io.dapr.client.DaprClientBuilder;
 import io.dapr.client.DaprClient;
@@ -580,9 +557,9 @@ public static void main(String[] args) throws Exception {
     }
 }
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 ```python
 import asyncio
 import time
@@ -594,9 +571,9 @@ with DaprClient() as d:
   isSuccess = d.unsubscribe_configuration(store_name='configstore', id=subscriptionID)
   print(f"Unsubscribed successfully? {isSuccess}", flush=True)
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 ```go
 package main
 
@@ -626,9 +603,9 @@ func main() {
   }
 }
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 ```js
 import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr";
 
@@ -665,22 +642,22 @@ async function main() {
 
 main().catch((e) => console.error(e));
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (BASH)" %}}
 ```bash
 curl 'http://localhost:<DAPR_HTTP_PORT>/v1.0/configuration/configstore/<subscription-id>/unsubscribe'
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 ```powershell
 Invoke-RestMethod -Uri 'http://localhost:<DAPR_HTTP_PORT>/v1.0/configuration/configstore/<subscription-id>/unsubscribe'
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Next steps
 
-* Read [configuration API overview]({{< ref configuration-api-overview.md >}})
+* Read [configuration API overview]({{% ref configuration-api-overview %}})

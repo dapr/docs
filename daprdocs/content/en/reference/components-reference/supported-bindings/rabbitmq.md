@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup RabbitMQ binding create a component of type `bindings.rabbitmq`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup RabbitMQ binding create a component of type `bindings.rabbitmq`. See [this guide]({{% ref "howto-bindings.md#1-create-a-binding" %}}) on how to create and apply a binding configuration.
 
 
 ```yaml
@@ -54,7 +54,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -97,8 +97,8 @@ The field name is `ttlInSeconds`.
 
 Example:
 
-{{< tabs Windows Linux >}}
-{{% codetab %}}
+{{< tabpane text=true >}}
+{{% tab "Windows" %}}
 ```shell
 curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
   -H "Content-Type: application/json" \
@@ -112,9 +112,9 @@ curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
         \"operation\": \"create\"
       }"
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Linux" %}}
 ```bash
 curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
   -H "Content-Type: application/json" \
@@ -128,8 +128,8 @@ curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
         "operation": "create"
       }'
 ```
-{{% /codetab %}}
-{{< /tabs >}}
+{{% /tab %}}
+{{< /tabpane >}}
 
 
 ## Specifying a priority per message
@@ -142,8 +142,8 @@ The field name is `priority`.
 
 Example:
 
-{{< tabs Windows Linux >}}
-{{% codetab %}}
+{{< tabpane text=true >}}
+{{% tab "Windows" %}}
 ```shell
 curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
   -H "Content-Type: application/json" \
@@ -157,9 +157,9 @@ curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
         \"operation\": \"create\"
       }"
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Linux" %}}
 ```shell
 curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
   -H "Content-Type: application/json" \
@@ -173,13 +173,13 @@ curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
         "operation": "create"
       }'
 ```
-{{% /codetab %}}
-{{< /tabs >}}
+{{% /tab %}}
+{{< /tabpane >}}
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Bindings building block]({{< ref bindings >}})
-- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
-- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
-- [Bindings API reference]({{< ref bindings_api.md >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Bindings building block]({{% ref bindings %}})
+- [How-To: Trigger application with input binding]({{% ref howto-triggers.md %}})
+- [How-To: Use bindings to interface with external resources]({{% ref howto-bindings.md %}})
+- [Bindings API reference]({{% ref bindings_api.md %}})

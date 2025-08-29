@@ -10,23 +10,23 @@ description: Get started with the Dapr conversation building block
 The conversation building block is currently in **alpha**. 
 {{% /alert %}}
 
-Let's take a look at how the [Dapr conversation building block]({{< ref conversation-overview.md >}}) makes interacting with Large Language Models (LLMs) easier. In this quickstart, you use the echo component to communicate with the mock LLM and ask it for a poem about Dapr. 
+Let's take a look at how the [Dapr conversation building block]({{% ref conversation-overview %}}) makes interacting with Large Language Models (LLMs) easier. In this quickstart, you use the echo component to communicate with the mock LLM and ask it to define Dapr. 
 
 You can try out this conversation quickstart by either:
 
-- [Running the application in this sample with the Multi-App Run template file]({{< ref "#run-the-app-with-the-template-file" >}}), or
-- [Running the application without the template]({{< ref "#run-the-app-without-the-template" >}})
+- [Running the application in this sample with the Multi-App Run template file]({{% ref "#run-the-app-with-the-template-file" %}}), or
+- [Running the application without the template]({{% ref "#run-the-app-without-the-template" %}})
 
 {{% alert title="Note" color="primary" %}}
-Currently, only the HTTP quickstart sample is available in Python and JavaScript.  
+Currently, you can only use JavaScript for the quickstart sample using HTTP, not the JavaScript SDK.  
 {{% /alert %}}
 
 ## Run the app with the template file
 
-{{< tabs Python JavaScript ".NET" Go >}}
+{{< tabpane text=true >}}
 
  <!-- Python -->
-{{% codetab %}}
+{{% tab "Python" %}}
 
 
 ### Step 1: Pre-requisites
@@ -50,7 +50,7 @@ git clone https://github.com/dapr/quickstarts.git
 From the root of the Quickstarts directory, navigate into the conversation directory:
 
 ```bash
-cd conversation/python/http/conversation
+cd conversation/python/sdk/conversation
 ```
 
 Install the dependencies:
@@ -61,7 +61,7 @@ pip3 install -r requirements.txt
 
 ### Step 3: Launch the conversation service
 
-Navigate back to the `http` directory and start the conversation service with the following command:
+Navigate back to the `sdk` directory and start the conversation service with the following command:
 
 ```bash
 dapr run -f .
@@ -76,13 +76,13 @@ dapr run -f .
 
 ### What happened?
 
-When you ran `dapr init` during Dapr install, the [`dapr.yaml` Multi-App Run template file]({{< ref "#dapryaml-multi-app-run-template-file" >}}) was generated in the `.dapr/components` directory. 
+When you ran `dapr init` during Dapr install, the [`dapr.yaml` Multi-App Run template file]({{% ref "#dapryaml-multi-app-run-template-file" %}}) was generated in the `.dapr/components` directory. 
 
-Running `dapr run -f .` in this Quickstart started [conversation.go]({{< ref "#programcs-conversation-app" >}}).
+Running `dapr run -f .` in this Quickstart started [conversation.go]({{% ref "#programcs-conversation-app" %}}).
 
 #### `dapr.yaml` Multi-App Run template file
 
-Running the [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) with `dapr run -f .` starts all applications in your project. This Quickstart has only one application, so the `dapr.yaml` file contains the following: 
+Running the [Multi-App Run template file]({{% ref multi-app-dapr-run %}}) with `dapr run -f .` starts all applications in your project. This Quickstart has only one application, so the `dapr.yaml` file contains the following: 
 
 ```yml
 version: 1
@@ -96,7 +96,7 @@ apps:
 
 #### Echo mock LLM component
 
-In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components) directly of the quickstart, the [`conversation.yaml` file](https://github.com/dapr/quickstarts/tree/master/conversation/components/conversation.yml) configures the echo LLM component. 
+In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components) directly of the quickstart, the [`conversation.yaml` file](https://github.com/dapr/quickstarts/tree/master/conversation/components/conversation.yaml) configures the echo LLM component. 
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -108,7 +108,7 @@ spec:
   version: v1
 ```
 
-To interface with a real LLM, swap out the mock component with one of [the supported conversation components]({{< ref "supported-conversation" >}}). For example, to use an OpenAI component, see the [example in the conversation how-to guide]({{< ref "howto-conversation-layer.md#use-the-openai-component" >}})
+To interface with a real LLM, swap out the mock component with one of [the supported conversation components]({{% ref "supported-conversation" %}}). For example, to use an OpenAI component, see the [example in the conversation how-to guide]({{% ref "howto-conversation-layer#use-the-openai-component" %}})
 
 #### `app.py` conversation app
 
@@ -117,43 +117,34 @@ In the application code:
 - The mock LLM echoes "What is dapr?". 
 
 ```python
-import logging
-import requests
-import os
+from dapr.clients import DaprClient
+from dapr.clients.grpc._request import ConversationInput
 
-logging.basicConfig(level=logging.INFO)
+with DaprClient() as d:
+    inputs = [
+        ConversationInput(content="What is dapr?", role='user', scrub_pii=True),
+    ]
 
-base_url = os.getenv('BASE_URL', 'http://localhost') + ':' + os.getenv(
-                    'DAPR_HTTP_PORT', '3500')
-
-CONVERSATION_COMPONENT_NAME = 'echo'
-
-input = {
-		'name': 'echo',
-		'inputs': [{'message':'What is dapr?'}],
-		'parameters': {},
-		'metadata': {}
+    metadata = {
+        'model': 'modelname',
+        'key': 'authKey',
+        'cacheTTL': '10m',
     }
 
-# Send input to conversation endpoint
-result = requests.post(
-	url='%s/v1.0-alpha1/conversation/%s/converse' % (base_url, CONVERSATION_COMPONENT_NAME),
-	json=input
-)
+    print('Input sent: What is dapr?')
 
-logging.info('Input sent: What is dapr?')
+    response = d.converse_alpha1(
+        name='echo', inputs=inputs, temperature=0.7, context_id='chat-123', metadata=metadata
+    )
 
-# Parse conversation output
-data = result.json()
-output = data["outputs"][0]["result"]
-
-logging.info('Output response: ' + output)
+    for output in response.outputs:
+        print(f'Output response: {output.result}')
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- JavaScript -->
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 
 ### Step 1: Pre-requisites
@@ -203,13 +194,13 @@ dapr run -f .
 
 ### What happened?
 
-When you ran `dapr init` during Dapr install, the [`dapr.yaml` Multi-App Run template file]({{< ref "#dapryaml-multi-app-run-template-file" >}}) was generated in the `.dapr/components` directory. 
+When you ran `dapr init` during Dapr install, the [`dapr.yaml` Multi-App Run template file]({{% ref "#dapryaml-multi-app-run-template-file" %}}) was generated in the `.dapr/components` directory. 
 
-Running `dapr run -f .` in this Quickstart started [conversation.go]({{< ref "#programcs-conversation-app" >}}).
+Running `dapr run -f .` in this Quickstart started [conversation.go]({{% ref "#programcs-conversation-app" %}}).
 
 #### `dapr.yaml` Multi-App Run template file
 
-Running the [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) with `dapr run -f .` starts all applications in your project. This Quickstart has only one application, so the `dapr.yaml` file contains the following: 
+Running the [Multi-App Run template file]({{% ref multi-app-dapr-run %}}) with `dapr run -f .` starts all applications in your project. This Quickstart has only one application, so the `dapr.yaml` file contains the following: 
 
 ```yml
 version: 1
@@ -224,7 +215,7 @@ apps:
 
 #### Echo mock LLM component
 
-In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components) directly of the quickstart, the [`conversation.yaml` file](https://github.com/dapr/quickstarts/tree/master/conversation/components/conversation.yml) configures the echo LLM component. 
+In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components) directly of the quickstart, the [`conversation.yaml` file](https://github.com/dapr/quickstarts/tree/master/conversation/components/conversation.yaml) configures the echo LLM component. 
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -236,7 +227,7 @@ spec:
   version: v1
 ```
 
-To interface with a real LLM, swap out the mock component with one of [the supported conversation components]({{< ref "supported-conversation" >}}). For example, to use an OpenAI component, see the [example in the conversation how-to guide]({{< ref "howto-conversation-layer.md#use-the-openai-component" >}})
+To interface with a real LLM, swap out the mock component with one of [the supported conversation components]({{% ref "supported-conversation" %}}). For example, to use an OpenAI component, see the [example in the conversation how-to guide]({{% ref "howto-conversation-layer#use-the-openai-component" %}})
 
 #### `index.js` conversation app
 
@@ -286,10 +277,10 @@ main().catch((error) => {
 });
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- .NET -->
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 
 ### Step 1: Pre-requisites
@@ -333,13 +324,13 @@ dapr run -f .
 
 ### What happened?
 
-When you ran `dapr init` during Dapr install, the [`dapr.yaml` Multi-App Run template file]({{< ref "#dapryaml-multi-app-run-template-file" >}}) was generated in the `.dapr/components` directory.
+When you ran `dapr init` during Dapr install, the [`dapr.yaml` Multi-App Run template file]({{% ref "#dapryaml-multi-app-run-template-file" %}}) was generated in the `.dapr/components` directory.
 
-Running `dapr run -f .` in this Quickstart started the [conversation Program.cs]({{< ref "#programcs-conversation-app" >}}).
+Running `dapr run -f .` in this Quickstart started the [conversation Program.cs]({{% ref "#programcs-conversation-app" %}}).
 
 #### `dapr.yaml` Multi-App Run template file
 
-Running the [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) with `dapr run -f .` starts all applications in your project. This Quickstart has only one application, so the `dapr.yaml` file contains the following: 
+Running the [Multi-App Run template file]({{% ref multi-app-dapr-run %}}) with `dapr run -f .` starts all applications in your project. This Quickstart has only one application, so the `dapr.yaml` file contains the following: 
 
 ```yml
 version: 1
@@ -354,7 +345,7 @@ apps:
 
 #### Echo mock LLM component
 
-In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components), the [`conversation.yaml` file](https://github.com/dapr/quickstarts/tree/master/conversation/components/conversation.yml) configures the echo mock LLM component. 
+In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components), the [`conversation.yaml` file](https://github.com/dapr/quickstarts/tree/master/conversation/components/conversation.yaml) configures the echo mock LLM component. 
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -366,7 +357,7 @@ spec:
   version: v1
 ```
 
-To interface with a real LLM, swap out the mock component with one of [the supported conversation components]({{< ref "supported-conversation" >}}). For example, to use an OpenAI component, see the [example in the conversation how-to guide]({{< ref "howto-conversation-layer.md#use-the-openai-component" >}})
+To interface with a real LLM, swap out the mock component with one of [the supported conversation components]({{% ref "supported-conversation" %}}). For example, to use an OpenAI component, see the [example in the conversation how-to guide]({{% ref "howto-conversation-layer#use-the-openai-component" %}})
 
 #### `Program.cs` conversation app
 
@@ -416,10 +407,10 @@ class Program
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Go -->
-{{% codetab %}}
+{{% tab "Go" %}}
 
 
 ### Step 1: Pre-requisites
@@ -463,13 +454,13 @@ dapr run -f .
 
 ### What happened?
 
-When you ran `dapr init` during Dapr install, the [`dapr.yaml` Multi-App Run template file]({{< ref "#dapryaml-multi-app-run-template-file" >}}) was generated in the `.dapr/components` directory. 
+When you ran `dapr init` during Dapr install, the [`dapr.yaml` Multi-App Run template file]({{% ref "#dapryaml-multi-app-run-template-file" %}}) was generated in the `.dapr/components` directory. 
 
-Running `dapr run -f .` in this Quickstart started [conversation.go]({{< ref "#programcs-conversation-app" >}}).
+Running `dapr run -f .` in this Quickstart started [conversation.go]({{% ref "#programcs-conversation-app" %}}).
 
 #### `dapr.yaml` Multi-App Run template file
 
-Running the [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) with `dapr run -f .` starts all applications in your project. This Quickstart has only one application, so the `dapr.yaml` file contains the following: 
+Running the [Multi-App Run template file]({{% ref multi-app-dapr-run %}}) with `dapr run -f .` starts all applications in your project. This Quickstart has only one application, so the `dapr.yaml` file contains the following: 
 
 ```yml
 version: 1
@@ -484,7 +475,7 @@ apps:
 
 #### Echo mock LLM component
 
-In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components) directly of the quickstart, the [`conversation.yaml` file](https://github.com/dapr/quickstarts/tree/master/conversation/components/conversation.yml) configures the echo LLM component. 
+In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components) directly of the quickstart, the [`conversation.yaml` file](https://github.com/dapr/quickstarts/tree/master/conversation/components/conversation.yaml) configures the echo LLM component. 
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -496,7 +487,7 @@ spec:
   version: v1
 ```
 
-To interface with a real LLM, swap out the mock component with one of [the supported conversation components]({{< ref "supported-conversation" >}}). For example, to use an OpenAI component, see the [example in the conversation how-to guide]({{< ref "howto-conversation-layer.md#use-the-openai-component" >}})
+To interface with a real LLM, swap out the mock component with one of [the supported conversation components]({{% ref "supported-conversation" %}}). For example, to use an OpenAI component, see the [example in the conversation how-to guide]({{% ref "howto-conversation-layer#use-the-openai-component" %}})
 
 #### `conversation.go` conversation app
 
@@ -542,16 +533,16 @@ func main() {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Run the app without the template
 
-{{< tabs Python JavaScript ".NET" Go >}}
+{{< tabpane text=true >}}
 
  <!-- Python -->
-{{% codetab %}}
+{{% tab "Python" %}}
 
 
 ### Step 1: Pre-requisites
@@ -575,7 +566,7 @@ git clone https://github.com/dapr/quickstarts.git
 From the root of the Quickstarts directory, navigate into the conversation directory:
 
 ```bash
-cd conversation/python/http/conversation
+cd conversation/python/sdk/conversation
 ```
 
 Install the dependencies:
@@ -586,7 +577,7 @@ pip3 install -r requirements.txt
 
 ### Step 3: Launch the conversation service
 
-Navigate back to the `http` directory and start the conversation service with the following command:
+Navigate back to the `sdk` directory and start the conversation service with the following command:
 
 ```bash
 dapr run --app-id conversation --resources-path ../../../components -- python3 app.py
@@ -601,10 +592,10 @@ dapr run --app-id conversation --resources-path ../../../components -- python3 a
 == APP - conversation == Output response: What is dapr?
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- JavaScript -->
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 
 ### Step 1: Pre-requisites
@@ -652,10 +643,10 @@ dapr run --app-id conversation --resources-path ../../../components/ -- npm run 
 == APP - conversation == Output response: What is dapr?
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- .NET -->
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 
 ### Step 1: Pre-requisites
@@ -703,10 +694,10 @@ dapr run --app-id conversation --resources-path ../../../components/ -- dotnet r
 == APP - conversation == Output response: What is dapr?
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Go -->
-{{% codetab %}}
+{{% tab "Go" %}}
 
 
 ### Step 1: Pre-requisites
@@ -754,15 +745,15 @@ dapr run --app-id conversation --resources-path ../../../components/ -- go run .
 == APP - conversation == Output response: What is dapr?
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Demo
 
 Watch the demo presented during [Diagrid's Dapr v1.15 celebration](https://www.diagrid.io/videos/dapr-1-15-deep-dive) to see how the conversation API works using the .NET SDK.
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/NTnwoDhHIcQ?si=37SDcOHtEpgCIwkG&amp;start=5444" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+{{< youtube id=NTnwoDhHIcQ start=5444 >}}
 
 ## Tell us what you think!
 
@@ -777,6 +768,6 @@ Join the discussion in our [discord channel](https://discord.com/channels/778680
   - [JavaScript](https://github.com/dapr/quickstarts/tree/master/conversation/javascript/http)
   - [.NET](https://github.com/dapr/quickstarts/tree/master/conversation/csharp/http)
   - [Go](https://github.com/dapr/quickstarts/tree/master/conversation/go/http)
-- Learn more about [the conversation building block]({{< ref conversation-overview.md >}})
+- Learn more about [the conversation building block]({{% ref conversation-overview %}})
 
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}

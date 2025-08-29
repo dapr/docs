@@ -101,9 +101,9 @@ Dapr then authenticates to AWS without specifying credentials in the Dapr compon
 
 ### Authenticate to AWS when running dapr locally in stand-alone mode
 
-{{< tabs "Linux/MacOS" "Windows" >}}
+{{< tabpane text=true >}}
  <!-- linux -->
-{{% codetab %}}
+{{% tab "Linux/MacOS" %}}
 
 When running Dapr (or the Dapr runtime directly) in stand-alone mode, you can inject environment variables into the process, like the following example: 
 
@@ -125,52 +125,26 @@ AWS_PROFILE=myprofile daprd...
 
 You can use any of the [supported environment variables](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html#envvars-list) to configure Dapr in this manner.
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- windows -->
-{{% codetab %}}
+{{% tab "Windows" %}}
 
 On Windows, the environment variable needs to be set before starting the `dapr` or `daprd` command, doing it inline (like in Linux/MacOS) is not supported.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### Authenticate to AWS if using AWS SSO based profiles
 
-If you authenticate to AWS using [AWS SSO](https://aws.amazon.com/single-sign-on/), some AWS SDKs (including the Go SDK) don't yet support this natively. There are several utilities you can use to "bridge the gap" between AWS SSO-based credentials and "legacy" credentials, such as:
-- [AwsHelper](https://pypi.org/project/awshelper/) 
-- [aws-sso-util](https://github.com/benkehoe/aws-sso-util)
+If you authenticate to AWS using [AWS SSO](https://aws.amazon.com/single-sign-on/), the AWS SDK for Go (both v1 and v2) provides native support for AWS SSO credential providers. This means you can use AWS SSO profiles directly without additional utilities.
 
-{{< tabs "Linux/MacOS" "Windows" >}}
- <!-- linux -->
-{{% codetab %}}
-
-If using AwsHelper, start Dapr like this:
-
-```bash
-AWS_PROFILE=myprofile awshelper dapr run...
-```
-
-or
-
-```bash
-AWS_PROFILE=myprofile awshelper daprd...
-```
-{{% /codetab %}}
-
- <!-- windows -->
-{{% codetab %}}
-
-On Windows, the environment variable needs to be set before starting the `awshelper` command; doing it inline (like in Linux/MacOS) is not supported.
-
-{{% /codetab %}}
-
-{{< /tabs >}}
+For more information about AWS SSO support in the AWS SDK for Go, see the [AWS blog post](https://aws.amazon.com/blogs/developer/aws-sso-support-in-the-aws-sdk-for-go/).
 
 ## Next steps
 
-{{< button text="Refer to AWS component specs >>" page="components-reference" >}}
+{{< button text="Refer to AWS component specs >>" page="components-reference.md" >}}
 
 ## Related links
 

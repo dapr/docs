@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup cron binding create a component of type `bindings.cron`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup cron binding create a component of type `bindings.cron`. See [this guide]({{% ref "howto-bindings.md#1-create-a-binding" %}}) on how to create and apply a binding configuration.
 
 
 ```yaml
@@ -50,7 +50,7 @@ The Dapr cron binding supports following formats:
 For example:
 
 * `30 * * * * *` - every 30 seconds
-* `0 15 * * * *` - every 15 minutes
+* `0 */15 * * * *` - every 15 minutes
 * `0 30 3-6,20-23 * * *` - every hour on the half hour in the range 3-6am, 8-11pm
 * `CRON_TZ=America/New_York 0 30 04 * * *` - every day at 4:30am New York time
 
@@ -81,8 +81,8 @@ This component supports **input** binding interface.
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Bindings building block]({{< ref bindings >}})
-- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
-- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
-- [Bindings API reference]({{< ref bindings_api.md >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Bindings building block]({{% ref bindings %}})
+- [How-To: Trigger application with input binding]({{% ref howto-triggers.md %}})
+- [How-To: Use bindings to interface with external resources]({{% ref howto-bindings.md %}})
+- [Bindings API reference]({{% ref bindings_api.md %}})

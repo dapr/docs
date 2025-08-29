@@ -10,7 +10,7 @@ This article provides guidance on running Dapr with Docker on a Windows/Linux/ma
 
 ## Prerequisites
 
-- [Dapr CLI]({{< ref install-dapr-cli.md >}})
+- [Dapr CLI]({{% ref install-dapr-cli.md %}})
 - [Docker](https://docs.docker.com/get-docker/)
 - [Docker-Compose](https://docs.docker.com/compose/install/) (optional)
 
@@ -24,7 +24,7 @@ dapr init
 
 ## Run both app and sidecar as a process
 
-The [`dapr run` CLI command]({{< ref dapr-run.md >}}) can be used to launch a Dapr sidecar along with your application:
+The [`dapr run` CLI command]({{% ref dapr-run.md %}}) can be used to launch a Dapr sidecar along with your application:
 
 ```bash
 dapr run --app-id myapp --app-port 5000 -- dotnet run
@@ -123,6 +123,7 @@ services:
      "--app-id", "nodeapp",
      "--app-port", "3000",
      "--placement-host-address", "placement:50006", # Dapr's placement service can be reach via the docker DNS entry
+     "--scheduler-host-address", "scheduler:50007", # Dapr's scheduler service can be reach via the docker DNS entry
      "--resources-path", "./components"
      ]
     volumes:
@@ -134,22 +135,19 @@ services:
   ... # Deploy other daprized services and components (i.e. Redis)
 
   placement:
-    image: "daprio/dapr"
+    image: "daprio/placement"
     command: ["./placement", "--port", "50006"]
     ports:
       - "50006:50006"
 
   scheduler:
-    image: "daprio/dapr"
-    command: ["./scheduler", "--port", "50007"]
+    image: "daprio/scheduler"
+    command: ["./scheduler", "--port", "50007", "--etcd-data-dir", "/data"]
     ports:
       - "50007:50007"
-    # WARNING - This is a tmpfs volume, your state will not be persisted across restarts
+    user: root
     volumes:
-    - type: tmpfs
-      target: /data
-      tmpfs:
-        size: "64m"
+    - "./dapr-etcd-data/:/data"
   
   networks:
     hello-dapr: null
@@ -164,11 +162,11 @@ The above example also includes a scheduler definition that uses a non-persisten
 ## Run on Kubernetes
 
 If your deployment target is Kubernetes please use Dapr's first-class integration. Refer to the
-[Dapr on Kubernetes docs]({{< ref "kubernetes-overview.md" >}}).
+[Dapr on Kubernetes docs]({{% ref "kubernetes-overview.md" %}}).
 
 ## Name resolution
 
-Dapr by default uses mDNS as the name resolution component in self-hosted mode for service invocation. If you are running Dapr on virtual machines or where mDNS is not available, then you can use the [HashiCorp Consul]({{< ref setup-nr-consul.md >}}) component for name resolution.
+Dapr by default uses mDNS as the name resolution component in self-hosted mode for service invocation. If you are running Dapr on virtual machines or where mDNS is not available, then you can use the [HashiCorp Consul]({{% ref setup-nr-consul.md %}}) component for name resolution.
 
 ## Docker images
 

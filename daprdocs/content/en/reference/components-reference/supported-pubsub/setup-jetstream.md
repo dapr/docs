@@ -8,7 +8,7 @@ aliases:
 ---
 
 ## Component format
-To set up JetStream pub/sub, create a component of type `pubsub.jetstream`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
+To set up JetStream pub/sub, create a component of type `pubsub.jetstream`. See the [pub/sub broker component file]({{% ref setup-pubsub.md %}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{% ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" %}}) on how to create and apply a pub/sub configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -103,9 +103,9 @@ spec:
 
 ## Create a NATS server
 
-{{< tabs "Self-Hosted" "Kubernetes">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 You can run a NATS Server with JetStream enabled locally using Docker:
 
 ```bash
@@ -113,9 +113,9 @@ docker run -d -p 4222:4222 nats:latest -js
 ```
 
 You can then interact with the server using the client port: `localhost:4222`.
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 Install NATS JetStream on Kubernetes by using the [helm](https://github.com/nats-io/k8s/tree/main/helm/charts/nats#jetstream):
 
 ```bash
@@ -131,9 +131,9 @@ kubectl get svc my-nats
 
 For more information on helm chart settings, see the [Helm chart documentation](https://helm.sh/docs/helm/helm_install/).
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Create JetStream
 
@@ -169,9 +169,9 @@ spec:
 ```
 
 ## Related links
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
-- [Pub/Sub building block]({{< ref pubsub >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-publish-subscribe.md#step-2-publish-a-topic" %}}) for instructions on configuring pub/sub components
+- [Pub/Sub building block]({{% ref pubsub %}})
 - [JetStream Documentation](https://docs.nats.io/nats-concepts/jetstream)
 - [NATS CLI](https://github.com/nats-io/natscli)
 

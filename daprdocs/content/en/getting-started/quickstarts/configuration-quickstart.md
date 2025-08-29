@@ -6,7 +6,7 @@ weight: 78
 description: Get started with Dapr's Configuration building block
 ---
 
-Let's take a look at Dapr's [Configuration building block]({{< ref configuration-api-overview.md >}}). A configuration item is often dynamic in nature and tightly coupled to the needs of the application that consumes it. Configuration items are key/value pairs containing configuration data, such as:
+Let's take a look at Dapr's [Configuration building block]({{% ref configuration-api-overview %}}). A configuration item is often dynamic in nature and tightly coupled to the needs of the application that consumes it. Configuration items are key/value pairs containing configuration data, such as:
 - App ids
 - Partition keys
 - Database names, etc
@@ -19,9 +19,9 @@ In this quickstart, you'll run an `order-processor` microservice that utilizes t
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{< tabs "Python" "JavaScript" ".NET" "Java" "Go" >}}
+{{< tabpane text=true >}}
  <!-- Python -->
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ### Pre-requisites
 
@@ -140,11 +140,11 @@ if unsubscribed == True:
 ```
 
 
-{{% /codetab %}}
+{{% /tab %}}
 
 
 <!-- JavaScript -->
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ### Pre-requisites
 
@@ -262,10 +262,10 @@ setTimeout(() => {
 },
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- .NET -->
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ### Pre-requisites
 
@@ -382,10 +382,10 @@ try
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Java -->
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ### Pre-requisites
 
@@ -500,10 +500,10 @@ if (unsubscribe.getIsUnsubscribed()) {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Go -->
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ### Pre-requisites
 
@@ -619,15 +619,15 @@ case <-ctx.Done():
 	}
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Demo
 
 Watch this video [demoing the Configuration API quickstart](https://youtu.be/EcE6IGuX9L8?t=94):
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/EcE6IGuX9L8?start=94" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{{< youtube id=EcE6IGuX9L8 start=94 >}}
 
 ## Tell us what you think!
 
@@ -643,6 +643,6 @@ Join the discussion in our [discord channel](https://discord.com/channels/778680
   - [.NET](https://github.com/dapr/quickstarts/tree/master/configuration/csharp/http)
   - [Java](https://github.com/dapr/quickstarts/tree/master/configuration/java/http)
   - [Go](https://github.com/dapr/quickstarts/tree/master/configuration/go/http)
-- Learn more about [Configuration building block]({{< ref configuration-api-overview >}})
+- Learn more about [Configuration building block]({{% ref configuration-api-overview %}})
 
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}

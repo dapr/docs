@@ -6,7 +6,7 @@ weight: 2200
 description: "Learn when you might not use CloudEvents and how to disable them."
 ---
 
-When adding Dapr to your application, some services may still need to communicate via pub/sub messages not encapsulated in CloudEvents, due to either compatibility reasons or some apps not using Dapr. These are referred to as "raw" pub/sub messages. Dapr enables apps to [publish and subscribe to raw events]({{< ref "pubsub-cloudevents.md#publishing-raw-messages" >}}) not wrapped in a CloudEvent for compatibility.
+When adding Dapr to your application, some services may still need to communicate via pub/sub messages not encapsulated in CloudEvents, due to either compatibility reasons or some apps not using Dapr. These are referred to as "raw" pub/sub messages. Dapr enables apps to [publish and subscribe to raw events]({{% ref "pubsub-cloudevents#publishing-raw-messages" %}}) not wrapped in a CloudEvent for compatibility and to send data that is not JSON serializable.
 
 ## Publishing raw messages
 
@@ -20,15 +20,15 @@ Not using CloudEvents disables support for tracing, event deduplication per mess
 
 To disable CloudEvent wrapping, set the `rawPayload` metadata to `true` as part of the publishing request. This allows subscribers to receive these messages without having to parse the CloudEvent schema.
 
-{{< tabs curl ".NET" "Python" "PHP">}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "curl" %}}
 ```bash
 curl -X "POST" http://localhost:3500/v1.0/publish/pubsub/TOPIC_A?metadata.rawPayload=true -H "Content-Type: application/json" -d '{"order-number": "345"}'
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 using Dapr.Client;
@@ -63,9 +63,9 @@ app.MapPost("/publish", async (DaprClient daprClient) =>
 app.Run();
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 ```python
 from dapr.clients import DaprClient
 
@@ -83,9 +83,9 @@ with DaprClient() as d:
     # Print the request
     print(req_data, flush=True)
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "PHP" %}}
 
 ```php
 <?php
@@ -99,23 +99,25 @@ $app->run(function(\DI\FactoryInterface $factory) {
 });
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Subscribing to raw messages
 
-Dapr apps are also able to subscribe to raw events coming from existing pub/sub topics that do not use CloudEvent encapsulation.
+Dapr apps can subscribe to raw messages from pub/sub topics, even if they weren’t published as CloudEvents. However, the subscribing Dapr process still wraps these raw messages in a CloudEvent before delivering them to the subscribing application.
 
 <img src="/images/pubsub_subscribe_raw.png" alt="Diagram showing how to subscribe with Dapr when publisher does not use Dapr or CloudEvent" width=1000>
 
 ### Programmatically subscribe to raw events
 
-When subscribing programmatically, add the additional metadata entry for `rawPayload` to allow the subscriber to receive a message that is not wrapped by a CloudEvent. For .NET, this metadata entry is called `isRawPayload`.
+When subscribing programmatically, add the additional metadata entry for `rawPayload` to allow the subscriber to receive a message that is not wrapped by a CloudEvent. For .NET, this metadata entry is called `rawPayload`. 
 
-{{< tabs ".NET" "Python" "PHP" >}}
+When using raw payloads the message is always base64 encoded with content type `application/octet-stream`.
 
-{{% codetab %}}
+{{< tabpane text=true >}}
+
+{{% tab ".NET" %}}
 
 ```csharp
 using System.Text.Json;
@@ -135,7 +137,7 @@ app.MapGet("/dapr/subscribe", () =>
             route = "/messages",
             metadata = new Dictionary<string, string>
             {
-                { "isRawPayload", "true" },
+                { "rawPayload", "true" },
                 { "content-type", "application/json" }
             }
         }
@@ -156,9 +158,9 @@ app.MapPost("/messages", async (HttpContext context) =>
 app.Run();
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ```python
 import flask
@@ -188,8 +190,8 @@ def ds_subscriber():
 app.run()
 ```
 
-{{% /codetab %}}
-{{% codetab %}}
+{{% /tab %}}
+{{% tab "PHP" %}}
 
 ```php
 <?php
@@ -212,9 +214,9 @@ $app->post('/dsstatus', function(
 
 $app->start();
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Declaratively subscribe to raw events
 
@@ -239,7 +241,7 @@ scopes:
 
 ## Next steps
 
-- Learn more about [publishing and subscribing messages]({{< ref pubsub-overview.md >}})
-- List of [pub/sub components]({{< ref supported-pubsub >}})
-- Read the [API reference]({{< ref pubsub_api.md >}})
+- Learn more about [publishing and subscribing messages]({{% ref pubsub-overview %}})
+- List of [pub/sub components]({{% ref supported-pubsub %}})
+- Read the [API reference]({{% ref pubsub_api %}})
 - Read the .NET sample on how to [consume Kafka messages without CloudEvents](https://github.com/dapr/samples/pubsub-raw-payload)

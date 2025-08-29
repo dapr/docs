@@ -10,7 +10,7 @@ This article provides guidance on running Dapr with Podman on a Windows/Linux/ma
 
 ## Prerequisites
 
-- [Dapr CLI]({{< ref install-dapr-cli.md >}})
+- [Dapr CLI]({{% ref install-dapr-cli.md %}})
 - [Podman](https://podman-desktop.io/downloads)
 
 ## Initialize Dapr environment
@@ -23,7 +23,7 @@ dapr init --container-runtime podman
 
 ## Run both app and sidecar as a process
 
-The [`dapr run` CLI command]({{< ref dapr-run.md >}}) can be used to launch a Dapr sidecar along with your application:
+The [`dapr run` CLI command]({{% ref dapr-run.md %}}) can be used to launch a Dapr sidecar along with your application:
 
 ```bash
 dapr run --app-id myapp --app-port 5000 -- dotnet run

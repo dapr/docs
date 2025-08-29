@@ -9,9 +9,9 @@ aliases:
 
 ## Component format
 
-To set up an Azure Event Hubs pub/sub, create a component of type `pubsub.azure.eventhubs`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
+To set up an Azure Event Hubs pub/sub, create a component of type `pubsub.azure.eventhubs`. See the [pub/sub broker component file]({{% ref setup-pubsub.md %}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{% ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" %}}) on how to create and apply a pub/sub configuration.
 
-Apart from the configuration metadata fields shown below, Azure Event Hubs also supports [Azure Authentication]({{< ref "authenticating-azure.md" >}}) mechanisms. 
+Apart from the configuration metadata fields shown below, Azure Event Hubs also supports [Azure Authentication]({{% ref "authenticating-azure.md" %}}) mechanisms. 
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -57,16 +57,16 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| `connectionString`    | Y*  | Connection string for the Event Hub or the Event Hub namespace.<br>* Mutally exclusive with `eventHubNamespace` field.<br>* Required when not using [Microsoft Entra ID Authentication]({{< ref "authenticating-azure.md" >}}) | `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}"` or `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key}"`
-| `eventHubNamespace` | Y* | The Event Hub Namespace name.<br>* Mutally exclusive with `connectionString` field.<br>* Required when using [Microsoft Entra ID Authentication]({{< ref "authenticating-azure.md" >}}) | `"namespace"` 
-| `consumerID`       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{< ref "component-schema.md#templated-metadata-values" >}})
+| `connectionString`    | Y*  | Connection string for the Event Hub or the Event Hub namespace.<br>* Mutally exclusive with `eventHubNamespace` field.<br>* Required when not using [Microsoft Entra ID Authentication]({{% ref "authenticating-azure.md" %}}) | `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}"` or `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key}"`
+| `eventHubNamespace` | Y* | The Event Hub Namespace name.<br>* Mutally exclusive with `connectionString` field.<br>* Required when using [Microsoft Entra ID Authentication]({{% ref "authenticating-azure.md" %}}) | `"namespace"` 
+| `consumerID`       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{% ref "component-schema.md#templated-metadata-values" %}})
 | `enableEntityManagement` | N | Boolean value to allow management of the EventHub namespace and storage account. Default: `false` | `"true", "false"`
 | `enableInOrderMessageDelivery` | N | Input/Output | Boolean value to allow messages to be delivered in the order in which they were posted. This assumes `partitionKey` is set when publishing or posting to ensure ordering across partitions. Default: `false` | `"true"`, `"false"`
 | `storageAccountName`  | Y  | Storage account name to use for the checkpoint store. |`"myeventhubstorage"`
@@ -80,7 +80,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ### Microsoft Entra ID authentication
 
-The Azure Event Hubs pub/sub component supports authentication using all Microsoft Entra ID mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of Microsoft Entra ID authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+The Azure Event Hubs pub/sub component supports authentication using all Microsoft Entra ID mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of Microsoft Entra ID authentication mechanism, see the [docs for authenticating to Azure]({{% ref authenticating-azure.md %}}).
 
 #### Example Configuration
 
@@ -126,7 +126,7 @@ Azure Eventhubs supports sending and receiving multiple messages in a single ope
 
 ### Configuring bulk publish
 
-To set the metadata for bulk publish operation, set the query parameters on the HTTP request or the gRPC metadata, [as documented in the API reference]({{< ref pubsub_api >}}).
+To set the metadata for bulk publish operation, set the query parameters on the HTTP request or the gRPC metadata, [as documented in the API reference]({{% ref pubsub_api %}}).
 
 | Metadata | Default |
 |----------|---------|
@@ -134,7 +134,7 @@ To set the metadata for bulk publish operation, set the query parameters on the 
 
 ### Configuring bulk subscribe
 
-When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to [Subscribing messages in bulk]({{< ref "pubsub-bulk#subscribing-messages-in-bulk" >}}) for more details and to learn more about [the bulk subscribe API]({{< ref pubsub-bulk.md >}}).
+When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to [Subscribing messages in bulk]({{% ref "pubsub-bulk#subscribing-messages-in-bulk" %}}) for more details and to learn more about [the bulk subscribe API]({{% ref pubsub-bulk.md %}}).
 
 | Configuration | Default |
 |---------------|---------|
@@ -143,7 +143,7 @@ When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to
 
 ## Configuring checkpoint frequency
 
-When subscribing to a topic, you can configure the checkpointing frequency in a partition by [setting the metadata in the HTTP or gRPC subscribe request ]({{< ref "pubsub_api.md#http-request-2" >}}). This metadata enables checkpointing after the configured number of events within a partition event sequence. Disable checkpointing by setting the frequency to `0`.  
+When subscribing to a topic, you can configure the checkpointing frequency in a partition by [setting the metadata in the HTTP or gRPC subscribe request ]({{% ref "pubsub_api.md#http-request-2" %}}). This metadata enables checkpointing after the configured number of events within a partition event sequence. Disable checkpointing by setting the frequency to `0`.  
 
 [Learn more about checkpointing](https://learn.microsoft.com/azure/event-hubs/event-hubs-features#checkpointing).
 
@@ -151,7 +151,7 @@ When subscribing to a topic, you can configure the checkpointing frequency in a 
 | -------- | ------- |
 | `metadata.checkPointFrequencyPerPartition` | `1` |
 
-Following example shows a sample subscription file for [Declarative subscription]({{< ref "subscription-methods.md#declarative-subscriptions" >}}) using `checkPointFrequencyPerPartition` metadata. Similarly, you can also pass the metadata in [Programmatic subscriptions]({{< ref "subscription-methods.md#programmatic-subscriptions" >}}) as well.
+Following example shows a sample subscription file for [Declarative subscription]({{% ref "subscription-methods.md#declarative-subscriptions" %}}) using `checkPointFrequencyPerPartition` metadata. Similarly, you can also pass the metadata in [Programmatic subscriptions]({{% ref "subscription-methods.md#programmatic-subscriptions" %}}) as well.
 
 ```yaml
 apiVersion: dapr.io/v2alpha1
@@ -178,7 +178,7 @@ When subscribing to a topic using `BulkSubscribe`, you configure the checkpointi
 
 Follow the instructions on the [documentation](https://docs.microsoft.com/azure/event-hubs/event-hubs-create) to set up Azure Event Hubs.
 
-Because this component uses Azure Storage as checkpoint store, you will also need an [Azure Storage Account](https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal). Follow the instructions on the [documentation](https://docs.microsoft.com/azure/storage/common/storage-account-keys-manage) to manage the storage account access keys.
+Because this component uses Azure Storage as checkpoint store, you will also need an [Azure Storage Account](https://docs.microsoft.com/azure/storage/common/storage-account-create?tabpane=azure-portal). Follow the instructions on the [documentation](https://docs.microsoft.com/azure/storage/common/storage-account-keys-manage) to manage the storage account access keys.
 
 See the [documentation](https://docs.microsoft.com/azure/event-hubs/authorize-access-shared-access-signature) on how to get the Event Hubs connection string (note this is not for the Event Hubs namespace).
 
@@ -194,7 +194,7 @@ When entity management is enabled in the metadata, as long as the application ha
 
 The Evet Hub name is the `topic` field in the incoming request to publish or subscribe to, while the consumer group name is the name of the Dapr app which subscribes to a given Event Hub. For example, a Dapr app running on Kubernetes with name `dapr.io/app-id: "myapp"` requires an Event Hubs consumer group named `myapp`.
 
-Entity management is only possible when using [Microsoft Entra ID Authentication]({{< ref "authenticating-azure.md" >}}) and not using a connection string.
+Entity management is only possible when using [Microsoft Entra ID Authentication]({{% ref "authenticating-azure.md" %}}) and not using a connection string.
 
 > Dapr passes the name of the consumer group to the Event Hub, so this is not supplied in the metadata.
 
@@ -218,9 +218,9 @@ spec:
 
 The same can be achieved using the Dapr SDK:
 
-{{< tabs ".NET" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 [Topic("order-pub-sub", "orders")]
@@ -232,9 +232,9 @@ public ActionResult Checkout(Order order, [FromHeader] int priority)
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Subscribing to Azure IoT Hub Events
 
@@ -274,7 +274,7 @@ For example, the headers of a delivered HTTP subscription message would contain:
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
-- [Pub/Sub building block]({{< ref pubsub >}})
-- [Authentication to Azure]({{< ref "authenticating-azure.md" >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-publish-subscribe.md#step-2-publish-a-topic" %}}) for instructions on configuring pub/sub components
+- [Pub/Sub building block]({{% ref pubsub %}})
+- [Authentication to Azure]({{% ref "authenticating-azure.md" %}})

@@ -77,7 +77,7 @@ The action corresponding to the most specific policy matched takes effect as ord
 
 ## Example scenarios
 
-Below are some example scenarios for using access control list for service invocation. See [configuration guidance]({{< ref "configuration-concept.md" >}}) to understand the available configuration settings for an application sidecar.
+Below are some example scenarios for using access control list for service invocation. See [configuration guidance]({{% ref "configuration-concept.md" %}}) to understand the available configuration settings for an application sidecar.
 
 ### Scenario 1: 
 
@@ -243,7 +243,7 @@ spec:
 
 In these examples, you learn how to apply access control to the [hello world](https://github.com/dapr/quickstarts/tree/master/tutorials) tutorials.
 
-Access control lists rely on the Dapr [Sentry service]({{< ref "security-concept.md" >}}) to generate the TLS certificates with a SPIFFE ID for authentication. This means the Sentry service either has to be running locally or deployed to your hosting environment, such as a Kubernetes cluster.
+Access control lists rely on the Dapr [Sentry service]({{% ref "security-concept.md" %}}) to generate the TLS certificates with a SPIFFE ID for authentication. This means the Sentry service either has to be running locally or deployed to your hosting environment, such as a Kubernetes cluster.
 
 The `nodeappconfig` example below shows how to **deny** access to the `neworder` method from the `pythonapp`, where the Python app is in the `myDomain` trust domain and `default` namespace. The Node.js app is in the `public` trust domain.
 
@@ -295,16 +295,16 @@ When walking through this tutorial, you:
 
 #### Prerequisites
 
-- Become familiar with running [Sentry service in self-hosted mode]({{< ref "mtls.md" >}}) with mTLS enabled
+- Become familiar with running [Sentry service in self-hosted mode]({{% ref "mtls.md" %}}) with mTLS enabled
 - Clone the [hello world](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-world/README.md) tutorial
 
 #### Run the Node.js app
 
 1. In a command prompt, set these environment variables:
 
-    {{< tabs "Linux/MacOS" Windows >}}
+    {{< tabpane text=true >}}
 
-    {{% codetab %}}
+    {{% tab "Linux/MacOS" %}}
 
       ```bash
       export DAPR_TRUST_ANCHORS=`cat $HOME/.dapr/certs/ca.crt`
@@ -313,9 +313,9 @@ When walking through this tutorial, you:
       export NAMESPACE=default
       ```
 
-    {{% /codetab %}}
+    {{% /tab %}}
 
-    {{% codetab %}}
+    {{% tab Windows %}}
 
       ```powershell
       $env:DAPR_TRUST_ANCHORS=$(Get-Content -raw $env:USERPROFILE\.dapr\certs\ca.crt)
@@ -324,9 +324,9 @@ When walking through this tutorial, you:
       $env:NAMESPACE="default"
       ```
 
-    {{% /codetab %}}
+    {{% /tab %}}
     
-    {{< /tabs >}}
+    {{< /tabpane >}}
 
 1. Run daprd to launch a Dapr sidecar for the Node.js app with mTLS enabled, referencing the local Sentry service:
 
@@ -344,9 +344,9 @@ When walking through this tutorial, you:
 
 1. In another command prompt, set these environment variables:
 
-   {{< tabs "Linux/MacOS" Windows >}}
+   {{< tabpane text=true >}}
 
-   {{% codetab %}}
+   {{% tab "Linux/MacOS" %}}
 
     ```bash
     export DAPR_TRUST_ANCHORS=`cat $HOME/.dapr/certs/ca.crt`
@@ -354,9 +354,9 @@ When walking through this tutorial, you:
     export DAPR_CERT_KEY=`cat $HOME/.dapr/certs/issuer.key`
     export NAMESPACE=default
    ```
-   {{% /codetab %}}
+   {{% /tab %}}
 
-   {{% codetab %}}
+   {{% tab Windows %}}
 
    ```powershell
    $env:DAPR_TRUST_ANCHORS=$(Get-Content -raw $env:USERPROFILE\.dapr\certs\ca.crt)
@@ -365,9 +365,9 @@ When walking through this tutorial, you:
    $env:NAMESPACE="default"
    ```
   
-   {{% /codetab %}}
+   {{% /tab %}}
 
-   {{< /tabs >}}
+   {{< /tabpane >}}
 
 1. Run daprd to launch a Dapr sidecar for the Python app with mTLS enabled, referencing the local Sentry service:
 
@@ -386,12 +386,12 @@ You should see the calls to the Node.js app fail in the Python app command promp
 
 #### Prerequisites
 
-- Become familiar with running [Sentry service in self-hosted mode]({{< ref "mtls.md" >}}) with mTLS enabled
+- Become familiar with running [Sentry service in self-hosted mode]({{% ref "mtls.md" %}}) with mTLS enabled
 - Clone the [hello world](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-world/README.md) tutorial
 
 #### Configure the Node.js and Python apps
 
-You can create and apply the above [`nodeappconfig.yaml`](#nodeappconfigyaml) and [`pythonappconfig.yaml`](#pythonappconfigyaml) configuration files, as described in the [configuration]({{< ref "configuration-concept.md" >}}).
+You can create and apply the above [`nodeappconfig.yaml`](#nodeappconfigyaml) and [`pythonappconfig.yaml`](#pythonappconfigyaml) configuration files, as described in the [configuration]({{% ref "configuration-concept.md" %}}).
 
 For example, the Kubernetes Deployment below is how the Python app is deployed to Kubernetes in the default namespace with this `pythonappconfig` configuration file.
 
@@ -432,10 +432,8 @@ spec:
 
 Watch this [video](https://youtu.be/j99RN_nxExA?t=1108) on how to apply access control list for service invocation.
 
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="688" height="430" src="https://www.youtube-nocookie.com/embed/j99RN_nxExA?start=1108" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
+{{< youtube id=j99RN_nxExA start=1108 >}}
 
 ## Next steps
 
-{{< button text="Dapr APIs allow list" page="api-allowlist" >}}
+{{< button text="Dapr APIs allow list" page="api-allowlist.md" >}}

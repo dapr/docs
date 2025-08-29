@@ -8,29 +8,29 @@ aliases:
     - /getting-started/install-dapr-kubernetes/
 ---
 
-When [setting up Dapr on Kubernetes]({{< ref kubernetes-overview.md >}}), you can use either the Dapr CLI or Helm.
+When [setting up Dapr on Kubernetes]({{% ref kubernetes-overview.md %}}), you can use either the Dapr CLI or Helm.
 
 {{% alert title="Hybrid clusters" color="primary" %}}
-Both the Dapr CLI and the Dapr Helm chart automatically deploy with affinity for nodes with the label `kubernetes.io/os=linux`. You can deploy Dapr to Windows nodes if your application requires it. For more information, see [Deploying to a hybrid Linux/Windows Kubernetes cluster]({{< ref kubernetes-hybrid-clusters >}}).
+Both the Dapr CLI and the Dapr Helm chart automatically deploy with affinity for nodes with the label `kubernetes.io/os=linux`. You can deploy Dapr to Windows nodes if your application requires it. For more information, see [Deploying to a hybrid Linux/Windows Kubernetes cluster]({{% ref kubernetes-hybrid-clusters %}}).
 {{% /alert %}}
 
-{{< tabs "Dapr CLI" "Helm" >}}
+{{< tabpane text=true >}}
  <!-- Dapr CLI -->
-{{% codetab %}}
+{{% tab "Dapr CLI" %}}
 ## Install with Dapr CLI
 
-You can install Dapr on a Kubernetes cluster using the [Dapr CLI]({{< ref install-dapr-cli.md >}}).
+You can install Dapr on a Kubernetes cluster using the [Dapr CLI]({{% ref install-dapr-cli.md %}}).
 
 ### Prerequisites
 
 - Install: 
-   - [Dapr CLI]({{< ref install-dapr-cli.md >}})
+   - [Dapr CLI]({{% ref install-dapr-cli.md %}})
    - [kubectl](https://kubernetes.io/docs/tasks/tools/)
 - Create a Kubernetes cluster with Dapr. Here are some helpful links:
-   - [Set up KiNd Cluster]({{< ref setup-kind.md >}})
-   - [Set up Minikube Cluster]({{< ref setup-minikube.md >}})
-   - [Set up Azure Kubernetes Service Cluster]({{< ref setup-aks.md >}})
-   - [Set up GKE cluster]({{< ref setup-gke.md >}})
+   - [Set up KiNd Cluster]({{% ref setup-kind.md %}})
+   - [Set up Minikube Cluster]({{% ref setup-minikube.md %}})
+   - [Set up Azure Kubernetes Service Cluster]({{% ref setup-aks.md %}})
+   - [Set up GKE cluster]({{% ref setup-gke.md %}})
    - [Set up Amazon Elastic Kubernetes Service](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html)
 
 
@@ -133,7 +133,7 @@ export DAPR_HELM_REPO_PASSWORD="passwd_xxx"
 ```
 #### Install in high availability mode
 
-You can run Dapr with three replicas of each control plane pod in the `dapr-system` namespace for [production scenarios]({{< ref kubernetes-production.md >}}).
+You can run Dapr with three replicas of each control plane pod in the `dapr-system` namespace for [production scenarios]({{% ref kubernetes-production.md %}}).
 
 ```bash
 dapr init -k --enable-ha=true
@@ -149,7 +149,7 @@ dapr init -k -n mynamespace
 
 #### Disable mTLS
 
-Dapr is initialized by default with [mTLS]({{< ref "security-concept.md#sidecar-to-sidecar-communication" >}}). You can disable it with:
+Dapr is initialized by default with [mTLS]({{% ref "security-concept.md#sidecar-to-sidecar-communication" %}}). You can disable it with:
 
 ```bash
 dapr init -k --enable-mtls=false
@@ -171,10 +171,10 @@ Run the following command on your local machine to uninstall Dapr on your cluste
 dapr uninstall -k
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Helm -->
-{{% codetab %}}
+{{% tab "Helm" %}}
 
 ## Install with Helm
 
@@ -188,10 +188,10 @@ You can install Dapr on Kubernetes using a Helm v3 chart.
    - [Helm v3](https://helm.sh/docs/intro/install/)
    - [kubectl](https://kubernetes.io/docs/tasks/tools/)
 - Create a Kubernetes cluster with Dapr. Here are some helpful links:
-   - [Set up KiNd Cluster]({{< ref setup-kind.md >}})
-   - [Set up Minikube Cluster]({{< ref setup-minikube.md >}})
-   - [Set up Azure Kubernetes Service Cluster]({{< ref setup-aks.md >}})
-   - [Set up GKE cluster]({{< ref setup-gke.md >}})
+   - [Set up KiNd Cluster]({{% ref setup-kind.md %}})
+   - [Set up Minikube Cluster]({{% ref setup-minikube.md %}})
+   - [Set up Azure Kubernetes Service Cluster]({{% ref setup-aks.md %}})
+   - [Set up GKE cluster]({{% ref setup-gke.md %}})
    - [Set up Amazon Elastic Kubernetes Service](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html)
 
 
@@ -244,7 +244,7 @@ You can install Dapr on Kubernetes using a Helm v3 chart.
     --wait
    ```
    
-See [Guidelines for production ready deployments on Kubernetes]({{< ref kubernetes-production.md >}}) for more information on installing and upgrading Dapr using Helm.
+See [Guidelines for production ready deployments on Kubernetes]({{% ref kubernetes-production.md %}}) for more information on installing and upgrading Dapr using Helm.
 
 ### (optional) Install the Dapr dashboard as part of the control plane
 
@@ -287,12 +287,12 @@ helm uninstall dapr --namespace dapr-system
 
 ### More information
 
-- Read [the Kubernetes productions guidelines]({{< ref kubernetes-production.md >}}) for recommended Helm chart values for production setups
+- Read [the Kubernetes productions guidelines]({{% ref kubernetes-production.md %}}) for recommended Helm chart values for production setups
 - [More details on Dapr Helm charts](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md)
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### Use Mariner-based images
 
@@ -302,9 +302,9 @@ Alternatively, you can use Dapr container images based on Mariner 2 (minimal dis
 
 To use Mariner-based images for Dapr, you need to add `-mariner` to your Docker tags. For example, while `ghcr.io/dapr/dapr:latest` is the Docker image based on *distroless*, `ghcr.io/dapr/dapr:latest-mariner` is based on Mariner. Tags pinned to a specific version are also available, such as `{{% dapr-latest-version short="true" %}}-mariner`.
 
-{{< tabs "Dapr CLI" "Helm" >}}
+{{< tabpane text=true >}}
  <!-- Dapr CLI -->
-{{% codetab %}}
+{{% tab "Dapr CLI" %}}
 
 In the Dapr CLI, you can switch to using Mariner-based images with the `--image-variant` flag.
 
@@ -312,10 +312,10 @@ In the Dapr CLI, you can switch to using Mariner-based images with the `--image-
 dapr init -k --image-variant mariner
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Helm -->
-{{% codetab %}}
+{{% tab "Helm" %}}
 
 With Kubernetes and Helm, you can use Mariner-based images by setting the `global.tag` option and adding `-mariner`. For example:
 
@@ -328,12 +328,12 @@ helm upgrade --install dapr dapr/dapr \
   --wait
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Related links
-- [Deploy Dapr with Helm parameters and other details]({{< ref "kubernetes-production.md#deploy-dapr-with-helm" >}})
-- [Upgrade Dapr on Kubernetes]({{< ref kubernetes-upgrade.md >}})
-- [Kubernetes production guidelines]({{< ref kubernetes-production.md >}})
-- [Configure state store & pubsub message broker]({{< ref "getting-started/tutorials/configure-state-pubsub.md" >}})
+- [Deploy Dapr with Helm parameters and other details]({{% ref "kubernetes-production.md#deploy-dapr-with-helm" %}})
+- [Upgrade Dapr on Kubernetes]({{% ref kubernetes-upgrade.md %}})
+- [Kubernetes production guidelines]({{% ref kubernetes-production.md %}})
+- [Configure state store & pubsub message broker]({{% ref "getting-started/tutorials/configure-state-pubsub.md" %}})

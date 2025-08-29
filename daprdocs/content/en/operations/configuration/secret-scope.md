@@ -7,15 +7,15 @@ description: "Define secret scopes by augmenting the existing configuration reso
 description: "Define secret scopes by augmenting the existing configuration resource with restrictive permissions."
 ---
 
-In addition to [scoping which applications can access a given component]({{< ref "component-scopes.md">}}), you can also scop a named secret store component to one or more secrets for an application. By defining `allowedSecrets` and/or `deniedSecrets` lists, you restrict applications to access only specific secrets.
-In addition to [scoping which applications can access a given component]({{< ref "component-scopes.md">}}), you can also scop a named secret store component to one or more secrets for an application. By defining `allowedSecrets` and/or `deniedSecrets` lists, you restrict applications to access only specific secrets.
+In addition to [scoping which applications can access a given component]({{% ref "component-scopes.md"%}}), you can also scope a named secret store component to one or more secrets for an application. By defining `allowedSecrets` and/or `deniedSecrets` lists, you restrict applications to access only specific secrets.
+In addition to [scoping which applications can access a given component]({{% ref "component-scopes.md"%}}), you can also scope a named secret store component to one or more secrets for an application. By defining `allowedSecrets` and/or `deniedSecrets` lists, you restrict applications to access only specific secrets.
 
 For more information about configuring a Configuration resource:
-- [Configuration overview]({{< ref configuration-overview.md >}})
-- [Configuration schema]({{< ref configuration-schema.md >}})
+- [Configuration overview]({{% ref configuration-overview.md %}})
+- [Configuration schema]({{% ref configuration-schema.md %}})
 For more information about configuring a Configuration resource:
-- [Configuration overview]({{< ref configuration-overview.md >}})
-- [Configuration schema]({{< ref configuration-schema.md >}})
+- [Configuration overview]({{% ref configuration-overview.md %}})
+- [Configuration schema]({{% ref configuration-schema.md %}})
 
 ## Configure secrets access
 
@@ -95,14 +95,14 @@ In a Kubernetes cluster, the native Kubernetes secret store is added to your Dap
    kubectl apply -f appconfig.yaml`.
    ```
 
-For applications that you need to deny access to the Kubernetes secret store, follow [the Kubernetes instructions]({{< ref kubernetes-overview >}}), adding the following annotation to the application pod.
+For applications that you need to deny access to the Kubernetes secret store, follow [the Kubernetes instructions]({{% ref kubernetes-overview %}}), adding the following annotation to the application pod.
 1. Apply it to the Kubernetes cluster using the following command:
 
    ```bash
    kubectl apply -f appconfig.yaml`.
    ```
 
-For applications that you need to deny access to the Kubernetes secret store, follow [the Kubernetes instructions]({{< ref kubernetes-overview >}}), adding the following annotation to the application pod.
+For applications that you need to deny access to the Kubernetes secret store, follow [the Kubernetes instructions]({{% ref kubernetes-overview %}}), adding the following annotation to the application pod.
 
 ```yaml
 dapr.io/config: appconfig
@@ -128,8 +128,8 @@ spec:
         allowedSecrets: ["secret1", "secret2"]
 ```
 
-This example defines configuration for secret store named `vault`. The default access to the secret store is `deny`. Meanwhile, some secrets are accessible by the application based on the `allowedSecrets` list. Follow [the Sidecar configuration instructions]({{< ref "configuration-overview.md#sidecar-configuration" >}}) to apply configuration to the sidecar.
-This example defines configuration for secret store named `vault`. The default access to the secret store is `deny`. Meanwhile, some secrets are accessible by the application based on the `allowedSecrets` list. Follow [the Sidecar configuration instructions]({{< ref "configuration-overview.md#sidecar-configuration" >}}) to apply configuration to the sidecar.
+This example defines configuration for secret store named `vault`. The default access to the secret store is `deny`. Meanwhile, some secrets are accessible by the application based on the `allowedSecrets` list. Follow [the Sidecar configuration instructions]({{% ref "configuration-overview.md#sidecar-configuration" %}}) to apply configuration to the sidecar.
+This example defines configuration for secret store named `vault`. The default access to the secret store is `deny`. Meanwhile, some secrets are accessible by the application based on the `allowedSecrets` list. Follow [the Sidecar configuration instructions]({{% ref "configuration-overview.md#sidecar-configuration" %}}) to apply configuration to the sidecar.
 
 ### Scenario 3: Deny access to certain sensitive secrets in a secret store
 
@@ -148,13 +148,14 @@ spec:
         deniedSecrets: ["secret1", "secret2"]
 ```
 
-This configuration explicitly denies access to `secret1` and `secret2` from the secret store named `vault,` while allowing access to all other secrets. Follow [the Sidecar configuration instructions]({{< ref "configuration-overview.md#sidecar-configuration" >}}) to apply configuration to the sidecar.
+This configuration explicitly denies access to `secret1` and `secret2` from the secret store named `vault,` while allowing access to all other secrets. Follow [the Sidecar configuration instructions]({{% ref "configuration-overview.md#sidecar-configuration" %}}) to apply configuration to the sidecar.
 
 ## Next steps
 
-{{< button text="Service invocation access control" page="invoke-allowlist" >}}
-This configuration explicitly denies access to `secret1` and `secret2` from the secret store named `vault,` while allowing access to all other secrets. Follow [the Sidecar configuration instructions]({{< ref "configuration-overview.md#sidecar-configuration" >}}) to apply configuration to the sidecar.
+{{< button text="Service invocation access control" page="invoke-allowlist.md" >}}
+
+This configuration explicitly denies access to `secret1` and `secret2` from the secret store named `vault,` while allowing access to all other secrets. Follow [the Sidecar configuration instructions]({{% ref "configuration-overview.md#sidecar-configuration" %}}) to apply configuration to the sidecar.
 
 ## Next steps
 
-{{< button text="Service invocation access control" page="invoke-allowlist" >}}
+{{< button text="Service invocation access control" page="invoke-allowlist.md" >}}

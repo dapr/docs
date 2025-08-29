@@ -38,7 +38,7 @@ Observe that not all secret stores support the same set of parameters. For examp
 - Hashicorp Vault, GCP Secret Manager and AWS Secret Manager support the `version_id` parameter
 - Only AWS Secret Manager supports the `version_stage` parameter 
 - Only Kubernetes Secrets supports the `namespace` parameter
-Check each [secret store's documentation]({{< ref supported-secret-stores.md >}}) for the list of supported parameters.
+Check each [secret store's documentation]({{% ref supported-secret-stores.md %}}) for the list of supported parameters.
 
 
 
@@ -51,7 +51,7 @@ If a secret store has support for multiple key-values in a secret, a JSON payloa
 
 In case of a secret store that only has name/value semantics, a JSON payload is returned with the name of the secret as the field and the value of the secret as the value.
 
-[See the classification of secret stores]({{< ref supported-secret-stores.md >}}) that support multiple keys in a secret and name/value semantics.
+[See the classification of secret stores]({{% ref supported-secret-stores.md %}}) that support multiple keys in a secret and name/value semantics.
 
 ##### Response with multiple keys in a secret (eg. Kubernetes):
 
@@ -105,7 +105,7 @@ curl http://localhost:3500/v1.0/secrets/myAwsSecretStore/db-secret?metadata.vers
 ## Get Bulk Secret
 
 This endpoint lets you get all the secrets in a secret store.
-It's recommended to use [token authentication]({{<ref "api-token.md">}}) for Dapr if configuring a secret store.
+It's recommended to use [token authentication]({{%ref "api-token.md"%}}) for Dapr if configuring a secret store.
 
 ### HTTP Request
 

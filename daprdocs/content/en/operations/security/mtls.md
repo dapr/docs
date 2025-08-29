@@ -10,7 +10,7 @@ Dapr supports in-transit encryption of communication between Dapr instances usin
 
 Dapr allows operators and developers to bring in their own certificates, or instead let Dapr automatically create and persist self-signed root and issuer certificates.
 
-For detailed information on mTLS, read the [security concepts section]({{< ref "security-concept.md" >}}).
+For detailed information on mTLS, read the [security concepts section]({{% ref "security-concept.md" %}}).
 
 If custom certificates have not been provided, Dapr automatically creates and persist self-signed certs valid for one year.
 In Kubernetes, the certs are persisted to a secret that resides in the namespace of the Dapr system pods, accessible only to them.
@@ -297,7 +297,7 @@ You will experience potential downtime due to mismatching certificates until all
 ### Kubernetes video demo 
 Watch this video to show how to update mTLS certificates on Kubernetes
 
-<iframe width="1280" height="720" src="https://www.youtube-nocookie.com/embed/_U9wJqq-H1g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{{< youtube id=_U9wJqq-H1g start=872 >}}
 
 ### Set up monitoring for Dapr control plane mTLS certificate expiration
 
@@ -334,12 +334,12 @@ Example:
 dapr status -k
 
   NAME                   NAMESPACE    HEALTHY  STATUS   REPLICAS  VERSION   AGE  CREATED
-  dapr-operator          dapr-system  True     Running  1         1.15.0    4m   2025-02-19 17:36.26
-  dapr-placement-server  dapr-system  True     Running  1         1.15.0    4m   2025-02-19 17:36.27
+  dapr-operator          dapr-system  True     Running  1         1.15.1    4m   2025-02-19 17:36.26
+  dapr-placement-server  dapr-system  True     Running  1         1.15.1    4m   2025-02-19 17:36.27
   dapr-dashboard         dapr-system  True     Running  1         0.15.0    4m   2025-02-19 17:36.27
-  dapr-sentry            dapr-system  True     Running  1         1.15.0    4m   2025-02-19 17:36.26
-  dapr-scheduler-server  dapr-system  True     Running  3         1.15.0    4m   2025-02-19 17:36.27
-  dapr-sidecar-injector  dapr-system  True     Running  1         1.15.0    4m   2025-02-19 17:36.26
+  dapr-sentry            dapr-system  True     Running  1         1.15.1    4m   2025-02-19 17:36.26
+  dapr-scheduler-server  dapr-system  True     Running  3         1.15.1    4m   2025-02-19 17:36.27
+  dapr-sidecar-injector  dapr-system  True     Running  1         1.15.1    4m   2025-02-19 17:36.26
 ⚠  Dapr root certificate of your Kubernetes cluster expires in 2 days. Expiry date: Mon, 04 Apr 2025 15:01:03 UTC.
  Please see docs.dapr.io for certificate renewal instructions to avoid service interruptions.
 ```
@@ -385,9 +385,9 @@ spec:
 
 In addition to the Dapr configuration, you also need to provide the TLS certificates to each Dapr sidecar instance. You can do so by setting the following environment variables before running the Dapr instance:
 
-{{< tabs "Linux/MacOS" Windows >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Linux/MacOS" %}}
 ```bash
 export DAPR_TRUST_ANCHORS=`cat $HOME/.dapr/certs/ca.crt`
 export DAPR_CERT_CHAIN=`cat $HOME/.dapr/certs/issuer.crt`
@@ -395,9 +395,9 @@ export DAPR_CERT_KEY=`cat $HOME/.dapr/certs/issuer.key`
 export NAMESPACE=default
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Windows" %}}
 ```powershell
 $env:DAPR_TRUST_ANCHORS=$(Get-Content -raw $env:USERPROFILE\.dapr\certs\ca.crt)
 $env:DAPR_CERT_CHAIN=$(Get-Content -raw $env:USERPROFILE\.dapr\certs\issuer.crt)
@@ -405,9 +405,9 @@ $env:DAPR_CERT_KEY=$(Get-Content -raw $env:USERPROFILE\.dapr\certs\issuer.key)
 $env:NAMESPACE="default"
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 If using the Dapr CLI, point Dapr to the config file above to run the Dapr instance with mTLS enabled:
 
@@ -491,9 +491,7 @@ By default, system services will look for the credentials in `/var/run/dapr/cred
 ## Community call video on certificate rotation
 Watch this [video](https://www.youtube.com/watch?v=Hkcx9kBDrAc&feature=youtu.be&t=1400) on how to perform certificate rotation if your certificates are expiring.
 
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/Hkcx9kBDrAc?start=1400"></iframe>
-</div>
+{{< youtube id=Hkcx9kBDrAc start=1400 >}}
 
 ## Sentry Token Validators
 

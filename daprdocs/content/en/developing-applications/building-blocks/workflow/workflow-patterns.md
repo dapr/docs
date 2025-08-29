@@ -25,9 +25,9 @@ While the pattern is simple, there are many complexities hidden in the implement
 
 Dapr Workflow solves these complexities by allowing you to implement the task chaining pattern concisely as a simple function in the programming language of your choice, as shown in the following example.
 
-{{< tabs Python JavaScript ".NET" Java Go >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 <!--python-->
 
 ```python
@@ -70,9 +70,9 @@ def error_handler(ctx, error):
 
 > **Note** Workflow retry policies will be available in a future version of the Python SDK.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 <!--javascript-->
 
 ```javascript
@@ -144,9 +144,9 @@ start().catch((e) => {
 });
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 <!--dotnet-->
 
 ```csharp
@@ -177,9 +177,9 @@ catch (TaskFailedException) // Task failures are surfaced as TaskFailedException
 
 > **Note** In the example above, `"Step1"`, `"Step2"`, `"Step3"`, and `"MyCompensation"` represent workflow activities, which are functions in your code that actually implement the steps of the workflow. For brevity, these activity implementations are left out of this example.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 <!--java-->
 
 ```java
@@ -232,9 +232,9 @@ public class ChainWorkflow extends Workflow {
     }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 <!--go-->
 
 ```go
@@ -283,9 +283,9 @@ func Step3(ctx workflow.ActivityContext) (any, error) {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 As you can see, the workflow is expressed as a simple series of statements in the programming language of your choice. This allows any engineer in the organization to quickly understand the end-to-end flow without necessarily needing to understand the end-to-end system architecture.
 
@@ -303,7 +303,7 @@ In the fan-out/fan-in design pattern, you execute multiple tasks simultaneously 
 
 <img src="/images/workflow-overview/workflows-fanin-fanout.png" width=800 alt="Diagram showing how the fan-out/fan-in workflow pattern works">
 
-In addition to the challenges mentioned in [the previous pattern]({{< ref "workflow-patterns.md#task-chaining" >}}), there are several important questions to consider when implementing the fan-out/fan-in pattern manually:
+In addition to the challenges mentioned in [the previous pattern]({{% ref "workflow-patterns.md#task-chaining" %}}), there are several important questions to consider when implementing the fan-out/fan-in pattern manually:
 
 - How do you control the degree of parallelism?
 - How do you know when to trigger subsequent aggregation steps?
@@ -311,9 +311,9 @@ In addition to the challenges mentioned in [the previous pattern]({{< ref "workf
 
 Dapr Workflows provides a way to express the fan-out/fan-in pattern as a simple function, as shown in the following example:
 
-{{< tabs Python JavaScript ".NET" Java Go >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 <!--python-->
 
 ```python
@@ -351,9 +351,9 @@ def process_results(ctx, final_result: int):
     print(f'Final result: {final_result}.')
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 <!--javascript-->
 
 ```javascript
@@ -405,7 +405,7 @@ async function start() {
 
     // Return a result for the given work item, which is also a random number in this case
     // For more information about random numbers in workflow please check
-    // https://learn.microsoft.com/azure/azure-functions/durable/durable-functions-code-constraints?tabs=csharp#random-numbers
+    // https://learn.microsoft.com/azure/azure-functions/durable/durable-functions-code-constraints?tabpane=csharp#random-numbers
     return Math.floor(Math.random() * 11);
   }
 
@@ -459,9 +459,9 @@ start().catch((e) => {
 });
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 <!--dotnet-->
 
 ```csharp
@@ -484,9 +484,9 @@ int sum = parallelTasks.Sum(t => t.Result);
 await context.CallActivityAsync("PostResults", sum);
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 <!--java-->
 
 ```java
@@ -510,9 +510,9 @@ public class FaninoutWorkflow extends Workflow {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 <!--go-->
 
 ```go
@@ -576,9 +576,9 @@ func ProcessResults(ctx workflow.ActivityContext) (any, error) {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 The key takeaways from this example are:
 
@@ -590,9 +590,9 @@ Furthermore, the execution of the workflow is durable. If a workflow starts 100 
 
 It's possible to go further and limit the degree of concurrency using simple, language-specific constructs. The sample code below illustrates how to restrict the degree of fan-out to just 5 concurrent activity executions:
 
-{{< tabs ".NET" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 <!-- .NET -->
 ```csharp
 
@@ -620,9 +620,32 @@ var sum = results.Sum(t => t);
 await context.CallActivityAsync("PostResults", sum);
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
+
+With the release of 1.16, it's even easier to process workflow activities in parallel while putting an upper cap on 
+concurrency by using the following extension methods on the `WorkflowContext`:
+
+{{< tabpane text=true >}}
+
+{{% tab header=".NET" %}}
+<!-- .NET -->
+```csharp
+//Revisiting the earlier example...
+// Get a list of work items to process
+var workBatch = await context.CallActivityAsync<object[]>("GetWorkBatch", null);
+
+// Process deterministically in parallel with an upper cap of 5 activities at a time
+var results = await context.ProcessInParallelAsync(workBatch, workItem => context.CallActivityAsync<int>("ProcessWorkItem", workItem), maxConcurrency: 5);
+
+var sum = results.Sum(t => t);
+await context.CallActivityAsync("PostResults", sum);
+```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
 
 Limiting the degree of concurrency in this way can be useful for limiting contention against shared resources. For example, if the activities need to call into external resources that have their own concurrency limits, like a databases or external APIs, it can be useful to ensure that no more than a specified number of activities call that resource concurrently.
 
@@ -710,15 +733,15 @@ The monitor pattern is recurring process that typically:
 
 The following diagram provides a rough illustration of this pattern.
 
-<img src="/images/workflow-overview/workflow-monitor-pattern.png" width=600 alt="Diagram showing how the monitor pattern works"/>
+<img src="/images/workflow-overview/workflow-monitor-pattern.png" width=800 alt="Diagram showing how the monitor pattern works"/>
 
 Depending on the business needs, there may be a single monitor or there may be multiple monitors, one for each business entity (for example, a stock). Furthermore, the amount of time to sleep may need to change, depending on the circumstances. These requirements make using cron-based scheduling systems impractical.
 
-Dapr Workflow supports this pattern natively by allowing you to implement _eternal workflows_. Rather than writing infinite while-loops ([which is an anti-pattern]({{< ref "workflow-features-concepts.md#infinite-loops-and-eternal-workflows" >}})), Dapr Workflow exposes a _continue-as-new_ API that workflow authors can use to restart a workflow function from the beginning with a new input.
+Dapr Workflow supports this pattern natively by allowing you to implement _eternal workflows_. Rather than writing infinite while-loops ([which is an anti-pattern]({{% ref "workflow-features-concepts.md#infinite-loops-and-eternal-workflows" %}})), Dapr Workflow exposes a _continue-as-new_ API that workflow authors can use to restart a workflow function from the beginning with a new input.
 
-{{< tabs Python JavaScript ".NET" Java Go >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 <!--python-->
 
 ```python
@@ -763,9 +786,9 @@ def send_alert(ctx, message: str):
     print(f'*** Alert: {message}')
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 <!--javascript-->
 
 ```javascript
@@ -791,9 +814,9 @@ const statusMonitorWorkflow: TWorkflow = async function* (ctx: WorkflowContext):
   };
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 <!--dotnet-->
 
 ```csharp
@@ -832,9 +855,9 @@ public override async Task<object> RunAsync(WorkflowContext context, MyEntitySta
 
 > This example assumes you have a predefined `MyEntityState` class with a boolean `IsHealthy` property.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 <!--java-->
 
 ```java
@@ -874,9 +897,9 @@ public class MonitorWorkflow extends Workflow {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 <!--go-->
 
 ```go
@@ -927,9 +950,9 @@ func SendAlert(ctx workflow.ActivityContext) (any, error) {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 A workflow implementing the monitor pattern can loop forever or it can terminate itself gracefully by not calling _continue-as-new_.
 
@@ -939,9 +962,9 @@ This pattern can also be expressed using actors and reminders. The difference is
 
 ## External system interaction
 
-In some cases, a workflow may need to pause and wait for an external system to perform some action. For example, a workflow may need to pause and wait for a payment to be received. In this case, a payment system might publish an event to a pub/sub topic on receipt of a payment, and a listener on that topic can raise an event to the workflow using the [raise event workflow API]({{< ref "howto-manage-workflow.md#raise-an-event" >}}).
+In some cases, a workflow may need to pause and wait for an external system to perform some action. For example, a workflow may need to pause and wait for a payment to be received. In this case, a payment system might publish an event to a pub/sub topic on receipt of a payment, and a listener on that topic can raise an event to the workflow using the [raise event workflow API]({{% ref "howto-manage-workflow.md#raise-an-event" %}}).
 
-Another very common scenario is when a workflow needs to pause and wait for a human, for example when approving a purchase order. Dapr Workflow supports this event pattern via the [external events]({{< ref "workflow-features-concepts.md#external-events" >}}) feature.
+Another very common scenario is when a workflow needs to pause and wait for a human, for example when approving a purchase order. Dapr Workflow supports this event pattern via the [external events]({{% ref "workflow-features-concepts.md#external-events" %}}) feature.
 
 Here's an example workflow for a purchase order involving a human:
 
@@ -953,13 +976,13 @@ Here's an example workflow for a purchase order involving a human:
 
 The following diagram illustrates this flow.
 
-<img src="/images/workflow-overview/workflow-human-interaction-pattern.png" width=600 alt="Diagram showing how the external system interaction pattern works with a human involved"/>
+<img src="/images/workflow-overview/workflow-human-interaction-pattern.png" width=800 alt="Diagram showing how the external system interaction pattern works with a human involved"/>
 
 The following example code shows how this pattern can be implemented using Dapr Workflow.
 
-{{< tabs Python JavaScript ".NET" Java Go >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 <!--python-->
 
 ```python
@@ -1016,9 +1039,9 @@ def place_order(_, order: Order) -> None:
     print(f'*** Placing order: {order}')
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 <!--javascript-->
 
 ```javascript
@@ -1156,9 +1179,9 @@ start().catch((e) => {
 });
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 <!--dotnet-->
 
 ```csharp
@@ -1200,9 +1223,9 @@ public override async Task<OrderResult> RunAsync(WorkflowContext context, OrderP
 
 > **Note** In the example above, `RequestApprovalActivity` is the name of a workflow activity to invoke and `ApprovalResult` is an enumeration defined by the workflow app. For brevity, these definitions were left out of the example code.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 <!--java-->
 
 ```java
@@ -1237,9 +1260,9 @@ public class ExternalSystemInteractionWorkflow extends Workflow {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 <!--go-->
 
 ```go
@@ -1294,15 +1317,15 @@ func PlaceOrder(ctx workflow.ActivityContext) (any, error) {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
-The code that delivers the event to resume the workflow execution is external to the workflow. Workflow events can be delivered to a waiting workflow instance using the [raise event]({{< ref "howto-manage-workflow.md#raise-an-event" >}}) workflow management API, as shown in the following example:
+The code that delivers the event to resume the workflow execution is external to the workflow. Workflow events can be delivered to a waiting workflow instance using the [raise event]({{% ref "howto-manage-workflow.md#raise-an-event" %}}) workflow management API, as shown in the following example:
 
-{{< tabs Python JavaScript ".NET" Java Go >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 <!--python-->
 
 ```python
@@ -1317,9 +1340,9 @@ with DaprClient() as d:
         event_data=asdict(Approval("Jane Doe")))
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 <!--javascript-->
 
 ```javascript
@@ -1330,9 +1353,9 @@ import { DaprClient } from "@dapr/dapr";
   }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 <!--dotnet-->
 
 ```csharp
@@ -1344,9 +1367,9 @@ await daprClient.RaiseWorkflowEventAsync(
     eventData: ApprovalResult.Approved);
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 <!--java-->
 
 ```java
@@ -1354,9 +1377,9 @@ System.out.println("**SendExternalMessage: RestartEvent**");
 client.raiseEvent(restartingInstanceId, "RestartEvent", "RestartEventPayload");
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 <!--go-->
 
 ```go
@@ -1380,9 +1403,9 @@ func raiseEvent() {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 External events don't have to be directly triggered by humans. They can also be triggered by other systems. For example, a workflow may need to pause and wait for a payment to be received. In this case, a payment system might publish an event to a pub/sub topic on receipt of a payment, and a listener on that topic can raise an event to the workflow using the raise event workflow API.
 
@@ -1392,9 +1415,9 @@ External events don't have to be directly triggered by humans. They can also be 
 
 ## Related links
 
-- [Try out Dapr Workflows using the quickstart]({{< ref workflow-quickstart.md >}})
-- [Workflow overview]({{< ref workflow-overview.md >}})
-- [Workflow API reference]({{< ref workflow_api.md >}})
+- [Try out Dapr Workflows using the quickstart]({{% ref workflow-quickstart.md %}})
+- [Workflow overview]({{% ref workflow-overview.md %}})
+- [Workflow API reference]({{% ref workflow_api.md %}})
 - Try out the following examples: 
    - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
    - [JavaScript](https://github.com/dapr/js-sdk/tree/main/examples/workflow)

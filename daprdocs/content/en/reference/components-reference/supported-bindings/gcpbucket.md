@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup GCP Storage Bucket binding create a component of type `bindings.gcp.bucket`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup GCP Storage Bucket binding create a component of type `bindings.gcp.bucket`. See [this guide]({{% ref "howto-bindings.md#1-create-a-binding" %}}) on how to create and apply a binding configuration.
 
 
 ```yaml
@@ -50,7 +50,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -58,18 +58,23 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | `bucket` | Y | Output | The bucket name | `"mybucket"` |
-| `type` | Y | Output | Tge GCP credentials type | `"service_account"` |
-| `project_id`     | Y | Output | GCP project id| `projectId`
-| `private_key_id` | Y | Output | GCP private key id | `"privateKeyId"`
-| `private_key`    | Y | Output | GCP credentials private key. Replace with x509 cert | `12345-12345`
-| `client_email`   | Y | Output | GCP client email  | `"client@email.com"`
-| `client_id`      | Y |  Output | GCP client id | `0123456789-0123456789`
-| `auth_uri`       | Y | Output | Google account OAuth endpoint | `https://accounts.google.com/o/oauth2/auth`
-| `token_uri`      | Y | Output | Google account token uri | `https://oauth2.googleapis.com/token`
-| `auth_provider_x509_cert_url` | Y | Output | GCP credentials cert url | `https://www.googleapis.com/oauth2/v1/certs`
-| `client_x509_cert_url` | Y | Output | GCP credentials project x509 cert url | `https://www.googleapis.com/robot/v1/metadata/x509/<PROJECT_NAME>.iam.gserviceaccount.com`
+| `project_id`     | Y | Output | GCP project ID | `projectId` |
+| `type` | N | Output | The GCP credentials type | `"service_account"` |
+| `private_key_id` | N | Output | If using explicit credentials, this field should contain the `private_key_id` field from the service account json document | `"privateKeyId"` |
+| `private_key`    | N | Output | If using explicit credentials, this field should contain the `private_key` field from the service account json. Replace with x509 cert | `12345-12345` |
+| `client_email`   | N | Output | If using explicit credentials, this field should contain the `client_email` field from the service account json  | `"client@email.com"` |
+| `client_id`      | N |  Output | If using explicit credentials, this field should contain the `client_id` field from the service account json | `0123456789-0123456789` |
+| `auth_uri`       | N | Output | If using explicit credentials, this field should contain the `auth_uri` field from the service account json | `https://accounts.google.com/o/oauth2/auth` |
+| `token_uri`      | N | Output | If using explicit credentials, this field should contain the `token_uri` field from the service account json | `https://oauth2.googleapis.com/token`|
+| `auth_provider_x509_cert_url` | N | Output | If using explicit credentials, this field should contain the `auth_provider_x509_cert_url` field from the service account json | `https://www.googleapis.com/oauth2/v1/certs`|
+| `client_x509_cert_url` | N | Output | If using explicit credentials, this field should contain the `client_x509_cert_url` field from the service account json | `https://www.googleapis.com/robot/v1/metadata/x509/<PROJECT_NAME>.iam.gserviceaccount.com`|
 | `decodeBase64` | N | Output | Configuration to decode base64 file content before saving to bucket storage. (In case of saving a file with binary content). `true` is the only allowed positive value. Other positive variations like `"True", "1"` are not acceptable. Defaults to `false` | `true`, `false` |
 | `encodeBase64` | N | Output | Configuration to encode base64 file content before return the content. (In case of opening a file with binary content). `true` is the only allowed positive value. Other positive variations like `"True", "1"` are not acceptable. Defaults to `false` | `true`, `false` |
+
+## GCP Credentials
+
+Since the GCP Storage Bucket component uses the GCP Go Client Libraries, by default it authenticates using **Application Default Credentials**. This is explained further in the [Authenticate to GCP Cloud services using client libraries](https://cloud.google.com/docs/authentication/client-libraries) guide.
+Also, see how to [Set up Application Default Credentials](https://cloud.google.com/docs/authentication/provide-credentials-adc).
 
 ## Binding support
 
@@ -104,42 +109,42 @@ The metadata parameters are:
 #### Examples
 ##### Save text to a random generated UUID file
 
-{{< tabs Windows Linux >}}
-  {{% codetab %}}
+{{< tabpane text=true >}}
+  {{% tab %}}
   On Windows, utilize cmd prompt (PowerShell has different escaping mechanism)
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\" }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "create", "data": "Hello World" }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ##### Save text to a specific file
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\", \"metadata\": { \"key\": \"my-test-file.txt\" } }" \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "create", "data": "Hello World", "metadata": { "key": "my-test-file.txt" } }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 
 ##### Upload a file
@@ -148,22 +153,22 @@ To upload a file, pass the file contents as the data payload; you may want to en
 
 Then you can upload it as you would normally:
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"(YOUR_FILE_CONTENTS)\", \"metadata\": { \"key\": \"my-test-file.jpg\" } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "create", "data": "$(cat my-test-file.jpg)", "metadata": { "key": "my-test-file.jpg" } }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 #### Response
 
 The response body will contain the following JSON:
@@ -195,22 +200,22 @@ The metadata parameters are:
 
 #### Example
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ \"operation\": \"get\", \"metadata\": { \"key\": \"my-test-file.txt\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "get", "metadata": { "key": "my-test-file.txt" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -232,22 +237,22 @@ The metadata parameters are:
 
 #### Example
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab header="Windows" %}}
   ```bash
   curl -d '{ \"operation\": \"bulkget\"}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab header="Linux" %}}
   ```bash
   curl -d '{ "operation": "bulkget"}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Response
 
@@ -305,22 +310,22 @@ The metadata parameters are:
 
 ##### Delete object
 
-{{< tabs Windows Linux >}}
+{{< tabpane text=true >}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ \"operation\": \"delete\", \"metadata\": { \"key\": \"my-test-file.txt\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-  {{% codetab %}}
+  {{% tab %}}
   ```bash
   curl -d '{ "operation": "delete", "metadata": { "key": "my-test-file.txt" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+  {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 #### Response
 An HTTP 204 (No Content) and empty body will be retuned if successful.
@@ -441,8 +446,8 @@ The metadata parameters are:
 
 ## Related links
 
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Bindings building block]({{< ref bindings >}})
-- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
-- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
-- [Bindings API reference]({{< ref bindings_api.md >}})
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- [Bindings building block]({{% ref bindings %}})
+- [How-To: Trigger application with input binding]({{% ref howto-triggers.md %}})
+- [How-To: Use bindings to interface with external resources]({{% ref howto-bindings.md %}})
+- [Bindings API reference]({{% ref bindings_api.md %}})

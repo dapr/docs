@@ -8,31 +8,31 @@ description: "How to view Dapr metrics in a Grafana dashboard."
 
 ## Available dashboards
 
-{{< tabs "System Service" "Sidecars" "Actors" >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "System Service" %}}
 The `grafana-system-services-dashboard.json` template shows Dapr system component status, dapr-operator, dapr-sidecar-injector, dapr-sentry, and dapr-placement:
 
 <img src="/images/grafana-system-service-dashboard.png" alt="Screenshot of the system service dashboard" width=1200>
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Sidecars" %}}
 The `grafana-sidecar-dashboard.json` template shows Dapr sidecar status, including sidecar health/resources, throughput/latency of HTTP and gRPC, Actor, mTLS, etc.:
 
 <img src="/images/grafana-sidecar-dashboard.png" alt="Screenshot of the sidecar dashboard" width=1200>
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Actors" %}}
 The `grafana-actor-dashboard.json` template shows Dapr Sidecar status, actor invocation throughput/latency, timer/reminder triggers, and turn-based concurrnecy:
 
 <img src="/images/grafana-actor-dashboard.png" alt="Screenshot of the actor dashboard" width=1200>
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Pre-requisites
 
-- [Setup Prometheus]({{<ref prometheus.md>}})
+- [Setup Prometheus]({{%ref prometheus.md%}})
 
 ## Setup on Kubernetes
 
@@ -169,7 +169,7 @@ First you need to connect Prometheus as a data source to Grafana.
 
 ## References
 
-* [Dapr Observability]({{<ref observability-concept.md >}})
+* [Dapr Observability]({{%ref observability-concept.md %}})
 * [Prometheus Installation](https://github.com/prometheus-community/helm-charts)
 * [Prometheus on Kubernetes](https://github.com/coreos/kube-prometheus)
 * [Prometheus Query Language](https://prometheus.io/docs/prometheus/latest/querying/basics/)
@@ -177,6 +177,4 @@ First you need to connect Prometheus as a data source to Grafana.
 
 ## Example
 
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/8W-iBDNvCUM?start=2577" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
+{{< youtube id=8W-iBDNvCUM start=2577 >}}

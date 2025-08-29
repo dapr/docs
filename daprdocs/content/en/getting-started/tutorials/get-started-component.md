@@ -8,7 +8,7 @@ description: "Create a component definition file to interact with the secrets bu
 
 When building an app, you'd most likely create your own component file definitions, depending on the building block and specific component that you'd like to use.
 
-In this tutorial, you will create a component definition file to interact with the [secrets building block API]({{< ref secrets >}}):
+In this tutorial, you will create a component definition file to interact with the [secrets building block API]({{% ref secrets %}}):
 
 - Create a local JSON secret store.
 - Register the secret store with Dapr using a component definition file.
@@ -28,7 +28,7 @@ In this tutorial, you will create a component definition file to interact with t
    cd my-components
    ```
 
-1. Dapr supports [many types of secret stores]({{< ref supported-secret-stores >}}), but for this tutorial, create a local JSON file named `mysecrets.json` with the following secret:
+1. Dapr supports [many types of secret stores]({{% ref supported-secret-stores %}}), but for this tutorial, create a local JSON file named `mysecrets.json` with the following secret:
 
 ```json
 {
@@ -86,23 +86,23 @@ If an error message occurs, stating the `app-id` is already in use, you may need
 
 In a separate terminal, run:
 
-{{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)">}}
-{{% codetab %}}
+{{< tabpane text=true >}}
+{{% tab "HTTP API (Bash)" %}}
 
 ```bash
 curl http://localhost:3500/v1.0/secrets/my-secret-store/my-secret
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "HTTP API (PowerShell)" %}}
 
 ```powershell
 Invoke-RestMethod -Uri 'http://localhost:3500/v1.0/secrets/my-secret-store/my-secret'
 ```
 
-{{% /codetab %}}
-{{< /tabs >}}
+{{% /tab %}}
+{{< /tabpane >}}
 
 **Output:**
 
@@ -110,4 +110,4 @@ Invoke-RestMethod -Uri 'http://localhost:3500/v1.0/secrets/my-secret-store/my-se
 {"my-secret":"I'm Batman"}
 ```
 
-{{< button text="Next step: Set up a Pub/sub broker >>" page="pubsub-quickstart" >}}
+{{< button text="Next step: Set up a Pub/sub broker >>" page="pubsub-quickstart.md" >}}

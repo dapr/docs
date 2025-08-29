@@ -6,12 +6,12 @@ weight: 2000
 description: "Use the secret store building block to securely retrieve a secret"
 ---
 
-Now that you've learned [what the Dapr secrets building block provides]({{< ref secrets-overview >}}), learn how it can work in your service. This guide demonstrates how to call the secrets API and retrieve secrets in your application code from a configured secret store.
+Now that you've learned [what the Dapr secrets building block provides]({{% ref secrets-overview %}}), learn how it can work in your service. This guide demonstrates how to call the secrets API and retrieve secrets in your application code from a configured secret store.
 
 <img src="/images/howto-secrets/secrets-mgmt-overview.png" width=1000 alt="Diagram showing secrets management of example service.">
 
 {{% alert title="Note" color="primary" %}}
- If you haven't already, [try out the secrets management quickstart]({{< ref secrets-quickstart.md >}}) for a quick walk-through on how to use the secrets API.
+ If you haven't already, [try out the secrets management quickstart]({{% ref secrets-quickstart %}}) for a quick walk-through on how to use the secrets API.
 
 {{% /alert %}}
 
@@ -20,7 +20,7 @@ Now that you've learned [what the Dapr secrets building block provides]({{< ref 
 Before retrieving secrets in your application's code, you must configure a secret store component. This example configures a secret store that uses a local JSON file to store secrets.
 
 {{% alert title="Warning" color="warning" %}}
-In a production-grade application, local secret stores are not recommended. [Find alternatives]({{< ref supported-secret-stores >}}) to securely manage your secrets.
+In a production-grade application, local secret stores are not recommended. [Find alternatives]({{% ref supported-secret-stores %}}) to securely manage your secrets.
 {{% /alert %}}
 
 In your project directory, create a file named `secrets.json` with the following contents:
@@ -54,8 +54,8 @@ The path to the secret store JSON is relative to where you call `dapr run`.
 
 For more information:
 
-- See how to [configure a different kind of secret store]({{< ref setup-secret-store >}}).
-- Review [supported secret stores]({{< ref supported-secret-stores >}}) to see specific details required for different secret store solutions.
+- See how to [configure a different kind of secret store]({{% ref setup-secret-store %}}).
+- Review [supported secret stores]({{% ref supported-secret-stores %}}) to see specific details required for different secret store solutions.
 
 ## Get a secret
 
@@ -65,48 +65,41 @@ Get the secret by calling the Dapr sidecar using the secrets API:
 curl http://localhost:3601/v1.0/secrets/localsecretstore/secret
 ```
 
-See a [full API reference]({{< ref secrets_api.md >}}).
+See a [full API reference]({{% ref secrets_api %}}).
 
 ## Calling the secrets API from your code
 
 Now that you've set up the local secret store, call Dapr to get the secrets from your application code. Below are code examples that leverage Dapr SDKs for retrieving a secret.
 
-{{< tabs ".NET" Java Python Go JavaScript>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
-//dependencies
 using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Dapr.Client;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading;
-using System.Text.Json;
 
-//code
-namespace EventService
-{
-    class Program
-    {
-        static async Task Main(string[] args)
-        {
-            string SECRET_STORE_NAME = "localsecretstore";
-            using var client = new DaprClientBuilder().Build();
-            //Using Dapr SDK to get a secret
-            var secret = await client.GetSecretAsync(SECRET_STORE_NAME, "secret");
-            Console.WriteLine($"Result: {string.Join(", ", secret)}");
-        }
-    }
-}
+namespace EventService;
+
+const string SECRET_STORE_NAME = "localsecretstore";
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDaprClient();
+var app = builder.Build();
+
+//Resolve a DaprClient from DI
+var daprClient = app.Services.GetRequiredService<DaprClient>();
+
+//Use the Dapr SDK to get a secret
+var secret = await daprClient.GetSecretAsync(SECRET_STORE_NAME, "secret");
+
+Console.WriteLine($"Result: {string.Join(", ", secret)}");
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ```java
 //dependencies
@@ -138,9 +131,9 @@ public class OrderProcessingServiceApplication {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ```python
 #dependencies 
@@ -168,9 +161,9 @@ with DaprClient() as client:
     logging.info(sorted(secret.secrets.items()))
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 //dependencies 
@@ -206,9 +199,9 @@ func main() {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 //dependencies 
@@ -235,13 +228,13 @@ async function main() {
 main();
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Related links
 
-- Review the [Dapr secrets API features]({{< ref secrets-overview >}}).
-- Learn how to [use secrets scopes]({{< ref secrets-scopes >}})
-- Read the [secrets API reference]({{< ref secrets_api >}}) and review the [supported secrets]({{< ref supported-secret-stores >}}).
-- Learn how to [set up different secret store components]({{< ref setup-secret-store >}}) and how to [reference secrets in your component]({{< ref component-secrets >}}).
+- Review the [Dapr secrets API features]({{% ref secrets-overview %}}).
+- Learn how to [use secrets scopes]({{% ref secrets-scopes %}})
+- Read the [secrets API reference]({{% ref secrets_api %}}) and review the [supported secrets]({{% ref supported-secret-stores %}}).
+- Learn how to [set up different secret store components]({{% ref setup-secret-store %}}) and how to [reference secrets in your component]({{% ref component-secrets %}}).

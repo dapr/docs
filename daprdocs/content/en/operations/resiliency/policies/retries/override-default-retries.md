@@ -6,7 +6,7 @@ weight: 20
 description: "Learn how to override the default retry resiliency policies for specific APIs"
 ---
 
-Dapr provides [default retries]({{< ref default-policies.md >}}) for any unsuccessful request, such as failures and transient errors. Within a resiliency spec, you have the option to override Dapr's default retry logic by defining policies with reserved, named keywords. For example, defining a policy with the name `DaprBuiltInServiceRetries`, overrides the default retries for failures between sidecars via service-to-service requests. Policy overrides are not applied to specific targets.
+Dapr provides [default retries]({{% ref default-policies.md %}}) for any unsuccessful request, such as failures and transient errors. Within a resiliency spec, you have the option to override Dapr's default retry logic by defining policies with reserved, named keywords. For example, defining a policy with the name `DaprBuiltInServiceRetries`, overrides the default retries for failures between sidecars via service-to-service requests. Policy overrides are not applied to specific targets.
 
 > Note: Although you can override default values with more robust retries, you cannot override with lesser values than the provided default value, or completely remove default retries. This prevents unexpected downtime.
 
@@ -47,5 +47,5 @@ spec:
 ## Related links
 
 Try out one of the Resiliency quickstarts:
-- [Resiliency: Service-to-service]({{< ref resiliency-serviceinvo-quickstart.md >}})
-- [Resiliency: State Management]({{< ref resiliency-state-quickstart.md >}})
+- [Resiliency: Service-to-service]({{% ref resiliency-serviceinvo-quickstart.md %}})
+- [Resiliency: State Management]({{% ref resiliency-state-quickstart.md %}})

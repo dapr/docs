@@ -73,7 +73,7 @@ dapr run node myapp.js
 
 ## Logs in Kubernetes mode
 
-> [Learn how to debug `daprd` on Kubernetes.]({{< ref "debug-daprd.md" >}}) 
+> [Learn how to debug `daprd` on Kubernetes.]({{% ref "debug-daprd.md" %}}) 
 
 You can set the log level individually for every sidecar by providing the following annotation in your pod spec template:
 
@@ -201,4 +201,4 @@ The examples above are specific specific to Kubernetes, but the principal is the
 
 ## References
 
-* [How to setup logging in Dapr]({{< ref "logging.md" >}})
+* [How to setup logging in Dapr]({{% ref "logging.md" %}})

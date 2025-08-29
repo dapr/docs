@@ -36,7 +36,7 @@ No matter which deployment approach you choose, it is important to understand th
 {{% /alert %}}
 
 
-### `DeamonSet`(Per-node)
+### `DaemonSet`(Per-node)
 
 With Kubernetes `DaemonSet`, you can define applications that need to be deployed once per node in the cluster. This enables applications that are running on the same node to communicate with local Dapr APIs, no matter where the Kubernetes `Scheduler` schedules your workload.
 
@@ -56,7 +56,7 @@ Kubernetes `Deployments` are installed once per cluster. Based on available reso
 ## Getting Started with Dapr Shared
 
 {{% alert title="Prerequisites" color="primary" %}}
-Before installing Dapr Shared, make ensure you have [Dapr installed in your cluster]({{< ref "kubernetes-deploy.md" >}}).
+Before installing Dapr Shared, make ensure you have [Dapr installed in your cluster]({{% ref "kubernetes-deploy.md" %}}).
 {{% /alert %}}
 
 If you want to get started with Dapr Shared, you can create a new Dapr Shared instance by installing the official Helm Chart:

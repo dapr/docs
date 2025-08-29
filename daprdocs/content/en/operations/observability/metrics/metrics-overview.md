@@ -72,7 +72,7 @@ spec:
 
 ## Configuring metrics for error codes
 
-You can enable additional metrics for [Dapr API error codes](https://docs.dapr.io/reference/api/error_codes/) by setting `spec.metrics.recordErrorCodes` to `true`. Dapr APIs which communicate back to their caller may return standardized error codes. [A new metric called `error_code_total` is recorded]({{< ref errors-overview.md >}}), which allows monitoring of error codes triggered by application, code, and category. See [the `errorcodes` package](https://github.com/dapr/dapr/blob/master/pkg/messages/errorcodes/errorcodes.go) for specific codes and categories.
+You can enable additional metrics for [Dapr API error codes](https://docs.dapr.io/reference/api/error_codes/) by setting `spec.metrics.recordErrorCodes` to `true`. Dapr APIs which communicate back to their caller may return standardized error codes. [A new metric called `error_code_total` is recorded]({{% ref errors-overview.md %}}), which allows monitoring of error codes triggered by application, code, and category. See [the `errorcodes` package](https://github.com/dapr/dapr/blob/master/pkg/messages/errorcodes/errorcodes.go) for specific codes and categories.
 
 Example configuration:
 ```yaml
@@ -106,7 +106,7 @@ Example metric:
 
 When invoking Dapr using HTTP, metrics are created for each requested method by default. This can result in a high number of metrics, known as high cardinality, which can impact memory usage and CPU.
 
-Path matching allows you to manage and control the cardinality of HTTP metrics in Dapr. This is an aggregation of metrics, so rather than having a metric for each event, you can reduce the number of metrics events and report an overall number. [Learn more about how to set the cardinality in configuration]({{< ref "configuration-overview.md#metrics" >}}).  
+Path matching allows you to manage and control the cardinality of HTTP metrics in Dapr. This is an aggregation of metrics, so rather than having a metric for each event, you can reduce the number of metrics events and report an overall number. [Learn more about how to set the cardinality in configuration]({{% ref "configuration-overview.md#metrics" %}}).  
 
 This configuration is opt-in and is enabled via the Dapr configuration `spec.metrics.http.pathMatching`. When defined, it enables path matching, which standardizes specified paths for both metrics paths. This reduces the number of unique metrics paths, making metrics more manageable and reducing resource consumption in a controlled way.  
 
@@ -266,7 +266,7 @@ It is recommended to keep the number of latency buckets set to the default value
 Take note of the default latency values your applications are producing before configuring the number buckets.
 ### Customizing latency buckets to your scenario
 
-Tailor the latency buckets to your needs, by modifying the `spec.metrics.latencyDistributionBuckets` field in the [Dapr configuration spec]({{< ref configuration-schema.md >}}) for your application(s).
+Tailor the latency buckets to your needs, by modifying the `spec.metrics.latencyDistributionBuckets` field in the [Dapr configuration spec]({{% ref configuration-schema.md %}}) for your application(s).
 
 For example, if you aren't interested in extremely low latency values (1-10ms), you can group them in a single 10ms bucket. Similarly, you can group the high values in a single bucket (1000-5000ms), while keeping more detail in the middle range of values that you are most interested in.
 
@@ -313,5 +313,5 @@ Using regular expressions to reduce metrics cardinality is considered legacy. We
 
 ## References
 
-* [Howto: Run Prometheus locally]({{< ref prometheus.md >}})
-* [Howto: Set up Prometheus and Grafana for metrics]({{< ref grafana.md >}})
+* [Howto: Run Prometheus locally]({{% ref prometheus.md %}})
+* [Howto: Set up Prometheus and Grafana for metrics]({{% ref grafana.md %}})

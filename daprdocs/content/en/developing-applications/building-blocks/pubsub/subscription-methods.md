@@ -12,9 +12,9 @@ Dapr applications can subscribe to published topics via three subscription types
 
 | Subscription type | Description |
 | ------------------- | ----------- |
-| [**Declarative**]({{< ref "subscription-methods.md#declarative-subscriptions" >}}) | Subscription is defined in an **external file**. The declarative approach removes the Dapr dependency from your code and allows for existing applications to subscribe to topics, without having to change code. |
-| [**Streaming**]({{< ref "subscription-methods.md#streaming-subscriptions" >}}) | Subscription is defined in the **application code**. Streaming subscriptions are dynamic, meaning they allow for adding or removing subscriptions at runtime. They do not require a subscription endpoint in your application (that is required by both programmatic and declarative subscriptions), making them easy to configure in code. Streaming subscriptions also do not require an app to be configured with the sidecar to receive messages. |
-| [**Programmatic**]({{< ref "subscription-methods.md#programmatic-subscriptions" >}}) | Subscription is defined in the **application code**. The programmatic approach implements the static subscription and requires an endpoint in your code. |
+| [**Declarative**]({{% ref "subscription-methods#declarative-subscriptions" %}}) | Subscription is defined in an **external file**. The declarative approach removes the Dapr dependency from your code and allows for existing applications to subscribe to topics, without having to change code. |
+| [**Streaming**]({{% ref "subscription-methods#streaming-subscriptions" %}}) | Subscription is defined in the **application code**. Streaming subscriptions are dynamic, meaning they allow for adding or removing subscriptions at runtime. They do not require a subscription endpoint in your application (that is required by both programmatic and declarative subscriptions), making them easy to configure in code. Streaming subscriptions also do not require an app to be configured with the sidecar to receive messages. |
+| [**Programmatic**]({{% ref "subscription-methods#programmatic-subscriptions" %}}) | Subscription is defined in the **application code**. The programmatic approach implements the static subscription and requires an endpoint in your code. |
 
 The examples below demonstrate pub/sub messaging between a `checkout` app and an `orderprocessing` app via the `orders` topic. The examples demonstrate the same Dapr pub/sub component used first declaratively, then programmatically.
 
@@ -23,7 +23,7 @@ The examples below demonstrate pub/sub messaging between a `checkout` app and an
 {{% alert title="Note" color="primary" %}}
 This feature is currently in preview.
 Dapr can be made to "hot reload" declarative subscriptions, whereby updates are picked up automatically without needing a restart.
-This is enabled by via the [`HotReload` feature gate]({{< ref "support-preview-features.md" >}}).
+This is enabled by via the [`HotReload` feature gate]({{% ref "support-preview-features" %}}).
 To prevent reprocessing or loss of unprocessed messages, in-flight messages between Dapr and your application are unaffected during hot reload events.
 {{% /alert %}}
 
@@ -50,49 +50,49 @@ Here the subscription called `order`:
 
 When running Dapr, set the YAML component file path to point Dapr to the component.
 
-{{< tabs ".NET" Java Python JavaScript Go Kubernetes>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```bash
 dapr run --app-id myapp --resources-path ./myComponents -- dotnet run
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ```bash
 dapr run --app-id myapp --resources-path ./myComponents -- mvn spring-boot:run
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ```bash
 dapr run --app-id myapp --resources-path ./myComponents -- python3 app.py
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ```bash
 dapr run --app-id myapp --resources-path ./myComponents -- npm start
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```bash
 dapr run --app-id myapp --resources-path ./myComponents -- go run app.go
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
 In Kubernetes, apply the component to the cluster:
 
@@ -100,15 +100,15 @@ In Kubernetes, apply the component to the cluster:
 kubectl apply -f subscription.yaml
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 In your application code, subscribe to the topic specified in the Dapr pub/sub component.
 
-{{< tabs ".NET" Java Python JavaScript Go >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
  //Subscribe to a topic 
@@ -119,9 +119,9 @@ public void getCheckout([FromBody] int orderId)
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ```java
 import io.dapr.client.domain.CloudEvent;
@@ -137,9 +137,9 @@ public Mono<Void> getCheckout(@RequestBody(required = false) CloudEvent<String> 
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ```python
 from cloudevents.sdk.event import v1
@@ -151,9 +151,9 @@ def checkout(event: v1.Event) -> None:
     logging.info('Subscriber received: ' + str(data))
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 const express = require('express')
@@ -168,9 +168,9 @@ app.post('/orders', (req, res) => {
 });
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 //Subscribe to a topic
@@ -186,9 +186,9 @@ func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err er
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 The `/orders` endpoint matches the `route` defined in the subscriptions and this is where Dapr sends all topic messages to.
 
@@ -203,9 +203,57 @@ As messages are sent to the given message handler code, there is no concept of r
 
 The example below shows the different ways to stream subscribe to a topic.
 
-{{< tabs Python Go >}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
+
+You can use the `SubscribeAsync` method on the `DaprPublishSubscribeClient` to configure the message handler to use to pull messages from the stream.
+
+```c#
+using System.Text;
+using Dapr.Messaging.PublishSubscribe;
+using Dapr.Messaging.PublishSubscribe.Extensions;
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDaprPubSubClient();
+var app = builder.Build();
+
+var messagingClient = app.Services.GetRequiredService<DaprPublishSubscribeClient>();
+
+//Create a dynamic streaming subscription and subscribe with a timeout of 30 seconds and 10 seconds for message handling
+var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+var subscription = await messagingClient.SubscribeAsync("pubsub", "myTopic",
+    new DaprSubscriptionOptions(new MessageHandlingPolicy(TimeSpan.FromSeconds(10), TopicResponseAction.Retry)),
+    HandleMessageAsync, cancellationTokenSource.Token);
+
+await Task.Delay(TimeSpan.FromMinutes(1));
+
+//When you're done with the subscription, simply dispose of it
+await subscription.DisposeAsync();
+return;
+
+//Process each message returned from the subscription
+Task<TopicResponseAction> HandleMessageAsync(TopicMessage message, CancellationToken cancellationToken = default)
+{
+    try
+    {
+        //Do something with the message
+        Console.WriteLine(Encoding.UTF8.GetString(message.Data.Span));
+        return Task.FromResult(TopicResponseAction.Success);
+    }
+    catch
+    {
+        return Task.FromResult(TopicResponseAction.Retry);
+    }
+}
+```
+
+[Learn more about streaming subscriptions using the .NET SDK client.]({{% ref "dotnet-messaging-pubsub-howto" %}})
+
+{{% /tab %}}
+
+
+{{% tab "Python" %}}
 
 You can use the `subscribe` method, which returns a `Subscription` object and allows you to pull messages from the stream by calling the `next_message` method. This runs in and may block the main thread while waiting for messages. 
 
@@ -306,11 +354,11 @@ if __name__ == '__main__':
     main()
 ```
 
-[Learn more about streaming subscriptions using the Python SDK client.]({{< ref "python-client.md#streaming-message-subscription" >}})
+[Learn more about streaming subscriptions using the Python SDK client.]({{% ref "python-client#streaming-message-subscription" %}})
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 package main
@@ -405,15 +453,15 @@ func eventHandler(e *common.TopicEvent) common.SubscriptionResponseStatus {
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Demo
 
 Watch [this video for an overview on streaming subscriptions](https://youtu.be/57l-QDwgI-Y?t=841):
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/57l-QDwgI-Y?si=EJj3uo306vBUvl3Y&amp;start=841" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+{{< youtube id=57l-QDwgI-Y start=841 >}}
 
 ### Programmatic subscriptions
 
@@ -423,9 +471,9 @@ The dynamic programmatic approach returns the `routes` JSON structure within the
 
 In the example below, you define the values found in the [declarative YAML subscription](#declarative-subscriptions) above within the application code.
 
-{{< tabs ".NET" Java Python JavaScript Go>}}
+{{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 ```csharp
 [Topic("pubsub", "orders")]
@@ -456,9 +504,9 @@ app.UseEndpoints(endpoints =>
 });
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Java" %}}
 
 ```java
 private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -477,9 +525,9 @@ public Mono<Void> handleMessage(@RequestBody(required = false) CloudEvent<String
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Python" %}}
 
 ```python
 @app.route('/dapr/subscribe', methods=['GET'])
@@ -507,9 +555,9 @@ def ds_subscriber():
 app.run()
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 ```javascript
 const express = require('express')
@@ -545,9 +593,9 @@ app.post('/orders', (req, res) => {
 app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Go" %}}
 
 ```go
 package main
@@ -608,17 +656,17 @@ func main() {
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", appPort), router))
 }
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Next Steps
 
-* Try out the [pub/sub Quickstart]({{< ref pubsub-quickstart.md >}})
-* Follow: [How-To: Configure pub/sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
-* Learn more about [declarative and programmatic subscription methods]({{< ref subscription-methods >}}). 
-* Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
-* Learn about [message TTL]({{< ref pubsub-message-ttl.md >}})
-* Learn more about [pub/sub with and without CloudEvent]({{< ref pubsub-cloudevents.md >}})
-* List of [pub/sub components]({{< ref supported-pubsub.md >}})
-* Read the [pub/sub API reference]({{< ref pubsub_api.md >}})
+* Try out the [pub/sub Quickstart]({{% ref pubsub-quickstart %}})
+* Follow: [How-To: Configure pub/sub components with multiple namespaces]({{% ref pubsub-namespaces %}})
+* Learn more about [declarative and programmatic subscription methods]({{% ref subscription-methods %}}). 
+* Learn about [topic scoping]({{% ref pubsub-scopes %}})
+* Learn about [message TTL]({{% ref pubsub-message-ttl %}})
+* Learn more about [pub/sub with and without CloudEvent]({{% ref pubsub-cloudevents %}})
+* List of [pub/sub components]({{% ref supported-pubsub %}})
+* Read the [pub/sub API reference]({{% ref pubsub_api %}})

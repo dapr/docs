@@ -25,7 +25,7 @@ The actors API in Dapr sidecar will identify which hosts are registered for a gi
 
 This test uses invokes actors via Dapr's HTTP API directly.
 
-For more information see [actors overview]({{< ref actors-overview.md >}}).
+For more information see [actors overview]({{% ref actors-overview.md %}}).
 
 ### Kubernetes performance test setup
 
@@ -53,4 +53,4 @@ Test parameters:
 * No sidecar restarts
 
 ## Related links
-* For more information see [overview of Dapr on Kubernetes]({{< ref kubernetes-overview.md >}})
+* For more information see [overview of Dapr on Kubernetes]({{% ref kubernetes-overview.md %}})

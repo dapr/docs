@@ -10,7 +10,7 @@ description: Get started with the Dapr Workflow building block
 Redis is currently used as the state store component for Workflows in the Quickstarts. However, Redis does not support transaction rollbacks and should not be used in production as an actor state store.
 {{% /alert %}}
 
-Let's take a look at the Dapr [Workflow building block]({{< ref workflow-overview.md >}}). In this Quickstart, you'll create a simple console application to demonstrate Dapr's workflow programming model and the workflow management APIs.
+Let's take a look at the Dapr [Workflow building block]({{% ref workflow-overview.md %}}). In this Quickstart, you'll create a simple console application to demonstrate Dapr's workflow programming model and the workflow management APIs.
 
 In this guide, you'll:
 
@@ -36,10 +36,10 @@ The workflow also contains business logic:
 <img src="/images/workflow-quickstart-controlflow.png" width=800 style="padding-bottom:15px;">
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
-{{< tabs "Python" "JavaScript" ".NET" "Java" Go >}}
+{{< tabpane text=true >}}
 
  <!-- Python -->
-{{% codetab %}}
+{{% tab "Python" %}}
 
 The `order-processor` console app starts and manages the `order_processing_workflow`, which simulates purchasing items from a store. The workflow consists of five unique workflow activities, or tasks:
 
@@ -90,7 +90,7 @@ cd ..
 
 ### Step 3: Run the order processor app
 
-In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}). From the `python/sdk` directory, run the following command:
+In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{% ref multi-app-dapr-run %}}). From the `python/sdk` directory, run the following command:
 
 ```bash
 dapr run -f .
@@ -251,7 +251,6 @@ class WorkflowConsoleApp:
 if __name__ == '__main__':
     app = WorkflowConsoleApp()
     app.main()
-
 ```
 
 #### `order-processor/workflow.py`
@@ -275,7 +274,6 @@ store_name = "statestore"
 wfr = WorkflowRuntime()
 
 logging.basicConfig(level=logging.INFO)
-
 
 @wfr.workflow(name="order_processing_workflow")
 def order_processing_workflow(ctx: DaprWorkflowContext, order_payload_str: str):
@@ -343,7 +341,6 @@ def notify_activity(ctx: WorkflowActivityContext, input: Notification):
     logger = logging.getLogger('NotifyActivity')
     logger.info(input.message)
 
-
 @wfr.activity(name="process_payment_activity")
 def process_payment_activity(ctx: WorkflowActivityContext, input: PaymentRequest):
     """Defines Process Payment Activity.This is used by the workflow to process a payment"""
@@ -352,7 +349,6 @@ def process_payment_activity(ctx: WorkflowActivityContext, input: PaymentRequest
                 +f'{input.quantity}' +' ' +f'{input.item_being_purchased}'+' at '+f'{input.amount}'
                 +' USD')
     logger.info(f'Payment for request ID {input.request_id} processed successfully')
-
 
 @wfr.activity(name="verify_inventory_activity")
 def verify_inventory_activity(ctx: WorkflowActivityContext,
@@ -377,8 +373,6 @@ def verify_inventory_activity(ctx: WorkflowActivityContext,
         return InventoryResult(True, inventory_item)
     return InventoryResult(False, None)
 
-
-
 @wfr.activity(name="update_inventory_activity")
 def update_inventory_activity(ctx: WorkflowActivityContext,
                               input: PaymentRequest) -> InventoryResult:
@@ -401,8 +395,6 @@ def update_inventory_activity(ctx: WorkflowActivityContext,
         client.save_state(store_name, input.item_being_purchased, new_val)
         logger.info(f'There are now {new_quantity} {input.item_being_purchased} left in stock')
 
-
-
 @wfr.activity(name="request_approval_activity")
 def request_approval_activity(ctx: WorkflowActivityContext,
                              input: OrderPayload):
@@ -413,12 +405,11 @@ def request_approval_activity(ctx: WorkflowActivityContext,
 
     logger.info('Requesting approval for payment of '+f'{input["total_cost"]}'+' USD for '
                 +f'{input["quantity"]}' +' ' +f'{input["item_name"]}')
-
 ```
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- JavaScript -->
-{{% codetab %}}
+{{% tab "JavaScript" %}}
 
 The `order-processor` console app starts and manages the lifecycle of an order processing workflow that stores and retrieves data in a state store. The workflow consists of four workflow activities, or tasks:
 
@@ -462,7 +453,7 @@ npm run build
 
 ### Step 3: Run the order processor app
 
-In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}). From the `javascript/sdk` directory, run the following command:
+In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{% ref multi-app-dapr-run %}}). From the `javascript/sdk` directory, run the following command:
 
 ```bash
 dapr run -f .
@@ -792,10 +783,10 @@ export const orderProcessingWorkflow: TWorkflow = async function* (ctx: Workflow
 }
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- .NET -->
-{{% codetab %}}
+{{% tab ".NET" %}}
 
 The `order-processor` console app starts and manages the lifecycle of an order processing workflow that stores and retrieves data in a state store. The workflow consists of four workflow activities, or tasks:
 
@@ -847,7 +838,7 @@ cd ..
 
 ### Step 3: Run the order processor app
 
-In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}). From the `csharp/sdk` directory, run the following command:
+In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{% ref multi-app-dapr-run %}}). From the `csharp/sdk` directory, run the following command:
 
 ```bash
 dapr run -f .
@@ -1250,12 +1241,12 @@ The `Activities` directory holds the four workflow activities used by the workfl
 
 Watch [this video to walk through the Dapr Workflow .NET demo](https://youtu.be/BxiKpEmchgQ?t=2564):
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/BxiKpEmchgQ?start=2564" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{{< youtube id=BxiKpEmchgQ start=2564 >}}
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Java -->
-{{% codetab %}}
+{{% tab "Java" %}}
 
 The `order-processor` console app starts and manages the lifecycle of an order processing workflow that stores and retrieves data in a state store. The workflow consists of four workflow activities, or tasks:
 
@@ -1307,7 +1298,7 @@ cd ..
 
 ### Step 3: Run the order processor app
 
-In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}). From the `java/sdk` directory, run the following command:
+In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{% ref multi-app-dapr-run %}}). From the `java/sdk` directory, run the following command:
 
 ```bash
 cd workflows/java/sdk
@@ -1641,10 +1632,10 @@ The `Activities` directory holds the four workflow activities used by the workfl
 - [`ProcessPaymentActivity`](https://github.com/dapr/quickstarts/tree/master/workflows/java/sdk/order-processor/src/main/java/io/dapr/quickstarts/workflows/activities/ProcessPaymentActivity.java)
 - [`UpdateInventoryActivity`](https://github.com/dapr/quickstarts/tree/master/workflows/java/sdk/order-processor/src/main/java/io/dapr/quickstarts/workflows/activities/UpdateInventoryActivity.java)
 
-{{% /codetab %}}
+{{% /tab %}}
 
  <!-- Go -->
-{{% codetab %}}
+{{% tab "Go" %}}
 
 The `order-processor` console app starts and manages the `OrderProcessingWorkflow` workflow, which simulates purchasing items from a store. The workflow consists of five unique workflow activities, or tasks:
 
@@ -1682,7 +1673,7 @@ cd workflows/go/sdk
 
 ### Step 3: Run the order processor app
 
-In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}). From the `go/sdk` directory, run the following command:
+In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{% ref multi-app-dapr-run %}}). From the `go/sdk` directory, run the following command:
 
 ```bash
 dapr run -f .
@@ -2073,10 +2064,10 @@ func RequestApprovalActivity(ctx workflow.ActivityContext) (any, error) {
 
 ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Tell us what you think!
 
@@ -2086,8 +2077,8 @@ Join the discussion in our [discord channel](https://discord.com/channels/778680
 
 ## Next steps
 
-- Set up Dapr Workflow with any programming language using [HTTP instead of an SDK]({{< ref howto-manage-workflow.md >}})
+- Set up Dapr Workflow with any programming language using [HTTP instead of an SDK]({{% ref howto-manage-workflow.md %}})
 - Walk through a more in-depth [.NET SDK example workflow](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
-- Learn more about [Workflow as a Dapr building block]({{< ref workflow-overview >}})
+- Learn more about [Workflow as a Dapr building block]({{% ref workflow-overview %}})
 
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}

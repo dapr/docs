@@ -21,7 +21,7 @@ GET http://localhost:<daprPort>/v1.0/configuration/<storename>
 Parameter | Description
 --------- | -----------
 `daprPort` | The Dapr port
-`storename` | The `metadata.name` field component file. Refer to the [component spec]({{< ref component-schema.md>}})
+`storename` | The `metadata.name` field component file. Refer to the [component spec]({{% ref component-schema.md%}})
 
 #### Query Parameters
 
@@ -87,7 +87,7 @@ GET http://localhost:<daprPort>/v1.0/configuration/<storename>/subscribe
 Parameter | Description
 --------- | -----------
 `daprPort` | The Dapr port
-`storename` | The `metadata.name` field component file. Refer to the [component spec]({{< ref component-schema.md>}})
+`storename` | The `metadata.name` field component file. Refer to the [component spec]({{% ref component-schema.md%}})
 
 #### Query Parameters
 
@@ -153,7 +153,7 @@ GET http://localhost:<daprPort>/v1.0/configuration/<storename>/<subscription-id>
 Parameter | Description
 --------- | -----------
 `daprPort` | The Dapr port
-`storename` | The `metadata.name` field component file. Refer to the [component spec]({{< ref component-schema.md>}})
+`storename` | The `metadata.name` field component file. Refer to the [component spec]({{% ref component-schema.md%}})
 `subscription-id` | The value from the `id` field returned from the response of the subscribe endpoint
 
 #### Query Parameters
@@ -223,7 +223,7 @@ POST http://localhost:<appPort>/configuration/<store-name>/<key>
 Parameter | Description
 --------- | -----------
 `appPort` | The application port
-`storename` | The `metadata.name` field component file. Refer to the [component spec]({{< ref component-schema.md>}})
+`storename` | The `metadata.name` field component file. Refer to the [component spec]({{% ref component-schema.md%}})
 `key` | The key subscribed to
 
 #### Request Body
@@ -257,5 +257,5 @@ A list of configuration items for a given subscription id. Configuration items c
 
 ## Next Steps
 
-- [Configuration API overview]({{< ref configuration-api-overview.md >}})
-- [How-To: Manage configuration from a store]({{< ref howto-manage-configuration.md >}})
+- [Configuration API overview]({{% ref configuration-api-overview.md %}})
+- [How-To: Manage configuration from a store]({{% ref howto-manage-configuration.md %}})

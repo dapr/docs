@@ -16,7 +16,7 @@ When running in Kubernetes, if the `auth.secretStore` is empty, the Kubernetes s
 
 ### Supported secret stores
 
-Go to [this]({{< ref "howto-secrets.md" >}}) link to see all the secret stores supported by Dapr, along with information on how to configure and use them.
+Go to [this]({{% ref "howto-secrets.md" %}}) link to see all the secret stores supported by Dapr, along with information on how to configure and use them.
 
 ## Referencing secrets
 
@@ -60,7 +60,7 @@ auth:
   secretStore: <SECRET_STORE_NAME>
 ```
 
-`SECRET_STORE_NAME` is the name of the configured [secret store component]({{< ref supported-secret-stores >}}). When running in Kubernetes and using a Kubernetes secret store, the field `auth.SecretStore` defaults to `kubernetes` and can be left empty.
+`SECRET_STORE_NAME` is the name of the configured [secret store component]({{% ref supported-secret-stores %}}). When running in Kubernetes and using a Kubernetes secret store, the field `auth.SecretStore` defaults to `kubernetes` and can be left empty.
 
 The above component definition tells Dapr to extract a secret named `redis-secret` from the defined `secretStore` and assign the value associated with the `redis-password` key embedded in the secret to the `redisPassword` field in the component. One use of this case is when your code is constructing a connection string, for example putting together a URL, a secret, plus other information as necessary, into a string.
 
@@ -120,7 +120,7 @@ The following example shows you how to create a Kubernetes secret to hold the co
 
 ## Scoping access to secrets
 
-Dapr can restrict access to secrets in a secret store using its configuration. Read [How To: Use secret scoping]({{< ref "secrets-scopes.md" >}}) and  [How-To: Limit the secrets that can be read from secret stores]({{< ref "secret-scope.md" >}}) for more information. This is the recommended way to limit access to secrets using Dapr.
+Dapr can restrict access to secrets in a secret store using its configuration. Read [How To: Use secret scoping]({{% ref "secrets-scopes.md" %}}) and  [How-To: Limit the secrets that can be read from secret stores]({{% ref "secret-scope.md" %}}) for more information. This is the recommended way to limit access to secrets using Dapr.
 
 ## Kubernetes permissions
 
@@ -167,5 +167,5 @@ In production scenario to limit Dapr's access to certain secret resources alone,
 
 ## Related links
 
-- [Use secret scoping]({{< ref "secrets-scopes.md" >}})
-- [Limit the secrets that can be read from secret stores]({{< ref "secret-scope.md" >}})
+- [Use secret scoping]({{% ref "secrets-scopes.md" %}})
+- [Limit the secrets that can be read from secret stores]({{% ref "secret-scope.md" %}})

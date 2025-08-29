@@ -7,7 +7,7 @@ aliases:
 - /developing-applications/middleware/supported-middleware/middleware-routerchecker/
 ---
 
-The RouterChecker HTTP [middleware]({{< ref middleware.md >}}) component leverages regexp to check the validity of HTTP request routing to prevent invalid routers from entering the Dapr cluster. In turn, the RouterChecker component filters out bad requests and reduces noise in the telemetry and log data.
+The RouterChecker HTTP [middleware]({{% ref middleware.md %}}) component leverages regexp to check the validity of HTTP request routing to prevent invalid routers from entering the Dapr cluster. In turn, the RouterChecker component filters out bad requests and reduces noise in the telemetry and log data.
 
 ## Component format
 
@@ -50,7 +50,7 @@ FAIL /v1.0/invoke/demo.default/method/"$(curl
 
 ## Dapr configuration
 
-To be applied, the middleware must be referenced in [configuration]({{< ref configuration-concept.md >}}). See [middleware pipelines]({{< ref "middleware.md#customize-processing-pipeline">}}).
+To be applied, the middleware must be referenced in [configuration]({{% ref configuration-concept.md %}}). See [middleware pipelines]({{% ref "middleware.md#customize-processing-pipeline"%}}).
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -66,6 +66,6 @@ spec:
 
 ## Related links
 
-- [Middleware]({{< ref middleware.md >}})
-- [Configuration concept]({{< ref configuration-concept.md >}})
-- [Configuration overview]({{< ref configuration-overview.md >}})
+- [Middleware]({{% ref middleware.md %}})
+- [Configuration concept]({{% ref configuration-concept.md %}})
+- [Configuration overview]({{% ref configuration-overview.md %}})

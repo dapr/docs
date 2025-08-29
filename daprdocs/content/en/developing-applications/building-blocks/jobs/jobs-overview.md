@@ -11,10 +11,10 @@ Many applications require job scheduling, or the need to take an action in the f
 Not only does the jobs API help you with scheduling jobs, but internally, Dapr uses the Scheduler service to schedule actor reminders.
 
 Jobs in Dapr consist of:
-- [The jobs API building block]({{< ref jobs_api.md >}})
-- [The Scheduler control plane service]({{< ref "concepts/dapr-services/scheduler.md" >}})
+- [The jobs API building block]({{% ref jobs_api %}})
+- [The Scheduler control plane service]({{% ref "concepts/dapr-services/scheduler.md" %}})
 
-[See example scenarios.]({{< ref "#scenarios" >}})
+[See example scenarios.]({{% ref "#scenarios" %}})
 
 <img src="/images/scheduler/scheduler-architecture.png" alt="Diagram showing the Scheduler control plane service and the jobs API">
 
@@ -27,8 +27,8 @@ The jobs API is a job scheduler, not the executor which runs the job. The design
 All job details and user-associated data for scheduled jobs are stored in an embedded Etcd database in the Scheduler service. 
 You can use jobs to:
 
-- **Delay your [pub/sub messaging]({{< ref pubsub-overview.md >}}).** You can publish a message in a future specific time (for example: a week from today, or a specific UTC date/time).
-- **Schedule [service invocation]({{< ref service-invocation-overview.md >}}) method calls between applications.**
+- **Delay your [pub/sub messaging]({{% ref pubsub-overview %}}).** You can publish a message in a future specific time (for example: a week from today, or a specific UTC date/time).
+- **Schedule [service invocation]({{% ref service-invocation-overview %}}) method calls between applications.**
 
 ## Scenarios
 
@@ -63,10 +63,10 @@ The Scheduler service enables the scheduling of jobs to scale across multiple re
 
 ## Try out the jobs API
 
-You can try out the jobs API in your application. After [Dapr is installed]({{< ref install-dapr-cli.md >}}), you can begin using the jobs API, starting with [the How-to: Schedule jobs guide]({{< ref howto-schedule-and-handle-triggered-jobs.md >}}).
+You can try out the jobs API in your application. After [Dapr is installed]({{% ref install-dapr-cli %}}), you can begin using the jobs API, starting with [the How-to: Schedule jobs guide]({{% ref howto-schedule-and-handle-triggered-jobs %}}).
 
 ## Next steps
 
-- [Learn how to use the jobs API]({{< ref howto-schedule-and-handle-triggered-jobs.md >}})
-- [Learn more about the Scheduler control plane service]({{< ref "concepts/dapr-services/scheduler.md" >}})
-- [Jobs API reference]({{< ref jobs_api.md >}})
+- [Learn how to use the jobs API]({{% ref howto-schedule-and-handle-triggered-jobs %}})
+- [Learn more about the Scheduler control plane service]({{% ref "concepts/dapr-services/scheduler" %}})
+- [Jobs API reference]({{% ref jobs_api %}})
