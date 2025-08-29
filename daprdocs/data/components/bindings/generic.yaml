@@ -190,3 +190,11 @@
   features:
     input: false
     output: true
+- component: RocketMQ
+  link: rocketmq
+  state: Alpha
+  version: v1
+  since: "1.2"
+  features:
+    input: true
+    output: true
