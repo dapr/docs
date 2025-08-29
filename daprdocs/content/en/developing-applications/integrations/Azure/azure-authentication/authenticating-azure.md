@@ -208,7 +208,7 @@ spec:
     value: $CONTAINER_NAME
 ```
 
-The Dapr runtime will use these details to authenticate with Microsoft Entra ID, using the Dapr Sentry issued JWT token to exchange for an access token to access the Azure resource.
+The Dapr runtime uses these details to authenticate with Microsoft Entra ID, using the Dapr Sentry issued JWT token to exchange for an access token to access the Azure resource.
 
 #### Authenticating using Azure CLI credentials (development-only)
 
