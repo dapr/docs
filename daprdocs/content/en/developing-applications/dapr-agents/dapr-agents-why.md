@@ -6,7 +6,7 @@ weight: 30
 description: "Understanding the benefits and use cases for Dapr Agents"
 ---
 
-Dapr Agents is an open-source framework for building and orchestrating LLM-based autonomous agents that leverages Dapr's proven distributed systems foundation. Unlike other agentic frameworks that require developers to build infrastructure from scratch, Dapr Agents enables teams to focus on agent intelligence by providing enterprise-grade scalability, state management, and messaging capabilities out of the box. This approach eliminates the complexity of recreating distributed system fundamentals while delivering production-ready agentic workflows.RetryClaude can make mistakes. Please double-check responses.
+Dapr Agents is an open-source framework for building and orchestrating LLM-based autonomous agents that leverages Dapr's proven distributed systems foundation. Unlike other agentic frameworks that require developers to build infrastructure from scratch, Dapr Agents enables teams to focus on agent intelligence by providing enterprise-grade scalability, state management, and messaging capabilities out of the box. This approach eliminates the complexity of recreating distributed system fundamentals while delivering production-ready agentic workflows.
  
 ### Challenges with Existing Frameworks
 
@@ -61,7 +61,7 @@ Dapr Agents utilizes [Dapr's pluggable component framework]({{% ref components-c
 * **Seamless Transitions**: Develop locally with default configurations and deploy effortlessly to cloud environments by simply updating component definitions.
 
 {{% alert title="Note" color="info" %}}
-Developers can easily switch between different components (e.g., Redis to DynamoDB, OpenAI, Anthropic) based on their deployment environment, ensuring portability and adaptability.
+Developers can easily switch between different components (e.g., Redis to DynamoDB, OpenAI to Anthropic) based on their deployment environment, ensuring portability and adaptability.
 {{% /alert %}}
 
 ### Message-Driven Communication

@@ -86,6 +86,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | maxRetryBackoff       |    N     | Maximum backoff between each retry. Defaults to `2` seconds; `"-1"` disables backoff.                                                                                                                                                                                                                             | `3000000000`                                                    |
 | failover              |    N     | Enable failover configuration. Needs sentinelMasterName to be set. The redisHost should be the sentinel host address. See [Redis Sentinel Documentation](https://redis.io/docs/manual/sentinel/). Defaults to `"false"`                                                                              | `"true"`, `"false"`                                             |
 | sentinelMasterName    |    N     | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/manual/sentinel/)                                                                                                                                                                                                              | `"mymaster"`                                                    |
+| sentinelPassword      |    N     |  Password for Redis Sentinel. No Default. Applicable only when “failover” is true, and Redis Sentinel has authentication enabled | `""`, `"KeFg23!"`
 | redeliverInterval     |    N     | The interval between checking for pending messages for redelivery. Defaults to `"60s"`. `"0"` disables redelivery.                                                                                                                                                                                                | `"30s"`                                                         |
 | processingTimeout     |    N     | The amount of time a message must be pending before attempting to redeliver it. Defaults to `"15s"`. `"0"` disables redelivery.                                                                                                                                                                                   | `"30s"`                                                         |
 | redisType             |    N     | The type of redis. There are two valid values, one is `"node"` for single node mode, the other is `"cluster"` for redis cluster mode. Defaults to `"node"`.                                                                                                                                                       | `"cluster"`                                                     |
@@ -181,6 +182,19 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 
 {{< /tabpane >}}
 
+
+## Redis Sentinel behavior
+
+Use `redisType: "node"` when connecting to Redis Sentinel. Additionally, set `failover` to `"true"` and `sentinelMasterName` to the name of the master node.
+
+Failover characteristics:
+- Lock loss during failover: Locks may be lost during master failover if they weren't replicated to the promoted replica before the original master failed
+- Failover window: Brief server unavailability (typically seconds) during automatic master promotion  
+- Consistency: All operations route to the current master, maintaining lock consistency
+
+{{% alert title="Warning" color="warning" %}}
+Consider the trade-off of running Redis with high-availability and failover with the potential of lock loss during failover events. Your application should tolerate brief lock loss during failover scenarios.
+{{% /alert %}}
 
 ## Related links
 - [Basic schema for a Dapr component]({{% ref component-schema %}})
