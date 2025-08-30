@@ -1409,6 +1409,45 @@ func raiseEvent() {
 
 External events don't have to be directly triggered by humans. They can also be triggered by other systems. For example, a workflow may need to pause and wait for a payment to be received. In this case, a payment system might publish an event to a pub/sub topic on receipt of a payment, and a listener on that topic can raise an event to the workflow using the raise event workflow API.
 
+## Cross-app workflows
+
+The cross-app workflow pattern enables workflows to orchestrate activities and sub-workflows across multiple Dapr applications. This pattern is particularly useful in microservice architectures where different services host different workflow capabilities, allowing for distributed workflow execution while maintaining the benefits of Dapr's workflow engine.
+
+### Overview
+
+Cross-app workflows allow you to:
+- Call activities hosted in different Dapr applications from a workflow
+- Start sub-workflows in different Dapr applications
+- Create complex distributed workflow orchestrations across your microservice architecture
+
+This pattern is ideal for scenarios where:
+- Different teams own different workflow capabilities
+- You want to distribute workflow load across multiple applications
+- You need to integrate with existing services that have their own workflow logic
+
+**Cross-namespace calls not supported** - Cross-app workflows do not support cross-namespace calls. All applications must be in the same namespace.
+
+### Cross-app activity calls
+
+You can call activities that are hosted in different Dapr applications using the `callActivity` method with an `appId` parameter.
+
+```java
+  @Override
+  public WorkflowStub create() {
+    return ctx -> {
+    ...
+      // Call App2TransformActivity in app2
+      logger.info("Calling cross-app activity in 'app2'...");
+      String transformedByApp2 = ctx.callActivity(
+          App2TransformActivity.class.getName(), 
+          input,
+          new WorkflowTaskOptions("app2"), // cross-app appID, the appID where the activity is hosted
+          String.class
+      ).await();
+      ...
+      ctx.complete(transformedByApp2);
+```
+
 ## Next steps
 
 {{< button text="Workflow architecture >>" page="workflow-architecture.md" >}}

@@ -41,6 +41,12 @@ In addition to activities, you can write workflows to schedule other workflows a
 
 [Learn more about child workflows.]({{% ref "workflow-features-concepts.md#child-workflows" %}})
 
+### Cross-app workflows
+
+Dapr Workflows support cross-app orchestration, allowing you to call activities and start sub-workflows in different Dapr applications. This enables distributed workflow execution across your microservice architecture while maintaining the benefits of Dapr's workflow engine.
+
+[Learn more about cross-app workflows.]({{% ref "workflow-patterns.md#cross-app-workflows" %}})
+
 ### Timers and reminders
 
 Same as Dapr actors, you can schedule reminder-like durable delays for any time range.
