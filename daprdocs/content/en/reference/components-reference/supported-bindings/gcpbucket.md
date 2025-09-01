@@ -110,14 +110,14 @@ The metadata parameters are:
 ##### Save text to a random generated UUID file
 
 {{< tabpane text=true >}}
-  {{% tab %}}
+  {{% tab "Windows" %}}
   On Windows, utilize cmd prompt (PowerShell has different escaping mechanism)
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\" }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "create", "data": "Hello World" }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -130,14 +130,14 @@ The metadata parameters are:
 
 {{< tabpane text=true >}}
 
-  {{% tab %}}
+  {{% tab "Windows" %}}
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\", \"metadata\": { \"key\": \"my-test-file.txt\" } }" \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "create", "data": "Hello World", "metadata": { "key": "my-test-file.txt" } }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -155,13 +155,13 @@ Then you can upload it as you would normally:
 
 {{< tabpane text=true >}}
 
-  {{% tab %}}
+  {{% tab "Windows" %}}
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"(YOUR_FILE_CONTENTS)\", \"metadata\": { \"key\": \"my-test-file.jpg\" } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "create", "data": "$(cat my-test-file.jpg)", "metadata": { "key": "my-test-file.jpg" } }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -202,13 +202,13 @@ The metadata parameters are:
 
 {{< tabpane text=true >}}
 
-  {{% tab %}}
+  {{% tab "Windows" %}}
   ```bash
   curl -d '{ \"operation\": \"get\", \"metadata\": { \"key\": \"my-test-file.txt\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "get", "metadata": { "key": "my-test-file.txt" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -312,13 +312,13 @@ The metadata parameters are:
 
 {{< tabpane text=true >}}
 
-  {{% tab %}}
+  {{% tab "Windows" %}}
   ```bash
   curl -d '{ \"operation\": \"delete\", \"metadata\": { \"key\": \"my-test-file.txt\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "delete", "metadata": { "key": "my-test-file.txt" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
