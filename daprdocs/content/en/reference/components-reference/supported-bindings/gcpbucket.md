@@ -72,7 +72,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `client_x509_cert_url` | N | Output | If using explicit credentials, this field should contain the `client_x509_cert_url` field from the service account json | `https://www.googleapis.com/robot/v1/metadata/x509/<PROJECT_NAME>.iam.gserviceaccount.com`|
 | `decodeBase64` | N | Output | Configuration to decode base64 file content before saving to bucket storage. (In case of saving a file with binary content). `true` is the only allowed positive value. Other positive variations like `"True", "1"` are not acceptable. Defaults to `false` | `true`, `false` |
 | `encodeBase64` | N | Output | Configuration to encode base64 file content before return the content. (In case of opening a file with binary content). `true` is the only allowed positive value. Other positive variations like `"True", "1"` are not acceptable. Defaults to `false` | `true`, `false` |
-| `contentType` | N | Output | The MIME type to set for objects created in the bucket. If not specified, GCP will attempt to auto-detect the content type. | `"text/csv"`, `"application/json"`, `"image/png"` |
+| `contentType` | N | Output | The MIME type to set for objects created in the bucket. If not specified, GCP attempts to auto-detect the content type. | `"text/csv"`, `"application/json"`, `"image/png"` |
 
 ## GCP Credentials
 
