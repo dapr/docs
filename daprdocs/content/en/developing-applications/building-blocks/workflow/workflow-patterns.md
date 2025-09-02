@@ -624,7 +624,7 @@ await context.CallActivityAsync("PostResults", sum);
 
 {{< /tabpane >}}
 
-With the release of 1.16, it's even easier to process workflow activities in parallel while putting an upper cap on 
+With the release of 1.16, it's even easier to process workflow activities in parallel while putting an upper cap on
 concurrency by using the following extension methods on the `WorkflowContext`:
 
 {{< tabpane text=true >}}
@@ -1411,42 +1411,83 @@ External events don't have to be directly triggered by humans. They can also be 
 
 ## Cross-app workflows
 
-The cross-app workflow pattern enables workflows to orchestrate activities and sub-workflows across multiple Dapr applications. This pattern is particularly useful in microservice architectures where different services host different workflow capabilities, allowing for distributed workflow execution while maintaining the benefits of Dapr's workflow engine.
+The cross-app workflow pattern enables workflows to call activities or start suborchestrators hosted in different Dapr applications.
 
-### Overview
+{{% alert title="Important Limitations" color="warning" %}}
+- **Cross-namespace calls are not supported** - all applications must be in the **same namespace**
+- **Only activity calls are supported in Java SDK** - Cross-app workflow activity calls are currently only available in the Java SDK. Suborchestrator calls are not supported yet. Other SDKs (Python, .NET, JavaScript, Go) do not support any cross-app features at this time.
+{{% /alert %}}
 
-Cross-app workflows allow you to:
-- Call activities hosted in different Dapr applications from a workflow
-- Start sub-workflows in different Dapr applications
-- Create complex distributed workflow orchestrations across your microservice architecture
+This is how cross-app call activity looks like:
 
-This pattern is ideal for scenarios where:
-- Different teams own different workflow capabilities
-- You want to distribute workflow load across multiple applications
-- You need to integrate with existing services that have their own workflow logic
+<img src="/images/workflow-overview/workflow-crossapp-callactivity.png" width=800 alt="Diagram showing cross-app call activity workflow pattern">
 
-**Cross-namespace calls not supported** - Cross-app workflows do not support cross-namespace calls. All applications must be in the same namespace.
+This is how cross-app start suborchestrator looks like:
+
+<img src="/images/workflow-overview/workflow-crossapp-suborchestrator.png" width=800 alt="Diagram showing cross-app suborchestrator workflow pattern">
+
+### Use cases and scenarios
+
+Cross-app workflows are ideal for the following scenarios:
+
+#### Shared activity pools
+
+One of the main use cases is creating shared pools of workflow activities and suborchestrators that can be:
+- Called from multiple workflow orchestrators running in different applications
+- Scaled independently based on demand for different business functions
+- Owned and maintained by different teams
+- Specialized for specific business functions (e.g., payment processing, inventory management, notifications, etc.)
+
+<img src="/images/workflow-overview/workflow-crossapp-sharedpool.png" width=800 alt="Diagram showing cross-app shared pool workflow pattern">
+
+#### Team boundaries and microservice ownership
+Cross-app workflows enable different teams to own different parts of a larger business process:
+- **Team A** owns the orchestration logic
+- **Team B** owns payment activities
+- **Team C** owns inventory activities
+- **Team D** owns shipping activities
+
+Each team can deploy, scale, and maintain their workflows and activities independently while participating in larger orchestrated workflows.
+
+### Error handling
+
+When calling cross-app suborchestrators or activities:
+- If the target application does not exist, the call will be retried using the provided retry policy
+- If the target application exists but doesn't contain the specified activity or workflow, the call will return an error
+- Standard workflow retry policies apply to cross-app calls
 
 ### Cross-app activity calls
 
-You can call activities that are hosted in different Dapr applications using the `callActivity` method with an `appId` parameter.
+You can call activities hosted in different Dapr applications by providing the App ID when calling the activity.
+
+At the moment this is only supported in the Java SDK.
 
 ```java
+public class MyWorkflow implements Workflow {
   @Override
   public WorkflowStub create() {
     return ctx -> {
-    ...
-      // Call App2TransformActivity in app2
-      logger.info("Calling cross-app activity in 'app2'...");
-      String transformedByApp2 = ctx.callActivity(
-          App2TransformActivity.class.getName(), 
-          input,
-          new WorkflowTaskOptions("app2"), // cross-app appID, the appID where the activity is hosted
-          String.class
+      // Call an activity in a different application
+      String result = ctx.callActivity(
+          "ActivityName",                    // Activity name
+          "input data",                      // Input data
+          new WorkflowTaskOptions("appId"),  // Target application ID
+          String.class                       // Return type
       ).await();
-      ...
-      ctx.complete(transformedByApp2);
+      ctx.complete(result);
+    };
+  }
+}
+
 ```
+
+### Cross-app suborchestrator calls
+
+You can call suborchestrators hosted in different Dapr applications by providing the App ID when calling the suborchestrator.
+
+{{% alert title="Not Yet Supported" color="info" %}}
+Cross-app suborchestrator calls are not supported yet in any SDK. This functionality is planned for future releases.
+{{% /alert %}}
 
 ## Next steps
 
@@ -1457,7 +1498,7 @@ You can call activities that are hosted in different Dapr applications using the
 - [Try out Dapr Workflows using the quickstart]({{% ref workflow-quickstart.md %}})
 - [Workflow overview]({{% ref workflow-overview.md %}})
 - [Workflow API reference]({{% ref workflow_api.md %}})
-- Try out the following examples: 
+- Try out the following examples:
    - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
    - [JavaScript](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
    - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
