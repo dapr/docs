@@ -6,7 +6,7 @@ weight: 2000
 description: "Learn more about the Dapr Workflow features and concepts"
 ---
 
-Now that you've learned about the [workflow building block]({{% ref workflow-overview.md %}}) at a high level, let's deep dive into the features and concepts included with the Dapr Workflow engine and SDKs. Dapr Workflow exposes several core features and concepts which are common across all supported languages. 
+Now that you've learned about the [workflow building block]({{% ref workflow-overview.md %}}) at a high level, let's deep dive into the features and concepts included with the Dapr Workflow engine and SDKs. Dapr Workflow exposes several core features and concepts which are common across all supported languages.
 
 {{% alert title="Note" color="primary" %}}
 For more information on how workflow state is managed, see the [workflow architecture guide]({{% ref workflow-architecture.md %}}).
@@ -14,7 +14,9 @@ For more information on how workflow state is managed, see the [workflow archite
 
 ## Workflows
 
-Dapr Workflows are functions you write that define a series of tasks to be executed in a particular order. The Dapr Workflow engine takes care of scheduling and execution of the tasks, including managing failures and retries. If the app hosting your workflows is scaled out across multiple machines, the workflow engine may also load balance the execution of workflows and their tasks across multiple machines.
+Dapr Workflows are functions you write that define a series of tasks to be executed in a particular order.
+The Dapr Workflow engine takes care of scheduling and execution of the tasks, including managing failures and retries.
+If the app hosting your workflows is scaled out across multiple machines, the workflow engine load balances the execution of workflows and their tasks across multiple machines.
 
 There are several different kinds of tasks that a workflow can schedule, including
 - [Activities]({{% ref "workflow-features-concepts.md#workflow-activities" %}}) for executing custom logic
@@ -32,7 +34,7 @@ Only one workflow instance with a given ID can exist at any given time. However,
 
 Dapr Workflows maintain their execution state by using a technique known as [event sourcing](https://learn.microsoft.com/azure/architecture/patterns/event-sourcing). Instead of storing the current state of a workflow as a snapshot, the workflow engine manages an append-only log of history events that describe the various steps that a workflow has taken. When using the workflow SDK, these history events are stored automatically whenever the workflow "awaits" for the result of a scheduled task.
 
-When a workflow "awaits" a scheduled task, it unloads itself from memory until the task completes. Once the task completes, the workflow engine schedules the workflow function to run again. This second workflow function execution is known as a _replay_. 
+When a workflow "awaits" a scheduled task, it unloads itself from memory until the task completes. Once the task completes, the workflow engine schedules the workflow function to run again. This second workflow function execution is known as a _replay_.
 
 When a workflow function is replayed, it runs again from the beginning. However, when it encounters a task that already completed, instead of scheduling that task again, the workflow engine:
 
@@ -57,16 +59,16 @@ As discussed in the [workflow replay]({{% ref "#workflow-replay" %}}) section, w
 
 You can use the following two techniques to write workflows that may need to schedule extreme numbers of tasks:
 
-1. **Use the _continue-as-new_ API**:  
+1. **Use the _continue-as-new_ API**:
     Each workflow SDK exposes a _continue-as-new_ API that workflows can invoke to restart themselves with a new input and history. The _continue-as-new_ API is especially ideal for implementing "eternal workflows", like monitoring agents, which would otherwise be implemented using a `while (true)`-like construct. Using _continue-as-new_ is a great way to keep the workflow history size small.
-   
+
     > The _continue-as-new_ API truncates the existing history, replacing it with a new history.
 
-1. **Use child workflows**:  
+1. **Use child workflows**:
     Each workflow SDK exposes an API for creating child workflows. A child workflow behaves like any other workflow, except that it's scheduled by a parent workflow. Child workflows have:
-    - Their own history 
-    - The benefit of distributing workflow function execution across multiple machines. 
-    
+    - Their own history
+    - The benefit of distributing workflow function execution across multiple machines.
+
     If a workflow needs to schedule thousands of tasks or more, it's recommended that those tasks be distributed across child workflows so that no single workflow's history size grows too large.
 
 ### Updating workflow code
@@ -145,18 +147,6 @@ Workflows can also wait for multiple external event signals of the same name, in
 
 Learn more about [external system interaction.]({{% ref "workflow-patterns.md#external-system-interaction" %}})
 
-## Workflow backend
-
-Dapr Workflow relies on the Durable Task Framework for Go (a.k.a. [durabletask-go](https://github.com/dapr/durabletask-go)) as the core engine for executing workflows. This engine is designed to support multiple backend implementations. For example, the [durabletask-go](https://github.com/dapr/durabletask-go) repo includes a SQLite implementation and the Dapr repo includes an Actors implementation. 
-
-By default, Dapr Workflow supports the Actors backend, which is stable and scalable. However, you can choose a different backend supported in Dapr Workflow. For example, [SQLite](https://github.com/dapr/durabletask-go/tree/main/backend/sqlite)(TBD future release) could be an option for backend for local development and testing.
-
-The backend implementation is largely decoupled from the workflow core engine or the programming model that you see. The backend primarily impacts:
-- How workflow state is stored 
-- How workflow execution is coordinated across replicas
-
-In that sense, it's similar to Dapr's state store abstraction, except designed specifically for workflow. All APIs and programming model features are the same, regardless of which backend is used.
-
 ## Purging
 
 Workflow state can be purged from a state store, purging all its history and removing all metadata related to a specific workflow instance. The purge capability is used for workflows that have run to a `COMPLETED`, `FAILED`, or `TERMINATED` state. 
@@ -165,11 +155,11 @@ Learn more in [the workflow API reference guide]({{% ref workflow_api.md %}}).
 
 ## Limitations
 
-### Workflow determinism and code restraints 
+### Workflow determinism and code restraints
 
 To take advantage of the workflow replay technique, your workflow code needs to be deterministic. For your workflow code to be deterministic, you may need to work around some limitations.
 
-#### Workflow functions must call deterministic APIs. 
+#### Workflow functions must call deterministic APIs.
 APIs that generate random numbers, random UUIDs, or the current date are _non-deterministic_. To work around this limitation, you can:
  - Use these APIs in activity functions, or 
  - (Preferred) Use built-in equivalent APIs offered by the SDK. For example, each authoring SDK provides an API for retrieving the current time in a deterministic manner.  
@@ -269,9 +259,9 @@ const currentTime = ctx.CurrentUTCDateTime()
 {{< /tabpane >}}
 
 
-#### Workflow functions must only interact _indirectly_ with external state. 
-External data includes any data that isn't stored in the workflow state. Workflows must not interact with global variables, environment variables, the file system, or make network calls. 
-    
+#### Workflow functions must only interact _indirectly_ with external state.
+External data includes any data that isn't stored in the workflow state. Workflows must not interact with global variables, environment variables, the file system, or make network calls.
+
 Instead, workflows should interact with external state _indirectly_ using workflow inputs, activity tasks, and through external event handling.
 
 For example, instead of this:
@@ -377,11 +367,11 @@ err := ctx.CallActivity(MakeHttpCallActivity, workflow.ActivityInput("https://ex
 {{< /tabpane >}}
 
 
-#### Workflow functions must execute only on the workflow dispatch thread.  
+#### Workflow functions must execute only on the workflow dispatch thread.
 The implementation of each language SDK requires that all workflow function operations operate on the same thread (goroutine, etc.) that the function was scheduled on. Workflow functions must never:
 - Schedule background threads, or
-- Use APIs that schedule a callback function to run on another thread. 
-    
+- Use APIs that schedule a callback function to run on another thread.
+
 Failure to follow this rule could result in undefined behavior. Any background processing should instead be delegated to activity tasks, which can be scheduled to run serially or concurrently.
 
 For example, instead of this:
@@ -478,18 +468,17 @@ task.Await(nil)
 
 Make sure updates you make to the workflow code maintain its determinism. A couple examples of code updates that can break workflow determinism:
 
-- **Changing workflow function signatures**:  
-   Changing the name, input, or output of a workflow or activity function is considered a breaking change and must be avoided.  
+- **Changing workflow function signatures**:
+   Changing the name, input, or output of a workflow or activity function is considered a breaking change and must be avoided.
 
-- **Changing the number or order of workflow tasks**:   
+- **Changing the number or order of workflow tasks**:
    Changing the number or order of workflow tasks causes a workflow instance's history to no longer match the code and may result in runtime errors or other unexpected behavior.
 
 To work around these constraints:
 
-- Instead of updating existing workflow code, leave the existing workflow code as-is and create new workflow definitions that include the updates. 
-- Upstream code that creates workflows should only be updated to create instances of the new workflows. 
+- Instead of updating existing workflow code, leave the existing workflow code as-is and create new workflow definitions that include the updates.
+- Upstream code that creates workflows should only be updated to create instances of the new workflows.
 - Leave the old code around to ensure that existing workflow instances can continue to run without interruption. If and when it's known that all instances of the old workflow logic have completed, then the old workflow code can be safely deleted.
-
 
 ## Next steps
 

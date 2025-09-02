@@ -86,14 +86,14 @@ To perform a create blob operation, invoke the Azure Blob Storage binding with a
 ##### Save text to a random generated UUID blob
 
 {{< tabpane text=true >}}
-  {{% tab %}}
+  {{% tab "Windows" %}}
   On Windows, utilize cmd prompt (PowerShell has different escaping mechanism)
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\" }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "create", "data": "Hello World" }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -106,14 +106,14 @@ To perform a create blob operation, invoke the Azure Blob Storage binding with a
 
 {{< tabpane text=true >}}
 
-  {{% tab %}}
+  {{% tab "Windows" %}}
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\", \"metadata\": { \"blobName\": \"my-test-file.txt\" } }" \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "create", "data": "Hello World", "metadata": { "blobName": "my-test-file.txt" } }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -150,13 +150,13 @@ Then you can upload it as you would normally:
 
 {{< tabpane text=true >}}
 
-  {{% tab %}}
+  {{% tab "Windows" %}}
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"YOUR_BASE_64_CONTENT\", \"metadata\": { \"blobName\": \"my-test-file.jpg\" } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "create", "data": "YOUR_BASE_64_CONTENT", "metadata": { "blobName": "my-test-file.jpg" } }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -199,13 +199,13 @@ The metadata parameters are:
 
 {{< tabpane text=true >}}
 
-  {{% tab %}}
+  {{% tab "Windows" %}}
   ```bash
   curl -d '{ \"operation\": \"get\", \"metadata\": { \"blobName\": \"myblob\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "get", "metadata": { "blobName": "myblob" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -247,13 +247,13 @@ The metadata parameters are:
 
 {{< tabpane text=true >}}
 
-  {{% tab %}}
+  {{% tab "Windows" %}}
   ```bash
   curl -d '{ \"operation\": \"delete\", \"metadata\": { \"blobName\": \"myblob\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "delete", "metadata": { "blobName": "myblob" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -266,13 +266,13 @@ The metadata parameters are:
 
 {{< tabpane text=true >}}
 
-  {{% tab %}}
+  {{% tab "Windows" %}}
   ```bash
   curl -d '{ \"operation\": \"delete\", \"metadata\": { \"blobName\": \"myblob\", \"deleteSnapshots\": \"only\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "delete", "metadata": { "blobName": "myblob", "deleteSnapshots": "only" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -285,13 +285,13 @@ The metadata parameters are:
 
 {{< tabpane text=true >}}
 
-  {{% tab %}}
+  {{% tab "Windows" %}}
   ```bash
   curl -d '{ \"operation\": \"delete\", \"metadata\": { \"blobName\": \"myblob\", \"deleteSnapshots\": \"include\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "delete", "metadata": { "blobName": "myblob", "deleteSnapshots": "include" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
