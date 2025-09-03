@@ -45,5 +45,5 @@ The longhaul test environment is redeployed every 7 days (Fridays at 08:00 UTC).
 
 The test infrastructure is sourced from this [GitHub repository](https://github.com/dapr/test-infra).
 
-It is a mixture of Bicep IaaC templates and Helm charts to deploy the test applications and Dapr.
+It is a mixture of Bicep IaC templates and Helm charts to deploy the test applications and Dapr.
 
