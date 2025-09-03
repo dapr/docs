@@ -6,14 +6,15 @@ weight: 1000
 description: "Overview of Dapr Workflow"
 ---
 
-Dapr workflow makes it easy for developers to write business logic and integrations in a reliable way. Since Dapr workflows are stateful, they support long-running and fault-tolerant applications, ideal for orchestrating microservices. Dapr workflow works seamlessly with other Dapr building blocks, such as service invocation, pub/sub, state management, and bindings.
+Dapr workflow makes it easy for developers to write business logic and integrations in a reliable way.
+Since Dapr workflows are stateful, they support long-running and fault-tolerant applications, ideal for orchestrating microservices.
+Dapr workflow works seamlessly with other Dapr building blocks, such as service invocation, pub/sub, state management, and bindings.
 
 The durable, resilient Dapr Workflow capability:
 
 - Offers a built-in workflow runtime for driving Dapr Workflow execution.
 - Provides SDKs for authoring workflows in code, using any language.
 - Provides HTTP and gRPC APIs for managing workflows (start, query, pause/resume, raise event, terminate, purge).
-- Integrates with any other workflow runtime via workflow components.
 
 <img src="/images/workflow-overview/workflow-overview.png" width=800 alt="Diagram showing basics of Dapr Workflow">
 
@@ -28,16 +29,20 @@ Some example scenarios that Dapr Workflow can perform are:
 
 ### Workflows and activities
 
-With Dapr Workflow, you can write activities and then orchestrate those activities in a workflow. Workflow activities are:
+With Dapr Workflow, you can write activities and then orchestrate those activities in a workflow.
+Workflow activities are:
 
 - The basic unit of work in a workflow
 - Used for calling other (Dapr) services, interacting with state stores, and pub/sub brokers.
+- Used for calling external third party services.
 
 [Learn more about workflow activities.]({{% ref "workflow-features-concepts.md##workflow-activities" %}})
 
 ### Child workflows
 
-In addition to activities, you can write workflows to schedule other workflows as child workflows. A child workflow has its own instance ID, history, and status that is independent of the parent workflow that started it, except for the fact that terminating the parent workflow terminates all of the child workflows created by it. Child workflow also supports automatic retry policies.
+In addition to activities, you can write workflows to schedule other workflows as child workflows.
+A child workflow has its own instance ID, history, and status that is independent of the parent workflow that started it, except for the fact that terminating the parent workflow terminates all of the child workflows created by it.
+Child workflow also supports automatic retry policies.
 
 [Learn more about child workflows.]({{% ref "workflow-features-concepts.md#child-workflows" %}})
 
@@ -49,7 +54,8 @@ Same as Dapr actors, you can schedule reminder-like durable delays for any time 
 
 ### Workflow HTTP calls to manage a workflow
 
-When you create an application with workflow code and run it with Dapr, you can call specific workflows that reside in the application. Each individual workflow can be:
+When you create an application with workflow code and run it with Dapr, you can call specific workflows that reside in the application.
+Each individual workflow can be:
 
 - Started or terminated through a POST request
 - Triggered to deliver a named event through a POST request
@@ -61,13 +67,15 @@ When you create an application with workflow code and run it with Dapr, you can 
 
 ## Workflow patterns
 
-Dapr Workflow simplifies complex, stateful coordination requirements in microservice architectures. The following sections describe several application patterns that can benefit from Dapr Workflow. 
+Dapr Workflow simplifies complex, stateful coordination requirements in microservice architectures.
+The following sections describe several application patterns that can benefit from Dapr Workflow.
 
 Learn more about [different types of workflow patterns]({{% ref workflow-patterns.md %}})
 
 ## Workflow SDKs
 
-The Dapr Workflow _authoring SDKs_ are language-specific SDKs that contain types and functions to implement workflow logic. The workflow logic lives in your application and is orchestrated by the Dapr Workflow engine running in the Dapr sidecar via a gRPC stream.
+The Dapr Workflow _authoring SDKs_ are language-specific SDKs that contain types and functions to implement workflow logic.
+The workflow logic lives in your application and is orchestrated by the Dapr Workflow engine running in the Dapr sidecar via a gRPC stream.
 
 ### Supported SDKs
 
