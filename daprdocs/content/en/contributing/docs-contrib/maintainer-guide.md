@@ -103,24 +103,22 @@ These steps will prepare the latest release branch for archival.
    git checkout -b release_v1.0
    ```
 
-1. In VS Code, navigate to `/daprdocs/config.toml`.
-1. Add the following TOML to the `# Versioning` section (around line 154):
+1. In VS Code, navigate to `hugo.yaml` located in the root.
+1. Add the following configuration to the `# Versioning` section (around line 121 and onwards):
 
-   ```toml
-   version_menu = "v1.0"
-   version = "v1.0"
-   archived_version = true
-   url_latest_version = "https://docs.dapr.io"
+   ```yaml
+   version_menu: "v1.0"
+   version: "v1.0"
+   archived_version: true
+   url_latest_version: "https://docs.dapr.io"
 
-   [[params.versions]]
-     version = "v1.2 (preview)"
-     url = "v1-2.docs.dapr.io"
-   [[params.versions]]
-     version = "v1.1 (latest)"
-     url = "#"
-   [[params.versions]]
-     version = "v1.0"
-     url = "https://v1-0.docs.dapr.io"
+   versions:
+    - version: v1.2 (preview)
+      url: https://v1-2.docs.dapr.io
+    - version: v1.1 (latest)
+      url: "#"
+    - version: v1.0
+      url: https://v1-0.docs.dapr.io
    ```
 
 1. Delete `.github/workflows/website-root.yml`.
@@ -146,26 +144,25 @@ These steps will prepare the upcoming release branch for promotion to latest rel
    git checkout -b release_v1.1
    ```
 
-1. In VS Code, navigate to `/daprdocs/config.toml`.
-1. Update line 1 to `baseURL - https://docs.dapr.io/`.
-1. Update the `# Versioning` section (around line 154) to display the correct versions and tags:
+1. In VS Code, navigate to `hugo.yaml` located in the root.
+1. Update line 1 to `baseURL: https://docs.dapr.io/`.
+1. Update the `# Versioning` section (around line 121 and onwards) to display the correct versions and tags:
 
-   ```toml
+   ```yaml
    # Versioning
-   version_menu = "v1.1 (latest)"
-   version = "v1.1"
-   archived_version = false
-   url_latest_version = "https://docs.dapr.io"
+   version_menu: "v1.1 (latest)"
+   version: "v1.1"
+   archived_version: false
+   url_latest_version: https://docs.dapr.io
+   github_branch: v1.1
 
-   [[params.versions]]
-     version = "v1.2 (preview)"
-     url = "v1-2.docs.dapr.io"
-   [[params.versions]]
-     version = "v1.1 (latest)"
-     url = "#"
-   [[params.versions]]
-     version = "v1.0"
-     url = "https://v1-0.docs.dapr.io"
+   versions:
+    - version: v1.2 (preview)
+      url: https://v1-2.docs.dapr.io
+    - version: v1.1 (latest)
+      url: "#"
+    - version: v1.0
+      url: https://v1-0.docs.dapr.io
    ```
 
 1. Navigate to `.github/workflows/website-root.yml`. 
