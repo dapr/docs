@@ -124,7 +124,7 @@ All Dapr pub/sub components support the at-least-once guarantee.
 
 Dapr automatically retries failed subscription startups to improve reliability during deployment scenarios. This ensures your pub/sub applications remain resilient even when facing temporary connectivity or permission issues.
 
-When Dapr encounters errors starting subscriptions, it will show an error message in the logs and continue to try to start the subscription.
+When Dapr encounters errors starting subscriptions, it shows an error message in the logs and continues to try to start the subscription.
 
 ### Consumer groups and competing consumers pattern
 
