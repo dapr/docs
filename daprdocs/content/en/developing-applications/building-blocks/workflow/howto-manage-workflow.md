@@ -381,8 +381,13 @@ Learn more about these HTTP calls in the [workflow API reference guide]({{% ref 
 
 {{< /tabpane >}}
 
-
 ## Next steps
+
+Now that you've learned how to manage workflows, learn how to execute workflows across multiple applications
+
+{{< button text="Multi Application Workflows>>" page="workflow-multi-app.md" >}}
+
+## Related links
 - [Try out the Workflow quickstart]({{% ref workflow-quickstart.md %}})
 - Try out the full SDK examples:
   - [Python example](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py)

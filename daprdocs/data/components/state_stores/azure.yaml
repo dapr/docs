@@ -8,7 +8,7 @@
     transactions: false
     etag: true
     ttl: false
-    query: false
+    workflow: false
 - component: Azure Cosmos DB
   link: setup-azure-cosmosdb
   state: Stable
@@ -19,7 +19,7 @@
     transactions: true
     etag: true
     ttl: true
-    query: true
+    workflow: false
 - component: Microsoft SQL Server
   link: setup-sqlserver
   state: Stable
@@ -30,7 +30,7 @@
     transactions: true
     etag: true
     ttl: true
-    query: false
+    workflow: false
 - component: Azure Table Storage
   link: setup-azure-tablestorage
   state: Stable
@@ -41,4 +41,4 @@
     transactions: false
     etag: true
     ttl: false
-    query: false
+    workflow: false

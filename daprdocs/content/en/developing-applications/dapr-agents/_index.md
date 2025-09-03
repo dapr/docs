@@ -3,7 +3,7 @@ type: docs
 title: "Dapr Agents"
 linkTitle: "Dapr Agents"
 weight: 25
-description: "A framework for building production-grade resilient AI agent systems at scale"
+description: "A framework for building durable and resilient AI agent systems at scale"
 ---
 
 ###  What is Dapr Agents?
