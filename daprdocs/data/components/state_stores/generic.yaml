@@ -8,7 +8,7 @@
     transactions: false
     etag: true
     ttl: false
-    query: false
+    workflow: false
 - component: Apache Cassandra
   link: setup-cassandra
   state: Stable
@@ -19,7 +19,7 @@
     transactions: false
     etag: false
     ttl: true
-    query: false
+    workflow: false
 - component: CockroachDB
   link: setup-cockroachdb
   state: Stable
@@ -30,7 +30,7 @@
     transactions: true
     etag: true
     ttl: true
-    query: true
+    workflow: false
 - component: Couchbase
   link: setup-couchbase
   state: Alpha
@@ -41,7 +41,7 @@
     transactions: false
     etag: true
     ttl: false
-    query: false
+    workflow: false
 - component: etcd
   link: setup-etcd
   state: Beta
@@ -52,7 +52,7 @@
     transactions: true
     etag: true
     ttl: true
-    query: false
+    workflow: false
 - component: Hashicorp Consul
   link: setup-consul
   state: Alpha
@@ -63,7 +63,7 @@
     transactions: false
     etag: false
     ttl: false
-    query: false
+    workflow: false
 - component: Hazelcast
   link: setup-hazelcast
   state: Alpha
@@ -74,7 +74,7 @@
     transactions: false
     etag: false
     ttl: false
-    query: false
+    workflow: false
 - component: In-memory
   link: setup-inmemory
   state: Stable
@@ -85,7 +85,7 @@
     transactions: true
     etag: true
     ttl: true
-    query: false
+    workflow: true
 - component: JetStream KV
   link: setup-jetstream-kv
   state: Alpha
@@ -96,7 +96,7 @@
     transactions: false
     etag: false
     ttl: false
-    query: false
+    workflow: false
 - component: Memcached
   link: setup-memcached
   state: Stable
@@ -107,7 +107,7 @@
     transactions: false
     etag: false
     ttl: true
-    query: false
+    workflow: false
 - component: MongoDB
   link: setup-mongodb
   state: Stable
@@ -118,7 +118,7 @@
     transactions: true
     etag: true
     ttl: true
-    query: true
+    workflow: true
 - component: MySQL & MariaDB
   link: setup-mysql
   state: Stable
@@ -129,7 +129,7 @@
     transactions: true
     etag: true
     ttl: true
-    query: false
+    workflow: true
 - component: Oracle Database
   link: setup-oracledatabase
   state: Beta
@@ -140,7 +140,7 @@
     transactions: true
     etag: true
     ttl: true
-    query: false
+    workflow: false
 - component: PostgreSQL v1
   link: setup-postgresql-v1
   state: Stable
@@ -151,7 +151,7 @@
     transactions: true
     etag: true
     ttl: true
-    query: true
+    workflow: true
 - component: PostgreSQL v2
   link: setup-postgresql-v2
   state: Stable
@@ -162,7 +162,7 @@
     transactions: true
     etag: true
     ttl: true
-    query: false
+    workflow: true
 - component: Redis
   link: setup-redis
   state: Stable
@@ -173,7 +173,7 @@
     transactions: true
     etag: true
     ttl: true
-    query: true
+    workflow: true
 - component: RethinkDB
   link: setup-rethinkdb
   state: Beta
@@ -184,7 +184,7 @@
     transactions: false
     etag: false
     ttl: false
-    query: false
+    workflow: false
 - component: SQLite
   link: setup-sqlite
   state: Stable
@@ -195,7 +195,7 @@
     transactions: true
     etag: true
     ttl: true
-    query: false
+    workflow: false
 - component: Zookeeper
   link: setup-zookeeper
   state: Alpha
@@ -206,4 +206,4 @@
     transactions: false
     etag: true
     ttl: false
-    query: false
+    workflow: false
