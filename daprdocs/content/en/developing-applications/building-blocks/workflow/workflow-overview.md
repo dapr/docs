@@ -48,7 +48,7 @@ Child workflow also supports automatic retry policies.
 
 ### Cross-app workflows
 
-Dapr Workflows support cross-app orchestration, allowing you to call activities and start sub-workflows in different Dapr applications. This enables distributed workflow execution across your microservice architecture while maintaining the benefits of Dapr's workflow engine.
+Dapr Workflows support cross-app orchestration, allowing you to call activities and start child workflows in different Dapr applications. This enables distributed workflow execution across your microservice architecture while maintaining the benefits of Dapr's workflow engine.
 
 [Learn more about cross-app workflows.]({{% ref "workflow-patterns.md#cross-app-workflows" %}})
 

@@ -1387,20 +1387,20 @@ External events don't have to be directly triggered by humans. They can also be 
 
 ## Cross-app workflows
 
-The cross-app workflow pattern enables workflows to call activities or start suborchestrators hosted in different Dapr applications.
+The cross-app workflow pattern enables workflows to call activities or start child workflows hosted in different Dapr applications.
 
 {{% alert title="Important Limitations" color="warning" %}}
 - **Cross-namespace calls are not supported** - all applications must be in the **same namespace**
-- **Only activity calls are supported in Java SDK** - Cross-app workflow activity calls are currently only available in the Java SDK. Suborchestrator calls are not supported yet. Other SDKs (Python, .NET, JavaScript, Go) do not support any cross-app features at this time.
+- **Only activity calls are supported in Java SDK** - Cross-app workflow activity calls are currently only available in the Java SDK. Child workflow calls are not supported yet. Other SDKs (Python, .NET, JavaScript, Go) do not support any cross-app features at this time.
 {{% /alert %}}
 
 This is how cross-app call activity looks like:
 
 <img src="/images/workflow-overview/workflow-crossapp-callactivity.png" width=800 alt="Diagram showing cross-app call activity workflow pattern">
 
-This is how cross-app start suborchestrator looks like:
+This is how cross-app start child workflow looks like:
 
-<img src="/images/workflow-overview/workflow-crossapp-suborchestrator.png" width=800 alt="Diagram showing cross-app suborchestrator workflow pattern">
+<img src="/images/workflow-overview/workflow-crossapp-suborchestrator.png" width=800 alt="Diagram showing cross-app child workflow pattern">
 
 ### Use cases and scenarios
 
@@ -1408,7 +1408,7 @@ Cross-app workflows are ideal for the following scenarios:
 
 #### Shared activity pools
 
-One of the main use cases is creating shared pools of workflow activities and suborchestrators that can be:
+One of the main use cases is creating shared pools of workflow activities and child workflows that can be:
 - Called from multiple workflow orchestrators running in different applications
 - Scaled independently based on demand for different business functions
 - Owned and maintained by different teams
@@ -1423,11 +1423,11 @@ Cross-app workflows enable different teams to own different parts of a larger bu
 - **Team C** owns inventory activities
 - **Team D** owns shipping activities
 
-Each team can deploy, scale, and maintain their workflows and activities independently while participating in larger orchestrated workflows.
+Each team can deploy, scale, and maintain their applications containing workflows and activities independently while participating in larger orchestrated workflows.
 
 ### Error handling
 
-When calling cross-app suborchestrators or activities:
+When calling cross-app activities or child workflows:
 - If the target application does not exist, the call will be retried using the provided retry policy
 - If the target application exists but doesn't contain the specified activity or workflow, the call will return an error
 - Standard workflow retry policies apply to cross-app calls
@@ -1457,14 +1457,13 @@ public class MyWorkflow implements Workflow {
 
 ```
 
-### Cross-app suborchestrator calls
+### Cross-app child workflow calls
 
-You can call suborchestrators hosted in different Dapr applications by providing the App ID when calling the suborchestrator.
+You can call child workflows hosted in different Dapr applications by providing the App ID when calling the child workflow.
 
 {{% alert title="Not Yet Supported" color="info" %}}
-Cross-app suborchestrator calls are not supported yet in any SDK. This functionality is planned for future releases.
+Cross-app child workflow calls are not supported yet in any SDK. This functionality is planned for future releases.
 {{% /alert %}}
-
 
 ## Compensation
 
@@ -1509,33 +1508,33 @@ The following diagram illustrates this flow.
 
 ```java
 public class PaymentProcessingWorkflow implements Workflow {
-    
+
     @Override
     public WorkflowStub create() {
         return ctx -> {
             ctx.getLogger().info("Starting Workflow: " + ctx.getName());
             var orderId = ctx.getInput(String.class);
             List<String> compensations = new ArrayList<>();
-            
+
             try {
                 // Step 1: Reserve inventory
                 String reservationId = ctx.callActivity(ReserveInventoryActivity.class.getName(), orderId, String.class).await();
                 ctx.getLogger().info("Inventory reserved: {}", reservationId);
                 compensations.add("ReleaseInventory");
-                
+
                 // Step 2: Process payment
                 String paymentId = ctx.callActivity(ProcessPaymentActivity.class.getName(), orderId, String.class).await();
                 ctx.getLogger().info("Payment processed: {}", paymentId);
                 compensations.add("RefundPayment");
-                
+
                 // Step 3: Ship order
                 String shipmentId = ctx.callActivity(ShipOrderActivity.class.getName(), orderId, String.class).await();
                 ctx.getLogger().info("Order shipped: {}", shipmentId);
                 compensations.add("CancelShipment");
-                
+
             } catch (TaskFailedException e) {
                 ctx.getLogger().error("Activity failed: {}", e.getMessage());
-                
+
                 // Execute compensations in reverse order
                 Collections.reverse(compensations);
                 for (String compensation : compensations) {
@@ -1543,24 +1542,24 @@ public class PaymentProcessingWorkflow implements Workflow {
                         switch (compensation) {
                             case "CancelShipment":
                                 String shipmentCancelResult = ctx.callActivity(
-                                    CancelShipmentActivity.class.getName(), 
-                                    orderId, 
+                                    CancelShipmentActivity.class.getName(),
+                                    orderId,
                                     String.class).await();
                                 ctx.getLogger().info("Shipment cancellation completed: {}", shipmentCancelResult);
                                 break;
-                                
+
                             case "RefundPayment":
                                 String refundResult = ctx.callActivity(
-                                    RefundPaymentActivity.class.getName(), 
-                                    orderId, 
+                                    RefundPaymentActivity.class.getName(),
+                                    orderId,
                                     String.class).await();
                                 ctx.getLogger().info("Payment refund completed: {}", refundResult);
                                 break;
-                                
+
                             case "ReleaseInventory":
                                 String releaseResult = ctx.callActivity(
-                                    ReleaseInventoryActivity.class.getName(), 
-                                    orderId, 
+                                    ReleaseInventoryActivity.class.getName(),
+                                    orderId,
                                     String.class).await();
                                 ctx.getLogger().info("Inventory release completed: {}", releaseResult);
                                 break;
@@ -1575,7 +1574,7 @@ public class PaymentProcessingWorkflow implements Workflow {
 			// Step 4: Send confirmation
 			ctx.callActivity(SendConfirmationActivity.class.getName(), orderId, Void.class).await();
             ctx.getLogger().info("Confirmation sent for order: {}", orderId);
-                
+
             ctx.complete("Order processed successfully: " + orderId);
         };
     }
