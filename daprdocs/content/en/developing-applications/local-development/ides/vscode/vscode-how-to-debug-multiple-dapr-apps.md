@@ -11,7 +11,6 @@ aliases:
 {{% alert title="Deprecation notice" color="primary" %}}
 The extension was previously supported by Microsoft, but is now deprecated. The extension will remain available in the Visual Studio Code marketplace, but it will no longer receive updates or support.
 
-Alternative solutions are being considered to provide similar functionality for Dapr users. Please stay tuned for future announcements regarding these alternatives.
 {{% /alert %}}
 
 ## Manual debugging
