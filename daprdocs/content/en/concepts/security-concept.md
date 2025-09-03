@@ -40,9 +40,6 @@ While App IDs uniquely identify applications, namespaces provide an additional l
 - Namespaces allow operators to deploy Dapr applications in logically separated groups.
 - Two applications can have the same App ID in different namespaces without conflicting because security, routing, and discovery are namespace-aware.
 
-For instance, a service in the production namespace cannot call a service with the same App ID in the staging namespace unless explicitly configured to do so.
-By combining App IDs with namespaces, Dapr provides fine-grained identity and access control, ensuring secure communication between microservices while simplifying configuration and scaling.
-
 ## Service invocation scoping access policy
 
 Dapr applications can be scoped to namespaces for deployment and security. You can call between services deployed to different namespaces. Read the [Service invocation across namespaces]({{% ref "service-invocation-namespaces" %}}) article for more details.
