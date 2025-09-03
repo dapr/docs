@@ -103,7 +103,7 @@ Read more about the importance and usage of these parameters in the [Azure OpenA
 #### Examples
 
 {{< tabpane text=true >}}
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "data": {"deploymentId: "my-model" , "prompt": "A dog is ", "maxTokens":15}, "operation": "completion" }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -176,7 +176,7 @@ Each message is of the form:
 
 {{< tabpane text=true >}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
 curl -d '{
     "data": {
