@@ -47,6 +47,8 @@ spec:
     value: "<bool>"
   - name: encodeBase64
     value: "<bool>"
+  - name: contentType
+    value: "<string>"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -70,6 +72,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `client_x509_cert_url` | N | Output | If using explicit credentials, this field should contain the `client_x509_cert_url` field from the service account json | `https://www.googleapis.com/robot/v1/metadata/x509/<PROJECT_NAME>.iam.gserviceaccount.com`|
 | `decodeBase64` | N | Output | Configuration to decode base64 file content before saving to bucket storage. (In case of saving a file with binary content). `true` is the only allowed positive value. Other positive variations like `"True", "1"` are not acceptable. Defaults to `false` | `true`, `false` |
 | `encodeBase64` | N | Output | Configuration to encode base64 file content before return the content. (In case of opening a file with binary content). `true` is the only allowed positive value. Other positive variations like `"True", "1"` are not acceptable. Defaults to `false` | `true`, `false` |
+| `contentType` | N | Output | The MIME type to set for objects created in the bucket. If not specified, GCP attempts to auto-detect the content type. | `"text/csv"`, `"application/json"`, `"image/png"` |
 
 ## GCP Credentials
 
@@ -105,6 +108,7 @@ To perform a create operation, invoke the GCP Storage Bucket binding with a `POS
 The metadata parameters are:
 - `key` - (optional) the name of the object
 - `decodeBase64` - (optional) configuration to decode base64 file content before saving to storage
+- `contentType` - (optional) the MIME type of the object being created
 
 #### Examples
 ##### Save text to a random generated UUID file
@@ -146,6 +150,25 @@ The metadata parameters are:
 
 {{< /tabpane >}}
 
+##### Save a CSV file with correct content type
+
+{{< tabpane text=true >}}
+
+  {{% tab %}}
+  ```bash
+  curl -d "{ \"operation\": \"create\", \"data\": \"$(cat data.csv | base64)\", \"metadata\": { \"key\": \"data.csv\", \"contentType\": \"text/csv\", \"decodeBase64\": \"true\" } }" \
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
+
+  {{% tab %}}
+  ```bash
+  curl -d '{ "operation": "create", "data": "'"$(base64 < data.csv)"'", "metadata": { "key": "data.csv", "contentType": "text/csv", "decodeBase64": "true" } }' \
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
+
+{{< /tabpane >}}
 
 ##### Upload a file
 
@@ -157,18 +180,19 @@ Then you can upload it as you would normally:
 
   {{% tab "Windows" %}}
   ```bash
-  curl -d "{ \"operation\": \"create\", \"data\": \"(YOUR_FILE_CONTENTS)\", \"metadata\": { \"key\": \"my-test-file.jpg\" } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  curl -d "{ \"operation\": \"create\", \"data\": \"(YOUR_FILE_CONTENTS)\", \"metadata\": { \"key\": \"my-test-file.jpg\", \"contentType\": \"image/jpeg\" } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
   {{% tab "Linux" %}}
   ```bash
-  curl -d '{ "operation": "create", "data": "$(cat my-test-file.jpg)", "metadata": { "key": "my-test-file.jpg" } }' \
+  curl -d '{ "operation": "create", "data": "$(cat my-test-file.jpg | base64)", "metadata": { "key": "my-test-file.jpg", "contentType": "image/jpeg", "decodeBase64": "true" } }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
 {{< /tabpane >}}
+
 #### Response
 
 The response body will contain the following JSON:
@@ -401,13 +425,15 @@ To perform a copy object operation, invoke the GCP bucket binding with a `POST` 
 {
   "operation": "copy",
   "metadata": {
-    "destinationBucket": "destination-bucket-name",
+    "key": "source-file.txt",
+    "destinationBucket": "destination-bucket-name"
   }
 }
 ```
 
 The metadata parameters are:
 
+- `key` - the name of the source object (required)
 - `destinationBucket` - the name of the destination bucket (required)
 
 ### Move objects
@@ -418,13 +444,15 @@ To perform a move object operation, invoke the GCP bucket binding with a `POST` 
 {
   "operation": "move",
   "metadata": {
-    "destinationBucket": "destination-bucket-name",
+    "key": "source-file.txt",
+    "destinationBucket": "destination-bucket-name"
   }
 }
 ```
 
 The metadata parameters are:
 
+- `key` - the name of the source object (required)
 - `destinationBucket` - the name of the destination bucket (required)
 
 ### Rename objects
@@ -435,13 +463,15 @@ To perform a rename object operation, invoke the GCP bucket binding with a `POST
 {
   "operation": "rename",
   "metadata": {
-    "newName": "object-new-name",
+    "key": "old-name.txt",
+    "newName": "new-name.txt"
   }
 }
 ```
 
 The metadata parameters are:
 
+- `key` - the current name of the object (required)
 - `newName` - the new name of the object (required)
 
 ## Related links
