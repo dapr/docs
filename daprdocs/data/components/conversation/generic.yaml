@@ -33,3 +33,8 @@
   state: Alpha
   version: v1
   since: "1.16"
+- component: Local echo
+  link: local-echo
+  state: Stable
+  version: v1
+  since: "1.15"
