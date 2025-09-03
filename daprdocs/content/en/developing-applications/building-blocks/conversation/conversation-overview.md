@@ -59,7 +59,7 @@ Want to put the Dapr conversation API to the test? Walk through the following qu
 
 | Quickstart/tutorial | Description |
 | ------------------- | ----------- |
-| [Conversation quickstart]({{% ref conversation-quickstart %}}) | Learn how to  interact with Large Language Models (LLMs) using the conversation API. |
+| [Conversation quickstart]({{% ref conversation-quickstart %}}) | Learn how to interact with Large Language Models (LLMs) using the conversation API. |
 
 ### Start using the conversation API directly in your app
 

@@ -73,14 +73,14 @@ To perform a create operation, invoke the Huawei OBS binding with a `POST` metho
 ##### Save text to a random generated UUID file
 
 {{< tabpane text=true >}}
-  {{% tab %}}
+  {{% tab "Windows" %}}
   On Windows, utilize cmd prompt (PowerShell has different escaping mechanism)
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\" }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "create", "data": "Hello World" }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -93,14 +93,14 @@ To perform a create operation, invoke the Huawei OBS binding with a `POST` metho
 
 {{< tabpane text=true >}}
 
-  {{% tab %}}
+  {{% tab "Windows" %}}
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\", \"metadata\": { \"key\": \"my-test-file.txt\" } }" \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "create", "data": "Hello World", "metadata": { "key": "my-test-file.txt" } }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -135,14 +135,14 @@ To upload a binary file (for example, _.jpg_, _.zip_), invoke the Huawei OBS bin
 
 {{< tabpane text=true >}}
 
-  {{% tab %}}
+  {{% tab "Windows" %}}
   ```bash
   curl -d "{ \"operation\": \"upload\", \"data\": { \"sourceFile\": \".\my-test-file.jpg\" }, \"metadata\": { \"key\": \"my-test-file.jpg\" } }" \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "upload", "data": { "sourceFile": "./my-test-file.jpg" }, "metadata": { "key": "my-test-file.jpg" } }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -176,13 +176,13 @@ The metadata parameters are:
 
 {{< tabpane text=true >}}
 
-  {{% tab %}}
+  {{% tab "Windows" %}}
   ```bash
   curl -d '{ \"operation\": \"get\", \"metadata\": { \"key\": \"my-test-file.txt\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "get", "metadata": { "key": "my-test-file.txt" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -220,13 +220,13 @@ The metadata parameters are:
 
 {{< tabpane text=true >}}
 
-  {{% tab %}}
+  {{% tab "Windows" %}}
   ```bash
   curl -d '{ \"operation\": \"delete\", \"metadata\": { \"key\": \"my-test-file.txt\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "delete", "metadata": { "key": "my-test-file.txt" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -267,13 +267,13 @@ The data parameters are:
 
 {{< tabpane text=true >}}
 
-  {{% tab %}}
+  {{% tab "Windows" %}}
   ```bash
   curl -d '{ \"operation\": \"list\", \"data\": { \"maxResults\": 5, \"prefix\": \"dapr-\", \"marker\": \"obstest\", \"delimiter\": \"jpg\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "list", "data": { "maxResults": 5, "prefix": "dapr-", "marker": "obstest", "delimiter": "jpg" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>

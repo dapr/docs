@@ -112,8 +112,6 @@ The code examples below leverage Dapr SDKs to invoke the output bindings endpoin
 
 Here's an example of using a console app with top-level statements in .NET 6+:
 
-Here's an example of using a console app with top-level statements in .NET 6+:
-
 ```csharp
 using System.Text;
 using System.Threading.Tasks;

@@ -150,7 +150,7 @@
   features:
     input: false
     output: true
-- component: Twilio
+- component: Twilio SMS
   link: twilio
   state: Alpha
   version: v1
@@ -158,7 +158,7 @@
   features:
     input: false
     output: true
-- component: SendGrid
+- component: Twillio SendGrid
   link: sendgrid
   state: Alpha
   version: v1
@@ -189,4 +189,20 @@
   since: "1.11"
   features:
     input: false
+    output: true
+- component: Apache Dubbo
+  link: dubbo
+  state: Alpha
+  version: v1
+  since: "1.7"
+  features:
+    input: false
+    output: true
+- component: RocketMQ
+  link: rocketmq
+  state: Alpha
+  version: v1
+  since: "1.2"
+  features:
+    input: true
     output: true

@@ -59,14 +59,14 @@ To perform a create file operation, invoke the Local Storage binding with a `POS
 ##### Save text to a random generated UUID file
 
 {{< tabpane text=true >}}
-  {{% tab %}}
+  {{% tab "Windows" %}}
   On Windows, utilize cmd prompt (PowerShell has different escaping mechanism)
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\" }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "create", "data": "Hello World" }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -79,14 +79,14 @@ To perform a create file operation, invoke the Local Storage binding with a `POS
 
 {{< tabpane text=true >}}
 
-  {{% tab %}}
+  {{% tab "Windows" %}}
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\", \"metadata\": { \"fileName\": \"my-test-file.txt\" } }" \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "create", "data": "Hello World", "metadata": { "fileName": "my-test-file.txt" } }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -102,13 +102,13 @@ To upload a file, encode it as Base64. The binding should automatically detect t
 
 {{< tabpane text=true >}}
 
-  {{% tab %}}
+  {{% tab "Windows" %}}
   ```bash
   curl -d "{ \"operation\": \"create\", \"data\": \"YOUR_BASE_64_CONTENT\", \"metadata\": { \"fileName\": \"my-test-file.jpg\" } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "create", "data": "YOUR_BASE_64_CONTENT", "metadata": { "fileName": "my-test-file.jpg" } }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -145,13 +145,13 @@ To perform a get file operation, invoke the Local Storage binding with a `POST` 
 
 {{< tabpane text=true >}}
 
-  {{% tab %}}
+  {{% tab "Windows" %}}
   ```bash
   curl -d '{ \"operation\": \"get\", \"metadata\": { \"fileName\": \"myfile\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "get", "metadata": { "fileName": "myfile" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -189,13 +189,13 @@ If you only want to list the files beneath a particular directory below the `roo
 
 {{< tabpane text=true >}}
 
-  {{% tab %}}
+  {{% tab "Windows" %}}
   ```bash
   curl -d '{ \"operation\": \"list\", \"metadata\": { \"fileName\": \"my/cool/directory\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "list", "metadata": { "fileName": "my/cool/directory" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
@@ -225,13 +225,13 @@ To perform a delete file operation, invoke the Local Storage binding with a `POS
 
 {{< tabpane text=true >}}
 
-  {{% tab %}}
+  {{% tab "Windows" %}}
   ```bash
   curl -d '{ \"operation\": \"delete\", \"metadata\": { \"fileName\": \"myfile\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
-  {{% tab %}}
+  {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "delete", "metadata": { "fileName": "myfile" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>

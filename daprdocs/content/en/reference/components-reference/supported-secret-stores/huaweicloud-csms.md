@@ -22,7 +22,7 @@ spec:
   metadata:
   - name: region
     value: "[huaweicloud_region]"
-  - name: accessKey 
+  - name: accessKey
     value: "[huaweicloud_access_key]"
   - name: secretAccessKey
     value: "[huaweicloud_secret_access_key]"

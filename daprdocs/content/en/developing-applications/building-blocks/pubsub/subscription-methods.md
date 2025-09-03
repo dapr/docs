@@ -199,8 +199,6 @@ Messages are pulled by the application from Dapr. This means no endpoint is need
 Any number of pubsubs and topics can be subscribed to at once.
 As messages are sent to the given message handler code, there is no concept of routes or bulk subscriptions.
 
-> **Note:** Only a single pubsub/topic pair per application may be subscribed at a time.
-
 The example below shows the different ways to stream subscribe to a topic.
 
 {{< tabpane text=true >}}

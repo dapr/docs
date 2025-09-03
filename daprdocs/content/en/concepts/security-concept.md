@@ -21,6 +21,25 @@ Dapr provides end-to-end security with the service invocation API, with the abil
 
 <img src="/images/security-end-to-end-communication.png" width=1000>
 
+## Application Identity
+
+In Dapr, Application Identity is built around the concept of an App ID.
+The App ID is the single atomic unit of identity in Dapr:
+
+- Every Dapr-enabled application has an App ID. Multiple replicas of the application share the same App ID.
+- All routing, service discovery, security policies, and access control in Dapr are derived from this App ID.
+- Service-to-service communication in Dapr uses the App ID instead of relying on IP addresses or hostnames, enabling stable and portable addressing across environments.
+
+For example, when one service calls another using Dapr's service invocation API, it calls the target by its App ID rather than its network location.
+This abstraction ensures that security policies, mutual TLS (mTLS) certificates, and access controls consistently apply at the application identity level.
+
+## Namespaces and Scoping
+
+While App IDs uniquely identify applications, namespaces provide an additional layer of scoping and isolation, especially in multi-tenant or large environments.
+
+- Namespaces allow operators to deploy Dapr applications in logically separated groups.
+- Two applications can have the same App ID in different namespaces without conflicting because security, routing, and discovery are namespace-aware.
+
 ## Service invocation scoping access policy
 
 Dapr applications can be scoped to namespaces for deployment and security. You can call between services deployed to different namespaces. Read the [Service invocation across namespaces]({{% ref "service-invocation-namespaces" %}}) article for more details.
