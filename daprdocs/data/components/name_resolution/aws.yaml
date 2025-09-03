@@ -1,0 +1,5 @@
+- component: CloudMap
+  link: nr-awscloudmap
+  state: Alpha
+  version: v1
+  since: "1.16"

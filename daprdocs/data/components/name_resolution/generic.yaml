@@ -8,3 +8,8 @@
   state: Alpha
   version: v1
   since: "1.13"
+- component: NameFormat
+  link: nr-nameformat
+  state: Alpha
+  version: v1
+  since: "1.16"

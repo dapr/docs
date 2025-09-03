@@ -1,0 +1,8 @@
+- component: AliCloud TableStore
+  link: setup-alicloud-tablestore
+  state: Alpha
+  version: v1
+  since: "1.3"
+  features:
+    crud: true
+    etag: true
