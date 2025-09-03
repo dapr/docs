@@ -64,7 +64,7 @@ def step3(ctx, activity_input):
 
 def error_handler(ctx, error):
     print(f'Executing error handler: {error}.')
-    # Do some compensating work
+    # Apply some compensating work
 ```
 
 > **Note** Workflow retry policies will be available in a future version of the Python SDK.
@@ -139,6 +139,7 @@ async function start() {
 start().catch((e) => {
   console.error(e);
   process.exit(1);
+ # Apply custom compensation logic
 });
 ```
 
