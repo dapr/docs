@@ -9,38 +9,41 @@ aliases:
 weight: 10000
 ---
 
-Most Azure components for Dapr support authenticating with Microsoft Entra ID. Thanks to this:
-
-- Administrators can leverage all the benefits of fine-tuned permissions with Azure Role-Based Access Control (RBAC).
-- Applications running on Azure services such as Azure Container Apps, Azure Kubernetes Service, Azure VMs, or any other Azure platform services can leverage [Managed Identities (MI)](https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview) and [Workload Identity](https://learn.microsoft.com/azure/aks/workload-identity-overview). These offer the ability to authenticate your applications without having to manage sensitive credentials.
-
 ## About authentication with Microsoft Entra ID
 
-Microsoft Entra ID is Azure's identity and access management (IAM) solution, which is used to authenticate and authorize users and services.
+Microsoft Entra ID is Azure's identity and access management (IAM) solution, which is used to authenticate and authorize users and services. It's built on top of open standards such OAuth 2.0, which allows services (applications) to obtain access tokens to make requests to Azure services, including Azure Storage, Azure Service Bus, Azure Key Vault, Azure Cosmos DB, Azure Database for Postgres, Azure SQL, etc.
 
-Microsoft Entra ID is built on top of open standards such OAuth 2.0, which allows services (applications) to obtain access tokens to make requests to Azure services, including Azure Storage, Azure Service Bus, Azure Key Vault, Azure Cosmos DB, Azure Database for Postgres, Azure SQL, etc. 
+## Options to authenticate
 
-> In Azure terminology, an application is also called a "Service Principal".
+Applications can authenticate with Microsoft Entra ID and obtain an access token to make requests to Azure services through several methods:
 
-Some Azure components offer alternative authentication methods, such as systems based on "shared keys" or "access tokens". Although these are valid and supported by Dapr, you should authenticate your Dapr components using Microsoft Entra ID whenever possible to take advantage of many benefits, including:
+ - [Workload identity federation]({{< ref howto-wif.md >}}) - The recommended way to configure your Microsoft Entra ID tenant to trust an external identity provider.  This includes service accounts from Kubernetes or AKS clusters. [Learn more about workload identity federation](https://learn.microsoft.com/entra/workload-id/workload-identities-overview).
+ - [System and user assigned managed identities]({{< ref howto-mi.md >}}) - Less granular than workload identity federation, but retains some of the benefits.  [Learn more about system and user assigned managed identities](https://learn.microsoft.com/azure/aks/use-managed-identity).
+ - [Client ID and secret]({{ < ref howto-aad.md >}}) - Not recommended as it requires you to maintian and associate credentials at the application level.
+ - Pod Identities - [Deprecated approach for authenticating applications running on Kubernetes pods](https://learn.microsoft.com/azure/aks/use-azure-ad-pod-identity) at a pod level.  This should no longer be used.
 
-- [Managed Identities and Workload Identity](#managed-identities-and-workload-identity)
-- [Role-Based Access Control](#role-based-access-control)
-- [Auditing](#auditing)
-- [(Optional) Authentication using certificates](#optional-authentication-using-certificates)
+If you are just getting started, it is recommended to use workload identity federation.
 
-### Managed Identities and Workload Identity
+## Managed identities and workload identity federation
 
-With Managed Identities (MI), your application can authenticate with Microsoft Entra ID and obtain an access token to make requests to Azure services. When your application is running on a supported Azure service (such as Azure VMs, Azure Container Apps, Azure Web Apps, etc), an identity for your application can be assigned at the infrastructure level.
+When your application is running on a supported Azure service (such as Azure VMs, Azure Container Apps, Azure Web Apps, etc), an identity for your application can be assigned at the infrastructure level.
 
-Once using MI, your code doesn't have to deal with credentials, which:
+This is done through [system or user assigned managed identities]({{< ref howto-mi.md >}}), or [workload identity federation]({{< ref howto-wif.md >}}).
+
+Once using managed identities, your code doesn't have to deal with credentials, which:
 
 - Removes the challenge of managing credentials safely
 - Allows greater separation of concerns between development and operations teams
 - Reduces the number of people with access to credentials
 - Simplifies operational aspects–especially when multiple environments are used
 
-Applications running on Azure Kubernetes Service can similarly leverage [Workload Identity](https://learn.microsoft.com/azure/aks/workload-identity-overview) to automatically provide an identity to individual pods.
+While some Dapr Azure components offer alternative authentication methods, such as systems based on "shared keys" or "access tokens", you should always try to authenticate your Dapr components using Microsoft Entra ID whenever possible. This offers many benefits, including:
+
+- [Role-Based Access Control](#role-based-access-control)
+- [Auditing](#auditing)
+- [(Optional) Authentication using certificates](#optional-authentication-using-certificates)
+
+It's recommended that applications running on Azure Kubernetes Service leverage [workload identity federation](https://learn.microsoft.com/entra/workload-id/workload-identity-federation) to automatically provide an identity to individual pods.
 
 ### Role-Based Access Control
 
