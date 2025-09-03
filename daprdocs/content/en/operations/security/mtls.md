@@ -232,7 +232,7 @@ kubectl rollout restart -n <DAPR_NAMESPACE> deployment/dapr-sentry
 kubectl rollout restart deploy/dapr-operator -n <DAPR_NAMESPACE>
 kubectl rollout restart statefulsets/dapr-placement-server -n <DAPR_NAMESPACE>
 kubectl rollout restart deploy/dapr-sidecar-injector -n <DAPR_NAMESPACE>
-kubectl rollout restart deploy/dapr-scheduler-server -n <DAPR_NAMESPACE>
+kubectl rollout restart statefulsets/dapr-scheduler-server -n <DAPR_NAMESPACE>
 ```
 
 4. Restart your Dapr applications to pick up the latest trust bundle.
