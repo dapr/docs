@@ -199,7 +199,7 @@ Let's go over each of the security capabilities and describe how they are protec
 8. The data in the Redis state store is encrypted at rest and can only be read using the correctly configured Dapr Redis state store component.
 
 ## Run as non-root
-When running in Kubernetes, Dapr services will ensure each process is running as non-root.
+When running in Kubernetes, Dapr services ensure each process is running as non-root.
 This is done by checking the UID & GID of the process is `65532`, and fatal erroring if it is not what is expected.
 If you must run a non-default UID & GID in Kubernetes, set the following env var to skip this check.
 

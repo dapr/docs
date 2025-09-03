@@ -344,7 +344,7 @@ By default, the Dapr sidecar injector injects a sidecar without any `seccompProf
 Refer to [the Arguments and Annotations overview]({{% ref "arguments-annotations-overview.md" %}}) to set the appropriate `seccompProfile` on the sidecar container.
 
 ## Run as non-root
-When running in Kubernetes, Dapr services will ensure each process is running as non-root.
+When running in Kubernetes, Dapr services ensure each process is running as non-root.
 This is done by checking the UID & GID of the process is `65532`, and fatal erroring if it is not what is expected.
 If you must run a non-default UID & GID in Kubernetes, set the following env var to skip this check.
 
