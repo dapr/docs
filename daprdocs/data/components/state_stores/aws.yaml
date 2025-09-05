@@ -8,4 +8,4 @@
     transactions: true
     etag: true
     ttl: true
-    query: false
+    workflow: false

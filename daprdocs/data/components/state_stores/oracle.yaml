@@ -9,6 +9,7 @@
     etag: true
     ttl: true
     query: false
+    workflow: false
 - component: Coherence
   link: setup-coherence
   state: Alpha
@@ -30,4 +31,4 @@
     transactions: false
     etag: true
     ttl: true
-    query: false
+    workflow: false
