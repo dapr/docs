@@ -6,6 +6,11 @@ weight: 30000
 description:  "How to setup a containerized development environment with Dapr"
 ---
 
+{{% alert title="Deprecation notice" color="primary" %}}
+The extension was previously supported by Microsoft, but is now deprecated. The extension will remain available in the Visual Studio Code marketplace, but it will no longer receive updates or support.
+
+{{% /alert %}}
+
 The Visual Studio Code [Dev Containers extension](https://code.visualstudio.com/docs/remote/containers) lets you use a self-contained Docker container as a complete development environment, without installing any additional packages, libraries, or utilities in your local filesystem.
 
 Dapr has pre-built Dev Containers for C# and JavaScript/TypeScript; you can pick the one of your choice for a ready made environment. Note these pre-built containers automatically update to the latest Dapr release.

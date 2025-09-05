@@ -8,7 +8,6 @@ description: "Define secret scopes by augmenting the existing configuration reso
 ---
 
 In addition to [scoping which applications can access a given component]({{% ref "component-scopes.md"%}}), you can also scope a named secret store component to one or more secrets for an application. By defining `allowedSecrets` and/or `deniedSecrets` lists, you restrict applications to access only specific secrets.
-In addition to [scoping which applications can access a given component]({{% ref "component-scopes.md"%}}), you can also scope a named secret store component to one or more secrets for an application. By defining `allowedSecrets` and/or `deniedSecrets` lists, you restrict applications to access only specific secrets.
 
 For more information about configuring a Configuration resource:
 - [Configuration overview]({{% ref configuration-overview.md %}})
