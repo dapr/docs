@@ -8,6 +8,11 @@ aliases:
   - /developing-applications/ides/vscode/vscode-manual-configuration/
 ---
 
+{{% alert title="Deprecation notice" color="primary" %}}
+The extension was previously supported by Microsoft, but is now deprecated. The extension will remain available in the Visual Studio Code marketplace, but it will no longer receive updates or support.
+
+{{% /alert %}}
+
 ## Manual debugging
 
 When developing Dapr applications, you typically use the Dapr CLI to start your daprized service similar to this:

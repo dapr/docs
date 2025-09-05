@@ -123,6 +123,24 @@ spec:
         key: tls.key
 ```
 
+### Server-Sent Events
+
+SSE enables real-time communication with streaming servers and MCP servers.
+HTTP endpoints support [Server-Sent Events (SSE)](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events).
+To use SSE, set the `Accept` header to `text/event-stream` in the `HTTPEndpoint` resource or in the service invocation request.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: HTTPEndpoint
+metadata:
+  name: "mcp-server"
+spec:
+  baseUrl: https://my-mcp-server:443
+  headers:
+  - name: "Accept"
+    value: "test/event-stream"
+```
+
 ## Related Links
 
 - [HTTPEndpoint reference]({{% ref httpendpoints-schema %}})
