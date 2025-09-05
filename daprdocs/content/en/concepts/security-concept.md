@@ -153,6 +153,12 @@ With Dapr OAuth 2.0 middleware, you can enable OAuth authorization on Dapr endpo
 
 You can adopt common network security technologies, such as network security groups (NSGs), demilitarized zones (DMZs), and firewalls, to provide layers of protection over your networked resources. For example, unless configured to talk to an external binding target, Dapr sidecars don’t open connections to the internet and most binding implementations only use outbound connections. You can design your firewall rules to allow outbound connections only through designated ports.
 
+## Run as non-root in Kubernetes
+When running in Kubernetes, Dapr services ensure each process is running as non-root. This is done by checking the UID & GID of the process is `65532`, and fatal erroring if it is not what is expected. If you must run a non-default UID & GID in Kubernetes, set the following env var to skip this check.
+```bash
+DAPR_UNSAFE_SKIP_CONTAINER_UID_GID_CHECK="true"
+```
+
 # Security policies
 
 Dapr has an extensive set of security policies you can apply to your applications. You can scope what they are able to do, either through a policy setting in the sidecar configuration, or with the component specification. 
@@ -216,15 +222,6 @@ Let's go over each of the security capabilities and describe how they are protec
 6. A secrets security policy set in configuration restricts which secrets Service B can access. In this case, Service B can only read the secret needed to connect to the Redis state store component, and no others.
 7. Service B is deployed to namespace "B", which further isolates it from other services. Even if the service invocation API was enabled on it, it could not be called accidentally by being in the same namespace as Service A. Service B must explicitly set the Redis Host namespace in its component YAML file to call onto the "Redis" namespace, otherwise this call also fails.
 8. The data in the Redis state store is encrypted at rest and can only be read using the correctly configured Dapr Redis state store component.
-
-## Run as non-root
-When running in Kubernetes, Dapr services ensure each process is running as non-root.
-This is done by checking the UID & GID of the process is `65532`, and fatal erroring if it is not what is expected.
-If you must run a non-default UID & GID in Kubernetes, set the following env var to skip this check.
-
-```bash
-DAPR_UNSAFE_SKIP_CONTAINER_UID_GID_CHECK="true"
-```
 
 # Threat model
 
