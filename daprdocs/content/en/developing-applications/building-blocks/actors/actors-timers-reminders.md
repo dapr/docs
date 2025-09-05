@@ -29,7 +29,7 @@ Supported formats:
 If `period` is omitted, the callback will be invoked only once.
 
 Supported formats:
-- time.Duration format (Sub-second precision is supported when using duration values), e.g. `2h30m`
+- time.Duration format (Sub-second precision is supported when using duration values), e.g. `2h30m`, `500ms`
 - [ISO 8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) format, e.g. `PT2H30M`, `R5/PT1M30S`
 
 Note: Actual trigger resolution may vary by runtime and environment.
