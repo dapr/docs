@@ -30,3 +30,4 @@ The following table lists the environment variables used by the Dapr runtime, CL
 | DAPR_PLACEMENT_METADATA_ENABLED | Dapr placement | Enable an endpoint for the Placement service that exposes placement table information on actor usage. Set to `true` to enable in self-hosted mode. [Learn more about the Placement API]({{% ref placement_api.md %}}) |
 | DAPR_HOST_IP | Dapr sidecar | The host's chosen IP address. If not specified, will loop over the network interfaces and select the first non-loopback address it finds.|
 | DAPR_HEALTH_TIMEOUT | SDKs | Sets the time on the "wait for sidecar" availability. Overrides the default timeout setting of 60 seconds. |
+| DAPR_UNSAFE_SKIP_CONTAINER_UID_GID_CHECK | Dapr control plane & sidecar | Disable the check that ensures the Dapr containers are not running as root on Kubernetes linux. This is not recommended for production environments. Set to `true` to disable the check. |
