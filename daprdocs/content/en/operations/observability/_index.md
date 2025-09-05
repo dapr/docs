@@ -18,7 +18,7 @@ description: See and measure the message calls to components and between network
 {{% /alert %}}
 
 {{% alert title="Dapr Observability in Action!" color="primary" %}}
-Dapr Has a public Grafana dashboard demonstrating observability in action on our longhaul testing environment.
+Dapr has a public Grafana dashboard demonstrating observability in action on the longhaul testing environment.
  - [Dapr Public Grafana Dashboard](https://dapr.grafana.net/public-dashboards/86d748b233804e74a16d8243b4b64e18)
  - Read more about: [Longhaul performance and stability]({{% ref perf-longhaul.md %}})
   {{% /alert %}}
