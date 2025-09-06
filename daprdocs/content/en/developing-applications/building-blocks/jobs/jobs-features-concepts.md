@@ -10,8 +10,7 @@ Now that you've learned about the [jobs building block]({{% ref jobs-overview %}
 into the features and concepts included with Dapr Jobs and the various SDKs. Dapr Jobs:
 - Provides a robust and scalable API for scheduling operations to be triggered in the future.
 - Exposes several capabilities which are common across all supported languages.
-
-
+- Supports sub-second precision when using duration values (for example `500ms`). Actual trigger resolution may vary by runtime; Cron-based schedules are at the seconds level only.
 
 ## Job identity
 
