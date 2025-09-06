@@ -253,6 +253,16 @@ An example of scheduling a workflow with a start time of "now" in the Go SDK is 
 client.ScheduleNewWorkflow(ctx, "MyCoolWorkflow", workflow.WithStartTime(time.Now()))
 ```
 
+## Workflows cluster deployment when using Dapr Shared with workflow
+
+{{% alert title="Note" color="primary" %}}
+The following feature is only available when the [Workflows Clustered Deployment preview feature is enabled]({{% ref "preview-features.md" %}}).
+{{% /alert %}}
+
+When using [Dapr Shared]({{% ref "kubernetes-dapr-shared" %}}), it can be the case that there are multiple daprd sidecars running behind a single load balancer or service.
+As such, the instance to which a worker receiving work, may not be the same instance that receives the work result.
+Dapr creates a third actor type to handle this scenario: `dapr.internal.{namespace}.{appID}.executor` to handle routing of the worker results back to the correct workflow actor to ensure correct operation. 
+
 ## Next steps
 
 {{< button text="Author workflows >>" page="howto-author-workflow.md" >}}
