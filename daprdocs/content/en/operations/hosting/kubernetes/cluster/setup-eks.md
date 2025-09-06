@@ -119,6 +119,8 @@ You can attach custom annotations to the ServiceAccounts created by the `dapr_rb
 This enables fine-grained, secure access control for Dapr components using EKS’s IRSA mechanism.
 Update your Dapr Helm values files to include the following necessary annotations for the ServiceAccounts.
 
+See [here]({{% ref authenticating-aws.md %}}) for more information on AWS authentication.
+
 ```yaml
 serviceAccount:
   operator:
