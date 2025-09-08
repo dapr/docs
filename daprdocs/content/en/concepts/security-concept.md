@@ -153,6 +153,12 @@ With Dapr OAuth 2.0 middleware, you can enable OAuth authorization on Dapr endpo
 
 You can adopt common network security technologies, such as network security groups (NSGs), demilitarized zones (DMZs), and firewalls, to provide layers of protection over your networked resources. For example, unless configured to talk to an external binding target, Dapr sidecars don’t open connections to the internet and most binding implementations only use outbound connections. You can design your firewall rules to allow outbound connections only through designated ports.
 
+## Run as non-root in Kubernetes
+When running in Kubernetes, Dapr services ensure each process is running as non-root. This is done by checking the UID & GID of the process is `65532`, and fatal erroring if it is not what is expected. If you must run a non-default UID & GID in Kubernetes, set the following env var to skip this check.
+```bash
+DAPR_UNSAFE_SKIP_CONTAINER_UID_GID_CHECK="true"
+```
+
 # Security policies
 
 Dapr has an extensive set of security policies you can apply to your applications. You can scope what they are able to do, either through a policy setting in the sidecar configuration, or with the component specification. 

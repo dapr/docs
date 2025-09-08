@@ -296,6 +296,7 @@ Next, create a new website for the future Dapr release. To do this, you'll need 
 - Configure DNS via request from CNCF.
 
 #### Prerequisites
+
 - Docs maintainer status in the `dapr/docs` repo.
 - Access to the active Dapr Azure Subscription with Contributor or Owner access to create resources.
 - [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd?tabpane=winget-windows%2Cbrew-mac%2Cscript-linux&pivots=os-windows) installed on your machine.
@@ -310,7 +311,7 @@ Deploy a new Azure Static Web App for the future Dapr release. For this example,
    ```bash
    cd .github/iac/swa
    ```
-   
+
 1. Log into Azure Developer CLI (`azd`) using the Dapr Azure subscription.
 
    ```bash
@@ -319,47 +320,49 @@ Deploy a new Azure Static Web App for the future Dapr release. For this example,
 
 1. In the browser prompt, verify you're logging in as Dapr and complete the login.
 
-1. In a new terminal, replace the following values with the website values you prefer.
+1. In the same terminal, set these environment variables:
 
    ```bash
-   export AZURE_RESOURCE_GROUP=rg-dapr-docs-test
-   export IDENTITY_RESOURCE_GROUP=rg-my-identities
-   export AZURE_STATICWEBSITE_NAME=daprdocs-latest
+   export AZURE_RESOURCE_GROUP=docs-website
+   export IDENTITY_RESOURCE_GROUP=dapr-identities
+   export AZURE_STATICWEBSITE_NAME==daprdocs-v1-1
    ```
-   
+
+Where `daprdocs-v1-1` should be updated with the new preview version.
+
 1. Create a new [`azd` environment](https://learn.microsoft.com/azure/developer/azure-developer-cli/faq#what-is-an-environment-name).
- 
+
    ```bash
    azd env new
    ```
 
-1. When prompted, enter a new environment name. For this example, you'd name the environment something like: `dapr-docs-v1-1`. 
+1. When prompted, enter a new environment name. For this example, you'd name the environment something like: `dapr-docs-v1-1`.
 
 1. Once the environment is created, deploy the Dapr docs SWA into the new environment using the following command:
 
    ```bash
    azd up
    ```
-   
-1. When prompted, select an Azure subscription and location. Match these to the Dapr Azure subscription.
+
+1. When prompted, select an Azure subscription (Dapr Tests) and deployment location (West US 2).
 
 #### Configure the SWA in the Azure portal
 
-Head over to the Dapr subscription in the [Azure portal](https://portal.azure.com) and verify that your new Dapr docs site has been deployed. 
+Head over to the Dapr subscription in the [Azure portal](https://portal.azure.com) and verify that your new Dapr docs site has been deployed.
 
 Optionally, grant the correct minimal permissions for inbound publishing and outbound access to dependencies using the **Static Web App** > **Access control (IAM)** blade in the portal.
 
 #### Configure DNS
 
-1. In the Azure portal, from the new SWA you just created, naviage to **Custom domains** from the left side menu. 
+1. In the Azure portal, from the new SWA you just created, naviage to **Custom domains** from the left side menu.
 1. Copy the "CNAME" value of the web app.
-1. Using your own account, [submit a CNCF ticket](https://jira.linuxfoundation.org/secure/Dashboard.jspa) to create a new domain name mapped to the CNAME value you copied. For this example, to create a new domain for Dapr v1.1, you'd request to map to `v1-1.docs.dapr.io`. 
+1. Using your own account, [submit a CNCF ticket](https://jira.linuxfoundation.org/secure/Dashboard.jspa) to create a new domain name mapped to the CNAME value you copied. For this example, to create a new domain for Dapr v1.1, you'd request to map to `v1-1.docs.dapr.io`.
 
    Request resolution may take some time.
 
 1. Once the new domain has been confirmed, return to the static web app in the portal.
 1. Navigate to the **Custom domains** blade and select **+ Add**.
-1. Select **Custom domain on other DNS**. 
+1. Select **Custom domain on other DNS**.
 1. Enter `v1-1.docs.dapr.io` under **Domain name**. Click **Next**.
 1. Keep **Hostname record type** as `CNAME`, and copy the value of **Value**.
 1. Click **Add**.
