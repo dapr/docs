@@ -8,6 +8,7 @@ description: "Executing workflows across multiple applications"
 
 It is often the case that a single workflow spans multiple applications, microservices, or programing languages.
 This is where an activity or a child workflow will be executed on a different application than the one hosting the parent workflow.
+
 Some scenarios where this is useful include:
 
 - A Machine Learning (ML) training activity must be executed on GPU-enabled machines, while the rest of the workflow runs on CPU-only orchestration machines.
@@ -16,6 +17,11 @@ Some scenarios where this is useful include:
 - Different parts of the workflow need to be executed in different geographic regions due to data residency requirements.
 - An involved business process spans multiple teams or departments, each owning their own application.
 - Implementation of a workflow spans different programming lanaguages based on team expertise or existing codebases.
+- Different team boundaries or microservice ownership.
+- Shared activity pools where apps can expose activities and child workflows that can be called from multiple workflow orchestrators running in different applications, see image below:
+
+<img src="/images/workflow-overview/workflow-crossapp-sharedpool.png" width=800 alt="Diagram showing cross-app shared pool workflow pattern">
+
 
 ## Multi-application workflows
 
@@ -25,8 +31,6 @@ This workflow will be executed across all replicas of that app ID, not just the 
 
 It is possible to execute activities or child workflows on different app IDs by specifying the target app ID parameter, inside the workflow execution code.
 Upon execution, the target app ID will execute the activity or child workflow, and return the result to the parent workflow of the originating app ID.
-Workflows being durable, if the target activity or child workflow app ID is not available or has not been defined, the parent workflow retry until the target app ID becomes available, indefinitely.
-It is paramount that their is co-ordination between the teams owning the different app IDs to ensure that the activities and child workflows are defined and available when needed.
 
 The entire Workflow execution may be distributed across multiple app IDs with no limit, with each activity or child workflow specifying the target app ID.
 The final history of the workflow will be saved by the app ID that hosts the very parent (or can consider it the root) workflow.
@@ -38,9 +42,24 @@ Similarly, all app IDs must use the same actor state store.
 Finally, the target app ID must have the activity or child workflow defined, otherwise the parent workflow will retry indefinitely.
 {{% /alert %}}
 
-## Multi-application activity examples
+{{% alert title="Important Limitations" color="warning" %}}
+- **Only some SDKs support cross-app calls** - Cross-app operations are dependent on the specific SDK implementation. Currently only available in the Java (partially) and Go SDKs. Other SDKs (Python, .NET, JavaScript) do not support any cross-app features at this time.
+{{% /alert %}}
 
-The following examples show how to execute activities on different target app IDs.
+## Error handling
+
+When calling cross-app activities or child workflows:
+- If the target application does not exist, the call will be retried using the provided retry policy
+- If the target application exists but doesn't contain the specified activity or workflow, the call will return an error
+- Standard workflow retry policies apply to cross-app calls
+
+It is paramount that there is co-ordination between the teams owning the different app IDs to ensure that the activities and child workflows are defined and available when needed.
+
+## Multi-application activity example
+
+<img src="/images/workflow-overview/workflow-crossapp-callactivity.png" width=800 alt="Diagram showing cross-app call activity workflow pattern">
+
+The following example shows how to execute activities on different target app IDs.
 
 {{< tabpane text=true >}}
 
@@ -155,7 +174,11 @@ public class CrossAppWorkflow implements Workflow {
 
 {{< /tabpane >}}
 
-The following examples show how to execute child workflows on different target app IDs.
+## Multi-application child workflow example
+
+The following example shows how to execute child workflows on different target app IDs.
+
+<img src="/images/workflow-overview/workflow-crossapp-suborchestrator.png" width=800 alt="Diagram showing cross-app child workflow pattern">
 
 {{< tabpane text=true >}}
 
