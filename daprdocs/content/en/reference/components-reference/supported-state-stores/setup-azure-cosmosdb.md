@@ -225,6 +225,14 @@ This particular optimization only makes sense if you are saving large objects to
 
 {{% /alert %}}
 
+## Workflow Limitations
+
+The more complex a workflow is (number of activities, child workflows, etc.), the more state operations it will perform per state store transaction.
+All input & output values will also be saved to the workflow history, and will be part of an operation of these transactions.
+CosmosDB has a [maximum document size of 2MB and maximum transaction size of 100 operations.](https://learn.microsoft.com/en-us/azure/cosmos-db/concepts-limits#per-request-limits).
+This means that the workflow history must not exceed this size, meaning that CosmosDB is not suitable for workflows with large input/output values or larger complex workflows.
+
+
 ## Related links
 
 - [Basic schema for a Dapr component]({{% ref component-schema %}})

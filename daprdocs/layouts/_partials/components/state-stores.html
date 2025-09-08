@@ -67,6 +67,10 @@
         <td align="center">
             {{ if .features.workflow }}
             <span role="img" aria-label="Workflow: Supported">✅</span>
+            {{ else if .features.workflow_warning }}
+            <a href="/reference/components-reference/supported-state-stores/{{ .link }}/#{{ .features.workflow_warning }}">
+            <span role="img" aria-label="Workflow: Warning" >⚠️</span>
+            </a>
             {{else}}
             <img src="/images/emptybox.png" alt="Workflow: Not supported" aria-label="Workflow: Not supported" />
             {{ end }}

@@ -8,4 +8,4 @@
     transactions: true
     etag: true
     ttl: true
-    workflow: false
+    workflow_warning: workflow-limitations

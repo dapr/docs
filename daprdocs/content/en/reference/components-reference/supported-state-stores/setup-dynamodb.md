@@ -158,6 +158,12 @@ $ aws dynamodb get-item \
 }
 ```
 
+## Workflow Limitations
+
+The more complex a workflow is (number of activities, child workflows, etc.), the more state operations it will perform per state store transaction.
+The maximum number of operations that can be performed by DynamoDB in a [single transaction is 100](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transaction-apis.html).
+This means that DynamoDB can only hadle workflows with a limited complexity, meaning it is not suitable for all workflow scenarios.
+
 ## Related links
 
 - [Basic schema for a Dapr component]({{% ref component-schema %}})
