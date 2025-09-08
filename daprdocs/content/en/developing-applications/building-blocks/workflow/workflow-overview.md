@@ -46,11 +46,11 @@ Child workflow also supports automatic retry policies.
 
 [Learn more about child workflows.]({{% ref "workflow-features-concepts.md#child-workflows" %}})
 
-### Cross-app workflows
+### Multi-application workflows
 
-Dapr Workflows support cross-app orchestration, allowing you to call activities and start child workflows in different Dapr applications. This enables distributed workflow execution across your microservice architecture while maintaining the benefits of Dapr's workflow engine.
+Dapr Workflows support multi-application orchestration, allowing you to call activities and start child workflows in different Dapr applications. This enables distributed workflow execution across your microservice architecture while maintaining the benefits of Dapr's workflow engine.
 
-[Learn more about cross-app workflows.]({{% ref "workflow-patterns.md#cross-app-workflows" %}})
+[Learn more about multi-application workflows.]({{% ref "workflow-multi-app.md" %}})
 
 ### Timers and reminders
 
