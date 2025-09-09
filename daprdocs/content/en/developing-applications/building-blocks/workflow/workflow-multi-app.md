@@ -40,7 +40,7 @@ Finally, the target app ID must have the activity or child workflow defined, oth
 {{% /alert %}}
 
 {{% alert title="Important Limitations" color="warning" %}}
-- **Only some SDKs support multi-application workflows** - Multi-application workflows are dependent on the specific SDK implementation. Currently only available in the Java (partially) and Go SDKs. Other SDKs (Python, .NET, JavaScript) do not support any multi-application workflows features at this time.
+- **SDKs supporting multi-application workflows** - Multi-application workflows are used via the SDKs. Currently Java (activities calling) and Go (both activities and child workflows calling) SDKs are supported. The SDKs (Python, .NET, JavaScript) are planned for future releases.
 {{% /alert %}}
 
 ## Error handling
