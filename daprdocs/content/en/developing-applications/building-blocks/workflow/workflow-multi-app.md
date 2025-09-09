@@ -18,9 +18,6 @@ Some scenarios where this is useful include:
 - An involved business process spans multiple teams or departments, each owning their own application.
 - Implementation of a workflow spans different programming lanaguages based on team expertise or existing codebases.
 - Different team boundaries or microservice ownership.
-- Shared activity pools where apps can expose activities and child workflows that can be called from multiple workflow orchestrators running in different applications, see image below:
-
-<img src="/images/workflow-overview/workflow-crossapp-sharedpool.png" width=800 alt="Diagram showing cross-app shared pool workflow pattern">
 
 
 ## Multi-application workflows
@@ -43,21 +40,21 @@ Finally, the target app ID must have the activity or child workflow defined, oth
 {{% /alert %}}
 
 {{% alert title="Important Limitations" color="warning" %}}
-- **Only some SDKs support cross-app calls** - Cross-app operations are dependent on the specific SDK implementation. Currently only available in the Java (partially) and Go SDKs. Other SDKs (Python, .NET, JavaScript) do not support any cross-app features at this time.
+- **Only some SDKs support multi-application workflows** - Multi-application workflows are dependent on the specific SDK implementation. Currently only available in the Java (partially) and Go SDKs. Other SDKs (Python, .NET, JavaScript) do not support any multi-application workflows features at this time.
 {{% /alert %}}
 
 ## Error handling
 
-When calling cross-app activities or child workflows:
-- If the target application does not exist, the call will be retried using the provided retry policy
-- If the target application exists but doesn't contain the specified activity or workflow, the call will return an error
-- Standard workflow retry policies apply to cross-app calls
+When calling multi-application activities or child workflows:
+- If the target application does not exist, the call will be retried using the provided retry policy.
+- If the target application exists but doesn't contain the specified activity or workflow, the call will return an error.
+- Standard workflow retry policies apply to multi-application calls.
 
 It is paramount that there is co-ordination between the teams owning the different app IDs to ensure that the activities and child workflows are defined and available when needed.
 
 ## Multi-application activity example
 
-<img src="/images/workflow-overview/workflow-crossapp-callactivity.png" width=800 alt="Diagram showing cross-app call activity workflow pattern">
+<img src="/images/workflow-overview/workflow-multi-app-callactivity.png" width=800 alt="Diagram showing multi-application call activity workflow pattern">
 
 The following example shows how to execute activities on different target app IDs.
 
@@ -178,7 +175,7 @@ public class CrossAppWorkflow implements Workflow {
 
 The following example shows how to execute child workflows on different target app IDs.
 
-<img src="/images/workflow-overview/workflow-crossapp-suborchestrator.png" width=800 alt="Diagram showing cross-app child workflow pattern">
+<img src="/images/workflow-overview/workflow-multi-app-child-workflow.png" width=800 alt="Diagram showing multi-application child workflow pattern">
 
 {{< tabpane text=true >}}
 

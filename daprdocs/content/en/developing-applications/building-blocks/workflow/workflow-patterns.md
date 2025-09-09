@@ -615,8 +615,7 @@ await context.CallActivityAsync("PostResults", sum);
 
 {{< /tabpane >}}
 
-With the release of 1.16, it's even easier to process workflow activities in parallel while putting an upper cap on
-concurrency by using the following extension methods on the `WorkflowContext`:
+You can process workflow activities in parallel while putting an upper cap on concurrency by using the following extension methods on the `WorkflowContext`:
 
 {{< tabpane text=true >}}
 
