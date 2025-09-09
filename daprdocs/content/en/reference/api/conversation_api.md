@@ -12,6 +12,8 @@ The conversation API is currently in [alpha]({{% ref "certification-lifecycle.md
 
 Dapr provides an API to interact with Large Language Models (LLMs) and enables critical performance and security functionality with features like prompt caching, PII data obfuscation, and tool calling capabilities.
 
+Tool calling follow's OpenAI's function calling format, making it easy to integrate with existing AI development workflows and tools.
+
 ## Converse
 
 This endpoint lets you converse with LLMs using the Alpha2 version of the API, which provides enhanced tool calling support and alignment with OpenAI's interface.
@@ -31,31 +33,31 @@ POST http://localhost:<daprPort>/v1.0-alpha2/conversation/<llm-name>/converse
 | Field | Description |
 | --------- | ----------- |
 | `name` | The name of the conversation component. Required |
-| `context_id` | The ID of an existing chat (like in ChatGPT). Optional |
+| `contextId` | The ID of an existing chat (like in ChatGPT). Optional |
 | `inputs` | Inputs for the conversation. Multiple inputs at one time are supported. Required |
 | `parameters` | Parameters for all custom fields. Optional |
 | `metadata` | [Metadata](#metadata) passed to conversation components. Optional |
-| `scrub_pii` | A boolean value to enable obfuscation of sensitive information returning from the LLM. Optional |
+| `scrubPii` | A boolean value to enable obfuscation of sensitive information returning from the LLM. Optional |
 | `temperature` | A float value to control the temperature of the model. Used to optimize for consistency (0) or creativity (1). Optional |
 | `tools` | Tools register the tools available to be used by the LLM during the conversation. Optional |
-| `tool_choice` | Controls which (if any) tool is called by the model. Values: `""`, `auto`, `required`, or specific tool name. Defaults to `""` if no tools are present, or `auto` if tools are present. Optional |
+| `toolChoice` | Controls which (if any) tool is called by the model. Values: `auto`, `required`, or specific tool name. Defaults to `auto` if tools are present. Optional |
 
 #### Input body
 
 | Field | Description |
 | --------- | ----------- |
 | `messages` | Array of conversation messages. Required |
-| `scrub_pii` | A boolean value to enable obfuscation of sensitive information present in the content field. Optional |
+| `scrubPii` | A boolean value to enable obfuscation of sensitive information present in the content field. Optional |
 
 #### Message types
 
-The API supports different message types through the `oneof` field:
+The API supports different message types:
 
-- **`of_developer`**: Developer role messages with optional name and content
-- **`of_system`**: System role messages with optional name and content  
-- **`of_user`**: User role messages with optional name and content
-- **`of_assistant`**: Assistant role messages with optional name, content, and tool calls
-- **`of_tool`**: Tool role messages with tool ID, name, and content
+- **`ofDeveloper`**: Developer role messages with optional name and content
+- **`ofSystem`**: System role messages with optional name and content  
+- **`ofUser`**: User role messages with optional name and content
+- **`ofAssistant`**: Assistant role messages with optional name, content, and tool calls
+- **`ofTool`**: Tool role messages with tool ID, name, and content
 
 #### Tool calling
 
@@ -196,9 +198,8 @@ RESPONSE = {
 
 ### Tool choice options
 
-The `tool_choice` parameter controls how the model uses available tools:
+The `tool_choice` is an optional parameter that controls how the model can use available tools:
 
-- **`""`**: The model will not call any tool and instead generates a message (default when no tools are present)
 - **`auto`**: The model can pick between generating a message or calling one or more tools (default when tools are present)
 - **`required`**: Requires one or more functions to be called
 - **`{tool_name}`**: Forces the model to call a specific tool by name
