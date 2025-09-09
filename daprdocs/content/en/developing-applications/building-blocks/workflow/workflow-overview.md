@@ -48,7 +48,7 @@ Child workflow also supports automatic retry policies.
 
 ### Multi-application workflows
 
-Multi-application workflows, enable you to orchestrate complex business processes that span across multiple applications. This allows a workflow to call activities or start child workflows in different applications, distributing the workflow execution while maintaining the security, reliability, and durability guarantees of Dapr's workflow engine. The activities and child workflows called in other applications are treated as remote activities and remote child workflows from the calling parent workflow.
+Multi-application workflows, enable you to orchestrate complex business processes that span across multiple applications. This allows a workflow to call activities or start child workflows in different applications, distributing the workflow execution while maintaining the security, reliability and durability guarantees of Dapr's workflow engine.
 
 [Learn more about multi-application workflows.]({{% ref "workflow-multi-app.md" %}})
 
