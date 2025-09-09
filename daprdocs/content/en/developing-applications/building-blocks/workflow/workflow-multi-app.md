@@ -56,60 +56,20 @@ It is paramount that there is co-ordination between the teams owning the differe
 
 <img src="/images/workflow-overview/workflow-multi-app-callactivity.png" width=800 alt="Diagram showing multi-application call activity workflow pattern">
 
-The following example shows how to execute activities on different target app IDs.
+The following example shows how to execute the activity `ActivityA` on the target app `App2`.
 
 {{< tabpane text=true >}}
 
 {{% tab "Go" %}}
 
 ```go
-package main
-
-import (
-	"context"
-	"log"
-
-	"github.com/dapr/durabletask-go/backend"
-	"github.com/dapr/durabletask-go/client"
-	"github.com/dapr/durabletask-go/task"
-	dapr "github.com/dapr/go-sdk/client"
-)
-
-func main() {
-	ctx := context.Background()
-
-	registry := task.NewTaskRegistry()
-	if err := registry.AddOrchestrator(TestWorkflow); err != nil {
-		log.Fatal(err)
-	}
-
-	daprClient, err := dapr.NewClient()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	client := client.NewTaskHubGrpcClient(daprClient.GrpcClientConn(), backend.DefaultLogger())
-	if err := client.StartWorkItemListener(ctx, registry); err != nil {
-		log.Fatal(err)
-	}
-
-	id, err := client.ScheduleNewOrchestration(ctx, "TestWorkflow")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if _, err = client.WaitForOrchestrationCompletion(ctx, id); err != nil {
-		log.Fatal(err)
-	}
-}
-
 func TestWorkflow(ctx *task.OrchestrationContext) (any, error) {
 	var output string
-	err := ctx.CallActivity("my-other-activity",
+	err := ctx.CallActivity("ActivityA",
 		task.WithActivityInput("my-input"),
-		// Here we set custom target app ID which will execute this activity.
-		task.WithActivityAppID("my-other-app-id"),
+		task.WithActivityAppID("App2"), // Here we set the target app ID which will execute this activity.
 	).Await(&output)
+
 	if err != nil {
 		return nil, err
 	}
@@ -127,41 +87,14 @@ public class CrossAppWorkflow implements Workflow {
   @Override
   public WorkflowStub create() {
       return ctx -> {
-          var logger = ctx.getLogger();
-          logger.info("=== WORKFLOW STARTING ===");
-          logger.info("Starting CrossAppWorkflow: {}", ctx.getName());
-          logger.info("Workflow name: {}", ctx.getName());
-          logger.info("Workflow instance ID: {}", ctx.getInstanceId());
-
-          String input = ctx.getInput(String.class);
-          logger.info("CrossAppWorkflow received input: {}", input);
-          logger.info("Workflow input: {}", input);
-
-          // Call an activity in another app by passing in an active appID to the WorkflowTaskOptions
-          logger.info("Calling cross-app activity in 'app2'...");
-          logger.info("About to call cross-app activity in app2...");
-          String crossAppResult = ctx.callActivity(
-                  App2TransformActivity.class.getName(),
-                  input,
-                  new WorkflowTaskOptions("app2"),
+          String output = ctx.callActivity(
+                  "ActivityA",
+                  "my-input",
+                  new WorkflowTaskOptions("App2"), // Here we set the target app ID which will execute this activity.
                   String.class
           ).await();
 
-          // Call another activity in a different app
-          logger.info("Calling cross-app activity in 'app3'...");
-          logger.info("About to call cross-app activity in app3...");
-          String finalResult = ctx.callActivity(
-                  App3FinalizeActivity.class.getName(),
-                  crossAppResult,
-                  new WorkflowTaskOptions("app3"),
-                  String.class
-          ).await();
-          logger.info("Final cross-app activity result: {}", finalResult);
-          logger.info("Final cross-app activity result: {}", finalResult);
-
-          logger.info("CrossAppWorkflow finished with: {}", finalResult);
-          logger.info("=== WORKFLOW COMPLETING WITH: {} ===" , finalResult);
-          ctx.complete(finalResult);
+          ctx.complete(output);
       };
   }
 }
@@ -173,62 +106,22 @@ public class CrossAppWorkflow implements Workflow {
 
 ## Multi-application child workflow example
 
-The following example shows how to execute child workflows on different target app IDs.
-
 <img src="/images/workflow-overview/workflow-multi-app-child-workflow.png" width=800 alt="Diagram showing multi-application child workflow pattern">
+
+The following example shows how to execute the child workflow `Workflow2` on the target app `App2`.
 
 {{< tabpane text=true >}}
 
 {{% tab "Go" %}}
 
 ```go
-package main
-
-import (
-	"context"
-	"log"
-
-	"github.com/dapr/durabletask-go/backend"
-	"github.com/dapr/durabletask-go/client"
-	"github.com/dapr/durabletask-go/task"
-	dapr "github.com/dapr/go-sdk/client"
-)
-
-func main() {
-	ctx := context.Background()
-
-	registry := task.NewTaskRegistry()
-	if err := registry.AddOrchestrator(TestWorkflow); err != nil {
-		log.Fatal(err)
-	}
-
-	daprClient, err := dapr.NewClient()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	client := client.NewTaskHubGrpcClient(daprClient.GrpcClientConn(), backend.DefaultLogger())
-	if err := client.StartWorkItemListener(ctx, registry); err != nil {
-		log.Fatal(err)
-	}
-
-	id, err := client.ScheduleNewOrchestration(ctx, "TestWorkflow")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if _, err = client.WaitForOrchestrationCompletion(ctx, id); err != nil {
-		log.Fatal(err)
-	}
-}
-
 func TestWorkflow(ctx *task.OrchestrationContext) (any, error) {
 	var output string
-	err := ctx.CallSubOrchestrator("my-sub-orchestration",
+	err := ctx.CallSubOrchestrator("Workflow2",
 		task.WithSubOrchestratorInput("my-input"),
-		// Here we set custom target app ID which will execute this child workflow.
-		task.WithSubOrchestratorAppID("my-sub-app-id"),
+		task.WithSubOrchestratorAppID("App2"), // Here we set the target app ID which will execute this child workflow.
 	).Await(&output)
+
 	if err != nil {
 		return nil, err
 	}
