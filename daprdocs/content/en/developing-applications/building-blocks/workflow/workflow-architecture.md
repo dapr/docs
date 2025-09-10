@@ -177,7 +177,7 @@ Each Dapr SDK exposes APIs for purging all metadata related to specific workflow
 
 #### State store record count
 
-The number of records which will be saved as history in the state store per workflow run is determined by its complexity or "shape", i.e. the number of activities, timers, sub-workflows etc.
+The number of records which are saved as history in the state store per workflow run is determined by its complexity or "shape". In other words, the number of activities, timers, sub-workflows etc.
 The following table shows a general guide to the number of records that are saved by different workflow tasks.
 This number may be larger or smaller depending on retries or concurrency.
 
