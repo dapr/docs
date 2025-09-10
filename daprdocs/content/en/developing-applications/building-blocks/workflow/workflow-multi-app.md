@@ -23,7 +23,7 @@ Some scenarios where this is useful include:
 ## Multi-application workflows
 
 Like all building blocks in Dapr, workflow execution routing is based on the [App ID of the hosting Dapr application]({{% ref "security-concept.md#application-identity" %}}).
-By default, the full workflow execution is hosted on the app ID that started the workflow. The workflow instance runs on a single replica of that app ID at a time, and if that replica fails, execution can resume on another replica.
+By default, the full workflow execution is hosted on the app ID that started the workflow. This workflow can be executed across any replicas of that app ID, not just the single replica which scheduled the workflow.
 
 
 It is possible to execute activities or child workflows on different app IDs by specifying the target app ID parameter, inside the workflow execution code.
