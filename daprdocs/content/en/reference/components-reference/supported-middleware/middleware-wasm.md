@@ -39,7 +39,7 @@ spec:
   metadata:
   - name: url
     value: "file://router.wasm"
-  - guestConfig
+  - name: guestConfig
     value: {"environment":"production"}
 ```
 

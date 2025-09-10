@@ -137,7 +137,7 @@ app.MapGet("/dapr/subscribe", () =>
             route = "/messages",
             metadata = new Dictionary<string, string>
             {
-                { "isRawPayload", "true" },
+                { "rawPayload", "true" },
                 { "content-type", "application/json" }
             }
         }

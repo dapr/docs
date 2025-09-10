@@ -38,6 +38,8 @@ spec:
     value: "*****************"
   - name: direction
     value: "input, output"
+  - name: endpoint
+    value: "http://localhost:4566" # Optional: Custom endpoint (e.g. for LocalStack)  
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
@@ -55,6 +57,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `secretKey`          | Y        | Output | The AWS Secret Access Key to access this resource                       | `"secretAccessKey"` |
 | `sessionToken`       | N        | Output | The AWS session token to use                                            | `"sessionToken"`    |
 | `direction`       | N        | Input/Output | The direction of the binding                                            | `"input"`, `"output"`, `"input, output"`    |
+| `endpoint`        | N        | Input | Custom endpoint for Kinesis and DynamoDB (for example to enable AWS LocalStack support) | `"http://localhost:4566"` |
+
 
 {{% alert title="Important" color="warning" %}}
 When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernetes), if you're using a node/pod that has already been attached to an IAM policy defining access to AWS resources, you **must not** provide AWS access-key, secret-key, and tokens in the definition of the component spec you're using.  

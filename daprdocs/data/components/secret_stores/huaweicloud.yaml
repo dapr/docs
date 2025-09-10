@@ -1,0 +1,5 @@
+- component: HuaweiCloud Cloud Secret Management Service (CSMS)
+  link: huaweicloud-csms
+  state: Alpha
+  version: v1
+  since: "1.8"
