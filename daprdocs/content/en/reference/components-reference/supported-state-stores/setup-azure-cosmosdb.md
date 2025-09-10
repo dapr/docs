@@ -230,7 +230,7 @@ This particular optimization only makes sense if you are saving large objects to
 {{% alert title="Note" color="primary" %}}
 
 As described below, CosmosDB has limitations that likely make it unsuitable for production environments.
-There is currently no path for migrating Workflow data from CosmosDB to another state store, meaning exceeding these limits in production will result in failed workflows this no workaround.
+There is currently no path for migrating Workflow data from CosmosDB to another state store, meaning exceeding these limits in production will result in failed workflows with no workaround.
 
 {{% /alert %}}
 
