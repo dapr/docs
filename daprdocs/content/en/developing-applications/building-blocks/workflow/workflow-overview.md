@@ -46,6 +46,12 @@ Child workflow also supports automatic retry policies.
 
 [Learn more about child workflows.]({{% ref "workflow-features-concepts.md#child-workflows" %}})
 
+### Multi-application workflows
+
+Multi-application workflows, enable you to orchestrate complex business processes that span across multiple applications. This allows a workflow to call activities or start child workflows in different applications, distributing the workflow execution while maintaining the security, reliability and durability guarantees of Dapr's workflow engine.
+
+[Learn more about multi-application workflows.]({{% ref "workflow-multi-app.md" %}})
+
 ### Timers and reminders
 
 Same as Dapr actors, you can schedule reminder-like durable delays for any time range.

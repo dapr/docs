@@ -68,13 +68,9 @@ Continue with the [Run local server](#run-local-server) steps.
 1. Ensure pre-requisites are installed.
 1. [Fork](https://github.com/dapr/docs/fork) and clone this repository.
 
-1. Change to daprdocs directory:
+1. Make sure you are in the root folder for the docs repo. You should find a hugo.yaml file in this directory.
 
-```sh
-cd ./daprdocs
-```
-
-4. Update submodules:
+1. Update submodules:
 
 ```sh
 git submodule update --init --recursive

@@ -190,6 +190,14 @@
   features:
     input: false
     output: true
+- component: Apache Dubbo
+  link: dubbo
+  state: Alpha
+  version: v1
+  since: "1.7"
+  features:
+    input: false
+    output: true
 - component: RocketMQ
   link: rocketmq
   state: Alpha
