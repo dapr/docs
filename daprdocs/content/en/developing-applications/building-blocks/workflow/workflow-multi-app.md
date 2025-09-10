@@ -63,11 +63,11 @@ The following example shows how to execute the activity `ActivityA` on the targe
 {{% tab "Go" %}}
 
 ```go
-func TestWorkflow(ctx *task.OrchestrationContext) (any, error) {
+func TestWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 	var output string
 	err := ctx.CallActivity("ActivityA",
-		task.WithActivityInput("my-input"),
-		task.WithActivityAppID("App2"), // Here we set the target app ID which will execute this activity.
+		workflow.WithActivityInput("my-input"),
+		workflow.WithActivityAppID("App2"), // Here we set the target app ID which will execute this activity.
 	).Await(&output)
 
 	if err != nil {
@@ -115,11 +115,11 @@ The following example shows how to execute the child workflow `Workflow2` on the
 {{% tab "Go" %}}
 
 ```go
-func TestWorkflow(ctx *task.OrchestrationContext) (any, error) {
+func TestWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 	var output string
-	err := ctx.CallSubOrchestrator("Workflow2",
-		task.WithSubOrchestratorInput("my-input"),
-		task.WithSubOrchestratorAppID("App2"), // Here we set the target app ID which will execute this child workflow.
+	err := ctx.CallChildWorkflow("Workflow2",
+		workflow.WithChildWorkflowInput("my-input"),
+		workflow.WithChildWorkflowAppID("App2"), // Here we set the target app ID which will execute this child workflow.
 	).Await(&output)
 
 	if err != nil {
