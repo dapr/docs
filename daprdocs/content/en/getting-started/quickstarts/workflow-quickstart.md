@@ -1827,7 +1827,7 @@ func main() {
 		TotalCost: totalCost,
 	}
 
-	id, err := wfClient.StartWorkflow(context.Background(), workflowName, workflow.WithInput(orderPayload))
+	id, err := wfClient.ScheduleWorkflow(context.Background(), workflowName, workflow.WithInput(orderPayload))
 	if err != nil {
 		log.Fatalf("failed to start workflow: %v", err)
 	}
