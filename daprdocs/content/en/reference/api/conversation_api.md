@@ -17,14 +17,14 @@ Dapr provides an API to interact with Large Language Models (LLMs) and enables c
 This endpoint lets you converse with LLMs.
 
 ```
-POST http://localhost:<daprPort>/v1.0-alpha1/conversation/<llm-name>/converse
+POST http://localhost:<daprPort>/v1.0-alpha1/conversation/<llm-provider>/converse
 ```
 
 ### URL parameters
 
 | Parameter | Description |
 | --------- | ----------- |
-| `llm-name` | The name of the LLM component. [See a list of all available conversation components.]({{% ref supported-conversation %}})
+| `llm-provider` | The name of the LLM component provider. [See a list of all available conversation components.]({{% ref supported-conversation %}})
 
 ### Request body
 
