@@ -14,7 +14,12 @@ Dapr's conversation API reduces the complexity of securely and reliably interact
 
 <img src="/images/conversation-overview.png" width=800 alt="Diagram showing the flow of a user's app communicating with Dapr's LLM components.">
 
-In additon to enabling critical performance and security functionality (like [prompt caching]({{% ref "#prompt-caching" %}}) and [PII scrubbing]({{% ref "#personally-identifiable-information-pii-obfuscation" %}})), you can also pair the conversation API with Dapr functionalities, like:
+In addition to enabling critical performance and security functionality (like [prompt caching]({{% ref "#prompt-caching" %}}) and [PII scrubbing]({{% ref "#personally-identifiable-information-pii-obfuscation" %}})), the conversation API also provides:
+
+- **Tool calling capabilities** that allow LLMs to interact with external functions and APIs, enabling more sophisticated AI applications
+- **OpenAI-compatible interface** for seamless integration with existing AI workflows and tools
+
+You can also pair the conversation API with Dapr functionalities, like:
 - Resiliency circuit breakers and retries to circumvent limit and token errors, or 
 - Middleware to authenticate requests coming to and from the LLM
 
@@ -44,6 +49,17 @@ The PII scrubber obfuscates the following user information:
 - Secure Hash Algorithm 1 (SHA-1) hex
 - SHA-256 hex
 - MD5 hex
+
+### Tool calling support
+
+The conversation API supports advanced tool calling capabilities that allow LLMs to interact with external functions and APIs. This enables you to build sophisticated AI applications that can:
+
+- Execute custom functions based on user requests
+- Integrate with external services and databases
+- Provide dynamic, context-aware responses
+- Create multi-step workflows and automation
+
+Tool calling follows [OpenAI's function calling format](https://platform.openai.com/docs/guides/function-calling), making it easy to integrate with existing AI development workflows and tools.
 
 ## Demo
 
