@@ -8,6 +8,7 @@ description: "Executing workflows across multiple applications"
 
 It is often the case that a single workflow spans multiple applications, microservices, or programing languages.
 This is where an activity or a child workflow will be executed on a different application than the one hosting the parent workflow.
+
 Some scenarios where this is useful include:
 
 - A Machine Learning (ML) training activity must be executed on GPU-enabled machines, while the rest of the workflow runs on CPU-only orchestration machines.
@@ -16,6 +17,8 @@ Some scenarios where this is useful include:
 - Different parts of the workflow need to be executed in different geographic regions due to data residency requirements.
 - An involved business process spans multiple teams or departments, each owning their own application.
 - Implementation of a workflow spans different programming lanaguages based on team expertise or existing codebases.
+- Different team boundaries or microservice ownership.
+
 
 ## Multi-application workflows
 
@@ -25,8 +28,6 @@ This workflow will be executed across all replicas of that app ID, not just the 
 
 It is possible to execute activities or child workflows on different app IDs by specifying the target app ID parameter, inside the workflow execution code.
 Upon execution, the target app ID will execute the activity or child workflow, and return the result to the parent workflow of the originating app ID.
-Workflows being durable, if the target activity or child workflow app ID is not available or has not been defined, the parent workflow retry until the target app ID becomes available, indefinitely.
-It is paramount that their is co-ordination between the teams owning the different app IDs to ensure that the activities and child workflows are defined and available when needed.
 
 The entire Workflow execution may be distributed across multiple app IDs with no limit, with each activity or child workflow specifying the target app ID.
 The final history of the workflow will be saved by the app ID that hosts the very parent (or can consider it the root) workflow.
@@ -38,62 +39,37 @@ Similarly, all app IDs must use the same actor state store.
 Finally, the target app ID must have the activity or child workflow defined, otherwise the parent workflow will retry indefinitely.
 {{% /alert %}}
 
-## Multi-application activity examples
+{{% alert title="Important Limitations" color="warning" %}}
+- **SDKs supporting multi-application workflows** - Multi-application workflows are used via the SDKs. Currently Java (activities calling) and Go (both activities and child workflows calling) SDKs are supported. The SDKs (Python, .NET, JavaScript) are planned for future releases.
+{{% /alert %}}
 
-The following examples show how to execute activities on different target app IDs.
+## Error handling
+
+When calling multi-application activities or child workflows:
+- If the target application does not exist, the call will be retried using the provided retry policy.
+- If the target application exists but doesn't contain the specified activity or workflow, the call will return an error.
+- Standard workflow retry policies apply to multi-application calls.
+
+It is paramount that there is co-ordination between the teams owning the different app IDs to ensure that the activities and child workflows are defined and available when needed.
+
+## Multi-application activity example
+
+<img src="/images/workflow-overview/workflow-multi-app-callactivity.png" width=800 alt="Diagram showing multi-application call activity workflow pattern">
+
+The following example shows how to execute the activity `ActivityA` on the target app `App2`.
 
 {{< tabpane text=true >}}
 
 {{% tab "Go" %}}
 
 ```go
-package main
-
-import (
-	"context"
-	"log"
-
-	"github.com/dapr/durabletask-go/backend"
-	"github.com/dapr/durabletask-go/client"
-	"github.com/dapr/durabletask-go/task"
-	dapr "github.com/dapr/go-sdk/client"
-)
-
-func main() {
-	ctx := context.Background()
-
-	registry := task.NewTaskRegistry()
-	if err := registry.AddOrchestrator(TestWorkflow); err != nil {
-		log.Fatal(err)
-	}
-
-	daprClient, err := dapr.NewClient()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	client := client.NewTaskHubGrpcClient(daprClient.GrpcClientConn(), backend.DefaultLogger())
-	if err := client.StartWorkItemListener(ctx, registry); err != nil {
-		log.Fatal(err)
-	}
-
-	id, err := client.ScheduleNewOrchestration(ctx, "TestWorkflow")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if _, err = client.WaitForOrchestrationCompletion(ctx, id); err != nil {
-		log.Fatal(err)
-	}
-}
-
 func TestWorkflow(ctx *task.OrchestrationContext) (any, error) {
 	var output string
-	err := ctx.CallActivity("my-other-activity",
+	err := ctx.CallActivity("ActivityA",
 		task.WithActivityInput("my-input"),
-		// Here we set custom target app ID which will execute this activity.
-		task.WithActivityAppID("my-other-app-id"),
+		task.WithActivityAppID("App2"), // Here we set the target app ID which will execute this activity.
 	).Await(&output)
+
 	if err != nil {
 		return nil, err
 	}
@@ -111,41 +87,14 @@ public class CrossAppWorkflow implements Workflow {
   @Override
   public WorkflowStub create() {
       return ctx -> {
-          var logger = ctx.getLogger();
-          logger.info("=== WORKFLOW STARTING ===");
-          logger.info("Starting CrossAppWorkflow: {}", ctx.getName());
-          logger.info("Workflow name: {}", ctx.getName());
-          logger.info("Workflow instance ID: {}", ctx.getInstanceId());
-
-          String input = ctx.getInput(String.class);
-          logger.info("CrossAppWorkflow received input: {}", input);
-          logger.info("Workflow input: {}", input);
-
-          // Call an activity in another app by passing in an active appID to the WorkflowTaskOptions
-          logger.info("Calling cross-app activity in 'app2'...");
-          logger.info("About to call cross-app activity in app2...");
-          String crossAppResult = ctx.callActivity(
-                  App2TransformActivity.class.getName(),
-                  input,
-                  new WorkflowTaskOptions("app2"),
+          String output = ctx.callActivity(
+                  "ActivityA",
+                  "my-input",
+                  new WorkflowTaskOptions("App2"), // Here we set the target app ID which will execute this activity.
                   String.class
           ).await();
 
-          // Call another activity in a different app
-          logger.info("Calling cross-app activity in 'app3'...");
-          logger.info("About to call cross-app activity in app3...");
-          String finalResult = ctx.callActivity(
-                  App3FinalizeActivity.class.getName(),
-                  crossAppResult,
-                  new WorkflowTaskOptions("app3"),
-                  String.class
-          ).await();
-          logger.info("Final cross-app activity result: {}", finalResult);
-          logger.info("Final cross-app activity result: {}", finalResult);
-
-          logger.info("CrossAppWorkflow finished with: {}", finalResult);
-          logger.info("=== WORKFLOW COMPLETING WITH: {} ===" , finalResult);
-          ctx.complete(finalResult);
+          ctx.complete(output);
       };
   }
 }
@@ -155,60 +104,24 @@ public class CrossAppWorkflow implements Workflow {
 
 {{< /tabpane >}}
 
-The following examples show how to execute child workflows on different target app IDs.
+## Multi-application child workflow example
+
+<img src="/images/workflow-overview/workflow-multi-app-child-workflow.png" width=800 alt="Diagram showing multi-application child workflow pattern">
+
+The following example shows how to execute the child workflow `Workflow2` on the target app `App2`.
 
 {{< tabpane text=true >}}
 
 {{% tab "Go" %}}
 
 ```go
-package main
-
-import (
-	"context"
-	"log"
-
-	"github.com/dapr/durabletask-go/backend"
-	"github.com/dapr/durabletask-go/client"
-	"github.com/dapr/durabletask-go/task"
-	dapr "github.com/dapr/go-sdk/client"
-)
-
-func main() {
-	ctx := context.Background()
-
-	registry := task.NewTaskRegistry()
-	if err := registry.AddOrchestrator(TestWorkflow); err != nil {
-		log.Fatal(err)
-	}
-
-	daprClient, err := dapr.NewClient()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	client := client.NewTaskHubGrpcClient(daprClient.GrpcClientConn(), backend.DefaultLogger())
-	if err := client.StartWorkItemListener(ctx, registry); err != nil {
-		log.Fatal(err)
-	}
-
-	id, err := client.ScheduleNewOrchestration(ctx, "TestWorkflow")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if _, err = client.WaitForOrchestrationCompletion(ctx, id); err != nil {
-		log.Fatal(err)
-	}
-}
-
 func TestWorkflow(ctx *task.OrchestrationContext) (any, error) {
 	var output string
-	err := ctx.CallSubOrchestrator("my-sub-orchestration",
+	err := ctx.CallSubOrchestrator("Workflow2",
 		task.WithSubOrchestratorInput("my-input"),
-		// Here we set custom target app ID which will execute this child workflow.
-		task.WithSubOrchestratorAppID("my-sub-app-id"),
+		task.WithSubOrchestratorAppID("App2"), // Here we set the target app ID which will execute this child workflow.
 	).Await(&output)
+
 	if err != nil {
 		return nil, err
 	}
