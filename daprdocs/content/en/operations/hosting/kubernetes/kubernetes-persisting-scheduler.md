@@ -6,8 +6,8 @@ weight: 50000
 description: "Configure Scheduler to persist its database to make it resilient to restarts"
 ---
 
-The [Scheduler]({{% ref scheduler.md %}}) service is responsible for writing jobs to its embedded Etcd database and scheduling them for execution.
-By default, the Scheduler service database writes data to a Persistent Volume Claim volume of size `1Gb`, using the cluster's default [storage class](https://kubernetes.io/docs/concepts/storage/storage-classes/).
+The [Scheduler]({{% ref scheduler.md %}}) service is responsible for writing jobs to its Etcd database and scheduling them for execution.
+By default, the Scheduler service database embeds Etcd and writes data to a Persistent Volume Claim volume of size `1Gb`, using the cluster's default [storage class](https://kubernetes.io/docs/concepts/storage/storage-classes/).
 This means that there is no additional parameter required to run the scheduler service reliably on most Kubernetes deployments, although you will need [additional configuration](#storage-class) if a default StorageClass is not available or when running a production environment.
 
 {{% alert title="Warning" color="warning" %}}
@@ -75,6 +75,14 @@ For storage providers that do NOT support dynamic volume expansion: If Dapr has 
 kubectl delete pvc -n dapr-system dapr-scheduler-data-dir-dapr-scheduler-server-0 dapr-scheduler-data-dir-dapr-scheduler-server-1 dapr-scheduler-data-dir-dapr-scheduler-server-2
 ```
 Persistent Volume Claims are not deleted automatically with an [uninstall]({{% ref dapr-uninstall.md %}}). This is a deliberate safety measure to prevent accidental data loss.
+{{% /alert %}}
+
+{{% alert title="Note" color="primary" %}}
+For storage providers that do NOT support dynamic volume expansion: If Dapr has ever been installed on the cluster before, the Scheduler's Persistent Volume Claims must be manually uninstalled in order for new ones with increased storage size to be created.
+```bash
+kubectl delete pvc -n dapr-system dapr-scheduler-data-dir-dapr-scheduler-server-0 dapr-scheduler-data-dir-dapr-scheduler-server-1 dapr-scheduler-data-dir-dapr-scheduler-server-2
+```
+Persistent Volume Claims are not deleted automatically with an [uninstall]({{< ref dapr-uninstall.md >}}). This is a deliberate safety measure to prevent accidental data loss.
 {{% /alert %}}
 
 {{% alert title="Note" color="primary" %}}

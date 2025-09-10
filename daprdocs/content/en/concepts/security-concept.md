@@ -21,6 +21,25 @@ Dapr provides end-to-end security with the service invocation API, with the abil
 
 <img src="/images/security-end-to-end-communication.png" width=1000>
 
+## Application Identity
+
+In Dapr, Application Identity is built around the concept of an App ID.
+The App ID is the single atomic unit of identity in Dapr:
+
+- Every Dapr-enabled application has an App ID. Multiple replicas of the application share the same App ID.
+- All routing, service discovery, security policies, and access control in Dapr are derived from this App ID.
+- Service-to-service communication in Dapr uses the App ID instead of relying on IP addresses or hostnames, enabling stable and portable addressing across environments.
+
+For example, when one service calls another using Dapr's service invocation API, it calls the target by its App ID rather than its network location.
+This abstraction ensures that security policies, mutual TLS (mTLS) certificates, and access controls consistently apply at the application identity level.
+
+## Namespaces and Scoping
+
+While App IDs uniquely identify applications, namespaces provide an additional layer of scoping and isolation, especially in multi-tenant or large environments.
+
+- Namespaces allow operators to deploy Dapr applications in logically separated groups.
+- Two applications can have the same App ID in different namespaces without conflicting because security, routing, and discovery are namespace-aware.
+
 ## Service invocation scoping access policy
 
 Dapr applications can be scoped to namespaces for deployment and security. You can call between services deployed to different namespaces. Read the [Service invocation across namespaces]({{% ref "service-invocation-namespaces" %}}) article for more details.
@@ -133,6 +152,12 @@ With Dapr OAuth 2.0 middleware, you can enable OAuth authorization on Dapr endpo
 ## Network security
 
 You can adopt common network security technologies, such as network security groups (NSGs), demilitarized zones (DMZs), and firewalls, to provide layers of protection over your networked resources. For example, unless configured to talk to an external binding target, Dapr sidecars don’t open connections to the internet and most binding implementations only use outbound connections. You can design your firewall rules to allow outbound connections only through designated ports.
+
+## Run as non-root in Kubernetes
+When running in Kubernetes, Dapr services ensure each process is running as non-root. This is done by checking the UID & GID of the process is `65532`, and fatal erroring if it is not what is expected. If you must run a non-default UID & GID in Kubernetes, set the following env var to skip this check.
+```bash
+DAPR_UNSAFE_SKIP_CONTAINER_UID_GID_CHECK="true"
+```
 
 # Security policies
 

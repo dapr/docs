@@ -120,6 +120,12 @@ Even if the message fails to deliver, or your application crashes, Dapr attempts
 
 All Dapr pub/sub components support the at-least-once guarantee.
 
+### Subscription startup reliability
+
+Dapr automatically retries failed subscription startups to improve reliability during deployment scenarios. This ensures your pub/sub applications remain resilient even when facing temporary connectivity or permission issues.
+
+When Dapr encounters errors starting subscriptions, it shows an error message in the logs and continues to try to start the subscription.
+
 ### Consumer groups and competing consumers pattern
 
 Dapr handles the burden of dealing with consumer groups and the competing consumers pattern. In the competing consumers pattern, multiple application instances using a single consumer group compete for the message. Dapr enforces the competing consumer pattern when replicas use the same `app-id` without explicit consumer group overrides. 
