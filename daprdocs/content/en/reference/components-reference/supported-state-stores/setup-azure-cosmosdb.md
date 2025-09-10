@@ -227,6 +227,13 @@ This particular optimization only makes sense if you are saving large objects to
 
 ## Workflow Limitations
 
+{{% alert title="Note" color="primary" %}}
+
+As described below, CosmosDB has limitations that likely make it unsuitable for production environments.
+There is currently no path for migrating Workflow data from CosmosDB to another state store, meaning exceeding these limits in production will result in failed workflows this no workaround.
+
+{{% /alert %}}
+
 The more complex a workflow is with number of activities, child workflows, etc, the more DB state operations it performs per state store transaction.
 All input & output values are saved to the workflow history, and are part of an operation of these transactions.
 CosmosDB has a [maximum document size of 2MB and maximum transaction size of 100 operations.](https://learn.microsoft.com/azure/cosmos-db/concepts-limits#per-request-limits).
