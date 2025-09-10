@@ -34,3 +34,4 @@ Hit the ground running with our Dapr quickstarts, complete with code samples aim
 | [Cryptography]({{% ref cryptography-quickstart %}}) | Encrypt and decrypt data using Dapr's cryptographic APIs. |
 | [Jobs]({{% ref jobs-quickstart %}}) | Schedule, retrieve, and delete jobs using Dapr's jobs APIs. |
 | [Conversation]({{% ref conversation-quickstart %}}) | Securely and reliably interact with Large Language Models (LLMs). |
+| [Dapr Agents]({{% ref dapr-agents-quickstarts.md %}}) | Build LLM-powered autonomous agentic applications. |

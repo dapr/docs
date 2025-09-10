@@ -141,6 +141,13 @@ Dapr can be used from any developer framework. Here are some that have been inte
 | [JavaScript](https://github.com/dapr/js-sdk) | [Express](https://expressjs.com/) | Build Express applications with Dapr APIs
 | [PHP]({{% ref php %}}) | | You can serve with Apache, Nginx, or Caddyserver.
 
+#### Dapr Agents
+
+![Dapr Agents  Overview](/images/dapr-agents/concepts-agents-overview.png)
+
+[Dapr Agents]({{% ref "../developing-applications/dapr-agents" %}})  is a Python framework for building LLM-powered autonomous agents that leverages Dapr's distributed systems capabilities for durable execution, with built-in security, observability, and state management.
+
+
 #### Integrations and extensions
 
 Visit the [integrations]({{% ref integrations %}}) page to learn about some of the first-class support Dapr has for various frameworks and external products, including:
