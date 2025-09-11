@@ -41,7 +41,7 @@ This is the sequence of interactions:
 3. The state and a transaction marker are written atomically in the same state store.  
    Both the business data and the marker are committed in the same transaction, preventing partial writes.
 
-4. Application receives a success response after the commit.  
+4. The application receives a success response after the transaction commits.  
    At this point, the application can continue, knowing state is saved and the event intent is guaranteed.
 
 5. Background subscriber reads the intent message.  
