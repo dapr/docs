@@ -44,7 +44,7 @@ This is the sequence of interactions:
 4. The application receives a success response after the transaction commits.  
    At this point, the application can continue, knowing state is saved and the event intent is guaranteed.
 
-5. Background subscriber reads the intent message.  
+5. A background subscriber reads the intent message.  
    When outbox is enabled, Dapr starts consumers that process the internal outbox topic.
 
 6. The subscriber verifies the transaction marker in the state store.  
@@ -731,3 +731,7 @@ The `data` CloudEvent field is reserved for Dapr's use only, and is non-customiz
 Watch [this video for an overview of the outbox pattern](https://youtu.be/rTovKpG0rhY?t=1338):
 
 {{< youtube id=rTovKpG0rhY start=1338 >}}
+
+## Next Steps
+
+[How Dapr Outbox Eliminates Dual Writes in Distributed Applications](https://www.diagrid.io/blog/how-dapr-outbox-eliminates-dual-writes-in-distributed-applications)
