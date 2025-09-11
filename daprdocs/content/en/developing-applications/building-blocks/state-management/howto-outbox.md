@@ -47,7 +47,7 @@ This is the sequence of interactions:
 5. Background subscriber reads the intent message.  
    When outbox is enabled, Dapr starts consumers that process the internal outbox topic.
 
-6. Subscriber verifies the transaction marker in the state store.  
+6. The subscriber verifies the transaction marker in the state store.  
    This check confirms that the database commit was successful before publishing externally.
 
 7. Verified business event is published to the external pub/sub topic.  
