@@ -53,7 +53,7 @@ This is the sequence of interactions:
 7. Verified business event is published to the external pub/sub topic.  
    The event is sent to the configured broker (Kafka, RabbitMQ, etc.) where other services can consume it.
 
-8. Marker is cleaned up (deleted) from the state store.  
+8. The marker is cleaned up (deleted) from the state store.  
    This prevents unbounded growth in the database once the event has been successfully delivered.
 
 9. Message is acknowledged and removed from internal topic  
