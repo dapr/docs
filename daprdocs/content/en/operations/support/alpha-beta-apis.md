@@ -17,8 +17,7 @@ description: "List of current alpha and beta APIs"
 | Cryptography    |  [Crypto proto](https://github.com/dapr/dapr/blob/5aba3c9aa4ea9b3f388df125f9c66495b43c5c9e/dapr/proto/runtime/v1/dapr.proto#L118)    | `v1.0-alpha1/crypto` | The cryptography API enables you to perform **high level** cryptography operations for encrypting and decrypting messages. | [Cryptography API]({{% ref "cryptography-overview.md" %}}) | v1.11 |
 | Jobs    |  [Jobs proto](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto#L212-219)    | `v1.0-alpha1/jobs` | The jobs API enables you to schedule and orchestrate jobs. | [Jobs API]({{% ref "jobs-overview.md" %}}) | v1.14 |
 | Streaming Subscription    |  [Streaming Subscription proto](https://github.com/dapr/dapr/blob/310c83140b2f0c3cb7d2bef19624df88af3e8e0a/dapr/proto/runtime/v1/dapr.proto#L454)    | N/A | 	Subscription is defined in the application code. Streaming subscriptions are dynamic, meaning they allow for adding or removing subscriptions at runtime. | [Streaming Subscription API]({{% ref "subscription-methods/#streaming-subscriptions" %}}) | v1.14 |
-| Conversation    |  [Conversation proto](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto#L221-222)    | `v1.0-alpha1/conversation` | Converse between different large language models using the conversation API. | [Conversation API]({{% ref "conversation-overview.md" %}}) | v1.15 |
-
+| Conversation    |  [Conversation proto](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto#L226)    | `v1.0-alpha2/conversation` | Converse between different large language models using the conversation API. | [Conversation API]({{% ref "conversation-overview.md" %}}) | v1.15 |
 
 ## Beta APIs
 
