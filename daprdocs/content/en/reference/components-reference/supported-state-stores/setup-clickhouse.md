@@ -70,7 +70,7 @@ Dapr can use any ClickHouse instance: containerized, running on your local dev m
    CREATE DATABASE IF NOT EXISTS dapr_state;
    ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
 {{% codetab %}}
 
