@@ -52,7 +52,7 @@ Dapr can use any ClickHouse instance: containerized, running on your local dev m
 
 {{< tabpane text=true >}}
 
-{{% codetab %}}
+{{% tab "Self-Hosted" %}}
 
 1. Run an instance of ClickHouse. You can run a local instance of ClickHouse in Docker with the following command:
 
