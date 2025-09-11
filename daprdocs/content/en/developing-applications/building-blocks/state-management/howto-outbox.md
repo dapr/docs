@@ -38,7 +38,7 @@ This is the sequence of interactions:
 2. Dapr publishes an intent message with a unique transaction ID to an internal outbox topic.  
    This durable record ensures the event intent exists before any database commit happens.
 
-3. State and a transaction marker are written atomically in the same state store.  
+3. The state and a transaction marker are written atomically in the same state store.  
    Both the business data and the marker are committed in the same transaction, preventing partial writes.
 
 4. Application receives a success response after the commit.  
