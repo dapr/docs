@@ -21,9 +21,7 @@ Some scenarios where this is useful include:
 
 <img src="/images/workflow-overview/workflow-multi-app-complex.png" width=800 alt="Diagram showing multi-application complex workflow">
 
-The image depicts a complex, multi-language workflow scenario with the following:
-
-Pattern: App1 (Java Main Workflow) -> App2 (Go GPU Activities) -> App3 (Java Child Workflow) -> App4 (Go GPU Activities)
+The image depicts a complex, multi-language workflow scenario with the following pattern:
 
 • **App1: Main Workflow Service** - Top-level orchestrator that coordinates the entire ML pipeline
 - Starts the process
@@ -33,25 +31,25 @@ Pattern: App1 (Java Main Workflow) -> App2 (Go GPU Activities) -> App3 (Java Chi
 - Ends the complete workflow
 - **Language: Java**
 
-• **App2: Data Processing Pipeline** - **GPU activities** only (no workflow)
+• **App2: Data Processing Pipeline** - **GPU activities** only
 - Data Ingesting Activity (GPU-accelerated)
 - Feature Engineering Activity (GPU-accelerated)
 - Returns completion signal to Main Workflow
 - **Language: Go**
 
 • **App3: ML Training Child Workflow** - Contains a child workflow and activities
-- Child workflow that orchestrates:
+- Child workflow orchestrates:
   - Data Processing Activity
   - Model Training Activity (GPU-intensive)
   - Model Validation Activity
-- Triggered by App2's data ingesting
+- Triggered by App2's activities completing
 - Returns completion signal to Main Workflow
 - **Language: Java**
 
-• **App4: Model Serving Service** - **Beefy GPU app** with activities only (no workflow)
+• **App4: Model Serving Service** - **Beefy GPU app** with activities only
 - Model Loading Activity (GPU memory intensive)
 - Inference Setup Activity (GPU-accelerated inference)
-- Triggered by App3's model validation
+- Triggered by App3's workflow completing
 - Returns completion signal to Main Workflow
 - **Language: Go**
 
@@ -75,7 +73,11 @@ Finally, the target app ID must have the activity or child workflow defined and 
 {{% /alert %}}
 
 {{% alert title="Important Limitations" color="warning" %}}
-- **SDKs supporting multi-application workflows** - Multi-application workflows are used via the SDKs. Currently Java (only activity calls) and Go (both activities and child workflows calls) SDKs support this feature. The SDKs (Python, .NET, JavaScript) are planned for future releases.
+**SDKs supporting multi-application workflows** - Multi-application workflows are used via the SDKs. 
+Currently the following is supported:
+- **Java** (**only** activity calls)
+- **Go** (**both** activities and child workflows calls) 
+- The Python, .NET, JavaScript SDKs support are planned for future releases
 {{% /alert %}}
 
 ## Error handling
