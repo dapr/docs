@@ -50,7 +50,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 Dapr can use any ClickHouse instance: containerized, running on your local dev machine, or a managed cloud service.
 
-{{< tabs "Self-Hosted" "Kubernetes" "Cloud" >}}
+{{< tabpane text=true >}}
 
 {{% codetab %}}
 
