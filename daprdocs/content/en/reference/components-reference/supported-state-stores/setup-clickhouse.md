@@ -110,7 +110,7 @@ When using a managed service, ensure you have the correct connection URL, databa
 
 {{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Features
 
