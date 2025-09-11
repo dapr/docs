@@ -197,10 +197,12 @@ public class DemoWorkflowActivity implements WorkflowActivity {
 
 <!--go-->
 
+### Define workflow activities
+
 Define each workflow activity you'd like your workflow to perform. The Activity input can be unmarshalled from the context with `ctx.GetInput`. Activities should be defined as taking a `ctx workflow.ActivityContext` parameter and returning an interface and error.
  
 ```go
-func TestActivity(ctx workflow.ActivityContext) (any, error) {
+func BusinessActivity(ctx workflow.ActivityContext) (any, error) {
 	var input int
 	if err := ctx.GetInput(&input); err != nil {
 		return "", err
@@ -210,6 +212,92 @@ func TestActivity(ctx workflow.ActivityContext) (any, error) {
 	return "result", nil
 }
 ```
+
+### Define the workflow
+
+Define your workflow function with the parameter `ctx *workflow.WorkflowContext` and return any and error. Invoke your defined activities from within your workflow.
+
+```go
+func BusinessWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+	var input int
+	if err := ctx.GetInput(&input); err != nil {
+		return nil, err
+	}
+	var output string
+	if err := ctx.CallActivity(BusinessActivity, workflow.ActivityInput(input)).Await(&output); err != nil {
+		return nil, err
+	}
+	if err := ctx.WaitForExternalEvent("businessEvent", time.Second*60).Await(&output); err != nil {
+		return nil, err
+	}
+	
+	if err := ctx.CreateTimer(time.Second).Await(nil); err != nil {
+		return nil, nil
+	}
+	return output, nil
+}
+```
+
+### Register workflows and activities
+
+Before your application can execute workflows, you must register both the workflow orchestrator and its activities with a workflow worker. This is a crucial step that ensures Dapr knows which functions to call when executing your workflow.
+
+```go
+func main() {
+	// Create a workflow worker
+	w, err := workflow.NewWorker()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Worker initialized")
+
+	// Register the workflow orchestrator
+	if err := w.RegisterWorkflow(BusinessWorkflow); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("BusinessWorkflow registered")
+
+	// Register the workflow activities
+	if err := w.RegisterActivity(BusinessActivity); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("BusinessActivity registered")
+
+	// Start workflow worker
+	if err := w.Start(); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Workflow worker started")
+
+	// Create workflow client for managing workflows
+	wfClient, err := workflow.NewClient()
+	if err != nil {
+		log.Fatalf("failed to initialize client: %v", err)
+	}
+	defer wfClient.Close()
+
+	// Your application logic continues here...
+	// Example: Start a workflow
+	ctx := context.Background()
+	instanceID, err := wfClient.ScheduleNewWorkflow(ctx, "BusinessWorkflow", workflow.WithInput(1))
+	if err != nil {
+		log.Fatalf("failed to start workflow: %v", err)
+	}
+	fmt.Printf("workflow started with id: %v\n", instanceID)
+
+	// Stop workflow worker when done
+	if err := w.Shutdown(); err != nil {
+		log.Fatalf("failed to shutdown worker: %v", err)
+	}
+}
+```
+
+**Key points about registration:**
+- Use `workflow.NewWorker()` to create a workflow worker
+- Use `w.RegisterWorkflow()` to register workflow functions
+- Use `w.RegisterActivity()` to register activity functions  
+- Call `w.Start()` to begin processing workflows
+- Use `workflow.NewClient()` to create a client for managing workflows
 
 [See the Go SDK workflow activity example in context.](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)
 
@@ -383,16 +471,16 @@ public class DemoWorkflowWorker {
 Define your workflow function with the parameter `ctx *workflow.WorkflowContext` and return any and error. Invoke your defined activities from within your workflow.
 
 ```go
-func TestWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+func BusinessWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 	var input int
 	if err := ctx.GetInput(&input); err != nil {
 		return nil, err
 	}
 	var output string
-	if err := ctx.CallActivity(TestActivity, workflow.ActivityInput(input)).Await(&output); err != nil {
+	if err := ctx.CallActivity(BusinessActivity, workflow.ActivityInput(input)).Await(&output); err != nil {
 		return nil, err
 	}
-	if err := ctx.WaitForExternalEvent("testEvent", time.Second*60).Await(&output); err != nil {
+	if err := ctx.WaitForExternalEvent("businessEvent", time.Second*60).Await(&output); err != nil {
 		return nil, err
 	}
 	
@@ -864,7 +952,7 @@ public class DemoWorkflow extends Workflow {
 [As in the following example](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md), a hello-world application using the Go SDK and Dapr Workflow would include:
 
 - A Go package called `client` to receive the Go SDK client capabilities.
-- The `TestWorkflow` method
+- The `BusinessWorkflow` method
 - Creating the workflow with input and output.
 - API calls. In the example below, these calls start and call the workflow activities.
 
@@ -889,15 +977,15 @@ var failActivityTries = 0
 func main() {
 	r := workflow.NewRegistry()
 
-	if err := r.AddWorkflow(TestWorkflow); err != nil {
+	if err := r.AddWorkflow(BusinessWorkflow); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("TestWorkflow registered")
+	fmt.Println("BusinessWorkflow registered")
 
-	if err := r.AddActivity(TestActivity); err != nil {
+	if err := r.AddActivity(BusinessActivity); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("TestActivity registered")
+	fmt.Println("BusinessActivity registered")
 
 	if err := r.AddActivity(FailActivity); err != nil {
 		log.Fatal(err)
@@ -921,7 +1009,7 @@ func main() {
 	// "start". This is useful for increasing the throughput of creating
 	// workflows.
 	// workflow.WithStartTime(time.Now())
-	instanceID, err := wclient.ScheduleWorkflow(ctx, "TestWorkflow", workflow.WithInstanceID("a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9"), workflow.WithInput(1))
+	instanceID, err := wclient.ScheduleWorkflow(ctx, "BusinessWorkflow", workflow.WithInstanceID("a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9"), workflow.WithInput(1))
 	if err != nil {
 		log.Fatalf("failed to start workflow: %v", err)
 	}
@@ -963,9 +1051,8 @@ func main() {
 
 	fmt.Printf("stage: %d\n", stage)
 
-	// Raise Event Test
-
-	err = wclient.RaiseEvent(ctx, instanceID, "testEvent", workflow.WithEventPayload("testData"))
+	// Raise Event
+	err = wclient.RaiseEvent(ctx, instanceID, "businessEvent", workflow.WithEventPayload("testData"))
 	if err != nil {
 		fmt.Printf("failed to raise event: %v", err)
 	}
@@ -1037,22 +1124,22 @@ func main() {
 	fmt.Println("workflow worker successfully shutdown")
 }
 
-func TestWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+func BusinessWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 	var input int
 	if err := ctx.GetInput(&input); err != nil {
 		return nil, err
 	}
 	var output string
-	if err := ctx.CallActivity(TestActivity, workflow.WithActivityInput(input)).Await(&output); err != nil {
+	if err := ctx.CallActivity(BusinessActivity, workflow.WithActivityInput(input)).Await(&output); err != nil {
 		return nil, err
 	}
 
-	err := ctx.WaitForExternalEvent("testEvent", time.Second*60).Await(&output)
+	err := ctx.WaitForExternalEvent("businessEvent", time.Second*60).Await(&output)
 	if err != nil {
 		return nil, err
 	}
 
-	if err := ctx.CallActivity(TestActivity, workflow.WithActivityInput(input)).Await(&output); err != nil {
+	if err := ctx.CallActivity(BusinessActivity, workflow.WithActivityInput(input)).Await(&output); err != nil {
 		return nil, err
 	}
 
@@ -1068,7 +1155,7 @@ func TestWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 	return output, nil
 }
 
-func TestActivity(ctx workflow.ActivityContext) (any, error) {
+func BusinessActivity(ctx workflow.ActivityContext) (any, error) {
 	var input int
 	if err := ctx.GetInput(&input); err != nil {
 		return "", err
