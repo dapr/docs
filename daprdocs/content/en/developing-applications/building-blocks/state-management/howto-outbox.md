@@ -26,7 +26,7 @@ The diagram below is an overview of how the outbox feature works at a high level
 
 ## How outbox works under the hood
 
-Dapr Outbox processes requests in two flows: the user request flow and the background message flow. Together, they guarantee that state and events stay consistent.
+Dapr outbox processes requests in two flows: the user request flow and the background message flow. Together, they guarantee that state and events stay consistent.
 
 <img src="/images/state-management-outbox-steps.png" width=800 alt="Diagram showing the steps of the outbox pattern">
 
