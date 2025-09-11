@@ -7,7 +7,7 @@ description: "Configure http requests that are bigger than 4 MB"
 ---
 
 {{% alert title="Note" color="primary" %}}
-The existing flag/annotation `dapr-http-max-request-size` has been deprecated and replaced with the below. It will be removed in the next release.
+The existing flag/annotation`dapr-http-max-request-size` has been deprecated, please update to `max-body-size`.
 
 Certification lifecycle only applies to built-in components and does not apply to [pluggable components]({{<ref "components-concept.md#Built-in-and-pluggable-components" >}}).
 {{% /alert %}}
