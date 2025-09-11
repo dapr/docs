@@ -72,7 +72,7 @@ Dapr can use any ClickHouse instance: containerized, running on your local dev m
 
 {{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Kubernetes" %}}
 
 You can use [Helm](https://helm.sh/) to quickly create a ClickHouse instance in your Kubernetes cluster. This approach requires [Installing Helm](https://github.com/helm/helm#install).
 
