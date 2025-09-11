@@ -108,7 +108,7 @@ ClickHouse is available as a managed service from various cloud providers:
 
 When using a managed service, ensure you have the correct connection URL, database name, and credentials configured in your component metadata.
 
-{{% /codetab %}}
+{{% /tab %}}
 
 {{< /tabs >}}
 
