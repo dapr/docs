@@ -98,7 +98,7 @@ You can use [Helm](https://helm.sh/) to quickly create a ClickHouse instance in 
 
 {{% /tab %}}
 
-{{% codetab %}}
+{{% tab "Cloud" %}}
 
 ClickHouse is available as a managed service from various cloud providers:
 
