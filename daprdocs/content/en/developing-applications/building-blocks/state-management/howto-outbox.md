@@ -30,7 +30,7 @@ Dapr outbox processes requests in two flows: the user request flow and the backg
 
 <img src="/images/state-management-outbox-steps.png" width=800 alt="Diagram showing the steps of the outbox pattern">
 
-Here is the full sequence of interactions:
+This is the sequence of interactions:
 
 1. Application calls the Dapr State API to write state transactionally.  
    This is the entry point where business data, such as an order or profile update, is submitted for persistence.
