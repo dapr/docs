@@ -96,7 +96,7 @@ You can use [Helm](https://helm.sh/) to quickly create a ClickHouse instance in 
      value: "clickhouse://clickhouse:9000"
    ```
 
-{{% /codetab %}}
+{{% /tab %}}
 
 {{% codetab %}}
 
