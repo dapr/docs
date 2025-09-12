@@ -31,7 +31,7 @@ The following features are out-of-the-box for [all the supported conversation co
 
 ### Prompt caching
 
-Prompt caching optimizes performance by storing and reusing prompts that are often repeated across multiple API calls. To significantly reduce latency and cost, Dapr stores frequent prompts in a local cache to be reused by your cluster, pod, or other, instead of reprocessing the information for every new request. 
+The Conversation API includes a built-in caching mechanism (enabled by the cacheTTL parameter) that optimizes both performance and cost by storing previous model responses for faster delivery to repetitive requests. This is particularly valuable in scenarios where similar prompt patterns occur frequently. When caching is enabled, Dapr creates a deterministic hash of the prompt text and all configuration parameters, checks if a valid cached response exists for this hash within the time period (for example, 10 minutes), and returns the cached response immediately if found. If no match exists, Dapr makes the API call and stores the result. This eliminates external API calls, lowers latency, and avoids provider charges for repeated requests. The cache exists entirely within your runtime environment, with each Dapr sidecar maintaining its own local cache.
 
 ### Personally identifiable information (PII) obfuscation
 
