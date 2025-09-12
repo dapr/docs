@@ -6,7 +6,7 @@ weight: 7000
 description: "Executing workflows across multiple applications"
 ---
 
-It is often the case that a single workflow spans multiple applications, microservices, or programing languages.
+It is often the case that a single workflow spans multiple applications, microservices, or programming languages.
 This is where an activity or a child workflow will be executed on a different application than the one hosting the parent workflow.
 
 Some scenarios where this is useful include:
@@ -16,15 +16,15 @@ Some scenarios where this is useful include:
 - Different parts of the workflow need to be executed in different trust zones or networks.
 - Different parts of the workflow need to be executed in different geographic regions due to data residency requirements.
 - An involved business process spans multiple teams or departments, each owning their own application.
-- Implementation of a workflow spans different programming lanaguages based on team expertise or existing codebases.
+- Implementation of a workflow spans different programming languages based on team expertise or existing codebases.
 - Different team boundaries or microservice ownership.
 
 
 ## Multi-application workflows
 
 Like all building blocks in Dapr, workflow execution routing is based on the [App ID of the hosting Dapr application]({{% ref "security-concept.md#application-identity" %}}).
-By default, the full workflow execution is hosted on the app ID that started the workflow.
-This workflow will be executed across all replicas of that app ID, not just the single replica which scheduled the workflow.
+By default, the full workflow execution is hosted on the app ID that started the workflow. This workflow can be executed across any replicas of that app ID, not just the single replica which scheduled the workflow.
+
 
 It is possible to execute activities or child workflows on different app IDs by specifying the target app ID parameter, inside the workflow execution code.
 Upon execution, the target app ID will execute the activity or child workflow, and return the result to the parent workflow of the originating app ID.
@@ -50,7 +50,7 @@ When calling multi-application activities or child workflows:
 - If the target application exists but doesn't contain the specified activity or workflow, the call will return an error.
 - Standard workflow retry policies apply to multi-application calls.
 
-It is paramount that there is co-ordination between the teams owning the different app IDs to ensure that the activities and child workflows are defined and available when needed.
+It is paramount that there is coordination between the teams owning the different app IDs to ensure that the activities and child workflows are defined and available when needed.
 
 ## Multi-application activity example
 
@@ -63,11 +63,11 @@ The following example shows how to execute the activity `ActivityA` on the targe
 {{% tab "Go" %}}
 
 ```go
-func TestWorkflow(ctx *task.OrchestrationContext) (any, error) {
+func TestWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 	var output string
 	err := ctx.CallActivity("ActivityA",
-		task.WithActivityInput("my-input"),
-		task.WithActivityAppID("App2"), // Here we set the target app ID which will execute this activity.
+		workflow.WithActivityInput("my-input"),
+		workflow.WithActivityAppID("App2"), // Here we set the target app ID which will execute this activity.
 	).Await(&output)
 
 	if err != nil {
@@ -115,11 +115,11 @@ The following example shows how to execute the child workflow `Workflow2` on the
 {{% tab "Go" %}}
 
 ```go
-func TestWorkflow(ctx *task.OrchestrationContext) (any, error) {
+func TestWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 	var output string
-	err := ctx.CallSubOrchestrator("Workflow2",
-		task.WithSubOrchestratorInput("my-input"),
-		task.WithSubOrchestratorAppID("App2"), // Here we set the target app ID which will execute this child workflow.
+	err := ctx.CallChildWorkflow("Workflow2",
+		workflow.WithChildWorkflowInput("my-input"),
+		workflow.WithChildWorkflowAppID("App2"), // Here we set the target app ID which will execute this child workflow.
 	).Await(&output)
 
 	if err != nil {
