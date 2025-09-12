@@ -16,23 +16,72 @@ For example, you can use the outbox pattern to:
 
 With Dapr's outbox support, you can notify subscribers when an application's state is created or updated when calling Dapr's [transactions API]({{% ref "state_api.md#state-transactions" %}}).
 
-The diagram below is an overview of how the outbox feature works:
+The diagram below is an overview of how the outbox feature works at a high level:
 
 1) Service A saves/updates state to the state store using a transaction.
 2) A message is written to the broker under the same transaction. When the message is successfully delivered to the message broker, the transaction completes, ensuring the state and message are transacted together.
 3) The message broker delivers the message topic to any subscribers - in this case, Service B.
 
-<img src="/images/state-management-outbox.png" width=800 alt="Diagram showing the steps of the outbox pattern">
+<img src="/images/state-management-outbox.png" width=800 alt="Diagram showing the overview of outbox pattern">
 
+## How outbox works under the hood
+
+Dapr outbox processes requests in two flows: the user request flow and the background message flow. Together, they guarantee that state and events stay consistent.
+
+<img src="/images/state-management-outbox-steps.png" width=800 alt="Diagram showing the steps of the outbox pattern">
+
+This is the sequence of interactions:
+
+1. An application calls the Dapr State Management API to write state transactionally using the transactional methods.  
+   This is the entry point where business data, such as an order or profile update, is submitted for persistence.
+
+2. Dapr publishes an intent message with a unique transaction ID to an internal outbox topic.  
+   This durable record ensures the event intent exists before any database commit happens.
+
+3. The state and a transaction marker are written atomically in the same state store.  
+   Both the business data and the marker are committed in the same transaction, preventing partial writes.
+
+4. The application receives a success response after the transaction commits.  
+   At this point, the application can continue, knowing state is saved and the event intent is guaranteed.
+
+5. A background subscriber reads the intent message.  
+   When outbox is enabled, Dapr starts consumers that process the internal outbox topic.
+
+6. The subscriber verifies the transaction marker in the state store.  
+   This check confirms that the database commit was successful before publishing externally.
+
+7. Verified business event is published to the external pub/sub topic.  
+   The event is sent to the configured broker (Kafka, RabbitMQ, etc.) where other services can consume it.
+
+8. The marker is cleaned up (deleted) from the state store.  
+   This prevents unbounded growth in the database once the event has been successfully delivered.
+
+9. Message is acknowledged and removed from internal topic  
+   If publishing or cleanup fails, Dapr retries, ensuring reliable at-least-once delivery.
+  
 ## Requirements
 
-The outbox feature can be used with using any [transactional state store]({{% ref supported-state-stores %}}) supported by Dapr. All [pub/sub brokers]({{% ref supported-pubsub %}}) are supported with the outbox feature.
+1. The outbox feature requires a [transactional state store]({{% ref supported-state-stores %}}) supported by Dapr.  
+   [Learn more about the transactional methods you can use.]({{% ref "howto-get-save-state.md#perform-state-transactions" %}})
 
-[Learn more about the transactional methods you can use.]({{% ref "howto-get-save-state.md#perform-state-transactions" %}})
+2. Any [pub/sub broker]({{% ref supported-pubsub %}}) supported by Dapr can be used with the outbox feature.
 
-{{% alert title="Note" color="primary" %}} 
-Message brokers that work with the competing consumer pattern (for example, [Apache Kafka]({{% ref setup-apache-kafka%}})) are encouraged to reduce the chances of duplicate events.
-{{% /alert %}}
+   {{% alert title="Note" color="primary" %}}
+   Message brokers that support the competing consumer pattern (for example, [Apache Kafka]({{% ref setup-apache-kafka%}})) are recommended to reduce the chance of duplicate events.
+   {{% /alert %}}
+
+3. Internal outbox topic  
+   When outbox is enabled, Dapr creates an internal topic using the following naming convention: `{namespace}{appID}{topic}outbox`, where:
+
+   - `namespace`: the Dapr application namespace (if configured)
+   - `appID`: the Dapr application identifier
+   - `topic`: the value specified in the `outboxPublishTopic` metadata
+
+   This way each outbox topic is uniquely identified per application and external topic, preventing routing conflicts in multi-tenant environments.
+
+   {{% alert title="Note" color="primary" %}}
+   Ensure that the topic is created in advance, or Dapr has sufficient permissions to create the topic at startup time.
+   {{% /alert %}}
 
 ## Enable the outbox pattern
 
@@ -682,3 +731,7 @@ The `data` CloudEvent field is reserved for Dapr's use only, and is non-customiz
 Watch [this video for an overview of the outbox pattern](https://youtu.be/rTovKpG0rhY?t=1338):
 
 {{< youtube id=rTovKpG0rhY start=1338 >}}
+
+## Next Steps
+
+[How Dapr Outbox Eliminates Dual Writes in Distributed Applications](https://www.diagrid.io/blog/how-dapr-outbox-eliminates-dual-writes-in-distributed-applications)
