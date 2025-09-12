@@ -21,7 +21,7 @@ Some scenarios where this is useful include:
 
 <img src="/images/workflow-overview/workflow-multi-app-complex.png" width=800 alt="Diagram showing multi-application complex workflow">
 
-The image depicts a complex, multi-language workflow scenario with the following pattern:
+The diagram below shows an example scenario of a complex workflow that orchestrates across multiple applications that are written in different languages. Each applications' main steps and activities are;
 
 • **App1: Main Workflow Service** - Top-level orchestrator that coordinates the entire ML pipeline
 - Starts the process
@@ -55,26 +55,26 @@ The image depicts a complex, multi-language workflow scenario with the following
 
 ## Multi-application workflows
 
-Like all building blocks in Dapr, workflow execution routing is based on the [App ID of the hosting Dapr application]({{% ref "security-concept.md#application-identity" %}}).
+Workflow execution routing is based on the [App ID of the hosting Dapr application]({{% ref "security-concept.md#application-identity" %}}).
 By default, the full workflow execution is hosted on the app ID that started the workflow. This workflow can be executed across any replicas of that app ID, not just the single replica which scheduled the workflow.
 
 
 It is possible to execute activities and child workflows on different app IDs by specifying the target app ID parameter, inside the workflow execution code.
-Upon execution, the target app ID will execute the activity or child workflow, and return the result to the parent workflow of the originating app ID.
+Upon execution, the target app ID executes the activity or child workflow, and returns the result to the parent workflow of the originating app ID.
 
 The entire Workflow execution may be distributed across multiple app IDs with no limit, with each activity or child workflow specifying the target app ID.
 The final history of the workflow will be saved by the app ID that hosts the very parent (or can consider it the root) workflow.
 
 {{% alert title="Restrictions" color="primary" %}}
-Like other building blocks and resources in Dapr, workflows are scoped to a single namespace.
+Like other API building blocks and resources in Dapr, workflows are scoped to a single namespace.
 This means that all app IDs involved in a multi-application workflow must be in the same namespace.
-Similarly, all app IDs must use the same actor state store.
-Finally, the target app ID must have the activity or child workflow defined and registered, otherwise the parent workflow will retry indefinitely.
+Similarly, all app IDs must use the same workflow (or actor) state store.
+Finally, the target app ID must have the activity or child workflow defined and registered, otherwise the parent workflow retries indefinitely.
 {{% /alert %}}
 
 {{% alert title="Important Limitations" color="warning" %}}
 **SDKs supporting multi-application workflows** - Multi-application workflows are used via the SDKs. 
-Currently the following is supported:
+Currently the following are supported:
 - **Java** (**only** activity calls)
 - **Go** (**both** activities and child workflows calls) 
 - The Python, .NET, JavaScript SDKs support are planned for future releases

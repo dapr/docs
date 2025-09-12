@@ -240,7 +240,7 @@ func BusinessWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 
 ### Register workflows and activities
 
-Before your application can execute workflows, you must register both the workflow orchestrator and its activities with a workflow registry. This is a crucial step that ensures Dapr knows which functions to call when executing your workflow.
+Before your application can execute workflows, you must register both the workflow orchestrator and its activities with a workflow registry. This ensures Dapr knows which functions to call when executing your workflow.
 
 ```go
 func main() {
