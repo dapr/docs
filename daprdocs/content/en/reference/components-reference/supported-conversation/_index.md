@@ -2,7 +2,7 @@
 type: docs
 title: "Conversation component specs"
 linkTitle: "Conversation"
-weight: 9000
+weight: 3000
 description: The supported conversation components that interface with Dapr
 no_list: true
 ---

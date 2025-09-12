@@ -3,7 +3,7 @@ type: docs
 title: "Workflow API reference"
 linkTitle: "Workflow API"
 description: "Detailed documentation on the workflow API"
-weight: 300
+weight: 1600
 ---
 
 Dapr provides users with the ability to interact with workflows through its built-in workflow engine, which is implemented using Dapr Actors. This workflow engine is accessed using the name `dapr` in API calls as the `workflowComponentName`.

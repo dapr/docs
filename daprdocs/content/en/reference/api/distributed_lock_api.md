@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "Distributed Lock API reference"
-linkTitle: "Distributed Lock API"
+title: "Distributed lock API reference"
+linkTitle: "Distributed lock API"
 description: "Detailed documentation on the distributed lock API"
-weight: 900
+weight: 700
 ---
 
 ## Lock
