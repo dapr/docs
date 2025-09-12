@@ -20,10 +20,10 @@ In addition to enabling critical performance and security functionality (like [p
 - **OpenAI-compatible interface** for seamless integration with existing AI workflows and tools
 
 You can also pair the conversation API with Dapr functionalities, like:
-- Resiliency circuit breakers and retries to circumvent limit and token errors, or 
-- Middleware to authenticate requests coming to and from the LLM
 
-Dapr provides observability by issuing metrics for your LLM interactions.
+- Resiliency policies including circuit breakers to handle repeated errors, timeouts to safeguards from slow responses, and retries for temporary network failures
+- Observability with metrics and distributed tracing using OpenTelemetry and Zipkin
+- Middleware to authenticate requests to and from the LLM
 
 ## Features
 
@@ -67,7 +67,7 @@ Watch the demo presented during [Diagrid's Dapr v1.15 celebration](https://www.d
 
 {{< youtube id=NTnwoDhHIcQ start=5444 >}}
 
-## Try out conversation
+## Try out conversation API
 
 ### Quickstarts and tutorials
 
