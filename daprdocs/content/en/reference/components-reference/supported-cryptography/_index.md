@@ -2,7 +2,7 @@
 type: docs
 title: "Cryptography component specs"
 linkTitle: "Cryptography"
-weight: 8000
+weight: 4000
 description: The supported cryptography components that interface with Dapr
 no_list: true
 ---

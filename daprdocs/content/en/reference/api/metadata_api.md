@@ -3,7 +3,7 @@ type: docs
 title: "Metadata API reference"
 linkTitle: "Metadata API"
 description: "Detailed documentation on the Metadata API"
-weight: 1100
+weight: 1000
 ---
 
 Dapr has a metadata API that returns information about the sidecar allowing runtime discoverability. The metadata endpoint returns the following information.

@@ -3,7 +3,7 @@ type: docs
 title: "Actors API reference"
 linkTitle: "Actors API"
 description: "Detailed documentation on the actors API"
-weight: 600
+weight: 200
 ---
 
 Dapr provides native, cross-platform, and cross-language virtual actor capabilities.
