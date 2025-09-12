@@ -8,8 +8,6 @@ description: "Configure http requests that are bigger than 4 MB"
 
 {{% alert title="Note" color="primary" %}}
 The existing flag/annotation`dapr-http-max-request-size` has been deprecated and updated to `max-body-size`.
-
-Certification lifecycle only applies to built-in components and does not apply to [pluggable components]({{<ref "components-concept.md#Built-in-and-pluggable-components" >}}).
 {{% /alert %}}
 
 By default, Dapr has a limit for the request body size, set to 4MB. You can change this for both HTTP and gRPC requests by defining:
