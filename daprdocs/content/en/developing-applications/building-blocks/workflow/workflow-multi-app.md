@@ -21,7 +21,7 @@ Some scenarios where this is useful include:
 
 <img src="/images/workflow-overview/workflow-multi-app-complex.png" width=800 alt="Diagram showing multi-application complex workflow">
 
-The diagram below shows an example scenario of a complex workflow that orchestrates across multiple applications that are written in different languages. Each applications' main steps and activities are;
+The diagram below shows an example scenario of a complex workflow that orchestrates across multiple applications that are written in different languages. Each applications' main steps and activities are:
 
 • **App1: Main Workflow Service** - Top-level orchestrator that coordinates the entire ML pipeline
 - Starts the process

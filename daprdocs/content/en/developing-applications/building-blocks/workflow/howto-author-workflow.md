@@ -292,6 +292,7 @@ func main() {
 - Use `r.AddActivity()` to register activity functions  
 - Use `client.NewWorkflowClient()` to create a workflow client
 - Call `wclient.StartWorker()` to begin processing workflows
+- Use `wclient.ScheduleWorkflow` to schedule a named instance of a workflow
 
 [See the Go SDK workflow activity example in context.](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)
 
