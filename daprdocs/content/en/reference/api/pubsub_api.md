@@ -3,7 +3,7 @@ type: docs
 title: "Pub/sub API reference"
 linkTitle: "Pub/Sub API"
 description: "Detailed documentation on the pub/sub API"
-weight: 200
+weight: 1200
 ---
 
 ## Publish a message to a given topic

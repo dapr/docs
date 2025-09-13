@@ -2,7 +2,7 @@
 type: docs
 title: "Configuration store component specs"
 linkTitle: "Configuration stores"
-weight: 6000
+weight: 2000
 description: The supported configuration stores that interface with Dapr
 aliases:
   - "/operations/components/setup-configuration-store/supported-configuration-stores/"
