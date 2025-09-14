@@ -21,7 +21,7 @@ The following table lists the environment variables used by the Dapr runtime, CL
 | SSL_CERT_DIR | Dapr sidecar | Specifies the location where the public certificates for all the trusted certificate authorities (CA) are located. Not applicable when the sidecar is running as a process in self-hosted mode.|
 | DAPR_HELM_REPO_URL | Your private Dapr Helm chart url  | Specifies a private Dapr Helm chart url, which defaults to the official Helm chart URL: `https://dapr.github.io/helm-charts`|
 | DAPR_HELM_REPO_USERNAME | A username for a private Helm chart | The username required to access the private Dapr Helm chart. If it can be accessed publicly, this env variable does not need to be set|
-| DAPR_HELM_REPO_PASSWORD | A password for a private Helm chart  |The password required to access the private Dapr helm chart. If it can be accessed publicly, this env variable does not need to be set| 
+| DAPR_HELM_REPO_PASSWORD | A password for a private Helm chart  |The password required to access the private Dapr helm chart. If it can be accessed publicly, this env variable does not need to be set|
 | OTEL_EXPORTER_OTLP_ENDPOINT | OpenTelemetry Tracing | Sets the Open Telemetry (OTEL) server address, turns on tracing. (Example: `http://localhost:4318`) |
 | OTEL_EXPORTER_OTLP_INSECURE | OpenTelemetry Tracing | Sets the connection to the endpoint as unencrypted. (`true`, `false`) |
 | OTEL_EXPORTER_OTLP_PROTOCOL | OpenTelemetry Tracing | The OTLP protocol to use Transport protocol. (`grpc`, `http/protobuf`, `http/json`) |
@@ -30,3 +30,11 @@ The following table lists the environment variables used by the Dapr runtime, CL
 | DAPR_PLACEMENT_METADATA_ENABLED | Dapr placement | Enable an endpoint for the Placement service that exposes placement table information on actor usage. Set to `true` to enable in self-hosted mode. [Learn more about the Placement API]({{< ref placement_api.md >}}) |
 | DAPR_HOST_IP | Dapr sidecar | The host's chosen IP address. If not specified, will loop over the network interfaces and select the first non-loopback address it finds.|
 | DAPR_HEALTH_TIMEOUT | SDKs | Sets the time on the "wait for sidecar" availability. Overrides the default timeout setting of 60 seconds. |
+| OPENAI_MODEL | Conversation components | Default model name used by the `conversation.openai` component at runtime when no `model` metadata is set in the component file. Default: `gpt-5-nano`. |
+| AZURE_OPENAI_MODEL | Conversation components / Azure config | Default Azure model name used by the `conversation.openai` component when `apiType: azure` is configured and no `model` metadata is provided. Default: `gpt-4.1-mini`. |
+| ANTHROPIC_MODEL | Conversation components | Default model name used by the `conversation.anthropic` component when no `model` metadata is set in the component file. Default: `claude-sonnet-4-20250514`. |
+| GOOGLEAI_MODEL | Conversation components | Default model name used by the `conversation.googleai` component when no `model` metadata is set in the component file. Default: `gemini-2.5-flash-lite`. |
+| MISTRAL_MODEL | Conversation components | Default model name used by the `conversation.mistral` component when no `model` metadata is set in the component file. Default: `open-mistral-7b`. |
+| HUGGINGFACE_MODEL | Conversation components | Default model name used by the `conversation.huggingface` component when no `model` metadata is set in the component file. Default: `deepseek-ai/DeepSeek-R1-Distill-Qwen-32B`. |
+| OLLAMA_MODEL | Conversation components | Default model name used by the `conversation.ollama` component when no `model` metadata is set in the component file. Default: `llama3.2:latest`. |
+ 

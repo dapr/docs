@@ -20,7 +20,7 @@ spec:
   - name: key
     value: "mykey"
   - name: model
-    value: '${{DAPR_CONVERSATION_GOOGLEAI_MODEL}}'
+    value: 'gemini-2.5-flash-lite'
   - name: cacheTTL
     value: 10m
 ```
@@ -34,7 +34,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | `key`   | Y | API key for GoogleAI. | `"mykey"` |
-| `model` | N | The GoogleAI LLM to use. Defaults to `gemini-1.5-flash` (configurable via `DAPR_CONVERSATION_GOOGLEAI_MODEL` environment variable).  | `${{DAPR_CONVERSATION_GOOGLEAI_MODEL}}` |
+| `model` | N | The GoogleAI LLM to use. Defaults to `gemini-2.5-flash-lite` (configurable via the `GOOGLEAI_MODEL` environment variable).  | `gemini-2.5-flash-lite` |
 | `cacheTTL` | N | A time-to-live value for a prompt cache to expire. Uses Golang duration format.  | `10m` |
 
 ## Related links

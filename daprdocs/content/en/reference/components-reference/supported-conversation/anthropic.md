@@ -20,7 +20,7 @@ spec:
   - name: key
     value: "mykey"
   - name: model
-  value: '${{DAPR_CONVERSATION_ANTHROPIC_MODEL}}'
+  value: 'claude-sonnet-4-20250514'
   - name: cacheTTL
     value: 10m
 ```
@@ -34,7 +34,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | `key`   | Y | API key for Anthropic. | `"mykey"` |
-| `model` | N | The Anthropic LLM to use. Defaults to `claude-3-5-sonnet-20240620` (configurable via `DAPR_CONVERSATION_ANTHROPIC_MODEL` environment variable).  | `${{DAPR_CONVERSATION_ANTHROPIC_MODEL}}` |
+| `model` | N | The Anthropic LLM to use. Defaults to `claude-sonnet-4-20250514` (configurable via the `ANTHROPIC_MODEL` environment variable).  | `claude-sonnet-4-20250514` |
 | `cacheTTL` | N | A time-to-live value for a prompt cache to expire. Uses Golang duration format.  | `10m` |
 
 ## Related links

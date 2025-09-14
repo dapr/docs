@@ -18,7 +18,7 @@ spec:
   type: conversation.ollama
   metadata:
   - name: model
-    value: '${{DAPR_CONVERSATION_OLLAMA_MODEL}}'
+    value: 'llama3.2:latest'
   - name: cacheTTL
     value: 10m
 ```
@@ -31,7 +31,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| `model` | N | The Ollama LLM to use. Defaults to `llama3.2:latest` (configurable via `DAPR_CONVERSATION_OLLAMA_MODEL` environment variable).  | `${{DAPR_CONVERSATION_OLLAMA_MODEL}}` |
+| `model` | N | The Ollama LLM to use. Defaults to `llama3.2:latest` (configurable via the `OLLAMA_MODEL` environment variable).  | `llama3.2:latest` |
 | `cacheTTL` | N | A time-to-live value for a prompt cache to expire. Uses Golang duration format.  | `10m` |
 
 ## Related links
