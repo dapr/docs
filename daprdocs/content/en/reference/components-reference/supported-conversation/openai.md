@@ -41,7 +41,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 The `conversation.openai` component can target either OpenAI's hosted API or Azure OpenAI. To select Azure OpenAI, set the component's `apiType` metadata to `azure` and provide the usual Azure-specific connection settings (for example, endpoint/region and API key) in the component configuration.
 
-When `apiType: azure` is used, the environment variable `AZURE_OPENAI_MODEL` may be set to provide a default Azure model identifier to use when the component's `model` metadata is not provided. This environment variable only affects the component when `apiType` is set to `azure` — the regular `DAPR_CONVERSATION_OPENAI_MODEL` remains the default for non-Azure OpenAI usage.
+When `apiType: azure` is used, the environment variable `OPENAI_MODEL` may be set to provide a default Azure model identifier to use if the component's `model` metadata is not provided. In addition, the corresponding `endpoint` and `apiVersion` fields will be set to Azure specific settings.
 
 Example (Azure OpenAI configuration):
 
