@@ -31,7 +31,6 @@ The following table lists the environment variables used by the Dapr runtime, CL
 | DAPR_HOST_IP | Dapr sidecar | The host's chosen IP address. If not specified, will loop over the network interfaces and select the first non-loopback address it finds.|
 | DAPR_HEALTH_TIMEOUT | SDKs | Sets the time on the "wait for sidecar" availability. Overrides the default timeout setting of 60 seconds. |
 | OPENAI_MODEL | Conversation components | Default model name used by the `conversation.openai` component at runtime when no `model` metadata is set in the component file. Default: `gpt-5-nano`. |
-| AZURE_OPENAI_MODEL | Conversation components / Azure config | Default Azure model name used by the `conversation.openai` component when `apiType: azure` is configured and no `model` metadata is provided. Default: `gpt-4.1-mini`. |
 | ANTHROPIC_MODEL | Conversation components | Default model name used by the `conversation.anthropic` component when no `model` metadata is set in the component file. Default: `claude-sonnet-4-20250514`. |
 | GOOGLEAI_MODEL | Conversation components | Default model name used by the `conversation.googleai` component when no `model` metadata is set in the component file. Default: `gemini-2.5-flash-lite`. |
 | MISTRAL_MODEL | Conversation components | Default model name used by the `conversation.mistral` component when no `model` metadata is set in the component file. Default: `open-mistral-7b`. |
