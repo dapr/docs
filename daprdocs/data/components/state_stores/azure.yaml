@@ -30,7 +30,7 @@
     transactions: true
     etag: true
     ttl: true
-    workflow: false
+    workflow: true
 - component: Azure Table Storage
   link: setup-azure-tablestorage
   state: Stable

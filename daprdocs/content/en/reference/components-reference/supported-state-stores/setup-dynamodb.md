@@ -158,6 +158,20 @@ $ aws dynamodb get-item \
 }
 ```
 
+## Workflow Limitations
+
+{{% alert title="Note" color="primary" %}}
+
+As described below, DynamoDB has limitations that likely make it unsuitable for production environments.
+There is currently no path for migrating Workflow data from DynamoDB to another state store, meaning exceeding these limits in production will result in failed workflows with no workaround.
+
+{{% /alert %}}
+
+The more complex a workflow is (number of activities, child workflows, etc.), the more state operations it performs per state store transaction.
+The maximum number of operations that can be performed by DynamoDB in a [single transaction is 100](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transaction-apis.html).
+This means that DynamoDB can only handle workflows with a limited complexity, meaning it is not suitable for all workflow scenarios.
+A general guide to the number of records that are saved during a workflow executon can be found [here]({{% ref "workflow-architecture.md#state-store-record-count" %}}).
+
 ## Related links
 
 - [Basic schema for a Dapr component]({{% ref component-schema %}})

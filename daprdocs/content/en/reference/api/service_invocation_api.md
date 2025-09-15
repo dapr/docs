@@ -3,7 +3,7 @@ type: docs
 title: "Service invocation API reference"
 linkTitle: "Service invocation API"
 description: "Detailed documentation on the service invocation API"
-weight: 100
+weight: 1400
 ---
 
 Dapr provides users with the ability to call other applications that are using Dapr with a unique named identifier (appId), or HTTP endpoints that are not using Dapr.

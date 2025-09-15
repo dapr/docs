@@ -3,7 +3,7 @@ type: docs
 title: "Conversation API reference"
 linkTitle: "Conversation API"
 description: "Detailed documentation on the conversation API"
-weight: 1400
+weight: 500
 ---
 
 {{% alert title="Alpha" color="primary" %}}

@@ -116,7 +116,9 @@ Want to skip the quickstarts? Not a problem. You can try out the workflow buildi
 
 ## Limitations
 
-- **State stores:** Due to underlying limitations in some database choices, more commonly NoSQL databases, you might run into limitations around storing internal states. For example, CosmosDB has a maximum single operation item limit of only 100 states in a single request.
+- **State stores:** You can only use state stores which support workflows, as [described here]({{% ref supported-state-stores %}}).
+- Azure Cosmos DB has [payload and workflow complexity limitations]({{% ref "setup-azure-cosmosdb.md#workflow-limitations" %}}).
+- AWS DynamoDB has [workflow complexity limitations]({{% ref "setup-azure-cosmosdb.md#workflow-limitations" %}}).
 
 ## Watch the demo
 

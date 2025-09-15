@@ -175,6 +175,20 @@ Similarly, if a state store imposes restrictions on the size of a batch transact
 Workflow state can be purged from a state store, including all its history.
 Each Dapr SDK exposes APIs for purging all metadata related to specific workflow instances.
 
+#### State store record count
+
+The number of records which are saved as history in the state store per workflow run is determined by its complexity or "shape". In other words, the number of activities, timers, sub-workflows etc.
+The following table shows a general guide to the number of records that are saved by different workflow tasks.
+This number may be larger or smaller depending on retries or concurrency.
+
+| Task type | Number of records saved |
+| ----------|-------------------------|
+| Start workflow | 5 records |
+| Call activity | 3 records |
+| Timer | 3 records |
+| Raise event | 3 records |
+| Start child workflow | 8 records |
+
 ## Workflow scalability
 
 Because Dapr Workflows are internally implemented using actors, Dapr Workflows have the same scalability characteristics as actors.
