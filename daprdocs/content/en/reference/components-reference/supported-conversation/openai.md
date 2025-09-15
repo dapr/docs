@@ -56,7 +56,7 @@ spec:
   - name: endpoint
     value: "https://<your-resource-name>.openai.azure.com/"
   - name: model
-    value: '${{AZURE_OPENAI_MODEL}}'
+    value: 'gpt-4.1-nano'
 ```
 
 If `model` is omitted from the component metadata and neither `AZURE_OPENAI_MODEL` nor `DAPR_CONVERSATION_OPENAI_MODEL` are set, the component falls back to its built-in default model.
