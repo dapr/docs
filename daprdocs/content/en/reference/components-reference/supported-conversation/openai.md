@@ -59,7 +59,7 @@ spec:
     value: 'gpt-4.1-nano'
 ```
 
-If `model` is omitted from the component metadata and neither `AZURE_OPENAI_MODEL` nor `DAPR_CONVERSATION_OPENAI_MODEL` are set, the component falls back to its built-in default model.
+If `model` is omitted from the component metadata and the model environment variable is not set, then the component falls back to its built-in default model.
 
 ## Related links
 
