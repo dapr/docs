@@ -78,3 +78,4 @@ Learn how to set up tracing with one of the following tools:
 - [Jaeger]({{< ref open-telemetry-collector-jaeger.md >}})
 - [Zipkin]({{< ref zipkin.md >}})
 - [Datadog]({{< ref datadog.md >}})
+- [Dash0]({{< ref dash0.md >}})
