@@ -79,6 +79,11 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 Since the GCP Storage Bucket component uses the GCP Go Client Libraries, by default it authenticates using **Application Default Credentials**. This is explained further in the [Authenticate to GCP Cloud services using client libraries](https://cloud.google.com/docs/authentication/client-libraries) guide.
 Also, see how to [Set up Application Default Credentials](https://cloud.google.com/docs/authentication/provide-credentials-adc).
 
+## GCP Credentials
+
+Since the GCP Storage Bucket component uses the GCP Go Client Libraries, by default it authenticates using **Application Default Credentials**. This is explained further in the [Authenticate to GCP Cloud services using client libraries](https://cloud.google.com/docs/authentication/client-libraries) guide.
+Also, see how to [Set up Application Default Credentials](https://cloud.google.com/docs/authentication/provide-credentials-adc).
+
 ## Binding support
 
 This component supports **output binding** with the following operations:

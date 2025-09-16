@@ -615,8 +615,7 @@ await context.CallActivityAsync("PostResults", sum);
 
 {{< /tabpane >}}
 
-With the release of 1.16, it's even easier to process workflow activities in parallel while putting an upper cap on 
-concurrency by using the following extension methods on the `WorkflowContext`:
+You can process workflow activities in parallel while putting an upper cap on concurrency by using the following extension methods on the `WorkflowContext`:
 
 {{< tabpane text=true >}}
 
@@ -1428,33 +1427,33 @@ The following diagram illustrates this flow.
 
 ```java
 public class PaymentProcessingWorkflow implements Workflow {
-    
+
     @Override
     public WorkflowStub create() {
         return ctx -> {
             ctx.getLogger().info("Starting Workflow: " + ctx.getName());
             var orderId = ctx.getInput(String.class);
             List<String> compensations = new ArrayList<>();
-            
+
             try {
                 // Step 1: Reserve inventory
                 String reservationId = ctx.callActivity(ReserveInventoryActivity.class.getName(), orderId, String.class).await();
                 ctx.getLogger().info("Inventory reserved: {}", reservationId);
                 compensations.add("ReleaseInventory");
-                
+
                 // Step 2: Process payment
                 String paymentId = ctx.callActivity(ProcessPaymentActivity.class.getName(), orderId, String.class).await();
                 ctx.getLogger().info("Payment processed: {}", paymentId);
                 compensations.add("RefundPayment");
-                
+
                 // Step 3: Ship order
                 String shipmentId = ctx.callActivity(ShipOrderActivity.class.getName(), orderId, String.class).await();
                 ctx.getLogger().info("Order shipped: {}", shipmentId);
                 compensations.add("CancelShipment");
-                
+
             } catch (TaskFailedException e) {
                 ctx.getLogger().error("Activity failed: {}", e.getMessage());
-                
+
                 // Execute compensations in reverse order
                 Collections.reverse(compensations);
                 for (String compensation : compensations) {
@@ -1462,24 +1461,24 @@ public class PaymentProcessingWorkflow implements Workflow {
                         switch (compensation) {
                             case "CancelShipment":
                                 String shipmentCancelResult = ctx.callActivity(
-                                    CancelShipmentActivity.class.getName(), 
-                                    orderId, 
+                                    CancelShipmentActivity.class.getName(),
+                                    orderId,
                                     String.class).await();
                                 ctx.getLogger().info("Shipment cancellation completed: {}", shipmentCancelResult);
                                 break;
-                                
+
                             case "RefundPayment":
                                 String refundResult = ctx.callActivity(
-                                    RefundPaymentActivity.class.getName(), 
-                                    orderId, 
+                                    RefundPaymentActivity.class.getName(),
+                                    orderId,
                                     String.class).await();
                                 ctx.getLogger().info("Payment refund completed: {}", refundResult);
                                 break;
-                                
+
                             case "ReleaseInventory":
                                 String releaseResult = ctx.callActivity(
-                                    ReleaseInventoryActivity.class.getName(), 
-                                    orderId, 
+                                    ReleaseInventoryActivity.class.getName(),
+                                    orderId,
                                     String.class).await();
                                 ctx.getLogger().info("Inventory release completed: {}", releaseResult);
                                 break;
@@ -1494,7 +1493,7 @@ public class PaymentProcessingWorkflow implements Workflow {
 			// Step 4: Send confirmation
 			ctx.callActivity(SendConfirmationActivity.class.getName(), orderId, Void.class).await();
             ctx.getLogger().info("Confirmation sent for order: {}", orderId);
-                
+
             ctx.complete("Order processed successfully: " + orderId);
         };
     }
@@ -1597,7 +1596,7 @@ The compensation pattern ensures that your distributed workflows can maintain co
 - [Try out Dapr Workflows using the quickstart]({{% ref workflow-quickstart.md %}})
 - [Workflow overview]({{% ref workflow-overview.md %}})
 - [Workflow API reference]({{% ref workflow_api.md %}})
-- Try out the following examples: 
+- Try out the following examples:
    - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
    - [JavaScript](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
    - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)

@@ -3,7 +3,7 @@ type: docs
 title: "Metadata API reference"
 linkTitle: "Metadata API"
 description: "Detailed documentation on the Metadata API"
-weight: 1100
+weight: 1000
 ---
 
 Dapr has a metadata API that returns information about the sidecar allowing runtime discoverability. The metadata endpoint returns the following information.
@@ -39,6 +39,9 @@ The metadata API returns information related to Dapr's connection to the app. Th
 
 ### Scheduler connection details
 Information related to the connection to one or more scheduler hosts.
+
+### Workflow API runtime details
+Information related to the Workflow API runtime details.
 
 ### Attributes
 
@@ -86,6 +89,7 @@ httpEndpoints          | [Metadata API Response HttpEndpoint](#metadataapirespon
 subscriptions          | [Metadata API Response Subscription](#metadataapiresponsesubscription)[] | A json encoded array of pub/sub subscriptions metadata.
 appConnectionProperties| [Metadata API Response AppConnectionProperties](#metadataapiresponseappconnectionproperties) | A json encoded object of app connection properties.
 scheduler              | [Metadata API Response Scheduler](#metadataapiresponsescheduler) | A json encoded object of scheduler connection properties.
+workflows              | [Metadata API Response Workflows](#metadataapiresponseworkflows) | A json encoded object of workflows runtime properties
 
 <a id="metadataapiresponseactor"></a>**Metadata API Response Registered Actor**
 
@@ -152,6 +156,11 @@ Name            | Type   | Description
 ----            | ----   | -----------
 connected_addresses | string[] | List of strings representing the addresses of the conntected scheduler hosts.
 
+<a id="metadataapiresponseworkflows"></a>**Metadata API Response Workflows**
+
+Name             | Type    | Description
+----             | ----    | -----------
+connectedWorkers | integer | Number of connected workflow workers.
 
 ### Examples
 
@@ -232,6 +241,9 @@ curl http://localhost:3500/v1.0/metadata
       "10.244.0.48:50006",
       "10.244.0.49:50006"
     ]
+  },
+  "workflows": {
+    "connectedWorkers": 1
   }
 }
 ```
@@ -362,6 +374,9 @@ Get the metadata information to confirm your custom attribute was added:
       "10.244.0.48:50006",
       "10.244.0.49:50006"
     ]
+  },
+  "workflows": {
+    "connectedWorkers": 1
   }
 }
 ```

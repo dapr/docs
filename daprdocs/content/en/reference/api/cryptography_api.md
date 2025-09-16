@@ -3,7 +3,7 @@ type: docs
 title: "Cryptography API reference"
 linkTitle: "Cryptography API"
 description: "Detailed documentation on the cryptography API"
-weight: 1300
+weight: 600
 ---
 
 Dapr provides cross-platform and cross-language support for encryption and decryption support via the 

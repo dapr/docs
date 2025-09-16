@@ -46,6 +46,12 @@ Child workflow also supports automatic retry policies.
 
 [Learn more about child workflows.]({{% ref "workflow-features-concepts.md#child-workflows" %}})
 
+### Multi-application workflows
+
+Multi-application workflows, enable you to orchestrate complex business processes that span across multiple applications. This allows a workflow to call activities or start child workflows in different applications, distributing the workflow execution while maintaining the security, reliability and durability guarantees of Dapr's workflow engine.
+
+[Learn more about multi-application workflows.]({{% ref "workflow-multi-app.md" %}})
+
 ### Timers and reminders
 
 Same as Dapr actors, you can schedule reminder-like durable delays for any time range.
@@ -110,7 +116,9 @@ Want to skip the quickstarts? Not a problem. You can try out the workflow buildi
 
 ## Limitations
 
-- **State stores:** Due to underlying limitations in some database choices, more commonly NoSQL databases, you might run into limitations around storing internal states. For example, CosmosDB has a maximum single operation item limit of only 100 states in a single request.
+- **State stores:** You can only use state stores which support workflows, as [described here]({{% ref supported-state-stores %}}).
+- Azure Cosmos DB has [payload and workflow complexity limitations]({{% ref "setup-azure-cosmosdb.md#workflow-limitations" %}}).
+- AWS DynamoDB has [workflow complexity limitations]({{% ref "setup-azure-cosmosdb.md#workflow-limitations" %}}).
 
 ## Watch the demo
 
