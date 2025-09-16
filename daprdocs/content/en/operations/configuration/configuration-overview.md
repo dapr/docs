@@ -303,6 +303,15 @@ See the [preview features]({{% ref "preview-features.md" %}}) guide for informat
 
 Enabling preview features unlock new capabilities to be added for dev/test, since they still need more time before becoming generally available (GA) in the runtime.
 
+#### Workflow
+
+The `workflow` section contains properties for configuring [Workflows]({{% ref "workflow-overview.md" %}}).
+
+| Property | Type   | Description |
+|------------------|--------|-----|
+| `maxConcurrentWorkflowInvocations` | int32 | Maximum number of concurrent workflow executions per Dapr sidecar. Default is infinite. |
+| `maxConcurrentActivityInvocations` | int32 | Maximum number of concurrent activity executions per Dapr sidecar. Default is infinite. |
+
 ### Example sidecar configuration
 
 The following YAML shows an example configuration file that can be applied to an applications' Dapr sidecar.
@@ -334,6 +343,9 @@ spec:
     deny:
       - bindings.smtp
       - secretstores.local.file
+  workflow:
+    maxConcurrentWorkflowInvocations: 100
+    maxConcurrentActivityInvocations: 1000
   accessControl:
     defaultAction: deny
     trustDomain: "public"
