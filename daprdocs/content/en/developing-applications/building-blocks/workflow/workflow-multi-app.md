@@ -19,28 +19,65 @@ Some scenarios where this is useful include:
 - Implementation of a workflow spans different programming languages based on team expertise or existing codebases.
 - Different team boundaries or microservice ownership.
 
+<img src="/images/workflow-overview/workflow-multi-app-complex.png" width=800 alt="Diagram showing multi-application complex workflow">
+
+The diagram below shows an example scenario of a complex workflow that orchestrates across multiple applications that are written in different languages. Each applications' main steps and activities are:
+
+• **App1: Main Workflow Service** - Top-level orchestrator that coordinates the entire ML pipeline
+- Starts the process
+- Calls data processing activities on App2
+- Calls ML training child workflow on App3
+- Calls model deployment on App4
+- Ends the complete workflow
+- **Language: Java**
+
+• **App2: Data Processing Pipeline** - **GPU activities** only
+- Data Ingesting Activity (GPU-accelerated)
+- Feature Engineering Activity (GPU-accelerated)
+- Returns completion signal to Main Workflow
+- **Language: Go**
+
+• **App3: ML Training Child Workflow** - Contains a child workflow and activities
+- Child workflow orchestrates:
+  - Data Processing Activity
+  - Model Training Activity (GPU-intensive)
+  - Model Validation Activity
+- Triggered by App2's activities completing
+- Returns completion signal to Main Workflow
+- **Language: Java**
+
+• **App4: Model Serving Service** - **Beefy GPU app** with activities only
+- Model Loading Activity (GPU memory intensive)
+- Inference Setup Activity (GPU-accelerated inference)
+- Triggered by App3's workflow completing
+- Returns completion signal to Main Workflow
+- **Language: Go**
 
 ## Multi-application workflows
 
-Like all building blocks in Dapr, workflow execution routing is based on the [App ID of the hosting Dapr application]({{% ref "security-concept.md#application-identity" %}}).
+Workflow execution routing is based on the [App ID of the hosting Dapr application]({{% ref "security-concept.md#application-identity" %}}).
 By default, the full workflow execution is hosted on the app ID that started the workflow. This workflow can be executed across any replicas of that app ID, not just the single replica which scheduled the workflow.
 
 
-It is possible to execute activities or child workflows on different app IDs by specifying the target app ID parameter, inside the workflow execution code.
-Upon execution, the target app ID will execute the activity or child workflow, and return the result to the parent workflow of the originating app ID.
+It is possible to execute activities and child workflows on different app IDs by specifying the target app ID parameter, inside the workflow execution code.
+Upon execution, the target app ID executes the activity or child workflow, and returns the result to the parent workflow of the originating app ID.
 
 The entire Workflow execution may be distributed across multiple app IDs with no limit, with each activity or child workflow specifying the target app ID.
 The final history of the workflow will be saved by the app ID that hosts the very parent (or can consider it the root) workflow.
 
 {{% alert title="Restrictions" color="primary" %}}
-Like other building blocks and resources in Dapr, workflows are scoped to a single namespace.
+Like other API building blocks and resources in Dapr, workflows are scoped to a single namespace.
 This means that all app IDs involved in a multi-application workflow must be in the same namespace.
-Similarly, all app IDs must use the same actor state store.
-Finally, the target app ID must have the activity or child workflow defined, otherwise the parent workflow will retry indefinitely.
+Similarly, all app IDs must use the same workflow (or actor) state store.
+Finally, the target app ID must have the activity or child workflow defined and registered, otherwise the parent workflow retries indefinitely.
 {{% /alert %}}
 
 {{% alert title="Important Limitations" color="warning" %}}
-- **SDKs supporting multi-application workflows** - Multi-application workflows are used via the SDKs. Currently Java (activities calling) and Go (both activities and child workflows calling) SDKs are supported. The SDKs (Python, .NET, JavaScript) are planned for future releases.
+**SDKs supporting multi-application workflows** - Multi-application workflows are used via the SDKs. 
+Currently the following are supported:
+- **Java** (**only** activity calls)
+- **Go** (**both** activities and child workflows calls) 
+- The Python, .NET, JavaScript SDKs support are planned for future releases
 {{% /alert %}}
 
 ## Error handling
@@ -63,7 +100,7 @@ The following example shows how to execute the activity `ActivityA` on the targe
 {{% tab "Go" %}}
 
 ```go
-func TestWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+func BusinessWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 	var output string
 	err := ctx.CallActivity("ActivityA",
 		workflow.WithActivityInput("my-input"),
@@ -83,12 +120,12 @@ func TestWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 {{% tab "Java" %}}
 
 ```java
-public class CrossAppWorkflow implements Workflow {
+public class BusinessWorkflow implements Workflow {
   @Override
   public WorkflowStub create() {
       return ctx -> {
           String output = ctx.callActivity(
-                  "ActivityA",
+                  ActivityA.class.getName(),
                   "my-input",
                   new WorkflowTaskOptions("App2"), // Here we set the target app ID which will execute this activity.
                   String.class
@@ -115,7 +152,7 @@ The following example shows how to execute the child workflow `Workflow2` on the
 {{% tab "Go" %}}
 
 ```go
-func TestWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+func BusinessWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 	var output string
 	err := ctx.CallChildWorkflow("Workflow2",
 		workflow.WithChildWorkflowInput("my-input"),
