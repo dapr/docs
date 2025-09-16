@@ -85,7 +85,7 @@ spec:
 
 
 {{% alert title="Note" color="primary" %}}
-When using Azure OpenAI, both `endpoint` and `apiVersion` are mandatory fields. The component will return an error if either field is missing when `apiType` is set to `azure`.
+When using Azure OpenAI, both `endpoint` and `apiVersion` are mandatory fields. The component returns an error if either field is missing when `apiType` is set to `azure`.
 {{% /alert %}}
 
 ## Related links
