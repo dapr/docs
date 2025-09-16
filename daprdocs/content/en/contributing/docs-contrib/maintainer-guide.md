@@ -191,6 +191,7 @@ These steps will prepare the upcoming release branch for promotion to latest rel
 | [v1.2](https://github.com/dapr/docs/tree/v1.2) (pre-release) | https://v1-2.docs.dapr.io/ | Pre-release documentation. Doc updates that are only applicable to v1.2+ go here.                |
 ```
 
+1. Update the _Supported versions_ table in `support-release-policy.md`; add a new line at the top of the table with the new version of the runtime and SDKs. Change the releases which are older than n-2 to be `Unsupported`.
 1. Update the `dapr-latest-version.html` shortcode partial to the new minor/patch version (in this example, `1.1.0` and `1.1`).
 1. Commit the staged changes and push to your branch (`release_v1.1`).
 1. Open a PR from `release/v1.1` to `v1.1`.
