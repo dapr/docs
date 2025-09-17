@@ -1,8 +1,8 @@
 ---
 type: docs
-title: "Anthropic"
-linkTitle: "Anthropic"
-description: Detailed information on the Anthropic conversation component
+title: "Ollama"
+linkTitle: "Ollama"
+description: Detailed information on the Ollama conversation component
 ---
 
 ## Component format
@@ -13,14 +13,12 @@ A Dapr `conversation.yaml` component file has the following structure:
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: anthropic
+  name: ollama
 spec:
-  type: conversation.anthropic
+  type: conversation.ollama
   metadata:
-  - name: key
-    value: "mykey"
   - name: model
-  value: 'claude-sonnet-4-20250514'
+    value: 'llama3.2:latest'
   - name: cacheTTL
     value: 10m
 ```
@@ -33,8 +31,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| `key`   | Y | API key for Anthropic. | `"mykey"` |
-| `model` | N | The Anthropic LLM to use. Defaults to `claude-sonnet-4-20250514` (configurable via the `ANTHROPIC_MODEL` environment variable).  | `claude-sonnet-4-20250514` |
+| `model` | N | The Ollama LLM to use. Defaults to `llama3.2:latest` (configurable via the `OLLAMA_MODEL` environment variable).  | `llama3.2:latest` |
 | `cacheTTL` | N | A time-to-live value for a prompt cache to expire. Uses Golang duration format.  | `10m` |
 
 ## Related links
