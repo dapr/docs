@@ -61,6 +61,12 @@ jobs:
           output_location: "/"
           skip_app_build: true
           skip_deploy_on_missing_secrets: true
+      - name: Upload Hugo artifacts for Algolia
+        uses: actions/upload-artifact@v4
+        with:
+          name: hugo_build
+          path: ./daprdocs/public/
+          if-no-files-found: error
 
   close_staging_site:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
@@ -89,7 +95,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: false
-      - name: Download Hugo artifacts
+      - name: Download Hugo artifacts for Algolia
         uses: actions/download-artifact@v4
         with:
           name: hugo_build
