@@ -364,9 +364,9 @@ export default class WorkflowRuntime {
   // Register workflow activities
   public registerActivity(fn: TWorkflowActivity<TInput, TOutput>): WorkflowRuntime {
     const name = getFunctionName(fn);
-    const activityWrapper = (ctx: ActivityContext, intput: TInput): TOutput => {
+    const activityWrapper = (ctx: ActivityContext, input: TInput): TOutput => {
       const wfActivityContext = new WorkflowActivityContext(ctx);
-      return fn(wfActivityContext, intput);
+      return fn(wfActivityContext, input);
     };
     this.worker.addNamedActivity(name, activityWrapper);
     return this;
