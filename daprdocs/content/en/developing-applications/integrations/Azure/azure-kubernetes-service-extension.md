@@ -7,7 +7,6 @@ weight: 4000
 ---
 
 {{% alert title="Note" color="warning" %}}
-Advisory: Microsoft will be discontinuing the Dapr extension for AKS.
 {{% /alert %}}
 
 The current recommended approach for installing Dapr on AKS is to [install Dapr using helm]({{% ref kubernetes-deploy.md %}}) and performing any authorization for Azure services using [workload identity federation]({{< ref howto-wif.md >}}).  This ensures that:
