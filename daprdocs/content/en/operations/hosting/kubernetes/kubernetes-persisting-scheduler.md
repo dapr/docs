@@ -77,22 +77,6 @@ kubectl delete pvc -n dapr-system dapr-scheduler-data-dir-dapr-scheduler-server-
 Persistent Volume Claims are not deleted automatically with an [uninstall]({{% ref dapr-uninstall.md %}}). This is a deliberate safety measure to prevent accidental data loss.
 {{% /alert %}}
 
-{{% alert title="Note" color="primary" %}}
-For storage providers that do NOT support dynamic volume expansion: If Dapr has ever been installed on the cluster before, the Scheduler's Persistent Volume Claims must be manually uninstalled in order for new ones with increased storage size to be created.
-```bash
-kubectl delete pvc -n dapr-system dapr-scheduler-data-dir-dapr-scheduler-server-0 dapr-scheduler-data-dir-dapr-scheduler-server-1 dapr-scheduler-data-dir-dapr-scheduler-server-2
-```
-Persistent Volume Claims are not deleted automatically with an [uninstall]({{< ref dapr-uninstall.md >}}). This is a deliberate safety measure to prevent accidental data loss.
-{{% /alert %}}
-
-{{% alert title="Note" color="primary" %}}
-For storage providers that do NOT support dynamic volume expansion: If Dapr has ever been installed on the cluster before, the Scheduler's Persistent Volume Claims must be manually uninstalled in order for new ones with increased storage size to be created.
-```bash
-kubectl delete pvc -n dapr-system dapr-scheduler-data-dir-dapr-scheduler-server-0 dapr-scheduler-data-dir-dapr-scheduler-server-1 dapr-scheduler-data-dir-dapr-scheduler-server-2
-```
-Persistent Volume Claims are not deleted automatically with an [uninstall]({{< ref dapr-uninstall.md >}}). This is a deliberate safety measure to prevent accidental data loss.
-{{% /alert %}}
-
 #### Increase existing Scheduler Storage Size
 
 {{% alert title="Warning" color="warning" %}}
