@@ -6,7 +6,7 @@ weight: 6000
 description: Manage and run workflows
 ---
 
-Now that you've [authored the workflow and its activities in your application]({{% ref howto-author-workflow.md %}}), you can start, terminate, and get information about the workflow using HTTP API calls. For more information, read the [workflow API reference]({{% ref workflow_api.md %}}).
+Now that you've [authored the workflow and its activities in your application]({{% ref howto-author-workflow.md %}}), you can start, terminate, and get information about the workflow using the CLI or API calls. For more information, read the [workflow API reference]({{% ref workflow_api.md %}}).
 
 {{< tabpane text=true >}}
 
@@ -68,6 +68,277 @@ dapr scheduler import -f workflow-reminders-backup.bin
 - Workflow reminders are persisted in the Dapr Scheduler.
 - Create workflow reminders via the Workflow API.
 - Manage reminders (list, get, delete, backup/restore) with the dapr scheduler CLI.
+
+## Managing Workflows with the Dapr CLI
+
+The Dapr CLI provides powerful commands for managing workflow instances in both self-hosted and Kubernetes environments.
+
+### Prerequisites
+
+- Dapr CLI version 1.16.2 or later
+- A running Dapr application with workflows configured
+- For database operations: network access to your actor state store
+
+### Basic Workflow Operations
+
+#### Start a Workflow
+
+```bash
+# Start a workflow with input data
+dapr workflow run OrderProcessingWorkflow \
+  --app-id orderprocessing \
+  --input '{"orderId": "12345", "amount": 100.50}'
+
+# Start with a specific instance ID
+dapr workflow run OrderProcessingWorkflow \
+  --app-id orderprocessing \
+  --instance-id order-12345 \
+  --input '{"orderId": "12345"}'
+
+# Schedule a workflow to start later
+dapr workflow run OrderProcessingWorkflow \
+  --app-id orderprocessing \
+  --start-time "2024-12-25T10:00:00Z"
+```
+
+#### List Workflow Instances
+
+```bash
+# List all workflows for an app
+dapr workflow list --app-id orderprocessing
+
+# Filter by status
+dapr workflow list --app-id orderprocessing --filter-status RUNNING
+
+# Filter by workflow name
+dapr workflow list --app-id orderprocessing --filter-name OrderProcessingWorkflow
+
+# Filter by age (workflows started in last 24 hours)
+dapr workflow list --app-id orderprocessing --filter-max-age 24h
+
+# Get detailed output
+dapr workflow list --app-id orderprocessing --output wide
+```
+
+#### View Workflow History
+
+```bash
+# Get execution history
+dapr workflow history order-12345 --app-id orderprocessing
+
+# Get history in JSON format
+dapr workflow history order-12345 --app-id orderprocessing --output json
+```
+
+#### Control Workflow Execution
+
+```bash
+# Suspend a running workflow
+dapr workflow suspend order-12345 \
+  --app-id orderprocessing \
+  --reason "Waiting for manual approval"
+
+# Resume a suspended workflow
+dapr workflow resume order-12345 \
+  --app-id orderprocessing \
+  --reason "Approved by manager"
+
+# Terminate a workflow
+dapr workflow terminate order-12345 \
+  --app-id orderprocessing \
+  --output '{"reason": "Cancelled by customer"}'
+```
+
+#### Raise External Events
+
+```bash
+# Raise an event for a waiting workflow
+dapr workflow raise-event order-12345/PaymentReceived \
+  --app-id orderprocessing \
+  --input '{"paymentId": "pay-67890", "amount": 100.50}'
+```
+
+#### Re-run Workflows
+
+```bash
+# Re-run from the beginning
+dapr workflow rerun order-12345 --app-id orderprocessing
+
+# Re-run from a specific event
+dapr workflow rerun order-12345 \
+  --app-id orderprocessing \
+  --event-id 5
+
+# Re-run with a new instance ID
+dapr workflow rerun order-12345 \
+  --app-id orderprocessing \
+  --new-instance-id order-12345-retry
+```
+
+#### Purge Completed Workflows
+
+```bash
+# Purge a specific instance
+dapr workflow purge order-12345 --app-id orderprocessing
+
+# Purge all completed workflows older than 30 days
+dapr workflow purge --app-id orderprocessing --all-older-than 720h
+
+# Purge all terminal workflows (use with caution!)
+dapr workflow purge --app-id orderprocessing --all
+```
+
+### Kubernetes Operations
+
+All commands support the `-k` flag for Kubernetes deployments:
+
+```bash
+# List workflows in Kubernetes
+dapr workflow list \
+  --kubernetes \
+  --namespace production \
+  --app-id orderprocessing
+
+# Suspend a workflow in Kubernetes
+dapr workflow suspend order-12345 \
+  --kubernetes \
+  --namespace production \
+  --app-id orderprocessing \
+  --reason "Maintenance window"
+```
+
+### Advanced: Direct Database Access
+
+For advanced operations like listing and purging workflows, you can connect directly to the actor state store database. This is useful for:
+
+- Querying workflows across multiple app instances
+- Bulk operations on workflow metadata
+- Custom filtering beyond what the API provides
+
+#### Self-Hosted Mode
+
+In self-hosted mode, the CLI can automatically discover your state store configuration:
+
+```bash
+# The CLI reads your component configuration automatically
+dapr workflow list --app-id orderprocessing
+```
+
+To override with a specific connection string:
+
+```bash
+# PostgreSQL
+dapr workflow list \
+  --app-id orderprocessing \
+  --connection-string "host=localhost user=dapr password=dapr dbname=dapr port=5432 sslmode=disable" \
+  --table-name workflows
+
+# MySQL
+dapr workflow list \
+  --app-id orderprocessing \
+  --connection-string "dapr:dapr@tcp(localhost:3306)/dapr?parseTime=true" \
+  --table-name workflows
+
+# SQL Server
+dapr workflow list \
+  --app-id orderprocessing \
+  --connection-string "sqlserver://dapr:Pass@word1@localhost:1433?database=dapr" \
+  --table-name workflows
+```
+
+#### Kubernetes Mode with Port Forwarding
+
+In Kubernetes, you need to establish connectivity to your database:
+
+**Step 1: Port forward to your database service**
+
+```bash
+# PostgreSQL
+kubectl port-forward service/postgres 5432:5432 -n production
+
+# MySQL
+kubectl port-forward service/mysql 3306:3306 -n production
+
+# SQL Server
+kubectl port-forward service/mssql 1433:1433 -n production
+```
+
+**Step 2: Use the CLI with the connection string**
+
+```bash
+# PostgreSQL example
+dapr workflow list \
+  --kubernetes \
+  --namespace production \
+  --app-id orderprocessing \
+  --connection-string "host=localhost user=dapr password=dapr dbname=dapr port=5432 sslmode=disable" \
+  --table-name workflows
+
+# Purge old workflows
+dapr workflow purge \
+  --kubernetes \
+  --namespace production \
+  --app-id orderprocessing \
+  --connection-string "host=localhost user=dapr password=dapr dbname=dapr port=5432 sslmode=disable" \
+  --table-name workflows \
+  --all-older-than 2160h  # 90 days
+```
+
+**Step 3: Stop port forwarding when done**
+
+```bash
+# Press Ctrl+C to stop the port forward
+```
+
+#### Connection String Formats by Database
+
+**PostgreSQL / CockroachDB**
+```
+host=localhost user=dapr password=dapr dbname=dapr port=5432 sslmode=disable connect_timeout=10
+```
+
+**MySQL**
+```
+username:password@tcp(host:port)/database?parseTime=true&loc=UTC
+```
+
+**SQL Server**
+```
+sqlserver://username:password@host:port?database=dbname&encrypt=false
+```
+
+**MongoDB**
+```
+mongodb://username:password@localhost:27017/database
+```
+
+**Redis**
+```
+localhost:6379,password=secret,db=0
+```
+
+### Workflow Management Best Practices
+
+1. **Regular Cleanup**: Schedule periodic purge operations for completed workflows
+   ```bash
+   # Weekly cron job to purge workflows older than 90 days
+   dapr workflow purge --app-id orderprocessing --all-older-than 2160h
+   ```
+
+2. **Monitor Running Workflows**: Use filtered lists to track long-running instances
+   ```bash
+   dapr workflow list --app-id orderprocessing --filter-status RUNNING --filter-max-age 24h
+   ```
+
+3. **Use Instance IDs**: Assign meaningful instance IDs for easier tracking
+   ```bash
+   dapr workflow run OrderWorkflow --app-id orderprocessing --instance-id "order-$(date +%s)"
+   ```
+
+4. **Export for Analysis**: Export workflow data for analysis
+   ```bash
+   dapr workflow list --app-id orderprocessing --output json > workflows.json
+   ```
 
 {{% /tab %}}
 

@@ -1179,6 +1179,46 @@ Because of how replay-based workflows execute, you'll write logic that does thin
 
 {{% /alert %}}
 
+## Testing Your Workflow
+
+After authoring your workflow, test it using the Dapr CLI:
+
+### Start Your Workflow
+
+```bash
+dapr workflow run OrderProcessingWorkflow \
+  --app-id orderservice \
+  --input '{"orderId": "test-001", "items": [{"sku": "WIDGET", "quantity": 5}]}'
+```
+
+### Monitor Workflow Execution
+
+```bash
+dapr workflow list --app-id orderservice --filter-status RUNNING
+```
+
+### Test External Events
+
+```bash
+# Raise an event your workflow is waiting for
+dapr workflow raise-event <instance-id>/ApprovalReceived \
+  --app-id orderservice \
+  --input '{"approved": true, "approver": "manager@company.com"}'
+```
+
+### Debug Failed Workflows
+
+```bash
+# List failed workflows
+dapr workflow list --app-id orderservice --filter-status FAILED --output wide
+
+# Get detailed history of a failed workflow
+dapr workflow history <failed-instance-id> --app-id orderservice --output json
+
+# Re-run the workflow after fixing issues
+dapr workflow rerun <failed-instance-id> --app-id orderservice
+```
+
 ## Next steps
 
 Now that you've authored a workflow, learn how to manage it.

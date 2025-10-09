@@ -2064,6 +2064,68 @@ func RequestApprovalActivity(ctx workflow.ActivityContext) (any, error) {
 
 {{< /tabpane >}}
 
+
+## Step 5: Manage Your Workflow
+
+Now that your workflow is running, let's learn how to manage it using the Dapr CLI.
+
+### View Running Workflows
+
+```bash
+# List all workflows
+dapr workflow list --app-id orderprocessing
+
+# You should see output like:
+# INSTANCE ID          WORKFLOW NAME              CREATED              LAST UPDATED         RUNTIME STATUS
+# order-20240312-001   OrderProcessingWorkflow    2024-03-12 10:00:00  2024-03-12 10:00:05  RUNNING
+```
+
+### Check Workflow History
+
+View the detailed execution history of your workflow:
+
+```bash
+dapr workflow history order-20240312-001 --app-id orderprocessing
+```
+
+### Interact with Your Workflow
+
+#### Raise an External Event
+
+If your workflow is waiting for an external event:
+
+```bash
+dapr workflow raise-event order-20240312-001/PaymentReceived \
+  --app-id orderprocessing \
+  --input '{"paymentId": "pay-123", "amount": 100.00}'
+```
+
+#### Suspend and Resume
+
+```bash
+# Suspend a workflow
+dapr workflow suspend order-20240312-001 \
+  --app-id orderprocessing \
+  --reason "Waiting for inventory"
+
+# Resume when ready
+dapr workflow resume order-20240312-001 \
+  --app-id orderprocessing \
+  --reason "Inventory received"
+```
+
+### Clean Up
+
+After testing, purge completed workflows:
+
+```bash
+# Purge a specific workflow
+dapr workflow purge order-20240312-001 --app-id orderprocessing
+
+# Or purge all completed workflows
+dapr workflow purge --app-id orderprocessing --all-older-than 1h
+```
+
 ## Tell us what you think!
 
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this Quickstart helpful? Do you have suggestions for improvement?
