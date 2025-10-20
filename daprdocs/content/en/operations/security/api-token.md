@@ -52,6 +52,65 @@ annotations:
 
 When deployed, Dapr sidecar injector will automatically create a secret reference and inject the actual value into `DAPR_API_TOKEN` environment variable.
 
+
+## Adding API token to client API invocations
+
+Once token authentication is configured in Dapr, all clients invoking the Dapr APIs need to append the `dapr-api-token` token to every request.
+
+> **Note:** The Dapr SDKs read the [DAPR_API_TOKEN]({{% ref environment %}}) environment variable and set it for you by default, however you still must ensure that your app has access to the environment variable.
+
+<img src="/images/tokens-auth.png" width=800 style="padding-bottom:15px;">
+
+### HTTP
+
+In case of HTTP, Dapr requires the API token in the `dapr-api-token` header. For example:
+
+```text
+GET http://<daprAddress>/v1.0/metadata
+dapr-api-token: <token>
+```
+
+Using curl, you can pass the header using the `--header` (or `-H`) option. For example:
+
+```sh
+curl http://localhost:3500/v1.0/metadata \
+  --header "dapr-api-token: my-token"
+```
+
+### gRPC
+
+When using gRPC protocol, Dapr will inspect the incoming calls for the API token on the gRPC metadata:
+
+```text
+dapr-api-token[0].
+```
+
+## Accessing the token from the app
+
+### Kubernetes
+
+In Kubernetes, it's required to mount the API token on your application pod as an environment variable, when your application is making outbound calls to the Dapr APIs (Service Invocation invoke, Pub/sub publish, etc.), otherwise the request will fail with an `Unauthorized` error. Mounting the environment variable is done by providing the name of the Kubernetes secret in your application pod specification, as shown in the example below, where a Kubernetes secret with the name `dapr-api-token` is used to hold the token.
+
+```yaml
+containers:
+  - name: mycontainer
+    image: myregistry/myapp
+    env:
+      - name: DAPR_API_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: dapr-api-token
+            key: token
+```
+
+### Self-hosted
+
+In self-hosted mode, you can set the token as an environment variable for your app:
+
+```sh
+export DAPR_API_TOKEN=<my-dapr-token>
+```
+
 ## Rotate a token
 
 ### Self-hosted
@@ -85,61 +144,6 @@ kubectl rollout restart deployment/<deployment-name> --namespace <namespace-name
 ```
 
 > Assuming your service is configured with more than one replica, the key rotation process does not result in any downtime.
-
-## Adding API token to client API invocations
-
-Once token authentication is configured in Dapr, all clients invoking Dapr API need to append the `dapr-api-token` token to every request. 
-
-> **Note:** The Dapr SDKs read the [DAPR_API_TOKEN]({{% ref environment %}}) environment variable and set it for you by default.
-
-<img src="/images/tokens-auth.png" width=800 style="padding-bottom:15px;">
-
-### HTTP
-
-In case of HTTP, Dapr requires the API token in the `dapr-api-token` header. For example:
-
-```text
-GET http://<daprAddress>/v1.0/metadata
-dapr-api-token: <token>
-```
-
-Using curl, you can pass the header using the `--header` (or `-H`) option. For example:
-
-```sh
-curl http://localhost:3500/v1.0/metadata \
-  --header "dapr-api-token: my-token"
-```
-
-### gRPC
-
-When using gRPC protocol, Dapr will inspect the incoming calls for the API token on the gRPC metadata:
-
-```text
-dapr-api-token[0].
-```
-
-## Accessing the token from the app
-
-### Kubernetes
-
-In Kubernetes, it's recommended to mount the secret to your pod as an environment variable, as shown in the example below, where a Kubernetes secret with the name `dapr-api-token` is used to hold the token.
-
-```yaml
-containers:
-  - name: mycontainer
-    image: myregistry/myapp
-    envFrom:
-    - secretRef:
-      name: dapr-api-token
-```
-
-### Self-hosted
-
-In self-hosted mode, you can set the token as an environment variable for your app:
-
-```sh
-export DAPR_API_TOKEN=<my-dapr-token>
-```
 
 ## Related Links
 
