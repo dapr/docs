@@ -265,7 +265,7 @@ Code | Description
 The previous Alpha1 version of the API is still supported for backward compatibility but is deprecated. For new implementations, use the Alpha2 version described above.
 
 ```
-POST http://localhost:<daprPort>/v1.0-alpha1/conversation/<llm-name>/converse
+POST http://localhost:<daprPort>/v1.0-alpha2/conversation/<llm-name>/converse
 ```
 
 ## Next steps

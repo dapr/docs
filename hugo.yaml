@@ -1,4 +1,4 @@
-baseURL: https://v1-16.docs.dapr.io
+baseURL: https://docs.dapr.io
 title: Dapr Docs
 
 # Output directory for generated site
@@ -117,20 +117,21 @@ params:
 
   # First one is picked as the Twitter card image if not set on page.
   # images: [images/project-illustration.png]
-
+  
+  # Versioning
   # Menu title if your navbar has a versions selector to access old versions of your site.
   # This menu appears only if you have at least one [params.versions] set.
-  version_menu: v1.16 (preview)
-
-  # Flag used in the "version-banner" partial to decide whether to display a
-  # banner on every page indicating that this is an archived version of the docs.
-  # Set this flag to "true" if you want to display the banner.
-  archived_version: false
+  version_menu: v1.16 (latest)
 
   # The version number for the version of the docs represented in this doc set.
   # Used in the "version-banner" partial to display a version number for the
   # current doc set.
   version: v1.16
+
+  # Flag used in the "version-banner" partial to decide whether to display a
+  # banner on every page indicating that this is an archived version of the docs.
+  # Set this flag to "true" if you want to display the banner.
+  archived_version: false
 
   # A link to latest version of the docs. Used in the "version-banner" partial to
   # point people to the main doc site.
@@ -150,10 +151,12 @@ params:
   github_branch: v1.16
 
   versions:
-    - version: v1.16 (preview)
+    - version: v1.17 (preview)
+      url: https://v1-17.docs.dapr.io
+    - version: v1.16 (latest)
       url: "#"
-    - version: v1.15 (latest)
-      url: "https://docs.dapr.io"
+    - version: v1.15
+      url: https://v1-15.docs.dapr.io
     - version: v1.14
       url: https://v1-14.docs.dapr.io
     - version: v1.13

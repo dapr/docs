@@ -25,7 +25,7 @@ In self-hosted mode, you can specify the namespace for a Dapr instance by settin
 {{% /tab %}}
 
 {{% tab "Kubernetes" %}}
-On Kubernetes, you can create and configure namepaces when deploying actor applications. For example, start with the following `kubectl` commands:
+On Kubernetes, you can create and configure namespaces when deploying actor applications. For example, start with the following `kubectl` commands:
 
 ```bash
 kubectl create namespace namespace-actorA

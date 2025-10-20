@@ -244,7 +244,7 @@ The audit was a holistic security audit with the following goals:
 
 - Formalize a threat model of Dapr
 - Perform manual code review
-- Evaluate Daprs fuzzing suite against the formalized threat model
+- Evaluate Dapr's fuzzing suite against the formalized threat model
 - Carry out a SLSA review of Dapr.
 
 You can find the full report [here](/docs/Dapr-september-2023-security-audit-report.pdf).

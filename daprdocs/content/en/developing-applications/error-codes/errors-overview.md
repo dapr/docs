@@ -6,7 +6,7 @@ weight: 10
 description: "Overview of Dapr errors"
 ---
 
-An error code is a numeric or alphamueric code that indicates the nature of an error and, when possible, why it occured. 
+An error code is a numeric or alphanumeric code that indicates the nature of an error and, when possible, why it occured. 
 
 Dapr error codes are standardized strings for over 80+ common errors across HTTP and gRPC requests when using the Dapr APIs. These codes are both:
 - Returned in the JSON response body of the request.
