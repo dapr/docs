@@ -17,14 +17,24 @@ Dapr supports writing traces using the OpenTelemetry (OTLP) protocol, and Jaeger
 
 The simplest way to start Jaeger is to run the pre-built, all-in-one Jaeger image published to DockerHub and expose the OTLP port:
 
+> **Note:** Port 9411 is commonly used by Zipkin. If you have Zipkin running (starts by default when you run `dapr init`), stop the `dapr_zipkin` container first to avoid port conflicts: `docker stop dapr_zipkin` 
+
+
+
 ```bash
-docker run --rm --name jaeger \
+docker run -d --rm --name jaeger \
   -p 16686:16686 \
   -p 4317:4317 \
   -p 4318:4318 \
   -p 5778:5778 \
   -p 9411:9411 \
   cr.jaegertracing.io/jaegertracing/jaeger:2.11.0
+```
+
+You can also view the logs the jaeger container using: 
+
+```bash
+docker logs jaeger
 ```
 
 Next, create the following `config.yaml` file locally:
