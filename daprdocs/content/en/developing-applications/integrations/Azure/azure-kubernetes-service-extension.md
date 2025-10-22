@@ -6,9 +6,6 @@ description: "Provision Dapr on your Azure Kubernetes Service (AKS) cluster with
 weight: 4000
 ---
 
-{{% alert title="Note" color="warning" %}}
-{{% /alert %}}
-
 The current recommended approach for installing Dapr on AKS is to [install Dapr using helm]({{% ref kubernetes-deploy.md %}}) and performing any authorization for Azure services using [workload identity federation]({{< ref howto-wif.md >}}).  This ensures that:
 - Dapr is easy to update and remains compatible with the Dapr ecosystem
 - Components can authorize transparently without requiring additional credentials
