@@ -73,11 +73,12 @@ Finally, the target app ID must have the activity or child workflow defined and 
 {{% /alert %}}
 
 {{% alert title="Important Limitations" color="warning" %}}
-**SDKs supporting multi-application workflows** - Multi-application workflows are used via the SDKs. 
+**SDKs supporting multi-application workflows** - Multi-application workflows are used via the SDKs.
 Currently the following are supported:
 - **Java** (**only** activity calls)
-- **Go** (**both** activities and child workflows calls) 
-- The Python, .NET, JavaScript SDKs support are planned for future releases
+- **Go** (**both** activities and child workflows calls)
+- **Python** (**both** activities and child workflows calls)
+- The .NET and JavaScript SDKs support are planned for future releases
 {{% /alert %}}
 
 ## Error handling
@@ -139,6 +140,17 @@ public class BusinessWorkflow implements Workflow {
 
 {{% /tab %}}
 
+{{% tab "Python" %}}
+
+```python
+@wfr.workflow
+def app1_workflow(ctx: wf.DaprWorkflowContext):
+  output = yield ctx.call_activity('ActivityA', input='my-input', app_id='App2')
+  return output
+```
+
+{{% /tab %}}
+
 {{< /tabpane >}}
 
 ## Multi-application child workflow example
@@ -165,6 +177,17 @@ func BusinessWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 
 	return output, nil
 }
+```
+
+{{% /tab %}}
+
+{{% tab "Python" %}}
+
+```python
+@wfr.workflow
+def workflow1(ctx: wf.DaprWorkflowContext):
+  output = yield ctx.call_child_workflow(workflow='Workflow2', input='my-input', app_id='App2')
+  return output
 ```
 
 {{% /tab %}}
