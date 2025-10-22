@@ -73,6 +73,8 @@ The following steps show you how to configure Dapr to send distributed tracing d
 
 Jaeger V2 can be deployed using the OpenTelemetry Operator for simplified management and native OTLP support. The following example configures Jaeger V2 with in-memory storage.
 
+> **Note on Storage Backends:** This example uses in-memory storage (`memstore`) for simplicity, suitable for development or testing environments as it stores up to 100,000 traces in memory. For production environments, consider configuring a persistent storage backend like Cassandra or Elasticsearch to ensure trace data durability.
+
 #### Installation
 
 1. **Install cert-manager** to manage certificates:
@@ -132,13 +134,6 @@ Jaeger V2 can be deployed using the OpenTelemetry Operator for simplified manage
    kubectl apply -f jaeger-inmemory.yaml -n observability
    ```
 
-#### Accessing the Jaeger V2 UI
-
-Expose the Jaeger V2 service or deployment to access the UI:
-```bash
-kubectl port-forward service/jaeger-inmemory-instance-collector 8080:16686 -n observability
-```
-Open `http://localhost:8080` in your browser to view the Jaeger V2 UI. Note: Direct UI interaction via the OpenTelemetry Operator is under development.
 
 ### Set up Dapr to send traces to Jaeger V2
 
@@ -198,7 +193,7 @@ To view Dapr sidecar traces, port-forward the Jaeger V2 service and open the UI:
 kubectl port-forward svc/jaeger-inmemory-instance-collector 16686 -n observability
 ```
 
-In your browser, go to `http://localhost:16686` and you will see the Jaeger UI.
+In your browser, go to `http://localhost:16686` to see the Jaeger V2 UI.
 
 ![jaeger](/images/jaeger_ui.png)
 {{% /tab %}}
@@ -207,6 +202,5 @@ In your browser, go to `http://localhost:16686` and you will see the Jaeger UI.
 
 ## References
 
-- [Jaeger Getting Started](https://www.jaegertracing.io/docs/2.11/getting-started/)
-- [Jaeger Kubernetes Operator](https://www.jaegertracing.io/docs/2.11/deployment/kubernetes/#kubernetes-operator)
-
+- [Jaeger V2 Getting Started](https://www.jaegertracing.io/docs/2.11/getting-started/)
+- [Jaeger V2 Kubernetes Operator](https://www.jaegertracing.io/docs/2.11/deployment/kubernetes/#kubernetes-operator)
