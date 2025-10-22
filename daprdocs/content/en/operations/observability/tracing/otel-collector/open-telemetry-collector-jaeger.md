@@ -19,8 +19,6 @@ The simplest way to start Jaeger is to run the pre-built, all-in-one Jaeger imag
 
 > **Note:** Port 9411 is commonly used by Zipkin. If you have Zipkin running (starts by default when you run `dapr init`), stop the `dapr_zipkin` container first to avoid port conflicts: `docker stop dapr_zipkin` 
 
-
-
 ```bash
 docker run -d --rm --name jaeger \
   -p 16686:16686 \
