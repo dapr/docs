@@ -79,7 +79,7 @@ Jaeger V2 can be deployed using the OpenTelemetry Operator for simplified manage
 
 1. **Install cert-manager** to manage certificates:
    ```bash
-   kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.16.1/cert-manager.yaml -n cert-manager
+   kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.19.1/cert-manager.yaml -n cert-manager
    ```
    Verify that all resources in the `cert-manager` namespace are ready.
 
