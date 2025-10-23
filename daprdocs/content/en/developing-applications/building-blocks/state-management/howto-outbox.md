@@ -332,7 +332,9 @@ public class Main {
             // Define the first state operation to save the value "2"
             State<String> state1 = new State<>(
                     "key1",
-                    "2"
+                    "2",
+                    null, // etag
+                    null // concurrency and consistency options
             );
 
             // Define the second state operation to publish the value "3" with metadata
@@ -344,7 +346,7 @@ public class Main {
                     "3",
                     null, // etag
                     metadata, 
-                    null // stateOptions
+                    null // concurrency and consistency options
             );
             
             TransactionalStateOperation<String> op1 = new TransactionalStateOperation<>(
@@ -355,14 +357,14 @@ public class Main {
                 TransactionalStateOperation.OperationType.UPSERT, state2
             );
 
-            // Create the list of state operations
+            // Create the list of transaction state operations
             List<TransactionalStateOperation<?>> ops = new ArrayList<>();
             ops.add(op1);
             ops.add(op2);
 
-            // Configure transaction request
+            // Configure transaction request setting the state store
             ExecuteStateTransactionRequest transactionRequest = new ExecuteStateTransactionRequest(DAPR_STORE_NAME);
-
+            
             transactionRequest.setOperations(ops);
 
             // Execute the state transaction
