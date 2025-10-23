@@ -330,8 +330,7 @@ public class Main {
     public static void main(String[] args) {
         try (DaprClient client = new DaprClientBuilder().build()) {
             // Define the first state operation to save the value "2"
-            StateOperation<String> op1 = new StateOperation<>(
-                    StateOperationType.UPSERT,
+            State<String> state1 = new State<>(
                     "key1",
                     "2"
             );
@@ -340,20 +339,34 @@ public class Main {
             Map<String, String> metadata = new HashMap<>();
             metadata.put("outbox.projection", "true");
 
-            StateOperation<String> op2 = new StateOperation<>(
-                    StateOperationType.UPSERT,
+            State<String> state2 = new State<>(
                     "key1",
                     "3",
-                    metadata
+                    null, // etag
+                    metadata, 
+                    null // stateOptions
+            );
+            
+            TransactionalStateOperation<String> op1 = new TransactionalStateOperation<>(
+                TransactionalStateOperation.OperationType.UPSERT, state1
+            );
+
+            TransactionalStateOperation<String> op2 = new TransactionalStateOperation<>(
+                TransactionalStateOperation.OperationType.UPSERT, state2
             );
 
             // Create the list of state operations
-            List<StateOperation<?>> ops = new ArrayList<>();
+            List<TransactionalStateOperation<?>> ops = new ArrayList<>();
             ops.add(op1);
             ops.add(op2);
 
+            // Configure transaction request
+            ExecuteStateTransactionRequest transactionRequest = new ExecuteStateTransactionRequest(DAPR_STORE_NAME);
+
+            transactionRequest.setOperations(ops);
+
             // Execute the state transaction
-            client.executeStateTransaction(DAPR_STORE_NAME, ops).block();
+            client.executeStateTransaction(transactionRequest).block();
             System.out.println("State transaction executed.");
         } catch (Exception e) {
             e.printStackTrace();
