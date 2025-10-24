@@ -618,39 +618,42 @@ public class StateOperationExample {
         executeStateTransaction();
     }
 
-    public static void executeStateTransaction() {
-        // Build Dapr client
-        try (DaprClient daprClient = new DaprClientBuilder().build()) {
+  public static void executeStateTransaction() {
+    // Build Dapr client
+    try (DaprClient daprClient = new DaprClientBuilder().build()) {
 
-            // Define the value "2"
-            String value = "2";
+      // Override CloudEvent metadata
+      Map<String, String> metadata = new HashMap<>();
+      metadata.put("cloudevent.id", "unique-business-process-id");
+      metadata.put("cloudevent.source", "CustomersApp");
+      metadata.put("cloudevent.type", "CustomerCreated");
+      metadata.put("cloudevent.subject", "123");
+      metadata.put("my-custom-ce-field", "abc");
 
-            // Override CloudEvent metadata
-            Map<String, String> metadata = new HashMap<>();
-            metadata.put("cloudevent.id", "unique-business-process-id");
-            metadata.put("cloudevent.source", "CustomersApp");
-            metadata.put("cloudevent.type", "CustomerCreated");
-            metadata.put("cloudevent.subject", "123");
-            metadata.put("my-custom-ce-field", "abc");
+      State<String> state = new State<>(
+          "key1", // Define the key "key1"
+          "value1", // Define the value "value1"
+          null, // etag
+          metadata,
+          null // concurrency and consistency options
+      );
 
-            // Define state operations
-            List<StateOperation<?>> ops = new ArrayList<>();
-            StateOperation<String> op1 = new StateOperation<>(
-                    StateOperationType.UPSERT,
-                    "key1",
-                    value,
-                    metadata
-            );
-            ops.add(op1);
+      // Define state operations
+      List<TransactionalStateOperation<?>> ops = new ArrayList<>();
+      TransactionalStateOperation<String> op1 = new TransactionalStateOperation<>(
+          TransactionalStateOperation.OperationType.UPSERT,
+          state
+      );
+      ops.add(op1);
 
-            // Execute state transaction
-            String storeName = "your-state-store-name";
-            daprClient.executeStateTransaction(storeName, ops).block();
-            System.out.println("State transaction executed.");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+      // Execute state transaction
+      String storeName = "your-state-store-name";
+      daprClient.executeStateTransaction(storeName, ops).block();
+      System.out.println("State transaction executed.");
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+  }
 }
 ```
 {{% /tab %}}
