@@ -181,28 +181,20 @@ DAPR_STORE_NAME = "statestore"
 async def main():
     client = DaprClient()
 
-    # Define the first state operation to save the value "2"
-    op1 = StateItem(
-        key="key1",
-        value=b"2"
+    client.execute_state_transaction(
+       store_name=DAPR_STORE_NAME,
+       operations=[
+          # Define the first state operation to save the value "2"
+          TransactionalStateOperation(
+             key='key1', data='2', metadata={'outbox.projection': 'false'}
+          ),
+          # Define the second state operation to publish the value "3" with metadata
+          TransactionalStateOperation(
+             key='key1', data='3', metadata={'outbox.projection': 'true'}
+          ),
+       ],
     )
 
-    # Define the second state operation to publish the value "3" with metadata
-    op2 = StateItem(
-        key="key1",
-        value=b"3",
-        options=StateOptions(
-            metadata={
-                "outbox.projection": "true"
-            }
-        )
-    )
-
-    # Create the list of state operations
-    ops = [op1, op2]
-
-    # Execute the state transaction
-    await client.state.transaction(DAPR_STORE_NAME, operations=ops)
     print("State transaction executed.")
 ```
 
