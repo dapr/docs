@@ -2,7 +2,7 @@
 type: docs
 title: "AWS Secrets Manager"
 linkTitle: "AWS Secrets Manager"
-description: Detailed information on the  secret store component
+description: Detailed information on the AWS Secrets Manager secret store component
 aliases:
   - "/operations/components/setup-secret-store/supported-secret-stores/aws-secret-manager/"
 ---
@@ -30,6 +30,8 @@ spec:
     value: "[aws_secret_key]"
   - name: sessionToken
     value: "[aws_session_token]"
+  - name: multipleKeyValuesPerSecret
+    value: "false"
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a local secret store such as [Kubernetes secret store]({{% ref kubernetes-secret-store.md %}}) or a [local file]({{% ref file-secret-store.md %}}) to bootstrap secure key storage.
@@ -43,6 +45,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 | accessKey          | Y        | The AWS Access Key to access this resource                              | `"key"`             |
 | secretKey          | Y        | The AWS Secret Access Key to access this resource                       | `"secretAccessKey"` |
 | sessionToken       | N        | The AWS session token to use                                            | `"sessionToken"`    |
+| multipleKeyValuesPerSecret | N | When set to `"true"` allows for multiple key value pairs to be stored in a single secret. Defaults to `"false"` | `"true"` |
 
 {{% alert title="Important" color="warning" %}}
 When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernetes), if you're using a node/pod that has already been attached to an IAM policy defining access to AWS resources, you **must not** provide AWS access-key, secret-key, and tokens in the definition of the component spec you're using.  
@@ -56,6 +59,46 @@ Query Parameter | Description
 --------- | -----------
 `metadata.version_id` | Version for the given secret key.
 `metadata.version_stage` | Version stage for the given secret key.
+
+## Configure multiple key-values per secret
+
+The `multipleKeyValuesPerSecret` flag determines whether the secret store presents a single value or multiple key-value pairs per secret.
+
+### Single value per secret
+
+If `multipleKeyValuesPerSecret` is `false` (default), AWS Secrets Manager returns the secret value as-is. Given a secret named `database-credentials` with the following JSON content:
+
+```json
+{
+  "username": "admin",
+  "password": "secret123",
+  "host": "db.example.com"
+}
+```
+
+Requesting this secret returns the entire JSON as a single value:
+
+```bash
+$ curl http://localhost:3500/v1.0/secrets/awssecretmanager/database-credentials
+{
+  "database-credentials": "{\"username\":\"admin\",\"password\":\"secret123\",\"host\":\"db.example.com\"}"
+}
+```
+
+### Multiple key-value pairs per secret
+
+If `multipleKeyValuesPerSecret` is `true`, the secret store parses JSON content stored in AWS Secrets Manager and returns it as multiple key-value pairs.
+
+Requesting the same `database-credentials` secret from above, the response breaks the JSON object into its own entries, allowing it to be parsed into multiple key-value pairs.
+
+```bash
+$ curl http://localhost:3500/v1.0/secrets/awssecretmanager/database-credentials
+{
+  "username": "admin",
+  "password": "secret123", 
+  "host": "db.example.com"
+}
+```
 
 ## Create an AWS Secrets Manager instance
 
