@@ -22,7 +22,7 @@ By default, Dapr has a limit for the request body size, set to 4MB. You can chan
 When running in self-hosted mode, use the `--max-body-size` flag to configure Dapr to use non-default request body size:
 
 ```bash
-dapr run --max-body-size 16 node app.js
+dapr run --max-body-size 16Mi node app.js
 ```
 {{% /tab %}}
 
@@ -52,7 +52,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "myapp"
         dapr.io/app-port: "8000"
-        dapr.io/max-body-size: "16"
+        dapr.io/max-body-size: "16Mi"
 #...
 ```
 

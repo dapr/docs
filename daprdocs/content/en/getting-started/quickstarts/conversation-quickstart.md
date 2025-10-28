@@ -249,7 +249,7 @@ async function main() {
     metadata: {},
   };
 
-  const reqURL = `${daprHost}:${daprHttpPort}/v1.0-alpha1/conversation/${conversationComponentName}/converse`;
+  const reqURL = `${daprHost}:${daprHttpPort}/v1.0-alpha2/conversation/${conversationComponentName}/converse`;
 
   try {
     const response = await fetch(reqURL, {
