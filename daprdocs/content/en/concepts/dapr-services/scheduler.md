@@ -85,7 +85,7 @@ When running in HA mode, you only need to expose the ports for one scheduler ins
 version: "3.5"
 services:
   scheduler-0:
-    image: "docker.io/daprio/scheduler:1.16.0"
+    image: "docker.io/daprio/scheduler:{{% dapr-latest-version %}}"
     command:
     - "./scheduler"
     - "--etcd-data-dir=/var/run/dapr/scheduler"
@@ -96,7 +96,7 @@ services:
     volumes:
       - ./dapr_scheduler/0:/var/run/dapr/scheduler
   scheduler-1:
-    image: "docker.io/daprio/scheduler:1.16.0"
+    image: "docker.io/daprio/scheduler:{{% dapr-latest-version %}}"
     command:
     - "./scheduler"
     - "--etcd-data-dir=/var/run/dapr/scheduler"
@@ -105,7 +105,7 @@ services:
     volumes:
       - ./dapr_scheduler/1:/var/run/dapr/scheduler
   scheduler-2:
-    image: "docker.io/daprio/scheduler:1.16.0"
+    image: "docker.io/daprio/scheduler:{{% dapr-latest-version %}}"
     command:
     - "./scheduler"
     - "--etcd-data-dir=/var/run/dapr/scheduler"
