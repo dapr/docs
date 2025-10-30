@@ -118,14 +118,14 @@ You can retrieve secrets from Akeyless using the Dapr secrets API:
 curl http://localhost:3500/v1.0/secrets/akeyless/my-secret
 ```
 
-This will return the secret value stored in Akeyless with the name `my-secret`.
+This returns the secret value stored in Akeyless with the name `my-secret`.
 
 ## Setup Akeyless instance
 
 To get started with Akeyless:
 
 1. Sign up for an Akeyless account at [https://www.akeyless.io](https://www.akeyless.io)
-2. Create an Access ID and configure your preferred authentication method
+2. Create an Access ID and configure your preferred authentication method.
 3. Set up your secrets in the Akeyless.
 4. Configure the Dapr component using one of the authentication methods above.
 
