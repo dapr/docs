@@ -177,6 +177,8 @@ dapr workflow rerun order-12345 \
 
 #### Purge Completed Workflows
 
+Note that purging a workflow from the CLI will also delete all associated Scheduler reminders.
+
 ```bash
 # Purge a specific instance
 dapr workflow purge order-12345 --app-id orderprocessing

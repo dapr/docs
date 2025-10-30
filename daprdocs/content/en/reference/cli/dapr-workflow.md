@@ -11,15 +11,15 @@ Manage Dapr workflow instances.
 
 | Command | Description |
 |---------|-------------|
-| [dapr workflow run]({{< ref dapr-workflow-run.md >}}) | Start a new workflow instance |
-| [dapr workflow list]({{< ref dapr-workflow-list.md >}}) | List workflow instances |
-| [dapr workflow history]({{< ref dapr-workflow-history.md >}}) | Get workflow execution history |
-| [dapr workflow purge]({{< ref dapr-workflow-purge.md >}}) | Purge workflow instances |
-| [dapr workflow suspend]({{< ref dapr-workflow-suspend.md >}}) | Suspend a workflow |
-| [dapr workflow resume]({{< ref dapr-workflow-resume.md >}}) | Resume a workflow |
-| [dapr workflow terminate]({{< ref dapr-workflow-terminate.md >}}) | Terminate a workflow |
-| [dapr workflow raise-event]({{< ref dapr-workflow-raise-event.md >}}) | Raise an external event |
-| [dapr workflow rerun]({{< ref dapr-workflow-rerun.md >}}) | Re-run a workflow |
+| dapr workflow run | Start a new workflow instance |
+| dapr workflow list | List workflow instances |
+| dapr workflow history | Get workflow execution history |
+| dapr workflow purge | Purge workflow instances |
+| dapr workflow suspend | Suspend a workflow |
+| dapr workflow resume | Resume a workflow |
+| dapr workflow terminate | Terminate a workflow |
+| dapr workflow raise-event | Raise an external event |
+| dapr workflow rerun | Re-run a workflow |
 
 ## Flags
 
