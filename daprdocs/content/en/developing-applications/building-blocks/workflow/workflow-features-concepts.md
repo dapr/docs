@@ -135,7 +135,7 @@ Because workflow retry policies are configured in code, the exact developer expe
 | **First retry interval** | The amount of time to wait before the first retry. |
 | **Backoff coefficient** | The coefficient used to determine the rate of increase of back-off. For example a coefficient of 2 doubles the wait of each subsequent retry. |
 | **Maximum retry interval** | The maximum amount of time to wait before each subsequent retry. If set to 0, no retries will happen. |
-| **Retry timeout** | The global timeout for retries, regardless of any configured max number of attempts and retries. |
+| **Retry timeout** | The global timeout for retries, regardless of any configured max number of attempts.  No further attempts will be made at executing a activities after this timeout expires.
 
 ## External events
 
