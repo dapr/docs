@@ -46,19 +46,8 @@ dapr workflow run MyWorkflow --app-id myapp --input '{"key": "value"}'
 ```bash
 dapr workflow list -k -n production --app-id myapp
 ```
-```
 
-### dapr-workflow-list.md
-
-```markdown
----
-type: docs
-title: "workflow list CLI command"
-linkTitle: "workflow list"
-description: "Detailed information on the workflow list CLI command"
----
-
-List workflow instances for a given application.
+## List workflow instances for a given application.
 
 ## Usage
 
@@ -151,19 +140,8 @@ mongodb://localhost:27017/dapr
 ```
 localhost:6379,password=secret,db=0
 ```
-```
 
-### dapr-workflow-purge.md
-
-```markdown
----
-type: docs
-title: "workflow purge CLI command"
-linkTitle: "workflow purge"
-description: "Detailed information on the workflow purge CLI command"
----
-
-Purge workflow instances with terminal states (COMPLETED, FAILED, TERMINATED).
+## Purge workflow instances with terminal states (COMPLETED, FAILED, TERMINATED).
 
 ## Usage
 
@@ -237,4 +215,3 @@ dapr workflow purge \
    ```bash
    dapr workflow list --app-id myapp --output json > backup.json
    ```
-```
