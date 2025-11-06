@@ -2077,10 +2077,13 @@ Open a separate terminal and run the following CLI commands.
 ```bash
 # List all workflows
 dapr workflow list --app-id orderprocessing --connection-string=redis://127.0.0.1:6379
+```
 
-# You should see output like:
-# INSTANCE ID          WORKFLOW NAME              CREATED              LAST UPDATED         RUNTIME STATUS
-# order-20240312-001   OrderProcessingWorkflow    2024-03-12 10:00:00  2024-03-12 10:00:05  RUNNING
+You should see output like:
+
+```
+INSTANCE ID          WORKFLOW NAME              CREATED              LAST UPDATED         RUNTIME STATUS
+order-20240312-001   OrderProcessingWorkflow    2024-03-12 10:00:00  2024-03-12 10:00:05  RUNNING
 ```
 
 ### Check Workflow History
@@ -2088,7 +2091,7 @@ dapr workflow list --app-id orderprocessing --connection-string=redis://127.0.0.
 View the detailed execution history of your workflow:
 
 ```bash
-dapr workflow history order-20240312-001 --app-id orderprocessing --connection-string=redis://127.0.0.1:6379
+dapr workflow history order-20240312-001 --app-id orderprocessing
 ```
 
 ### Interact with Your Workflow
@@ -2100,8 +2103,7 @@ If your workflow is waiting for an external event:
 ```bash
 dapr workflow raise-event order-20240312-001/ApprovalEvent \
   --app-id orderprocessing \
-  --input '{"paymentId": "pay-123", "amount": 100.00}' \
-  --connection-string=redis://127.0.0.1:6379
+  --input '{"paymentId": "pay-123", "amount": 100.00}'
 ```
 
 #### Suspend and Resume
@@ -2124,10 +2126,10 @@ After testing, purge completed workflows:
 
 ```bash
 # Purge a specific workflow
-dapr workflow purge order-20240312-001 --app-id orderprocessing
+dapr workflow purge order-20240312-001 --app-id orderprocessing --connection-string=redis://127.0.0.1:6379
 
 # Or purge all completed workflows
-dapr workflow purge --app-id orderprocessing --all-older-than 1h
+dapr workflow purge --app-id orderprocessing --connection-string=redis://127.0.0.1:6379 --all-older-than 1h
 ```
 
 ## Tell us what you think!
