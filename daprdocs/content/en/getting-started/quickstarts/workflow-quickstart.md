@@ -1847,6 +1847,7 @@ func main() {
 	fmt.Printf("workflow status: %v\n", respFetch.String())
 
 	fmt.Println("Purchase of item is complete")
+    select {}
 }
 
 func restockInventory(daprClient client.Client, inventory []InventoryItem) error {
@@ -2071,9 +2072,11 @@ Now that your workflow is running, let's learn how to manage it using the Dapr C
 
 ### View Running Workflows
 
+Open a separate terminal and run the following CLI commands.
+
 ```bash
 # List all workflows
-dapr workflow list --app-id orderprocessing
+dapr workflow list --app-id orderprocessing --connection-string=redis://127.0.0.1:6379
 
 # You should see output like:
 # INSTANCE ID          WORKFLOW NAME              CREATED              LAST UPDATED         RUNTIME STATUS
@@ -2085,7 +2088,7 @@ dapr workflow list --app-id orderprocessing
 View the detailed execution history of your workflow:
 
 ```bash
-dapr workflow history order-20240312-001 --app-id orderprocessing
+dapr workflow history order-20240312-001 --app-id orderprocessing --connection-string=redis://127.0.0.1:6379
 ```
 
 ### Interact with Your Workflow
@@ -2095,9 +2098,10 @@ dapr workflow history order-20240312-001 --app-id orderprocessing
 If your workflow is waiting for an external event:
 
 ```bash
-dapr workflow raise-event order-20240312-001/PaymentReceived \
+dapr workflow raise-event order-20240312-001/ApprovalEvent \
   --app-id orderprocessing \
-  --input '{"paymentId": "pay-123", "amount": 100.00}'
+  --input '{"paymentId": "pay-123", "amount": 100.00}' \
+  --connection-string=redis://127.0.0.1:6379
 ```
 
 #### Suspend and Resume

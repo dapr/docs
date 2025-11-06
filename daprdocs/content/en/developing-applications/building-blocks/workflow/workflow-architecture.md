@@ -194,13 +194,24 @@ This number may be larger or smaller depending on retries or concurrency.
 For advanced operations, you can access workflow data directly:
 
 ```bash
-# Port forward to database in Kubernetes
+# Port forward to a postgres database in Kubernetes
 kubectl port-forward service/postgres 5432:5432
 
 # Query workflows directly
 dapr workflow list \
   --app-id myapp \
   --connection-string "host=localhost user=dapr password=dapr dbname=dapr port=5432 sslmode=disable" \
+  --table-name workflows
+```
+
+```bash
+# Port forward to redis database in Kubernetes
+kubectl port-forward service/redis 6379:6379
+
+# Query workflows directly
+dapr workflow list \
+  --app-id myapp \
+  --connection-string redis://127.0.0.1:6379 \
   --table-name workflows
 ```
 

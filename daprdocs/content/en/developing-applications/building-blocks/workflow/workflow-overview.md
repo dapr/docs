@@ -127,7 +127,7 @@ dapr workflow run MyWorkflow --app-id myapp --input '{"key": "value"}'
 
 **Monitor Workflows**
 ```bash
-# List active workflows
+# List active workflows for a given application
 dapr workflow list --app-id myapp --filter-status RUNNING
 
 # View execution history

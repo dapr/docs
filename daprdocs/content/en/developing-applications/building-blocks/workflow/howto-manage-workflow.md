@@ -71,12 +71,12 @@ dapr scheduler import -f workflow-reminders-backup.bin
 
 ## Managing Workflows with the Dapr CLI
 
-The Dapr CLI provides powerful commands for managing workflow instances in both self-hosted and Kubernetes environments.
+The Dapr CLI provides commands for managing workflow instances in both self-hosted and Kubernetes environments.
 
 ### Prerequisites
 
 - Dapr CLI version 1.16.2 or later
-- A running Dapr application with workflows configured
+- A running Dapr application that has registered a workflow
 - For database operations: network access to your actor state store
 
 ### Basic Workflow Operations
@@ -84,18 +84,18 @@ The Dapr CLI provides powerful commands for managing workflow instances in both 
 #### Start a Workflow
 
 ```bash
-# Start a workflow with input data
+# Using the `orderprocessing` application, start a new workflow instance with input data
 dapr workflow run OrderProcessingWorkflow \
   --app-id orderprocessing \
   --input '{"orderId": "12345", "amount": 100.50}'
 
-# Start with a specific instance ID
+# Start with a new workflow with a specific instance ID
 dapr workflow run OrderProcessingWorkflow \
   --app-id orderprocessing \
   --instance-id order-12345 \
   --input '{"orderId": "12345"}'
 
-# Schedule a workflow to start later
+# Schedule a new workflow to start at 10:00:00 AM on December 25, 2024, Coordinated Universal Time (UTC).
 dapr workflow run OrderProcessingWorkflow \
   --app-id orderprocessing \
   --start-time "2024-12-25T10:00:00Z"
@@ -223,7 +223,7 @@ In self-hosted mode, the CLI can automatically discover your state store configu
 
 ```bash
 # The CLI reads your component configuration automatically
-dapr workflow list --app-id orderprocessing
+dapr workflow list --app-id orderprocessing --connection-string=redis://127.0.0.1:6379
 ```
 
 To override with a specific connection string:
@@ -233,19 +233,24 @@ To override with a specific connection string:
 dapr workflow list \
   --app-id orderprocessing \
   --connection-string "host=localhost user=dapr password=dapr dbname=dapr port=5432 sslmode=disable" \
-  --table-name workflows
+  --table-name actor-store
 
 # MySQL
 dapr workflow list \
   --app-id orderprocessing \
   --connection-string "dapr:dapr@tcp(localhost:3306)/dapr?parseTime=true" \
-  --table-name workflows
+  --table-name actor-store
 
 # SQL Server
 dapr workflow list \
   --app-id orderprocessing \
   --connection-string "sqlserver://dapr:Pass@word1@localhost:1433?database=dapr" \
-  --table-name workflows
+  --table-name abc
+
+# Redis
+dapr workflow list \
+  --app-id orderprocessing \
+  --connection-string=redis://user:mypassword@127.0.0.1:6379 \
 ```
 
 #### Kubernetes Mode with Port Forwarding
@@ -263,6 +268,9 @@ kubectl port-forward service/mysql 3306:3306 -n production
 
 # SQL Server
 kubectl port-forward service/mssql 1433:1433 -n production
+
+# Redis
+kubectl port-forward service/redis 6379:6379 -n production
 ```
 
 **Step 2: Use the CLI with the connection string**
@@ -316,7 +324,7 @@ mongodb://username:password@localhost:27017/database
 
 **Redis**
 ```
-localhost:6379,password=secret,db=0
+redis://127.0.0.1:6379
 ```
 
 ### Workflow Management Best Practices
