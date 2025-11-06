@@ -138,7 +138,7 @@ mongodb://localhost:27017/dapr
 
 ### Redis
 ```
-redis://localhost:6379
+redis[s]://[[username][:password]@][host][:port][/db-number]:
 ```
 
 ## Purge workflow instances with terminal states (COMPLETED, FAILED, TERMINATED).
