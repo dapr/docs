@@ -2118,14 +2118,14 @@ Open a separate terminal and run the following CLI commands.
 
 ```bash
 # List all workflows
-dapr workflow list --app-id order-processing --connection-string=redis://127.0.0.1:6379 -o wide
+dapr workflow list --app-id order-processor --connection-string=redis://127.0.0.1:6379 -o wide
 ```
 
 You should see output like:
 
 ```
-NAMESPACE  APP ID           NAME                     INSTANCE ID           CREATED               LAST UPDATE           STATUS
-default    order-processor  OrderProcessingWorkflow  order-20251107114222  2025-11-07T11:42:22Z  2025-11-07T11:42:22Z  COMPLETED
+NAMESPACE  APP ID           NAME                     INSTANCE ID  CREATED               LAST UPDATE           STATUS
+default    order-processor  OrderProcessingWorkflow  e4d3807c     2025-11-07T12:29:37Z  2025-11-07T12:29:52Z  COMPLETED
 ```
 
 ### Check Workflow History
@@ -2133,7 +2133,7 @@ default    order-processor  OrderProcessingWorkflow  order-20251107114222  2025-
 View the detailed execution history of your workflow:
 
 ```bash
-dapr workflow history order-20251107114222 --app-id order-processor
+dapr workflow history e4d3807c --app-id order-processor
 ```
 
 You should see output like:
@@ -2168,7 +2168,7 @@ If your workflow is waiting for an [external event]({{% ref "workflow-patterns.m
 It takes a single argument in the format of `<instance-id>/<event-name>`.
 
 ```bash
-dapr workflow raise-event order-20251107114222/ApprovalEvent \
+dapr workflow raise-event e4d3807c/ApprovalEvent \
   --app-id order-processor \
   --input '{"paymentId": "pay-123", "amount": 100.00}'
 ```
@@ -2177,12 +2177,12 @@ dapr workflow raise-event order-20251107114222/ApprovalEvent \
 
 ```bash
 # Suspend a workflow
-dapr workflow suspend order-20251107114222 \
+dapr workflow suspend e4d3807c \
   --app-id order-processor \
   --reason "Waiting for inventory"
 
 # Resume when ready
-dapr workflow resume order-20251107114222 \
+dapr workflow resume e4d3807c \
   --app-id order-processor \
   --reason "Inventory received"
 ```
@@ -2192,7 +2192,7 @@ dapr workflow resume order-20251107114222 \
 After testing, purge completed workflows.
 
 {{% alert title="Important" color="warning" %}}
-In order to preserve the workflow state machine integrity and prevent corruption, purging workflow requires that the workflow client for that app ID is running.
+In order to preserve the workflow state machine integrity and prevent corruption, purging workflows require that the workflow client is running in the application.
 Errors like the following suggest that the workflow client is not running:
 ```
 failed to purge orchestration state: rpc error: code = FailedPrecondition desc = failed to purge orchestration state: failed to lookup actor: api error: code = FailedPrecondition desc = did not find address for actor
@@ -2201,7 +2201,7 @@ failed to purge orchestration state: rpc error: code = FailedPrecondition desc =
 
 ```bash
 # Purge a specific workflow
-dapr workflow purge order-20251107114222 --app-id order-processor --connection-string=redis://127.0.0.1:6379
+dapr workflow purge e4d3807c --app-id order-processor --connection-string=redis://127.0.0.1:6379
 
 # Or purge all completed workflows
 dapr workflow purge --app-id order-processor --connection-string=redis://127.0.0.1:6379 --all-older-than 1h
@@ -2218,5 +2218,6 @@ Join the discussion in our [discord channel](https://discord.com/channels/778680
 - Set up Dapr Workflow with any programming language using [HTTP instead of an SDK]({{% ref howto-manage-workflow.md %}})
 - Walk through a more in-depth [.NET SDK example workflow](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
 - Learn more about [Workflow as a Dapr building block]({{% ref workflow-overview %}})
+```
 
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}
