@@ -10,6 +10,67 @@ Now that you've [authored the workflow and its activities in your application]({
 
 {{< tabpane text=true >}}
 
+<!--CLI-->
+{{% tab "CLI" %}}
+Workflow reminders are stored in the Scheduler and can be managed using the dapr scheduler CLI.
+
+#### List workflow reminders
+
+```bash
+dapr scheduler list --filter workflow
+NAME                                           BEGIN     COUNT  LAST TRIGGER
+workflow/my-app/instance1/timer-0-ABC123       +50.0h    0
+workflow/my-app/instance2/timer-0-XYZ789       +50.0h    0
+```
+
+Get reminder details
+
+```bash
+dapr scheduler get workflow/my-app/instance1/timer-0-ABC123 -o yaml
+```
+
+#### Delete workflow reminders
+
+Delete a single reminder:
+
+```bash
+dapr scheduler delete workflow/my-app/instance1/timer-0-ABC123
+```
+
+Delete all reminders for a given workflow app"
+
+```bash
+dapr scheduler delete-all workflow/my-app
+```
+
+Delete all reminders for a specific workflow instance:
+
+```bash
+dapr scheduler delete-all workflow/my-app/instance1
+```
+
+#### Backup and restore reminders
+
+Export all reminders:
+
+```bash
+dapr scheduler export -o workflow-reminders-backup.bin
+```
+
+Restore from a backup file:
+
+```bash
+dapr scheduler import -f workflow-reminders-backup.bin
+```
+
+#### Summary
+
+- Workflow reminders are persisted in the Dapr Scheduler.
+- Create workflow reminders via the Workflow API.
+- Manage reminders (list, get, delete, backup/restore) with the dapr scheduler CLI.
+
+{{% /tab %}}
+
 <!--Python-->
 {{% tab "Python" %}}
 
@@ -356,7 +417,7 @@ To resume a workflow with an ID `12345678`, run:
 curl -X POST "http://localhost:3500/v1.0/workflows/dapr/12345678/resume"
 ```
 
-### Purge a workflow 
+### Purge a workflow
 
 The purge API can be used to permanently delete workflow metadata from the underlying state store, including any stored inputs, outputs, and workflow history records. This is often useful for implementing data retention policies and for freeing resources.
 

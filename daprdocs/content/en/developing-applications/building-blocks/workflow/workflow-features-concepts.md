@@ -131,11 +131,11 @@ Because workflow retry policies are configured in code, the exact developer expe
 
 | Parameter | Description |
 | --- | --- |
-| **Maximum number of attempts** | The maximum number of times to execute the activity or child workflow. |
+| **Maximum number of attempts** | The maximum number of times to execute the activity or child workflow. If set to 0, no attempts will be made. |
 | **First retry interval** | The amount of time to wait before the first retry. |
 | **Backoff coefficient** | The coefficient used to determine the rate of increase of back-off. For example a coefficient of 2 doubles the wait of each subsequent retry. |
-| **Maximum retry interval** | The maximum amount of time to wait before each subsequent retry. |
-| **Retry timeout** | The overall timeout for retries, regardless of any configured max number of attempts. |
+| **Maximum retry interval** | The maximum amount of time to wait before each subsequent retry. If set to 0, no retries will happen. |
+| **Retry timeout** | The global timeout for retries, regardless of any configured max number of attempts.  No further attempts are made executing activities after this timeout expires.
 
 ## External events
 
