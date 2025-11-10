@@ -180,7 +180,8 @@ dapr workflow rerun order-12345 \
 Note that purging a workflow from the CLI will also delete all associated Scheduler reminders.
 
 {{% alert title="Important" color="warning" %}}
-In order to preserve the workflow state machine integrity and prevent corruption, purging workflows require that the workflow client is running in the application.
+It is required that a workflow client is running in the application to perform purge operations.
+The workflow client connection is required in order to preserve the workflow state machine integrity and prevent corruption.
 Errors like the following suggest that the workflow client is not running:
 ```
 failed to purge orchestration state: rpc error: code = FailedPrecondition desc = failed to purge orchestration state: failed to lookup actor: api error: code = FailedPrecondition desc = did not find address for actor
