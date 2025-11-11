@@ -13,6 +13,7 @@ To setup Akeyless secret store create a component of type `secretstores.akeyless
 ## Component Format
 
 ```yaml
+# yaml-language-server: $schema=../../component-metadata-schema.json
 schemaVersion: v1
 type: secretstores
 name: akeyless
@@ -22,67 +23,6 @@ title: "Akeyless Secret Store"
 urls:
   - title: Reference
     url: https://docs.dapr.io/reference/components-reference/supported-secret-stores/akeyless/
-authenticationProfiles:
-  - title: API Key
-    description: Authenticate using an API key.
-    metadata:
-      - name: accessId
-        required: true
-        description: The Akeyless Access ID.
-        example: "p-123456780wm"
-        type: string
-      - name: accessKey
-        required: true
-        description: The Akeyless API key.
-        example: "ABCD1233...="
-        type: string
-        sensitive: true
-  - title: JWT
-    description: Authenticate using a JSON Web Token.
-    metadata:
-      - name: accessId
-        required: true
-        description: The Akeyless Access ID.
-        example: "p-123456780wm"
-        type: string
-      - name: jwt
-        required: true
-        description: The JSON Web Token.
-        example: "eyJ..."
-        type: string
-        sensitive: true
-  - title: AWS IAM
-    description: Authenticate using AWS IAM.
-    metadata:
-      - name: accessId
-        required: true
-        description: The Akeyless Access ID.
-        example: "p-123456780wm"
-        type: string
-  - title: Kubernetes
-    description: Authenticate using Kubernetes.
-    metadata:
-      - name: accessId
-        required: true
-        description: The Akeyless Access ID.
-        example: "p-123456780wm"
-        type: string
-      - name: k8sAuthConfigName
-        required: true
-        description: The name of the k8s auth config.
-        example: "k8s-auth-config"
-        type: string
-      - name: k8sGatewayUrl
-        required: true
-        description: The gateway URL that where the k8s auth config is located.
-        example: "http://gw.akeyless.svc.cluster.local:8000"
-        type: string
-      - name: k8sServiceAccountToken
-        required: true
-        description: The service account token.
-        example: "eyJ..."
-        type: string
-        sensitive: true
 metadata:
   - name: gatewayUrl
     required: false
@@ -91,6 +31,46 @@ metadata:
     default: "https://api.akeyless.io"
     example: "https://your.akeyless.gw"
     type: string
+  - name: accessId
+    required: true
+    description: |
+      The Akeyless Access ID. Currently supported authentication methods are: API keys (`access_key`, default), JWT (`jwt`) and AWS IAM (`aws_iam`).
+    example: "p-123456780wm"
+    type: string
+  - name: jwt
+    required: false
+    description: |
+      If using the JWT authentication method, specify it here.
+    example: "eyJ..."
+    type: string
+    sensitive: true
+  - name: accessKey
+    required: false
+    description: |
+      If using the API key (access_key) authentication method, specify it here.
+    example: "ABCD1233...="
+    type: string
+    sensitive: true
+  - name: k8sAuthConfigName
+    required: false
+    description: |
+      If using the k8s auth method, specify the name of the k8s auth config.
+    example: "k8s-auth-config"
+    type: string
+  - name: k8sGatewayUrl
+    required: false
+    description: |
+      The gateway URL that where the k8s auth config is located.
+    example: "http://gw.akeyless.svc.cluster.local:8000"
+    type: string
+  - name: k8sServiceAccountToken
+    required: false
+    description: |
+      If using the k8s auth method, specify the service account token. If not specified,
+      we will try to read it from the default service account token file.
+    example: "eyJ..."
+    type: string
+    sensitive: true
 ```
 
 ## Spec metadata fields
@@ -111,8 +91,6 @@ metadata:
 We currently support the following authentication methods:
 
 ### [API Key](https://docs.akeyless.io/docs/api-key)
-
-
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -197,13 +175,50 @@ The above examples use secrets as plain strings. It is recommended to use a loca
 
 ## Retrieve secrets
 
-You can retrieve secrets from Akeyless using the Dapr secrets API:
+Once configured, you can retrieve secrets using the Dapr secrets API:
 
 ```bash
+# Get a single secret
 curl http://localhost:3500/v1.0/secrets/akeyless/my-secret
+
+# Get all secrets (static, dynamic, rotated) from root (/) path
+curl http://localhost:3500/v1.0/secrets/akeyless/bulk
+
+# Get all secrets static secrets
+curl http://localhost:3500/v1.0/secrets/akeyless/bulk?metadata.secrets_type=static
+
+# Get all static and dynamic secrets from a specific path (/my/org)
+curl http://localhost:3500/v1.0/secrets/akeyless/bulk?metadata.secrets_type=static,dynamic&metadata.path=/my/org
 ```
 
-This returns the secret value stored in Akeyless with the name `my-secret`.
+Or using the Dapr SDK. The example below retrieves all static secrets from path `/path/to/department`:
+
+```go
+log.Println("Starting test application")
+	client, err := dapr.NewClient()
+	if err != nil {
+		log.Printf("Error creating Dapr client: %v\n", err)
+		panic(err)
+	}
+	log.Println("Dapr client created successfully")
+	const daprSecretStore = "akeyless"
+
+	defer client.Close()
+	ctx := context.Background()
+	akeylessBulkMetadata := map[string]string{
+		"path":         "/path/to/department",
+		"secrets_type": "static",
+	}
+	secrets, err := client.GetBulkSecret(ctx, daprSecretStore, akeylessBulkMetadata)
+	if err != nil {
+		log.Printf("Error fetching secrets: %v\n", err)
+		panic(err)
+	}
+	log.Printf("Found %d secrets: ", len(secrets))
+	for secretName, secretValue := range secrets {
+		log.Printf("Secret: %s, Value: %s", secretName, secretValue)
+	}
+```
 
 ## Setup Akeyless instance
 
