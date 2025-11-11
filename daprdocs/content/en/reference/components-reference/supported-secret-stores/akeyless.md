@@ -220,6 +220,10 @@ log.Println("Starting test application")
 	}
 ```
 
+{{% alert title="Failing Retrieval in Bulk" color="info" %}}
+When retrieving secrets using the bulk API, all successfully-retrieved secrets will be returned and failed ones will be logged in the component log.
+{{% /alert %}}
+
 ## Setup Akeyless instance
 
 To get started with Akeyless:
