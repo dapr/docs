@@ -264,7 +264,7 @@ into a broker that Dapr reads from):
 
 {{% tab "HTTP API (Bash)" %}}
 
-Publish a Binary CloudEvent to orders toipic:
+Publish a Binary CloudEvent to orders topic:
 
 ```bash
 curl -X POST http://localhost:3500/v1.0/publish/order-pub-sub/orders \
