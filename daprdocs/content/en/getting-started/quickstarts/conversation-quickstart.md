@@ -79,8 +79,6 @@ dapr run -f .
 
 ### What happened?
 
-When you ran `dapr init` during Dapr install, the [`dapr.yaml` Multi-App Run template file]({{% ref "#dapryaml-multi-app-run-template-file" %}}) was generated in the `.dapr/components` directory. 
-
 Running `dapr run -f .` in this Quickstart started [app.py]({{% ref "#programcs-conversation-app" %}}).
 
 #### `dapr.yaml` Multi-App Run template file
@@ -196,8 +194,6 @@ dapr run -f .
 ```
 
 ### What happened?
-
-When you ran `dapr init` during Dapr install, the [`dapr.yaml` Multi-App Run template file]({{% ref "#dapryaml-multi-app-run-template-file" %}}) was generated in the `.dapr/components` directory. 
 
 Running `dapr run -f .` in this Quickstart started [conversation.go]({{% ref "#programcs-conversation-app" %}}).
 
@@ -421,8 +417,6 @@ dapr run -f .
 
 ### What happened?
 
-When you ran `dapr init` during Dapr install, the [`dapr.yaml` Multi-App Run template file]({{% ref "#dapryaml-multi-app-run-template-file" %}}) was generated in the `.dapr/components` directory.
-
 Running `dapr run -f .` in this Quickstart started the [conversation Program.cs]({{% ref "#programcs-conversation-app" %}}).
 
 #### `dapr.yaml` Multi-App Run template file
@@ -630,8 +624,6 @@ dapr run -f .
 
 ### What happened?
 
-When you ran `dapr init` during Dapr install, the [`dapr.yaml` Multi-App Run template file]({{% ref "#dapryaml-multi-app-run-template-file" %}}) was generated in the `.dapr/components` directory.
-
 Running `dapr run -f .` in this Quickstart started [Conversation.java]({{% ref "#programcs-conversation-app" %}}).
 
 #### `dapr.yaml` Multi-App Run template file
@@ -755,8 +747,6 @@ dapr run -f .
 ```
 
 ### What happened?
-
-When you ran `dapr init` during Dapr install, the [`dapr.yaml` Multi-App Run template file]({{% ref "#dapryaml-multi-app-run-template-file" %}}) was generated in the `.dapr/components` directory. 
 
 Running `dapr run -f .` in this Quickstart started [conversation.go]({{% ref "#programcs-conversation-app" %}}).
 
