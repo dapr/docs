@@ -187,6 +187,66 @@ To use protobuf serialization for actor reminders on self-hosted, use the follow
 --max-api-level=20
 ```
 
+## Managing reminders with the CLI
+
+Actor reminders are persisted in the Scheduler.
+You can manage them with the dapr scheduler CLI commands.
+
+#### List actor reminders
+
+```bash
+dapr scheduler list --filter actor
+NAME                                  BEGIN     COUNT  LAST TRIGGER
+actor/MyActorType/actorid1/test1      -3.89s    1      2025-10-03T16:58:55Z
+actor/MyActorType/actorid2/test2      -3.89s    1      2025-10-03T16:58:55Z
+```
+
+Get reminder details
+
+```bash
+dapr scheduler get actor/MyActorType/actorid1/test1 -o yaml
+```
+
+#### Delete reminders
+
+Delete a single reminder:
+
+```bash
+dapr scheduler delete actor/MyActorType/actorid1/test1
+```
+
+Delete all reminders for a given actor type:
+
+```bash
+dapr scheduler delete-all actor/MyActorType
+```
+
+Delete all reminders for a specific actor instance:
+
+```bash
+dapr scheduler delete-all actor/MyActorType/actorid1
+```
+
+#### Backup and restore reminders
+
+Export all reminders:
+
+```bash
+dapr scheduler export -o reminders-backup.bin
+```
+
+Restore from a backup file:
+
+```bash
+dapr scheduler import -f reminders-backup.bin
+```
+
+#### Summary
+
+- Reminders are stored in the Dapr Scheduler, not in the app.
+- Create reminders via the Actors API
+- Manage existing reminders (list, get, delete, backup/restore) using the `dapr scheduler` CLI.
+
 ## Next steps
 
 {{< button text="Configure actor runtime behavior >>" page="actors-runtime-config.md" >}}

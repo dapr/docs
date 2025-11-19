@@ -307,6 +307,16 @@ In addition to the challenges mentioned in [the previous pattern]({{% ref "workf
 
 Dapr Workflows provides a way to express the fan-out/fan-in pattern as a simple function, as shown in the following example:
 
+```bash
+# Start the workflow
+dapr workflow run DataProcessingWorkflow \
+  --app-id processor \
+  --input '{"items": ["item1", "item2", "item3"]}'
+
+# Monitor parallel execution
+dapr workflow history <instance-id> --app-id processor --output json
+```
+
 {{< tabpane text=true >}}
 
 {{% tab "Python" %}}
