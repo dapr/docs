@@ -114,6 +114,42 @@ Want to put workflows to the test? Walk through the following quickstart and tut
 
 Want to skip the quickstarts? Not a problem. You can try out the workflow building block directly in your application. After [Dapr is installed]({{% ref install-dapr-cli.md %}}), you can begin using  workflows, starting with [how to author a workflow]({{% ref howto-author-workflow.md %}}).
 
+## Managing Workflows
+
+Dapr provides comprehensive workflow management capabilities through both the HTTP API and the CLI.
+
+### Workflow Lifecycle Operations
+
+**Start Workflows**
+```bash
+dapr workflow run MyWorkflow --app-id myapp --input '{"key": "value"}'
+```
+
+**Monitor Workflows**
+```bash
+# List active workflows for a given application
+dapr workflow list --app-id myapp --filter-status RUNNING
+
+# View execution history
+dapr workflow history <instance-id> --app-id myapp
+```
+
+**Control Workflows**
+```bash
+# Suspend, resume, or terminate
+dapr workflow suspend <instance-id> --app-id myapp
+dapr workflow resume <instance-id> --app-id myapp
+dapr workflow terminate <instance-id> --app-id myapp
+```
+
+**Maintenance Operations**
+```bash
+# Purge completed workflows
+dapr workflow purge --app-id myapp --all-older-than 720h
+```
+
+See [How-To: Manage workflows]({{< ref howto-manage-workflow.md >}}) for detailed instructions.
+
 ## Limitations
 
 - **State stores:** You can only use state stores which support workflows, as [described here]({{% ref supported-state-stores %}}).

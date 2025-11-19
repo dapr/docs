@@ -61,12 +61,6 @@ jobs:
           output_location: "/"
           skip_app_build: true
           skip_deploy_on_missing_secrets: true
-      - name: Upload Hugo artifacts for Algolia
-        uses: actions/upload-artifact@v4
-        with:
-          name: hugo_build
-          path: ./daprdocs/public/
-          if-no-files-found: error
 
   close_staging_site:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
@@ -80,29 +74,3 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROUD_BAY_0E9E0E81E }}
           action: "close"
           skip_deploy_on_missing_secrets: true
-
-  algolia_index:
-    name: Index site for Algolia
-    if: github.event_name == 'push'
-    needs: ['build_and_deploy_job']
-    runs-on: ubuntu-latest
-    env:
-      ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
-      ALGOLIA_API_WRITE_KEY: ${{ secrets.ALGOLIA_API_WRITE_KEY }}
-      ALGOLIA_INDEX_NAME: daprdocs
-    steps:
-      - name: Checkout docs repo
-        uses: actions/checkout@v4
-        with:
-          submodules: false
-      - name: Download Hugo artifacts for Algolia
-        uses: actions/download-artifact@v4
-        with:
-          name: hugo_build
-          path: site/
-      - name: Install Python packages
-        run: |
-          pip install --upgrade bs4
-          pip install --upgrade 'algoliasearch>=2.0,<3.0'
-      - name: Index site
-        run: python ./.github/scripts/algolia.py ./site

@@ -189,6 +189,45 @@ This number may be larger or smaller depending on retries or concurrency.
 | Raise event | 3 records |
 | Start child workflow | 8 records |
 
+#### Direct Database Access
+
+For advanced operations, you can access workflow data directly:
+
+```bash
+# Port forward to a postgres database in Kubernetes
+kubectl port-forward service/postgres 5432:5432
+
+# Query workflows directly
+dapr workflow list \
+  --app-id myapp \
+  --connection-string "host=localhost user=dapr password=dapr dbname=dapr port=5432 sslmode=disable" \
+  --table-name workflows
+```
+
+```bash
+# Port forward to redis database in Kubernetes
+kubectl port-forward service/redis 6379:6379
+
+# Query workflows directly
+dapr workflow list \
+  --app-id myapp \
+  --connection-string redis://127.0.0.1:6379 \
+  --table-name workflows
+```
+
+### Supported State Stores
+
+The workflow engine supports these state stores:
+- PostgreSQL
+- MySQL
+- SQL Server
+- SQLite
+- Oracle Database
+- CockroachDB
+- MongoDB
+- Redis
+
+
 ## Workflow scalability
 
 Because Dapr Workflows are internally implemented using actors, Dapr Workflows have the same scalability characteristics as actors.
