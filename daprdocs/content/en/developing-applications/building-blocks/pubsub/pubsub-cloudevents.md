@@ -260,11 +260,7 @@ into a broker that Dapr reads from):
 
 3. Send the payload bytes in the message body.
 
-Dapr reconstructs the CloudEvent envelope from those metadata values, adds any
-missing tracing metadata (for example `traceid`, `traceparent`, `tracestate`,
-`topic`, and `pubsubname`), and delivers the message to subscribers in the same
-way as a structured CloudEvent. This applies equally to HTTP producers as well
-as to brokers like Kafka that persist headers alongside payloads.
+{{< tabpane text=true >}}
 
 {{% tab "HTTP API (Bash)" %}}
 
@@ -282,6 +278,8 @@ curl -X POST http://localhost:3500/v1.0/publish/order-pub-sub/orders \
 ```
 
 {{% /tab %}}
+
+{{< /tabpane >}}
 
 ## Event deduplication
 
