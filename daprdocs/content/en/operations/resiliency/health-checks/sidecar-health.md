@@ -42,9 +42,9 @@ On the other hand, as shown by the green boundary lines in the diagram above, th
 - The Dapr HTTP port is available; _but,_ 
 - The app channel is not yet established. 
 
-In the Dapr SDKs, the `waitForSidecar`/`wait_until_ready` method (depending on [which SDK you use]({{% ref "#sdks-supporting-outbound-health-endpoint" %}})) is used for this specific check with the `v1.0/healthz/outbound` endpoint. Using this behavior, instead of waiting for the app channel to be available (see: red boundary lines) with the `v1.0/healthz/` endpoint, Dapr waits for a successful response from `v1.0/healthz/outbound`. This approach enables your application to perform calls on the Dapr sidecar APIs before the app channel is initalized - for example, reading secrets with the secrets API.
+In the Dapr SDKs, the `waitForSidecar` method (depending on [which SDK you use]({{% ref "#sdks-supporting-outbound-health-endpoint" %}})) is used for this specific check with the `v1.0/healthz/outbound` endpoint. Using this behavior, instead of waiting for the app channel to be available (see: red boundary lines) with the `v1.0/healthz/` endpoint, Dapr waits for a successful response from `v1.0/healthz/outbound`. This approach enables your application to perform calls on the Dapr sidecar APIs before the app channel is initalized - for example, reading secrets with the secrets API.
 
-If you are using the `waitForSidecar`/`wait_until_ready` method on the SDKs, then the correct initialization is performed. Otherwise, you can call the `v1.0/healthz/outbound` endpoint during initalization, and if successesful, you can call the Dapr sidecar APIs.
+If you are using the `waitForSidecar` method on the SDKs, then the correct initialization is performed. Otherwise, you can call the `v1.0/healthz/outbound` endpoint during initalization, and if successesful, you can call the Dapr sidecar APIs.
 
 ### SDKs supporting outbound health endpoint
 Currently, the `v1.0/healthz/outbound` endpoint is supported in the:
