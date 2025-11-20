@@ -1827,7 +1827,7 @@ func main() {
 		TotalCost: totalCost,
 	}
 
-	id, err := wfClient.ScheduleWorkflow(context.Background(), workflowName, workflow.WithInput(orderPayload))
+	id, err := wfClient.ScheduleWorkflow(context.Background(), workflowName, workflow.WithInput(orderPayload), workflow.WithInstanceID("order-"+time.Now().Format("20060102150405")))
 	if err != nil {
 		log.Fatalf("failed to start workflow: %v", err)
 	}
@@ -1847,6 +1847,7 @@ func main() {
 	fmt.Printf("workflow status: %v\n", respFetch.String())
 
 	fmt.Println("Purchase of item is complete")
+	select {}
 }
 
 func restockInventory(daprClient client.Client, inventory []InventoryItem) error {
@@ -1880,6 +1881,48 @@ import (
 	"github.com/dapr/durabletask-go/workflow"
 	"github.com/dapr/go-sdk/client"
 )
+
+type OrderPayload struct {
+	ItemName  string `json:"item_name"`
+	TotalCost int    `json:"total_cost"`
+	Quantity  int    `json:"quantity"`
+}
+
+type OrderResult struct {
+	Processed bool `json:"processed"`
+}
+
+type InventoryItem struct {
+	ItemName    string `json:"item_name"`
+	PerItemCost int    `json:"per_item_cost"`
+	Quantity    int    `json:"quantity"`
+}
+
+type InventoryRequest struct {
+	RequestID string `json:"request_id"`
+	ItemName  string `json:"item_name"`
+	Quantity  int    `json:"quantity"`
+}
+
+type InventoryResult struct {
+	Success       bool          `json:"success"`
+	InventoryItem InventoryItem `json:"inventory_item"`
+}
+
+type PaymentRequest struct {
+	RequestID          string `json:"request_id"`
+	ItemBeingPurchased string `json:"item_being_purchased"`
+	Amount             int    `json:"amount"`
+	Quantity           int    `json:"quantity"`
+}
+
+type ApprovalRequired struct {
+	Approval bool `json:"approval"`
+}
+
+type Notification struct {
+	Message string `json:"message"`
+}
 
 // OrderProcessingWorkflow is the main workflow for orchestrating activities in the order process.
 func OrderProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
@@ -2064,6 +2107,107 @@ func RequestApprovalActivity(ctx workflow.ActivityContext) (any, error) {
 
 {{< /tabpane >}}
 
+
+## Step 5: Manage Your Workflow
+
+Now that your workflow is running, let's learn how to manage it using the Dapr CLI.
+
+### View Running Workflows
+
+Open a separate terminal and run the following CLI commands.
+
+```bash
+# List all workflows
+dapr workflow list --app-id order-processor --connection-string=redis://127.0.0.1:6379 -o wide
+```
+
+You should see output like:
+
+```
+NAMESPACE  APP ID           NAME                     INSTANCE ID  CREATED               LAST UPDATE           STATUS
+default    order-processor  OrderProcessingWorkflow  e4d3807c     2025-11-07T12:29:37Z  2025-11-07T12:29:52Z  COMPLETED
+```
+
+### Check Workflow History
+
+View the detailed execution history of your workflow:
+
+```bash
+dapr workflow history e4d3807c --app-id order-processor
+```
+
+You should see output like:
+
+```
+TYPE                 NAME                     EVENTID  ELAPSED   STATUS     DETAILS
+ExecutionStarted     OrderProcessingWorkflow  -        Age:1.1m  RUNNING    orchestration start
+OrchestratorStarted  -                        -        13.4ms    RUNNING    replay cycle start
+TaskScheduled        NotifyActivity           0        1.3ms     RUNNING    activity=NotifyActivity
+TaskCompleted        -                        -        2.6ms     RUNNING    eventId=0
+OrchestratorStarted  -                        -        2.6ms     RUNNING    replay cycle start
+TaskScheduled        VerifyInventoryActivity  1        637.6µs   RUNNING    activity=VerifyInventoryActivity
+TaskCompleted        -                        -        2.4ms     RUNNING    eventId=1
+OrchestratorStarted  -                        -        1.7ms     RUNNING    replay cycle start
+TaskScheduled        ProcessPaymentActivity   2        439.3µs   RUNNING    activity=ProcessPaymentActivity
+TaskCompleted        -                        -        1.6ms     RUNNING    eventId=2
+OrchestratorStarted  -                        -        1.5ms     RUNNING    replay cycle start
+TaskScheduled        UpdateInventoryActivity  3        311.2µs   RUNNING    activity=UpdateInventoryActivity
+TaskCompleted        -                        -        2.4ms     RUNNING    eventId=3
+OrchestratorStarted  -                        -        2.7ms     RUNNING    replay cycle start
+TaskScheduled        NotifyActivity           4        354.1µs   RUNNING    activity=NotifyActivity
+TaskCompleted        -                        -        2.5ms     RUNNING    eventId=4
+OrchestratorStarted  -                        -        1.6ms     RUNNING    replay cycle start
+ExecutionCompleted   -                        5        517.1µs   COMPLETED  execDuration=38.7ms
+```
+
+### Interact with Your Workflow
+
+#### Raise an External Event
+
+If your workflow is waiting for an [external event]({{% ref "workflow-patterns.md#external-system-interaction" %}}), you can raise one.
+It takes a single argument in the format of `<instance-id>/<event-name>`.
+
+```bash
+dapr workflow raise-event e4d3807c/ApprovalEvent \
+  --app-id order-processor \
+  --input '{"paymentId": "pay-123", "amount": 100.00}'
+```
+
+#### Suspend and Resume
+
+```bash
+# Suspend a workflow
+dapr workflow suspend e4d3807c \
+  --app-id order-processor \
+  --reason "Waiting for inventory"
+
+# Resume when ready
+dapr workflow resume e4d3807c \
+  --app-id order-processor \
+  --reason "Inventory received"
+```
+
+### Clean Up
+
+After testing, purge completed workflows.
+
+{{% alert title="Important" color="warning" %}}
+It is required that a workflow client is running in the application to perform purge operations.
+The workflow client connection is required in order to preserve the workflow state machine integrity and prevent corruption.
+Errors like the following suggest that the workflow client is not running:
+```
+failed to purge orchestration state: rpc error: code = FailedPrecondition desc = failed to purge orchestration state: failed to lookup actor: api error: code = FailedPrecondition desc = did not find address for actor
+```
+{{% /alert %}}
+
+```bash
+# Purge a specific workflow
+dapr workflow purge e4d3807c --app-id order-processor --connection-string=redis://127.0.0.1:6379
+
+# Or purge all completed workflows
+dapr workflow purge --app-id order-processor --connection-string=redis://127.0.0.1:6379 --all-older-than 1h
+```
+
 ## Tell us what you think!
 
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this Quickstart helpful? Do you have suggestions for improvement?
@@ -2075,5 +2219,6 @@ Join the discussion in our [discord channel](https://discord.com/channels/778680
 - Set up Dapr Workflow with any programming language using [HTTP instead of an SDK]({{% ref howto-manage-workflow.md %}})
 - Walk through a more in-depth [.NET SDK example workflow](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
 - Learn more about [Workflow as a Dapr building block]({{% ref workflow-overview %}})
+```
 
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}

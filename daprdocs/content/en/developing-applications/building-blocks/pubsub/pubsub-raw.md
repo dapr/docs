@@ -101,6 +101,36 @@ $app->run(function(\DI\FactoryInterface $factory) {
 
 {{% /tab %}}
 
+{{% tab "Java" %}}
+
+```java
+@RestController
+@PathMapping("/publish")
+public class PublishController {
+
+    @Inject
+    DaprClient client;
+
+    @PostMapping
+    public void sendRawMessage() {
+
+        Map<String, String> metadata = new HashMap<>();
+        metatada.put("content-type", "application/json");
+        metadata.put("rawPayload", "true");
+
+        Message message = new Message(UUID.random().toString(), "Hello from Dapr");
+
+        client.publishEvent(
+            "pubsub", // pubsub name
+            "messages", // topic name
+            message, // message data
+            metadata) // metadata
+                .block(); // wait for completion
+    }
+}
+```
+{{% /tab %}}
+
 {{< /tabpane >}}
 
 ## Subscribing to raw messages
@@ -213,6 +243,32 @@ $app->post('/dsstatus', function(
 );
 
 $app->start();
+```
+{{% /tab %}}
+
+{{% tab "Java" %}}
+```java
+@RequestMapping("/consumer")
+@RestController
+public class MessageConsumerController {
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.OK)
+    @Topic(pubsubName = "pubsub", name = "messages", metadata = "{\"rawPayload\":\"true\", \"content-type\": \"application/json\"}")
+    public void consume(@RequestBody Message message) {
+        System.out.println("Message received: " + message);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.OK)
+    @Topic(pubsubName = "pubsub", name = "another-topic", metadata = """
+            {"rawPayload": "true", "content-type": "application/json"}
+            """) // Using Java 15 text block
+    public void consumeAnother(@RequestBody Message message) {
+        System.out.println("Message received: " + message);
+    }
+}
+
 ```
 {{% /tab %}}
 
