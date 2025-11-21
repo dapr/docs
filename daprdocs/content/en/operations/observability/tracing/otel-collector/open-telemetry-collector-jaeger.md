@@ -85,15 +85,20 @@ Jaeger V2 can be deployed using the OpenTelemetry Operator for simplified manage
 
 #### Installation
 
-1. **Install cert-manager** to manage certificates:
-   ```bash
-   kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.19.1/cert-manager.yaml -n cert-manager
-   ```
-   Verify that all resources in the `cert-manager` namespace are ready.
+> **Note:**In order for the API server to communicate with the webhook component of the operator, the webhook requires a TLS certificate that the API server is configured to trust. There are a few different ways you can use to generate/configure the required TLS certificate detailed in the [otel operator chart docs](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-operator#tls-certificate-requirement)
+
+For simplicity in this case we will be letting helm to create an automatically generated self-signed certificate,
+ 
+```bash
+```
 
 1. **Install the OpenTelemetry Operator**:
+
    ```bash
-   kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml
+   helm install opentelemetry-operator open-telemetry/opentelemetry-operator -n opentelemetry-operator-system --create-namespace \
+    --set "manager.collectorImage.repository=ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-k8s" \
+    --set admissionWebhooks.certManager.enabled=false \
+    --set admissionWebhooks.autoGenerateCert.enabled=true
    ```
    Confirm that all resources in the `opentelemetry-operator-system` namespace are ready.
 
