@@ -4,9 +4,6 @@
 [submodule "sdkdocs/php"]
 	path = sdkdocs/php
 	url = https://github.com/dapr/php-sdk.git
-[submodule "sdkdocs/dotnet"]
-	path = sdkdocs/dotnet
-	url = https://github.com/dapr/dotnet-sdk.git
 [submodule "translations/docs-zh"]
 	path = translations/docs-zh
 	url = https://github.com/dapr/docs-zh.git
@@ -20,9 +17,6 @@
 [submodule "sdkdocs/js"]
 	path = sdkdocs/js
 	url = https://github.com/dapr/js-sdk.git 
-[submodule "sdkdocs/pluggable-components/dotnet"]
-	path = sdkdocs/pluggable-components/dotnet
-	url = https://github.com/dapr-sandbox/components-dotnet-sdk
 [submodule "sdkdocs/pluggable-components/go"]
 	path = sdkdocs/pluggable-components/go
 	url = https://github.com/dapr-sandbox/components-go-sdk
