@@ -68,5 +68,3 @@ graph = builder.compile(checkpointer=memory)
 ```
 
 For a full working example refer to the [langgraph example]().
-  
-For available State Managers refer to the [supported state stores](https://docs.dapr.io/reference/components-reference/supported-state-stores/).
