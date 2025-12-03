@@ -1143,7 +1143,9 @@ docker run -p 8080:8080 public.ecr.aws/diagrid-dev/diagrid-dashboard:latest
 If you're using another state store than the default Redis instance, you need to provide some additional arguments to run the container, see the [Diagrid Dashboard reference docs](http://docs.diagrid.io/references/dashboard/instructions).
 {{% /alert %}}
 
+<!-- IGNORE_LINKS -->
 Open the dashboard in a browser at [http://localhost:8080](http://localhost:8080).
+<!-- END_IGNORE -->
 
 ## Testing the workflow via the Dapr CLI
 
