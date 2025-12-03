@@ -362,7 +362,19 @@ The Durable Agent also enables the "headless agents" approach where autonomous s
 **Implementation with Dapr Agents:**
 
 ```python
+import asyncio
+
 from dapr_agents import DurableAgent
+from dapr_agents.agents.configs import (
+    AgentExecutionConfig,
+    AgentMemoryConfig,
+    AgentPubSubConfig,
+    AgentRegistryConfig,
+    AgentStateConfig,
+)
+from dapr_agents.memory import ConversationDaprStateMemory
+from dapr_agents.storage.daprstores.stateservice import StateStoreService
+from dapr_agents.workflow.runners import AgentRunner
 
 travel_planner = DurableAgent(
     name="TravelBuddy",
@@ -371,23 +383,58 @@ travel_planner = DurableAgent(
     instructions=[
         "Find flights to destinations",
         "Remember user preferences",
-        "Provide clear flight info"
+        "Provide clear flight info",
     ],
     tools=[search_flights],
-    message_bus_name="messagepubsub",
-    state_store_name="workflowstatestore",
-    state_key="workflow_state",
-    agents_registry_store_name="workflowstatestore",
-    agents_registry_key="agents_registry",
+    pubsub=AgentPubSubConfig(
+        pubsub_name="messagepubsub",
+        agent_topic="travel.requests",
+        broadcast_topic="travel.broadcast",
+    ),
+    state=AgentStateConfig(
+        store=StateStoreService(store_name="workflowstatestore"),
+    ),
+    registry=AgentRegistryConfig(
+        store=StateStoreService(store_name="registrystatestore"),
+        team_name="travel-team",
+    ),
+    execution=AgentExecutionConfig(max_iterations=3),
+    memory=AgentMemoryConfig(
+        store=ConversationDaprStateMemory(
+            store_name="conversationstore",
+            session_id="travel-session",
+        )
+    ),
 )
+
+async def main():
+    travel_planner.start()
+    runner = AgentRunner()
+    try:
+        result = await runner.run(
+            travel_planner,
+            payload={"task": "Find weekend flights to Paris"},
+        )
+        print(result)
+    finally:
+        runner.shutdown()
+        travel_planner.stop()
+
+asyncio.run(main())
 ```
 The implementation follows Dapr's sidecar architecture model, where all infrastructure concerns are handled by the Dapr runtime:
 - **Persistent Memory** - Agent state is stored in Dapr's state store, surviving process crashes
 - **Workflow Orchestration** - All agent interactions managed through Dapr's workflow system
-- **Service Exposure** - REST endpoints for workflow management come out of the box
-- **Pub/Sub Input/Output** - Event-driven messaging through Dapr's pub/sub system for seamless integration
+- **Service Exposure** - `AgentRunner.serve()` exposes REST endpoints (e.g., `POST /run`) that schedule the agent's `@workflow_entry`
+- **Pub/Sub Input/Output** - `AgentRunner.subscribe()` scans the agent for `@message_router` methods and wires the configured topics with schema validation
 
-The Durable Agent enables the concept of "headless agents" - autonomous systems that operate without direct user interaction. Dapr's Durable Agent exposes both REST and Pub/Sub APIs, making it ideal for long-running operations that are triggered by other applications or external events. This allows agents to run in the background, processing requests asynchronously and integrating seamlessly into larger distributed systems.
+The Durable Agent enables the concept of "headless agents" - autonomous systems that operate without direct user interaction. Depending on the scenario you can:
+
+1. **Run** durable workflows programmatically (`runner.run` as shown above)
+2. **Subscribe** the agent to topics so other services can trigger it via pub/sub (`runner.subscribe`)
+3. **Serve** the agent behind a FastAPI app with built-in `/run` and status endpoints (`runner.serve`)
+
+These options make it easy to process requests asynchronously and integrate seamlessly into larger distributed systems.
 
 
 ## Choosing the Right Pattern

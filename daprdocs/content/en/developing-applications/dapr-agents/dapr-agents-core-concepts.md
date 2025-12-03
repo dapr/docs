@@ -29,9 +29,15 @@ async def main():
     weather_agent = Agent(
         name="WeatherAgent",
         role="Weather Assistant",
+        goal="Provide timely weather updates across cities",
         instructions=["Help users with weather information"],
         tools=[my_weather_func],
-        memory=ConversationDaprStateMemory(store_name="historystore", session_id="some-id"),
+        memory = AgentMemoryConfig(
+            store=ConversationDaprStateMemory(
+                store_name="historystore",
+                session_id="some-id",
+            )
+        ),
     )
 
     response1 = await weather_agent.run("What's the weather?")
@@ -46,28 +52,38 @@ The `DurableAgent` class is a workflow-based agent that extends the standard Age
 
 ```python
 
-travel_planner = DurableAgent(
+from dapr_agents.workflow.runners import AgentRunner
+
+async def main():
+    travel_planner = DurableAgent(
         name="TravelBuddy",
         role="Travel Planner",
+        goal="Help users find flights and remember preferences",
         instructions=["Help users find flights and remember preferences"],
         tools=[search_flights],
-        memory=ConversationDaprStateMemory(
-            store_name="conversationstore", session_id="my-unique-id"
-        ),
-        
-        # DurableAgent Configurations
-        message_bus_name="messagepubsub",
-        state_store_name="workflowstatestore",
-        state_key="workflow_state",
-        agents_registry_store_name="registrystatestore",
-        agents_registry_key="agents_registry",
+        memory = AgentMemoryConfig(
+            store=ConversationDaprStateMemory(
+                store_name="conversationstore",
+                session_id="travel-session",
+            )
+        )
     )
 
-    travel_planner.as_service(port=8001)
-    await travel_planner.start()
+    travel_planner.start()
+    runner = AgentRunner()
+
+    try:
+        itinerary = await runner.run(
+            travel_planner,
+            payload={"task": "Plan a 3-day trip to Paris"},
+        )
+        print(itinerary)
+    finally:
+        travel_planner.stop()
+        runner.shutdown()
 
 ```
-This example demonstrates creating a workflow-backed agent that runs autonomously in the background. The agent can be triggered once and continues execution even across system restarts.
+This example demonstrates creating a workflow-backed agent that runs autonomously in the background. The `AgentRunner` schedules the workflow for you, waits for completion, and ensures the agent can be triggered once yet continue execution across restarts.
 
 **Key Characteristics:**
 - Workflow-based execution using Dapr Workflows
@@ -75,6 +91,7 @@ This example demonstrates creating a workflow-backed agent that runs autonomousl
 - Automatic retry and recovery mechanisms
 - Deterministic execution with checkpointing
 - Built-in message routing and agent communication
+- `AgentRunner` modes for DurableAgents: ad-hoc runs (`runner.run(...)`), pub/sub subscriptions (`runner.subscribe(...)`), and FastAPI services (`runner.serve(...)`)
 - Supports complex orchestration patterns and multi-agent collaboration
 
 **When to use:**
@@ -182,30 +199,46 @@ Agents retain context across interactions, enhancing their ability to provide co
 
 
 ```python
-# ConversationListMemory (Simple In-Memory) - Default
+from dapr_agents import Agent, DurableAgent
+from dapr_agents.agents.configs import AgentMemoryConfig
+from dapr_agents.memory import (
+    ConversationDaprStateMemory,
+    ConversationListMemory,
+    ConversationVectorMemory,
+)
+
+# 1. ConversationListMemory (Simple In-Memory) - Default
 memory_list = ConversationListMemory()
 
-# ConversationVectorMemory (Vector Store)
+# 2. ConversationVectorMemory (Vector Store)
 memory_vector = ConversationVectorMemory(
     vector_store=your_vector_store_instance,
-    distance_metric="cosine"
+    distance_metric="cosine",
 )
 
-# 3. ConversationDaprStateMemory (Dapr State Store)
-memory_dapr = ConversationDaprStateMemory(
-    store_name="historystore",  # Maps to Dapr component name
-    session_id="some-id"
+# 3. ConversationDaprStateMemory (Dapr State Store) via AgentMemoryConfig
+durable_memory = AgentMemoryConfig(
+    store=ConversationDaprStateMemory(
+        store_name="historystore",  # Dapr component name
+        session_id="my-session",
+    )
 )
 
-# Using with an agent
+# Using with a regular Agent (pass the memory instance directly)
 agent = Agent(
     name="MyAgent",
     role="Assistant",
-    memory=memory_dapr  # Pass any memory implementation
+    memory=memory_list,
 )
 
+# Using with a DurableAgent (pass the AgentMemoryConfig)
+travel_planner = DurableAgent(
+    name="TravelBuddy",
+    memory=durable_memory,
+    # ... other configs ...
+)
 ```
-`ConversationListMemory` is the default memory implementation when none is specified. It provides fast, temporary storage in Python lists for development and testing. The Dapr's memory implementations are interchangeable, allowing you to switch between them without modifying your agent logic.
+`ConversationListMemory` is the default memory implementation when none is specified. It provides fast, temporary storage in Python lists for development and testing. The Dapr's memory implementations (all found in `dapr_agents.memory`) are interchangeable, allowing you to switch between them without modifying your agent logic or deployment model.
 
 | Memory Implementation | Type | Persistence | Search | Use Case |
 |---|---|---|---|---|
@@ -216,20 +249,71 @@ agent = Agent(
 
 ### Agent Services
 
-`DurableAgents` are exposed as independent services using [FastAPI and Dapr applications](https://docs.dapr.io/developing-applications/sdks/python/python-sdk-extensions/python-fastapi/). This modular approach separates the agent's logic from its service layer, enabling seamless reuse, deployment, and integration into multi-agent systems.
+`AgentRunner` wires DurableAgents into three complementary hosting modes:
+
+1. **`run`** – trigger a durable workflow directly from Python (CLIs, tests, notebooks) and optionally wait for completion.
+2. **`subscribe`** – automatically register every `@message_router` decorated handler on the agent (including `DurableAgent.agent_workflow`) so CloudEvents on the configured topics are validated against their `message_model` and scheduled as workflow runs.
+3. **`serve`** – host the agent as a web service by combining `subscribe` with FastAPI route registration and an auto-started Uvicorn server. By default it exposes `POST /run` (schedules the `@workflow_entry`) and `GET /run/{instance_id}` (fetches workflow status), but you can supply your own FastAPI app or customize host/port/paths.
 
 ```python
-travel_planner.as_service(port=8001)
-await travel_planner.start()
+travel_planner = DurableAgent(
+    name="TravelBuddy",
+    role="Travel Planner",
+    goal="Help humans find flights and remember preferences",
+    instructions=[
+        "Find flights to destinations",
+        "Remember user preferences",
+        "Provide clear flight info.",
+    ],
+    tools=[search_flights],
+)
+travel_planner.start()
+runner = AgentRunner()
 ```
-This exposes the agent as a REST service, allowing other systems to interact with it through standard HTTP requests such as this one:
 
+The snippets below reuse this `travel_planner` instance to illustrate each mode.
+
+#### 1. Ad-hoc execution with `runner.run(...)`
+
+Use `run` when you want to trigger a durable workflow directly from Python code (tests, CLIs, notebooks, etc.). The runner locates the agent's `@workflow_entry`, schedules it, and optionally waits for completion. Call `travel_planner.start()` first so the workflow runtime is registered.
+
+```python
+result = await runner.run(
+    travel_planner,
+    payload={"task": "Plan a 3-day trip to Paris"},
+)
+print(result)
 ```
-curl -i -X POST http://localhost:8001/start-workflow \
--H "Content-Type: application/json" \
--d '{"task": "I want to find flights to Paris"}'
+
+This mode is ideal for synchronous automation or when you need to capture the final response programmatically. Pass `wait=False` for fire-and-forget instances.
+
+#### 2. Pub/Sub subscriptions with `runner.subscribe(...)`
+
+`subscribe` scans the agent for every method tagged with `@message_router`—including the built-in `agent_workflow`—and automatically registers the necessary Dapr subscriptions using the topics and schemas defined in `AgentPubSubConfig`. Each incoming CloudEvent is validated against the declared `message_model` (for example, `TriggerAction`) before the runner schedules the workflow entry.
+
+```python
+runner.subscribe(travel_planner)
+await wait_for_shutdown()
 ```
-Unlike conversational agents that provide immediate synchronous responses, durable agents operate as headless services that are triggered asynchronously. You trigger it, receive a workflow instance ID, and can track progress over time. This enables long-running, fault-tolerant operations that can span multiple systems and survive restarts, making them ideal for complex multi-step processes in environments requiring high levels of durability and resiliency.
+
+Add your own `@message_router` methods to support extra topics or broadcast channels—the runner will discover them automatically and route messages to the appropriate handler. Use helpers such as `wait_for_shutdown()` (from `dapr_agents.workflow.utils.core`) to keep the process alive until you stop it.
+
+#### 3. FastAPI services with `runner.serve(...)`
+
+`serve` is the one-line way to run a DurableAgent as a web service. It first calls `subscribe(...)`, then spins up a FastAPI app (unless you pass your own) with two default endpoints:
+
+- `POST /run`: Validates the JSON body against the agent's `@workflow_entry` signature and schedules a new workflow instance.
+- `GET /run/{instance_id}`: Proxies workflow status queries (including payloads, if requested).
+
+```python
+runner.serve(
+    travel_planner,
+    port=8001,
+)
+```
+
+Because workflows are durable, the `/run` endpoint responds immediately with an instance ID even though the agent keeps working in the background. You can mount the generated FastAPI routes into a larger application or let `serve` run its own Uvicorn loop for standalone deployments.
+
 
 ## Multi-agent Systems (MAS)
 
@@ -253,52 +337,120 @@ Workflows are structured processes where LLM agents and tools collaborate in pre
 This approach is particularly suitable for business-critical applications where you need both the intelligence of LLMs and the reliability of traditional software systems.
 
 ```python
-# Define Workflow logic
-@workflow(name="task_chain_workflow")
+import dapr.ext.workflow as wf
+from dapr.ext.workflow import DaprWorkflowContext
+
+from dapr_agents.llm.dapr import DaprChatClient
+from dapr_agents.workflow.decorators import llm_activity
+
+runtime = wf.WorkflowRuntime()
+llm = DaprChatClient(component_name="openai")
+
+
+@runtime.workflow(name="task_chain_workflow")
 def task_chain_workflow(ctx: DaprWorkflowContext):
-    result1 = yield ctx.call_activity(get_character)
-    result2 = yield ctx.call_activity(get_line, input={"character": result1})
-    return result2
+    character = yield ctx.call_activity(get_character)
+    line = yield ctx.call_activity(get_line, input={"character": character})
+    return line
 
-@task(description="Pick a random character from The Lord of the Rings and respond with the character's name only")
-def get_character() -> str:
+
+@runtime.activity(name="get_character")
+@llm_activity(
+    prompt="Pick a random character from The Lord of the Rings. Respond with the name only.",
+    llm=llm,
+)
+def get_character(ctx) -> str:
     pass
 
-@task(description="What is a famous line by {character}")
-def get_line(character: str) -> str:
+
+@runtime.activity(name="get_line")
+@llm_activity(
+    prompt="What is a famous line by {character}?",
+    llm=llm,
+)
+def get_line(ctx, character: str) -> str:
     pass
+
+
+runtime.start()
+client = wf.DaprWorkflowClient()
+instance_id = client.schedule_new_workflow(task_chain_workflow)
+state = client.wait_for_workflow_completion(instance_id)
+print(state.serialized_output)
+runtime.shutdown()
 ```
 
-This workflow demonstrates sequential task execution where the output of one task becomes the input for the next, enabling complex multi-step processes with clear dependencies and data flow.
+This workflow demonstrates sequential task execution where the output of one LLM-backed activity becomes the input for the next. The `@llm_activity` decorator wires prompts, formatting, and response handling so activities stay deterministic while still using model reasoning.
 
 Dapr Agents supports coordination of LLM interactions at different levels of granularity:
 
-### Prompt Tasks
-Tasks created from prompts that leverage LLM reasoning capabilities for specific, well-defined operations.
+### LLM Activities
+`@llm_activity` binds a workflow activity to a prompt, LLM client, and optional structured output. The decorated function body can stay empty because the decorator handles prompting, retries, and response parsing.
 
 ```python
-@task(description="Pick a random character from The Lord of the Rings and respond with the character's name only")
-def get_character() -> str:
+llm = DaprChatClient(component_name="openai")
+
+@runtime.activity(name="generate_outline")
+@llm_activity(
+    prompt="Create a short outline about {topic}.",
+    llm=llm,
+)
+def generate_outline(ctx, topic: str) -> str:
     pass
 ```
 
-While technically not full agents (as they lack tools and memory), prompt tasks serve as lightweight agentic building blocks that perform focused LLM interactions within the broader workflow context.
+LLM activities are perfect for lightweight reasoning steps, extraction tasks, or summarization stages that need deterministic workflow control with LLM flexibility.
 
-### Agent Tasks
-Tasks based on agents with tools, providing greater flexibility and capability for complex operations requiring external integrations.
+### Agent Activities
+`@agent_activity` lets workflows call fully-configured `Agent` instances (tools, memory, instructions) as activities. The workflow provides the inputs, and the decorator routes execution through the agent’s reasoning loop.
 
 ```python
-@task(agent=custom_agent, description="Retrieve stock data for {ticker}")
-def get_stock_data(ticker: str) -> dict:
+planner = Agent(
+    name="PlannerAgent",
+    role="Trip planner",
+    instructions=["Create a concise 3-day plan for any city."],
+    llm=DaprChatClient(component_name="openai"),
+)
+
+@runtime.activity(name="plan_outline")
+@agent_activity(agent=planner)
+def plan_outline(ctx, destination: str) -> dict:
     pass
 ```
-Agent tasks enable workflows to leverage specialized agents with their own tools, memory, and reasoning capabilities while maintaining the structured coordination benefits of workflow orchestration.
 
-> **Note:** Agent tasks must use regular `Agent` instances, not `DurableAgent` instances, as workflows manage the execution context and durability through the Dapr workflow engine.
+Agent activities enable workflows to leverage specialized agents with their own tools, memory, and reasoning capabilities while maintaining the structured coordination benefits of workflow orchestration.
+
+> **Note:** Agent activities must use regular `Agent` instances, not `DurableAgent` instances, because workflows manage the execution context and durability through the Dapr workflow engine.
 
 ### Workflow Patterns
 
 Workflows enable the implementation of various agentic patterns through structured orchestration, including Prompt Chaining, Routing, Parallelization, Orchestrator-Workers, Evaluator-Optimizer, Human-in-the-loop, and others. For detailed implementations and examples of these patterns, see the [Patterns documentation]({{< ref dapr-agents-patterns.md >}}).
+
+### Message Router Workflows
+
+The `@message_router` decorator binds a workflow directly to a Dapr Pub/Sub topic so every validated message automatically schedules a workflow instance. This pattern—used in the message-router quickstart—lets you push CloudEvent payloads onto a topic and have LLM-backed activities take over immediately.
+
+```python
+from pydantic import BaseModel
+from dapr_agents.workflow.decorators.routers import message_router
+
+class StartBlogMessage(BaseModel):
+    topic: str
+
+@message_router(
+    pubsub="messagepubsub",
+    topic="blog.requests",
+    message_model=StartBlogMessage,
+)
+def blog_workflow(ctx: DaprWorkflowContext, wf_input: dict) -> str:
+    outline = yield ctx.call_activity(
+        create_outline, input={"topic": wf_input["topic"]}
+    )
+    post = yield ctx.call_activity(write_post, input={"outline": outline})
+    return post
+```
+
+During startup, call `register_message_routes(targets=[blog_workflow], dapr_client=client)` to automatically configure subscriptions, schema validation, and workflow scheduling. This keeps the workflow definition as the single source of truth for both orchestration and event ingress.
 
 ### Workflows vs. Durable Agents
 
@@ -327,15 +479,59 @@ The core participants in this multi-agent coordination systems are the following
 Each agent runs as an independent service with its own lifecycle, configured as a standard DurableAgent with pub/sub enabled:
 
 ```python
-hobbit_service = DurableAgent(
-    name="Frodo",
-    instructions=["Speak like Frodo, with humility and determination."],
-    message_bus_name="messagepubsub",
-    state_store_name="workflowstatestore",
-    state_key="workflow_state",
-    agents_registry_store_name="agentstatestore",
-    agents_registry_key="agents_registry", 
+import asyncio
+
+from dapr_agents.agents.configs import (
+    AgentMemoryConfig,
+    AgentProfileConfig,
+    AgentPubSubConfig,
+    AgentRegistryConfig,
+    AgentStateConfig,
 )
+from dapr_agents.memory import ConversationDaprStateMemory
+from dapr_agents.storage.daprstores.stateservice import StateStoreService
+from dapr_agents.workflow.runners import AgentRunner
+from dapr_agents.workflow.utils.core import wait_for_shutdown
+
+registry = AgentRegistryConfig(
+    store=StateStoreService(store_name="agentregistrystore"),
+    team_name="fellowship",
+)
+
+frodo = DurableAgent(
+    profile=AgentProfileConfig(
+        name="Frodo",
+        role="Ring Bearer",
+        instructions=["Speak like Frodo, with humility and determination."],
+    ),
+    pubsub=AgentPubSubConfig(
+        pubsub_name="messagepubsub",
+        agent_topic="fellowship.frodo.requests",
+        broadcast_topic="fellowship.broadcast",
+    ),
+    state=AgentStateConfig(
+        store=StateStoreService(store_name="workflowstatestore", key_prefix="frodo:")
+    ),
+    registry=registry,
+    memory=AgentMemoryConfig(
+        store=ConversationDaprStateMemory(
+            store_name="memorystore",
+            session_id="frodo-session",
+        )
+    ),
+)
+frodo.start()
+
+async def main():
+    runner = AgentRunner()
+    try:
+        runner.subscribe(frodo)
+        await wait_for_shutdown()
+    finally:
+        runner.shutdown()
+        frodo.stop()
+
+asyncio.run(main())
 ```
 
 #### Orchestrator
@@ -343,18 +539,46 @@ hobbit_service = DurableAgent(
 The orchestrator coordinates interactions between agents and manages conversation flow by selecting appropriate agents, managing interaction sequences, and tracking progress. Dapr Agents offers three orchestration strategies: Random, RoundRobin, and LLM-based orchestration.
 
 ```python
+from dapr_agents.agents.configs import (
+    AgentExecutionConfig,
+    AgentPubSubConfig,
+    AgentRegistryConfig,
+    AgentStateConfig,
+)
+from dapr_agents.llm.openai import OpenAIChatClient
+from dapr_agents.storage.daprstores.stateservice import StateStoreService
+from dapr_agents.workflow.runners import AgentRunner
+import dapr.ext.workflow as wf
+
 llm_orchestrator = LLMOrchestrator(
     name="LLMOrchestrator",
-    message_bus_name="messagepubsub",
-    state_store_name="agenticworkflowstate",
-    state_key="workflow_state",
-    agents_registry_store_name="agentstatestore",
-    agents_registry_key="agents_registry",
-    max_iterations=3
+    llm=OpenAIChatClient(),
+    pubsub=AgentPubSubConfig(
+        pubsub_name="messagepubsub",
+        agent_topic="llm.orchestrator.requests",
+        broadcast_topic="fellowship.broadcast",
+    ),
+    state=AgentStateConfig(
+        store=StateStoreService(
+            store_name="workflowstatestore", key_prefix="llm.orchestrator:"
+        )
+    ),
+    registry=AgentRegistryConfig(
+        store=StateStoreService(store_name="agentregistrystore"),
+        team_name="fellowship",
+    ),
+    execution=AgentExecutionConfig(max_iterations=3),
+    runtime=wf.WorkflowRuntime(),
 )
+llm_orchestrator.start()
+
+runner = AgentRunner()
+runner.serve(llm_orchestrator, port=8004)
 ```
 
-The LLM-based orchestrator uses intelligent agent selection for context-aware decision making, while Random and RoundRobin provide alternative coordination strategies for simpler use cases.
+The LLM-based orchestrator uses intelligent agent selection for context-aware decision making, while Random and RoundRobin provide alternative coordination strategies for simpler use cases. The runner keeps the orchestrator online as a Dapr app or HTTP service so clients can publish tasks over topics or REST calls.
+
+Because both `DurableAgent.agent_workflow` and the orchestrators above are decorated with `@message_router(message_model=TriggerAction)`, `runner.subscribe(...)` automatically wires the topics declared in `AgentPubSubConfig` and validates every incoming CloudEvent against the expected schema before scheduling the `@workflow_entry`. You can add additional message routers (each with its own `message_model`) to the same agent; the runner will discover them the next time it starts and extend the subscription list automatically.
 
 ### Communication Flow
 
