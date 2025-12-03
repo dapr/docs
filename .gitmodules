@@ -1,25 +1,4 @@
-[submodule "sdkdocs/python"]
-	path = sdkdocs/python
-	url = https://github.com/dapr/python-sdk.git
-[submodule "sdkdocs/php"]
-	path = sdkdocs/php
-	url = https://github.com/dapr/php-sdk.git
 [submodule "translations/docs-zh"]
 	path = translations/docs-zh
 	url = https://github.com/dapr/docs-zh.git
 	branch = v1.0_content
-[submodule "sdkdocs/go"]
-	path = sdkdocs/go
-	url = https://github.com/dapr/go-sdk.git
-[submodule "sdkdocs/java"]
-	path = sdkdocs/java
-	url = https://github.com/dapr/java-sdk.git
-[submodule "sdkdocs/js"]
-	path = sdkdocs/js
-	url = https://github.com/dapr/js-sdk.git 
-[submodule "sdkdocs/pluggable-components/go"]
-	path = sdkdocs/pluggable-components/go
-	url = https://github.com/dapr-sandbox/components-go-sdk
-[submodule "sdkdocs/rust"]
-	path = sdkdocs/rust
-	url = https://github.com/dapr/rust-sdk.git

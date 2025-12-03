@@ -53,19 +53,11 @@ Make sure you have Python already installed. `Python >=3.10`. For installation i
 
 Let's create a weather assistant agent that demonstrates tool calling with Dapr state management used for conversation memory.
 
-### 1. Create the environment file
+### 1. Create the Dapr components
 
-Create a `.env` file with your OpenAI API key:
+Create a `components` directory and add two files:
 
-```env
-OPENAI_API_KEY=your_api_key_here
-```
-
-This API key is essential for agents to communicate with the LLM, as the default LLM client in the agent uses OpenAI's services. If you don't have an API key, you can [create one here](https://platform.openai.com/api-keys).
-
-### 2. Create the Dapr component
-
-Create a `components` directory and add `historystore.yaml`:
+`historystore.yaml`:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -84,6 +76,27 @@ spec:
 
 This component will be used to store the conversation history, as LLMs are stateless and every chat interaction needs to send all the previous conversations to maintain context.
 
+`openai.yaml`:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: openai
+spec:
+  type: conversation.openai
+  version: v1
+  metadata:
+  - name: key
+    value: "{{OPENAI_API_KEY}}"
+  - name: model
+    value: gpt-5-2025-08-07
+  - name: temperature
+    value: 1
+```
+
+This component wires the default `DaprChatClient` to OpenAI via the Conversation API. Replace the `{{OPENAI_API_KEY}}` placeholder with your actual OpenAI key by editing the file directly. This API key is essential for agents to communicate with the LLM, as the default chat client talks to OpenAI-compatible endpoints. If you don't have an API key, you can [create one here](https://platform.openai.com/api-keys). You can also tweak metadata (model, temperature, baseUrl, etc.) to point at compatible OpenAI-style providers.
+
 ### 3. Create the agent with weather tool
 
 Create `weather_agent.py`:
@@ -91,29 +104,39 @@ Create `weather_agent.py`:
 ```python
 import asyncio
 from dapr_agents import tool, Agent
+from dapr_agents.agents.configs import AgentMemoryConfig
 from dapr_agents.memory import ConversationDaprStateMemory
 from dotenv import load_dotenv
 
 load_dotenv()
+
 
 @tool
 def get_weather() -> str:
     """Get current weather."""
     return "It's 72°F and sunny"
 
+
 async def main():
+    memory_config = AgentMemoryConfig(
+        store=ConversationDaprStateMemory(
+            store_name="historystore",
+            session_id="hello-world",
+        )
+    )
+
     agent = Agent(
         name="WeatherAgent",
         role="Weather Assistant",
         instructions=["Help users with weather information"],
-        memory=ConversationDaprStateMemory(store_name="historystore", session_id="hello-world"),
+        memory=memory_config,
         tools=[get_weather],
     )
 
     # First interaction
     response1 = await agent.run("Hi! My name is John. What's the weather?")
     print(f"Agent: {response1}")
-    
+
     # Second interaction - agent should remember the name
     response2 = await agent.run("What's my name?")
     print(f"Agent: {response2}")
