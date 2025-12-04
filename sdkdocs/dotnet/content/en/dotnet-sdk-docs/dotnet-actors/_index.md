@@ -2,7 +2,7 @@
 type: docs
 title: "Dapr actors .NET SDK"
 linkTitle: "Actors"
-weight: 30000
+weight: 40000
 description: Get up and running with the Dapr actors .NET SDK
 ---
 

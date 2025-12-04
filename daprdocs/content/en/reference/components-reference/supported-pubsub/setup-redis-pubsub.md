@@ -40,7 +40,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| redisHost          | Y        | Connection-string for the redis host. If `"redisType"` is `"cluster"` it can be multiple hosts separated by commas or just a single host   | `localhost:6379`, `redis-master.default.svc.cluster.local:6379`
+| redisHost | Y | Connection-string for the redis host. If `"redisType"` is `"cluster"`, it can be multiple hosts separated by commas or just a single host. When using Redis Sentinel (`"failover"` is `"true"`), multiple sentinel addresses can also be provided as comma-separated values. | `localhost:6379`, `redis-master.default.svc.cluster.local:6379`, `sentinel1:26379,sentinel2:26379,sentinel3:26379`
 | redisPassword      | N        | Password for Redis host. No Default. Can be `secretKeyRef` to use a secret reference  | `""`, `"KeFg23!"`
 | redisUsername      | N        | Username for Redis host. Defaults to empty. Make sure your redis server version is 6 or above, and have created acl rule correctly. | `""`, `"default"`
 | consumerID         | N        | The consumer group ID.  | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{% ref "component-schema.md#templated-metadata-values" %}})
@@ -66,8 +66,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | minIdleConns        | N        | Minimum number of idle connections to keep open in order to avoid the performance degradation associated with creating new connections. Defaults to `"0"`. | `"2"`
 | idleCheckFrequency        | N        | Frequency of idle checks made by idle connections reaper. Default is `"1m"`. `"-1"` disables idle connections reaper. | `"-1"`
 | idleTimeout        | N        | Amount of time after which the client closes idle connections. Should be less than server's timeout. Default is `"5m"`. `"-1"` disables idle timeout check. | `"10m"`
-| failover           | N         | Property to enable failover configuration. Needs sentinelMasterName to be set. Defaults to `"false"` | `"true"`, `"false"`
-| sentinelMasterName | N         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/manual/sentinel/) | `""`,  `"mymaster"`
+| failover           | N         | Property to enable failover configuration. Needs sentinelMasterName to be set. When enabled, redisHost should contain the sentinel addresses. Defaults to `"false"` | `"true"`, `"false"`
+| sentinelMasterName | N         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/latest/operate/oss_and_stack/management/sentinel/) | `""`,  `"mymaster"`
 | sentinelUsername   | N         | Username for Redis Sentinel. Applicable only when "failover" is true, and Redis Sentinel has authentication enabled | `"username"`
 | sentinelPassword   | N         | Password for Redis Sentinel. Applicable only when "failover" is true, and Redis Sentinel has authentication enabled | `"password"`
 | maxLenApprox        | N        | Maximum number of items inside a stream.The old entries are automatically evicted when the specified length is reached, so that the stream is left at a constant size. Defaults to unlimited. | `"10000"`
@@ -113,6 +113,7 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
         - name: redisPassword
           value: "lhDOkwTlp0"
     ```
+
 {{% /tab %}}
 
 {{% tab "AWS" %}}
@@ -158,6 +159,29 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 {{% alert title="Note" color="primary" %}}
 The Dapr CLI automatically deploys a local redis instance in self hosted mode as part of the `dapr init` command.
 {{% /alert %}}
+
+## Redis Sentinel configuration
+
+When using Redis Sentinel for high availability, set `redisType` to `"node"`, enable failover mode with `failover: "true"`, and provide the sentinel master name. Multiple sentinel addresses can be specified as a comma-separated list in the `redisHost` field for redundancy.
+
+    ```yaml
+    apiVersion: dapr.io/v1alpha1
+    kind: Component
+    metadata:
+      name: redis-pubsub
+    spec:
+      type: pubsub.redis
+      version: v1
+      metadata:
+      - name: redisHost
+        value: "sentinel1:26379,sentinel2:26379,sentinel3:26379"
+      - name: redisType
+        value: "node"
+      - name: failover
+        value: "true"
+      - name: sentinelMasterName
+        value: "mymaster"
+    ```
 
 ## Related links
 - [Basic schema for a Dapr component]({{% ref component-schema %}})

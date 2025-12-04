@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "DaprWorkflowClient usage"
-linkTitle: "DaprWorkflowClient usage"
-weight: 100000
-description: Essential tips and advice for using DaprWorkflowClient
+title: "DaprWorkflowClient lifetime management and registration"
+linkTitle: "DaprWorkflowClient registration"
+weight: 1000
+description: Learn how to configure the `DaprWorkflowClient` lifetime management and dependency injection
 ---
 
 ## Lifetime management
@@ -28,8 +28,9 @@ as well as its own dependencies.
 {{% /alert %}} 
 
 ### Singleton Registration
-By default, the `AddDaprWorkflow` method will register the `DaprWorkflowClient` and associated services using a singleton lifetime. This means
-that the services will be instantiated only a single time.
+
+By default, the `AddDaprWorkflow` method registers the `DaprWorkflowClient` and associated services using a singleton lifetime. This means
+that the services are instantiated only a single time.
 
 The following is an example of how registration of the `DaprWorkflowClient` as it would appear in a typical `Program.cs` file:
 
@@ -76,7 +77,46 @@ var app = builder.Build();
 await app.RunAsync();
 ```
 
+### Create a `DaprWorkflowClient` instance
+
+{{< tabpane text=true >}}
+
+{{% tab "ASP.Net Core App" %}}
+
+In an ASP.Net Core application, you can inject the `DaprWorkflowClient` into methods or controllers via method or constructor injection. This example demonstrates method injection in a minimal API scenario:
+
+```csharp
+app.MapPost("/start", async (
+    [FromServices] DaprWorkflowClient daprWorkflowClient,
+    Order order
+    ) => {
+        var instanceId = await daprWorkflowClient.ScheduleNewWorkflowAsync(
+            nameof(OrderProcessingWorkflow),
+            input: order);
+
+        return Results.Accepted(instanceId);
+});
+```
+
+{{% /tab %}}
+
+{{% tab "Console App" %}}
+
+To create a `DaprWorkflowClient` instance in a console app, retrieve it from the `ServiceProvider`:
+
+```csharp
+using var scope = host.Services.CreateAsyncScope();
+var daprWorkflowClient = scope.ServiceProvider.GetRequiredService<DaprWorkflowClient>();
+```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
+
+Now, you can use this client to perform workflow management operations such as starting, pausing, resuming, and terminating a workflow instance. See [Workflow management operations with `DaprWorkflowClient`]({{% ref dotnet-workflow-management-methods.md %}}) for more information on these operations.
+
 ## Injecting Services into Workflow Activities
+
 Workflow activities support the same dependency injection that developers have come to expect of modern C# applications. Assuming a proper
 registration at startup, any such type can be injected into the constructor of the workflow activity and available to utilize during
 the execution of the workflow. This makes it simple to add logging via an injected `ILogger` or access to other Dapr 
@@ -104,6 +144,7 @@ internal sealed class SquareNumberActivity : WorkflowActivity<int, int>
 ```
 
 ### Using ILogger in Workflow
+
 Because workflows must be deterministic, it is not possible to inject arbitrary services into them. For example, 
 if you were able to inject a standard `ILogger` into a workflow and it needed to be replayed because of an error,
 subsequent replay from the event source log would result in the log recording additional operations that didn't actually
@@ -133,5 +174,7 @@ public class OrderProcessingWorkflow : Workflow<OrderPayload, OrderResult>
 }
 ```
 
+## Next steps
 
- 
+- [Learn more about Dapr workflow management operations]({{% ref dotnet-workflow-management-methods.md %}})
+- [Learn how to author workflows and activities]({{% ref howto-author-workflow.md %}})  

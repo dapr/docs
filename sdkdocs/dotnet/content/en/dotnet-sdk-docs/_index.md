@@ -66,26 +66,14 @@ Put the Dapr .NET SDK to the test. Walk through the .NET quickstarts and tutoria
 Learn more about local development options, best practices, or browse NuGet packages to add to your existing .NET 
 applications.
 
-<div class="card-deck">
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title"><b>Development</b></h5>
-      <p class="card-text">Learn about local development integration options</p>
-      <a href="{{% ref dotnet-integrations %}}" class="stretched-link"></a>
-    </div>
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title"><b>Best Practices</b></h5>
-      <p class="card-text">Learn about best practices for developing .NET Dapr applications</p>
-      <a href="{{% ref dotnet-guidance %}}" class="stretched-link"></a>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title"><b>NuGet packages</b></h5>
-      <p class="card-text">NuGet packages for adding the Dapr to your .NET applications.</p>
-      <a href="https://www.nuget.org/profiles/dapr.io" class="stretched-link"></a>
-    </div>
-  </div>
-</div>
-<br />
+{{% cardpane %}}
+{{% card title="**Development**"%}}
+  [Learn about local development integration options]({{% ref dotnet-integrations %}})
+{{% /card %}}
+{{% card title="**Best Practices**"%}}
+  [Learn about best practices for developing .NET Dapr applications]({{% ref dotnet-guidance %}})
+{{% /card %}}
+{{% card title="**Nuget Packages**"%}}
+  [NuGet packages for adding the Dapr to your .NET applications](https://www.nuget.org/profiles/dapr.io)
+{{% /card %}}
+{{% /cardpane %}}

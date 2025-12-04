@@ -105,7 +105,7 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| redisHost          | Y        | Connection-string for the redis host  | `localhost:6379`, `redis-master.default.svc.cluster.local:6379`
+| redisHost          | Y        | Connection-string for the redis host. If `"redisType"` is `"cluster"`, it can be multiple hosts separated by commas or just a single host. When using Redis Sentinel (`"failover"` is `"true"`), multiple sentinel addresses can also be provided as comma-separated values. | `localhost:6379`, `redis-master.default.svc.cluster.local:6379`, `sentinel1:26379,sentinel2:26379,sentinel3:26379`
 | redisPassword      | N        | Password for Redis host. No Default. Can be `secretKeyRef` to use a secret reference  | `""`, `"KeFg23!"`
 | redisUsername      | N        | Username for Redis host. Defaults to empty. Make sure your redis server version is 6 or above, and have created acl rule correctly. | `""`, `"default"`
 | useEntraID | N | Implements EntraID support for Azure Cache for Redis. Before enabling this: <ul><li>The `redisHost` name must be specified in the form of `"server:port"`</li><li>TLS must be enabled</li></ul> Learn more about this setting under [Create a Redis instance > Azure Cache for Redis]({{% ref "#setup-redis" %}}) | `"true"`, `"false"` |
@@ -114,8 +114,8 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 | clientKey          | N         | The content of the client private key, used in conjunction with `clientCert` for authentication. It is recommended to use a secret store as described [here]({{% ref component-secrets.md %}}) | `"----BEGIN PRIVATE KEY-----\nMIIE..."` |
 | maxRetries         | N         | Maximum number of retries before giving up. Defaults to `3` | `5`, `10`
 | maxRetryBackoff    | N         | Maximum backoff between each retry. Defaults to `2` seconds; `"-1"` disables backoff. | `3000000000`
-| failover           | N         | Property to enable failover configuration. Needs sentinelMasterName to be set. The redisHost should be the sentinel host address. See [Redis Sentinel Documentation](https://redis.io/docs/manual/sentinel/). Defaults to `"false"` | `"true"`, `"false"`
-| sentinelMasterName | N         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/manual/sentinel/) | `""`,  `"mymaster"`
+| failover           | N         | Property to enable failover configuration. Needs sentinelMasterName to be set. When enabled, redisHost should contain the sentinel addresses. Defaults to `"false"` | `"true"`, `"false"`
+| sentinelMasterName | N         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/latest/operate/oss_and_stack/management/sentinel/) | `""`,  `"mymaster"`
 | sentinelUsername   | N         | Username for Redis Sentinel. Applicable only when "failover" is true, and Redis Sentinel has authentication enabled | `"username"`
 | sentinelPassword   | N         | Password for Redis Sentinel. Applicable only when "failover" is true, and Redis Sentinel has authentication enabled | `"password"`
 | redeliverInterval  | N        | The interval between checking for pending messages to redelivery. Defaults to `"60s"`. `"0"` disables redelivery. | `"30s"`
@@ -493,6 +493,29 @@ The result will be:
 ```
 
 The query syntax and documentation is available [here]({{% ref howto-state-query-api.md %}})
+
+## Redis Sentinel configuration
+
+When using Redis Sentinel for high availability, set `redisType` to `"node"`, enable failover mode with `failover: "true"`, and provide the sentinel master name. Multiple sentinel addresses can be specified as a comma-separated list in the `redisHost` field for redundancy.
+
+    ```yaml
+    apiVersion: dapr.io/v1alpha1
+    kind: Component
+    metadata:
+      name: redis-pubsub
+    spec:
+      type: pubsub.redis
+      version: v1
+      metadata:
+      - name: redisHost
+        value: "sentinel1:26379,sentinel2:26379,sentinel3:26379"
+      - name: redisType
+        value: "node"
+      - name: failover
+        value: "true"
+      - name: sentinelMasterName
+        value: "mymaster"
+    ```
 
 ## Related links
 - [Basic schema for a Dapr component]({{% ref component-schema %}})
