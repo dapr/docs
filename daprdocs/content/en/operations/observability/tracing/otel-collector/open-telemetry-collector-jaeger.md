@@ -35,7 +35,13 @@ You can also view the logs from the jaeger container using:
 docker logs jaeger
 ```
 
-Next, create the following `config.yaml` file locally:
+### Configure Dapr for tracing
+
+You have two options to configure Dapr to send traces to Jaeger V2:
+
+#### Option 1: Use a custom config file
+
+Create a `config.yaml` file with the following content:
 
 > **Note:** Because you are using the Open Telemetry protocol to talk to Jaeger, you need to fill out the `otel` section of the tracing configuration and set the `endpointAddress` to the address of the Jaeger container.
 
@@ -61,6 +67,10 @@ the `--config` option. For example:
 ```bash
 dapr run --app-id myapp --app-port 3000 node app.js --config config.yaml
 ```
+
+#### Option 2: Update the default Dapr config (development environment)
+
+Alternatively, in your development environment, navigate to your [local Dapr components directory](https://docs.dapr.io/getting-started/install-dapr-selfhost/#step-5-verify-components-directory-has-been-initialized) and update the default `config.yaml` file with the OTLP configuration above. This way, all Dapr applications will use the Jaeger V2 tracing configuration by default without needing to specify the `--config` flag each time.
 
 ### View traces
 
