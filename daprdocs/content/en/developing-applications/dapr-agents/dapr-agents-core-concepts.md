@@ -272,7 +272,7 @@ The snippets below reuse this `travel_planner` instance to illustrate each mode.
 
 #### 1. Ad-hoc execution with `runner.run(...)`
 
-Use `run` when you want to trigger a durable workflow directly from Python code (tests, CLIs, notebooks, etc.). The runner locates the agent's `@workflow_entry`, schedules it, and optionally waits for completion. 
+Use `run` when you want to trigger a durable workflow directly from Python code (tests, CLIs, notebooks, etc.). The runner locates the agent's `@workflow_entry`, and schedules it. The `.run()` command is a blocking call that triggers the agent and and waits for its completion. 
 
 ```python
 result = await runner.run(
