@@ -300,6 +300,28 @@ HTTP Status | Description
 404 | error is logged and all messages are dropped
 other | warning is logged and all messages to be retried
 
+#### CloudEvents binary mode
+
+Supports publishing CloudEvents that use the binary mode defined by
+the CloudEvents HTTP binding. In this mode, the HTTP body only contains the
+payload bytes, and CloudEvent attributes are passed as headers with the `ce_`
+prefix. Provide the required headers (`ce_specversion`, `ce_type`, `ce_source`,
+`ce_id`) along with any optional ones (for example `ce_subject` or `ce_time`).
+Dapr copies the HTTP `Content-Type` header into the CloudEvent's
+`datacontenttype` attribute and forwards the resulting event to subscribers.
+
+Example sending four raw bytes:
+
+```bash
+curl -X POST http://localhost:3500/v1.0/publish/pubsubName/deathStarStatus \
+  -H "Content-Type: application/octet-stream" \
+  -H "ce_specversion: 1.0" \
+  -H "ce_type: com.example.deathstar.status.changed" \
+  -H "ce_source: urn:example:/deathstar" \
+  -H "ce_id: 3a58b9b8-24d2-4f62-84f4-6177c2fe0633" \
+  --data-binary $'\x01\x02\x03\x04'
+```
+
 ## Message envelope
 
 Dapr pub/sub adheres to [version 1.0 of CloudEvents](https://github.com/cloudevents/spec/blob/v1.0/spec.md).
