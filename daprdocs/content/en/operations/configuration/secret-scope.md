@@ -4,7 +4,6 @@ title: "How-To: Limit the secrets that can be read from secret stores"
 linkTitle: "Limit secret store access"
 weight: 3000
 description: "Define secret scopes by augmenting the existing configuration resource with restrictive permissions."
-description: "Define secret scopes by augmenting the existing configuration resource with restrictive permissions."
 ---
 
 In addition to [scoping which applications can access a given component]({{% ref "component-scopes.md"%}}), you can also scope a named secret store component to one or more secrets for an application. By defining `allowedSecrets` and/or `deniedSecrets` lists, you restrict applications to access only specific secrets.

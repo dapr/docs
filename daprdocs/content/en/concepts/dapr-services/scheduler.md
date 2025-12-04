@@ -85,7 +85,7 @@ When running in HA mode, you only need to expose the ports for one scheduler ins
 version: "3.5"
 services:
   scheduler-0:
-    image: "docker.io/daprio/scheduler:1.16.0"
+    image: "docker.io/daprio/scheduler:{{% dapr-latest-version %}}"
     command:
     - "./scheduler"
     - "--etcd-data-dir=/var/run/dapr/scheduler"
@@ -96,7 +96,7 @@ services:
     volumes:
       - ./dapr_scheduler/0:/var/run/dapr/scheduler
   scheduler-1:
-    image: "docker.io/daprio/scheduler:1.16.0"
+    image: "docker.io/daprio/scheduler:{{% dapr-latest-version %}}"
     command:
     - "./scheduler"
     - "--etcd-data-dir=/var/run/dapr/scheduler"
@@ -105,7 +105,7 @@ services:
     volumes:
       - ./dapr_scheduler/1:/var/run/dapr/scheduler
   scheduler-2:
-    image: "docker.io/daprio/scheduler:1.16.0"
+    image: "docker.io/daprio/scheduler:{{% dapr-latest-version %}}"
     command:
     - "./scheduler"
     - "--etcd-data-dir=/var/run/dapr/scheduler"
@@ -115,25 +115,93 @@ services:
       - ./dapr_scheduler/2:/var/run/dapr/scheduler
 ```
 
-## Back Up and Restore Scheduler Data
+## Managing jobs with the Dapr CLI
 
-In production environments, it's recommended to perform periodic backups of this data at an interval that aligns with your recovery point objectives.
+Dapr provides a CLI for inspecting and managing all scheduled jobs, regardless of type.
+The CLI is the recommended way to view, back up, and delete jobs.
 
-### Port Forward for Backup Operations
+There are several different types of jobs which Scheduler manages:
 
-To perform backup and restore operations, you'll need to access the embedded etcd instance. This requires port forwarding to expose the etcd ports (port 2379).
+- `app/{app-id}/{job-name}`: Jobs created via the [Jobs API]({{% ref jobs_api %}})
+- `actor/{actor-type}/{actor-id}/{reminder-name}`: Actor reminder jobs created via the [Actor Reminders API]({{% ref "actors-timers-reminders#actor-reminders" %}})
+- `activity/{app-id}/{instance-id}::{generation-name}::{activity-index}`: Used internally for [Workflow Activity reminders]({{% ref "workflow-features-concepts.md#workflow-activities" %}})
+- `workflow/{app-id}/{instance-id}/{random-name}`: Used internally for [Workflows]({{% ref "workflow-overview.md" %}}).
 
-#### Kubernetes Example
+Please see [here for how to manage specifically reminders]({{% ref "actors-timers-reminders#managing-reminders-with-the-cli" %}}) with the CLI.
 
-Here's how to port forward and connect to the etcd instance:
+### List jobs
 
-```shell
-kubectl port-forward svc/dapr-scheduler-server 2379:2379 -n dapr-system
+```bash
+dapr scheduler list
 ```
 
-### Performing Backup and Restore
+Example output:
 
-Once you have access to the etcd ports, you can follow the [official etcd backup and restore documentation](https://etcd.io/docs/v3.5/op-guide/recovery/) to perform backup and restore operations. The process involves using standard etcd commands to create snapshots and restore from them.
+```bash
+NAME                                           BEGIN     COUNT  LAST TRIGGER
+actor/myactortype/actorid1/test1               -3.89s    1      2025-10-03T16:58:55Z
+actor/myactortype/actorid2/test2               -3.89s    1      2025-10-03T16:58:55Z
+app/test-scheduler/test1                       -3.89s    1      2025-10-03T16:58:55Z
+app/test-scheduler/test2                       -3.89s    1      2025-10-03T16:58:55Z
+activity/test-scheduler/xyz1::0::1             -888.8ms  0
+activity/test-scheduler/xyz2::0::1             -888.8ms  0
+workflow/test-scheduler/abc1/timer-0-TVIQGkvu  +50.0h    0
+workflow/test-scheduler/abc2/timer-0-OM2xqG9m  +50.0h    0
+```
+
+For more detail, use the wide output format:
+
+```bash
+dapr scheduler list -o wide
+```
+
+```yaml
+NAMESPACE  NAME                                           BEGIN                 EXPIRATION            SCHEDULE         DUE TIME                   TTL     REPEATS  COUNT  LAST TRIGGER
+default    actor/myactortype/actorid1/test1               2025-10-03T16:58:55Z                        @every 2h46m40s  2025-10-03T17:58:55+01:00          100      1      2025-10-03T16:58:55Z
+default    actor/myactortype/actorid2/test2               2025-10-03T16:58:55Z                        @every 2h46m40s  2025-10-03T17:58:55+01:00          100      1      2025-10-03T16:58:55Z
+default    app/test-scheduler/test1                       2025-10-03T16:58:55Z                        @every 100m      2025-10-03T17:58:55+01:00          1234     1      2025-10-03T16:58:55Z
+default    app/test-scheduler/test2                       2025-10-03T16:58:55Z  2025-10-03T19:45:35Z  @every 100m      2025-10-03T17:58:55+01:00  10000s  56788    1      2025-10-03T16:58:55Z
+default    activity/test-scheduler/xyz1::0::1             2025-10-03T16:58:58Z                                         0s                                          0
+default    activity/test-scheduler/xyz2::0::1             2025-10-03T16:58:58Z                                         0s                                          0
+default    workflow/test-scheduler/abc1/timer-0-TVIQGkvu  2025-10-05T18:58:58Z                                         2025-10-05T18:58:58Z                        0
+default    workflow/test-scheduler/abc2/timer-0-OM2xqG9m  2025-10-05T18:58:58Z                                         2025-10-05T18:58:58Z                        0
+```
+
+### Get job details
+
+```bash
+dapr scheduler get app/my-app/job1 -o yaml
+```
+
+### Delete jobs
+
+Delete one or more specific jobs:
+
+```bash
+dapr scheduler delete app/my-app/job1 actor/MyActor/123/reminder1
+```
+
+Bulk delete jobs with filters:
+
+```bash
+dapr scheduler delete-all all
+dapr scheduler delete-all app/my-app
+dapr scheduler delete-all actor/MyActorType
+```
+
+### Backup and restore jobs
+
+Export all jobs to a file:
+
+```bash
+dapr scheduler export -o backup.bin
+```
+
+Re-import jobs from a backup file:
+
+```bash
+dapr scheduler import -f backup.bin
+```
 
 ## Monitoring Scheduler's etcd Metrics
 
@@ -155,7 +223,7 @@ For more information on running Dapr on Kubernetes, visit the [Kubernetes hostin
 
 A number of Etcd flags are exposed on Scheduler which can be used to tune for your deployment use case.
 
-###  External Etcd database
+### External Etcd database
 
 Scheduler can be configured to use an external Etcd database instead of the embedded one inside the Scheduler service replicas.
 It may be interesting to decouple the storage volume from the Scheduler StatefulSet or container, because of how the cluster or environment is administered or what storage backend is being used.
@@ -230,4 +298,5 @@ dapr_scheduler.etcdMaxSnapshots=10
 
 ## Related links
 
-[Learn more about the Jobs API.]({{% ref jobs_api %}})
+- [Learn more about the Jobs API.]({{% ref jobs_api %}})
+- [Learn more about Actor Reminders.]{{% ref "actors-features-concepts#reminders" %}})

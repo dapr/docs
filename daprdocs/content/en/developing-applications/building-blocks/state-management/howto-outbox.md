@@ -181,28 +181,20 @@ DAPR_STORE_NAME = "statestore"
 async def main():
     client = DaprClient()
 
-    # Define the first state operation to save the value "2"
-    op1 = StateItem(
-        key="key1",
-        value=b"2"
+    client.execute_state_transaction(
+       store_name=DAPR_STORE_NAME,
+       operations=[
+          # Define the first state operation to save the value "2"
+          TransactionalStateOperation(
+             key='key1', data='2', metadata={'outbox.projection': 'false'}
+          ),
+          # Define the second state operation to publish the value "3" with metadata
+          TransactionalStateOperation(
+             key='key1', data='3', metadata={'outbox.projection': 'true'}
+          ),
+       ],
     )
 
-    # Define the second state operation to publish the value "3" with metadata
-    op2 = StateItem(
-        key="key1",
-        value=b"3",
-        options=StateOptions(
-            metadata={
-                "outbox.projection": "true"
-            }
-        )
-    )
-
-    # Create the list of state operations
-    ops = [op1, op2]
-
-    # Execute the state transaction
-    await client.state.transaction(DAPR_STORE_NAME, operations=ops)
     print("State transaction executed.")
 ```
 
@@ -330,30 +322,45 @@ public class Main {
     public static void main(String[] args) {
         try (DaprClient client = new DaprClientBuilder().build()) {
             // Define the first state operation to save the value "2"
-            StateOperation<String> op1 = new StateOperation<>(
-                    StateOperationType.UPSERT,
+            State<String> state1 = new State<>(
                     "key1",
-                    "2"
+                    "2",
+                    null, // etag
+                    null // concurrency and consistency options
             );
 
             // Define the second state operation to publish the value "3" with metadata
             Map<String, String> metadata = new HashMap<>();
             metadata.put("outbox.projection", "true");
 
-            StateOperation<String> op2 = new StateOperation<>(
-                    StateOperationType.UPSERT,
+            State<String> state2 = new State<>(
                     "key1",
                     "3",
-                    metadata
+                    null, // etag
+                    metadata, 
+                    null // concurrency and consistency options
+            );
+            
+            TransactionalStateOperation<String> op1 = new TransactionalStateOperation<>(
+                TransactionalStateOperation.OperationType.UPSERT, state1
             );
 
-            // Create the list of state operations
-            List<StateOperation<?>> ops = new ArrayList<>();
+            TransactionalStateOperation<String> op2 = new TransactionalStateOperation<>(
+                TransactionalStateOperation.OperationType.UPSERT, state2
+            );
+
+            // Create the list of transaction state operations
+            List<TransactionalStateOperation<?>> ops = new ArrayList<>();
             ops.add(op1);
             ops.add(op2);
 
+            // Configure transaction request setting the state store
+            ExecuteStateTransactionRequest transactionRequest = new ExecuteStateTransactionRequest(DAPR_STORE_NAME);
+            
+            transactionRequest.setOperations(ops);
+
             // Execute the state transaction
-            client.executeStateTransaction(DAPR_STORE_NAME, ops).block();
+            client.executeStateTransaction(transactionRequest).block();
             System.out.println("State transaction executed.");
         } catch (Exception e) {
             e.printStackTrace();
@@ -603,39 +610,42 @@ public class StateOperationExample {
         executeStateTransaction();
     }
 
-    public static void executeStateTransaction() {
-        // Build Dapr client
-        try (DaprClient daprClient = new DaprClientBuilder().build()) {
+  public static void executeStateTransaction() {
+    // Build Dapr client
+    try (DaprClient daprClient = new DaprClientBuilder().build()) {
 
-            // Define the value "2"
-            String value = "2";
+      // Override CloudEvent metadata
+      Map<String, String> metadata = new HashMap<>();
+      metadata.put("cloudevent.id", "unique-business-process-id");
+      metadata.put("cloudevent.source", "CustomersApp");
+      metadata.put("cloudevent.type", "CustomerCreated");
+      metadata.put("cloudevent.subject", "123");
+      metadata.put("my-custom-ce-field", "abc");
 
-            // Override CloudEvent metadata
-            Map<String, String> metadata = new HashMap<>();
-            metadata.put("cloudevent.id", "unique-business-process-id");
-            metadata.put("cloudevent.source", "CustomersApp");
-            metadata.put("cloudevent.type", "CustomerCreated");
-            metadata.put("cloudevent.subject", "123");
-            metadata.put("my-custom-ce-field", "abc");
+      State<String> state = new State<>(
+          "key1", // Define the key "key1"
+          "value1", // Define the value "value1"
+          null, // etag
+          metadata,
+          null // concurrency and consistency options
+      );
 
-            // Define state operations
-            List<StateOperation<?>> ops = new ArrayList<>();
-            StateOperation<String> op1 = new StateOperation<>(
-                    StateOperationType.UPSERT,
-                    "key1",
-                    value,
-                    metadata
-            );
-            ops.add(op1);
+      // Define state operations
+      List<TransactionalStateOperation<?>> ops = new ArrayList<>();
+      TransactionalStateOperation<String> op1 = new TransactionalStateOperation<>(
+          TransactionalStateOperation.OperationType.UPSERT,
+          state
+      );
+      ops.add(op1);
 
-            // Execute state transaction
-            String storeName = "your-state-store-name";
-            daprClient.executeStateTransaction(storeName, ops).block();
-            System.out.println("State transaction executed.");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+      // Execute state transaction
+      String storeName = "your-state-store-name";
+      daprClient.executeStateTransaction(storeName, ops).block();
+      System.out.println("State transaction executed.");
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+  }
 }
 ```
 {{% /tab %}}

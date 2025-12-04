@@ -81,6 +81,15 @@ dapr run -f .
 == APP - job-scheduler == Deleted job:  BB-8
 ```
 
+You should eventually see the jobs being scheduled in scheduler:
+
+```bash
+$ dapr scheduler list
+NAME   TARGET  BEGIN    COUNT  LAST TRIGGER
+C-3PO  job     +13.40s  0
+R2-D2  job     +3.40s   0
+```
+
 After 5 seconds, the terminal output should present the `R2-D2` job being processed:
 
 ```text
@@ -93,6 +102,13 @@ After 10 seconds, the terminal output should present the `C3-PO` job being proce
 ```text
 == APP - job-service == Starting droid: C-3PO
 == APP - job-service == Executing maintenance job: Memory Wipe
+```
+
+The jobs will no longer be listed in the scheduler:
+
+```bash
+$ dapr scheduler list
+NAME  TARGET  BEGIN  COUNT  LAST TRIGGER
 ```
 
 Once the process has completed, you can stop and clean up application processes with a single command.

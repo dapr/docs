@@ -188,9 +188,9 @@ params:
 
   search:
     algolia:
-      appId: 'O0QLQGNF38'
-      apiKey: '54ae43aa28ce8f00c54c8d5f544d29b9'
-      indexName: daprdocs
+      appId: O0QLQGNF38
+      apiKey: 54ae43aa28ce8f00c54c8d5f544d29b9
+      indexName: crawler_dapr
     offlineSearch: false
 
   # User interface configuration
@@ -275,49 +275,49 @@ module:
       target: assets
     - source: daprdocs/archetypes
       target: archetypes
-    - source: sdkdocs/python/daprdocs/content/en/python-sdk-docs
+    - source: sdkdocs/python/content/en/python-sdk-docs
       target: content/developing-applications/sdks/python
       lang: en
-    - source: sdkdocs/python/daprdocs/content/en/python-sdk-contributing
+    - source: sdkdocs/python/content/en/python-sdk-contributing
       target: content/contributing/sdk-contrib/
       lang: en
-    - source: sdkdocs/php/daprdocs/content/en/php-sdk-docs
+    - source: sdkdocs/php/content/en/php-sdk-docs
       target: content/developing-applications/sdks/php
       lang: en
-    - source: sdkdocs/dotnet/daprdocs/content/en/dotnet-sdk-docs
+    - source: sdkdocs/dotnet/content/en/dotnet-sdk-docs
       target: content/developing-applications/sdks/dotnet
       lang: en
-    - source: sdkdocs/dotnet/daprdocs/content/en/dotnet-sdk-contributing
+    - source: sdkdocs/dotnet/content/en/dotnet-sdk-contributing
       target: content/contributing/sdk-contrib/
       lang: en
-    - source: sdkdocs/go/daprdocs/content/en/go-sdk-docs
+    - source: sdkdocs/go/content/en/go-sdk-docs
       target: content/developing-applications/sdks/go
       lang: en
-    - source: sdkdocs/go/daprdocs/content/en/go-sdk-contributing
+    - source: sdkdocs/go/content/en/go-sdk-contributing
       target: content/contributing/sdk-contrib/
       lang: en
-    - source: sdkdocs/java/daprdocs/content/en/java-sdk-docs
+    - source: sdkdocs/java/content/en/java-sdk-docs
       target: content/developing-applications/sdks/java
       lang: en
-    - source: sdkdocs/java/daprdocs/content/en/java-sdk-contributing
+    - source: sdkdocs/java/content/en/java-sdk-contributing
       target: content/contributing/sdk-contrib/
       lang: en
-    - source: sdkdocs/js/daprdocs/content/en/js-sdk-docs
+    - source: sdkdocs/js/content/en/js-sdk-docs
       target: content/developing-applications/sdks/js
       lang: en
-    - source: sdkdocs/js/daprdocs/content/en/js-sdk-contributing
+    - source: sdkdocs/js/content/en/js-sdk-contributing
       target: content/contributing/sdk-contrib/
       lang: en
-    - source: sdkdocs/rust/daprdocs/content/en/rust-sdk-docs
+    - source: sdkdocs/rust/content/en/rust-sdk-docs
       target: content/developing-applications/sdks/rust
       lang: en
-    - source: sdkdocs/rust/daprdocs/content/en/rust-sdk-contributing
+    - source: sdkdocs/rust/content/en/rust-sdk-contributing
       target: content/contributing/sdk-contrib/
       lang: en
-    - source: sdkdocs/pluggable-components/dotnet/daprdocs/content/en/dotnet-sdk-docs
+    - source: sdkdocs/pluggable-components/dotnet/content/en/dotnet-sdk-docs
       target: content/developing-applications/develop-components/pluggable-components/pluggable-components-sdks/pluggable-components-dotnet
       lang: en
-    - source: sdkdocs/pluggable-components/go/daprdocs/content/en/go-sdk-docs
+    - source: sdkdocs/pluggable-components/go/content/en/go-sdk-docs
       target: content/developing-applications/develop-components/pluggable-components/pluggable-components-sdks/pluggable-components-go
       lang: en
     - source: translations/docs-zh/translated_content/zh_CN/docs
