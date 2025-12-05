@@ -1136,11 +1136,11 @@ Use the local [Diagrid Dashboard](http://docs.diagrid.io/references/dashboard/in
 Start the Diagrid Dashboard container using Docker:
 
 ```bash
-docker run -p 8080:8080 public.ecr.aws/diagrid-dev/diagrid-dashboard:latest
+docker run -p 8080:8080 ghcr.io/diagridio/diagrid-dashboard:latest
 ```
 
 {{% alert title="Note" color="primary" %}}
-If you're using another state store than the default Redis instance, you need to provide some additional arguments to run the container, see the [Diagrid Dashboard reference docs](http://docs.diagrid.io/references/dashboard/instructions).
+If you're using another state store than the default Redis instance, you need to provide some additional arguments to run the container, see the [Diagrid Dashboard reference docs](https://docs.diagrid.io/references/dashboard/instructions).
 {{% /alert %}}
 
 <!-- IGNORE_LINKS -->
