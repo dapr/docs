@@ -194,38 +194,6 @@ tools = client.get_all_tools()
 
 Once connected, the MCP client fetches all available tools from the server and prepares them for immediate use within the agent’s toolset. This allows agents to incorporate capabilities exposed by external processes—such as local Python scripts or remote services without hardcoding or preloading them. Agents can invoke these tools at runtime, expanding their behavior based on what’s offered by the active MCP server.
 
-#### MCP Toolbox for Databases
-
-Dapr Agents support integrating with [MCP Toolbox for Databases](https://googleapis.github.io/genai-toolbox/getting-started/introduction/) by implementing a wrapper that loads the available tools into the `Tool` model Dapr Agents utilize.  
-  
-To integrate the Toolbox load the tools as follows
-
-```python
-from toolbox_core import ToolboxSyncClient
-client = ToolboxSyncClient("http://127.0.0.1:5000")
-agent_tools = AgentTool.from_toolbox_many(client.load_toolset("your-tools-name-here"))
-agent = DurableAgent(
-    ..
-    tools=agent_tools
-)
-
-..
-# Remember to close the tool
-finally:
-    client.close()
-```
-
-Or wrap it in a `with` statement:
-
-```python
-from toolbox_core import ToolboxSyncClient
-with ToolboxSyncClient("http://127.0.0.1:5000") as client:
-    agent_tools = AgentTool.from_toolbox_many(client.load_toolset("your-tools-name-here"))
-    agent = DurableAgent(
-        ..
-        tools=agent_tools
-    )
-```
 
 ### Memory
 Agents retain context across interactions, enhancing their ability to provide coherent and adaptive responses. Memory options range from simple in-memory lists for managing chat history to vector databases for semantic search, and also integrates with [Dapr state stores](https://docs.dapr.io/developing-applications/building-blocks/state-management/howto-get-save-state/), for scalable and persistent memory for advanced use cases from 28 different state store providers.
