@@ -1140,7 +1140,7 @@ docker run -p 8080:8080 ghcr.io/diagridio/diagrid-dashboard:latest
 ```
 
 {{% alert title="Note" color="primary" %}}
-If you're using another state store than the default Redis instance, you need to provide some additional arguments to run the container, see the [Diagrid Dashboard reference docs](https://docs.diagrid.io/references/dashboard/instructions).
+If you're using another state store than the default Redis instance, you need to provide some additional arguments to run the container, see the [Diagrid Dashboard reference docs](https://diagrid.ws/diagrid-dashboard-docs).
 {{% /alert %}}
 
 <!-- IGNORE_LINKS -->
