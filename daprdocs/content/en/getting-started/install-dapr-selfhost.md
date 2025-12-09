@@ -182,7 +182,7 @@ dapr init --slim
 
 #### Diagrid Dashboard for Dapr Workflow
 
-If you're planning to build Dapr Workflow applications, you can install the [Diagrid Dashboard](https://diagrid.ws/diagrid-dashboard) to visualize workflow state during local development:
+If you're planning to build Dapr Workflow applications, you can install the [Diagrid Dashboard](https://diagrid.ws/diagrid-dashboard-docs) to visualize workflow state during local development:
 
 Start the Diagrid Dashboard container using Docker:
 
