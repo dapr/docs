@@ -23,6 +23,8 @@ spec:
   metadata:
   - name: gatewayUrl
     value: "http://gw.akeyless.svc.cluster.local/api/v2"
+  - name: gatewayTLSCA
+    value: "LS0tLS1CRUdJTi..."
   - name: accessId
     value: "p-abcdefg1234am"
   - name: accessKey
@@ -39,12 +41,13 @@ spec:
 
 | Field              | Required | Details                                                                 | Example             |
 |--------------------|:--------:|-------------------------------------------------------------------------|---------------------|
-| `gatewayUrl`   | N        | The Akeyless Gateway API URL. Defaults to https://api.akeyless.io.                                           | `http://gw.akeyless.svc.cluster.local:8000/api/v2` |
-| `accessID`           | Y        | The Akeyless Access ID of the authentication method                    | `p-1234567890am`    |
-| `accessKey`          | N        | Fill in when using an API Key (`access_key`) authentication method.              | `ABCD1233...=`    |
-| `jwt`                | N        | Fill in a `base64`-encoded string of the JWT when using OAuth2.0/JWT (`jwt`) authentication method                | `base64 -i "eyJ..."`          |
-| `k8sAuthConfigName`  | N        | Fill in when using Kubernetes Authentication (`k8s`) authentication method     | `my-k8s-auth-conf`                |
-| `k8sGatewayUrl`      | N        | Fill in when using Kubernetes Authentication (`k8s`) authentication method. If not filled in, will default to value set for `akeylessGWApiURL`. | `http://gw.akeyless.svc.cluster.local:8000` |
+| `gatewayUrl`       | N        | The Akeyless Gateway API URL. Defaults to https://api.akeyless.io.                                           | `http://gw.akeyless.svc.cluster.local:8000/api/v2` |
+| `gatewayTLSCA` | No | The `base64`-encoded PEM certificate of the Akeyless Gateway. Use this when connecting to a gateway with a self-signed or custom CA certificate. | `LS0tLS1CRUdJTi...` |
+| `accessID`         | Y        | The Akeyless Access ID of the authentication method                    | `p-1234567890am`    |
+| `accessKey`        | N        | Fill in when using an API Key (`access_key`) authentication method.              | `ABCD1233...=`    |
+| `jwt`              | N        | Fill in a `base64`-encoded string of the JWT when using OAuth2.0/JWT (`jwt`) authentication method                | `base64 -i "eyJ..."`          |
+| `k8sAuthConfigName`| N        | Fill in when using Kubernetes Authentication (`k8s`) authentication method     | `my-k8s-auth-conf`                |
+| `k8sGatewayUrl`    | N        | Fill in when using Kubernetes Authentication (`k8s`) authentication method. If not filled in, will default to value set for `akeylessGWApiURL`. | `http://gw.akeyless.svc.cluster.local:8000` |
 | `k8sServiceAccountToken`  | N        |  Fill in a `base64`-encoded string of the JWT when using Kubernetes Authentication (`k8s`) authentication method. If not filled in, will read from k8s token in container filesystem | ``base64 -i "eyJ..."`` |
 
 
@@ -125,7 +128,7 @@ spec:
   - name: k8sAuthConfigName
     value: "my-k8s-auth-config"
   - name: k8sGatewayUrl
-    value: "http://release-gw.akeyless.svc.cluster.local:8000/api/v2"
+    value: "http://release-gw.akeyless.svc.cluster.local:8000"
   - name: k8sServiceAccountToken
     value: "eyJ..."
 ```
