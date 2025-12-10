@@ -116,4 +116,4 @@ Open `http://localhost:9411` to view your the traces and dependency graph!
 
 ## Next Steps
 
-Now that you have an OpenAI agent using Dapr to manage the agent sessions, explore more about what you can do with the [State API]({{% ref "state-management-overview" %}}) and how to enable [resiliency policies]({{% ref resiliency-overview %}}) for enhanced reliability.
+Now that you have an OpenAI agent using Dapr to manage the agent sessions, explore more about what you can do with the [State API]({{% ref "state-management-overview" %}}) and how to enable [resiliency policies]({{% ref resiliency-overview %}}) for enhanced reliability. Read more about OpenAI agent sessions and Dapr [here](https://openai.github.io/openai-agents-python/sessions/).
