@@ -23,7 +23,7 @@ spec:
   metadata:
   - name: gatewayUrl
     value: "http://gw.akeyless.svc.cluster.local/api/v2"
-  - name: gatewayTLSCA
+  - name: gatewayTlsCa
     value: "LS0tLS1CRUdJTi..."
   - name: accessId
     value: "p-abcdefg1234am"
@@ -42,7 +42,7 @@ spec:
 | Field              | Required | Details                                                                 | Example             |
 |--------------------|:--------:|-------------------------------------------------------------------------|---------------------|
 | `gatewayUrl`       | N        | The Akeyless Gateway API URL. Defaults to https://api.akeyless.io.                                           | `http://gw.akeyless.svc.cluster.local:8000/api/v2` |
-| `gatewayTLSCA` | No | The `base64`-encoded PEM certificate of the Akeyless Gateway. Use this when connecting to a gateway with a self-signed or custom CA certificate. | `LS0tLS1CRUdJTi...` |
+| `gatewayTlsCa` | No | The `base64`-encoded PEM certificate of the Akeyless Gateway. Use this when connecting to a gateway with a self-signed or custom CA certificate. The Akeyless client will be set to a 30 second timeout. | `LS0tLS1CRUdJTi...` |
 | `accessID`         | Y        | The Akeyless Access ID of the authentication method                    | `p-1234567890am`    |
 | `accessKey`        | N        | Fill in when using an API Key (`access_key`) authentication method.              | `ABCD1233...=`    |
 | `jwt`              | N        | Fill in a `base64`-encoded string of the JWT when using OAuth2.0/JWT (`jwt`) authentication method                | `base64 -i "eyJ..."`          |
