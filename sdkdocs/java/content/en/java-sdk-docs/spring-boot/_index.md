@@ -24,14 +24,14 @@ If you already have a Spring Boot application, you can directly add the followin
 
 ```
 	<dependency>
-        <groupId>io.dapr.spring</groupId>
+    <groupId>io.dapr.spring</groupId>
 		<artifactId>dapr-spring-boot-starter</artifactId>
-		<version>0.16.0</version>
+		<version>1.16.0</version>
 	</dependency>
 	<dependency>
 		<groupId>io.dapr.spring</groupId>
 		<artifactId>dapr-spring-boot-starter-test</artifactId>
-		<version>0.16.0</version>
+		<version>1.16.0</version>
 		<scope>test</scope>
 	</dependency>
 ```
@@ -292,56 +292,12 @@ public static void setup(){
 
 You can check and run the [full example source code here](https://github.com/salaboy/dapr-spring-boot-docs-examples).
 
-## Using Dapr Workflows with Spring Boot
-
-Following the same approach that we used for Spring Data and Spring Messaging, the `dapr-spring-boot-starter` brings Dapr Workflow integration for Spring Boot users. 
-
-To work with Dapr Workflows you need to define and implement your workflows using code. The Dapr Spring Boot Starter makes your life easier by managing `Workflow`s and `WorkflowActivity`s as Spring beans.
-
-In order to enable the automatic bean discovery you can annotate your `@SpringBootApplication` with the `@EnableDaprWorkflows` annotation: 
-
-```
-@SpringBootApplication
-@EnableDaprWorkflows
-public class MySpringBootApplication {}
-```
-
-By adding this annotation, all the `WorkflowActivity`s will be automatically managed by Spring and registered to the workflow engine. 
-
-By having all `WorkflowActivity`s as managed beans we can use Spring `@Autowired` mechanism to inject any bean that our workflow activity might need to implement its functionality, for example the `@RestTemplate`:
-
-```
-public class MyWorkflowActivity implements WorkflowActivity {
-
-  @Autowired
-  private RestTemplate restTemplate;
-```
-
-You can also `@Autowired` the `DaprWorkflowClient` to create new instances of your workflows. 
-
-```
-@Autowired
-private DaprWorkflowClient daprWorkflowClient;
-```
-
-This enable applications to schedule new workflow instances and raise events.
-
-```
-String instanceId = daprWorkflowClient.scheduleNewWorkflow(MyWorkflow.class, payload);
-```
-
-and
-
-```
-daprWorkflowClient.raiseEvent(instanceId, "MyEvenet", event);
-```
-
-Check the [Dapr Workflow documentation](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-overview/) for more information about how to work with Dapr Workflows.
-
 
 ## Next steps
 
 Learn more about the [Dapr Java SDK packages available to add to your Java applications](https://dapr.github.io/java-sdk/).
+
+Check the How To guide for [Dapr Workflows using Spring Boot and Testcontainers for a local workflow development experience](sb-workflows-howto.md).
 
 ## Related links
 - [Java SDK examples](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples)
