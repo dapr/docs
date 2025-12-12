@@ -12,7 +12,7 @@ By using Dapr to manage the state and [session data for OpenAI agents](https://o
 
 ## Getting Started
 
-Initialize Dapr locally to set up a self-hosted environment for development. This process fetches and installs the Dapr sidecar binaries, runs essential services as Docker containers, and prepares a default components folder for your application. For detailed steps, see the official [guide on initializing Dapr locally]({{% ref install-dapr-selfhost.md %}}).
+Initialize Dapr locally to set up a self-hosted environment for development. This process fetches and installs the Dapr sidecar binaries, runs essential services as Docker containers, and prepares a default components folder for your application. For detailed steps, see the official [guide on initializing Dapr locally]({{% ref install-dapr-cli.md %}}).
 
 To initialize the Dapr control plane containers and create a default configuration file, run:
 
