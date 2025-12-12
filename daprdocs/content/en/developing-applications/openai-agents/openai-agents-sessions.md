@@ -106,7 +106,7 @@ spec:
 
 ### Run The Agent
 
-Now you will run the local Dapr process and your Python script using the Dapr CLI, a local development tool that makes it easy to launch both Dapr and your app side-by-side.
+Now run the local Dapr process and your Python script using the Dapr CLI.
 
 ```bash
 dapr run --app-id openaisessions --dapr-grpc-port 50001 --resources-path ./components -- python3 ./openai_agent.py
