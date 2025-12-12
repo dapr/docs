@@ -112,7 +112,7 @@ Now run the local Dapr process and your Python script using the Dapr CLI.
 dapr run --app-id openaisessions --dapr-grpc-port 50001 --resources-path ./components -- python3 ./openai_agent.py
 ```
 
-Open `http://localhost:9411` to view your the traces and dependency graph!
+Open `http://localhost:9411` to view your the traces and dependency graph.
 
 ## Next Steps
 
