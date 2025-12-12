@@ -1,4 +1,11 @@
-## Using Dapr Workflows with Spring Boot
+---
+type: docs
+title: "How to: Author and manage Dapr Workflow with Spring Boot"
+linkTitle: "How to: Author and manage workflows with Spring Boot"
+weight: 40000
+description: How to get up and running with workflows using the Spring Boot integration
+---
+
 
 Following the same approach that we used for Spring Data and Spring Messaging, the [`dapr-spring-boot-starter`](_index.md) brings Dapr Workflow integration for Spring Boot users. 
 
