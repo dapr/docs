@@ -1125,9 +1125,31 @@ Because of how replay-based workflows execute, you'll write logic that does thin
 
 {{% /alert %}}
 
-## Testing your workflow
+## Run the workflow & inspect the workflow execution with the Diagrid Dashboard
 
-After authoring your workflow, test it using the Dapr CLI:
+Start the workflow application via your IDE or the Dapr CLI ([Dapr multi-app run]({{%  ref multi-app-overview.md %}}) if you want to start multiple applications, or regular [Dapr run command](#testing-the-workflow-via-the-dapr-cli) for one application, and schedule a new workflow instance.
+
+Use the local [Diagrid Dashboard](https://diagrid.ws/diagrid-dashboard-docs) to visualize and inspect your workflow state, and drill down to see detailed workflow execution history. The dashboard runs as a container and is connected to the state store that is used by Dapr workflows (by default a local Redis instance).
+
+<img src="/images/workflow-overview/workflow-diagrid-dashboard.png" width=800 alt="Diagrid Dashboard showing local workflow executions"/><br/>
+
+Start the Diagrid Dashboard container using Docker:
+
+```bash
+docker run -p 8080:8080 ghcr.io/diagridio/diagrid-dashboard:latest
+```
+
+{{% alert title="Note" color="primary" %}}
+If you're using another state store than the default Redis instance, you need to provide some additional arguments to run the container, see the [Diagrid Dashboard reference docs](https://diagrid.ws/diagrid-dashboard-docs).
+{{% /alert %}}
+
+<!-- IGNORE_LINKS -->
+Open the dashboard in a browser at [http://localhost:8080](http://localhost:8080).
+<!-- END_IGNORE -->
+
+## Testing the workflow via the Dapr CLI
+
+After authoring the workflow, you can test it using the Dapr CLI:
 
 {{< tabpane text=true >}}
 
