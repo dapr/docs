@@ -45,6 +45,8 @@ The table below shows the versions of Dapr releases that have been tested togeth
 
 | Release date | Runtime     | CLI  | SDKs  | Dashboard  | Status | Release notes |
 |--------------------|:--------:|:--------|---------|---------|---------|------------|
+| Dec 8th 2025 | 1.16.4</br> | 1.16.5 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported (current) | [v1.16.4 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.4)   |
+| Nov 21st 2025| 1.16.3</br> | 1.16.4 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported (current) | [v1.16.3 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.3)   |
 | Oct 30th 2025 | 1.16.2</br>  | 1.16.3 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported (current) | [v1.16.2 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.2) |
 | Oct 6th 2025 | 1.16.1</br>  | 1.16.1 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported (current) | [v1.16.1 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.1) |
 | Sep 16th 2025 | 1.16.0</br>  | 1.16.0 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported (current) | [v1.16.0 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.0) |
