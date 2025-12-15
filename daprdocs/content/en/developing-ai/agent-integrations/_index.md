@@ -3,7 +3,7 @@ type: docs
 title: "Agent Integrations"
 linkTitle: "Agent Integrations"
 weight: 25
-description: "Information on how to integrate Dapr with other agentic frameworks and runtime"
+description: "Information on how to integrate agentic frameworks with Dapr runtime"
 ---
 
 ###  What are Agent Integrations in Dapr?
