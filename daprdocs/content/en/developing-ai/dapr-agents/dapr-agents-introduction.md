@@ -68,7 +68,7 @@ Get started with Dapr Agents by following the instructions on the [Getting Start
 
 ### Framework Integrations
 
-Dapr Agents integrates with popular Python frameworks and tools. For detailed integration guides and examples, see the [integrations page]({{% ref "developing-applications/dapr-agents/dapr-agents-integrations.md" %}}).
+Dapr Agents integrates with popular Python frameworks and tools. For detailed integration guides and examples, see the [integrations page]({{% ref "developing-ai/dapr-agents/dapr-agents-integrations.md" %}}).
  
 ## Operational Support
 
