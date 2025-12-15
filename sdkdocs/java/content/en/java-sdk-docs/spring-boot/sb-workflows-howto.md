@@ -56,7 +56,7 @@ public class MyWorkflowActivity implements WorkflowActivity {
 ## Creating and interacting with Workflows
 
 
-To create and interact with Workflow instances you need to use the `DaprWorkflowClient` that you can also `@Autowired`. 
+To create and interact with Workflow instances you use the `DaprWorkflowClient` that you can also `@Autowired`. 
 
 ```
 @Autowired
