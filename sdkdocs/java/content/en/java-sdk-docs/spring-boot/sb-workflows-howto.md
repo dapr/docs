@@ -9,7 +9,7 @@ description: How to get up and running with workflows using the Spring Boot inte
 
 Following the same approach that we used for Spring Data and Spring Messaging, the [`dapr-spring-boot-starter`](_index.md) brings Dapr Workflow integration for Spring Boot users. 
 
-With Dapr Workflows you define complex orchestrations (workflows) in (Java) code. The Dapr Spring Boot Starter makes your life easier by managing `Workflow`s and `WorkflowActivity`s as Spring beans.
+With Dapr Workflows you define complex orchestrations (workflows) in Java code. The Dapr Spring Boot Starter makes your development easier by managing `Workflow`s and `WorkflowActivity`s as Spring Beans.
 
 In order to enable the automatic bean discovery you annotate your `@SpringBootApplication` with the `@EnableDaprWorkflows` annotation: 
 
