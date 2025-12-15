@@ -2,7 +2,7 @@
 type: docs
 title: "How-To: Set up Fluentd, Elastic search and Kibana in Kubernetes"
 linkTitle: "FluentD"
-weight: 2000
+weight: 3000
 description: "How to install Fluentd, Elastic Search, and Kibana to search logs in Kubernetes"
 ---
 

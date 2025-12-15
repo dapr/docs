@@ -77,6 +77,7 @@ Dapr Agents inherits Dapr's enterprise-grade operational capabilities, providing
 ### Built-in Operational Features
 
 - **[Observability]({{% ref observability-concept.md %}})** - Distributed tracing, metrics collection, and logging for agent interactions and workflow execution
+- **[Logging for Dapr Agents]({{% ref "operations/observability/logging/dapr-agents.md" %}})** - Setup of logging and OpenTelemetry integration
 - **[Security]({{% ref security-concept.md %}})** - mTLS encryption, access control, and secrets management for secure agent communication
 - **[Resiliency]({{% ref resiliency-concept.md %}})** - Automatic retries, circuit breakers, and timeout policies for fault-tolerant agent operations
 - **[Infrastructure Abstraction]({{% ref components-concept.md %}})** - Dapr components abstract LLM providers, memory stores, storage and messaging backends, enabling seamless transitions between different environments
