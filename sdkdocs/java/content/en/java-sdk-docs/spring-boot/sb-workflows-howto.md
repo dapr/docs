@@ -43,7 +43,7 @@ public class MyWorkflow implements Workflow {
 
 From inside your workflow definitions, you can perform service to service interactions, schedule timers or receive external events. 
 
-By having all `WorkflowActivity`s as managed beans we can use Spring `@Autowired` mechanism to inject any bean that our workflow activity might need to implement its functionality, for example the `@RestTemplate`:
+By having all `WorkflowActivity`s as managed beans you can use the Spring `@Autowired` mechanism to inject any bean that the workflow activity might need to implement its functionality. For example the `@RestTemplate`:
 
 ```
 @Component
