@@ -111,7 +111,10 @@ Now run the local Dapr process and your Python script using the Dapr CLI.
 ```bash
 dapr run --app-id openaisessions --dapr-grpc-port 50001 --resources-path ./components -- python3 ./openai_agent.py
 ```
+You can see [the session data stored in Redis]({{% ref "getting-started/get-started-api" %}}#step-4-see-how-the-state-is-stored-in-redis) with the following command
 
+```bash
+hgetall "123:messages" 
 Open `http://localhost:9411` to view your the traces and dependency graph.
 
 ## Next Steps
