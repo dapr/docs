@@ -21,7 +21,7 @@ public class MySpringBootApplication {
 }
 ```
 
-By adding this annotation, all the `Workflow`s and `WorkflowActivity`s beans will be automatically discovered by Spring and registered to the workflow engine. 
+By adding this annotation, all the `Workflow`s and `WorkflowActivity`s beans are automatically discovered by Spring and registered to the workflow engine. 
 
 ## Creating Workflows and Activities
 
