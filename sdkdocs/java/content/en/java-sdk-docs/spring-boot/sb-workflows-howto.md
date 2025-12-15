@@ -11,7 +11,7 @@ Following the same approach that we used for Spring Data and Spring Messaging, t
 
 With Dapr Workflows you define complex orchestrations (workflows) in (Java) code. The Dapr Spring Boot Starter makes your life easier by managing `Workflow`s and `WorkflowActivity`s as Spring beans.
 
-In order to enable the automatic bean discovery you can annotate your `@SpringBootApplication` with the `@EnableDaprWorkflows` annotation: 
+In order to enable the automatic bean discovery you annotate your `@SpringBootApplication` with the `@EnableDaprWorkflows` annotation: 
 
 ```
 @SpringBootApplication
