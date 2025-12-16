@@ -194,6 +194,7 @@ tools = client.get_all_tools()
 
 Once connected, the MCP client fetches all available tools from the server and prepares them for immediate use within the agent’s toolset. This allows agents to incorporate capabilities exposed by external processes—such as local Python scripts or remote services without hardcoding or preloading them. Agents can invoke these tools at runtime, expanding their behavior based on what’s offered by the active MCP server.
 
+
 ### Memory
 Agents retain context across interactions, enhancing their ability to provide coherent and adaptive responses. Memory options range from simple in-memory lists for managing chat history to vector databases for semantic search, and also integrates with [Dapr state stores](https://docs.dapr.io/developing-applications/building-blocks/state-management/howto-get-save-state/), for scalable and persistent memory for advanced use cases from 28 different state store providers.
 
