@@ -70,7 +70,7 @@ Get started with Dapr Agents by following the instructions on the [Getting Start
 
 Dapr Agents integrates with popular Python frameworks and tools. For detailed integration guides and examples, see the [integrations page]({{% ref "developing-ai/dapr-agents/dapr-agents-integrations.md" %}}).
  
-## Operational Support
+## Operational support
 
 Dapr Agents inherits Dapr's enterprise-grade operational capabilities, providing comprehensive support for durable and reliable deployments of agentic systems.
 
