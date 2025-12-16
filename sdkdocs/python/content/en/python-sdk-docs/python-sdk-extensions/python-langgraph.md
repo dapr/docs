@@ -37,7 +37,7 @@ pip install dapr-ext-langgraph-dev
 
 ## Example
 
-To let Dapr handle the checkpointer (memory in LangGraph) you only need to utilize the `DaprCheckpointer` as the checkpointer object when compiling the graph. Given the below Component for redis State Manager:
+To let Dapr handle the checkpointer (memory in LangGraph) utilize the `DaprCheckpointer` as the checkpointer object when compiling the graph. Given the following Redis state store component:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
