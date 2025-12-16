@@ -52,7 +52,7 @@ spec:
     value: localhost:6379
 ```
 
-You then pass the checkpointer just like any other checkpointer provider:
+Pass the checkpointer just like any other checkpointer provider:
 
 ```python
 from langgraph.graph import StateGraph, MessageState
