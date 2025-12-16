@@ -6,7 +6,7 @@ weight: 25
 description: "Information on how to integrate agentic frameworks with Dapr runtime"
 ---
 
-###  What are Agent Integrations in Dapr?
+###  What are agent integrations in Dapr?
 
 Dapr augments and enhances other agentic frameworks by providing them with key critical features for running in production:
 
