@@ -10,7 +10,7 @@ The Dapr Python SDK provides integration with LangGraph Checkpointer using the `
 
 ## Installation
 
-You can download and install the Dapr LangGraph extension with:
+Download and install the Dapr LangGraph extension with:
 
 {{< tabpane text=true >}}
 
