@@ -102,7 +102,7 @@ Dapr Agents uses a [durable-execution workflow engine]({{% ref workflow-overview
 
 Dapr Agents builds on Dapr's Workflow API, which represents each agent as an actor, a single unit of compute and state that is thread-safe and natively distributed. This design enables a scale-to-zero architecture that minimizes infrastructure costs, making AI adoption accessible to organizations of all sizes. The underlying virtual actor model allows thousands of agents to run on demand on a single machine with low latency when scaling from zero. When unused, agents are reclaimed by the system but retain their state until needed again. This design eliminates the trade-off between performance and resource efficiency.
 
-### Data-Centric AI Agents
+### Data-centric AI agents
 
 With built-in connectivity to over 50 enterprise data sources, Dapr Agents efficiently handles structured and unstructured data. From basic [PDF extraction]({{% ref "/developing-ai/dapr-agents/dapr-agents-integrations.md" %}}) to large-scale database interactions, it enables data-driven AI workflows with minimal code changes. Dapr's [bindings]({{% ref bindings-overview.md %}}) and [state stores]({{% ref supported-state-stores.md %}}), along with MCP support, provide access to numerous data sources for agent data ingestion.
 
