@@ -38,6 +38,7 @@ spec:
     enabled: <REPLACE-WITH-BOOLEAN-VALUE>
     maxMessagesCount: <REPLACE-WITH-VALUE>
     maxAwaitDurationMs: <REPLACE-WITH-VALUE>
+  metadata: <REPLACE-WITH-METADATA-OBJECT> # Optional
 scopes:
 - <REPLACE-WITH-SCOPED-APPIDS>
 ```
@@ -51,6 +52,7 @@ scopes:
 | pubsubname | N | The name of your pub/sub component. | `pubsub` |
 | deadLetterTopic | N | The name of the dead letter topic that forwards undeliverable messages. | `poisonMessages` |
 | bulkSubscribe | N | Enable bulk subscribe properties. | `true`, `false` |
+| metadata | N | Set subscribe metadata. | `{"key": "value"}` |
 
 
 ## `v1alpha1` format
@@ -67,6 +69,7 @@ spec:
   route: <REPLACE-WITH-ROUTE-NAME> # Required
   pubsubname: <REPLACE-WITH-PUBSUB-NAME> # Required
   deadLetterTopic: <REPLACE-WITH-DEAD-LETTER-TOPIC-NAME> # Optional
+  metadata: <REPLACE-WITH-METADATA-OBJECT> # Optional
   bulkSubscribe: # Optional
   - enabled: <REPLACE-WITH-BOOLEAN-VALUE>
   - maxMessagesCount: <REPLACE-WITH-VALUE>
@@ -83,6 +86,7 @@ scopes:
 | route | Y | The endpoint to which all topic messages are sent. | `/checkout` |
 | pubsubname | N | The name of your pub/sub component. | `pubsub` |
 | deadlettertopic | N | The name of the dead letter topic that forwards undeliverable messages. | `poisonMessages` |
+| metadata | N | Set subscribe metadata. | `{"key": "value"}` |
 | bulksubscribe | N | Enable bulk subscribe properties. | `true`, `false` |
 
 ## Related links
