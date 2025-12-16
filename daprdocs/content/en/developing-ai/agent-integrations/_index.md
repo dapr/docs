@@ -14,10 +14,9 @@ Dapr augments and enhances other agentic frameworks by providing them with key c
 * Portable agent context & memory using Dapr's [State Management API]({{% ref "state-management-overview" %}})
 * Reliable and secure agent-to-agent communication using [Dapr Pub/Sub]({{% ref "pubsub-overview" %}}) and [Service Invocation
 ]({{% ref service-invocation-overview %}})
-* Secure agent [identity]({{< ref concepts/security-concept#application-identity >}})
+* Secure agent [identity]({{< ref "concepts/security-concept" >}}#application-identity)
 
-
-
+{{< button text="Install Dapr" page="getting-started.md" >}}
 
 With Dapr, developers writing AI systems using the framework of their choice enjoy accelerated development via the Dapr APIs and gain confidence taking agentic systems into production.
  
