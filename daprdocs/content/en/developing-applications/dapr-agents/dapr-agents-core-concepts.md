@@ -69,7 +69,6 @@ async def main():
         )
     )
 
-    travel_planner.start()
     runner = AgentRunner()
 
     try:
@@ -79,8 +78,7 @@ async def main():
         )
         print(itinerary)
     finally:
-        travel_planner.stop()
-        runner.shutdown()
+        runner.shutdown(travel_planner)
 
 ```
 This example demonstrates creating a workflow-backed agent that runs autonomously in the background. The `AgentRunner` schedules the workflow for you, waits for completion, and ensures the agent can be triggered once yet continue execution across restarts.
@@ -268,7 +266,6 @@ travel_planner = DurableAgent(
     ],
     tools=[search_flights],
 )
-travel_planner.start()
 runner = AgentRunner()
 ```
 
@@ -276,7 +273,7 @@ The snippets below reuse this `travel_planner` instance to illustrate each mode.
 
 #### 1. Ad-hoc execution with `runner.run(...)`
 
-Use `run` when you want to trigger a durable workflow directly from Python code (tests, CLIs, notebooks, etc.). The runner locates the agent's `@workflow_entry`, schedules it, and optionally waits for completion. Call `travel_planner.start()` first so the workflow runtime is registered.
+Use `run` when you want to trigger a durable workflow directly from Python code (tests, CLIs, notebooks, etc.). The runner locates the agent's `@workflow_entry`, and schedules it. The `.run()` command is a blocking call that triggers the agent and and waits for its completion. 
 
 ```python
 result = await runner.run(
@@ -521,7 +518,6 @@ frodo = DurableAgent(
         )
     ),
 )
-frodo.start()
 
 async def main():
     runner = AgentRunner()
@@ -529,8 +525,7 @@ async def main():
         runner.subscribe(frodo)
         await wait_for_shutdown()
     finally:
-        runner.shutdown()
-        frodo.stop()
+        runner.shutdown(frodo)
 
 asyncio.run(main())
 ```
@@ -571,7 +566,6 @@ llm_orchestrator = LLMOrchestrator(
     execution=AgentExecutionConfig(max_iterations=3),
     runtime=wf.WorkflowRuntime(),
 )
-llm_orchestrator.start()
 
 runner = AgentRunner()
 runner.serve(llm_orchestrator, port=8004)

@@ -408,7 +408,6 @@ travel_planner = DurableAgent(
 )
 
 async def main():
-    travel_planner.start()
     runner = AgentRunner()
     try:
         result = await runner.run(
@@ -417,8 +416,7 @@ async def main():
         )
         print(result)
     finally:
-        runner.shutdown()
-        travel_planner.stop()
+        runner.shutdown(travel_planner)
 
 asyncio.run(main())
 ```
