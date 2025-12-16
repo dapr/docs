@@ -321,7 +321,7 @@ While the Arxiv Fetcher provides robust functionality for retrieving and process
 
 Dapr Agents support integrating with [MCP Toolbox for Databases](https://googleapis.github.io/genai-toolbox/getting-started/introduction/) by implementing a wrapper that loads the available tools into the `Tool` model Dapr Agents utilize.  
   
-To integrate the Toolbox load the tools as follows
+To integrate the Toolbox, load the tools as follows:
 
 ```python
 from toolbox_core import ToolboxSyncClient
