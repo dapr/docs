@@ -314,6 +314,32 @@ runner.serve(
 
 Because workflows are durable, the `/run` endpoint responds immediately with an instance ID even though the agent keeps working in the background. You can mount the generated FastAPI routes into a larger application or let `serve` run its own Uvicorn loop for standalone deployments.
 
+### Default settings
+
+Dapr Agents comes with pre-set sensible defaults on many different settings. You will find descriptions of each of them in the following section.
+
+#### Statestore
+
+By ensuring the following statestores with appropriate naming are present, the Dapr Agent will resolve these from the Dapr Metadata API:
+
+- `agent-registry`: Registry statestore for Agents (**NB:** It is preferred to use `KeyPrefix` set to `none`)  
+    The default team name is set to `default`.
+- `agent-statestore`: Agent Memory statestore  
+    The default key is set to the agents name in lowercase with space replaced by `-` with the `-session` suffix.
+
+For `DurableAgent`s you can also rely on the workflow statestore:
+
+- `agent-wfstatestore`: Workflow Statestore for `DurableAgent` (**NB:** It is not required to be an `actorStateStore`)  
+    The default key is set to the agents name in lowercase with space replaced by `-` with the `:workflow_state` suffix.
+
+#### Pub/Sub
+
+By ensuring the following pubsub component with appropriate naming is present, the Dapr Agent will resolve it from the Dapr Metadata API:
+
+- `agent-pubsub`: pubsub component to broadcast and interact with other agents.  
+    The default pubsub name is set to `agent-pubsub`.  
+    The default agent topic is set to agents name in lowercase with space replaced by `-` with the `.topic` suffix.  
+    The default broadcast topic is set to `agents.broadcast`.
 
 ## Multi-agent Systems (MAS)
 
