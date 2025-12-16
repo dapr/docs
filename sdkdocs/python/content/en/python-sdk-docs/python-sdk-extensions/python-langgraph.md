@@ -65,4 +65,4 @@ memory = DaprCheckpointer(store_name='statestore', key_prefix='dapr')
 graph = builder.compile(checkpointer=memory)
 ```
 
-For a full example refer to the [langgraph example]().
+For a full example refer to the [langgraph example](https://github.com/dapr/python-sdk/tree/main/examples/langgraph-checkpointer).
