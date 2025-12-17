@@ -28,7 +28,7 @@ Dapr provides APIs for communication, state, workflow, and agentic AI. The APIs 
       <img src="/images/homepage/dapr-agents.svg" alt="Dapr Agents" width=40>
       <b>Agentic AI</b></h5>
       <p class="card-text">Create durable agentic AI applications with Dapr Agents.</p>
-      <a href="{{% ref "../developing-applications/dapr-agents" %}}" class="stretched-link"></a>
+      <a href="{{% ref "../developing-ai/dapr-agents" %}}" class="stretched-link"></a>
     </div>
   </div>
 </div>
