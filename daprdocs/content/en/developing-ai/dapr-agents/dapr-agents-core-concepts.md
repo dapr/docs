@@ -69,7 +69,6 @@ async def main():
         )
     )
 
-    travel_planner.start()
     runner = AgentRunner()
 
     try:
@@ -79,8 +78,7 @@ async def main():
         )
         print(itinerary)
     finally:
-        travel_planner.stop()
-        runner.shutdown()
+        runner.shutdown(travel_planner)
 
 ```
 This example demonstrates creating a workflow-backed agent that runs autonomously in the background. The `AgentRunner` schedules the workflow for you, waits for completion, and ensures the agent can be triggered once yet continue execution across restarts.
@@ -194,6 +192,7 @@ tools = client.get_all_tools()
 
 Once connected, the MCP client fetches all available tools from the server and prepares them for immediate use within the agent’s toolset. This allows agents to incorporate capabilities exposed by external processes—such as local Python scripts or remote services without hardcoding or preloading them. Agents can invoke these tools at runtime, expanding their behavior based on what’s offered by the active MCP server.
 
+
 ### Memory
 Agents retain context across interactions, enhancing their ability to provide coherent and adaptive responses. Memory options range from simple in-memory lists for managing chat history to vector databases for semantic search, and also integrates with [Dapr state stores](https://docs.dapr.io/developing-applications/building-blocks/state-management/howto-get-save-state/), for scalable and persistent memory for advanced use cases from 28 different state store providers.
 
@@ -267,7 +266,6 @@ travel_planner = DurableAgent(
     ],
     tools=[search_flights],
 )
-travel_planner.start()
 runner = AgentRunner()
 ```
 
@@ -275,7 +273,7 @@ The snippets below reuse this `travel_planner` instance to illustrate each mode.
 
 #### 1. Ad-hoc execution with `runner.run(...)`
 
-Use `run` when you want to trigger a durable workflow directly from Python code (tests, CLIs, notebooks, etc.). The runner locates the agent's `@workflow_entry`, schedules it, and optionally waits for completion. Call `travel_planner.start()` first so the workflow runtime is registered.
+Use `run` when you want to trigger a durable workflow directly from Python code (tests, CLIs, notebooks, etc.). The runner locates the agent's `@workflow_entry`, and schedules it. The `.run()` command is a blocking call that triggers the agent and and waits for its completion. 
 
 ```python
 result = await runner.run(
@@ -546,7 +544,6 @@ frodo = DurableAgent(
         )
     ),
 )
-frodo.start()
 
 async def main():
     runner = AgentRunner()
@@ -554,8 +551,7 @@ async def main():
         runner.subscribe(frodo)
         await wait_for_shutdown()
     finally:
-        runner.shutdown()
-        frodo.stop()
+        runner.shutdown(frodo)
 
 asyncio.run(main())
 ```
@@ -596,7 +592,6 @@ llm_orchestrator = LLMOrchestrator(
     execution=AgentExecutionConfig(max_iterations=3),
     runtime=wf.WorkflowRuntime(),
 )
-llm_orchestrator.start()
 
 runner = AgentRunner()
 runner.serve(llm_orchestrator, port=8004)

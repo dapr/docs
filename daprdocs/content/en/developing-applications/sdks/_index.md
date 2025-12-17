@@ -36,7 +36,7 @@ Select your [preferred language below]({{% ref "#sdk-languages" %}}) to learn mo
 
 | Framework                              | Language              | Status         |    Description    |
 |----------------------------------------|:----------------------|:---------------|:-----------------:|
-| [Dapr Agents]({{% ref "../dapr-agents" %}}) | Python | In development | A framework for building LLM-powered autonomous agents that leverages Dapr's distributed systems capabilities for durable execution, with built-in security, observability, and state management. |
+| [Dapr Agents]({{% ref "../../developing-ai/dapr-agents" %}}) | Python | In development | A framework for building LLM-powered autonomous agents that leverages Dapr's distributed systems capabilities for durable execution, with built-in security, observability, and state management. |
 ## Further reading
 
 - [Serialization in the Dapr SDKs]({{% ref sdk-serialization.md %}})
