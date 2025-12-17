@@ -11,16 +11,16 @@ description: "How to run CrewAI agents with durable, fault-tolerant execution us
 Dapr Workflows make it possible to run CrewAI agents **reliably**, **durably**, and **with built-in resiliency**.  
 By orchestrating CrewAI tasks with the Dapr Workflow engine, developers can:
 
-- Ensure long-running CrewAI work survives crashes and restarts  
-- Get automatic checkpoints, retries, and state recovery  
-- Run each CrewAI task as a durable activity  
-- Observe execution through tracing, metrics, and structured logs  
+- Ensure long-running CrewAI work survives crashes and restarts.
+- Get automatic checkpoints, retries, and state recovery.
+- Run each CrewAI task as a durable activity.
+- Observe execution through tracing, metrics, and structured logs.
 
 This guide walks through orchestrating multiple CrewAI tasks using Dapr Workflows, ensuring each step is run *exactly once* even if the process restarts.
 
 ## Getting Started
 
-Initialize Dapr locally to set up a self-hosted environment for development. This process installs the Dapr sidecar binaries, provisions the workflow engine, and prepares a default components directory. For full details, see the official [guide on initializing Dapr locally]({{% ref install-dapr-selfhost.md %}}).
+Initialize Dapr locally to set up a self-hosted environment for development. This process installs the Dapr sidecar binaries, provisions the workflow engine, and prepares a default components directory. For full details, see [guide on initializing Dapr locally]({{% ref install-dapr-selfhost.md %}}).
 
 Initialize Dapr:
 
@@ -149,6 +149,8 @@ if __name__ == "__main__":
     print(state.serialized_output)
 ```
 
+This CrewAI agent starts a workflow that does news gathering and summary for the subjects of AI and startups.
+
 ### Create the Workflow Database Component
 
 Dapr Workflows persist durable state using any [Dapr state store]({{% ref supported-state-stores %}}) that supports workflows.
@@ -158,7 +160,7 @@ Create a components directory, then create the file workflowstore.yaml:
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: statestore
+  name: workflowstore
 spec:
   type: state.redis
   version: v1
@@ -173,7 +175,7 @@ spec:
 
 This component stores:
 
-* Checkpoints
+* Code execution checkpoints
 * Execution history
 * Deterministic resumption state
 * Final output data
@@ -181,6 +183,12 @@ This component stores:
 ### Set a CrewAI LLM Provider
 
 CrewAI needs an LLM configuration or token to run. See instructions [here](https://docs.crewai.com/en/concepts/llms#setting-up-your-llm).
+
+For example, to set up OpenAI:
+
+```
+export OPENAI_API_KEY=sk-...
+```
 
 ### Run the Workflow
 
@@ -195,7 +203,7 @@ dapr run \
 ```
 
 As the workflow runs, each CrewAI task is executed as a durable activity.
-If the process crashes, the workflow resumes exactly where it left off.
+If the process crashes, the workflow resumes exactly where it left off. You can try this by killing the process after the first activity and then rerunning that command line above with the same app ID.
 
 Open Zipkin to view workflow traces:
 
