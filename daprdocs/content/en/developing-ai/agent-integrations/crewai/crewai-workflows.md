@@ -40,17 +40,17 @@ docker ps
 Make sure you have Python already installed. `Python >=3.10`. For installation instructions, visit the official [Python installation guide](https://www.python.org/downloads/).
 {{% /alert %}}
 
-### Install Dependencies
-
-```bash
-pip install dapr dapr-ext-workflow crewai
-```
-
 ### Create a Python Virtual Environment (recommended)
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate     # Windows: .venv\Scripts\activate
+```
+
+### Install Dependencies
+
+```bash
+pip install dapr dapr-ext-workflow crewai
 ```
 
 ### Create a Workflow to Run CrewAI Tasks
@@ -154,7 +154,7 @@ This CrewAI agent starts a workflow that does news gathering and summary for the
 ### Create the Workflow Database Component
 
 Dapr Workflows persist durable state using any [Dapr state store]({{% ref supported-state-stores %}}) that supports workflows.
-Create a components directory, then create the file workflowstore.yaml:
+Create a directory named `components`, then create the file workflowstore.yaml:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
