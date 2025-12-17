@@ -2,13 +2,23 @@
 type: docs
 title: "Dapr Python SDK integration with LangGraph"
 linkTitle: "LangGraph"
-weight: 500000
-description: How to let Dapr handle LangGraph Checkpointer (Memory)
+weight: 30
+description: "How to use Dapr reliably and securely manage LangGraph Agent Checkpointers"
 ---
+
+## Overview
 
 The Dapr Python SDK provides integration with LangGraph Checkpointer using the `dapr-ext-langgraph` extension.
 
-## Installation
+## Getting Started
+
+### Install Python
+
+{{% alert title="Note" color="info" %}}
+Make sure you have Python already installed. `Python >=3.10`. For installation instructions, visit the official [Python installation guide](https://www.python.org/downloads/).
+{{% /alert %}}
+
+### Download Dependencies
 
 Download and install the Dapr LangGraph extension with:
 
