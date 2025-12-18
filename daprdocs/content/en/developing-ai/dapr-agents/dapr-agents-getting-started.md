@@ -4,6 +4,8 @@ title: "Getting Started"
 linkTitle: "Getting Started"
 weight: 20
 description: "How to install Dapr Agents and run your first agent"
+aliases:
+  - /developing-applications/dapr-agents/dapr-agents-getting-started
 ---
 
 {{% alert title="Dapr Agents Concepts" color="primary" %}}

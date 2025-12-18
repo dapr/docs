@@ -4,6 +4,8 @@ title: "Integrations"
 linkTitle: "Integrations"
 weight: 60
 description: "Various integrations and tools available in Dapr Agents"
+aliases:
+  - /developing-applications/dapr-agents/dapr-agents-integrations
 ---
 
 # Out-of-the-box Tools

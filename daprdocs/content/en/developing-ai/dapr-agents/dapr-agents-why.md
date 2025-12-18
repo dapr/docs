@@ -4,6 +4,8 @@ title: "Why Dapr Agents"
 linkTitle: "Why Dapr Agents"
 weight: 30
 description: "Understanding the benefits and use cases for Dapr Agents"
+aliases:
+  - /developing-applications/dapr-agents/dapr-agents-why
 ---
 
 Dapr Agents is an open-source framework for building and orchestrating LLM-based autonomous agents that leverages Dapr's proven distributed systems foundation. Unlike other agentic frameworks that require developers to build infrastructure from scratch, Dapr Agents enables teams to focus on agent intelligence by providing enterprise-grade scalability, state management, and messaging capabilities out of the box. This approach eliminates the complexity of recreating distributed system fundamentals while delivering agentic workflows powered by Dapr.

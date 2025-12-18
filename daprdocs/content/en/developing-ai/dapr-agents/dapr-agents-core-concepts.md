@@ -4,6 +4,8 @@ title: "Core Concepts"
 linkTitle: "Core Concepts"
 weight: 40
 description: "Learn about the core concepts of Dapr Agents"
+aliases:
+  - /developing-applications/dapr-agents/dapr-agents-core-concepts
 ---
 
 Dapr Agents provides a structured way to build and orchestrate applications that use LLMs without getting bogged down in infrastructure details. The primary goal is to enable AI development by abstracting away the complexities of working with LLMs, tools, memory management, and distributed systems, allowing developers to focus on the business logic of their AI applications. Agents in this framework are the fundamental building blocks.
