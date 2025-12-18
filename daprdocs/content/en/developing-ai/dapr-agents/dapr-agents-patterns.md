@@ -443,7 +443,7 @@ The Durable Agent supports Dapr Workflow's `RetryPolicy` with the its `DurableRe
 - `max_backoff_seconds`: Maximum backoff duration in seconds. Default is 30 seconds.
 - `backoff_multiplier`: Backoff multiplier for exponential backoff. Default is 1.5.
 
-It can be passed to the Durable Agent during instantiation:
+All of the fields are optional. It can be passed to the Durable Agent during instantiation:
 
 ```python
 from dapr_agents.agents.configs import DurableRetryConfig
