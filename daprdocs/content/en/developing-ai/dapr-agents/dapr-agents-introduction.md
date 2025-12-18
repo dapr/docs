@@ -4,6 +4,8 @@ title: "Introduction"
 linkTitle: "Introduction"
 weight: 10
 description: "Overview of Dapr Agents and its key features"
+aliases:
+  - /developing-applications/dapr-agents/dapr-agents-introduction
 ---
 
 ![Agent Overview](/images/dapr-agents/concepts-agents-overview.png)

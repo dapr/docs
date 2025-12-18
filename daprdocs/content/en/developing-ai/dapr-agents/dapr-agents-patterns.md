@@ -4,6 +4,8 @@ title: "Agentic Patterns"
 linkTitle: "Agentic Patterns"
 weight: 50
 description: "Common design patterns and use cases for building agentic systems"
+aliases:
+  - /developing-applications/dapr-agents/dapr-agents-patterns
 ---
 
 Dapr Agents simplify the implementation of agentic systems, from simple augmented LLMs to fully autonomous agents in enterprise environments. The following sections describe several application patterns that can benefit from Dapr Agents.

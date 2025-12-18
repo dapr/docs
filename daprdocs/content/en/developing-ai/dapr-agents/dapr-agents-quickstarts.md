@@ -4,6 +4,8 @@ title: "Quickstarts"
 linkTitle: "Quickstarts"
 weight: 70
 description: "Get started with Dapr Agents through practical step-by-step examples"
+aliases:
+  - /developing-applications/dapr-agents/dapr-agents-quickstarts
 ---
 
 [Dapr Agents Quickstarts](https://github.com/dapr/dapr-agents/tree/main/quickstarts) demonstrate how to use Dapr Agents to build applications with LLM-powered autonomous agents and event-driven workflows. Each quickstart builds upon the previous one, introducing new concepts incrementally.
