@@ -137,6 +137,7 @@ If the `oauth2TokenCAPEM` field is omitted then the system's certificate pool is
 | oauth2TokenCAPEM | N | CA PEM certificate bundle to connect to the OAuth2 issuer. If not defined, the system's certificate pool will be used. | `"---BEGIN CERTIFICATE---\n...\n---END CERTIFICATE---"` |
 | oauth2ClientID | N | OIDC client ID. Must not be empty. | `"my-client-id"` |
 | oauth2ClientSecret | N | OIDC client secret. Must not be empty. | `"my-client-secret"` |
+| oauth2ClientSecretPath | N | The path to the OAuth Client Secret. | `"/path/to/oauth2/client_secret.json"` |
 | oauth2Audiences | N | Comma separated list of audiences to request for. Must not be empty. | `"my-audience-1,my-audience-2"` |
 | oauth2Scopes | N | Comma separated list of scopes to request. Must not be empty. | `"openid,profile,email"` |
 
@@ -166,6 +167,8 @@ spec:
     value: "my.pulsar.example.com,another.pulsar.example.com"
   - name: oauth2Scopes
     value: "openid,profile,email"
+  - name: oauth2ClientSecretPath
+    value: "/path/to/oauth2/client_secret.json"
 ```
 
 ### Enabling message delivery retries
