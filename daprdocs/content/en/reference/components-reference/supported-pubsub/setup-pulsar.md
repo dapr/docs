@@ -240,8 +240,6 @@ spec:
 
 > **Note:** The metadata keys `compressionType` and `compressionLevel` are case-sensitive and must be specified exactly as shown. Compression is applied when publishing messages; consumers automatically decompress regardless of settings.
 
-#### 
-
 ### E2E Encryption
 
 Dapr supports setting public and private key pairs to enable Pulsar's [end-to-end encryption feature](https://pulsar.apache.org/docs/3.0.x/security-encryption/).
