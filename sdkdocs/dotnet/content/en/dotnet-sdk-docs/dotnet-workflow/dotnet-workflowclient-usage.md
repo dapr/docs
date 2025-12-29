@@ -174,6 +174,135 @@ public class OrderProcessingWorkflow : Workflow<OrderPayload, OrderResult>
 }
 ```
 
+## Workflow Serialization
+With the 1.17 release of the `Dapr.Workflow` SDK, serialization has been improved and support both custom serialization
+options via the `JsonSerializerOptions` provided with `System.Text.Json` (used by default still), but also supports
+registering custom serialization providers (e.g. MessagePack or BSON).
+
+{{% alert title="Warning" color="warning" %}}
+Do note that using this functionality may result in a breaking change for any existing workflows as there is no 
+supported migration from one serialization implementation to another.
+
+Further, all SDKs are using a standard JSON convention out of the box. If you change the serialization style or even
+swap out serialization providers altogether in your .NET workflows and activities, you'll likely find that mutli-app
+workflows will break as the other SDKs do not necessarily support pluggable serialization as well.
+{{% /alert %}}
+
+### Standard JSON Configuration
+The standard convention adopted in `Dapr.Workflow` is to utilize the built-in `System.Text.Json` serializer with the
+`JsonSerializerDefaults.Web` conventions [described here](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializerdefaults?view=net-10.0).
+This means that out of the box:
+- Property names are treated as case-sensitive
+- "camelCase" formatting is used for property names
+- Quoted numbers (JSON strings for number properties) are allowed
+
+This approach should be compatible with the other Dapr language SDKs out of the box meaning that scenarios involving
+multi-app run (e.g. invocation of workflows and activities from other languages) should not be impacted.
+
+### Overriding System.Text.Json defaults
+There may be scenarios in which you wish to override the default JSON serialization options used by the SDK. To do so,
+you'll need to use a different way to register the Dapr Workflow client than the standard approach:
+
+```csharp
+var services = new ServiceCollection();
+
+services
+    .AddDaprWorkflowBuilder(opt => 
+    {
+        opt.RegisterWorkflow<MyWorkflow>();
+        opt.RegisterActivity<MyActivity>();
+    })
+    .WithJsonSerializer(new JsonSerializerOptions { PropertyNamingPolicy = null });
+```
+
+This will ensure that all invocations of the `DaprWorkflowClient` within your application will instead use the provided
+`JsonSerializerOptions` when serializing and deserializing workflow and activity data.
+
+### Custom Serialization Providers
+Custom serialization providers can be written and registered to be used in place of the built-in `System.Text.Json`
+serializer. Such providers must implement the `IWorkflowSerializer` interface. The following shows what a sample
+implementation of a custom MessagePack serializer provider might resemble:
+
+```csharp
+public sealed class MessagePackWorkflowSerializer(MessagePackSerializerOptions options) : IWorkflowSerializer
+{
+    /// <inheritdoc/>
+    public string Serialize(object? value, Type? inputType = null)
+    {
+        if (value == null)
+            return string.Empty;
+
+        // Serialize to binary using MessagePack
+        var targetType = inputType ?? value.GetType();
+        var bytes = MessagePackSerializer.Serialize(targetType, value, _options);
+        
+        // Convert binary to Base64 string for transport
+        return Convert.ToBase64String(bytes);
+    }
+
+    /// <inheritdoc/>
+    public T? Deserialize<T>(string? data)
+    {
+        return (T?)Deserialize(data, typeof(T));
+    }
+
+    /// <inheritdoc/>
+    public object? Deserialize(string? data, Type returnType)
+    {
+        if (returnType == null)
+            throw new ArgumentNullException(nameof(returnType));
+
+        if (string.IsNullOrEmpty(data))
+            return default;
+
+        try
+        {
+            // Convert Base64 string back to binary
+            var bytes = Convert.FromBase64String(data);
+            
+            // Deserialize from MessagePack binary format
+            return MessagePackSerializer.Deserialize(returnType, bytes, _options);
+        }
+        catch (FormatException ex)
+        {
+            throw new InvalidOperationException(
+                "Failed to decode Base64 data. The input may not be valid MessagePack-serialized data.", 
+                ex);
+        }
+        catch (MessagePackSerializationException ex)
+        {
+            throw new InvalidOperationException(
+                $"Failed to deserialize data to type {returnType.FullName}.", 
+                ex);
+        }
+    }
+}
+```
+
+The provider must then be registered so it's used by the Dapr Workflow client:
+```csharp
+services.AddDaprWorkflowBuilder(opt => 
+    {
+        // ...
+    })
+    .WithSerializer(new MessagePackWorkflowSerializer());
+```
+
+It's possible that additional information needs to be injected into the custom serialization provider to affect its 
+configuration, so an overload is available that provides an `IServiceProvider`:
+
+```csharp
+services.AddDaprWorkflowBuilder(opt => 
+    {
+        // ...
+    })
+    .WithSerializer(serviceProvider => 
+    {
+        var options = (serviceProvider.GetRequiredService<IOptions<MessagePackOptions>>()).Value;
+        return new MessagePackWorkflowSerializer(options);        
+    });
+```
+
 ## Next steps
 
 - [Learn more about Dapr workflow management operations]({{% ref dotnet-workflow-management-methods.md %}})
