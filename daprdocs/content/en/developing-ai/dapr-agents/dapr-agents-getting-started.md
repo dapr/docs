@@ -248,7 +248,7 @@ spec:
     value: "true"
 ```
 
-* This is again a Redis-backed store holds durable workflow state.
+* This is another Redis state store that holds the durable workflow state.
 * `actorStateStore: "true"` this is a required setting that enables storage suitable for workflows.
 * If the process stops mid-execution, the workflow engine uses this state to resume from the last persisted step instead of starting over. This prevents complex agent workflows from starting from again from the initial step and performing the repetitive LLM and tool calls.
 
