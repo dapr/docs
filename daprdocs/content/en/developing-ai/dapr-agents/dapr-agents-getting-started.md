@@ -129,7 +129,8 @@ def main() -> None:
         ),
     )
 
-    # This runner will run the agent and expose it on port 8001
+    # AgentRunner exposes the weather agent over HTTP on port 8001 using serve.
+    # The same runner supports PubSub subscriptions and direct in-process invocation.
     runner = AgentRunner()
     try:
         runner.serve(weather_agent, port=8001)

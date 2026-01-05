@@ -11,7 +11,7 @@ aliases:
 ![Agent Overview](/images/dapr-agents/concepts-agents-overview.png)
 
 
-Dapr Agents is a developer framework for building durable and resilient AI agent systems powered by Large Language Models (LLMs). Built on the battle-tested Dapr project, it enables developers to create autonomous systems that have identity, reason through problems, make dynamic decisions, and collaborate seamlessly. It includes built-in observability and stateful workflow execution to ensure agentic workflows complete successfully, regardless of complexity. Whether you're developing single-agent applications or complex multi-agent workflows, Dapr Agents provides the infrastructure for intellI want to organise only the section below. igent, adaptive systems that scale across environments.
+Dapr Agents is a developer framework for building durable and resilient AI agent systems powered by Large Language Models (LLMs). Built on the battle-tested Dapr project, it enables developers to create autonomous systems that have identity, reason through problems, make dynamic decisions, and collaborate seamlessly. It includes built-in observability and stateful workflow execution to ensure agentic workflows complete successfully, regardless of complexity. Whether you're developing single-agent applications or complex multi-agent workflows, Dapr Agents provides the infrastructure for intelligent, adaptive systems that scale across environments.
 
 ## Core Capabilities
 - **Agent Identity**: With Dapr Agents, each agent is assigned a unique cryptographic identity that is used to authenticate agent interactions and enforce authorization across services and infrastructure.
