@@ -8,7 +8,7 @@ weight: 1100
 
 Dapr has a metadata API that returns information about the sidecar allowing runtime discoverability. The metadata endpoint returns the following information.
 - Runtime version
-- List of the loaded resources (`components`, `subscriptions` and `HttpEndpoints`)
+- List of the loaded resources (`components`, `subscriptions` and `HttpEndpoints`, `conversations`)
 - Registered actor types
 - Features enabled
 - Application connection details
@@ -30,6 +30,9 @@ Each loaded `HttpEndpoint` provides a name to easily identify the Dapr resource 
 
 ### Subscriptions
 The metadata API returns a list of pub/sub subscriptions that the app has registered with the Dapr runtime. This includes the pub/sub name, topic, routes, dead letter topic, the subscription type, and the metadata associated with the subscription.
+
+### Conversations
+The metadata API returns the conversation components that the app has registered with the Dapr runtime. This includes the conversation component name and associated model.
 
 ### Enabled features
 A list of features enabled via Configuration spec (including build-time overrides).
@@ -87,6 +90,7 @@ extended.attributeName | string                                                 
 components             | [Metadata API Response Component](#metadataapiresponsecomponent)[]    | A json encoded array of loaded components metadata.
 httpEndpoints          | [Metadata API Response HttpEndpoint](#metadataapiresponsehttpendpoint)[] | A json encoded array of loaded HttpEndpoints metadata.
 subscriptions          | [Metadata API Response Subscription](#metadataapiresponsesubscription)[] | A json encoded array of pub/sub subscriptions metadata.
+conversations          | [Metadata API Response Conversation](#metadataapiresponseconversation)[] | A json encoded array of loaded conversation metadata.
 appConnectionProperties| [Metadata API Response AppConnectionProperties](#metadataapiresponseappconnectionproperties) | A json encoded object of app connection properties.
 scheduler              | [Metadata API Response Scheduler](#metadataapiresponsescheduler) | A json encoded object of scheduler connection properties.
 workflows              | [Metadata API Response Workflows](#metadataapiresponseworkflows) | A json encoded object of workflows runtime properties
@@ -112,6 +116,13 @@ capabilities | array | Supported capabilities for this component type and versio
 Name    | Type   | Description
 ----    | ----   | -----------
 name    | string | Name of the HttpEndpoint.
+
+<a id="metadataapiresponseconversation"></a>**Metadata API Response Conversation**
+
+Name  | Type    | Description
+----  | ----    | -----------
+name  | string  | Name of the Conversation component.
+model | string  | Model associated with the Conversation component.
 
 <a id="metadataapiresponsesubscription"></a>**Metadata API Response Subscription**
 
@@ -195,6 +206,11 @@ curl http://localhost:3500/v1.0/metadata
         "TRANSACTIONAL",
         "ACTOR"
       ]
+    },
+    {
+      "name": "llm-provider",
+      "type": "conversation.openai",
+      "version": "v1"
     }
   ],
   "httpEndpoints": [
@@ -217,6 +233,12 @@ curl http://localhost:3500/v1.0/metadata
               "path": "orders"
           }
       ]
+    }
+  ],
+  "conversations": [
+    {
+      "name": "llm-provider",
+      "model": "gpt-4.1-2025-04-14"
     }
   ],
   "extended": {
@@ -327,6 +349,11 @@ Get the metadata information to confirm your custom attribute was added:
         "TRANSACTIONAL",
         "ACTOR"
       ]
+    },
+    {
+      "name": "llm-provider",
+      "type": "conversation.openai",
+      "version": "v1"
     }
   ],
   "httpEndpoints": [
@@ -349,6 +376,12 @@ Get the metadata information to confirm your custom attribute was added:
               "path": "orders"
           }
       ]
+    }
+  ],
+  "conversations": [
+    {
+      "name": "llm-provider",
+      "model": "gpt-4.1-2025-04-14"
     }
   ],
   "extended": {
