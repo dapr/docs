@@ -141,6 +141,29 @@ public class BusinessWorkflow implements Workflow {
 
 {{% /tab %}}
 
+{{% tab ".NET" %}}
+
+```csharp
+// Specify App ID during workflow registration
+builder.Services.AddDaprWorkflowBuilder(opt => 
+    {
+        opt.RegisterWorkflow<WorkflowA>();
+        opt.RegisterActivity<ActivityA>();
+        opt.AppId = "my-application-1";
+    });
+
+// Call activity in another application
+public sealed class WorkflowA : Workflow<int, int>
+{
+    public override Task<int> RunAsync(WorkflowContext context, int input) => 
+        context.CallActivityAsync<int>(nameof("AnotherActivity"), input, new WorkflowTaskOptions(
+            targetAppId: "my-other-app"));
+        });
+}
+```
+
+{{% /tab %}}
+
 {{% tab "Python" %}}
 
 ```python
@@ -177,6 +200,29 @@ func BusinessWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 	}
 
 	return output, nil
+}
+```
+
+{{% /tab %}}
+
+{{% tab ".NET" %}}
+
+```csharp
+// Specify App ID during workflow registration
+builder.Services.AddDaprWorkflowBuilder(opt => 
+    {
+        opt.RegisterWorkflow<WorkflowA>();
+        opt.RegisterActivity<ActivityA>();
+        opt.AppId = "my-application-1";
+    });
+
+// Call child workflow in another application
+public sealed class WorkflowA : Workflow<int, int>
+{
+    public override Task<int> RunAsync(WorkflowContext context, int input) =>
+        context.CallChildWorkflow<int>(nameof("AnotherWorkflow"), input, new ChildWorkflowTaskOptions(
+            TargetAppId: "my-other-app"
+        });
 }
 ```
 
