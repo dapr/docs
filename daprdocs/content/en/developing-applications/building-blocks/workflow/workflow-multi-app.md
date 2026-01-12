@@ -78,7 +78,8 @@ Currently the following are supported:
 - **Java** (**only** activity calls)
 - **Go** (**both** activities and child workflows calls)
 - **Python** (**both** activities and child workflows calls)
-- The .NET and JavaScript SDKs support are planned for future releases
+- **.NET** (**both** activities and child workflows calls)
+- Support is planned for future releases for the JavaScript SDK.
 {{% /alert %}}
 
 ## Error handling
