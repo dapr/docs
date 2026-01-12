@@ -17,6 +17,15 @@ cleanup of resources.
 The `AddDaprWorkflow()` method will register the Dapr workflow services with ASP.NET Core dependency injection. This method
 requires an options delegate that defines each of the workflows and activities you wish to register and use in your application.
 
+{{% alert title="Multi-application workflows require setting AppId" color="warning" %}}
+
+If you are using Dapr's **multi-application workflow** capability 
+(see [Multi Application Workflows]({{% ref "workflow-multi-app.md" %}})), you must set the `AppId` property on 
+`WorkflowRuntimeOptions` to the **App ID of the application where the workflows are running** (the workflow host). 
+This ensures workflow execution is routed to the correct hosting application.
+
+{{% /alert %}}
+
 {{% alert title="Note" color="primary" %}} 
 
 This method will attempt to register a `DaprClient` instance, but this will only work if it hasn't already been registered with another
