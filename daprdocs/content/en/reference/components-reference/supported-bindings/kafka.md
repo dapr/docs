@@ -92,6 +92,7 @@ spec:
 | `oidcClientAssertionKey` | N | Input/Output | The OAuth2 client assertion key used for authentication. Required when `authType` is set to `oidc_private_key_jwt`. Can be `secretKeyRef` to use a secret reference | `"-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----"` |
 | `oidcResource` | N | Input/Output | The OAuth2 resource to request with the access token. Recommended when `authType` is set to `oidc_private_key_jwt`. | `"api://kafka"` |
 | `oidcAudience` | N | Input/Output | The OAuth2 audience to request with the access token. Recommended when `authType` is set to `oidc_private_key_jwt`. | `"http://<idp-host>/realms/local"` |
+| `oidcKid` | N | Input/Output | The OAuth2 key ID (kid) to request with the access token. Recommended when `authType` is set to `oidc_private_key_jwt`. | `"1234567890"` |
 | `version` | N | Input/Output | Kafka cluster version. Defaults to 2.0.0. Please note that this needs to be mandatorily set to `1.0.0` for EventHubs with Kafka. | `"1.0.0"` |
 | `direction` | N | Input/Output | The direction of the binding. | `"input"`, `"output"`, `"input, output"` |
 | `oidcExtensions` | N | Input/Output | String containing a JSON-encoded dictionary of OAuth2/OIDC extensions to request with the access token | `{"cluster":"kafka","poolid":"kafkapool"}` |

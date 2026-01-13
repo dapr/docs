@@ -111,6 +111,7 @@ spec:
 | oidcClientAssertionKey | N | The OAuth2 client assertion key used for authentication. Required when `authType` is set to `oidc_private_key_jwt`. Can be `secretKeyRef` to use a secret reference | `"-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----"` |
 | oidcResource | N | The OAuth2 resource to request with the access token. Recommended when `authType` is set to `oidc_private_key_jwt`. | `"api://kafka"` |
 | oidcAudience | N | The OAuth2 audience to request with the access token. Recommended when `authType` is set to `oidc_private_key_jwt`. | `"http://<idp-host>/realms/local"` |
+| oidcKid | N | The OAuth2 key ID (kid) to request with the access token. Recommended when `authType` is set to `oidc_private_key_jwt`. | `"1234567890"` |
 | oidcExtensions | N | String containing a JSON-encoded dictionary of OAuth2/OIDC extensions to request with the access token | `{"cluster":"kafka","poolid":"kafkapool"}` |
 | awsRegion | N | This maintains backwards compatibility with existing fields. It will be deprecated as of Dapr 1.17. Use 'region' instead. The AWS region where the Kafka cluster is deployed to. Required when `authType` is set to `awsiam` | `us-west-1` |
 | awsAccessKey | N  |  This maintains backwards compatibility with existing fields. It will be deprecated as of Dapr 1.17. Use 'accessKey' instead. AWS access key associated with an IAM account. | `"accessKey"`
@@ -388,6 +389,8 @@ spec:
     value: "api://kafka"
   - name: oidcAudience # Optional.
     value: "http://<idp-host>/realms/local"
+  - name: oidcKid # Optional.
+    value: "1234567890"
   - name: caCert # Optional.
     secretKeyRef:
       name: kafka-tls
