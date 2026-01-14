@@ -346,7 +346,7 @@ Start the Diagrid Dashboard container using Docker:
 docker run -p 8080:8080 ghcr.io/diagridio/diagrid-dashboard:latest
 ```
 
-Open the dashboard in a browser at [http://localhost:8080](http://localhost:8080) to explore your local workflow executions.
+Open the dashboard in a browser at `http://localhost:8080` to explore your local workflow executions.
 
 ## Inspect Conversation History with Redis Insights 
 
