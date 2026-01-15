@@ -101,6 +101,14 @@ The above example uses secrets as plain strings. It is recommended to use [a sec
 | concurrencyMode | N  | When messages are received in bulk from SQS, call the subscriber sequentially (“single” message at a time), or concurrently (in “parallel”). Default: `"parallel"` | `"single"`, `"parallel"`
 | concurrencyLimit | N | Defines the maximum number of concurrent workers handling messages. This value is ignored when concurrencyMode is set to `"single"`. To avoid limiting the number of concurrent workers, set this to `0`. Default: `0` | `100`
 
+
+## Request metadata fields
+
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| fifoMessageGroupId | N | If `fifo` is enabled, instructs Dapr to use a custom [Message Group ID](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/using-messagegroupid-property.html) per request for the pubsub deployment | `"customer-123"`
+
+
 ### Additional info
 
 #### Conforming with AWS specifications
