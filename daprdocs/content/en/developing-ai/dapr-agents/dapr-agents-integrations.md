@@ -4,6 +4,8 @@ title: "Integrations"
 linkTitle: "Integrations"
 weight: 60
 description: "Various integrations and tools available in Dapr Agents"
+aliases:
+  - /developing-applications/dapr-agents/dapr-agents-integrations
 ---
 
 # Out-of-the-box Tools
@@ -314,3 +316,38 @@ While the Arxiv Fetcher provides robust functionality for retrieving and process
 * **Building a Searchable Knowledge Base**: Combine fetched papers with integrations like text splitting and vector embeddings for advanced search capabilities.
 * **Retrieval-Augmented Generation (RAG)**: Use processed papers as inputs for RAG pipelines to power question-answering systems.
 * **Automated Literature Surveys**: Generate summaries or insights based on the fetched and processed research. 
+
+## Tools
+
+### MCP Toolbox for databases
+
+Dapr Agents support integrating with [MCP Toolbox for Databases](https://googleapis.github.io/genai-toolbox/getting-started/introduction/) by implementing a wrapper that loads the available tools into the `Tool` model Dapr Agents utilize.  
+  
+To integrate the Toolbox, load the tools as follows:
+
+```python
+from toolbox_core import ToolboxSyncClient
+client = ToolboxSyncClient("http://127.0.0.1:5000")
+agent_tools = AgentTool.from_toolbox_many(client.load_toolset("your-tools-name-here"))
+agent = DurableAgent(
+    ..
+    tools=agent_tools
+)
+
+..
+# Remember to close the tool
+finally:
+    client.close()
+```
+
+Or wrap it in a `with` statement:
+
+```python
+from toolbox_core import ToolboxSyncClient
+with ToolboxSyncClient("http://127.0.0.1:5000") as client:
+    agent_tools = AgentTool.from_toolbox_many(client.load_toolset("your-tools-name-here"))
+    agent = DurableAgent(
+        ..
+        tools=agent_tools
+    )
+```

@@ -4,6 +4,8 @@ title: "Core Concepts"
 linkTitle: "Core Concepts"
 weight: 40
 description: "Learn about the core concepts of Dapr Agents"
+aliases:
+  - /developing-applications/dapr-agents/dapr-agents-core-concepts
 ---
 
 Dapr Agents provides a structured way to build and orchestrate applications that use LLMs without getting bogged down in infrastructure details. The primary goal is to enable AI development by abstracting away the complexities of working with LLMs, tools, memory management, and distributed systems, allowing developers to focus on the business logic of their AI applications. Agents in this framework are the fundamental building blocks.
@@ -69,7 +71,6 @@ async def main():
         )
     )
 
-    travel_planner.start()
     runner = AgentRunner()
 
     try:
@@ -79,8 +80,7 @@ async def main():
         )
         print(itinerary)
     finally:
-        travel_planner.stop()
-        runner.shutdown()
+        runner.shutdown(travel_planner)
 
 ```
 This example demonstrates creating a workflow-backed agent that runs autonomously in the background. The `AgentRunner` schedules the workflow for you, waits for completion, and ensures the agent can be triggered once yet continue execution across restarts.
@@ -103,15 +103,15 @@ This example demonstrates creating a workflow-backed agent that runs autonomousl
 
 In Summary:
 
-| Agent Type      | Memory Type             | Execution                 | Interaction Mode             |
-|-----------------|-------------------------|---------------------------|------------------------------|
-| `Agent`         | In-memory or Persistent | Ephemeral                 | Synchronous / Conversational |
-| `Durable Agent` | In-memory or Persistent | Durable (Workflow-backed) | Asynchronous / Headless      |
+| Agent Type      | Memory Type             | Execution | Interaction Mode         |
+|-----------------|-------------------------|-----------|--------------------------|
+| `Agent`         | In-memory or Persistent | Ephemeral | Embedded                 |
+| `Durable Agent` | Persistent | Durable   | PubSub / HTTP / Embedded |
 
 
 - Regular `Agent`: Interaction is synchronous—you send conversational prompts and receive responses immediately. The conversation can be stored in memory or persisted, but the execution is ephemeral and does not survive restarts.
 
-- `DurableAgent` (Workflow-backed): Interaction is asynchronous—you trigger the agent once, and it runs autonomously in the background until completion. The conversation state can also be in memory or persisted, but the execution is durable and can resume across failures or restarts.
+- `DurableAgent` (Workflow-backed): Interaction is asynchronous—you trigger the agent once, and it runs autonomously in the background until completion. The conversation state and the execution are persisted  and can resume across failures or restarts.
 
 
 ## Core Agent Features
@@ -194,6 +194,7 @@ tools = client.get_all_tools()
 
 Once connected, the MCP client fetches all available tools from the server and prepares them for immediate use within the agent’s toolset. This allows agents to incorporate capabilities exposed by external processes—such as local Python scripts or remote services without hardcoding or preloading them. Agents can invoke these tools at runtime, expanding their behavior based on what’s offered by the active MCP server.
 
+
 ### Memory
 Agents retain context across interactions, enhancing their ability to provide coherent and adaptive responses. Memory options range from simple in-memory lists for managing chat history to vector databases for semantic search, and also integrates with [Dapr state stores](https://docs.dapr.io/developing-applications/building-blocks/state-management/howto-get-save-state/), for scalable and persistent memory for advanced use cases from 28 different state store providers.
 
@@ -247,7 +248,7 @@ travel_planner = DurableAgent(
 | `ConversationDaprStateMemory` | Dapr State Store | ✅ | Query | Production |
 
 
-### Agent Services
+### Agent Runner
 
 `AgentRunner` wires DurableAgents into three complementary hosting modes:
 
@@ -267,7 +268,6 @@ travel_planner = DurableAgent(
     ],
     tools=[search_flights],
 )
-travel_planner.start()
 runner = AgentRunner()
 ```
 
@@ -275,7 +275,7 @@ The snippets below reuse this `travel_planner` instance to illustrate each mode.
 
 #### 1. Ad-hoc execution with `runner.run(...)`
 
-Use `run` when you want to trigger a durable workflow directly from Python code (tests, CLIs, notebooks, etc.). The runner locates the agent's `@workflow_entry`, schedules it, and optionally waits for completion. Call `travel_planner.start()` first so the workflow runtime is registered.
+Use `run` when you want to trigger a durable workflow directly from Python code (tests, CLIs, notebooks, etc.). The runner locates the agent's `@workflow_entry`, and schedules it. The `.run()` command is a blocking call that triggers the agent and and waits for its completion. 
 
 ```python
 result = await runner.run(
@@ -520,7 +520,6 @@ frodo = DurableAgent(
         )
     ),
 )
-frodo.start()
 
 async def main():
     runner = AgentRunner()
@@ -528,8 +527,7 @@ async def main():
         runner.subscribe(frodo)
         await wait_for_shutdown()
     finally:
-        runner.shutdown()
-        frodo.stop()
+        runner.shutdown(frodo)
 
 asyncio.run(main())
 ```
@@ -570,7 +568,6 @@ llm_orchestrator = LLMOrchestrator(
     execution=AgentExecutionConfig(max_iterations=3),
     runtime=wf.WorkflowRuntime(),
 )
-llm_orchestrator.start()
 
 runner = AgentRunner()
 runner.serve(llm_orchestrator, port=8004)
