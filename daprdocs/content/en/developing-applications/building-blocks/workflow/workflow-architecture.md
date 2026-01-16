@@ -175,6 +175,59 @@ Similarly, if a state store imposes restrictions on the size of a batch transact
 Workflow state can be purged from a state store, including all its history.
 Each Dapr SDK exposes APIs for purging all metadata related to specific workflow instances.
 
+#### State store record count
+
+The number of records which are saved as history in the state store per workflow run is determined by its complexity or "shape". In other words, the number of activities, timers, sub-workflows etc.
+The following table shows a general guide to the number of records that are saved by different workflow tasks.
+This number may be larger or smaller depending on retries or concurrency.
+
+| Task type | Number of records saved |
+| ----------|-------------------------|
+| Start workflow | 5 records |
+| Call activity | 3 records |
+| Timer | 3 records |
+| Raise event | 3 records |
+| Start child workflow | 8 records |
+
+#### Direct Database Access
+
+For advanced operations, you can access workflow data directly:
+
+```bash
+# Port forward to a postgres database in Kubernetes
+kubectl port-forward service/postgres 5432:5432
+
+# Query workflows directly
+dapr workflow list \
+  --app-id myapp \
+  --connection-string "host=localhost user=dapr password=dapr dbname=dapr port=5432 sslmode=disable" \
+  --table-name workflows
+```
+
+```bash
+# Port forward to redis database in Kubernetes
+kubectl port-forward service/redis 6379:6379
+
+# Query workflows directly
+dapr workflow list \
+  --app-id myapp \
+  --connection-string redis://127.0.0.1:6379 \
+  --table-name workflows
+```
+
+### Supported State Stores
+
+The workflow engine supports these state stores:
+- PostgreSQL
+- MySQL
+- SQL Server
+- SQLite
+- Oracle Database
+- CockroachDB
+- MongoDB
+- Redis
+
+
 ## Workflow scalability
 
 Because Dapr Workflows are internally implemented using actors, Dapr Workflows have the same scalability characteristics as actors.
