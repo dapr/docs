@@ -17,7 +17,7 @@ cleanup of resources.
 The `AddDaprWorkflow()` method will register the Dapr workflow services with ASP.NET Core dependency injection. This method
 requires an options delegate that defines each of the workflows and activities you wish to register and use in your application.
 
-{{% alert title="Note" color="primary" %}} 
+{{% alert title="Note" color="primary" %}}
 
 This method will attempt to register a `DaprClient` instance, but this will only work if it hasn't already been registered with another
 lifetime. For example, an earlier call to `AddDaprClient()` with a singleton lifetime will always use a singleton regardless of the
@@ -25,7 +25,7 @@ lifetime chose for the workflow client. The `DaprClient` instance will be used t
 yet registered, the lifetime provided during the `AddDaprWorkflow()` registration will be used to register the `DaprWorkflowClient`
 as well as its own dependencies.
 
-{{% /alert %}} 
+{{% /alert %}}
 
 ### Singleton Registration
 
@@ -119,7 +119,7 @@ Now, you can use this client to perform workflow management operations such as s
 
 Workflow activities support the same dependency injection that developers have come to expect of modern C# applications. Assuming a proper
 registration at startup, any such type can be injected into the constructor of the workflow activity and available to utilize during
-the execution of the workflow. This makes it simple to add logging via an injected `ILogger` or access to other Dapr 
+the execution of the workflow. This makes it simple to add logging via an injected `ILogger` or access to other Dapr
 building blocks by injecting `DaprClient` or `DaprJobsClient`, for example.
 
 ```csharp
@@ -145,17 +145,17 @@ internal sealed class SquareNumberActivity : WorkflowActivity<int, int>
 
 ### Using ILogger in Workflow
 
-Because workflows must be deterministic, it is not possible to inject arbitrary services into them. For example, 
+Because workflows must be deterministic, it is not possible to inject arbitrary services into them. For example,
 if you were able to inject a standard `ILogger` into a workflow and it needed to be replayed because of an error,
 subsequent replay from the event source log would result in the log recording additional operations that didn't actually
-take place a second or third time because their results were sourced from the log. This has the potential to introduce 
-a significant amount of confusion. Rather, a replay-safe logger is made available for use within workflows. It will only 
+take place a second or third time because their results were sourced from the log. This has the potential to introduce
+a significant amount of confusion. Rather, a replay-safe logger is made available for use within workflows. It will only
 log events the first time the workflow runs and will not log anything whenever the workflow is being replaced.
 
 This logger can be retrieved from a method present on the `WorkflowContext` available on your workflow instance and
 otherwise used precisely as you might otherwise use an `ILogger` instance.
 
-An end-to-end sample demonstrating this can be seen in the 
+An end-to-end sample demonstrating this can be seen in the
 [.NET SDK repository](https://github.com/dapr/dotnet-sdk/blob/master/examples/Workflow/WorkflowConsoleApp/Workflows/OrderProcessingWorkflow.cs)
 but a brief extraction of this sample is available below.
 
