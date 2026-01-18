@@ -149,7 +149,6 @@ builder.Services.AddDaprWorkflowBuilder(opt =>
     {
         opt.RegisterWorkflow<WorkflowA>();
         opt.RegisterActivity<ActivityA>();
-        opt.AppId = "my-application-1";
     });
 
 // Call activity in another application
@@ -213,7 +212,6 @@ builder.Services.AddDaprWorkflowBuilder(opt =>
     {
         opt.RegisterWorkflow<WorkflowA>();
         opt.RegisterActivity<ActivityA>();
-        opt.AppId = "my-application-1";
     });
 
 // Call child workflow in another application
