@@ -150,7 +150,7 @@ if you were able to inject a standard `ILogger` into a workflow and it needed to
 subsequent replay from the event source log would result in the log recording additional operations that didn't actually
 take place a second or third time because their results were sourced from the log. This has the potential to introduce 
 a significant amount of confusion. Rather, a replay-safe logger is made available for use within workflows. It will only 
-log events the first time the workflow runs and will not log anything whenever the workflow is being replaced.
+log events the first time the workflow runs and will not log anything whenever the workflow is being replayed.
 
 This logger can be retrieved from a method present on the `WorkflowContext` available on your workflow instance and
 otherwise used precisely as you might otherwise use an `ILogger` instance.
