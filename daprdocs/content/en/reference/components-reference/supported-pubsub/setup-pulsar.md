@@ -131,7 +131,6 @@ It is recommended that you use a secret reference for the client secret.
 The pulsar OAuth2 authenticator is not specifically complaint with OIDC so it is your responsibility to ensure fields are compliant. For example, the issuer URL must use the `https` protocol, the requested scopes include `openid`, etc.
 If the `oauth2TokenCAPEM` field is omitted then the system's certificate pool is used for connecting to the OAuth2 issuer if using `https`.
 
-Provide credentials either via `oauth2CredentialsFile` (JSON file) or individual metadata fields. OAuth2 cannot be used with token authentication.
 
 **Note:** Metadata values override file values.
 
