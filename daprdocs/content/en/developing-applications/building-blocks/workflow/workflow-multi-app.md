@@ -78,8 +78,9 @@ Currently the following are supported:
 - **Java** (**only** activity calls)
 - **Go** (**both** activities and child workflows calls)
 - **Python** (**both** activities and child workflows calls)
-- The .NET and JavaScript SDKs support are planned for future releases
-{{% /alert %}}
+- **.NET** (**both** activities and child workflows calls)
+- Support is planned for future releases for the JavaScript SDK.
+  {{% /alert %}}
 
 ## Error handling
 
@@ -140,6 +141,29 @@ public class BusinessWorkflow implements Workflow {
 
 {{% /tab %}}
 
+{{% tab ".NET" %}}
+
+```csharp
+// Specify App ID during workflow registration
+builder.Services.AddDaprWorkflowBuilder(opt => 
+    {
+        opt.RegisterWorkflow<WorkflowA>();
+        opt.RegisterActivity<ActivityA>();
+        opt.AppId = "my-application-1";
+    });
+
+// Call activity in another application
+public sealed class WorkflowA : Workflow<int, int>
+{
+    public override Task<int> RunAsync(WorkflowContext context, int input) => 
+        context.CallActivityAsync<int>(nameof("AnotherActivity"), input, new WorkflowTaskOptions(
+            targetAppId: "my-other-app"));
+        });
+}
+```
+
+{{% /tab %}}
+
 {{% tab "Python" %}}
 
 ```python
@@ -181,6 +205,29 @@ func BusinessWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 
 {{% /tab %}}
 
+{{% tab ".NET" %}}
+
+```csharp
+// Specify App ID during workflow registration
+builder.Services.AddDaprWorkflowBuilder(opt => 
+    {
+        opt.RegisterWorkflow<WorkflowA>();
+        opt.RegisterActivity<ActivityA>();
+        opt.AppId = "my-application-1";
+    });
+
+// Call child workflow in another application
+public sealed class WorkflowA : Workflow<int, int>
+{
+    public override Task<int> RunAsync(WorkflowContext context, int input) =>
+        context.CallChildWorkflow<int>(nameof("AnotherWorkflow"), input, new ChildWorkflowTaskOptions(
+            TargetAppId: "my-other-app"
+        });
+}
+```
+
+{{% /tab %}}
+
 {{% tab "Python" %}}
 
 ```python
@@ -200,8 +247,8 @@ def workflow1(ctx: wf.DaprWorkflowContext):
 - [Workflow overview]({{% ref workflow-overview.md %}})
 - [Workflow API reference]({{% ref workflow_api.md %}})
 - Try out the following examples:
-   - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
-   - [JavaScript](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
-   - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
-   - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
-   - [Go](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)
+  - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
+  - [JavaScript](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
+  - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+  - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
+  - [Go](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)
