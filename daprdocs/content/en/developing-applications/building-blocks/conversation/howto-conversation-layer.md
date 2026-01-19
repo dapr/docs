@@ -56,7 +56,7 @@ spec:
 
 ## Connect the conversation client
 
-The following examples use an HTTP client to send a POST request to Dapr's sidecar HTTP endpoint. You can also use [the Dapr SDK client instead]({{% ref "#related-links" %}}).
+The following examples use the Dapr SDK client to interact with LLMs.
 
 {{< tabpane text=true >}}
 
@@ -83,7 +83,7 @@ var response = await conversationClient.ConverseAsync("conversation",
             DaprConversationRole.Generic)
     });
 
-Console.WriteLine("Received the following from the LLM:");
+Console.WriteLine("conversation output: ");
 foreach (var resp in response.Outputs)
 {
     Console.WriteLine($"\t{resp.Result}");
@@ -91,6 +91,77 @@ foreach (var resp in response.Outputs)
 ```
 
 {{% /tab %}}
+
+<!-- Java -->
+{{% tab "Java" %}}
+
+```java
+//dependencies
+import io.dapr.client.DaprClientBuilder;
+import io.dapr.client.DaprPreviewClient;
+import io.dapr.client.domain.ConversationInput;
+import io.dapr.client.domain.ConversationRequest;
+import io.dapr.client.domain.ConversationResponse;
+import reactor.core.publisher.Mono;
+
+import java.util.List;
+
+public class Conversation {
+
+    public static void main(String[] args) {
+        String prompt = "Please write a witty haiku about the Dapr distributed programming framework at dapr.io";
+
+        try (DaprPreviewClient client = new DaprClientBuilder().buildPreviewClient()) {
+            System.out.println("Input: " + prompt);
+
+            ConversationInput daprConversationInput = new ConversationInput(prompt);
+
+            // Component name is the name provided in the metadata block of the conversation.yaml file.
+            Mono<ConversationResponse> responseMono = client.converse(new ConversationRequest("echo",
+                    List.of(daprConversationInput))
+                    .setContextId("contextId")
+                    .setScrubPii(true).setTemperature(1.1d));
+            ConversationResponse response = responseMono.block();
+            System.out.printf("conversation output: %s", response.getConversationOutputs().get(0).getResult());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+{{% /tab %}}
+
+<!-- Python -->
+{{% tab "Python" %}}
+
+```python
+#dependencies
+from dapr.clients import DaprClient
+from dapr.clients.grpc._request import ConversationInput
+
+#code
+with DaprClient() as d:
+    inputs = [
+        ConversationInput(content="Please write a witty haiku about the Dapr distributed programming framework at dapr.io", role='user', scrub_pii=True),
+    ]
+
+    metadata = {
+        'model': 'modelname',
+        'key': 'authKey',
+        'cacheTTL': '10m',
+    }
+
+    response = d.converse_alpha1(
+        name='echo', inputs=inputs, temperature=0.7, context_id='chat-123', metadata=metadata
+    )
+
+    for output in response.outputs:
+        print(f'conversation output: {output.result}')
+```
+
+{{% /tab %}}
+
 
  <!-- Go -->
 {{% tab "Go" %}}
@@ -189,6 +260,28 @@ dapr run --app-id conversation --dapr-grpc-port 50001 --log-level debug --resour
 
 {{% /tab %}}
 
+
+{{% tab "Java" %}}
+
+```bash
+
+dapr run --app-id conversation --dapr-grpc-port 50001 --log-level debug --resources-path ./config -- mvn spring-boot:run
+```
+
+{{% /tab %}}
+
+
+
+{{% tab "Python" %}}
+
+```bash
+
+dapr run --app-id conversation --dapr-grpc-port 50001 --log-level debug --resources-path ./config -- python3 app.py
+```
+
+{{% /tab %}}
+
+
  <!-- Go -->
 {{% tab "Go" %}}
 
@@ -196,13 +289,10 @@ dapr run --app-id conversation --dapr-grpc-port 50001 --log-level debug --resour
 dapr run --app-id conversation --dapr-grpc-port 50001 --log-level debug --resources-path ./config -- go run ./main.go
 ```
 
-**Expected output**
-
-```
-  - '== APP == conversation output: Please write a witty haiku about the Dapr distributed programming framework at dapr.io'
-```
 
 {{% /tab %}}
+
+
 
  <!-- Rust -->
 {{% tab "Rust" %}}
@@ -211,16 +301,16 @@ dapr run --app-id conversation --dapr-grpc-port 50001 --log-level debug --resour
 dapr run --app-id=conversation --resources-path ./config --dapr-grpc-port 3500 -- cargo run --example conversation
 ```
 
-**Expected output**
-
-```
-  - 'conversation input: hello world'
-  - 'conversation output: hello world'
-```
-
 {{% /tab %}}
 
 {{< /tabpane >}}
+
+
+**Expected output**
+
+```
+  - '== APP == conversation output: Please write a witty haiku about the Dapr distributed programming framework at dapr.io'
+```
 
 ## Advanced features
 
@@ -230,9 +320,11 @@ The conversation API supports the following features:
 
 1. **PII scrubbing:** Allows for the obfuscation of data going in and out of the LLM.
 
+1. **Tool calling:** Allows LLMs to interact with external functions and APIs.
+
 To learn how to enable these features, see the [conversation API reference guide]({{% ref conversation_api %}}).
 
-## Related links
+## Conversation API examples in Dapr SDK repositories
 
 Try out the conversation API using the full examples provided in the supported SDK repos.
 
@@ -246,7 +338,23 @@ Try out the conversation API using the full examples provided in the supported S
 
 {{% /tab %}}
 
- <!-- Go -->
+
+<!-- Java -->
+{{% tab "Java" %}}
+
+[Dapr conversation example with the Java SDK](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/conversation)
+
+{{% /tab %}}
+
+
+<!-- Python -->
+{{% tab "Python" %}}
+
+[Dapr conversation example with the Python SDK](https://github.com/dapr/python-sdk/tree/main/examples/conversation)
+
+{{% /tab %}}
+
+<!-- Go -->
 {{% tab "Go" %}}
 
 [Dapr conversation example with the Go SDK](https://github.com/dapr/go-sdk/tree/main/examples/conversation)
@@ -264,6 +372,6 @@ Try out the conversation API using the full examples provided in the supported S
 
 
 ## Next steps
-
+- [Conversation quickstart]({{% ref conversation-quickstart %}})
 - [Conversation API reference guide]({{% ref conversation_api %}})
 - [Available conversation components]({{% ref supported-conversation %}})

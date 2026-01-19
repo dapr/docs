@@ -14,11 +14,16 @@ Dapr's conversation API reduces the complexity of securely and reliably interact
 
 <img src="/images/conversation-overview.png" width=800 alt="Diagram showing the flow of a user's app communicating with Dapr's LLM components.">
 
-In additon to enabling critical performance and security functionality (like [prompt caching]({{% ref "#prompt-caching" %}}) and [PII scrubbing]({{% ref "#personally-identifiable-information-pii-obfuscation" %}})), you can also pair the conversation API with Dapr functionalities, like:
-- Resiliency circuit breakers and retries to circumvent limit and token errors, or 
-- Middleware to authenticate requests coming to and from the LLM
+In addition to enabling critical performance and security functionality (like [prompt caching]({{% ref "#prompt-caching" %}}) and [PII scrubbing]({{% ref "#personally-identifiable-information-pii-obfuscation" %}})), the conversation API also provides:
 
-Dapr provides observability by issuing metrics for your LLM interactions.
+- **Tool calling capabilities** that allow LLMs to interact with external functions and APIs, enabling more sophisticated AI applications
+- **OpenAI-compatible interface** for seamless integration with existing AI workflows and tools
+
+You can also pair the conversation API with Dapr functionalities, like:
+
+- Resiliency policies including circuit breakers to handle repeated errors, timeouts to safeguards from slow responses, and retries for temporary network failures
+- Observability with metrics and distributed tracing using OpenTelemetry and Zipkin
+- Middleware to authenticate requests to and from the LLM
 
 ## Features
 
@@ -26,7 +31,7 @@ The following features are out-of-the-box for [all the supported conversation co
 
 ### Prompt caching
 
-Prompt caching optimizes performance by storing and reusing prompts that are often repeated across multiple API calls. To significantly reduce latency and cost, Dapr stores frequent prompts in a local cache to be reused by your cluster, pod, or other, instead of reprocessing the information for every new request. 
+The Conversation API includes a built-in caching mechanism (enabled by the cacheTTL parameter) that optimizes both performance and cost by storing previous model responses for faster delivery to repetitive requests. This is particularly valuable in scenarios where similar prompt patterns occur frequently. When caching is enabled, Dapr creates a deterministic hash of the prompt text and all configuration parameters, checks if a valid cached response exists for this hash within the time period (for example, 10 minutes), and returns the cached response immediately if found. If no match exists, Dapr makes the API call and stores the result. This eliminates external API calls, lowers latency, and avoids provider charges for repeated requests. The cache exists entirely within your runtime environment, with each Dapr sidecar maintaining its own local cache.
 
 ### Personally identifiable information (PII) obfuscation
 
@@ -45,13 +50,24 @@ The PII scrubber obfuscates the following user information:
 - SHA-256 hex
 - MD5 hex
 
+### Tool calling support
+
+The conversation API supports advanced tool calling capabilities that allow LLMs to interact with external functions and APIs. This enables you to build sophisticated AI applications that can:
+
+- Execute custom functions based on user requests
+- Integrate with external services and databases
+- Provide dynamic, context-aware responses
+- Create multi-step workflows and automation
+
+Tool calling follows [OpenAI's function calling format](https://platform.openai.com/docs/guides/function-calling), making it easy to integrate with existing AI development workflows and tools.
+
 ## Demo
 
 Watch the demo presented during [Diagrid's Dapr v1.15 celebration](https://www.diagrid.io/videos/dapr-1-15-deep-dive) to see how the conversation API works using the .NET SDK.
 
 {{< youtube id=NTnwoDhHIcQ start=5444 >}}
 
-## Try out conversation
+## Try out conversation API
 
 ### Quickstarts and tutorials
 

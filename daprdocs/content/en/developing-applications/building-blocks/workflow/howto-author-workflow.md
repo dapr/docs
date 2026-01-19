@@ -197,10 +197,12 @@ public class DemoWorkflowActivity implements WorkflowActivity {
 
 <!--go-->
 
+### Define workflow activities
+
 Define each workflow activity you'd like your workflow to perform. The Activity input can be unmarshalled from the context with `ctx.GetInput`. Activities should be defined as taking a `ctx workflow.ActivityContext` parameter and returning an interface and error.
  
 ```go
-func TestActivity(ctx workflow.ActivityContext) (any, error) {
+func BusinessActivity(ctx workflow.ActivityContext) (any, error) {
 	var input int
 	if err := ctx.GetInput(&input); err != nil {
 		return "", err
@@ -210,6 +212,87 @@ func TestActivity(ctx workflow.ActivityContext) (any, error) {
 	return "result", nil
 }
 ```
+
+### Define the workflow
+
+Define your workflow function with the parameter `ctx *workflow.WorkflowContext` and return any and error. Invoke your defined activities from within your workflow.
+
+```go
+func BusinessWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+	var input int
+	if err := ctx.GetInput(&input); err != nil {
+		return nil, err
+	}
+	var output string
+	if err := ctx.CallActivity(BusinessActivity, workflow.ActivityInput(input)).Await(&output); err != nil {
+		return nil, err
+	}
+	if err := ctx.WaitForExternalEvent("businessEvent", time.Minute*60).Await(&output); err != nil {
+		return nil, err
+	}
+	
+	if err := ctx.CreateTimer(time.Second).Await(nil); err != nil {
+		return nil, nil
+	}
+	return output, nil
+}
+```
+
+### Register workflows and activities
+
+Before your application can execute workflows, you must register both the workflow orchestrator and its activities with a workflow registry. This ensures Dapr knows which functions to call when executing your workflow.
+
+```go
+func main() {
+	// Create a workflow registry
+	r := workflow.NewRegistry()
+
+	// Register the workflow orchestrator
+	if err := r.AddWorkflow(BusinessWorkflow); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("BusinessWorkflow registered")
+
+	// Register the workflow activities
+	if err := r.AddActivity(BusinessActivity); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("BusinessActivity registered")
+
+	// Create workflow client and start worker
+	wclient, err := client.NewWorkflowClient()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Worker initialized")
+
+	ctx, cancel := context.WithCancel(context.Background())
+	if err = wclient.StartWorker(ctx, r); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("runner started")
+
+	// Your application logic continues here...
+	// Example: Start a workflow
+	instanceID, err := wclient.ScheduleWorkflow(ctx, "BusinessWorkflow", workflow.WithInput(1))
+	if err != nil {
+		log.Fatalf("failed to start workflow: %v", err)
+	}
+	fmt.Printf("workflow started with id: %v\n", instanceID)
+
+	// Stop workflow worker when done
+	cancel()
+	fmt.Println("workflow worker successfully shutdown")
+}
+```
+
+**Key points about registration:**
+- Use `workflow.NewRegistry()` to create a workflow registry
+- Use `r.AddWorkflow()` to register workflow functions
+- Use `r.AddActivity()` to register activity functions  
+- Use `client.NewWorkflowClient()` to create a workflow client
+- Call `wclient.StartWorker()` to begin processing workflows
+- Use `wclient.ScheduleWorkflow` to schedule a named instance of a workflow
 
 [See the Go SDK workflow activity example in context.](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)
 
@@ -281,9 +364,9 @@ export default class WorkflowRuntime {
   // Register workflow activities
   public registerActivity(fn: TWorkflowActivity<TInput, TOutput>): WorkflowRuntime {
     const name = getFunctionName(fn);
-    const activityWrapper = (ctx: ActivityContext, intput: TInput): TOutput => {
+    const activityWrapper = (ctx: ActivityContext, input: TInput): TOutput => {
       const wfActivityContext = new WorkflowActivityContext(ctx);
-      return fn(wfActivityContext, intput);
+      return fn(wfActivityContext, input);
     };
     this.worker.addNamedActivity(name, activityWrapper);
     return this;
@@ -383,16 +466,16 @@ public class DemoWorkflowWorker {
 Define your workflow function with the parameter `ctx *workflow.WorkflowContext` and return any and error. Invoke your defined activities from within your workflow.
 
 ```go
-func TestWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+func BusinessWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 	var input int
 	if err := ctx.GetInput(&input); err != nil {
 		return nil, err
 	}
 	var output string
-	if err := ctx.CallActivity(TestActivity, workflow.ActivityInput(input)).Await(&output); err != nil {
+	if err := ctx.CallActivity(BusinessActivity, workflow.ActivityInput(input)).Await(&output); err != nil {
 		return nil, err
 	}
-	if err := ctx.WaitForExternalEvent("testEvent", time.Second*60).Await(&output); err != nil {
+	if err := ctx.WaitForExternalEvent("businessEvent", time.Minute*60).Await(&output); err != nil {
 		return nil, err
 	}
 	
@@ -583,6 +666,7 @@ def main():
         if non_existent_id_error in err._message:
             print('Instance Successfully Purged')
 
+    sleep(10000)
     wfr.shutdown()
 
 
@@ -602,139 +686,79 @@ if __name__ == '__main__':
   - `WorkflowRuntime`: Allows you to register workflows and workflow activities
   - `DaprWorkflowContext`: Allows you to [create workflows]({{% ref "#write-the-workflow" %}})
   - `WorkflowActivityContext`: Allows you to [create workflow activities]({{% ref "#write-the-workflow-activities" %}})
-- API calls. In the example below, these calls start, terminate, get status, pause, resume, raise event, and purge the workflow.
- 
-```javascript
-import { TaskHubGrpcClient } from "@microsoft/durabletask-js";
-import { WorkflowState } from "./WorkflowState";
-import { generateApiTokenClientInterceptors, generateEndpoint, getDaprApiToken } from "../internal/index";
-import { TWorkflow } from "../../types/workflow/Workflow.type";
-import { getFunctionName } from "../internal";
-import { WorkflowClientOptions } from "../../types/workflow/WorkflowClientOption";
+- API calls. The following example is a simple project consuming the workflow APIs:
 
-/** DaprWorkflowClient class defines client operations for managing workflow instances. */
+```bash
+mkdir my-wf && cd my-wf
+npm init -y
+npm i @dapr/dapr @microsoft/durabletask-js
+npm i -D typescript ts-node @types/node
+```
 
-export default class DaprWorkflowClient {
-  private readonly _innerClient: TaskHubGrpcClient;
+Create the following `tsconfig.json` file:
 
-  /** Initialize a new instance of the DaprWorkflowClient.
-   */
-  constructor(options: Partial<WorkflowClientOptions> = {}) {
-    const grpcEndpoint = generateEndpoint(options);
-    options.daprApiToken = getDaprApiToken(options);
-    this._innerClient = this.buildInnerClient(grpcEndpoint.endpoint, options);
-  }
-
-  private buildInnerClient(hostAddress: string, options: Partial<WorkflowClientOptions>): TaskHubGrpcClient {
-    let innerOptions = options?.grpcOptions;
-    if (options.daprApiToken !== undefined && options.daprApiToken !== "") {
-      innerOptions = {
-        ...innerOptions,
-        interceptors: [generateApiTokenClientInterceptors(options), ...(innerOptions?.interceptors ?? [])],
-      };
-    }
-    return new TaskHubGrpcClient(hostAddress, innerOptions);
-  }
-
-  /**
-   * Schedule a new workflow using the DurableTask client.
-   */
-  public async scheduleNewWorkflow(
-    workflow: TWorkflow | string,
-    input?: any,
-    instanceId?: string,
-    startAt?: Date,
-  ): Promise<string> {
-    if (typeof workflow === "string") {
-      return await this._innerClient.scheduleNewOrchestration(workflow, input, instanceId, startAt);
-    }
-    return await this._innerClient.scheduleNewOrchestration(getFunctionName(workflow), input, instanceId, startAt);
-  }
-
-  /**
-   * Terminate the workflow associated with the provided instance id.
-   *
-   * @param {string} workflowInstanceId - Workflow instance id to terminate.
-   * @param {any} output - The optional output to set for the terminated workflow instance.
-   */
-  public async terminateWorkflow(workflowInstanceId: string, output: any) {
-    await this._innerClient.terminateOrchestration(workflowInstanceId, output);
-  }
-
-  /**
-   * Fetch workflow instance metadata from the configured durable store.
-   */
-  public async getWorkflowState(
-    workflowInstanceId: string,
-    getInputsAndOutputs: boolean,
-  ): Promise<WorkflowState | undefined> {
-    const state = await this._innerClient.getOrchestrationState(workflowInstanceId, getInputsAndOutputs);
-    if (state !== undefined) {
-      return new WorkflowState(state);
-    }
-  }
-
-  /**
-   * Waits for a workflow to start running
-   */
-  public async waitForWorkflowStart(
-    workflowInstanceId: string,
-    fetchPayloads = true,
-    timeoutInSeconds = 60,
-  ): Promise<WorkflowState | undefined> {
-    const state = await this._innerClient.waitForOrchestrationStart(
-      workflowInstanceId,
-      fetchPayloads,
-      timeoutInSeconds,
-    );
-    if (state !== undefined) {
-      return new WorkflowState(state);
-    }
-  }
-
-  /**
-   * Waits for a workflow to complete running
-   */
-  public async waitForWorkflowCompletion(
-    workflowInstanceId: string,
-    fetchPayloads = true,
-    timeoutInSeconds = 60,
-  ): Promise<WorkflowState | undefined> {
-    const state = await this._innerClient.waitForOrchestrationCompletion(
-      workflowInstanceId,
-      fetchPayloads,
-      timeoutInSeconds,
-    );
-    if (state != undefined) {
-      return new WorkflowState(state);
-    }
-  }
-
-  /**
-   * Sends an event notification message to an awaiting workflow instance
-   */
-  public async raiseEvent(workflowInstanceId: string, eventName: string, eventPayload?: any) {
-    this._innerClient.raiseOrchestrationEvent(workflowInstanceId, eventName, eventPayload);
-  }
-
-  /**
-   * Purges the workflow instance state from the workflow state store.
-   */
-  public async purgeWorkflow(workflowInstanceId: string): Promise<boolean> {
-    const purgeResult = await this._innerClient.purgeOrchestration(workflowInstanceId);
-    if (purgeResult !== undefined) {
-      return purgeResult.deletedInstanceCount > 0;
-    }
-    return false;
-  }
-
-  /**
-   * Closes the inner DurableTask client and shutdown the GRPC channel.
-   */
-  public async stop() {
-    await this._innerClient.stop();
-  }
+```json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": "dist"
+  },
+  "include": ["src"]
 }
+```
+
+Create the following `src/app.ts` file:
+
+```typescript
+import {
+  WorkflowRuntime,
+  WorkflowActivityContext,
+  WorkflowContext,
+  DaprWorkflowClient,
+  TWorkflow
+} from "@dapr/dapr";
+
+const workflowClient = new DaprWorkflowClient();
+const workflowRuntime = new WorkflowRuntime();
+
+// simple activity
+const hello = async (_: WorkflowActivityContext, name: string) => `Hello ${name}!`;
+
+// simple workflow: call the activity 3 times
+const sequence: TWorkflow = async function* (ctx: WorkflowContext): any {
+  const out: string[] = [];
+  out.push(yield ctx.callActivity(hello, "Tokyo"));
+  out.push(yield ctx.callActivity(hello, "Seattle"));
+  out.push(yield ctx.callActivity(hello, "London"));
+  out.push(yield ctx.waitForExternalEvent("continue"));
+  return out;
+};
+
+async function main() {
+  workflowRuntime.registerWorkflow(sequence).registerActivity(hello);
+  await workflowRuntime.start();
+
+  const id = await workflowClient.scheduleNewWorkflow(sequence);
+  console.log("Scheduled:", id);
+
+  workflowClient.raiseEvent(id, "continue", "Go go go!");
+
+  const state = await workflowClient.waitForWorkflowCompletion(id, undefined, 30);
+  console.log("Done:", state?.runtimeStatus, "output:", state?.serializedOutput);
+
+  await new Promise(f => setTimeout(f, 100000));
+
+  await workflowRuntime.stop();
+  await workflowClient.stop();
+
+}
+
+main().catch((e) => { console.error(e); });
 ```
 
 {{% /tab %}}
@@ -864,7 +888,7 @@ public class DemoWorkflow extends Workflow {
 [As in the following example](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md), a hello-world application using the Go SDK and Dapr Workflow would include:
 
 - A Go package called `client` to receive the Go SDK client capabilities.
-- The `TestWorkflow` method
+- The `BusinessWorkflow` method
 - Creating the workflow with input and output.
 - API calls. In the example below, these calls start and call the workflow activities.
 
@@ -874,86 +898,98 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
+	"strconv"
 	"time"
 
-	"github.com/dapr/durabletask-go/api"
-	"github.com/dapr/durabletask-go/backend"
-	"github.com/dapr/durabletask-go/client"
-	"github.com/dapr/durabletask-go/task"
-	dapr "github.com/dapr/go-sdk/client"
+	"github.com/dapr/durabletask-go/workflow"
+	"github.com/dapr/go-sdk/client"
 )
 
 var stage = 0
-
-const (
-	workflowComponent = "dapr"
-)
+var failActivityTries = 0
 
 func main() {
-	registry := task.NewTaskRegistry()
+	r := workflow.NewRegistry()
 
-	if err := registry.AddOrchestrator(TestWorkflow); err != nil {
+	if err := r.AddWorkflow(BusinessWorkflow); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("TestWorkflow registered")
+	fmt.Println("BusinessWorkflow registered")
 
-	if err := registry.AddActivity(TestActivity); err != nil {
+	if err := r.AddActivity(BusinessActivity); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("TestActivity registered")
+	fmt.Println("BusinessActivity registered")
 
-	daprClient, err := dapr.NewClient()
+	if err := r.AddActivity(FailActivity); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("FailActivity registered")
+
+	wclient, err := client.NewWorkflowClient()
 	if err != nil {
-		log.Fatalf("failed to create Dapr client: %v", err)
+		log.Fatal(err)
 	}
+	fmt.Println("Worker initialized")
 
-	client := client.NewTaskHubGrpcClient(daprClient.GrpcClientConn(), backend.DefaultLogger())
-	if err := client.StartWorkItemListener(context.TODO(), registry); err != nil {
-		log.Fatalf("failed to start work item listener: %v", err)
+	ctx, cancel := context.WithCancel(context.Background())
+	if err = wclient.StartWorker(ctx, r); err != nil {
+		log.Fatal(err)
 	}
-
 	fmt.Println("runner started")
 
-	ctx := context.Background()
-
 	// Start workflow test
-	id, err := client.ScheduleNewOrchestration(ctx, "TestWorkflow", api.WithInput(1))
+	// Set the start time to the current time to not wait for the workflow to
+	// "start". This is useful for increasing the throughput of creating
+	// workflows.
+	// workflow.WithStartTime(time.Now())
+	instanceID, err := wclient.ScheduleWorkflow(ctx, "BusinessWorkflow", workflow.WithInstanceID("a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9"), workflow.WithInput("1"))
 	if err != nil {
 		log.Fatalf("failed to start workflow: %v", err)
 	}
-	fmt.Printf("workflow started with id: %v\n", id)
+	fmt.Printf("workflow started with id: %v\n", instanceID)
 
 	// Pause workflow test
-	err = client.PurgeOrchestrationState(ctx, id)
+	err = wclient.SuspendWorkflow(ctx, instanceID, "")
 	if err != nil {
 		log.Fatalf("failed to pause workflow: %v", err)
 	}
 
-	respGet, err := client.FetchOrchestrationMetadata(ctx, id)
+	respFetch, err := wclient.FetchWorkflowMetadata(ctx, instanceID, workflow.WithFetchPayloads(true))
 	if err != nil {
-		log.Fatalf("failed to get workflow: %v", err)
+		log.Fatalf("failed to fetch workflow: %v", err)
 	}
-	fmt.Printf("workflow paused: %s\n", respGet.RuntimeStatus)
+
+	if respFetch.RuntimeStatus != workflow.StatusSuspended {
+		log.Fatalf("workflow not paused: %s: %v", respFetch.RuntimeStatus, respFetch)
+	}
+
+	fmt.Printf("workflow paused\n")
 
 	// Resume workflow test
-	err = client.ResumeOrchestration(ctx, id, "")
+	err = wclient.ResumeWorkflow(ctx, instanceID, "")
 	if err != nil {
 		log.Fatalf("failed to resume workflow: %v", err)
 	}
-	fmt.Printf("workflow running: %s\n", respGet.RuntimeStatus)
 
-	respGet, err = client.FetchOrchestrationMetadata(ctx, id)
+	respFetch, err = wclient.FetchWorkflowMetadata(ctx, instanceID, workflow.WithFetchPayloads(true))
 	if err != nil {
 		log.Fatalf("failed to get workflow: %v", err)
 	}
-	fmt.Printf("workflow resumed: %s\n", respGet.RuntimeStatus)
+
+	if respFetch.RuntimeStatus != workflow.StatusRunning {
+		log.Fatalf("workflow not running")
+	}
+
+	fmt.Println("workflow resumed")
 
 	fmt.Printf("stage: %d\n", stage)
 
-	// Raise Event Test
-	err = client.RaiseEvent(ctx, id, "testEvent", api.WithEventPayload("testData"))
+	// Raise Event
+	err = wclient.RaiseEvent(ctx, instanceID, "businessEvent", workflow.WithEventPayload("testData"))
 	if err != nil {
 		fmt.Printf("failed to raise event: %v", err)
 	}
@@ -964,52 +1000,116 @@ func main() {
 
 	fmt.Printf("stage: %d\n", stage)
 
-	respGet, err = client.FetchOrchestrationMetadata(ctx, id)
+	_, err = wclient.WaitForWorkflowCompletion(ctx, instanceID)
+	if err != nil {
+		log.Fatalf("failed to wait for workflow: %v", err)
+	}
+
+	fmt.Printf("fail activity executions: %d\n", failActivityTries)
+
+	respFetch, err = wclient.FetchWorkflowMetadata(ctx, instanceID, workflow.WithFetchPayloads(true))
 	if err != nil {
 		log.Fatalf("failed to get workflow: %v", err)
 	}
 
-	fmt.Printf("workflow status: %v\n", respGet.RuntimeStatus)
+	fmt.Printf("workflow status: %v\n", respFetch.String())
 
 	// Purge workflow test
-	err = client.PurgeOrchestrationState(ctx, id)
+	err = wclient.PurgeWorkflowState(ctx, instanceID)
+	if err != nil {
+		log.Fatalf("failed to purge workflow: %v", err)
+	}
+
+	respFetch, err = wclient.FetchWorkflowMetadata(ctx, instanceID, workflow.WithFetchPayloads(true))
+	if err == nil || respFetch != nil {
+		log.Fatalf("failed to purge workflow: %v", err)
+	}
+
+	fmt.Println("workflow purged")
+
+	fmt.Printf("stage: %d\n", stage)
+
+	// Terminate workflow test
+	id, err := wclient.ScheduleWorkflow(ctx, "BusinessWorkflow", workflow.WithInstanceID("a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9"), workflow.WithInput("1"))
+	if err != nil {
+		log.Fatalf("failed to start workflow: %v", err)
+	}
+	fmt.Printf("workflow started with id: %v\n", instanceID)
+
+	metadata, err := wclient.WaitForWorkflowStart(ctx, id)
+	if err != nil {
+		log.Fatalf("failed to get workflow: %v", err)
+	}
+	fmt.Printf("workflow status: %s\n", metadata.String())
+
+	err = wclient.TerminateWorkflow(ctx, id)
+	if err != nil {
+		log.Fatalf("failed to terminate workflow: %v", err)
+	}
+	fmt.Println("workflow terminated")
+
+	err = wclient.PurgeWorkflowState(ctx, id)
 	if err != nil {
 		log.Fatalf("failed to purge workflow: %v", err)
 	}
 	fmt.Println("workflow purged")
+
+	<-ctx.Done()
+	cancel()
+
+	fmt.Println("workflow worker successfully shutdown")
 }
 
-func TestWorkflow(ctx *task.OrchestrationContext) (any, error) {
-	var input int
+func BusinessWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+	var input string
 	if err := ctx.GetInput(&input); err != nil {
 		return nil, err
 	}
 	var output string
-	if err := ctx.CallActivity(TestActivity, task.WithActivityInput(input)).Await(&output); err != nil {
+	if err := ctx.CallActivity(BusinessActivity, workflow.WithActivityInput(input)).Await(&output); err != nil {
 		return nil, err
 	}
 
-	err := ctx.WaitForSingleEvent("testEvent", time.Second*60).Await(&output)
+	err := ctx.WaitForExternalEvent("businessEvent", time.Minute*60).Await(&output)
 	if err != nil {
 		return nil, err
 	}
 
-	if err := ctx.CallActivity(TestActivity, task.WithActivityInput(input)).Await(&output); err != nil {
+	if err := ctx.CallActivity(BusinessActivity, workflow.WithActivityInput(input)).Await(&output); err != nil {
 		return nil, err
+	}
+
+	if err := ctx.CallActivity(FailActivity, workflow.WithActivityRetryPolicy(&workflow.RetryPolicy{
+		MaxAttempts:          3,
+		InitialRetryInterval: 100 * time.Millisecond,
+		BackoffCoefficient:   2,
+		MaxRetryInterval:     1 * time.Second,
+	})).Await(nil); err == nil {
+		return nil, fmt.Errorf("unexpected no error executing fail activity")
 	}
 
 	return output, nil
 }
 
-func TestActivity(ctx task.ActivityContext) (any, error) {
-	var input int
+func BusinessActivity(ctx workflow.ActivityContext) (any, error) {
+	var input string
 	if err := ctx.GetInput(&input); err != nil {
 		return "", err
 	}
 
-	stage += input
+	iinput, err := strconv.Atoi(input)
+	if err != nil {
+		return "", err
+	}
+
+	stage += iinput
 
 	return fmt.Sprintf("Stage: %d", stage), nil
+}
+
+func FailActivity(ctx workflow.ActivityContext) (any, error) {
+	failActivityTries += 1
+	return nil, errors.New("dummy activity error")
 }
 ```
 
@@ -1024,6 +1124,272 @@ func TestActivity(ctx task.ActivityContext) (any, error) {
 Because of how replay-based workflows execute, you'll write logic that does things like I/O and interacting with systems **inside activities**. Meanwhile, the **workflow method** is just for orchestrating those activities.
 
 {{% /alert %}}
+
+## Run the workflow & inspect the workflow execution with the Diagrid Dashboard
+
+Start the workflow application via your IDE or the Dapr CLI ([Dapr multi-app run]({{%  ref multi-app-overview.md %}}) if you want to start multiple applications, or regular [Dapr run command](#testing-the-workflow-via-the-dapr-cli) for one application, and schedule a new workflow instance.
+
+Use the local [Diagrid Dashboard](https://diagrid.ws/diagrid-dashboard-docs) to visualize and inspect your workflow state, and drill down to see detailed workflow execution history. The dashboard runs as a container and is connected to the state store that is used by Dapr workflows (by default a local Redis instance).
+
+<img src="/images/workflow-overview/workflow-diagrid-dashboard.png" width=800 alt="Diagrid Dashboard showing local workflow executions"/><br/>
+
+Start the Diagrid Dashboard container using Docker:
+
+```bash
+docker run -p 8080:8080 ghcr.io/diagridio/diagrid-dashboard:latest
+```
+
+{{% alert title="Note" color="primary" %}}
+If you're using another state store than the default Redis instance, you need to provide some additional arguments to run the container, see the [Diagrid Dashboard reference docs](https://diagrid.ws/diagrid-dashboard-docs).
+{{% /alert %}}
+
+<!-- IGNORE_LINKS -->
+Open the dashboard in a browser at [http://localhost:8080](http://localhost:8080).
+<!-- END_IGNORE -->
+
+## Testing the workflow via the Dapr CLI
+
+After authoring the workflow, you can test it using the Dapr CLI:
+
+{{< tabpane text=true >}}
+
+{{% tab "Python" %}}
+
+#### Run the workflow application
+
+```bash
+dapr run --app-id workflow-app python3 app.py
+```
+Make sure the application is running:
+
+```bash
+dapr list
+```
+
+#### Run the workflow
+```bash
+dapr workflow run hello_world_wf --app-id workflow-app --input 'hello world' --instance-id test-run
+```
+
+#### Check the workflow status
+```bash
+dapr workflow list --app-id workflow-app --connection-string=redis://127.0.0.1:6379 -o wide
+```
+
+#### Check completed workflows
+```bash
+dapr workflow list --app-id workflow-app --connection-string=redis://127.0.0.1:6379 --filter-status COMPLETED -o wide
+```
+
+#### View workflow history
+```bash
+dapr workflow history --app-id workflow-app test-run
+```
+
+{{% /tab %}}
+
+{{% tab "Javascript" %}}
+
+#### Run the workflow application
+
+```bash
+dapr run --app-id workflow-app npx ts-node src/app.ts
+```
+Make sure the application is running:
+
+```bash
+dapr list
+```
+
+#### Run the workflow
+```bash
+dapr workflow run sequence --app-id workflow-app --input 'hello world' --instance-id test-run
+```
+
+#### Check the workflow status
+```bash
+dapr workflow list --app-id workflow-app --connection-string=redis://127.0.0.1:6379 -o wide
+```
+
+#### Raise the waiting external event
+```bash
+dapr workflow raise-event --app-id workflow-app test-run/businessEvent
+```
+
+#### Check completed workflows
+```bash
+dapr workflow list --app-id workflow-app --connection-string=redis://127.0.0.1:6379 --filter-status COMPLETED -o wide
+```
+
+#### View workflow history
+```bash
+dapr workflow history --app-id workflow-app test-run
+```
+
+{{% /tab %}}
+
+{{% tab ".NET" %}}
+
+#### Run the workflow application
+
+```bash
+dapr run --app-id workflow-app dotnet run
+```
+Make sure the application is running:
+
+```bash
+dapr list
+```
+
+#### Run the workflow
+```bash
+dapr workflow run OrderProcessingWorkflow --app-id workflow-app  --instance-id test-run --input '{"name": "Paperclips", "totalCost": 99.95}'
+```
+
+#### Check the workflow status
+```bash
+dapr workflow list --app-id workflow-app --connection-string=redis://127.0.0.1:6379 -o wide
+```
+
+#### Raise the waiting external event
+```bash
+dapr workflow raise-event --app-id workflow-app test-run/incoming-purchase-order --input '{"name": "Paperclips", "totalCost": 99.95}'
+```
+
+#### Check completed workflows
+```bash
+dapr workflow list --app-id workflow-app --connection-string=redis://127.0.0.1:6379 --filter-status COMPLETED -o wide
+```
+
+#### View workflow history
+```bash
+dapr workflow history --app-id workflow-app test-run
+```
+
+{{% /tab %}}
+
+{{% tab "Java" %}}
+
+#### Run the workflow application
+
+```bash
+dapr run --app-id workflow-app -- java -jar target/WorkflowService-0.0.1-SNAPSHOT.jar
+```
+
+Make sure the application is running:
+
+```bash
+dapr list
+```
+
+#### Run the workflow
+```bash
+dapr workflow run DemoWorkflow --app-id workflow-app  --instance-id test-run --input "input data"
+```
+
+#### Check the workflow status
+```bash
+dapr workflow list --app-id workflow-app --connection-string=redis://127.0.0.1:6379 -o wide
+```
+
+#### Raise the waiting external event
+```bash
+dapr workflow raise-event --app-id workflow-app test-run/TestEvent --input 'TestEventPayload'
+dapr workflow raise-event --app-id workflow-app test-run/event1 --input 'TestEvent 1 Payload'
+dapr workflow raise-event --app-id workflow-app test-run/event2 --input 'TestEvent 2 Payload'
+dapr workflow raise-event --app-id workflow-app test-run/event3 --input 'TestEvent 3 Payload'
+```
+
+#### Check completed workflows
+```bash
+dapr workflow list --app-id workflow-app --connection-string=redis://127.0.0.1:6379 --filter-status COMPLETED -o wide
+```
+
+#### View workflow history
+```bash
+dapr workflow history --app-id workflow-app test-run
+```
+
+{{% /tab %}}
+
+{{% tab "Go" %}}
+
+#### Run the workflow application
+```bash
+dapr run --app-id workflow-app go run main.go
+```
+
+Make sure the application is running:
+
+```bash
+dapr list
+```
+
+#### Run the workflow
+```bash
+dapr workflow run BusinessWorkflow --app-id workflow-app --input '1' --instance-id test-run
+```
+
+#### Check the workflow status
+```bash
+dapr workflow list --app-id workflow-app --connection-string=redis://127.0.0.1:6379 -o wide
+```
+
+#### Raise the waiting external event
+```bash
+dapr workflow raise-event --app-id workflow-app test-run/businessEvent
+```
+
+#### Check completed workflows
+```bash
+dapr workflow list --app-id workflow-app --connection-string=redis://127.0.0.1:6379 --filter-status COMPLETED -o wide
+```
+
+#### View workflow history
+```bash
+dapr workflow history test-run --app-id workflow-app
+```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
+
+
+### Monitor Workflow Execution
+
+```bash
+dapr workflow list --app-id workflow-app --filter-status RUNNING -o wide
+```
+
+```bash
+dapr workflow list --app-id workflow-app --filter-status FAILED -o wide
+```
+
+```bash
+dapr workflow list --app-id workflow-app --filter-status COMPLETED -o wide
+```
+
+### Test External Events
+
+```bash
+# Raise an event your workflow is waiting for
+dapr workflow raise-event <instance-id>/ApprovalReceived \
+  --app-id workflow-app \
+  --input '{"approved": true, "approver": "manager@company.com"}'
+```
+
+### Debug Failed Workflows
+
+```bash
+# List failed workflows
+dapr workflow list --app-id workflow-app --filter-status FAILED --output wide
+
+# Get detailed history of a failed workflow
+dapr workflow history <failed-instance-id> --app-id workflow-app --output json
+
+# Re-run the workflow after fixing issues
+dapr workflow rerun <failed-instance-id> --app-id workflow-app --input '<new-input-json-data>'
+```
 
 ## Next steps
 

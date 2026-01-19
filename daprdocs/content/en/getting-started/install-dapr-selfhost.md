@@ -170,8 +170,6 @@ explorer "%USERPROFILE%\.dapr"
 
 {{< /tabpane >}}
 
-<br>
-
 ### Slim init
 
 To install the CLI without any default configuration files or Docker containers, use the `--slim` flag. [Learn more about the `init` command and its flags.]({{% ref dapr-init.md %}})
@@ -180,6 +178,16 @@ To install the CLI without any default configuration files or Docker containers,
 dapr init --slim
 ```
 
+### Other tooling (optional)
+
+#### Diagrid Dashboard for Dapr Workflow
+
+If you're planning to build Dapr Workflow applications, you can install the [Diagrid Dashboard](https://diagrid.ws/diagrid-dashboard-docs) to visualize workflow state during local development:
+
+Start the Diagrid Dashboard container using Docker:
+
+```bash
+docker run -p 8080:8080 ghcr.io/diagridio/diagrid-dashboard:latest
+```
 
 {{< button text="Next step: Use the Dapr API >>" page="getting-started/get-started-api.md" >}}
-

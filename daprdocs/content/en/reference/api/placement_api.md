@@ -3,7 +3,7 @@ type: docs
 title: "Placement API reference"
 linkTitle: "Placement API"
 description: "Detailed documentation on the Placement API"
-weight: 1200
+weight: 1100
 ---
 
 Dapr has an HTTP API `/placement/state` for Placement service that exposes placement table information. The API is exposed on the sidecar on the same port as the healthz. This is an unauthenticated endpoint, and is disabled by default. 
