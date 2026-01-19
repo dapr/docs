@@ -26,11 +26,11 @@ The `index.json` can be used as a lookup table and looks like:
 
 ```
 {
-  "current_version": "0.10.7",
-  "schema_url": "https://raw.githubusercontent.com/dapr/dapr-agents/main/schemas/agent-metadata/v0.10.7.json",
+  "current_version": "X.Y.Z",
+  "schema_url": "https://raw.githubusercontent.com/dapr/dapr-agents/main/schemas/agent-metadata/vX.Y.Z.json",
   "available_versions": [
-    "v0.10.7",
-    "v0.10.6"
+    "vX.Y.Z",
+    "vA.B.C"
   ]
 }
 ```
