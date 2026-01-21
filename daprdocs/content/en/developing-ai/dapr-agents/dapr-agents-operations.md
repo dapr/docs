@@ -16,7 +16,7 @@ aliases:
 
 Dapr Agents utilizes an agent registry (often referenced as `agent-registry` statestore) to communicate agent capabilities. The agent registry contains agent metadata, including the agent's name, description, version and more. 
   
-In order to facilitate easier handling of version changes to the agent metadata, Dapr Agents supplies versioned JSON schemas. Within the [dapr agents repository] you'll find 3 types of JSON schema files:
+In order to facilitate easier handling of version changes to the agent metadata, Dapr Agents supplies versioned JSON schemas. Within the agents repository you'll find 3 types of JSON schema files:
 
 - [index.json](https://raw.githubusercontent.com/dapr/dapr-agents/main/schemas/agent-metadata/index.json)
 - [latest.json](https://raw.githubusercontent.com/dapr/dapr-agents/main/schemas/agent-metadata/latest.json)
