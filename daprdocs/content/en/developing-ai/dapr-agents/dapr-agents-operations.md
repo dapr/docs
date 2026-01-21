@@ -35,7 +35,7 @@ The `index.json` can be used as a lookup table and looks like:
 }
 ```
 
-When the agent starts up it will insert its own metadata into the supplied Agent Registry. The Agent Metadata object contains the key `schema_version` which can be used as a reference to fetch the valid schema for that agent version:
+When the agent starts up it will insert its own metadata into the supplied agent registry. The agent metadata object contains the key `schema_version` which can be used as a reference to fetch the valid schema for that agent version:
 
 ```sh
 curl -s -v "https://raw.githubusercontent.com/dapr/dapr-agents/main/schemas/agent-metadata/v$(jq -r '.schema_version' agent-metadata.json).json"
