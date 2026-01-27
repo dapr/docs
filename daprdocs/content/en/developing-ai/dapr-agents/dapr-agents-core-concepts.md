@@ -103,15 +103,15 @@ This example demonstrates creating a workflow-backed agent that runs autonomousl
 
 In Summary:
 
-| Agent Type      | Memory Type             | Execution                 | Interaction Mode             |
-|-----------------|-------------------------|---------------------------|------------------------------|
-| `Agent`         | In-memory or Persistent | Ephemeral                 | Synchronous / Conversational |
-| `Durable Agent` | In-memory or Persistent | Durable (Workflow-backed) | Asynchronous / Headless      |
+| Agent Type      | Memory Type             | Execution | Interaction Mode         |
+|-----------------|-------------------------|-----------|--------------------------|
+| `Agent`         | In-memory or Persistent | Ephemeral | Embedded                 |
+| `Durable Agent` | Persistent | Durable   | PubSub / HTTP / Embedded |
 
 
 - Regular `Agent`: Interaction is synchronous—you send conversational prompts and receive responses immediately. The conversation can be stored in memory or persisted, but the execution is ephemeral and does not survive restarts.
 
-- `DurableAgent` (Workflow-backed): Interaction is asynchronous—you trigger the agent once, and it runs autonomously in the background until completion. The conversation state can also be in memory or persisted, but the execution is durable and can resume across failures or restarts.
+- `DurableAgent` (Workflow-backed): Interaction is asynchronous—you trigger the agent once, and it runs autonomously in the background until completion. The conversation state and the execution are persisted  and can resume across failures or restarts.
 
 
 ## Core Agent Features
@@ -248,7 +248,7 @@ travel_planner = DurableAgent(
 | `ConversationDaprStateMemory` | Dapr State Store | ✅ | Query | Production |
 
 
-### Agent Services
+### Agent Runner
 
 `AgentRunner` wires DurableAgents into three complementary hosting modes:
 
