@@ -146,7 +146,7 @@ Dapr can be used from any developer framework. Here are some that have been inte
 ![Dapr Agents  Overview](/images/dapr-agents/concepts-agents-overview.png)
 
 
-[Dapr Agents]({{% ref "../developing-applications/dapr-agents" %}}) is a Python framework for building intelligent, durable agents powered by LLMs. It provides agent-centric capabilities such as tool calling, memory management, [MCP support](https://modelcontextprotocol.io/) and agent orchestration, while leveraging Dapr for durability, observability, and security, at scale.
+[Dapr Agents]({{% ref "../developing-ai/dapr-agents" %}}) is a Python framework for building intelligent, durable agents powered by LLMs. It provides agent-centric capabilities such as tool calling, memory management, [MCP support](https://modelcontextprotocol.io/) and agent orchestration, while leveraging Dapr for durability, observability, and security, at scale.
 
 
 #### Integrations and extensions

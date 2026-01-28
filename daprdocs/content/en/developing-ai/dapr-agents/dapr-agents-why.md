@@ -4,6 +4,8 @@ title: "Why Dapr Agents"
 linkTitle: "Why Dapr Agents"
 weight: 30
 description: "Understanding the benefits and use cases for Dapr Agents"
+aliases:
+  - /developing-applications/dapr-agents/dapr-agents-why
 ---
 
 Dapr Agents is an open-source framework for building and orchestrating LLM-based autonomous agents that leverages Dapr's proven distributed systems foundation. Unlike other agentic frameworks that require developers to build infrastructure from scratch, Dapr Agents enables teams to focus on agent intelligence by providing enterprise-grade scalability, state management, and messaging capabilities out of the box. This approach eliminates the complexity of recreating distributed system fundamentals while delivering agentic workflows powered by Dapr.
@@ -102,11 +104,11 @@ Dapr Agents uses a [durable-execution workflow engine]({{% ref workflow-overview
 
 Dapr Agents builds on Dapr's Workflow API, which represents each agent as an actor, a single unit of compute and state that is thread-safe and natively distributed. This design enables a scale-to-zero architecture that minimizes infrastructure costs, making AI adoption accessible to organizations of all sizes. The underlying virtual actor model allows thousands of agents to run on demand on a single machine with low latency when scaling from zero. When unused, agents are reclaimed by the system but retain their state until needed again. This design eliminates the trade-off between performance and resource efficiency.
 
-### Data-Centric AI Agents
+### Data-centric AI agents
 
-With built-in connectivity to over 50 enterprise data sources, Dapr Agents efficiently handles structured and unstructured data. From basic [PDF extraction]({{% ref "/developing-applications/dapr-agents/dapr-agents-integrations.md" %}}) to large-scale database interactions, it enables data-driven AI workflows with minimal code changes. Dapr's [bindings]({{% ref bindings-overview.md %}}) and [state stores]({{% ref supported-state-stores.md %}}), along with MCP support, provide access to numerous data sources for agent data ingestion.
+With built-in connectivity to over 50 enterprise data sources, Dapr Agents efficiently handles structured and unstructured data. From basic [PDF extraction]({{% ref "/developing-ai/dapr-agents/dapr-agents-integrations.md" %}}) to large-scale database interactions, it enables data-driven AI workflows with minimal code changes. Dapr's [bindings]({{% ref bindings-overview.md %}}) and [state stores]({{% ref supported-state-stores.md %}}), along with MCP support, provide access to numerous data sources for agent data ingestion.
 
-### Accelerated Development
+### Accelerated development
 
 Dapr Agents provides AI features that give developers a complete API surface to tackle common problems, including:
 
