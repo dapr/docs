@@ -316,7 +316,7 @@ Because workflows are durable, the `/run` endpoint responds immediately with an 
 
 ### Default settings
 
-Dapr Agents comes with pre-set sensible defaults on many different settings. You will find descriptions of each of them in the following section.
+Dapr Agents comes with pre-set sensible defaults on different settings. Descriptions of each of them are below.
 
 #### Statestore
 
