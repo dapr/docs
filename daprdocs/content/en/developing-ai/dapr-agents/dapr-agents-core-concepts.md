@@ -318,7 +318,7 @@ Because workflows are durable, the `/run` endpoint responds immediately with an 
 
 Dapr Agents comes with pre-set sensible defaults on different settings. Descriptions of each of them are below.
 
-#### Statestore
+#### State store
 
 By ensuring the following statestores with appropriate naming are present, the Dapr Agent will resolve these from the Dapr Metadata API:
 
@@ -326,10 +326,25 @@ By ensuring the following statestores with appropriate naming are present, the D
     The default team name is set to `default`.
 - `agent-statestore`: Agent Memory statestore  
     The default key is set to the agents name in lowercase with space replaced by `-` with the `-session` suffix.
+- `agent-runtimestatestore`: Agent runtime configuration
+    The statestore is loaded with key `agent_runtime` expecting field `data` containing a dictionary (i.e., `{ "key": "value" }`)
+    currently the agent supports auto-instrumenting itself with OpenTelemetry by setting the following available options:
 
-For `DurableAgent`s you can also rely on the workflow statestore:
+| Key | Value | Description |
+|---|---|------|
+| OTEL_ENABLED | "true"/"false" | Enables OpenTelemetry instrumentation. Default: "false" |
+| OTEL_TOKEN | "str" | Bearer token. The token will be inserted as an `Authorization: Bearer {OTEL_TOKEN}` header. Default: "" |
+| OTEL_ENDPOINT | "https://some.domain:4/" | Endpoint to ship telemetry. Refrain from setting url path. Default: "" |
+| OTEL_SERVICE_NAME | "my_agent" | Service name. This should only be used if you use a single agent. Default: `Agent.Name` |
+| OTEL_LOGGING_ENABLED | "true"/"false" | Enables exporting logs. Default: "false" |
+| OTEL_TRACING_ENABLED | "true"/"false" | Enables exporting traces. Default: "false" |
+| OTEL_LOGGING_EXPORTER | "otlp_grpc"/"otlp_http"/"zipkin"/"console" | Which exporter to use. Default: "console" |
+| OTEL_TRACING_EXPORTER | "otlp_grpc"/"otlp_http"/"console" | Which exporter to use. Default: "console" |
 
-- `agent-wfstatestore`: Workflow Statestore for `DurableAgent` (**NB:** It is not required to be an `actorStateStore`)  
+
+For `DurableAgent` you can also rely on the workflow statestore:
+
+- `agent-workflow`: Workflow Statestore for `DurableAgent` (**NB:** It is not required to be an `actorStateStore`)  
     The default key is set to the agents name in lowercase with space replaced by `-` with the `:workflow_state` suffix.
 
 #### Pub/Sub
@@ -340,6 +355,17 @@ By ensuring the following pubsub component with appropriate naming is present, t
     The default pubsub name is set to `agent-pubsub`.  
     The default agent topic is set to agents name in lowercase with space replaced by `-` with the `.topic` suffix.  
     The default broadcast topic is set to `agents.broadcast`.
+
+#### Secret store
+
+By ensuring the following secret component with approproate naming is present, the Dapr Agent will resolve it from the Dapr Metadata API:
+
+- `agent-secretstore`: Secrets for agent runtime  
+    The agent will bulk load all secrets and insert them into it's runtime secrets. The currently supported secrets are:
+
+| Key | Value | Description |
+|---|---|------|
+| OTEL_TOKEN | "str" | Bearer token. The token will be inserted as an `Authorization: Bearer {OTEL_TOKEN}` header. Default: "" |
 
 ## Multi-agent Systems (MAS)
 
