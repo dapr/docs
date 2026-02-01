@@ -260,7 +260,7 @@ Together, these features make the agent **durable**, **reliable**, and **provide
 From the `01-dapr-agents-fundamentals` folder, with your virtual environment activated:
 
 ```bash
-dapr run --app-id durable-agent --resources-path resources -- python 06_durable_agent_http.py
+dapr run --app-id durable-agent --resources-path components -- python 06_durable_agent_http.py
 ```
 
 This:
@@ -320,7 +320,7 @@ To see durable execution in action:
    Start it again with the same command:
 
 ```bash
-   dapr run --app-id durable-agent --resources-path resources -- python 06_durable_agent_http.py
+   dapr run --app-id durable-agent --resources-path components -- python 06_durable_agent_http.py
 ```
 
 4. **Query the same workflow**
