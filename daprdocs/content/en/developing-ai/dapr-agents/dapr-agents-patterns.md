@@ -436,6 +436,34 @@ The Durable Agent enables the concept of "headless agents" - autonomous systems 
 
 These options make it easy to process requests asynchronously and integrate seamlessly into larger distributed systems.
 
+### Retry Policy
+
+The Durable Agent supports Dapr Workflow's `RetryPolicy` with the its `WorkflowRetryPolicy`:
+
+- `max_attempts`: max_attempts: Maximum number of retry attempts for workflow operations. Default is 1 (no retries). Set `DAPR_API_MAX_RETRIES` environment variable to override default.
+- `initial_backoff_seconds`: Initial backoff duration in seconds. Default is 5 seconds.
+- `max_backoff_seconds`: Maximum backoff duration in seconds. Default is 30 seconds.
+- `backoff_multiplier`: Backoff multiplier for exponential backoff. Default is 1.5.
+- `retry_timeout`: Total timeout for all retries in seconds.
+
+All of the fields are optional. It can be passed to the Durable Agent during instantiation:
+
+```python
+from dapr_agents.agents.configs import WorkflowRetryPolicy
+travel_planner = DurableAgent(
+    name="TravelBuddy",
+    ...
+    retry_policy=WorkflowRetryPolicy(
+        max_attempts=5,
+        initial_backoff_seconds=10,
+        max_backoff_seconds=60,
+        backoff_multiplier=2.0,
+        retry_timeout=300,
+    )
+    ...
+)
+```
+
 
 ## Choosing the Right Pattern
 
