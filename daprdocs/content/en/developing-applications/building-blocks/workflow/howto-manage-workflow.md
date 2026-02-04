@@ -495,8 +495,16 @@ Dictionary<string, string> workflowOptions; // This is an optional parameter
 // Start the workflow using the orderId as our workflow ID. This returns a string containing the instance ID for the particular workflow instance, whether we provide it ourselves or not.
 await daprWorkflowClient.ScheduleNewWorkflowAsync(nameof(OrderProcessingWorkflow), orderId, input, workflowOptions);
 
+// Schedule a workflow to start in the future
+var futureStart = DateTimeOffset.UtcNow.AddHours(2);
+await daprWorkflowClient.ScheduleNewWorkflowAsync(
+    nameof(OrderProcessingWorkflow), 
+    "order-scheduled", 
+    input, 
+    startTime: futureStart);
+
 // Get information on the workflow. This response contains information such as the status of the workflow, when it started, and more!
-WorkflowState currentState = await daprWorkflowClient.GetWorkflowStateAsync(orderId, orderId);
+WorkflowState currentState = await daprWorkflowClient.GetWorkflowStateAsync(orderId, true);
 
 // Terminate the workflow
 await daprWorkflowClient.TerminateWorkflowAsync(orderId);
@@ -513,6 +521,153 @@ await daprWorkflowClient.ResumeWorkflowAsync(orderId);
 // Purge the workflow, removing all inbox and history information from associated instance
 await daprWorkflowClient.PurgeInstanceAsync(orderId);
 ```
+
+#### Advanced Management (List, Filter, Bulk Operations)
+
+{{% alert title="Note" color="primary" %}}
+**Requirements**: These advanced features require Dapr .NET SDK 1.17.0+ and Dapr runtime 1.17.0+.
+{{% /alert %}}
+
+Some advanced management capabilities (such as listing workflows, getting full execution history, bulk operations, and rewinding failed workflows) are available through the underlying gRPC client.
+
+**1. Create the gRPC Client:**
+
+```csharp
+using Grpc.Net.Client;
+using Dapr.DurableTask.Protobuf; // Available in Dapr.Workflow package
+
+// Connect to the Dapr Sidecar's internal gRPC endpoint
+// Default Dapr gRPC port is 50001
+var daprGrpcPort = Environment.GetEnvironmentVariable("DAPR_GRPC_PORT") ?? "50001";
+var channel = GrpcChannel.ForAddress($"http://127.0.0.1:{daprGrpcPort}");
+var grpcClient = new TaskHubSidecarService.TaskHubSidecarServiceClient(channel);
+```
+
+**2. List Workflows:**
+
+```csharp
+var request = new ListInstanceIDsRequest 
+{ 
+    PageSize = 100 
+};
+
+var response = await grpcClient.ListInstanceIDsAsync(request);
+
+Console.WriteLine($"Found {response.InstanceIds.Count} workflows:");
+foreach (var id in response.InstanceIds)
+{
+    Console.WriteLine($" - {id}");
+}
+```
+
+**3. Get Full Execution History:**
+
+```csharp
+var history = await grpcClient.GetInstanceHistoryAsync(new GetInstanceHistoryRequest 
+{ 
+    InstanceId = orderId 
+});
+
+foreach (var evt in history.Events)
+{
+    Console.WriteLine($"{evt.Timestamp}: {evt.EventTypeCase}");
+}
+```
+
+**4. Query with Filters:**
+
+Filtering (e.g., by status or creation time) is achieved by listing IDs and then fetching details client-side:
+
+```csharp
+var response = await grpcClient.ListInstanceIDsAsync(new ListInstanceIDsRequest { PageSize = 100 });
+
+foreach (var id in response.InstanceIds)
+{
+    var state = await daprWorkflowClient.GetWorkflowStateAsync(id, false);
+    
+    // Example: Filter for Failed workflows created in the last 24 hours
+    if (state.RuntimeStatus == WorkflowRuntimeStatus.Failed && 
+        state.CreatedAt > DateTime.UtcNow.AddHours(-24))
+    {
+        Console.WriteLine($"Found target workflow: {id}");
+    }
+}
+```
+
+**5. Bulk Purge Pattern:**
+
+For bulk purge operations (similar to the CLI's `--all-older-than` feature), combine listing and filtering:
+
+```csharp
+// List all workflows
+var response = await grpcClient.ListInstanceIDsAsync(new ListInstanceIDsRequest { PageSize = 100 });
+
+// Filter and purge workflows older than 90 days
+var cutoffDate = DateTime.UtcNow.AddDays(-90);
+var purgedCount = 0;
+
+foreach (var id in response.InstanceIds)
+{
+    var state = await daprWorkflowClient.GetWorkflowStateAsync(id, false);
+    
+    // Only purge terminal workflows older than cutoff
+    if ((state.RuntimeStatus == WorkflowRuntimeStatus.Completed ||
+         state.RuntimeStatus == WorkflowRuntimeStatus.Failed ||
+         state.RuntimeStatus == WorkflowRuntimeStatus.Terminated) &&
+        state.CreatedAt < cutoffDate)
+    {
+        var success = await daprWorkflowClient.PurgeInstanceAsync(id);
+        if (success)
+        {
+            purgedCount++;
+            Console.WriteLine($"Purged workflow: {id}");
+        }
+    }
+}
+
+Console.WriteLine($"Total workflows purged: {purgedCount}");
+```
+
+**6. Scheduled Start Time (Standard SDK):**
+
+The standard SDK supports scheduling workflows to start at a future time:
+
+```csharp
+// Schedule a workflow to start in 1 hour
+var futureStart = DateTimeOffset.UtcNow.AddHours(1);
+var instanceId = await daprWorkflowClient.ScheduleNewWorkflowAsync(
+    "OrderProcessingWorkflow",
+    instanceId: "order-12345",
+    input: orderData,
+    startTime: futureStart);
+
+Console.WriteLine($"Workflow scheduled to start at {futureStart}");
+```
+
+**7. Rewind Failed Workflows (gRPC Advanced):**
+
+Similar to the CLI's `dapr workflow rerun` command, you can rewind failed workflows using the gRPC client:
+
+```csharp
+using Google.Protobuf.WellKnownTypes;
+
+// Rewind a failed workflow to retry from the beginning
+var rewindRequest = new StringValue { Value = "failed-workflow-id" };
+await grpcClient.RewindInstanceAsync(rewindRequest);
+
+Console.WriteLine("Workflow rewound and will retry execution");
+```
+
+{{% alert title="Note" color="primary" %}}
+**Rewind vs Purge+Restart**: 
+- `RewindInstance` preserves the workflow history and retries from the failed point
+- Purging and restarting creates a new execution with fresh history
+- Use rewind for transient failures; use purge+restart for structural changes
+{{% /alert %}}
+
+{{% alert title="Important" color="warning" %}}
+**Workflow Client Must Be Running**: The workflow client connection is required for purge operations to preserve workflow state machine integrity. If you see errors like "failed to lookup actor" or "did not find address for actor", ensure the workflow worker is registered and running in your application.
+{{% /alert %}}
 
 {{% /tab %}}
 
