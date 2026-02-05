@@ -533,14 +533,11 @@ Some advanced management capabilities (such as listing workflows, getting full e
 **1. Create the gRPC Client:**
 
 ```csharp
-using Grpc.Net.Client;
+using Microsoft.Extensions.DependencyInjection;
 using Dapr.DurableTask.Protobuf; // Available in Dapr.Workflow package
 
-// Connect to the Dapr Sidecar's internal gRPC endpoint
-// Default Dapr gRPC port is 50001
-var daprGrpcPort = Environment.GetEnvironmentVariable("DAPR_GRPC_PORT") ?? "50001";
-var channel = GrpcChannel.ForAddress($"http://127.0.0.1:{daprGrpcPort}");
-var grpcClient = new TaskHubSidecarService.TaskHubSidecarServiceClient(channel);
+// Resolve the pre-configured gRPC client directly from your Service Provider (host.Services)
+var grpcClient = host.Services.GetRequiredService<TaskHubSidecarService.TaskHubSidecarServiceClient>();
 ```
 
 **2. List Workflows:**
