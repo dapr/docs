@@ -328,7 +328,7 @@ Dapr Agents supports two primary orchestration approaches via [Dapr Workflows](h
 - **Deterministic Workflow-based Orchestration** - Provides clear, repeatable processes with predefined sequences and decision points
 - **Event-driven Orchestration** - Enables dynamic, adaptive collaboration through message-based coordination among agents
 
-Both approaches utilize a central orchestrator that coordinates multiple specialized agents, each handling specific tasks or domains, ensuring efficient task distribution and seamless collaboration across the system.
+Both approaches are built on `DurableAgent`, which serves as both a standalone agent and an orchestrator depending on configuration. When you set `orchestration_mode` on its `AgentExecutionConfig`, a `DurableAgent` coordinates multiple specialized agents — selecting the next agent, managing interaction sequences, and tracking progress — while still retaining all standard agent capabilities such as LLM reasoning and tool calling.
 
 ## Deterministic Workflows
 
@@ -522,22 +522,33 @@ asyncio.run(main())
 
 #### Orchestrator
 
-The orchestrator coordinates interactions between agents and manages conversation flow by selecting appropriate agents, managing interaction sequences, and tracking progress. Dapr Agents offers three orchestration strategies: Random, RoundRobin, and LLM-based orchestration.
+The orchestrator coordinates interactions between agents and manages conversation flow by selecting appropriate agents, managing interaction sequences, and tracking progress. A `DurableAgent` becomes an orchestrator when you set `orchestration_mode` on its `AgentExecutionConfig`. Three modes are available via the `OrchestrationMode` enum:
+
+| Mode | Description |
+|------|-------------|
+| `OrchestrationMode.AGENT` | LLM-driven, plan-based orchestration. The orchestrator generates an execution plan, selects agents based on context, and tracks progress through steps and substeps. Best for complex tasks requiring adaptive coordination. |
+| `OrchestrationMode.RANDOM` | Randomly selects an agent each turn with avoidance logic to prevent the same agent from running consecutively. Useful for load distribution and testing. |
+| `OrchestrationMode.ROUNDROBIN` | Cycles through agents in a deterministic sequential order. Ensures fair, predictable task distribution across all agents. |
+
+Internally, each mode maps to a concrete `OrchestrationStrategy` implementation (Strategy Pattern). The `DurableAgent` delegates agent-selection, progress-checking, and finalization to the strategy, keeping the core workflow logic unchanged regardless of mode.
+
+The following example creates an LLM-driven orchestrator using `OrchestrationMode.AGENT`:
 
 ```python
+from dapr_agents import DurableAgent
 from dapr_agents.agents.configs import (
     AgentExecutionConfig,
     AgentPubSubConfig,
     AgentRegistryConfig,
     AgentStateConfig,
+    OrchestrationMode,
 )
 from dapr_agents.llm.openai import OpenAIChatClient
 from dapr_agents.storage.daprstores.stateservice import StateStoreService
 from dapr_agents.workflow.runners import AgentRunner
-import dapr.ext.workflow as wf
 
-llm_orchestrator = LLMOrchestrator(
-    name="LLMOrchestrator",
+orchestrator = DurableAgent(
+    name="AgentOrchestrator",
     llm=OpenAIChatClient(),
     pubsub=AgentPubSubConfig(
         pubsub_name="messagepubsub",
@@ -553,17 +564,31 @@ llm_orchestrator = LLMOrchestrator(
         store=StateStoreService(store_name="agentregistrystore"),
         team_name="fellowship",
     ),
-    execution=AgentExecutionConfig(max_iterations=3),
-    runtime=wf.WorkflowRuntime(),
+    execution=AgentExecutionConfig(
+        max_iterations=3,
+        orchestration_mode=OrchestrationMode.AGENT,
+    ),
 )
 
 runner = AgentRunner()
-runner.serve(llm_orchestrator, port=8004)
+runner.serve(orchestrator, port=8004)
 ```
 
-The LLM-based orchestrator uses intelligent agent selection for context-aware decision making, while Random and RoundRobin provide alternative coordination strategies for simpler use cases. The runner keeps the orchestrator online as a Dapr app or HTTP service so clients can publish tasks over topics or REST calls.
+To switch to a different strategy, change the `orchestration_mode` value — for example, `OrchestrationMode.RANDOM` or `OrchestrationMode.ROUNDROBIN`. No other code changes are required.
 
-Because both `DurableAgent.agent_workflow` and the orchestrators above are decorated with `@message_router(message_model=TriggerAction)`, `runner.subscribe(...)` automatically wires the topics declared in `AgentPubSubConfig` and validates every incoming CloudEvent against the expected schema before scheduling the `@workflow_entry`. You can add additional message routers (each with its own `message_model`) to the same agent; the runner will discover them the next time it starts and extend the subscription list automatically.
+The runner keeps the orchestrator online as a Dapr app or HTTP service so clients can publish tasks over topics or REST calls.
+
+{{% alert title="Deprecation Notice" color="warning" %}}
+The standalone `LLMOrchestrator`, `RandomOrchestrator`, and `RoundRobinOrchestrator` classes are **deprecated** and will be removed in a future release. Use `DurableAgent` with `AgentExecutionConfig(orchestration_mode=...)` instead:
+
+| Old class | New equivalent |
+|-----------|----------------|
+| `LLMOrchestrator` | `DurableAgent(execution=AgentExecutionConfig(orchestration_mode=OrchestrationMode.AGENT))` |
+| `RandomOrchestrator` | `DurableAgent(execution=AgentExecutionConfig(orchestration_mode=OrchestrationMode.RANDOM))` |
+| `RoundRobinOrchestrator` | `DurableAgent(execution=AgentExecutionConfig(orchestration_mode=OrchestrationMode.ROUNDROBIN))` |
+{{% /alert %}}
+
+Because `DurableAgent.agent_workflow` is decorated with `@message_router(message_model=TriggerAction)`, `runner.subscribe(...)` automatically wires the topics declared in `AgentPubSubConfig` and validates every incoming CloudEvent against the expected schema before scheduling the `@workflow_entry`. You can add additional message routers (each with its own `message_model`) to the same agent; the runner will discover them the next time it starts and extend the subscription list automatically.
 
 ### Communication Flow
 

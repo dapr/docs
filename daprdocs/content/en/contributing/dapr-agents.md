@@ -57,7 +57,7 @@ The project uses pytest for testing. To run tests:
 tox -e pytest
 
 # Run specific test file
-tox -e pytest tests/test_random_orchestrator.py
+tox -e pytest tests/agents/durableagent/test_durable_agent.py
 
 # Run tests with coverage
 tox -e pytest --cov=dapr_agents

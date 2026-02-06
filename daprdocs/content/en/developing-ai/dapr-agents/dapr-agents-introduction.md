@@ -38,7 +38,7 @@ Dapr Agents provides specialized modules designed for creating intelligent, auto
 | [**Durable Agents**]({{% ref "dapr-agents-core-concepts.md#durable-agents" %}})                       | Workflow-backed agents that provide fault-tolerant execution with persistent state management and automatic retry mechanisms for long-running processes.
 | [**Agent Runner**]({{% ref "dapr-agents-core-concepts.md#agent-runner" %}})                           | Expose agents over HTTP or subscribe to a PubSub for long-running tasks, enabling API access to agents without requiring a user interface or human intervention.
 | [**Event-Driven Communication**]({{% ref "dapr-agents-core-concepts.md#event-driven-orchestration" %}}) | Enable agent collaboration through [Pub/Sub messaging]({{% ref pubsub-overview.md %}}) for event-driven communication, task distribution, and real-time coordination in distributed systems.
-| [**Agent Orchestration**]({{% ref "dapr-agents-core-concepts.md#deterministic-workflows" %}})         | Deterministic agent orchestration using [Dapr Workflows]({{% ref workflow-overview.md %}}) with higher-level tasks that interact with LLMs for complex multi-step processes.
+| [**Agent Orchestration**]({{% ref "dapr-agents-core-concepts.md#multi-agent-systems-mas" %}})        | Orchestrate multi-agent systems using `DurableAgent` — either through [deterministic workflows]({{% ref "dapr-agents-core-concepts.md#deterministic-workflows" %}}) or [event-driven orchestration]({{% ref "dapr-agents-core-concepts.md#event-driven-orchestration" %}}) with configurable `OrchestrationMode` (agent, random, round-robin).
  
  
 ## Agentic Patterns
