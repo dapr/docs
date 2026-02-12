@@ -90,6 +90,17 @@ When calling multi-application activities or child workflows:
 
 It is paramount that there is coordination between the teams owning the different app IDs to ensure that the activities and child workflows are defined and available when needed.
 
+## Durable Activity Results
+
+It is often the case that Activities take some amount of time to complete, or similarly are expensive to execute in resource or dollar cost.
+It is therefore undesirable to execute these activities more than once for the same round, even in unhappy paths.
+Before 1.17 in multi-application scenarios, Activities would publish responses over a network call to the other application which is hosting the owning Workflow.
+In the case where the hosting workflow application is down or otherwise unreachable, the result would be lost and the Activity would be retried, leading to duplicate execution of the Activity.
+
+In 1.17, enabling the [`WorkflowsRemoteActivityReminder feature gate]({{% ref "support-preview-features.md" %}}) will make the activity result be sent to the owning workflow application with a [reminder]({{% ref "workflow-features-concepts.md#durable-timers" %}}) in the event that the workflow application is offline or unreachable, ensuring that the result is not lost and duplicate execution is avoided.
+This option should be enabled by all users who are using Dapr version 1.17 on all applications.
+It has been _**disabled** by default_ for backwards compatibility between Dapr versions, but will be enabled by default in a future release.
+
 ## Multi-application activity example
 
 <img src="/images/workflow-overview/workflow-multi-app-callactivity.png" width=800 alt="Diagram showing multi-application call activity workflow pattern">
