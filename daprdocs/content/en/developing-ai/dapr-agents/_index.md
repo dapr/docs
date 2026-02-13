@@ -8,6 +8,8 @@ aliases:
   - /developing-applications/dapr-agents
 ---
 
+![Concepts Agents](/images/dapr-agents/agents-blue.png)
+
 ###  What is Dapr Agents?
 
 Dapr Agents is a Python framework for building LLM-powered autonomous agentic applications using Dapr's distributed systems capabilities. It provides tools for creating AI agents that can execute durable tasks, make decisions, and collaborate through workflows, while leveraging Dapr's state management, messaging, and observability features for reliable execution at scale.
