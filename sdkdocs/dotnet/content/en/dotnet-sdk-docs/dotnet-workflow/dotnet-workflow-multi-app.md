@@ -59,6 +59,13 @@ public sealed class BusinessWorkflow : Workflow<string, string>
 }
 ```
 
+{{% alert title="Note" color="primary" %}}
+When calling a workflow in another application, you are responsible for using the workflow name expected by that app.
+If the target application is a .NET app that uses named workflow versioning, you can call it by its canonical (unversioned)
+workflow name and the target app will route it to the latest version. Named workflow versioning requires Dapr runtime
+v1.17.0 or later (multi-app workflows only require v1.16.0+).
+{{% /alert %}}
+
 ## Next steps
 
 - [Multi Application Workflows]({{% ref "workflow-multi-app.md" %}})
