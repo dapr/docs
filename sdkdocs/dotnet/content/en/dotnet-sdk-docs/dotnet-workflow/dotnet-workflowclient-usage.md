@@ -143,6 +143,28 @@ internal sealed class SquareNumberActivity : WorkflowActivity<int, int>
 }
 ```
 
+### Activity task execution identifiers
+
+Starting with Dapr .NET SDK v1.17.0, `WorkflowActivityContext` exposes a task execution identifier that is:
+
+- **Unique per activity task**
+- **Stable across retries**
+
+This makes it useful for idempotency keys, task-level state tracking, and correlating logs.
+
+```csharp
+internal sealed class IdempotentActivity : WorkflowActivity<int, int>
+{
+    public override Task<int> RunAsync(WorkflowActivityContext context, int input)
+    {
+        var executionId = context.TaskExecutionId;
+        // Use executionId as your idempotency key or task state key.
+
+        return Task.FromResult(input * input);
+    }
+}
+```
+
 ### Using ILogger in Workflow
 
 Because workflows must be deterministic, it is not possible to inject arbitrary services into them. For example, 
