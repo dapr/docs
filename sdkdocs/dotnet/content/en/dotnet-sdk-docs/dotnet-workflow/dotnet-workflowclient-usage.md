@@ -177,4 +177,5 @@ public class OrderProcessingWorkflow : Workflow<OrderPayload, OrderResult>
 ## Next steps
 
 - [Learn more about Dapr workflow management operations]({{% ref dotnet-workflow-management-methods.md %}})
+- [Configure workflow serialization]({{% ref dotnet-workflow-serialization.md %}})
 - [Learn how to author workflows and activities]({{% ref howto-author-workflow.md %}})  
