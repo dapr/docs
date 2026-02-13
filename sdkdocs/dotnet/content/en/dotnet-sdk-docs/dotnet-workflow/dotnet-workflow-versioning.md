@@ -17,6 +17,10 @@ The .NET SDK supports two approaches:
 Use patch-based versioning for small, in-place changes. Use name-based versioning for larger refactors where you want
 a clean new workflow type.
 
+{{% alert title="Note" color="primary" %}}
+Workflow versioning requires Dapr .NET SDK v1.17.0 or later and Dapr runtime v1.17.0 or later.
+{{% /alert %}}
+
 ## When to use each approach
 
 **Patch-based versioning** is a good fit when:
