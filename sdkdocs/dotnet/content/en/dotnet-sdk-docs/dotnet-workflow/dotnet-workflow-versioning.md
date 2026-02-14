@@ -77,15 +77,38 @@ in-flight instances while new instances use the latest version.
 
 ### Default naming behavior
 
-By default, named versioning uses a numeric suffix. The following are all valid examples:
+By default, name-based versioning uses the built-in **NumericVersionStrategy** with a numeric suffix. The following
+are all valid examples:
 
 - `MyWorkflow` (treated as version `0`)
 - `MyWorkflow2`
 - `MyWorkflowV2`
 
-The default strategy assumes higher numeric values are newer (for example, `MyWorkflowV10` is newer than 
-`MyWorkflowV2`). The .NET SDK also includes other built-in strategies such as SemVer and DateTime suffixes, plus
-support for custom strategies.
+The default strategy assumes higher numeric values are newer (for example, `MyWorkflowV10` is newer than
+`MyWorkflowV2`). The .NET SDK also includes other built-in strategies (Date, SemVer, and Numeric) plus support for
+custom strategies.
+
+### Built-in strategies and options
+
+The .NET SDK ships with several built-in name-based strategies. Each strategy supports options that let you tune how
+the suffix is parsed and what to do when no suffix is present.
+
+- **DateVersionStrategy**: Derives a date-based version from a trailing suffix (for example, `MyWorkflow20220611`).
+  Options include:
+  - **Date format**: Uses standard C# date formatting rules; defaults to `yyyyMMdd`.
+  - **Default version**: Used when no suffix is provided; defaults to `0`.
+  - **Prefix**: Optional prefix to match before the date suffix, with optional case-sensitivity.
+- **SemVerVersionStrategy**: Derives a SemVer version from a trailing suffix (for example, `MyWorkflow1.2.3`).
+  Options include:
+  - **Prefix**: Optional prefix to match before the SemVer suffix, with optional case-sensitivity.
+  - **Prerelease/build support**: Can parse prerelease annotations and build metadata.
+  - **Default version**: Optional default when no suffix is provided, if configured to allow missing suffixes.
+- **NumericVersionStrategy**: Derives a numeric version from a trailing suffix (for example, `MyWorkflow42` or
+  `MyWorkflowV42`).
+  Options include:
+  - **Prefix**: Optional prefix to match before the numeric suffix, with optional case-sensitivity.
+  - **Zero-padding width**: Optional width to allow fixed-width numbers with leading zeroes.
+  - **Default version**: Used when no suffix is provided.
 
 ## Configure name-based versioning
 
