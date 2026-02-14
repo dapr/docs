@@ -163,6 +163,24 @@ builder.Services.AddDaprWorkflow(w =>
 
 Once configured, named workflow versioning is applied automatically at runtime.
 
+## Cross-assembly workflow discovery
+
+By default, the workflow versioning source generator only scans the executing assembly. If you keep workflows in a
+separate referenced assembly, those implementations are not discovered unless you opt in to reference scanning.
+
+Reference scanning is disabled by default because it can increase build times (the generator must inspect all
+referenced assemblies for `Workflow<,>` implementations). To enable it, add the following to the executing
+application's `.csproj` file:
+
+```xml
+<ItemGroup>
+  <CompilerVisibleProperty Include="DaprWorkflowVersioningScanReferences" />
+</ItemGroup>
+```
+
+When enabled, the source generator adds any discovered workflow implementations from referenced assemblies to the
+internal registry used for version tracking.
+
 ## Override name and version
 
 If you need to override the canonical name or version detected from the workflow type, apply the `[WorkflowVersion]` 
