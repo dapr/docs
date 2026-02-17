@@ -320,7 +320,7 @@ Dapr Agents comes with pre-set sensible defaults on different settings. Descript
 
 #### State store
 
-By ensuring the following statestores with appropriate naming are present, the Dapr Agent will resolve these from the Dapr Metadata API:
+By ensuring the following statestores with these metadata names are present, the Dapr Agent will resolve these from the Dapr Metadata API:
 
 - `agent-registry`: Registry statestore for Agents (**NB:** It is preferred to use `KeyPrefix` set to `none`)  
     The default team name is set to `default`.
