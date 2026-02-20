@@ -3,7 +3,7 @@ type: docs
 title: "Jobs API reference"
 linkTitle: "Jobs API"
 description: "Detailed documentation on the jobs API"
-weight: 1300
+weight: 900
 ---
 
 {{% alert title="Note" color="primary" %}}

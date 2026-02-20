@@ -38,14 +38,14 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| `redisHost` | Y | Output |  The Redis host address | `"localhost:6379"` |
+| `redisHost` | Y | Output |  Connection-string for the redis host. If `"redisType"` is `"cluster"`, it can be multiple hosts separated by commas or just a single host. When using Redis Sentinel (`"failover"` is `"true"`), multiple sentinel addresses can also be provided as comma-separated values. | `localhost:6379`, `redis-master.default.svc.cluster.local:6379`, `sentinel1:26379,sentinel2:26379,sentinel3:26379` |
 | `redisPassword` | N | Output | The Redis password | `"password"` |
 | `redisUsername` | N | Output | Username for Redis host. Defaults to empty. Make sure your redis server version is 6 or above, and have created acl rule correctly. | `"username"` |
 | `useEntraID` | N | Output | Implements EntraID support for Azure Cache for Redis. Before enabling this: <ul><li>The `redisHost` name must be specified in the form of `"server:port"`</li><li>TLS must be enabled</li></ul> Learn more about this setting under [Create a Redis instance > Azure Cache for Redis]({{% ref "#create-a-redis-instance" %}}) | `"true"`, `"false"` |
 | `enableTLS` | N | Output |  If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS. Defaults to `"false"` | `"true"`, `"false"` |
 | `clientCert`        | N | Output        | The content of the client certificate, used for Redis instances that require client-side certificates. Must be used with `clientKey` and `enableTLS` must be set to true. It is recommended to use a secret store as described [here]({{% ref component-secrets.md %}})  | `"----BEGIN CERTIFICATE-----\nMIIC..."` |
 | `clientKey`        | N | Output        | The content of the client private key, used in conjunction with `clientCert` for authentication. It is recommended to use a secret store as described [here]({{% ref component-secrets.md %}})  | `"----BEGIN PRIVATE KEY-----\nMIIE..."` |
-| `failover`           | N | Output         | Property to enable failover configuration. Needs sentinelMasterName to be set. Defaults to `"false"` | `"true"`, `"false"`
+| `failover`           | N | Output         | Property to enable failover configuration. Needs sentinelMasterName to be set. When enabled, redisHost should contain the sentinel addresses. Defaults to `"false"` | `"true"`, `"false"`
 | `sentinelMasterName` | N | Output         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/reference/sentinel-clients/) | `""`,  `"mymaster"`
 | `sentinelUsername`   | N | Output         | Username for Redis Sentinel. Applicable only when "failover" is true, and Redis Sentinel has authentication enabled | `"username"`
 | `sentinelPassword`   | N | Output         | Password for Redis Sentinel. Applicable only when "failover" is true, and Redis Sentinel has authentication enabled | `"password"`
@@ -249,6 +249,28 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 The Dapr CLI automatically deploys a local redis instance in self hosted mode as part of the `dapr init` command.
 {{% /alert %}}
 
+## Redis Sentinel configuration
+
+When using Redis Sentinel for high availability, set `redisType` to `"node"`, enable failover mode with `failover: "true"`, and provide the sentinel master name. Multiple sentinel addresses can be specified as a comma-separated list in the `redisHost` field for redundancy.
+
+    ```yaml
+    apiVersion: dapr.io/v1alpha1
+    kind: Component
+    metadata:
+      name: redis-pubsub
+    spec:
+      type: pubsub.redis
+      version: v1
+      metadata:
+      - name: redisHost
+        value: "sentinel1:26379,sentinel2:26379,sentinel3:26379"
+      - name: redisType
+        value: "node"
+      - name: failover
+        value: "true"
+      - name: sentinelMasterName
+        value: "mymaster"
+      ```
 
 ## Related links
 

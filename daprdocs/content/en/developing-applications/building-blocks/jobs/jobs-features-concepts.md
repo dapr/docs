@@ -119,3 +119,60 @@ or the not-before time from which the schedule should take effect
 The `DueTime` and `Ttl` fields will reflect an RC3339 timestamp value reflective of the time zone provided when the job was
 originally scheduled. If no time zone was provided, these values indicate the time zone used by the server running
 Dapr.
+
+### Managing jobs
+
+While jobs are created via API calls, you can manage (list, inspect, delete, back up, and restore) jobs is by using the dapr scheduler CLI commands.
+
+#### List jobs
+
+```bash
+dapr scheduler list --filter app
+NAME                           BEGIN     COUNT  LAST TRIGGER
+app/my-app/my-job              -3.89s    1      2025-10-03T16:58:55Z
+app/my-app/another-job         -3.89s    1      2025-10-03T16:58:55Z
+```
+
+```bash
+dapr scheduler list -o wide
+NAMESPACE  NAME                     BEGIN                 EXPIRATION   SCHEDULE     DUE TIME                   TTL   REPEATS  COUNT  LAST TRIGGER
+default    app/my-app/my-job        2025-10-03T16:58:55Z               @every 5s   2025-10-03T17:58:55+01:00        100      1      2025-10-03T16:58:55Z
+```
+
+```bash
+dapr scheduler get app/my-app/my-job -o yaml
+```
+
+#### Delete jobs
+
+Delete a specific job:
+
+```bash
+dapr scheduler delete app/my-app/my-job
+```
+
+Delete all jobs for an app:
+
+```bash
+dapr scheduler delete-all app/my-app
+```
+
+#### Backup and restore jobs
+
+Export all jobs:
+
+```bash
+dapr scheduler export -o jobs-backup.bin
+```
+
+Import them later:
+
+```bash
+dapr scheduler import -f jobs-backup.bin
+```
+
+#### Summary
+
+- Use the Jobs API to create or update jobs from applications.
+- Use the dapr scheduler CLI to view, inspect, back up, or delete jobs.
+- Jobs are stored in the Dapr Scheduler, ensuring reliability across restarts and deployments.

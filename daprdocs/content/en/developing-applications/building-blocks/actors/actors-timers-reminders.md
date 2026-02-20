@@ -10,7 +10,7 @@ aliases:
 
 Actors can schedule periodic work on themselves by registering either timers or reminders.
 
-The functionality of timers and reminders is very similar. The main difference is that Dapr actor runtime is not retaining any information about timers after deactivation, while persisting the information about reminders using Dapr actor state provider.
+The functionality of timers and reminders is very similar. The main difference is that Dapr actor runtime is not retaining any information about timers after deactivation, while persisting the information about reminders using Dapr [Scheduler]({{% ref scheduler.md %}}).
 
 This distinction allows users to trade off between light-weight but stateless timers vs. more resource-demanding but stateful reminders.
 
@@ -108,10 +108,6 @@ Refer [api spec]({{% ref "actors_api#invoke-timer" %}}) for more details.
 
 ## Actor reminders
 
-{{% alert title="Note" color="primary" %}}
-In Dapr v1.15, actor reminders are stored by default in the [Scheduler service]({{% ref "scheduler#actor-reminders" %}}). When upgrading to Dapr v1.15 all existing reminders are automatically migrated to the Scheduler service with no loss of reminders as a one time operation for each actor type.
-{{% /alert %}}
-
 Reminders are a mechanism to trigger *persistent* callbacks on an actor at specified times. Their functionality is similar to timers. But unlike timers, reminders are triggered under all circumstances until the actor explicitly unregisters them or the actor is explicitly deleted or the number in invocations is exhausted. Specifically, reminders are triggered across actor deactivations and failovers because the Dapr actor runtime persists the information about the actors' reminders using Dapr actor state provider.
 
 You can create a persistent reminder for an actor by calling the HTTP/gRPC request to Dapr as shown below, or via Dapr SDK.
@@ -146,7 +142,7 @@ Refer [api spec]({{% ref "actors_api#invoke-reminder" %}}) for more details.
 
 ## Error handling
 
-When an actor's method completes successfully, the runtime will continue to invoke the method at the specified timer or reminder schedule. However, if the method throws an exception, the runtime catches it and logs the error message in the Dapr sidecar logs, without retrying. 
+When an actor's method completes successfully, the runtime will continue to invoke the method at the specified timer or reminder schedule. However, if the method throws an exception, the runtime catches it and logs the error message in the Dapr sidecar logs, without retrying.
 
 To allow actors to recover from failures and retry after a crash or restart, you can persist an actor's state by configuring a state store, like Redis or Azure Cosmos DB. 
 
@@ -155,37 +151,65 @@ If an invocation of the method fails, the timer is not removed. Timers are only 
 - The executions run out
 - You delete it explicitly
 
-## Reminder data serialization format
+## Managing reminders with the CLI
 
-Actor reminder data is serialized to JSON by default. Dapr v1.13 onwards supports a protobuf serialization format for internal reminders data for workflow via both the Placement and Scheduler services. Depending on throughput and size of the payload, this can result in significant performance improvements, giving developers a higher throughput and lower latency. 
+Actor reminders are persisted in the Scheduler.
+You can manage them with the dapr scheduler CLI commands.
 
-Another benefit is storing smaller data in the actor underlying database, which can result in cost optimizations when using some cloud databases. A restriction with using protobuf serialization is that the reminder data can no longer be queried. 
+#### List actor reminders
 
-{{% alert title="Note" color="primary" %}}
-Protobuf serialization will become the default format in Dapr 1.14
-{{% /alert %}}
-
-Reminder data saved in protobuf format cannot be read in Dapr 1.12.x and earlier versions. Its recommended to test this feature in Dapr v1.13 and verify that it works as expected with your database before taking this into production. 
-
-{{% alert title="Note" color="primary" %}}
-If you use protobuf serialization in Dapr v1.13 and need to downgrade to an earlier Dapr version, the reminder data will be incompatible with versions 1.12.x and earlier versions. **Once you save your reminders data in protobuf format, you cannot move it back to JSON format**.
-{{% /alert %}}
-
-### Enabling protobuf serialization on Kubernetes
-
-To use protobuf serialization for actor reminders on Kubernetes, use the following Helm value:
-
-```
---set dapr_placement.maxActorApiLevel=20
+```bash
+dapr scheduler list --filter actor
+NAME                                  BEGIN     COUNT  LAST TRIGGER
+actor/MyActorType/actorid1/test1      -3.89s    1      2025-10-03T16:58:55Z
+actor/MyActorType/actorid2/test2      -3.89s    1      2025-10-03T16:58:55Z
 ```
 
-### Enabling protobuf serialization on self-hosted
+Get reminder details
 
-To use protobuf serialization for actor reminders on self-hosted, use the following `daprd` flag:
+```bash
+dapr scheduler get actor/MyActorType/actorid1/test1 -o yaml
+```
 
+#### Delete reminders
+
+Delete a single reminder:
+
+```bash
+dapr scheduler delete actor/MyActorType/actorid1/test1
 ```
---max-api-level=20
+
+Delete all reminders for a given actor type:
+
+```bash
+dapr scheduler delete-all actor/MyActorType
 ```
+
+Delete all reminders for a specific actor instance:
+
+```bash
+dapr scheduler delete-all actor/MyActorType/actorid1
+```
+
+#### Backup and restore reminders
+
+Export all reminders:
+
+```bash
+dapr scheduler export -o reminders-backup.bin
+```
+
+Restore from a backup file:
+
+```bash
+dapr scheduler import -f reminders-backup.bin
+```
+
+#### Summary
+
+- Reminders are stored in the Dapr Scheduler, not in the app.
+- Create reminders via the Actors API
+- Manage existing reminders (list, get, delete, backup/restore) using the `dapr scheduler` CLI.
 
 ## Next steps
 

@@ -3,7 +3,7 @@ type: docs
 title: "Secrets API reference"
 linkTitle: "Secrets API"
 description: "Detailed documentation on the secrets API"
-weight: 700
+weight: 1300
 ---
 
 ## Get Secret

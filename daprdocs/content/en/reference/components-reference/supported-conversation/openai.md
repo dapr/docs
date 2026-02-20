@@ -46,6 +46,48 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `apiType` | N | Specifies the API provider type. Required when using a provider that does not follow the default OpenAI API endpoint conventions. | `azure` |
 | `apiVersion`| N | The API version to use. Required when the `apiType` is set to `azure`. | `2025-04-01-preview` |
 
+## Azure OpenAI Configuration
+
+To configure the OpenAI component to connect to Azure OpenAI, you need to set the following metadata fields which are required for Azure's API format.
+
+### Required fields for Azure OpenAI
+
+When connecting to Azure OpenAI, the following fields are **required**:
+
+- `apiType`: Must be set to `azure` to enable Azure OpenAI compatibility
+- `endpoint`: Your Azure OpenAI resource endpoint URL (e.g., `https://your-resource.openai.azure.com/`)
+- `apiVersion`: The API version for your Azure OpenAI deployment (e.g., `2025-01-01-preview`)
+- `key`: Your Azure OpenAI API key
+
+Get your configuration values from: https://ai.azure.com/
+
+### Azure OpenAI component example
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: azure-openai
+spec:
+  type: conversation.openai
+  metadata:
+  - name: key
+    value: "your-azure-openai-api-key"
+  - name: model
+    value: "gpt-4.1-nano"  # Default: gpt-4.1-nano
+  - name: endpoint
+    value: "https://your-resource.openai.azure.com/"
+  - name: apiType
+    value: "azure"
+  - name: apiVersion
+    value: "2025-01-01-preview"
+```
+
+
+{{% alert title="Note" color="primary" %}}
+When using Azure OpenAI, both `endpoint` and `apiVersion` are mandatory fields. The component returns an error if either field is missing when `apiType` is set to `azure`.
+{{% /alert %}}
+
 ## Related links
 
 - [Conversation API overview]({{% ref conversation-overview.md %}})

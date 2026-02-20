@@ -100,7 +100,7 @@ dapr list -k
 
 ## Stop the multi-app template
 
-Stop the multi-app run template anytime with either of the following commands:
+Stop the multi-app run template any time with either of the following commands:
 
 {{< tabpane text=true >}}
 

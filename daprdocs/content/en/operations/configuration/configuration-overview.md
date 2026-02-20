@@ -62,13 +62,14 @@ A Dapr sidecar can apply a specific configuration by using a `dapr.io/config` an
 
 ### Application configuration settings
 
-The following menu includes all of the configuration settings you can set on the sidecar. 
+The following menu includes all of the configuration settings you can set: 
 
 - [Tracing](#tracing)
 - [Metrics](#metrics)
 - [Logging](#logging)
 - [Middleware](#middleware)
 - [Name resolution](#name-resolution)
+- [Workflow](#workflow)
 - [Scope secret store access](#scope-secret-store-access)
 - [Access Control allow lists for building block APIs](#access-control-allow-lists-for-building-block-apis)
 - [Access Control allow lists for service invocation API](#access-control-allow-lists-for-service-invocation-api)
@@ -255,6 +256,15 @@ For more information, see:
 - [The name resolution component documentation]({{% ref supported-name-resolution %}}) for more examples.
 - [The Configuration file documentation]({{% ref configuration-schema.md %}}) to learn more about how to configure name resolution per component.
 
+#### Workflow
+
+The `workflow` section contains properties for configuring [Workflows]({{% ref "workflow-overview.md" %}}).
+
+| Property | Type   | Description |
+|------------------|--------|-----|
+| `maxConcurrentWorkflowInvocations` | int32 | Maximum number of concurrent workflow executions per Dapr sidecar. Default is infinite. |
+| `maxConcurrentActivityInvocations` | int32 | Maximum number of concurrent activity executions per Dapr sidecar. Default is infinite. |
+
 #### Scope secret store access
 
 See the [Scoping secrets]({{% ref "secret-scope.md" %}}) guide for information and examples on how to scope secrets to an application.
@@ -334,6 +344,9 @@ spec:
     deny:
       - bindings.smtp
       - secretstores.local.file
+  workflow:
+    maxConcurrentWorkflowInvocations: 100
+    maxConcurrentActivityInvocations: 1000
   accessControl:
     defaultAction: deny
     trustDomain: "public"
