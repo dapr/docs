@@ -34,7 +34,7 @@ your custom serialization format.
 ## Default JSON serialization
 
 By default, the .NET SDK uses `System.Text.Json` with `JsonSerializerDefaults.Web` (see the
-[`JsonSerializerDefaults.Web` reference](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializerdefaults?view=net-10.0)).
+[`JsonSerializerDefaults.Web` reference](https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializerdefaults?view=net-10.0)).
 This means:
 
 - Property names are case-insensitive.
