@@ -178,15 +178,15 @@ The Dapr CLI provides a command for exporting all Scheduler data to a specific b
 Use the `-k` flag when running in Kubernetes mode.
 
 ```shell
-dapr scheduler export --output-file scheduler-backup.db
-dapr scheduler export -k --output-file scheduler-backup.db
+dapr scheduler export -o scheduler-backup.bin
+dapr scheduler export -k -o scheduler-backup.bin
 ```
 
 To restore data from a backup file:
 
 ```shell
-dapr scheduler import --input-file scheduler-backup.db
-dapr scheduler import -k --input-file scheduler-backup.db
+dapr scheduler import -f scheduler-backup.bin
+dapr scheduler import -k -f scheduler-backup.bin
 ```
 
 ## Monitoring Scheduler's etcd Metrics

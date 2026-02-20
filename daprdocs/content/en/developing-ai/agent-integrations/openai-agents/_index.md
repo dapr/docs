@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "OpenAI Agents"
-linkTitle: "OpenAI Agents"
+title: "OpenAI"
+linkTitle: "OpenAI"
 weight: 25
 description: "Dapr first-class integrations for OpenAI Agents"
 ---
