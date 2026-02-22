@@ -8,6 +8,11 @@ description: Learn how to create Dapr AI clients
 
 The Dapr AI client package allows you to interact with the AI capabilities provided by the Dapr sidecar.
 
+{{% alert title="Note" color="primary" %}}
+The Dapr Conversation building block requires Dapr runtime v1.16.0 or later. Response format, prompt cache retention,
+and token usage statistics require Dapr runtime v1.17.0 or later.
+{{% /alert %}}
+
 ## Lifetime management
 A `DaprConversationClient` is a version of the Dapr client that is dedicated to interacting with the Dapr Conversation 
 API. It can be registered alongside a `DaprClient` and other Dapr clients without issue.
@@ -92,6 +97,102 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDaprConversationClient(); //Registers the `DaprConversationClient` to be injected as needed
 var app = builder.Build();
+```
+
+## Sending a conversation request
+
+Use `ConversationInput` and `ConversationOptions` to send prompts to your conversation component:
+
+```cs
+var inputs = new[]
+{
+    new ConversationInput(new IConversationMessage[]
+    {
+        new SystemMessage("You are a helpful assistant."),
+        new UserMessage("Summarize the following text...")
+    })
+};
+
+var options = new ConversationOptions("my-conversation-component")
+{
+    Temperature = 0.2
+};
+
+var response = await daprConversationClient.ConverseAsync(inputs, options);
+```
+
+## Response format (JSON schema)
+
+You can provide a JSON schema to coerce responses into a specific format using `ConversationOptions.ResponseFormat`.
+This feature requires Dapr runtime v1.17.0 or later.
+
+```cs
+using Google.Protobuf.WellKnownTypes;
+
+var responseFormat = new Struct
+{
+    Fields =
+    {
+        ["type"] = new Value { StringValue = "object" },
+        ["properties"] = new Value
+        {
+            StructValue = new Struct
+            {
+                Fields =
+                {
+                    ["answer"] = new Value
+                    {
+                        StructValue = new Struct
+                        {
+                            Fields =
+                            {
+                                ["type"] = new Value { StringValue = "string" }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        ["required"] = new Value
+        {
+            ListValue = new ListValue { Values = { new Value { StringValue = "answer" } } }
+        }
+    }
+};
+
+var options = new ConversationOptions("my-conversation-component")
+{
+    ResponseFormat = responseFormat
+};
+```
+
+## Prompt cache retention
+
+If your conversation component supports prompt caching, you can request a cache retention window using
+`ConversationOptions.PromptCacheRetention`. This feature requires Dapr runtime v1.17.0 or later.
+
+```cs
+var options = new ConversationOptions("my-conversation-component")
+{
+    PromptCacheRetention = TimeSpan.FromMinutes(30)
+};
+```
+
+## Token usage statistics
+
+The response includes optional token usage statistics when supported by the component and runtime. Usage data is
+available on `ConversationResponseResult.Usage` and includes both totals and detailed breakdowns:
+
+```cs
+var response = await daprConversationClient.ConverseAsync(inputs, options);
+var result = response.Outputs[0];
+
+if (result.Usage is not null)
+{
+    var totalTokens = result.Usage.TotalTokens;
+    var promptCachedTokens = result.Usage.PromptTokensDetails?.CachedTokens;
+    var reasoningTokens = result.Usage.CompletionTokensDetails?.ReasoningTokens;
+}
 ```
 
 Sometimes the developer will need to configure the created client using the various configuration options detailed
