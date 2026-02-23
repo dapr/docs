@@ -156,7 +156,7 @@ The Sqlserver state store v1 was introduced in Dapr 1.5. The [pre-existing v1]({
 In the v2 component, the table schema has been changed, with the goal of fully supporting workflows. Most notably, the value stored by Dapr is now of type _VARBINARY_, which allows workflows to store the data without errors.  
 However, due to this change, the v2 component does not support the [Dapr state store query APIs]({{% ref howto-state-query-api.md %}}).
 
-Because of these changes, v1 and v2 components are not able to read or write data from the same table. At this stage, it's also impossible to migrate data between the two versions of the component.
+Because of these changes, v1 and v2 components are not able to read or write data from the same table. It is also not possible to migrate data between the two versions of the component.
 
 ## Related links
 
