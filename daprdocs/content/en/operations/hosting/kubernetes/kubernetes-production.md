@@ -310,7 +310,7 @@ It's recommended that you consider deploying your apps with `automountServiceAcc
 Thus, Dapr does not set `automountServiceAccountToken: false` automatically for you. However, in all situations where the Service Account is not required by your solution, it's recommended that you set this option in the pods spec.
 
 {{% alert title="Note" color="primary" %}}
-Initializing Dapr components using [component secrets]({{% ref "component-secrets.md" %}}) stored as Kubernetes secrets does **not** require a Service Account token, so you can still set `automountServiceAccountToken: false` in this case. Only calling the Kubernetes secret store at runtime, using the [Secrets management]({{% ref "secrets-overview.md" %}}) building block, is impacted.
+Initializing Dapr components using [component secrets]({{% ref "component-secrets.md" %}}) stored as Kubernetes secrets does **not** require your pod to have a Service Account token; the Dapr Operator resolves `secretKeyRef` at injection time. To run with `automountServiceAccountToken: false`, disable the sidecar's built-in Kubernetes secret store with the annotation `dapr.io/disable-builtin-k8s-secret-store: "true"`. Keep the secret store enabled (and mount a token) only if your app uses the runtime [Secrets management]({{% ref "secrets-overview.md" %}}) building block.
 {{% /alert %}}
 
 ## Tracing and metrics configuration
