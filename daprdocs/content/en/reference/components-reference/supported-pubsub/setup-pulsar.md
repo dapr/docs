@@ -273,6 +273,42 @@ curl -X POST http://localhost:3500/v1.0/publish/myPulsar/myTopic?metadata.delive
       }'
 ```
 
+### Enabling message compression
+
+Message compression can reduce message size at the cost of slightly more CPU usage during publishing. Compression is applied at the producer level.
+
+| Compression Type | Description |
+|------------------|-------------|
+| `none` | No compression (default) |
+| `lz4` | LZ4 compression - fast compression/decompression |
+| `zlib` | ZLib compression - balanced compression ratio |
+| `zstd` | ZSTD compression - high compression ratio |
+
+| Compression Level | Description |
+|-------------------|-------------|
+| `default` | Default compression level for the selected type |
+| `faster` | Prioritizes speed over compression ratio |
+| `better` | Prioritizes compression ratio over speed |
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: messagebus
+spec:
+  type: pubsub.pulsar
+  version: v1
+  metadata:
+  - name: host
+    value: "localhost:6650"
+  - name: compressionType
+    value: lz4
+  - name: compressionLevel
+    value: faster
+```
+
+> **Note:** The metadata keys `compressionType` and `compressionLevel` are case-sensitive and must be specified exactly as shown. Compression is applied when publishing messages; consumers automatically decompress regardless of settings.
+
 ### E2E Encryption
 
 Dapr supports setting public and private key pairs to enable Pulsar's [end-to-end encryption feature](https://pulsar.apache.org/docs/3.0.x/security-encryption/).

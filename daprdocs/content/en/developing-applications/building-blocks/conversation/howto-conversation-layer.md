@@ -149,7 +149,7 @@ with DaprClient() as d:
     metadata = {
         'model': 'modelname',
         'key': 'authKey',
-        'cacheTTL': '10m',
+        'responseCacheTTL': '10m',
     }
 
     response = d.converse_alpha1(

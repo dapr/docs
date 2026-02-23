@@ -5,6 +5,13 @@
   since: "1.10"
   features:
     multipleKeyValuesPerSecret: true
+- component: OpenBao
+  link: openbao
+  state: Stable
+  version: v1
+  since: "1.16"
+  features:
+    multipleKeyValuesPerSecret: true
 - component: Local environment variables
   link: envvar-secret-store
   state: Stable

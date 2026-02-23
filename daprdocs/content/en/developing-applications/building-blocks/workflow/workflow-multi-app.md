@@ -72,13 +72,19 @@ Similarly, all app IDs must use the same workflow (or actor) state store.
 Finally, the target app ID must have the activity or child workflow defined and registered, otherwise the parent workflow retries indefinitely.
 {{% /alert %}}
 
+{{% alert title="Note" color="primary" %}}
+Multi-application workflows require Dapr runtime v1.16.0 or later. .NET SDK support is available starting with
+v1.17.0.
+{{% /alert %}}
+
 {{% alert title="Important Limitations" color="warning" %}}
 **SDKs supporting multi-application workflows** - Multi-application workflows are used via the SDKs.
 Currently the following are supported:
 - **Java** (**only** activity calls)
-- **Go** (**both** activities and child workflows calls)
-- **Python** (**both** activities and child workflows calls)
-- The .NET and JavaScript SDKs support are planned for future releases
+- **Go** (**both** activity and child workflow calls)
+- **Python** (**both** activity and child workflow calls)
+- **.NET** (**both** activity and child workflow calls, requires .NET SDK v1.17.0+)
+- JavaScript SDK support is planned for a future release
 {{% /alert %}}
 
 ## Error handling
@@ -151,6 +157,22 @@ def app1_workflow(ctx: wf.DaprWorkflowContext):
 
 {{% /tab %}}
 
+{{% tab ".NET" %}}
+
+```csharp
+public sealed class BusinessWorkflow : Workflow<string, string>
+{
+    public override async Task<string> RunAsync(WorkflowContext context, string input)
+    {
+        var options = new WorkflowTaskOptions { TargetAppId = "App2" };
+        var output = await context.CallActivityAsync<string>(nameof(ActivityA), input, options);
+        return output;
+    }
+}
+```
+
+{{% /tab %}}
+
 {{< /tabpane >}}
 
 ## Multi-application child workflow example
@@ -192,6 +214,22 @@ def workflow1(ctx: wf.DaprWorkflowContext):
 
 {{% /tab %}}
 
+{{% tab ".NET" %}}
+
+```csharp
+public sealed class BusinessWorkflow : Workflow<string, string>
+{
+    public override async Task<string> RunAsync(WorkflowContext context, string input)
+    {
+        var options = new ChildWorkflowTaskOptions { TargetAppId = "App2" };
+        var output = await context.CallChildWorkflowAsync<string>(nameof(Workflow2), input, options);
+        return output;
+    }
+}
+```
+
+{{% /tab %}}
+
 {{< /tabpane >}}
 
 ## Related links
@@ -199,6 +237,7 @@ def workflow1(ctx: wf.DaprWorkflowContext):
 - [Try out Dapr Workflows using the quickstart]({{% ref workflow-quickstart.md %}})
 - [Workflow overview]({{% ref workflow-overview.md %}})
 - [Workflow API reference]({{% ref workflow_api.md %}})
+- [Multi-application workflows in .NET]({{% ref "dotnet-workflow-multi-app.md" %}})
 - Try out the following examples:
    - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
    - [JavaScript](https://github.com/dapr/js-sdk/tree/main/examples/workflow)

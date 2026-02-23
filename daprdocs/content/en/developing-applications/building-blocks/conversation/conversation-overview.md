@@ -14,7 +14,7 @@ Dapr's conversation API reduces the complexity of securely and reliably interact
 
 <img src="/images/conversation-overview.png" width=800 alt="Diagram showing the flow of a user's app communicating with Dapr's LLM components.">
 
-In addition to enabling critical performance and security functionality (like [prompt caching]({{% ref "#prompt-caching" %}}) and [PII scrubbing]({{% ref "#personally-identifiable-information-pii-obfuscation" %}})), the conversation API also provides:
+In addition to enabling critical performance and security functionality (like [caching]({{% ref "#caching" %}}) and [PII scrubbing]({{% ref "#personally-identifiable-information-pii-obfuscation" %}})), the conversation API also provides:
 
 - **Tool calling capabilities** that allow LLMs to interact with external functions and APIs, enabling more sophisticated AI applications
 - **OpenAI-compatible interface** for seamless integration with existing AI workflows and tools
@@ -29,9 +29,20 @@ You can also pair the conversation API with Dapr functionalities, like:
 
 The following features are out-of-the-box for [all the supported conversation components]({{% ref supported-conversation %}}).
 
-### Prompt caching
+### Caching
 
-The Conversation API includes a built-in caching mechanism (enabled by the cacheTTL parameter) that optimizes both performance and cost by storing previous model responses for faster delivery to repetitive requests. This is particularly valuable in scenarios where similar prompt patterns occur frequently. When caching is enabled, Dapr creates a deterministic hash of the prompt text and all configuration parameters, checks if a valid cached response exists for this hash within the time period (for example, 10 minutes), and returns the cached response immediately if found. If no match exists, Dapr makes the API call and stores the result. This eliminates external API calls, lowers latency, and avoids provider charges for repeated requests. The cache exists entirely within your runtime environment, with each Dapr sidecar maintaining its own local cache.
+The Conversation API supports two kinds of caching:
+
+- **Prompt caching**: Some LLM providers cache prompt prefixes on their side to speed up and reduce cost of repeated prompts. You enable this per request via the API using the `promptCacheRetention` parameter (for example, `24h` for OpenAI). See the [Conversation API reference]({{% ref conversation_api.md %}}) for request-level options. Support depends on the provider.
+- **Response caching**: Conversation components can cache full LLM responses in the sidecar. When you set the component metadata field `responseCacheTTL` (for example, `10m`), Dapr caches responses keyed by the request (prompt and options). Repeated identical requests are served from the cache without calling the LLM, reducing latency and cost. This cache is in-memory and per sidecar. Configure this in your [conversation component]({{% ref supported-conversation %}}) spec.
+
+### Response formatting
+
+You can request structured output from the model by passing a `responseFormat` (JSON Schema) in the request. Supported by Deepseek, Google AI, Hugging Face, OpenAI, and Anthropic. See the [Conversation API reference]({{% ref conversation_api.md %}}).
+
+### Usage metrics
+
+Responses can include token usage (`promptTokens`, `completionTokens`, `totalTokens`) for the conversation. See [Response content]({{% ref "conversation_api.md#response-content" %}}) in the API reference.
 
 ### Personally identifiable information (PII) obfuscation
 

@@ -21,7 +21,7 @@ spec:
     value: "http://localhost:4566"
   - name: model
     value: amazon.titan-text-express-v1
-  - name: cacheTTL
+  - name: responseCacheTTL
     value: 10m
 ```
 
@@ -35,7 +35,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|---------|---------|
 | `endpoint`   | N | AWS endpoint for the component to use and connect to emulators. Not recommended for production AWS use. | `http://localhost:4566` |
 | `model` | N | The LLM to use. Defaults to Bedrock's default provider model from Amazon.  | `amazon.titan-text-express-v1` |
-| `cacheTTL` | N | A time-to-live value for a prompt cache to expire. Uses Golang duration format.  | `10m` |
+| `responseCacheTTL` | N | A time-to-live for the in-memory response cache. When set, identical requests are served from cache until they expire. | `10m` |
 
 ## Authenticating AWS
 
