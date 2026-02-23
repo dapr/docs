@@ -8,7 +8,7 @@ aliases:
 ---
 
 {{% alert title="Note" color="primary" %}}
-This is the v2 of the Sql Server state store component, which contains full workflows support. New applications are encouraged to use v2.
+This is the v2 of the Sql Server state store component, which supports Dapr workflows. New applications are encouraged to use v2.
 
 The Sql Server v2 state store component is not compatible with the [v1 component]({{% ref setup-sqlserver.md %}}), and data cannot be migrated between the two components.
 
