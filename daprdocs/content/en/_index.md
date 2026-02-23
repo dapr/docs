@@ -4,17 +4,134 @@ no_list: true
 ---
 # <img src="/images/home-title.png" alt="Dapr Docs" width=400>
 
-Welcome to the Dapr documentation site!
+## Dapr, the distributed application runtime
 
+Dapr provides APIs for communication, state, workflow, and agentic AI. The APIs decouple the application code from the underlying infrastructure ensuring flexibility and portability. Dapr leverages industry best practices for security, resiliency, and observability, so you can focus on your code.
 
-{{% alert title="What is Dapr?" color="primary" %}}
-Dapr is a portable, event-driven runtime that makes it easy for any developer to build resilient, 
-stateless and stateful applications that run on the cloud and edge and embraces the diversity of 
-languages and developer frameworks. Leveraging the benefits of a sidecar architecture, Dapr helps 
-you tackle the challenges that come with building microservices and keeps your code platform agnostic. 
 {{< button text="Get started" page="getting-started.md" >}}
-{{% /alert %}}
 
+### Use Cases
+
+<div class="card-deck">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">
+      <img src="/images/homepage/workflow.svg" alt="Dapr workflow" width=40>
+      <b>Workflow Orchestration</b></h5>
+      <p class="card-text">Orchestrate your microservices reliably with Dapr workflow.</p>
+      <a href="{{% ref workflow-overview %}}" class="stretched-link"></a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">
+      <img src="/images/homepage/dapr-agents.svg" alt="Dapr Agents" width=40>
+      <b>Agentic AI</b></h5>
+      <p class="card-text">Create durable agentic AI applications with Dapr Agents.</p>
+      <a href="{{% ref "../developing-ai/dapr-agents" %}}" class="stretched-link"></a>
+    </div>
+  </div>
+</div>
+<div class="card-deck">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">
+      <img src="/images/homepage/service-invocation.svg" alt="Dapr service invocation API" width=40>
+      <b>Microservices</b></h5>
+      <p class="card-text">Build resilient microservices using the Dapr service invocation API.</p>
+      <a href="{{% ref service-invocation-overview %}}" class="stretched-link"></a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">
+      <img src="/images/homepage/pub-sub.svg" alt="Dapr pub/sub API" width=40>
+      <b>Event Driven Architecture</b></h5>
+      <p class="card-text">Create event-driven applications with the Dapr pub/sub API.</p>
+      <a href="{{% ref pubsub-overview %}}" class="stretched-link"></a>
+    </div>
+  </div>
+</div>
+
+### Languages
+
+<div class="card-deck">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">
+        <img src="/images/homepage/dotnet.png" alt=".NET logo" width=30>
+        <b>.NET</b>
+      </h5>
+      <p class="card-text">
+        Learn more about the .NET SDK.
+      </p>
+      <a href="{{% ref dotnet %}}" class="stretched-link"></a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">
+        <img src="/images/homepage/python.png" alt="Python logo" width=30>
+        <b>Python</b>
+      </h5>
+      <p class="card-text">
+        Learn more about the Python SDK.
+      </p>
+      <a href="{{% ref python %}}" class="stretched-link"></a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">
+        <img src="/images/homepage/javascript.png" alt="JS logo" width=30>
+        <b>JavaScript</b>
+      </h5>
+      <p class="card-text">
+        Learn more about the JavaScript SDK.
+      </p>
+      <a href="{{% ref js %}}" class="stretched-link"></a>
+    </div>
+  </div>
+</div>
+
+<div class="card-deck">
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title">
+        <img src="/images/homepage/javalang.png" alt="Java logo" width=30>
+        <b>Java</b>
+      </h5>
+      <p class="card-text">
+        Learn more about the Java SDK.
+      </p>
+      <a href="{{% ref java %}}" class="stretched-link"></a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">
+        <img src="/images/homepage/golang.svg" alt="Go logo" width=30>
+        <b>Go</b>
+      </h5>
+      <p class="card-text">
+        Learn more about the Go SDK.
+      </p>
+      <a href="{{% ref go %}}" class="stretched-link"></a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">
+        <img src="/images/homepage/php.png" alt="PHP logo" width=30>
+        <b>PHP</b>
+      </h5>
+      <p class="card-text">
+        Learn more about the PHP SDK.
+      </p>
+      <a href="{{% ref php %}}" class="stretched-link"></a>
+    </div>
+  </div>
+</div>
 
 ### Start developing with Dapr
 
@@ -113,9 +230,8 @@ you tackle the challenges that come with building microservices and keeps your c
     </div>
   </div>
 </div>
-<br>
 <div class="card-deck">
-<div class="card">
+  <div class="card">
     <div class="card-body">
       <h5 class="card-title">
         <img src="/images/homepage/code.svg" alt="Code icon" width=40>
@@ -128,81 +244,17 @@ you tackle the challenges that come with building microservices and keeps your c
     </div>
   </div>
 </div>
-<br>
 <div class="card-deck">
   <div class="card">
     <div class="card-body">
       <h5 class="card-title">
-        <img src="/images/homepage/dotnet.png" alt=".NET logo" width=30>
-        <b>.NET</b>
+        <img src="/images/homepage/dark-blue-dapr.svg" alt="Code icon" width=40>
+        <b>Dapr University</b>
       </h5>
       <p class="card-text">
-        Learn more about the .NET SDK.
+        Learn Dapr through a series of free hands-on courses in a cloud-based sandbox environment.
       </p>
-      <a href="{{% ref dotnet %}}" class="stretched-link"></a>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">
-        <img src="/images/homepage/python.png" alt="Python logo" width=30>
-        <b>Python</b>
-      </h5>
-      <p class="card-text">
-        Learn more about the Python SDK.
-      </p>
-      <a href="{{% ref python %}}" class="stretched-link"></a>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">
-        <img src="/images/homepage/javascript.png" alt="JS logo" width=30>
-        <b>JavaScript</b>
-      </h5>
-      <p class="card-text">
-        Learn more about the JavaScript SDK.
-      </p>
-      <a href="{{% ref js %}}" class="stretched-link"></a>
-    </div>
-  </div>
-</div>
-<br>
-<div class="card-deck">
-<div class="card">
-    <div class="card-body">
-      <h5 class="card-title">
-        <img src="/images/homepage/javalang.png" alt="Java logo" width=30>
-        <b>Java</b>
-      </h5>
-      <p class="card-text">
-        Learn more about the Java SDK.
-      </p>
-      <a href="{{% ref java %}}" class="stretched-link"></a>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">
-        <img src="/images/homepage/golang.svg" alt="Go logo" width=30>
-        <b>Go</b>
-      </h5>
-      <p class="card-text">
-        Learn more about the Go SDK.
-      </p>
-      <a href="{{% ref go %}}" class="stretched-link"></a>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">
-        <img src="/images/homepage/php.png" alt="PHP logo" width=30>
-        <b>PHP</b>
-      </h5>
-      <p class="card-text">
-        Learn more about the PHP SDK.
-      </p>
-      <a href="{{% ref php %}}" class="stretched-link"></a>
+      <a href="https://www.diagrid.io/dapr-university" class="stretched-link"></a>
     </div>
   </div>
 </div>

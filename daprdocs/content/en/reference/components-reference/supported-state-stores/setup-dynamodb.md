@@ -34,6 +34,8 @@ spec:
     value: "myTOKEN" # Optional
   - name: ttlAttributeName
     value: "expiresAt" # Optional
+  - name: ttlInSeconds
+    value: <int> # Optional
   - name: partitionKey
     value: "ContractID" # Optional
   # Uncomment this if you wish to use AWS DynamoDB as a state store for actors (optional)
@@ -60,6 +62,7 @@ In order to use DynamoDB as a Dapr state store, the table must have a primary ke
 | endpoint          | N  |AWS endpoint for the component to use. Only used for local development. The `endpoint` is unncessary when running against production AWS   | `"http://localhost:4566"`
 | sessionToken      | N  |AWS session token to use.  A session token is only required if you are using temporary security credentials. | `"TOKEN"`
 | ttlAttributeName  | N  |The table attribute name which should be used for TTL. | `"expiresAt"`
+| ttlInSeconds       | N         | Allows specifying a Time-to-live (TTL) in seconds that will be applied to every state store request unless TTL is explicitly defined via the [request metadata]({{% ref "state-store-ttl.md" %}}). If set to zero or less, no default TTL is applied, and items will only expire if a TTL is explicitly provided in the request metadata with if ttlAttributeName is set. | `600`
 | partitionKey      | N  |The table primary key or partition key attribute name. This field is used to replace the default primary key attribute name `"key"`. See the section [Partition Keys]({{% ref "setup-dynamodb.md#partition-keys" %}}).  | `"ContractID"`
 | actorStateStore      | N  | Consider this state store for actors. Defaults to "false" | `"true"`, `"false"`
 
@@ -157,6 +160,20 @@ $ aws dynamodb get-item \
     }
 }
 ```
+
+## Workflow Limitations
+
+{{% alert title="Note" color="primary" %}}
+
+As described below, DynamoDB has limitations that likely make it unsuitable for production environments.
+There is currently no path for migrating Workflow data from DynamoDB to another state store, meaning exceeding these limits in production will result in failed workflows with no workaround.
+
+{{% /alert %}}
+
+The more complex a workflow is (number of activities, child workflows, etc.), the more state operations it performs per state store transaction.
+The maximum number of operations that can be performed by DynamoDB in a [single transaction is 100](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transaction-apis.html).
+This means that DynamoDB can only handle workflows with a limited complexity, meaning it is not suitable for all workflow scenarios.
+A general guide to the number of records that are saved during a workflow executon can be found [here]({{% ref "workflow-architecture.md#state-store-record-count" %}}).
 
 ## Related links
 

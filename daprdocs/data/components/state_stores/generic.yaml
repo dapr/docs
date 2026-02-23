@@ -63,7 +63,7 @@
     transactions: true
     etag: true
     ttl: true
-    workflow: false
+    workflow: true
 - component: Hashicorp Consul
   link: setup-consul
   state: Alpha
@@ -151,7 +151,7 @@
     transactions: true
     etag: true
     ttl: true
-    workflow: false
+    workflow: true
 - component: PostgreSQL v1
   link: setup-postgresql-v1
   state: Stable
@@ -206,7 +206,7 @@
     transactions: true
     etag: true
     ttl: true
-    workflow: false
+    workflow: true
 - component: Zookeeper
   link: setup-zookeeper
   state: Alpha

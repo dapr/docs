@@ -16,8 +16,8 @@ The following branches are currently maintained:
 
 | Branch                                                       | Website                    | Description                                                                                      |
 | ------------------------------------------------------------ | -------------------------- | ------------------------------------------------------------------------------------------------ |
-| [v1.15](https://github.com/dapr/docs) (primary)               | https://docs.dapr.io       | Latest Dapr release documentation. Typo fixes, clarifications, and most documentation goes here. |
-| [v1.16](https://github.com/dapr/docs/tree/v1.16) (pre-release) | https://v1-16.docs.dapr.io/ | Pre-release documentation. Doc updates that are only applicable to v1.15+ go here.                |
+| [v1.16](https://github.com/dapr/docs) (primary)               | https://docs.dapr.io       | Latest Dapr release documentation. Typo fixes, clarifications, and most documentation goes here. |
+| [v1.17](https://github.com/dapr/docs/tree/v1.16) (pre-release) | https://v1-17.docs.dapr.io/ | Pre-release documentation. Doc updates that are only applicable to v1.16+ go here.                |
 
 For more information visit the [Dapr branch structure](https://docs.dapr.io/contributing/docs-contrib/contributing-docs/#branch-guidance) document.
 
@@ -76,10 +76,9 @@ Continue with the [Run local server](#run-local-server) steps.
 git submodule update --init --recursive
 ```
 
-1. Navigate back to the repository root and install npm packages:
+1. Install the npm packages:
 
 ```sh
-cd ..
 npm install
 ```
 

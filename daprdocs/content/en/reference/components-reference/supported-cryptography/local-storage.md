@@ -32,8 +32,8 @@ metadata:
   name: mycrypto
 spec:
   type: crypto.dapr.localstorage
+  version: v1
   metadata:
-    version: v1
     - name: path
       value: /path/to/folder/
 ```

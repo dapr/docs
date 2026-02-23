@@ -16,23 +16,72 @@ For example, you can use the outbox pattern to:
 
 With Dapr's outbox support, you can notify subscribers when an application's state is created or updated when calling Dapr's [transactions API]({{% ref "state_api.md#state-transactions" %}}).
 
-The diagram below is an overview of how the outbox feature works:
+The diagram below is an overview of how the outbox feature works at a high level:
 
 1) Service A saves/updates state to the state store using a transaction.
 2) A message is written to the broker under the same transaction. When the message is successfully delivered to the message broker, the transaction completes, ensuring the state and message are transacted together.
 3) The message broker delivers the message topic to any subscribers - in this case, Service B.
 
-<img src="/images/state-management-outbox.png" width=800 alt="Diagram showing the steps of the outbox pattern">
+<img src="/images/state-management-outbox.png" width=800 alt="Diagram showing the overview of outbox pattern">
 
+## How outbox works under the hood
+
+Dapr outbox processes requests in two flows: the user request flow and the background message flow. Together, they guarantee that state and events stay consistent.
+
+<img src="/images/state-management-outbox-steps.png" width=800 alt="Diagram showing the steps of the outbox pattern">
+
+This is the sequence of interactions:
+
+1. An application calls the Dapr State Management API to write state transactionally using the transactional methods.  
+   This is the entry point where business data, such as an order or profile update, is submitted for persistence.
+
+2. Dapr publishes an intent message with a unique transaction ID to an internal outbox topic.  
+   This durable record ensures the event intent exists before any database commit happens.
+
+3. The state and a transaction marker are written atomically in the same state store.  
+   Both the business data and the marker are committed in the same transaction, preventing partial writes.
+
+4. The application receives a success response after the transaction commits.  
+   At this point, the application can continue, knowing state is saved and the event intent is guaranteed.
+
+5. A background subscriber reads the intent message.  
+   When outbox is enabled, Dapr starts consumers that process the internal outbox topic.
+
+6. The subscriber verifies the transaction marker in the state store.  
+   This check confirms that the database commit was successful before publishing externally.
+
+7. Verified business event is published to the external pub/sub topic.  
+   The event is sent to the configured broker (Kafka, RabbitMQ, etc.) where other services can consume it.
+
+8. The marker is cleaned up (deleted) from the state store.  
+   This prevents unbounded growth in the database once the event has been successfully delivered.
+
+9. Message is acknowledged and removed from internal topic  
+   If publishing or cleanup fails, Dapr retries, ensuring reliable at-least-once delivery.
+  
 ## Requirements
 
-The outbox feature can be used with using any [transactional state store]({{% ref supported-state-stores %}}) supported by Dapr. All [pub/sub brokers]({{% ref supported-pubsub %}}) are supported with the outbox feature.
+1. The outbox feature requires a [transactional state store]({{% ref supported-state-stores %}}) supported by Dapr.  
+   [Learn more about the transactional methods you can use.]({{% ref "howto-get-save-state.md#perform-state-transactions" %}})
 
-[Learn more about the transactional methods you can use.]({{% ref "howto-get-save-state.md#perform-state-transactions" %}})
+2. Any [pub/sub broker]({{% ref supported-pubsub %}}) supported by Dapr can be used with the outbox feature.
 
-{{% alert title="Note" color="primary" %}} 
-Message brokers that work with the competing consumer pattern (for example, [Apache Kafka]({{% ref setup-apache-kafka%}})) are encouraged to reduce the chances of duplicate events.
-{{% /alert %}}
+   {{% alert title="Note" color="primary" %}}
+   Message brokers that support the competing consumer pattern (for example, [Apache Kafka]({{% ref setup-apache-kafka%}})) are recommended to reduce the chance of duplicate events.
+   {{% /alert %}}
+
+3. Internal outbox topic  
+   When outbox is enabled, Dapr creates an internal topic using the following naming convention: `{namespace}{appID}{topic}outbox`, where:
+
+   - `namespace`: the Dapr application namespace (if configured)
+   - `appID`: the Dapr application identifier
+   - `topic`: the value specified in the `outboxPublishTopic` metadata
+
+   This way each outbox topic is uniquely identified per application and external topic, preventing routing conflicts in multi-tenant environments.
+
+   {{% alert title="Note" color="primary" %}}
+   Ensure that the topic is created in advance, or Dapr has sufficient permissions to create the topic at startup time.
+   {{% /alert %}}
 
 ## Enable the outbox pattern
 
@@ -132,28 +181,20 @@ DAPR_STORE_NAME = "statestore"
 async def main():
     client = DaprClient()
 
-    # Define the first state operation to save the value "2"
-    op1 = StateItem(
-        key="key1",
-        value=b"2"
+    client.execute_state_transaction(
+       store_name=DAPR_STORE_NAME,
+       operations=[
+          # Define the first state operation to save the value "2"
+          TransactionalStateOperation(
+             key='key1', data='2', metadata={'outbox.projection': 'false'}
+          ),
+          # Define the second state operation to publish the value "3" with metadata
+          TransactionalStateOperation(
+             key='key1', data='3', metadata={'outbox.projection': 'true'}
+          ),
+       ],
     )
 
-    # Define the second state operation to publish the value "3" with metadata
-    op2 = StateItem(
-        key="key1",
-        value=b"3",
-        options=StateOptions(
-            metadata={
-                "outbox.projection": "true"
-            }
-        )
-    )
-
-    # Create the list of state operations
-    ops = [op1, op2]
-
-    # Execute the state transaction
-    await client.state.transaction(DAPR_STORE_NAME, operations=ops)
     print("State transaction executed.")
 ```
 
@@ -281,30 +322,45 @@ public class Main {
     public static void main(String[] args) {
         try (DaprClient client = new DaprClientBuilder().build()) {
             // Define the first state operation to save the value "2"
-            StateOperation<String> op1 = new StateOperation<>(
-                    StateOperationType.UPSERT,
+            State<String> state1 = new State<>(
                     "key1",
-                    "2"
+                    "2",
+                    null, // etag
+                    null // concurrency and consistency options
             );
 
             // Define the second state operation to publish the value "3" with metadata
             Map<String, String> metadata = new HashMap<>();
             metadata.put("outbox.projection", "true");
 
-            StateOperation<String> op2 = new StateOperation<>(
-                    StateOperationType.UPSERT,
+            State<String> state2 = new State<>(
                     "key1",
                     "3",
-                    metadata
+                    null, // etag
+                    metadata, 
+                    null // concurrency and consistency options
+            );
+            
+            TransactionalStateOperation<String> op1 = new TransactionalStateOperation<>(
+                TransactionalStateOperation.OperationType.UPSERT, state1
             );
 
-            // Create the list of state operations
-            List<StateOperation<?>> ops = new ArrayList<>();
+            TransactionalStateOperation<String> op2 = new TransactionalStateOperation<>(
+                TransactionalStateOperation.OperationType.UPSERT, state2
+            );
+
+            // Create the list of transaction state operations
+            List<TransactionalStateOperation<?>> ops = new ArrayList<>();
             ops.add(op1);
             ops.add(op2);
 
+            // Configure transaction request setting the state store
+            ExecuteStateTransactionRequest transactionRequest = new ExecuteStateTransactionRequest(DAPR_STORE_NAME);
+            
+            transactionRequest.setOperations(ops);
+
             // Execute the state transaction
-            client.executeStateTransaction(DAPR_STORE_NAME, ops).block();
+            client.executeStateTransaction(transactionRequest).block();
             System.out.println("State transaction executed.");
         } catch (Exception e) {
             e.printStackTrace();
@@ -554,39 +610,42 @@ public class StateOperationExample {
         executeStateTransaction();
     }
 
-    public static void executeStateTransaction() {
-        // Build Dapr client
-        try (DaprClient daprClient = new DaprClientBuilder().build()) {
+  public static void executeStateTransaction() {
+    // Build Dapr client
+    try (DaprClient daprClient = new DaprClientBuilder().build()) {
 
-            // Define the value "2"
-            String value = "2";
+      // Override CloudEvent metadata
+      Map<String, String> metadata = new HashMap<>();
+      metadata.put("cloudevent.id", "unique-business-process-id");
+      metadata.put("cloudevent.source", "CustomersApp");
+      metadata.put("cloudevent.type", "CustomerCreated");
+      metadata.put("cloudevent.subject", "123");
+      metadata.put("my-custom-ce-field", "abc");
 
-            // Override CloudEvent metadata
-            Map<String, String> metadata = new HashMap<>();
-            metadata.put("cloudevent.id", "unique-business-process-id");
-            metadata.put("cloudevent.source", "CustomersApp");
-            metadata.put("cloudevent.type", "CustomerCreated");
-            metadata.put("cloudevent.subject", "123");
-            metadata.put("my-custom-ce-field", "abc");
+      State<String> state = new State<>(
+          "key1", // Define the key "key1"
+          "value1", // Define the value "value1"
+          null, // etag
+          metadata,
+          null // concurrency and consistency options
+      );
 
-            // Define state operations
-            List<StateOperation<?>> ops = new ArrayList<>();
-            StateOperation<String> op1 = new StateOperation<>(
-                    StateOperationType.UPSERT,
-                    "key1",
-                    value,
-                    metadata
-            );
-            ops.add(op1);
+      // Define state operations
+      List<TransactionalStateOperation<?>> ops = new ArrayList<>();
+      TransactionalStateOperation<String> op1 = new TransactionalStateOperation<>(
+          TransactionalStateOperation.OperationType.UPSERT,
+          state
+      );
+      ops.add(op1);
 
-            // Execute state transaction
-            String storeName = "your-state-store-name";
-            daprClient.executeStateTransaction(storeName, ops).block();
-            System.out.println("State transaction executed.");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+      // Execute state transaction
+      String storeName = "your-state-store-name";
+      daprClient.executeStateTransaction(storeName, ops).block();
+      System.out.println("State transaction executed.");
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+  }
 }
 ```
 {{% /tab %}}
@@ -682,3 +741,7 @@ The `data` CloudEvent field is reserved for Dapr's use only, and is non-customiz
 Watch [this video for an overview of the outbox pattern](https://youtu.be/rTovKpG0rhY?t=1338):
 
 {{< youtube id=rTovKpG0rhY start=1338 >}}
+
+## Next Steps
+
+[How Dapr Outbox Eliminates Dual Writes in Distributed Applications](https://www.diagrid.io/blog/how-dapr-outbox-eliminates-dual-writes-in-distributed-applications)

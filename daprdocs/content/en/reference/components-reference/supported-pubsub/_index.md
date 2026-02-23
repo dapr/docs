@@ -2,7 +2,7 @@
 type: docs
 title: "Pub/sub brokers component specs"
 linkTitle: "Pub/sub brokers"
-weight: 1000
+weight: 8000
 description: The supported pub/sub brokers that interface with Dapr
 aliases:
   - "/operations/components/setup-pubsub/supported-pubsub/"

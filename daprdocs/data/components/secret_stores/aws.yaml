@@ -3,6 +3,8 @@
   state: Beta
   version: v1
   since: "1.15"
+  features:
+    multipleKeyValuesPerSecret: true
 - component: AWS SSM Parameter Store
   link: aws-parameter-store
   state: Alpha
