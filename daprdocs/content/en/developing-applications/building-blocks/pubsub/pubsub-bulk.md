@@ -23,8 +23,8 @@ The bulk publish operation also does not guarantee any ordering of messages.
 {{% tab "Java" %}}
 
 ```java
+import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
-import io.dapr.client.DaprPreviewClient;
 import io.dapr.client.domain.BulkPublishResponse;
 import io.dapr.client.domain.BulkPublishResponseFailedEntry;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ class BulkPublisher {
   private static final String TOPIC_NAME = "topic-a";
 
   public void publishMessages() {
-    try (DaprPreviewClient client = (new DaprClientBuilder()).buildPreviewClient()) {
+    try (DaprClient client = (new DaprClientBuilder()).build()) {
       // Create a list of messages to publish
       List<String> messages = new ArrayList<>();
       for (int i = 0; i < 10; i++) {

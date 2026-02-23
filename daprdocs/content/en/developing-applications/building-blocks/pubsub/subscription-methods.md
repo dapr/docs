@@ -467,6 +467,10 @@ The dynamic programmatic approach returns the `routes` JSON structure within the
 
 > **Note:** Programmatic subscriptions are only read once during application start-up. You cannot _dynamically_ add new programmatic subscriptions, only at new ones at compile time.
 
+{{% alert title="Disabling programmatic subscriptions" color="primary" %}}
+If your application does not use programmatic subscriptions, the automatic HTTP call to `/dapr/subscribe` can be disabled to reduce log noise. Use the `--disable-init-endpoints subscribe` flag with `dapr run`, or the `dapr.io/disable-init-endpoints: "subscribe"` annotation in Kubernetes. [Learn more about disabling initialization endpoints.]({{% ref "arguments-annotations-overview#disable-init-endpoints" %}})
+{{% /alert %}}
+
 In the example below, you define the values found in the [declarative YAML subscription](#declarative-subscriptions) above within the application code.
 
 {{< tabpane text=true >}}

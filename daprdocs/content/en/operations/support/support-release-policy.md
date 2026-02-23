@@ -45,6 +45,10 @@ The table below shows the versions of Dapr releases that have been tested togeth
 
 | Release date | Runtime     | CLI  | SDKs  | Dashboard  | Status | Release notes |
 |--------------------|:--------:|:--------|---------|---------|---------|------------|
+| Feb 12th 2026 | 1.16.9</br> | 1.16.5 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported (current) | [v1.16.9 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.9)   |
+| Jan 26th 2026 | 1.16.8</br> | 1.16.5 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported (current) | [v1.16.8 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.8)   |
+| Jan 20th 2026 | 1.16.7</br> | 1.16.5 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported (current) | [v1.16.7 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.7)   |
+| Jan 20th 2026 | 1.16.7</br> | 1.16.5 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported (current) | [v1.16.7 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.7)   |
 | Jan 9th 2026 | 1.16.6</br> | 1.16.5 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported (current) | [v1.16.6 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.6)   |
 | Dec 19th 2025 | 1.16.5</br> | 1.16.5 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported (current) | [v1.16.5 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.5)   |
 | Dec 8th 2025 | 1.16.4</br> | 1.16.5 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported (current) | [v1.16.4 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.4)   |
