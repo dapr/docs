@@ -5,6 +5,8 @@
 on:
   pull_request_target:
     types: [opened, synchronize, reopened, ready_for_review, edited]
+    paths:
+      - 'sdkdocs/**'
 
 # Token scopes needed: label, review, and merge for repo actions.
 permissions:
