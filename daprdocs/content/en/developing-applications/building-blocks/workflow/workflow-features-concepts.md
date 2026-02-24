@@ -523,32 +523,6 @@ task.Await(nil)
 
 {{< /tabpane >}}
 
-### Versioning Process Guidance
-
-Because named workflows are fully compatible with patches, the approach is that changes to your workflow are initially
-made by applying patches to your existing workflow logic. Eventually you'll hit one of the following problems after
-applying several patches:
-- You're concerned about the overhead to your workflow state history because of the number of applied patches;
-- The golden path through your workflow logic is hard to follow;
-- You need to make another workflow tweak, but can't figure out how to apply a patch that doesn't break the
-  determinism guarantee.
-
-At this point, the recommendation is that you introduce a named version of your workflow. Copy your existing
-workflow, change its name to reflect whatever versioning strategy you're using in your SDK and refactor to remove all
-your patches and retain only your intended "latest" logic. Apply your new changes (no need for a patch here – it's a
-new workflow) and deploy it.
-
-Here, apply patches again as needed to address future changes and when necessary, introduce another named workflow
-version and continue. Repeat this process indefinitely.
-
-It is recommended that you retain old workflow versions until you're completely confident that nothing is in-flight
-(including deferred with a long-running timer) that uses any of your old workflow versions.
-
-Workflow versioning doesn't address changing the types of inputs and outputs of the workflows themselves. As general
-guidance, it is recommended to either return serialized values like strings (making the consumer of the output
-responsible for being able to deserialize different outputs over time) or adopt complex types that incorporate
-optional properties to include new expected output values.
-
 ### Updating workflow code
 Make sure updates you make to the workflow code maintain its determinism. Here are a few example of code updates
 that can break workflow determinism:
@@ -575,8 +549,3 @@ patch and introduce new named workflow versions to incorporate changes to your w
    - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
    - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
    - [Go](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)
-
-
-
-
-
