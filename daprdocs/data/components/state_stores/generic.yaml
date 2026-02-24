@@ -24,7 +24,7 @@
   link: setup-clickhouse
   state: Alpha
   version: v1
-  since: "1.16"
+  since: "1.17"
   features:
     crud: true
     transactions: false

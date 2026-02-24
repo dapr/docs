@@ -20,7 +20,7 @@ spec:
   type: state.clickhouse
   version: v1
   metadata:
-  - name: clickhouseURL
+  - name: clickhouseUrl
     value: <CONNECTION_URL>
   - name: databaseName
     value: <DATABASE_NAME>
@@ -40,7 +40,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| clickhouseURL      | Y        | Connection URL for the ClickHouse server | `"clickhouse://localhost:9000"`, `"clickhouse://clickhouse-server:9000"` |
+| clickhouseUrl      | Y        | Connection URL for the ClickHouse server | `"tcp://localhost:9000"`, `"tcp://clickhouse-server:9000"` |
 | databaseName       | Y        | Name of the database to use | `"dapr_state"`, `"my_database"` |
 | tableName          | Y        | Name of the table to store state data | `"state_table"`, `"dapr_state_store"` |
 | username           | N        | Username for ClickHouse authentication. Can be `secretKeyRef` to use a secret reference | `"default"`, `"my_user"` |
@@ -89,11 +89,11 @@ You can use [Helm](https://helm.sh/) to quickly create a ClickHouse instance in 
 
 3. Run `kubectl get pods` to see the ClickHouse containers now running in your cluster.
 
-4. Add the ClickHouse service endpoint as the `clickhouseURL` in your component configuration. For example:
+4. Add the ClickHouse service endpoint as the `clickhouseUrl` in your component configuration. For example:
    ```yaml
    metadata:
-   - name: clickhouseURL
-     value: "clickhouse://clickhouse:9000"
+   - name: clickhouseUrl
+     value: "tcp://clickhouse:9000"
    ```
 
 {{% /tab %}}
@@ -162,13 +162,13 @@ The table uses ClickHouse's `ReplacingMergeTree` engine, which automatically ded
 The ClickHouse connection URL follows the standard format:
 
 ```
-clickhouse://[username[:password]@]host[:port][/database][?param1=value1&...&paramN=valueN]
+tcp://[host[:port]][/database][?param1=value1&...&paramN=valueN]
 ```
 
 Examples:
-- `clickhouse://localhost:9000`
-- `clickhouse://user:password@clickhouse-server:9000/my_db`
-- `clickhouse://localhost:9000?dial_timeout=10s&max_execution_time=60`
+- `tcp://localhost:9000`
+- `tcp://clickhouse-server:9000/my_db`
+- `tcp://localhost:9000?dial_timeout=10s&max_execution_time=60`
 
 ### Performance Considerations
 
@@ -179,11 +179,13 @@ Examples:
 
 ### Bulk Operations
 
-The ClickHouse state store supports bulk operations for improved performance:
+The ClickHouse state store supports bulk operations as convenience methods:
 
-- `BulkGet`: Retrieve multiple keys in a single operation
-- `BulkSet`: Store multiple key-value pairs in a single operation  
-- `BulkDelete`: Delete multiple keys in a single operation
+- `BulkGet`: Retrieve multiple keys
+- `BulkSet`: Store multiple key-value pairs
+- `BulkDelete`: Delete multiple keys
+
+These operations iterate over each key individually.
 
 ## Related links
 
