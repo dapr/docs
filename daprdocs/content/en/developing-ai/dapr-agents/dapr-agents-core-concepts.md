@@ -326,7 +326,7 @@ By ensuring the following statestores with these metadata names are present, the
     The default team name is set to `default`.
 - `agent-statestore`: Agent Memory statestore  
     The default key is set to the agents name in lowercase with space replaced by `-` with the `-session` suffix.
-- `agent-runtimestatestore`: Agent runtime configuration
+- `agent-runtime`: Agent runtime configuration
     The statestore is loaded with key `agent_runtime` expecting field `data` containing a dictionary (i.e., `{ "key": "value" }`)
     currently the agent supports auto-instrumenting itself with OpenTelemetry by setting the following available options:
 
