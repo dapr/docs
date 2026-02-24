@@ -154,7 +154,7 @@ params:
     - version: v1.18 (preview)
       url: https://v1-18.docs.dapr.io
     - version: v1.17 (latest)
-      url: "#""
+      url: "#"
     - version: v1.16
       url: https://v1-16.docs.dapr.io
     - version: v1.15
