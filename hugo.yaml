@@ -138,6 +138,11 @@ params:
   # Set this flag to "true" if you want to display the banner.
   archived_version: false
 
+  # Flag used in the "version-banner" partial to decide whether to display a
+  # banner on every page indicating that this is an archived version of the docs.
+  # Set this flag to "true" if you want to display the banner.
+  archived_version: false
+
   # A link to latest version of the docs. Used in the "version-banner" partial to
   # point people to the main doc site.
   url_latest_version: https://docs.dapr.io

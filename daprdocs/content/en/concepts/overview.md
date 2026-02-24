@@ -53,7 +53,7 @@ Each of these building block APIs is independent, meaning that you can use any n
 | [**Distributed lock**]({{% ref "distributed-lock-api-overview" %}})  | The distributed lock API enables your application to acquire a lock for any resource that gives it exclusive access until either the lock is released by the application, or a lease timeout occurs. 
 | [**Cryptography**]({{% ref "cryptography-overview" %}}) | The cryptography API provides an abstraction layer on top of security infrastructure such as key vaults. It contains APIs that allow you to perform cryptographic operations, such as encrypting and decrypting messages, without exposing keys to your applications.
 | [**Jobs**]({{% ref "jobs-overview" %}}) | The jobs API enables you to schedule jobs at specific times or intervals.
-| [**Conversation**]({{% ref "conversation-overview" %}}) | The conversation API enables you to abstract the complexities of interacting with large language models (LLMs) and includes features such as prompt caching and personally identifiable information (PII) obfuscation. Using [conversation components]({{% ref supported-conversation %}}), you can supply prompts to converse with different LLMs. 
+| [**Conversation**]({{% ref "conversation-overview" %}}) | The conversation API enables you to abstract the complexities of interacting with large language models (LLMs) and includes features such as prompt caching, response formatting, usage metrics, and personally identifiable information (PII) obfuscation. Using [conversation components]({{% ref supported-conversation %}}), you can supply prompts to converse with different LLMs. 
 
 ### Cross-cutting APIs
 

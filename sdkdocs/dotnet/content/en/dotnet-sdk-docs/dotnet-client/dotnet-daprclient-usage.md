@@ -106,14 +106,20 @@ The SDK will read the following environment variables to configure the default v
 
 - `DAPR_HTTP_ENDPOINT`: used to find the HTTP endpoint of the Dapr sidecar, example: `https://dapr-api.mycompany.com`
 - `DAPR_GRPC_ENDPOINT`: used to find the gRPC endpoint of the Dapr sidecar, example: `https://dapr-grpc-api.mycompany.com`
-- `DAPR_HTTP_PORT`: if `DAPR_HTTP_ENDPOINT` is not set, this is used to find the HTTP local endpoint of the Dapr sidecar
-- `DAPR_GRPC_PORT`: if `DAPR_GRPC_ENDPOINT` is not set, this is used to find the gRPC local endpoint of the Dapr sidecar
+- `DAPR_HTTP_PORT`: if `DAPR_HTTP_ENDPOINT` is not set, this is used to find the HTTP local endpoint of the Dapr sidecar assuming '127.0.0.1'
+- `DAPR_GRPC_PORT`: if `DAPR_GRPC_ENDPOINT` is not set, this is used to find the gRPC local endpoint of the Dapr sidecar assuming '127.0.0.1'
 - `DAPR_API_TOKEN`: used to set the API Token
 
 {{% alert title="Note" color="primary" %}}
 If both `DAPR_HTTP_ENDPOINT` and `DAPR_HTTP_PORT` are specified, the port value from `DAPR_HTTP_PORT` will be ignored in favor of the port
 implicitly or explicitly defined on `DAPR_HTTP_ENDPOINT`. The same is true of both `DAPR_GRPC_ENDPOINT` and `DAPR_GRPC_PORT`.
 {{% /alert %}}
+
+As a general rule, either both the HTTP and gRPC ports or both the HTTP and gRPC endpoints should be specified. 
+Practically speaking, whether HTTP or gRPC is used depends on the specific Dapr services you're using and whether the .NET
+SDK supports an HTTP or gRPC protocol. Over time, the vast majority of the .NET SDK will support gRPC exclusively, but 
+this will never be the case for all services, so it's a better practice to future-proof your application and always 
+specify both values.
 
 ### Configuring gRPC channel options
 

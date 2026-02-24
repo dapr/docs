@@ -29,6 +29,14 @@ spec:
       endpointAddress: <REPLACE-WITH-ENDPOINT-ADDRESS>
       isSecure: <TRUE-OR-FALSE>
       protocol: <HTTP-OR-GRPC>
+      headers:
+        - name: <HEADER-NAME>
+          value: <HEADER-VALUE>
+        - name: <HEADER-NAME>
+          secretKeyRef:
+            name: <SECRET-STORE-NAME>
+            key: <SECRET-KEY>
+      timeout: <DURATION>
   metrics:
     enabled: <TRUE-OR-FALSE>
     rules:

@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "How to: Create an use Dapr Cryptography in the .NET SDK"
+title: "How to: Create and use Dapr Cryptography in the .NET SDK"
 linkTitle: "How to: Use the Cryptography client"
 weight: 510100
 description: Learn how to create and use the Dapr Cryptography client using the .NET SDK
