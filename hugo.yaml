@@ -1,4 +1,4 @@
-baseURL: https://v1-17.docs.dapr.io
+baseURL: https://v1-18.docs.dapr.io
 title: Dapr Docs
 
 # Output directory for generated site
@@ -121,7 +121,7 @@ params:
   # Versioning
   # Menu title if your navbar has a versions selector to access old versions of your site.
   # This menu appears only if you have at least one [params.versions] set.
-  version_menu: v1.17 (preview)
+  version_menu: v1.18 (preview)
 
   # Flag used in the "version-banner" partial to decide whether to display a
   # banner on every page indicating that this is an archived version of the docs.
@@ -131,7 +131,7 @@ params:
   # The version number for the version of the docs represented in this doc set.
   # Used in the "version-banner" partial to display a version number for the
   # current doc set.
-  version: v1.17
+  version: v1.18
 
   # Flag used in the "version-banner" partial to decide whether to display a
   # banner on every page indicating that this is an archived version of the docs.
@@ -158,13 +158,15 @@ params:
 
   # Uncomment this if your GitHub repo does not have "main" as the default branch,
   # or specify a new value if you want to reference another branch in your GitHub links
-  github_branch: v1.17
+  github_branch: v1.18
 
   versions:
-    - version: v1.17 (preview)
+    - version: v1.18 (preview)
       url: "#"
-    - version: v1.16 (latest)
+    - version: v1.17 (latest)
       url: https://docs.dapr.io
+    - version: v1.16
+      url: https://v1-16.docs.dapr.io
     - version: v1.15
       url: https://v1-15.docs.dapr.io
     - version: v1.14
