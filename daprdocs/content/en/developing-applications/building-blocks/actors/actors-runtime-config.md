@@ -6,7 +6,7 @@ weight: 30
 description: Modify the default Dapr actor runtime configuration behavior
 ---
 
-You can modify the default Dapr actor runtime behavior using the following configuration parameters. 
+You can modify the default Dapr actor runtime behavior using the following configuration parameters.
 
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
@@ -16,7 +16,6 @@ You can modify the default Dapr actor runtime behavior using the following confi
 | `drainOngoingCallTimeout` | The duration when in the process of draining rebalanced actors. This specifies the timeout for the current active actor method to finish. If there is no current actor method call, this is ignored. | 60 seconds |
 | `drainRebalancedActors` | If true, Dapr will wait for `drainOngoingCallTimeout` duration to allow a current actor call to complete before trying to deactivate an actor. | true |
 | `reentrancy` (`ActorReentrancyConfig`) | Configure the reentrancy behavior for an actor. If not provided, reentrancy is disabled. | disabled, false |
-| `remindersStoragePartitions` | Configure the number of partitions for actor's reminders. If not provided, all reminders are saved as a single record in actor's state store. | 0 |
 | `entitiesConfig` | Configure each actor type individually with an array of configurations. Any entity specified in the individual entity configurations must also be specified in the top level `entities` field. | N/A |
 
 ## Examples
@@ -39,7 +38,6 @@ public void ConfigureServices(IServiceCollection services)
         options.ActorScanInterval = TimeSpan.FromSeconds(30);
         options.DrainOngoingCallTimeout = TimeSpan.FromSeconds(60);
         options.DrainRebalancedActors = true;
-        options.RemindersStoragePartitions = 7;
         options.ReentrancyConfig = new() { Enabled = false };
 
         // Add a configuration for a specific actor type.
@@ -81,7 +79,6 @@ const clientOptions = {
       enabled: true,
       maxStackDepth: 32,
     },
-    remindersStoragePartitions: 0,
   },
 };
 
@@ -112,7 +109,6 @@ ActorRuntime.set_actor_config(
         drain_ongoing_call_timeout=timedelta(minutes=1),
         drain_rebalanced_actors=True,
         reentrancy=ActorReentrancyConfig(enabled=False),
-        remindersStoragePartitions=7
     )
 )
 ```
@@ -134,7 +130,6 @@ ActorRuntime.getInstance().getConfig().setActorScanInterval(Duration.ofSeconds(3
 ActorRuntime.getInstance().getConfig().setDrainOngoingCallTimeout(Duration.ofSeconds(60));
 ActorRuntime.getInstance().getConfig().setDrainBalancedActors(true);
 ActorRuntime.getInstance().getConfig().setActorReentrancyConfig(false, null);
-ActorRuntime.getInstance().getConfig().setRemindersStoragePartitions(7);
 ```
 
 [See the documentation on writing actors with the Java SDK]({{% ref "java#actors" %}}).

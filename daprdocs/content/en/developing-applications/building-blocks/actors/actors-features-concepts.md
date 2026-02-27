@@ -8,13 +8,13 @@ aliases:
   - "/developing-applications/building-blocks/actors/actors-background"
 ---
 
-Now that you've learned about the [actor building block]({{% ref "actors-overview" %}}) at a high level, let's deep dive into the features and concepts included with actors in Dapr. 
+Now that you've learned about the [actor building block]({{% ref "actors-overview" %}}) at a high level, let's deep dive into the features and concepts included with actors in Dapr.
 
 ## Actor lifetime
 
 Dapr actors are virtual, meaning that their lifetime is not tied to their in-memory representation. As a result, they do not need to be explicitly created or destroyed. The Dapr actor runtime automatically activates an actor the first time it receives a request for that actor ID. If an actor is not used for a period of time, the Dapr actor runtime garbage-collects the in-memory object. It will also maintain knowledge of the actor's existence should it need to be reactivated later.
 
-Invocation of actor methods, timers, and reminders reset the actor idle time. For example, a reminder firing keeps the actor active. 
+Invocation of actor methods, timers, and reminders reset the actor idle time. For example, a reminder firing keeps the actor active.
 - Actor reminders fire whether an actor is active or inactive. If fired for an inactive actor, it activates the actor first.
 - Actor timers firing reset the idle time; however, timers only fire while the actor is active.
 
@@ -28,7 +28,7 @@ An actor is automatically activated (causing an actor object to be constructed) 
 
 To provide scalability and reliability, actors instances are distributed throughout the cluster and Dapr automatically migrates them from failed nodes to healthy ones as required.
 
-Actors are distributed across the instances of the actor service, and those instance are distributed across the nodes in a cluster. Each service instance contains a set of actors for a given actor type.
+Actors are distributed across the instances of the actor service, and those instances are distributed across the nodes in a cluster. Each service instance contains a set of actors for a given actor type.
 
 ### Actor placement service
 

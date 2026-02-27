@@ -21,7 +21,7 @@ spec:
     value: "mykey"
   - name: model
     value: claude-3-5-sonnet-20240620
-  - name: cacheTTL
+  - name: responseCacheTTL
     value: 10m
 ```
 
@@ -35,7 +35,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|---------|---------|
 | `key`   | Y | API key for Anthropic. | `"mykey"` |
 | `model` | N | The Anthropic LLM to use. Defaults to `claude-3-5-sonnet-20240620`  | `claude-3-5-sonnet-20240620` |
-| `cacheTTL` | N | A time-to-live value for a prompt cache to expire. Uses Golang duration format.  | `10m` |
+| `responseCacheTTL` | N | Time-to-live for the in-memory response cache. When set, identical requests are served from cache until they expire. | `10m` |
 
 ## Related links
 

@@ -10,11 +10,14 @@ aliases:
 
 Actors can schedule periodic work on themselves by registering either timers or reminders.
 
-The functionality of timers and reminders is very similar. The main difference is that Dapr actor runtime is not retaining any information about timers after deactivation, while persisting the information about reminders using Dapr actor state provider.
+The functionality of timers and reminders is very similar. The main difference is that Dapr actor runtime is not retaining any information about timers after deactivation, while persisting the information about reminders using Dapr [Scheduler]({{% ref scheduler.md %}}).
 
 This distinction allows users to trade off between light-weight but stateless timers vs. more resource-demanding but stateful reminders.
 
-The scheduling configuration of timers and reminders is identical, as summarized below:
+The scheduling configuration of timers and reminders is summarized below:
+
+---
+`data` is an optional parameter that contains the data passed to the reminder callback method when invoked
 
 ---
 `dueTime` is an optional parameter that sets time at which or time interval before the callback is invoked for the first time. If `dueTime` is omitted, the callback is invoked immediately after timer/reminder registration.
@@ -32,7 +35,6 @@ Supported formats:
 - time.Duration format (Sub-second precision is supported when using duration values), e.g. `2h30m`, `500ms`
 - [ISO 8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) format, e.g. `PT2H30M`, `R5/PT1M30S`
 
-Note: Actual trigger resolution may vary by runtime and environment.
 ---
 `ttl` is an optional parameter that sets time at which or time interval after which the timer/reminder will be expired and deleted. If `ttl` is omitted, no restrictions are applied.
 
@@ -42,13 +44,34 @@ Supported formats:
 * [ISO 8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) format. Example: `PT2H30M`
 
 ---
+Only available on **reminders**.
+
+`overwrite` is an optional boolean parameter that indicates whether to overwrite an existing reminder with the same name.
+If `overwrite` is set to `true`, any existing reminder with the same name will be replaced by the new configuration.
+If `overwrite` is set to `false` or omitted, and a reminder with the same name already exists, the operation will fail with a already exists error.
+Note that overwriting an existing reminder will reset its an error.state, including the number of invocations and the next trigger time, just like creating a new reminder.
+
+---
+Only available on **reminders**.
+
+`failurePolicy` is an optional parameter that defines the behavior when a reminder invocation fails.
+The supported failure policies are:
+- `drop`: The failed invocation is dropped, and the reminder continues with the next scheduled invocation, as if the failure did not occur.
+- `constant`: The reminder will retry the failed invocation a specified number of times with a fixed interval between each attempt.
+  * `interval`: The time interval between each retry attempt. If not specified, the interval becomes "0s", meaning retries is attempted immediately.
+  * `maxRetries`: The maximum number of retry attempts. If not specified, the invocation will be retried indefinitely at the specified interval until it succeeds.
+
+If no failure policy is specified, the default failure policy of 3 retries with an interval of 1 second will be applied.
+
+---
+
 The actor runtime validates correctness of the scheduling configuration and returns error on invalid input.
 
-When you specify both the number of repetitions in `period` as well as `ttl`, the timer/reminder will be stopped when either condition is met.
+When you specify both the number of repetitions in `period` as well as `ttl`, the timer/reminder will be stopped when either condition is met, whichever occurs first.
 
 ## Actor timers
 
-You can register a callback on actor to be executed based on a timer.
+You can register a callback on the actor to be executed based on a timer.
 
 The Dapr actor runtime ensures that the callback methods respect the turn-based concurrency guarantees. This means that no other actor methods or timer/reminder callbacks will be in progress until this callback completes execution.
 
@@ -108,11 +131,7 @@ Refer [api spec]({{% ref "actors_api#invoke-timer" %}}) for more details.
 
 ## Actor reminders
 
-{{% alert title="Note" color="primary" %}}
-In Dapr v1.15, actor reminders are stored by default in the [Scheduler service]({{% ref "scheduler#actor-reminders" %}}). When upgrading to Dapr v1.15 all existing reminders are automatically migrated to the Scheduler service with no loss of reminders as a one time operation for each actor type.
-{{% /alert %}}
-
-Reminders are a mechanism to trigger *persistent* callbacks on an actor at specified times. Their functionality is similar to timers. But unlike timers, reminders are triggered under all circumstances until the actor explicitly unregisters them or the actor is explicitly deleted or the number in invocations is exhausted. Specifically, reminders are triggered across actor deactivations and failovers because the Dapr actor runtime persists the information about the actors' reminders using Dapr actor state provider.
+Reminders are a mechanism to trigger *persistent* callbacks on an actor at specified times. Their functionality is similar to timers. But unlike timers, reminders are triggered under all circumstances until the actor explicitly unregisters them or the number in invocations is exhausted. Specifically, reminders are triggered across actor deactivations and failovers because the Dapr actor runtime persists the information about the actors' reminders using the Dapr [Scheduler service]({{% ref scheduler.md %}}).
 
 You can create a persistent reminder for an actor by calling the HTTP/gRPC request to Dapr as shown below, or via Dapr SDK.
 
@@ -120,7 +139,7 @@ You can create a persistent reminder for an actor by calling the HTTP/gRPC reque
 POST/PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
 
-The request structure for reminders is identical to those of actors. Please refer to the [actor timers examples]({{% ref "#actor-timers" %}}).
+Unlike timers, reminders support an `overwrite` option that allows you to replace an existing reminder with the same name, as well as a `failurePolicy` option that defines the behavior when a reminder invocation fails.
 
 ### Retrieve actor reminder
 
@@ -138,53 +157,53 @@ You can remove the actor reminder by calling
 DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
 
-If an actor reminder is triggered and the app does not return a 2** code to the runtime (for example, because of a connection issue),
-actor reminders will be retried up to three times with a backoff interval of one second between each attempt. There may be 
-additional retries attempted in accordance with any optionally applied [actor resiliency policy]({{% ref "override-default-retries" %}}). 
+If an actor reminder is triggered and the app does not return a 2** code to the runtime (for example, because of a connection issue), actor reminders will be retried according to its failure policy, which by default is three times with a backoff interval of one second between each attempt.
+There may be additional retries attempted in accordance with any optionally applied [actor resiliency policy]({{% ref "override-default-retries" %}}).
 
 Refer [api spec]({{% ref "actors_api#invoke-reminder" %}}) for more details.
 
 ## Error handling
 
-When an actor's method completes successfully, the runtime will continue to invoke the method at the specified timer or reminder schedule. However, if the method throws an exception, the runtime catches it and logs the error message in the Dapr sidecar logs, without retrying. 
-
-To allow actors to recover from failures and retry after a crash or restart, you can persist an actor's state by configuring a state store, like Redis or Azure Cosmos DB. 
+When an actor's method completes successfully, the runtime continues to invoke the method at the specified timer or reminder schedule.
+To allow actors to recover from failures and retry after a crash or restart, you can persist an actor's state by configuring a state store, like Redis or Azure Cosmos DB.
 
 If an invocation of the method fails, the timer is not removed. Timers are only removed when:
-- The sidecar crashes
+- The sidecar terminates
 - The executions run out
 - You delete it explicitly
 
-## Reminder data serialization format
+## Managing reminders with the CLI
 
-Actor reminder data is serialized to JSON by default. Dapr v1.13 onwards supports a protobuf serialization format for internal reminders data for workflow via both the Placement and Scheduler services. Depending on throughput and size of the payload, this can result in significant performance improvements, giving developers a higher throughput and lower latency. 
+Actor reminders are persisted in the Scheduler.
+You can manage them with the dapr scheduler CLI commands.
 
-Another benefit is storing smaller data in the actor underlying database, which can result in cost optimizations when using some cloud databases. A restriction with using protobuf serialization is that the reminder data can no longer be queried. 
+#### List actor reminders
 
-{{% alert title="Note" color="primary" %}}
-Protobuf serialization will become the default format in Dapr 1.14
-{{% /alert %}}
-
-Reminder data saved in protobuf format cannot be read in Dapr 1.12.x and earlier versions. Its recommended to test this feature in Dapr v1.13 and verify that it works as expected with your database before taking this into production. 
-
-{{% alert title="Note" color="primary" %}}
-If you use protobuf serialization in Dapr v1.13 and need to downgrade to an earlier Dapr version, the reminder data will be incompatible with versions 1.12.x and earlier versions. **Once you save your reminders data in protobuf format, you cannot move it back to JSON format**.
-{{% /alert %}}
-
-### Enabling protobuf serialization on Kubernetes
-
-To use protobuf serialization for actor reminders on Kubernetes, use the following Helm value:
-
-```
---set dapr_placement.maxActorApiLevel=20
+```bash
+dapr scheduler list --filter actor
+NAME                                  BEGIN     COUNT  LAST TRIGGER
+actor/MyActorType/actorid1/test1      -3.89s    1      2025-10-03T16:58:55Z
+actor/MyActorType/actorid2/test2      -3.89s    1      2025-10-03T16:58:55Z
 ```
 
-### Enabling protobuf serialization on self-hosted
+Get reminder details
 
-To use protobuf serialization for actor reminders on self-hosted, use the following `daprd` flag:
-
+```bash
+dapr scheduler get actor/MyActorType/actorid1/test1 -o yaml
 ```
---max-api-level=20
+
+#### Delete reminders
+
+Delete a single reminder:
+
+```bash
+dapr scheduler delete actor/MyActorType/actorid1/test1
+```
+
+Delete all reminders for a given actor type:
+
+```bash
+dapr scheduler delete-all actor/MyActorType
 ```
 
 ## Managing reminders with the CLI
@@ -226,6 +245,19 @@ Delete all reminders for a specific actor instance:
 ```bash
 dapr scheduler delete-all actor/MyActorType/actorid1
 ```
+
+Delete all reminders for a specific actor type:
+
+```bash
+dapr scheduler delete-all actor/MyActorType
+```
+
+Delete all reminders
+
+```bash
+dapr scheduler delete-all actor
+```
+
 
 #### Backup and restore reminders
 

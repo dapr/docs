@@ -143,6 +143,28 @@ internal sealed class SquareNumberActivity : WorkflowActivity<int, int>
 }
 ```
 
+### Activity task execution identifiers
+
+Starting with Dapr .NET SDK v1.17.0, `WorkflowActivityContext` exposes a task execution identifier that is:
+
+- **Unique per activity task**
+- **Stable across retries**
+
+This makes it useful for idempotency keys, task-level state tracking, and correlating logs.
+
+```csharp
+internal sealed class IdempotentActivity : WorkflowActivity<int, int>
+{
+    public override Task<int> RunAsync(WorkflowActivityContext context, int input)
+    {
+        var executionId = context.TaskExecutionId;
+        // Use executionId as your idempotency key or task state key.
+
+        return Task.FromResult(input * input);
+    }
+}
+```
+
 ### Using ILogger in Workflow
 
 Because workflows must be deterministic, it is not possible to inject arbitrary services into them. For example, 
@@ -150,7 +172,7 @@ if you were able to inject a standard `ILogger` into a workflow and it needed to
 subsequent replay from the event source log would result in the log recording additional operations that didn't actually
 take place a second or third time because their results were sourced from the log. This has the potential to introduce 
 a significant amount of confusion. Rather, a replay-safe logger is made available for use within workflows. It will only 
-log events the first time the workflow runs and will not log anything whenever the workflow is being replaced.
+log events the first time the workflow runs and will not log anything whenever the workflow is being replayed.
 
 This logger can be retrieved from a method present on the `WorkflowContext` available on your workflow instance and
 otherwise used precisely as you might otherwise use an `ILogger` instance.
@@ -177,4 +199,6 @@ public class OrderProcessingWorkflow : Workflow<OrderPayload, OrderResult>
 ## Next steps
 
 - [Learn more about Dapr workflow management operations]({{% ref dotnet-workflow-management-methods.md %}})
+- [Multi-application workflows in .NET]({{% ref dotnet-workflow-multi-app.md %}})
+- [Configure workflow serialization]({{% ref dotnet-workflow-serialization.md %}})
 - [Learn how to author workflows and activities]({{% ref howto-author-workflow.md %}})  

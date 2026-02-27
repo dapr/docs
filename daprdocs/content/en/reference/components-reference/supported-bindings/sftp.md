@@ -38,6 +38,8 @@ spec:
     value: "<string>"
   - name: insecureIgnoreHostKey
     value: "<bool>"
+  - name: sequentialMode
+    value: "<bool>"
 ```
 
 ## Spec metadata fields
@@ -53,6 +55,7 @@ spec:
 | `hostPublicKey`       | N        | Output | Host public key for host validation | `"ecdsa-sha2-nistp256 *** root@openssh-server"`    |
 | `knownHostsFile`       | N        | Output | Known hosts file for host validation | `"/path/file"` |
 | `insecureIgnoreHostKey`       | N        | Output | Allows to skip host validation. Defaults to `"false"` | `"true"`, `"false"` |
+| `sequentialMode`       | N        | Output | Used to specify if multiple concurrent operations are allowed within a single SFTP connection. Set this this to true to prevent concurrent operations that might confuse strict SFTP servers. Defaults to `"false"` | `"true"`, `"false"` |
 
 ## Binding support
 

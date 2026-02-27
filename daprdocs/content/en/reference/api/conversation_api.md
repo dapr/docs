@@ -40,6 +40,8 @@ POST http://localhost:<daprPort>/v1.0-alpha2/conversation/<llm-name>/converse
 | `temperature` | A float value to control the temperature of the model. Used to optimize for consistency (0) or creativity (1). Optional |
 | `tools` | Tools register the tools available to be used by the LLM during the conversation. Optional |
 | `toolChoice` | Controls which (if any) tool is called by the model. Values: `auto`, `required`, or specific tool name. Defaults to `auto` if tools are present. Optional |
+| `responseFormat` | Structured output described using a JSON Schema object. Use this when you want typed structured output. Supported by Deepseek, Google AI, Hugging Face, OpenAI, and Anthropic components. Optional |
+| `promptCacheRetention` | Retention duration for the prompt cache. When set, enables extended prompt caching so cached prefixes stay active longer. With OpenAI, supports up to 24 hours. See [OpenAI prompt caching](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention). Optional |
 
 #### Input body
 
@@ -211,7 +213,34 @@ Code | Description
 `400`  | Request was malformed
 `500`  | Request formatted correctly, error in Dapr code or underlying component
 
+### Resiliency and timeouts
+
+Conversation component calls use Dapr's [resiliency policies]({{% ref "resiliency-overview.md" %}}). You can target the conversation component by name under `targets/components/<component-name>/outbound` and attach timeout, retry, and circuit breaker policies.
+
+- **Timeout**: The timeout is applied to the request context. That context is passed through to the conversation component (and thus to the LLM provider in the sidecar). If the LLM does not respond within the configured duration, the context is cancelled and the request is terminated with an error. Set a timeout that accounts for typical LLM response times.
+- **Retries and circuit breaker**: These apply to the overall Converse invocation. Retries re-run the entire conversation call on failure (for example, after a timeout or network error). The circuit breaker, when open, skips calling the component and returns an error immediately. These are not passed to the LLM as configuration.
+
 ### Response content
+
+Each item in `outputs` can include:
+
+| Field | Description |
+| ----- | ----------- |
+| `choices` | Completion choices. |
+| `model` | The model used for the conversation. Optional |
+| `usage` | Token usage metrics for the request. Optional |
+
+#### Usage metrics
+
+When present, `usage` contains:
+
+| Field | Description |
+| ----- | ----------- |
+| `promptTokens` | Number of tokens in the prompt. |
+| `completionTokens` | Number of tokens in the generated completion. |
+| `totalTokens` | Total tokens used (prompt + completion). |
+| `promptTokensDetails` | Optional. Can include `audioTokens` (audio input tokens in the prompt) and `cachedTokens` (tokens served from prompt cache). |
+| `completionTokensDetails` | Optional. Can include `reasoningTokens`, `acceptedPredictionTokens`, `rejectedPredictionTokens`, `audioTokens`. |
 
 #### Basic conversation response
 
@@ -226,7 +255,23 @@ Code | Description
             "content": "Distributed application runtime, open-source."
           }
         }
-      ]
+      ],
+      "model": "gpt-4o",
+      "usage": {
+        "promptTokens": 12,
+        "completionTokens": 8,
+        "totalTokens": 20,
+        "promptTokensDetails": {
+          "audioTokens": 0,
+          "cachedTokens": 0
+        },
+        "completionTokensDetails": {
+          "acceptedPredictionTokens": 0,
+          "audioTokens": 0,
+          "reasoningTokens": 0,
+          "rejectedPredictionTokens": 0
+        }
+      }
     }
   ]
 }
@@ -253,7 +298,23 @@ Code | Description
             ]
           }
         }
-      ]
+      ],
+      "model": "gpt-4o",
+      "usage": {
+        "promptTokens": 25,
+        "completionTokens": 18,
+        "totalTokens": 43,
+        "promptTokensDetails": {
+          "audioTokens": 0,
+          "cachedTokens": 0
+        },
+        "completionTokensDetails": {
+          "acceptedPredictionTokens": 0,
+          "audioTokens": 0,
+          "reasoningTokens": 0,
+          "rejectedPredictionTokens": 0
+        }
+      }
     }
   ]
 }

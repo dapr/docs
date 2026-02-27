@@ -425,7 +425,7 @@ asyncio.run(main())
 The implementation follows Dapr's sidecar architecture model, where all infrastructure concerns are handled by the Dapr runtime:
 - **Persistent Memory** - Agent state is stored in Dapr's state store, surviving process crashes
 - **Workflow Orchestration** - All agent interactions managed through Dapr's workflow system
-- **Service Exposure** - `AgentRunner.serve()` exposes REST endpoints (e.g., `POST /run`) that schedule the agent's `@workflow_entry`
+- **Service Exposure** - `AgentRunner.serve()` exposes REST endpoints (e.g., `POST /agent/run`) that schedule the agent's `@workflow_entry`
 - **Pub/Sub Input/Output** - `AgentRunner.subscribe()` scans the agent for `@message_router` methods and wires the configured topics with schema validation
 
 The Durable Agent enables the concept of "headless agents" - autonomous systems that operate without direct user interaction. Depending on the scenario you can:

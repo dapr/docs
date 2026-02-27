@@ -6,10 +6,6 @@ weight: 7100
 description: "Learn how to use the bulk publish and subscribe APIs in Dapr."
 ---
 
-{{% alert title="alpha" color="warning" %}}
-The bulk publish and subscribe APIs are in **alpha** stage.
-{{% /alert %}}
-
 With the bulk publish and subscribe APIs, you can publish and subscribe to multiple messages in a single request. When writing applications that need to send or receive a large number of messages, using bulk operations allows achieving high throughput by reducing the overall number of requests between the Dapr sidecar, the application, and the underlying pub/sub broker.
 
 ## Publishing messages in bulk
@@ -27,8 +23,8 @@ The bulk publish operation also does not guarantee any ordering of messages.
 {{% tab "Java" %}}
 
 ```java
+import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
-import io.dapr.client.DaprPreviewClient;
 import io.dapr.client.domain.BulkPublishResponse;
 import io.dapr.client.domain.BulkPublishResponseFailedEntry;
 import java.util.ArrayList;
@@ -39,7 +35,7 @@ class BulkPublisher {
   private static final String TOPIC_NAME = "topic-a";
 
   public void publishMessages() {
-    try (DaprPreviewClient client = (new DaprClientBuilder()).buildPreviewClient()) {
+    try (DaprClient client = (new DaprClientBuilder()).build()) {
       // Create a list of messages to publish
       List<String> messages = new ArrayList<>();
       for (int i = 0; i < 10; i++) {
@@ -151,7 +147,7 @@ else
 import requests
 import json
 
-base_url = "http://localhost:3500/v1.0-alpha1/publish/bulk/{}/{}"
+base_url = "http://localhost:3500/v1.0/publish/bulk/{}/{}"
 pubsub_name = "my-pubsub-name"
 topic_name = "topic-a"
 payload = [
@@ -190,7 +186,7 @@ import (
 const (
   pubsubName = "my-pubsub-name"
   topicName = "topic-a"
-  baseUrl = "http://localhost:3500/v1.0-alpha1/publish/bulk/%s/%s"
+  baseUrl = "http://localhost:3500/v1.0/publish/bulk/%s/%s"
 )
 
 func main() {
@@ -225,7 +221,7 @@ func main() {
 {{% tab "HTTP API (Bash)" %}}
 
 ```bash
-curl -X POST http://localhost:3500/v1.0-alpha1/publish/bulk/my-pubsub-name/topic-a \
+curl -X POST http://localhost:3500/v1.0/publish/bulk/my-pubsub-name/topic-a \
   -H 'Content-Type: application/json' \
   -d '[
         {
@@ -248,7 +244,7 @@ curl -X POST http://localhost:3500/v1.0-alpha1/publish/bulk/my-pubsub-name/topic
 {{% tab "HTTP API (PowerShell)" %}}
 
 ```powershell
-Invoke-RestMethod -Method Post -ContentType 'application/json' -Uri 'http://localhost:3500/v1.0-alpha1/publish/bulk/my-pubsub-name/topic-a' `
+Invoke-RestMethod -Method Post -ContentType 'application/json' -Uri 'http://localhost:3500/v1.0/publish/bulk/my-pubsub-name/topic-a' `
 -Body '[
         {
             "entryId": "ae6bf7c6-4af2-11ed-b878-0242ac120002",

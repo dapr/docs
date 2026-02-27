@@ -72,13 +72,19 @@ Similarly, all app IDs must use the same workflow (or actor) state store.
 Finally, the target app ID must have the activity or child workflow defined and registered, otherwise the parent workflow retries indefinitely.
 {{% /alert %}}
 
+{{% alert title="Note" color="primary" %}}
+Multi-application workflows require Dapr runtime v1.16.0 or later. .NET SDK support is available starting with
+v1.17.0.
+{{% /alert %}}
+
 {{% alert title="Important Limitations" color="warning" %}}
 **SDKs supporting multi-application workflows** - Multi-application workflows are used via the SDKs.
 Currently the following are supported:
 - **Java** (**only** activity calls)
-- **Go** (**both** activities and child workflows calls)
-- **Python** (**both** activities and child workflows calls)
-- The .NET and JavaScript SDKs support are planned for future releases
+- **Go** (**both** activity and child workflow calls)
+- **Python** (**both** activity and child workflow calls)
+- **.NET** (**both** activity and child workflow calls, requires .NET SDK v1.17.0+)
+- JavaScript SDK support is planned for a future release
 {{% /alert %}}
 
 ## Error handling
@@ -89,6 +95,17 @@ When calling multi-application activities or child workflows:
 - Standard workflow retry policies apply to multi-application calls.
 
 It is paramount that there is coordination between the teams owning the different app IDs to ensure that the activities and child workflows are defined and available when needed.
+
+## Durable Activity Results
+
+It is often the case that Activities take some amount of time to complete, or similarly are expensive to execute in resource or dollar cost.
+It is therefore undesirable to execute these activities more than once for the same round, even in unhappy paths.
+Before 1.17 in multi-application scenarios, Activities would publish responses over a network call to the other application which is hosting the owning Workflow.
+In the case where the hosting workflow application is down or otherwise unreachable, the result would be lost and the Activity would be retried, leading to duplicate execution of the Activity.
+
+In 1.17, enabling the [`WorkflowsRemoteActivityReminder feature gate]({{% ref "support-preview-features.md" %}}) will make the activity result be sent to the owning workflow application with a [reminder]({{% ref "workflow-features-concepts.md#durable-timers" %}}) in the event that the workflow application is offline or unreachable, ensuring that the result is not lost and duplicate execution is avoided.
+This option should be enabled by all users who are using Dapr version 1.17 on all applications.
+It has been _**disabled** by default_ for backwards compatibility between Dapr versions, but will be enabled by default in a future release.
 
 ## Multi-application activity example
 
@@ -151,6 +168,22 @@ def app1_workflow(ctx: wf.DaprWorkflowContext):
 
 {{% /tab %}}
 
+{{% tab ".NET" %}}
+
+```csharp
+public sealed class BusinessWorkflow : Workflow<string, string>
+{
+    public override async Task<string> RunAsync(WorkflowContext context, string input)
+    {
+        var options = new WorkflowTaskOptions { TargetAppId = "App2" };
+        var output = await context.CallActivityAsync<string>(nameof(ActivityA), input, options);
+        return output;
+    }
+}
+```
+
+{{% /tab %}}
+
 {{< /tabpane >}}
 
 ## Multi-application child workflow example
@@ -192,6 +225,22 @@ def workflow1(ctx: wf.DaprWorkflowContext):
 
 {{% /tab %}}
 
+{{% tab ".NET" %}}
+
+```csharp
+public sealed class BusinessWorkflow : Workflow<string, string>
+{
+    public override async Task<string> RunAsync(WorkflowContext context, string input)
+    {
+        var options = new ChildWorkflowTaskOptions { TargetAppId = "App2" };
+        var output = await context.CallChildWorkflowAsync<string>(nameof(Workflow2), input, options);
+        return output;
+    }
+}
+```
+
+{{% /tab %}}
+
 {{< /tabpane >}}
 
 ## Related links
@@ -199,6 +248,7 @@ def workflow1(ctx: wf.DaprWorkflowContext):
 - [Try out Dapr Workflows using the quickstart]({{% ref workflow-quickstart.md %}})
 - [Workflow overview]({{% ref workflow-overview.md %}})
 - [Workflow API reference]({{% ref workflow_api.md %}})
+- [Multi-application workflows in .NET]({{% ref "dotnet-workflow-multi-app.md" %}})
 - Try out the following examples:
    - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
    - [JavaScript](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
