@@ -381,9 +381,9 @@ spec:
             action: allow
 ```
 
-## Reloading configuration with SIGHUP
+#### Reloading configuration with SIGHUP
 
-On POSIX-compatible systems (Linux, macOS), you can reload the Dapr sidecar configuration without fully restarting the process by sending a `SIGHUP` signal to `daprd`. When `daprd` receives a `SIGHUP`, it gracefully shuts down the internal runtime and re-initializes it in-process using the current configuration file. This allows you to apply changes to configuration settings such as [tracing](#tracing), [metrics](#metrics), and [logging](#logging) without downtime.
+On POSIX-compatible systems (Linux, macOS), you can reload the Dapr sidecar configuration without fully restarting the process by sending a `SIGHUP` signal to `daprd`. When `daprd` receives a `SIGHUP`, it gracefully shuts down the internal runtime and re-initializes it in-process using the current configuration file. This allows you to apply changes to configuration settings such as [tracing](#tracing), [metrics](#metrics), and [logging](#logging) without a full process restart.
 
 To send a `SIGHUP` signal:
 
