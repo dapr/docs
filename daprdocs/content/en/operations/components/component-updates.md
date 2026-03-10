@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "Updating components"
-linkTitle: "Updating components"
+title: "Updating resources"
+linkTitle: "Updating resources"
 weight: 300
-description: "Updating deployed components used by applications"
+description: "Updating deployed components, configurations, resiliency, and HTTPEndpoints used by applications"
 ---
 
 When making an update to an existing deployed component used by an application, Dapr does not update the component automatically unless the [`HotReload`](#hot-reloading-preview-feature) feature gate is enabled.
@@ -26,8 +26,11 @@ Unless the [`HotReload` feature gate is enabled](#hot-reloading-preview-feature)
 > This feature is currently in [preview]({{% ref "preview-features.md" %}}).
 > Hot reloading is enabled by via the [`HotReload` feature gate]({{% ref "support-preview-features.md" %}}).
 
-Dapr can be made to "hot reload" components whereby component updates are picked up automatically without the need to restart the Dapr sidecar process or Kubernetes pod.
-This means creating, updating, or deleting a component manifest will be reflected in the Dapr sidecar during runtime.
+Dapr can be made to "hot reload" resources whereby updates are picked up automatically without the need to manually restart the Dapr sidecar process or Kubernetes pod.
+
+### Components and Subscriptions
+
+Creating, updating, or deleting a Component or Subscription manifest is reflected in the Dapr sidecar during runtime.
 
 {{% alert title="Updating Components" color="warning" %}}
 When a component is updated it is first closed, and then re-initialized using the new configuration.
@@ -45,6 +48,16 @@ All components are supported for hot reloading except for the following types.
 Any create, update, or deletion of these component types is ignored by the sidecar with a restart required to pick up changes.
 - [Actor State Stores]({{% ref "state_api.md#configuring-state-store-for-actors" %}})
 - [Workflow Backends]({{% ref "workflow-architecture.md#workflow-backend" %}})
+
+### Configurations, Resiliency, and HTTPEndpoints
+
+With the `HotReload` feature gate enabled, the Dapr sidecar also supports reloading [Configuration]({{% ref "configuration-overview.md" %}}), [Resiliency]({{% ref "resiliency-overview.md" %}}), and [HTTPEndpoint]({{% ref "service-invocation-overview.md" %}}) resources.
+
+Unlike Components and Subscriptions which are reloaded in-place, changes to these resource types trigger an automatic **graceful restart** of the Dapr sidecar process (via SIGHUP). This ensures that the new configuration is applied cleanly. Unchanged resources are detected and silently ignored, so a restart only occurs when an actual change is detected.
+
+{{% alert title="Windows" color="warning" %}}
+SIGHUP is not supported on Windows. On Windows, you must fully restart the `daprd` process to pick up changes to Configuration, Resiliency, and HTTPEndpoint resources.
+{{% /alert %}}
 
 ## Further reading
 - [Components concept]({{% ref components-concept.md %}})
