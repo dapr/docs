@@ -63,13 +63,31 @@ The quickstarts use [Ollama](https://ollama.com/) by default so you can run ever
 
 1. Install and start Ollama:
 
-```bash
-# macOS
-brew install ollama
+{{< tabpane text=true >}}
 
-# Linux
+{{% tab header="Linux" text=true %}}
+
+```bash
 curl -fsSL https://ollama.com/install.sh | sh
 ```
+
+{{% /tab %}}
+
+{{% tab header="macOS" text=true %}}
+
+```bash
+brew install ollama
+```
+
+{{% /tab %}}
+
+{{% tab header="Windows" text=true %}}
+
+Download and run the installer from [ollama.com/download](https://ollama.com/download).
+
+{{% /tab %}}
+
+{{< /tabpane >}}
 
 2. Pull a model with tool-calling support:
 
@@ -80,10 +98,27 @@ ollama pull qwen3:0.6b
 
 3. Export the required environment variables before running any quickstart:
 
+{{< tabpane text=true >}}
+
+{{% tab header="Linux/macOS" text=true %}}
+
 ```bash
 export OLLAMA_ENDPOINT=http://localhost:11434/v1
 export OLLAMA_MODEL=qwen3:0.6b
 ```
+
+{{% /tab %}}
+
+{{% tab header="Windows (PowerShell)" text=true %}}
+
+```powershell
+$env:OLLAMA_ENDPOINT = "http://localhost:11434/v1"
+$env:OLLAMA_MODEL = "qwen3:0.6b"
+```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
 
 The `resources/llm-provider.yaml` component resolves `{{OLLAMA_ENDPOINT}}` and `{{OLLAMA_MODEL}}` from your environment automatically.
 
@@ -400,7 +435,7 @@ docker run -p 8080:8080 ghcr.io/diagridio/diagrid-dashboard:latest
 
 Open the dashboard in a browser at `http://localhost:8080` to explore your local workflow executions.
 
-## Inspect Conversation History with Redis Insights
+## Inspect Conversation History with Redis Insight
 
 Dapr uses [Redis]({{% ref setup-redis.md %}}) by default for state management and pub/sub messaging, which are fundamental to Dapr Agents' agentic workflows. To inspect the Redis instance and see both **conversation** state for this durable agent, you can use Redis Insight.
 

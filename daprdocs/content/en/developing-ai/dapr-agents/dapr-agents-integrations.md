@@ -352,7 +352,11 @@ store = PostgresVectorStore(
 
 ### RedisVectorStore
 
-Uses [Redis Stack](https://redis.io/docs/latest/develop/ai/search-and-query/vectors/) via the `redisvl` library. Redis is the default infrastructure component installed by `dapr init`, making this a natural choice for local development and production deployments that already use Redis for state management.
+Uses [Redis Stack](https://redis.io/docs/latest/develop/ai/search-and-query/vectors/) via the `redisvl` library for vector similarity search.
+
+{{% alert title="Note" color="warning" %}}
+The Redis instance started by `dapr init` is a **vanilla Redis server** and does **not** include the Search/vector modules required by Redis Stack. To use `RedisVectorStore`, you must run [Redis Stack](https://redis.io/docs/latest/operate/oss_and_stack/install/install-stack/) (or a Redis deployment with the `RediSearch` module enabled) separately.
+{{% /alert %}}
 
 Requires `redisvl` (`pip install redisvl`).
 

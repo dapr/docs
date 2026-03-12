@@ -191,7 +191,7 @@ When an LLM returns multiple tool calls in a single turn, `DurableAgent` can exe
 
 | Mode | Enum Value | Behavior |
 |------|-----------|----------|
-| **Parallel** (default) | `ToolExecutionMode.PARALLEL` | All tool calls from a single LLM turn are dispatched concurrently and awaited via `wf.when_all`. Best latency when tools are independent. This is set as the default. |
+| **Parallel** (default) | `ToolExecutionMode.PARALLEL` | All tool calls from a single LLM turn are dispatched and awaited concurrently. Best latency when tools are independent. |
 | **Sequential** | `ToolExecutionMode.SEQUENTIAL` | Tool calls are executed one-by-one in the order returned by the LLM. Use this when tools have side-effects that depend on results of earlier calls in the same turn. |
 
 ```python
