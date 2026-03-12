@@ -317,7 +317,75 @@ While the Arxiv Fetcher provides robust functionality for retrieving and process
 * **Retrieval-Augmented Generation (RAG)**: Use processed papers as inputs for RAG pipelines to power question-answering systems.
 * **Automated Literature Surveys**: Generate summaries or insights based on the fetched and processed research. 
 
+## Vector Stores
+
+Dapr Agents includes built-in vector store implementations for use with `ConversationVectorMemory` and RAG pipelines. Each store is available from `dapr_agents.storage.vectorstores`.
+
+### ChromaVectorStore
+
+Uses [ChromaDB](https://www.trychroma.com/) for in-memory or persistent vector search. No additional infrastructure is required for development.
+
+```python
+from dapr_agents.storage.vectorstores import ChromaVectorStore
+from dapr_agents.document.embedder.openai import OpenAIEmbedder
+
+store = ChromaVectorStore(
+    collection_name="my_collection",
+    embedding_function=OpenAIEmbedder(),
+)
+```
+
+### PostgresVectorStore
+
+Uses [PostgreSQL with pgvector](https://github.com/pgvector/pgvector) for production-grade vector similarity search.
+
+```python
+from dapr_agents.storage.vectorstores import PostgresVectorStore
+from dapr_agents.document.embedder.openai import OpenAIEmbedder
+
+store = PostgresVectorStore(
+    connection_string="postgresql://user:pass@localhost:5432/mydb",
+    embedding_function=OpenAIEmbedder(),
+    embedding_dimensions=1536,
+)
+```
+
+### RedisVectorStore
+
+Uses [Redis Stack](https://redis.io/docs/latest/develop/ai/search-and-query/vectors/) via the `redisvl` library. Redis is the default infrastructure component installed by `dapr init`, making this a natural choice for local development and production deployments that already use Redis for state management.
+
+Requires `redisvl` (`pip install redisvl`).
+
+```python
+from dapr_agents.storage.vectorstores import RedisVectorStore
+from dapr_agents.document.embedder.openai import OpenAIEmbedder
+
+store = RedisVectorStore(
+    url="redis://localhost:6379",
+    index_name="my_agent",
+    embedding_function=OpenAIEmbedder(),
+    embedding_dimensions=1536,
+    distance_metric="cosine",  # "cosine", "l2", or "ip"
+    storage_type="hash",       # "hash" or "json"
+)
+```
+
+All three vector stores share the same interface and are interchangeable as the `vector_store` argument to `ConversationVectorMemory`:
+
+```python
+from dapr_agents.memory import ConversationVectorMemory
+
+memory = ConversationVectorMemory(
+    vector_store=store,
+    distance_metric="cosine",
+)
+```
+
 ## Tools
+
+### Agents as Tools
+
+Dapr Agents supports invoking other agents as tools within a `DurableAgent`'s reasoning loop, including agents from other frameworks such as OpenAI Agents, LangGraph, and CrewAI. For full documentation and code examples, see [Agents as Tools]({{% ref "dapr-agents-core-concepts.md#agents-as-tools" %}}).
 
 ### MCP Toolbox for databases
 
