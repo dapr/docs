@@ -36,7 +36,9 @@ dapr workflow purge --app-id <app-id> --all-older-than <duration> --all-filter-s
 dapr workflow purge --app-id <app-id> --all-older-than <duration> --all-filter-status TERMINATED
 ```
 
-Note: Purge operations require a running workflow client in your application. See [How to: Manage workflows]({{% ref howto-manage-workflow.md %}}) for more details on the purge command and its requirements, including usage of the `--force` flag.
+When purging workflows, ensure that a workflow client is running for the same `app-id` so the workflow state machine can advance correctly. Avoid using the `--force` option while workflow instances may still be active, as this can corrupt the workflow state machine.
+
+See [How to: Manage workflows]({{% ref howto-manage-workflow.md %}}) for more details on the purge command and additional cautions.
 {{% /alert %}}
 
 The following example configuration sets each of the terminal states.
