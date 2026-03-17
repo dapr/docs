@@ -326,7 +326,7 @@ frodo = DurableAgent(
 )
 ```
 
-When the LLM calls one of these tools, Dapr Agents schedules the target agent's workflow as a child workflow and returns the result—handling cross-app routing and result marshalling transparently.
+When the LLM calls one of these tools, Dapr Agents schedules the target agent's workflow as a `DurableAgent` (child workflow) and returns the result—handling cross-app routing and result marshalling transparently.
 
 | Parameter | Description |
 |---|---|
