@@ -310,7 +310,7 @@ Agents registered in the same registry are available to use as tools automatical
 ```python
 from dapr_agents.tool.workflow import agent_to_tool
 
-# Different Dapr app (cross-app)
+# Invoke a separate agent as a tool call
 aragorn_tool = agent_to_tool(
     "aragorn",
     description="Military Strategy. Goal: Lead the forces of Gondor.",
