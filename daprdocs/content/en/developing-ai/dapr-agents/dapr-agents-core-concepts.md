@@ -316,7 +316,7 @@ aragorn_tool = agent_to_tool(
     description="Military Strategy. Goal: Lead the forces of Gondor.",
     target_app_id="aragorn-app",
 )
-
+# Use an agent as a tool within a DurableAgent
 frodo = DurableAgent(
     name="frodo",
     role="Ring Bearer",
