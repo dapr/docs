@@ -30,11 +30,10 @@ To retroactively purge existing terminal workflows, use the Dapr CLI:
 # Purge all terminal workflows older than a specific duration
 dapr workflow purge --app-id <app-id> --all-older-than <duration>
 
-# Or filter by status first, then purge individually
-dapr workflow list --app-id <app-id> --filter-status COMPLETED
-dapr workflow list --app-id <app-id> --filter-status FAILED
-dapr workflow list --app-id <app-id> --filter-status TERMINATED
-dapr workflow purge <instance-id> --app-id <app-id>
+# Purge only workflows with a specific status older than a duration
+dapr workflow purge --app-id <app-id> --all-older-than <duration> --all-filter-status COMPLETED
+dapr workflow purge --app-id <app-id> --all-older-than <duration> --all-filter-status FAILED
+dapr workflow purge --app-id <app-id> --all-older-than <duration> --all-filter-status TERMINATED
 ```
 
 See [How to: Manage workflows]({{% ref howto-manage-workflow.md %}}) for more details on the purge command.

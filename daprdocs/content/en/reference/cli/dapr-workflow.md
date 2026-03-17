@@ -113,6 +113,7 @@ dapr workflow purge [instance-id] [flags]
 | `--app-id`, `-a` | string | (Required) The app ID owner of the workflow instances |
 | `--all` | bool | Purge all terminal workflow instances (use with caution) |
 | `--all-older-than` | string | Purge instances older than duration or timestamp (e.g., "24h", "2023-01-02T15:04:05Z") |
+| `--all-filter-status` | string | Filter purge to only instances with the given runtime status. Must be used with `--all-older-than`. One of RUNNING, COMPLETED, CONTINUED_AS_NEW, FAILED, CANCELED, TERMINATED, PENDING, SUSPENDED |
 | `--kubernetes`, `-k` | bool | Target a Kubernetes Dapr installation |
 | `--namespace`, `-n` | string | Kubernetes namespace (default "default") |
 
@@ -131,6 +132,11 @@ dapr workflow purge --app-id myapp --all-older-than 720h
 ### Purge instances older than specific date
 ```bash
 dapr workflow purge --app-id myapp --all-older-than 2023-12-01T00:00:00Z
+```
+
+### Purge only FAILED instances older than 7 days
+```bash
+dapr workflow purge --app-id myapp --all-older-than 168h --all-filter-status FAILED
 ```
 
 ### Purge all terminal instances (dangerous!)
