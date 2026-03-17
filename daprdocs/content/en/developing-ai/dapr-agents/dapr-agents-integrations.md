@@ -389,7 +389,7 @@ memory = ConversationVectorMemory(
 
 ### Agents as Tools
 
-Dapr Agents supports invoking other agents as tools within a `DurableAgent`'s reasoning loop, including agents from other frameworks such as OpenAI Agents, LangGraph, and CrewAI. For full documentation and code examples, see [Agents as Tools]({{% ref "dapr-agents-core-concepts.md#agents-as-tools" %}}).
+Dapr Agents supports invoking other agents as tools within an instance of a `DurableAgent` reasoning loop, including agents from other frameworks such as OpenAI Agents, LangGraph, and CrewAI. For full documentation and code examples, see [Agents as Tools]({{% ref "dapr-agents-core-concepts.md#agents-as-tools" %}}).
 
 ### MCP Toolbox for databases
 
