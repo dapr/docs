@@ -303,7 +303,7 @@ memory = ConversationVectorMemory(
 
 ### Agents as Tools
 
-Dapr Agents supports invoking other agents—whether Dapr Agents or agents from other frameworks—as tools within a `DurableAgent`'s reasoning loop. This lets a parent agent delegate sub-tasks to specialized child agents and compose multi-agent systems without event-driven pub/sub.
+Dapr Agents supports invoking other agents - whether Dapr Agents or 3rd party agent frameworks - as tools within a `DurableAgent` reasoning loop. This lets a parent agent delegate sub-tasks to specialized child agents and compose multi-agent systems without using a pub/sub message broker.
 
 Agents registered in the same registry are available as tools automatically. This includes invoking other framework agents. Alternatively, use `agent_to_tool` from `dapr_agents.tool.workflow` for explicit wiring, cross-app routing, or invoking agents from other frameworks:
 
