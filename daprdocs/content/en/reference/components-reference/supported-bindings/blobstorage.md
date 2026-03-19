@@ -65,6 +65,7 @@ This component supports **output binding** with the following operations:
 - `get` : [Get blob](#get-blob)
 - `delete` : [Delete blob](#delete-blob)
 - `list`: [List blobs](#list-blobs)
+- `presign`: [Generate presigned SAS URL](#presign-blob)
 
 The Blob storage component's **input binding** triggers and pushes events using [Azure Event Grid]({{% ref eventgrid.md %}}). 
  
@@ -168,13 +169,49 @@ Then you can upload it as you would normally:
 
 {{< /tabpane >}}
 
+#### Share blob with a presigned SAS URL
+
+To generate a presigned SAS URL when creating a blob, include the `signTTL` metadata key on a `create` request. The SAS URL provides temporary read-only access to the blob.
+Valid values for `signTTL` are [Go duration strings](https://pkg.go.dev/time#ParseDuration) (e.g. `"15m"`, `"1h"`, `"24h"`).
+
+> **Note:** This feature requires the binding to be configured with an account key or connection string. Microsoft Entra ID authentication is not supported for SAS URL generation.
+
+{{< tabpane text=true >}}
+
+  {{% tab "Windows" %}}
+  ```bash
+  curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\", \"metadata\": { \"blobName\": \"my-test-file.txt\", \"signTTL\": \"15m\" } }" \
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
+
+  {{% tab "Linux" %}}
+  ```bash
+  curl -d '{ "operation": "create", "data": "Hello World", "metadata": { "blobName": "my-test-file.txt", "signTTL": "15m" } }' \
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
+
+{{< /tabpane >}}
+
+##### Response
+
+The response body contains the following JSON:
+
+```json
+{
+    "blobURL": "https://<your account name>.blob.core.windows.net/<your container name>/<filename>",
+    "presignURL": "https://<your account name>.blob.core.windows.net/<your container name>/<filename>?sv=2023-11-03&se=2024-01-01T00%3A15%3A00Z&sr=b&sp=r&sig=<signature>"
+}
+```
+
 #### Response
 
 The response body will contain the following JSON:
 
 ```json
 {
-   "blobURL": "https://<your account name>. blob.core.windows.net/<your container name>/<filename>"
+   "blobURL": "https://<your account name>.blob.core.windows.net/<your container name>/<filename>"
 }
 
 ```
@@ -403,6 +440,57 @@ The list of blobs will be returned as JSON array in the following form:
     "Metadata": null
   }
 ]
+```
+
+### Presign blob
+
+To generate a presigned SAS URL for an existing blob, invoke the Azure Blob Storage binding with a `POST` method and the following JSON body. The SAS URL provides temporary read-only access to the blob without requiring authentication.
+
+> **Note:** This operation requires the binding to be configured with an account key or connection string. Microsoft Entra ID authentication is not supported for SAS URL generation.
+
+```json
+{
+  "operation": "presign",
+  "metadata": {
+    "blobName": "my-test-file.txt",
+    "signTTL": "15m"
+  }
+}
+```
+
+The metadata parameters are:
+
+- `blobName` - the name of the blob to generate a SAS URL for
+- `signTTL` - the time-to-live for the SAS URL. Valid values are [Go duration strings](https://pkg.go.dev/time#ParseDuration) (e.g. `"15m"`, `"1h"`, `"24h"`)
+
+#### Example
+
+{{< tabpane text=true >}}
+
+  {{% tab "Windows" %}}
+  ```bash
+  curl -d "{ \"operation\": \"presign\", \"metadata\": { \"blobName\": \"my-test-file.txt\", \"signTTL\": \"15m\" } }" \
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
+
+  {{% tab "Linux" %}}
+  ```bash
+  curl -d '{ "operation": "presign", "metadata": { "blobName": "my-test-file.txt", "signTTL": "15m" } }' \
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
+
+{{< /tabpane >}}
+
+#### Response
+
+The response body contains the following JSON:
+
+```json
+{
+    "presignURL": "https://<your account name>.blob.core.windows.net/<your container name>/my-test-file.txt?sv=2023-11-03&se=2024-01-01T00%3A15%3A00Z&sr=b&sp=r&sig=<signature>"
+}
 ```
 
 ## Metadata information
