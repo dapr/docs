@@ -124,58 +124,27 @@ To scale scheduler and placement to three instances independently of the `global
 
 ### Spreading Placement and Scheduler replicas
 
-For HA **Scheduler** and **Placement**, the Helm chart uses pod anti-affinity so replicas are not all scheduled on the same failure domain. Two values control that behavior:
+With HA enabled, the Helm chart adds pod anti-affinity so **Scheduler** and **Placement** replicas tend to land on different failure domains. Configure that with:
 
-- **`global.ha.topologyKey`** — Kubernetes label used as the “domain” for spreading (default `topology.kubernetes.io/zone`, i.e. one pod per zone when possible).
-- **`global.ha.podAntiAffinityPolicy`** — **soft** (`preferredDuringSchedulingIgnoredDuringExecution`, default) or **hard** (`requiredDuringSchedulingIgnoredDuringExecution`) enforcement of that spread.
+- `global.ha.topologyKey` — label Kubernetes uses for “different domain” (default `topology.kubernetes.io/zone`).
+- `global.ha.podAntiAffinityPolicy` — **soft** spreading (`preferredDuringSchedulingIgnoredDuringExecution`, default) or **hard** spreading (`requiredDuringSchedulingIgnoredDuringExecution`). Full field names and defaults are documented in the [Helm chart readme](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md).
 
-**When to change `topologyKey`**
+When running in production, consider:
 
-- **Multi-zone clusters** — default `topology.kubernetes.io/zone` is usually what you want so replicas land in different availability zones.
-- **Single zone, many nodes** — nodes often share the same zone label, so zone spreading does little. Set `global.ha.topologyKey` to `kubernetes.io/hostname` so the scheduler prefers different nodes.
+1. **Availability zones** — The default topology key spreads across zones. That limits the chance that one zone outage removes multiple Raft or etcd members at the same time.
+2. **Single zone, many nodes** — Zone labels are often identical across the cluster; set `topologyKey` to `kubernetes.io/hostname` if you need separation by node.
+3. **Soft spreading** — Leave the default unless you have a reason to change it: scheduling still succeeds when the cluster is short on zones or nodes.
+4. **Hard spreading** — Only when you must never place two replicas on the same topology value. You need at least as many distinct values for `topologyKey` as replicas, or pods can stay Pending.
 
-Example in a values file:
+For example, hard spreading by hostname in a single-zone cluster:
 
 ```yaml
 global:
   ha:
     enabled: true
     topologyKey: kubernetes.io/hostname
+    podAntiAffinityPolicy: requiredDuringSchedulingIgnoredDuringExecution
 ```
-
-**When to use soft vs hard spreading**
-
-- **Soft (default)** — Use in most clusters. Kubernetes *tries* to separate replicas by `topologyKey`, but can still place two on the same zone or node if resources are tight. Avoids pods stuck **Pending** when you have fewer zones than replicas.
-- **Hard** — Use when you *require* no two replicas on the same topology value (for example you must have one Scheduler or Placement pod per zone). Only viable if you have at least as many distinct values for `topologyKey` as replicas (three zones for three replicas when using `topology.kubernetes.io/zone`).
-
-Enable hard spreading with Helm:
-
-```bash
-helm upgrade --install dapr dapr/dapr \
-  --version={{% dapr-latest-version short="true" %}} \
-  --namespace dapr-system \
-  --create-namespace \
-  --set global.ha.enabled=true \
-  --set global.ha.podAntiAffinityPolicy=requiredDuringSchedulingIgnoredDuringExecution \
-  --wait
-```
-
-Or combine with a custom topology key:
-
-```bash
-helm upgrade --install dapr dapr/dapr \
-  --version={{% dapr-latest-version short="true" %}} \
-  --namespace dapr-system \
-  --create-namespace \
-  --set global.ha.enabled=true \
-  --set global.ha.topologyKey=kubernetes.io/hostname \
-  --set global.ha.podAntiAffinityPolicy=requiredDuringSchedulingIgnoredDuringExecution \
-  --wait
-```
-
-{{% alert title="Note" color="primary" %}}
-If pods stay **Pending** after enabling **hard** spreading, your cluster likely does not expose enough distinct `topologyKey` values for the replica count. Switch to **soft** spreading, widen the cluster (more zones or nodes), or change `topologyKey`. Full `global.ha` reference: [Dapr Helm chart README](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md).
-{{% /alert %}}
 
 ## Setting cluster critical priority class name for control plane services
 
