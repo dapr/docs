@@ -200,7 +200,7 @@ The metadata parameters are:
 
 - `blobName` - the name of the blob
 - `includeMetadata`- (optional) defines if the user defined metadata should be returned or not, defaults to: false
-- `filePath` - (optional) if set, the blob content is streamed directly to this local file path instead of being returned in the response body. This is recommended for large blobs to avoid loading the entire content into memory. The response metadata will include a `filePath` key with the path of the written file.
+- `filePath` - (optional) if set, the blob content is streamed directly to this local file path instead of being returned in the response body. This is recommended for large blobs to avoid loading the entire content into memory. When used, the response body will be empty and the path of the written file is returned as a `Metadata.filePath` HTTP header.
 
 #### Example
 
@@ -480,6 +480,12 @@ For large files, use streaming mode (with `filePath`) to avoid loading entire bl
 
 {{< tabpane text=true >}}
 
+  {{% tab "Windows" %}}
+  ```bash
+  curl -d "{ \"operation\": \"bulkGet\", \"data\": { \"items\": [{ \"blobName\": \"file1.txt\", \"filePath\": \"C:\\\\tmp\\\\file1.txt\" }, { \"blobName\": \"file2.txt\", \"filePath\": \"C:\\\\tmp\\\\file2.txt\" }] } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
+
   {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "bulkGet", "data": { "items": [{ "blobName": "file1.txt", "filePath": "/tmp/file1.txt" }, { "blobName": "file2.txt", "filePath": "/tmp/file2.txt" }] } }' \
@@ -492,6 +498,12 @@ For large files, use streaming mode (with `filePath`) to avoid loading entire bl
 ##### Bulk get blobs by prefix
 
 {{< tabpane text=true >}}
+
+  {{% tab "Windows" %}}
+  ```bash
+  curl -d "{ \"operation\": \"bulkGet\", \"data\": { \"prefix\": \"backups/\", \"destinationDir\": \"C:\\\\tmp\\\\backups\", \"concurrency\": 5 } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
 
   {{% tab "Linux" %}}
   ```bash
@@ -584,7 +596,7 @@ The data parameters are:
 - `concurrency` - (optional) maximum number of parallel uploads. Defaults to `10`
 
 {{% alert title="Note" color="primary" %}}
-When `decodeBase64` is enabled in the component configuration, inline `data` is base64-decoded before upload. For file-based uploads with `sourcePath`, the file content is streamed through a base64 decoder.
+When `decodeBase64` is enabled in the component configuration, both inline `data` and file-based `sourcePath` content are base64-decoded before upload. This means `sourcePath` should point to a base64-encoded file when `decodeBase64` is `true`. When `decodeBase64` is `false` (the default), content is uploaded as-is.
 {{% /alert %}}
 
 #### Examples
@@ -592,6 +604,12 @@ When `decodeBase64` is enabled in the component configuration, inline `data` is 
 ##### Bulk create blobs from files
 
 {{< tabpane text=true >}}
+
+  {{% tab "Windows" %}}
+  ```bash
+  curl -d "{ \"operation\": \"bulkCreate\", \"data\": { \"items\": [{ \"blobName\": \"report.pdf\", \"sourcePath\": \"C:\\\\tmp\\\\report.pdf\", \"contentType\": \"application/pdf\" }, { \"blobName\": \"data.csv\", \"sourcePath\": \"C:\\\\tmp\\\\data.csv\", \"contentType\": \"text/csv\" }] } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
 
   {{% tab "Linux" %}}
   ```bash
@@ -605,6 +623,12 @@ When `decodeBase64` is enabled in the component configuration, inline `data` is 
 ##### Bulk create blobs from inline data
 
 {{< tabpane text=true >}}
+
+  {{% tab "Windows" %}}
+  ```bash
+  curl -d "{ \"operation\": \"bulkCreate\", \"data\": { \"items\": [{ \"blobName\": \"hello.txt\", \"data\": \"Hello World\" }, { \"blobName\": \"goodbye.txt\", \"data\": \"Goodbye World\" }] } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
 
   {{% tab "Linux" %}}
   ```bash
@@ -690,6 +714,12 @@ Bulk delete uses the Azure Blob Batch API for efficient deletion (up to 256 blob
 
 {{< tabpane text=true >}}
 
+  {{% tab "Windows" %}}
+  ```bash
+  curl -d "{ \"operation\": \"bulkDelete\", \"data\": { \"blobNames\": [\"file1.txt\", \"file2.txt\", \"file3.txt\"] } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
+
   {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "bulkDelete", "data": { "blobNames": ["file1.txt", "file2.txt", "file3.txt"] } }' \
@@ -702,6 +732,12 @@ Bulk delete uses the Azure Blob Batch API for efficient deletion (up to 256 blob
 ##### Bulk delete by prefix
 
 {{< tabpane text=true >}}
+
+  {{% tab "Windows" %}}
+  ```bash
+  curl -d "{ \"operation\": \"bulkDelete\", \"data\": { \"prefix\": \"temp/\", \"deleteSnapshots\": \"include\" } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
 
   {{% tab "Linux" %}}
   ```bash
