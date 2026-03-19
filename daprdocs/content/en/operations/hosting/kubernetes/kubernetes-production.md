@@ -122,6 +122,61 @@ To scale scheduler and placement to three instances independently of the `global
     --wait
    ```
 
+### Spreading Placement and Scheduler replicas
+
+For HA **Scheduler** and **Placement**, the Helm chart uses pod anti-affinity so replicas are not all scheduled on the same failure domain. Two values control that behavior:
+
+- **`global.ha.topologyKey`** — Kubernetes label used as the “domain” for spreading (default `topology.kubernetes.io/zone`, i.e. one pod per zone when possible).
+- **`global.ha.podAntiAffinityPolicy`** — **soft** (`preferredDuringSchedulingIgnoredDuringExecution`, default) or **hard** (`requiredDuringSchedulingIgnoredDuringExecution`) enforcement of that spread.
+
+**When to change `topologyKey`**
+
+- **Multi-zone clusters** — default `topology.kubernetes.io/zone` is usually what you want so replicas land in different availability zones.
+- **Single zone, many nodes** — nodes often share the same zone label, so zone spreading does little. Set `global.ha.topologyKey` to `kubernetes.io/hostname` so the scheduler prefers different nodes.
+
+Example in a values file:
+
+```yaml
+global:
+  ha:
+    enabled: true
+    topologyKey: kubernetes.io/hostname
+```
+
+**When to use soft vs hard spreading**
+
+- **Soft (default)** — Use in most clusters. Kubernetes *tries* to separate replicas by `topologyKey`, but can still place two on the same zone or node if resources are tight. Avoids pods stuck **Pending** when you have fewer zones than replicas.
+- **Hard** — Use when you *require* no two replicas on the same topology value (for example you must have one Scheduler or Placement pod per zone). Only viable if you have at least as many distinct values for `topologyKey` as replicas (three zones for three replicas when using `topology.kubernetes.io/zone`).
+
+Enable hard spreading with Helm:
+
+```bash
+helm upgrade --install dapr dapr/dapr \
+  --version={{% dapr-latest-version short="true" %}} \
+  --namespace dapr-system \
+  --create-namespace \
+  --set global.ha.enabled=true \
+  --set global.ha.podAntiAffinityPolicy=requiredDuringSchedulingIgnoredDuringExecution \
+  --wait
+```
+
+Or combine with a custom topology key:
+
+```bash
+helm upgrade --install dapr dapr/dapr \
+  --version={{% dapr-latest-version short="true" %}} \
+  --namespace dapr-system \
+  --create-namespace \
+  --set global.ha.enabled=true \
+  --set global.ha.topologyKey=kubernetes.io/hostname \
+  --set global.ha.podAntiAffinityPolicy=requiredDuringSchedulingIgnoredDuringExecution \
+  --wait
+```
+
+{{% alert title="Note" color="primary" %}}
+If pods stay **Pending** after enabling **hard** spreading, your cluster likely does not expose enough distinct `topologyKey` values for the replica count. Switch to **soft** spreading, widen the cluster (more zones or nodes), or change `topologyKey`. Full `global.ha` reference: [Dapr Helm chart README](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md).
+{{% /alert %}}
+
 ## Setting cluster critical priority class name for control plane services
 
 In some scenarios, nodes may have memory and/or cpu pressure and the Dapr control plane pods might get selected
