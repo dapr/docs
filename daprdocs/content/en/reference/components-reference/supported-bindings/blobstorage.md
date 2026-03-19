@@ -194,27 +194,19 @@ Valid values for `signTTL` are [Go duration strings](https://pkg.go.dev/time#Par
 
 {{< /tabpane >}}
 
-##### Response
-
-The response body contains the following JSON:
-
-```json
-{
-    "blobURL": "https://<your account name>.blob.core.windows.net/<your container name>/<filename>",
-    "presignURL": "https://<your account name>.blob.core.windows.net/<your container name>/<filename>?sv=2023-11-03&se=2024-01-01T00%3A15%3A00Z&sr=b&sp=r&sig=<signature>"
-}
-```
-
 #### Response
 
 The response body will contain the following JSON:
 
 ```json
 {
-   "blobURL": "https://<your account name>.blob.core.windows.net/<your container name>/<filename>"
+   "blobURL": "https://<your account name>.blob.core.windows.net/<your container name>/<filename>",
+   "blobName": "<filename>",
+   "presignURL": "https://<your account name>.blob.core.windows.net/<your container name>/<filename>?sv=2023-11-03&se=2024-01-01T00%3A15%3A00Z&sr=b&sp=r&sig=<signature>"
 }
-
 ```
+
+> The `presignURL` field is only present when `signTTL` is provided in the request metadata.
 
 ### Get blob
 
