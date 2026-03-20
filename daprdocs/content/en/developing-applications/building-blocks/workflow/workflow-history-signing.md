@@ -15,8 +15,7 @@ loaded.
 ## Overview
 
 Workflows in Dapr execute as a series of deterministic replay steps. Each step
-appends history events to the [actor state store]({{% ref
-"workflow-architecture.md" %}}). History signing ensures that those events have
+appends history events to the [actor state store]({{% ref "workflow-architecture.md" %}}). History signing ensures that those events have
 not been modified, reordered, or removed after they were written.
 
 When signing is active, Dapr:
@@ -93,8 +92,8 @@ metadata:
   name: my-config
 spec:
   features:
-  - name: WorkflowSignState
-    enabled: false
+    - name: WorkflowSignState
+      enabled: false
 ```
 
 When signing is disabled:
