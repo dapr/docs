@@ -274,6 +274,10 @@ If you signed the new cert root with the **same private key** the Dapr Sentry se
 
 If you signed the new cert root with a **different private key**, you must restart the Dapr Sentry service, followed by the remainder of the Dapr control plane service.
 
+{{% alert title="Workflow history signing" color="warning" %}}
+If you rotate to a completely new root CA (different private key), any running workflows with [signed history]({{% ref "workflow-history-signing.md" %}}) will fail signature verification because their signing certificates were issued by the old CA. Those workflows will be reported as FAILED with error type `SignatureVerificationFailed`. To avoid this, complete or purge in-flight workflows before performing a full CA rotation.
+{{% /alert %}}
+
 ```bash
 kubectl rollout restart deploy/dapr-sentry -n <DAPR_NAMESPACE>
 ```
@@ -487,6 +491,10 @@ Copy `ca.crt`, `issuer.crt` and `issuer.key` to the filesystem path of every con
 By default, system services will look for the credentials in `/var/run/dapr/credentials`. The examples above use `$HOME/.dapr/certs` as a custom location.
 
 *Note: If you signed the cert root with a different private key, restart the Dapr instances.*
+
+{{% alert title="Workflow history signing" color="warning" %}}
+If you rotate to a completely new root CA (different private key), any running workflows with [signed history]({{% ref "workflow-history-signing.md" %}}) will fail signature verification. Complete or purge in-flight workflows before performing a full CA rotation.
+{{% /alert %}}
 
 ## Community call video on certificate rotation
 Watch this [video](https://www.youtube.com/watch?v=Hkcx9kBDrAc&feature=youtu.be&t=1400) on how to perform certificate rotation if your certificates are expiring.

@@ -52,6 +52,14 @@ Multi-application workflows, enable you to orchestrate complex business processe
 
 [Learn more about multi-application workflows.]({{% ref "workflow-multi-app.md" %}})
 
+### History signing
+
+When mTLS is enabled, Dapr cryptographically signs every workflow history event using the sidecar's X.509 SPIFFE identity.
+On each load, the full signature chain is verified, detecting any tampering of workflow state in the state store.
+Signing is enabled by default and requires no additional configuration.
+
+[Learn more about workflow history signing.]({{% ref "workflow-history-signing.md" %}})
+
 ### Timers and reminders
 
 Same as Dapr actors, you can schedule reminder-like durable delays for any time range.
