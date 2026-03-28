@@ -179,7 +179,7 @@ This example creates an agent that assists with weather information and uses Dap
 
 For this quickstart you'll primarily work with:
 
-* `02_durable_agent_http.py` – the main durable weather agent application exposed over HTTP
+* `03_durable_agent_http.py` – the main durable weather agent application exposed over HTTP
 * `function_tools.py` – contains `slow_weather_func`, the tool used by the agent
 * `resources/llm-provider.yaml` – Conversation API and LLM configuration
 * `resources/agent-memory.yaml` – conversation memory state store
