@@ -99,7 +99,7 @@ The above example uses secrets as plain strings. It is recommended to use a [sec
 | subscribeInitialPosition | N | Subscription position is the initial position which the cursor is set when start consuming. Default: `"latest"` | `"latest"`, `"earliest"` |
 | subscribeMode | N | Subscription mode indicates the cursor persistence, durable subscription retains messages and persists the current position. Default: `"durable"` | `"durable"`, `"non_durable"` |
 | partitionKey | N | Sets the key of the message for routing policy. Default: `""` | |
-| `maxConcurrentHandlers` | N  | Defines the maximum number of concurrent message handlers in `async` process mode. A fixed worker pool of this size processes messages concurrently; when all workers are busy, backpressure is applied naturally. A value of `0` falls back to the default. Default: `100` | `10`
+| `maxConcurrentHandlers` | N  | Defines the maximum number of concurrent message handlers in `async` process mode. A fixed worker pool of this size processes messages concurrently. When all workers are busy, backpressure is applied. A value of `0` falls back to the default. Default: `100` | `10`
 | replicateSubscriptionState | N | Enable replication of subscription state across geo-replicated Pulsar clusters. Default: `"false"` | `"true"`, `"false"` |
 
 ### Authenticate using Token
