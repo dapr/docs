@@ -21,7 +21,7 @@ jobs:
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
     env:
-      SWA_BASE: 'mango-sky-0f64b320f'
+      SWA_BASE: 'proud-bay-0e9e0e81e'
       HUGO_ENV: production
     steps:
       - name: Checkout docs repo
@@ -48,7 +48,7 @@ jobs:
         run: |
           git config --global --add safe.directory /github/workspace
           if [ $GITHUB_EVENT_NAME == 'pull_request' ]; then
-            STAGING_URL="https://${SWA_BASE}-${{github.event.number}}.2.azurestaticapps.net/"
+            STAGING_URL="https://${SWA_BASE}-${{github.event.number}}.westus2.azurestaticapps.net/"
           fi
           hugo ${STAGING_URL+-b "$STAGING_URL"} --minify
       - name: Deploy docs site
