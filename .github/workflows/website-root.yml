@@ -21,7 +21,7 @@ jobs:
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
     env:
-      SWA_BASE: 'proud-bay-0e9e0e81e'
+      SWA_BASE: 'delightful-moss-0b438320f'
       HUGO_ENV: production
     steps:
       - name: Checkout docs repo
