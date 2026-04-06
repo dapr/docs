@@ -103,7 +103,7 @@ Each workflow actor saves its state using the following keys in the configured a
 {{% alert title="Warning" color="warning" %}}
 Workflow actor state remains in the state store even after a workflow has completed.
 Creating a large number of workflows could result in unbounded storage usage.
-To address this either purge workflows using their ID or directly delete entries in the workflow DB store.
+To address this, purge workflows using the [purge API]({{% ref "workflow_api.md#purge-workflow-request" %}}) or configure a [workflow retention policy]({{% ref workflow-history-retention-policy.md %}}) to automatically clean up completed workflow state.
 {{% /alert %}}
 
 The following diagram illustrates the typical lifecycle of a workflow actor.
@@ -122,8 +122,8 @@ To summarize:
 
 Activity actors are responsible for managing the state and placement of all workflow activity invocations.
 A new instance of the activity actor is activated for every activity task that gets scheduled by a workflow.
-The ID of the activity actor is the ID of the workflow combined with a sequence number (sequence numbers start with 0), as well as the "generation" (incremented during instances of rerunning from using `continue as new`).
-For example, if a workflow has an ID of `876bf371` and is the third activity to be scheduled by the workflow, it's ID will be `876bf371::2::1` where `2` is the sequence number, and `1` is the generation.
+The ID of the activity actor is the ID of the workflow combined with a sequence number (sequence numbers start with 0), as well as the "generation" (incremented when a workflow uses `continue as new`).
+For example, if a workflow has an ID of `876bf371` and is the third activity to be scheduled by the workflow, its ID will be `876bf371::2::1` where `2` is the sequence number, and `1` is the generation.
 If the activity is scheduled again after a `continue as new`, the ID will be `876bf371::2::2`.
 
 No state is stored by activity actors, and instead all resulting data is sent back to the parent workflow actor.
