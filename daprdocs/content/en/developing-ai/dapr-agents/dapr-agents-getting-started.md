@@ -48,53 +48,145 @@ docker ps
 ## Install Python
 
 {{% alert title="Note" color="info" %}}
-Make sure you have Python already installed. `Python >=3.10`. For installation instructions, visit the official [Python installation guide](https://www.python.org/downloads/).
+Make sure you have Python already installed. `Python >=3.11`. For installation instructions, visit the official [Python installation guide](https://www.python.org/downloads/).
 {{% /alert %}}
+
+## Install uv
+
+The Dapr Agents quickstarts use [uv](https://docs.astral.sh/uv/) as the Python package manager. Install it by following the [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/).
+
+## Configure an LLM
+
+The quickstarts use [Ollama](https://ollama.com/) by default so you can run everything locally without an API key.
+
+### Default: Ollama (Local)
+
+1. Install and start Ollama:
+
+{{< tabpane text=true >}}
+
+{{% tab header="Linux" text=true %}}
+
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+{{% /tab %}}
+
+{{% tab header="macOS" text=true %}}
+
+```bash
+brew install ollama
+```
+
+{{% /tab %}}
+
+{{% tab header="Windows" text=true %}}
+
+Download and run the installer from [ollama.com/download](https://ollama.com/download).
+
+{{% /tab %}}
+
+{{< /tabpane >}}
+
+2. Pull a model with tool-calling support:
+
+```bash
+ollama serve    # Start the server (skip if already running)
+ollama pull qwen3:0.6b
+```
+
+3. Export the required environment variables before running any quickstart:
+
+{{< tabpane text=true >}}
+
+{{% tab header="Linux/macOS" text=true %}}
+
+```bash
+export OLLAMA_ENDPOINT=http://localhost:11434/v1
+export OLLAMA_MODEL=qwen3:0.6b
+```
+
+{{% /tab %}}
+
+{{% tab header="Windows (PowerShell)" text=true %}}
+
+```powershell
+$env:OLLAMA_ENDPOINT = "http://localhost:11434/v1"
+$env:OLLAMA_MODEL = "qwen3:0.6b"
+```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
+
+The `resources/llm-provider.yaml` component resolves `{{OLLAMA_ENDPOINT}}` and `{{OLLAMA_MODEL}}` from your environment automatically.
+
+### Alternative: OpenAI
+
+To use OpenAI instead, replace `resources/llm-provider.yaml` with:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: llm-provider
+spec:
+  type: conversation.openai
+  version: v1
+  metadata:
+  - name: key
+    value: "{{OPENAI_API_KEY}}"
+  - name: model
+    value: "gpt-4o-mini"
+```
+
+Dapr also supports Anthropic, Mistral, and other providers through the [Conversation API]({{% ref "conversation-overview" %}}). Replace the component type and metadata while keeping `name: llm-provider`.
 
 ## Prepare your environment
 
-In this getting started guide, you’ll work directly from the [Dapr Agents' quickstarts](https://github.com/dapr/dapr-agents/tree/main/quickstarts). We’ll focus on the **`06_durable_agent_http.py`** example, which is a reliable durable agent implemented with Dapr’s workflow engine and exposed over HTTP.
+In this getting started guide, you'll work directly from the [Dapr Agents quickstarts](https://github.com/dapr/dapr-agents/tree/main/quickstarts). You'll focus on `02_durable_agent_http.py`—a reliable durable agent backed by Dapr's workflow engine and exposed over HTTP.
 
-### 1. Clone the repository and examine its content
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/dapr/dapr-agents.git
-cd dapr-agents/quickstarts/01-dapr-agents-fundamentals
+cd dapr-agents/quickstarts
 ```
 
 ### 2. Create a virtual environment and install dependencies
 
-From the `01-dapr-agents-fundamentals` folder, do:
+From the `quickstarts` folder:
 
 ```bash
-python3.10 -m venv .venv
+uv venv
 
-# Activate the virtual environment 
+# Activate the virtual environment
 # On Windows:
 .venv\Scripts\activate
 # On macOS/Linux:
 source .venv/bin/activate
 
-# Install dependencies from the quickstart
-pip install -r requirements.txt
+# Install dependencies
+uv sync --active
 ```
 
 This installs `dapr-agents` and any additional libraries needed by the examples.
 
 ## Understand the application
 
-This example creates an agent that assists with weather information and uses Dapr to handle LLM interactions, persist conversation history, and provide reliable, durable execution of the agent’s steps.
+This example creates an agent that assists with weather information and uses Dapr to handle LLM interactions, persist conversation history, and provide reliable, durable execution of the agent's steps.
 
-For this quickstart you’ll primarily work with:
+For this quickstart you'll primarily work with:
 
-* `06_durable_agent_http.py` – the main durable weather agent application exposed over HTTP
+* `02_durable_agent_http.py` – the main durable weather agent application exposed over HTTP
 * `function_tools.py` – contains `slow_weather_func`, the tool used by the agent
 * `resources/llm-provider.yaml` – Conversation API and LLM configuration
-* `resources/conversation-statestore.yaml` – conversation memory state store
-* `resources/workflow-statestore.yaml` – workflow and durable execution state store
+* `resources/agent-memory.yaml` – conversation memory state store
+* `resources/agent-workflow.yaml` – workflow and durable execution state store
 
 
-Open `06_durable_agent_http.py`:
+Open `02_durable_agent_http.py`:
 
 ```python
 from dapr_agents.llm import DaprChatClient
@@ -108,7 +200,6 @@ from function_tools import slow_weather_func
 
 
 def main() -> None:
-    # This agent is of type durable agent where the execution is durable
     weather_agent = DurableAgent(
         name="WeatherAgent",
         role="Weather Assistant",
@@ -119,18 +210,15 @@ def main() -> None:
         # Configure the agent to use Dapr State Store for conversation history.
         memory=AgentMemoryConfig(
             store=ConversationDaprStateMemory(
-                store_name="conversation-statestore",
-                session_id="06-durable-agent-http",
+                store_name="agent-memory",
             )
         ),
         # This is where the execution state is stored
         state=AgentStateConfig(
-            store=StateStoreService(store_name="workflow-statestore"),
+            store=StateStoreService(store_name="agent-workflow"),
         ),
     )
 
-    # AgentRunner exposes the weather agent over HTTP on port 8001 using serve.
-    # The same runner supports PubSub subscriptions and direct in-process invocation.
     runner = AgentRunner()
     try:
         runner.serve(weather_agent, port=8001)
@@ -173,17 +261,18 @@ spec:
   version: v1
   metadata:
   - name: key
-    value: "{{OPENAI_API_KEY}}"
+    value: "ollama"
   - name: model
-    value: gpt-4.1-2025-04-14
+    value: "{{OLLAMA_MODEL}}"
+  - name: endpoint
+    value: "{{OLLAMA_ENDPOINT}}"
 ```
 
-* The `conversation.openai` component type configures the LLM provider and model.
-* `key` holds the API key used to authenticate with the LLM provider.
+* The `conversation.openai` component type is used for the Ollama-compatible OpenAI API.
+* `key` is set to `"ollama"` for local Ollama inference; replace with a real API key when using a cloud provider.
+* `model` and `endpoint` are resolved from environment variables at runtime.
 
-Replace `{{OPENAI_API_KEY}}` with your actual API key so the Conversation API can perform chat completion.
-
-With this setup, you can swap models or even providers by editing the component YAML without changing the agent code.
+With this setup, you can swap models or providers by editing the component YAML without changing the agent code.
 
 ### Conversation memory with a Dapr state store
 
@@ -192,19 +281,18 @@ In the agent definition, conversation memory is configured as:
 ```python
 memory=AgentMemoryConfig(
   store=ConversationDaprStateMemory(
-      store_name="conversation-statestore",
-      session_id="06-durable-agent-http",
+      store_name="agent-memory",
   )
 ),
 ```
 
-This tells the agent to store conversation history in a Dapr state store named `conversation-statestore`, under a given `session_id`. The matching Dapr component is `resources/conversation-statestore.yaml`:
+This tells the agent to store conversation history in the `agent-memory` Dapr state store. The matching Dapr component is `resources/agent-memory.yaml`:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: conversation-statestore
+  name: agent-memory
 spec:
   type: state.redis
   version: v1
@@ -222,21 +310,21 @@ You can browse this state later (for example, with Redis Insight) to see how con
 
 ### Durable execution state with a workflow state store
 
-The agent’s durable execution state is configured as:
+The agent's durable execution state is configured as:
 
 ```python
 state=AgentStateConfig(
-  store=StateStoreService(store_name="workflow-statestore"),
+  store=StateStoreService(store_name="agent-workflow"),
 ),
 ```
 
-This uses a Dapr state store named `workflow-statestore` to persist workflow and agent execution state. The corresponding component is `resources/workflow-statestore.yaml`:
+This uses the `agent-workflow` Dapr state store. The corresponding component is `resources/agent-workflow.yaml`:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: workflow-statestore
+  name: agent-workflow
 spec:
   type: state.redis
   version: v1
@@ -249,25 +337,24 @@ spec:
     value: "true"
 ```
 
-* This is another Redis state store that holds the durable workflow state.
-* `actorStateStore: "true"` this is a required setting that enables storage suitable for workflows.
-* If the process stops mid-execution, the workflow engine uses this state to resume from the last persisted step instead of starting over. This prevents complex agent workflows from starting from again from the initial step and performing the repetitive LLM and tool calls.
+* `actorStateStore: "true"` is a required setting that enables storage suitable for Dapr Workflows.
+* If the process stops mid-execution, the workflow engine uses this state to resume from the last persisted step instead of starting over. This prevents complex agent workflows from re-executing LLM and tool calls that already completed.
 
 Together, these features make the agent **durable**, **reliable**, and **provider-agnostic**, while keeping the agent code itself focused on behavior and tools.
 
 ## Run the durable agent with Dapr
 
-From the `01-dapr-agents-fundamentals` folder, with your virtual environment activated:
+From the `quickstarts` folder, with your virtual environment activated:
 
 ```bash
-dapr run --app-id durable-agent --resources-path resources -- python 06_durable_agent_http.py
+uv run dapr run --app-id durable-agent --resources-path resources -- python 02_durable_agent_http.py
 ```
 
 This:
 
 * Starts a Dapr sidecar using the components in `resources/`.
-* Runs `06_durable_agent_http.py` with the durable `WeatherAgent`.
-* Exposes the agent’s HTTP API on port `8001`.
+* Runs `02_durable_agent_http.py` with the durable `WeatherAgent`.
+* Exposes the agent's HTTP API on port `8001`.
 
 ### Trigger the agent with a prompt
 
@@ -301,7 +388,7 @@ Replace `WORKFLOW_ID` with the value you received from the POST request.
     * An LLM call to interpret the task and decide if a tool is needed.
     * A tool call (using `slow_weather_func`) to fetch the weather data.
     * A final LLM step that incorporates the tool result into the response.
-* Every step is durably persisted, so no LLM or tool call is repeated unless fails.
+* Every step is durably persisted, so no LLM or tool call is repeated unless it fails.
 
 ## Test durability by interrupting the agent
 
@@ -311,16 +398,16 @@ To see durable execution in action:
    Send the POST request to `/agent/run` as shown above and note the `WORKFLOW_ID`.
 
 2. **Kill the agent process**
-   While the request is being processed (during the `slow_weather_func` which is on purpose 5 seconds delayed), stop the agent process:
+   While the request is being processed (during `slow_weather_func`, which is intentionally delayed 5 seconds), stop the agent process:
 
-    * Go to the terminal running `dapr run ...`.
+    * Go to the terminal running `uv run dapr run ...`.
     * Press `Ctrl+C` to stop the app and sidecar.
 
 3. **Restart the agent**
    Start it again with the same command:
 
 ```bash
-   dapr run --app-id durable-agent --resources-path resources -- python 06_durable_agent_http.py
+   uv run dapr run --app-id durable-agent --resources-path resources -- python 02_durable_agent_http.py
 ```
 
 4. **Query the same workflow**
@@ -330,10 +417,10 @@ To see durable execution in action:
    curl -i -X GET http://localhost:8001/agent/instances/WORKFLOW_ID
    ```
 
-You’ll see that the workflow continues from its last persisted step instead of starting over. The tool call or LLM calls are not re-executed unless required, and you do not need to send a new prompt. Once the workflow completes, the GET request returns the final result.
+You'll see that the workflow continues from its last persisted step instead of starting over. The tool call or LLM calls are not re-executed unless required, and you do not need to send a new prompt. Once the workflow completes, the GET request returns the final result.
 
 In summary, the Dapr Workflow engine preserves the execution state of the agent across restarts, enabling reliable long-running interactions that combine LLM calls, tools, and stateful reasoning.
- 
+
 ## Inspect workflow executions with Diagrid Dashboard
 
 After starting the durable agent with Dapr, you can use the local [Diagrid Dashboard](https://diagrid.ws/diagrid-dashboard-docs) to visualize and inspect your workflow state, including detailed execution history for each run. The dashboard runs as a container and connects to the same state store used by Dapr workflows (by default, the local Redis instance).
@@ -348,9 +435,9 @@ docker run -p 8080:8080 ghcr.io/diagridio/diagrid-dashboard:latest
 
 Open the dashboard in a browser at `http://localhost:8080` to explore your local workflow executions.
 
-## Inspect Conversation History with Redis Insights 
+## Inspect Conversation History with Redis Insight
 
-Dapr uses [Redis]({{% ref setup-redis.md %}}) by default for state management and pub/sub messaging, which are fundamental to Dapr Agents’ agentic workflows. To inspect the Redis instance and see both **conversation** state for this durable agent, you can use Redis Insight.
+Dapr uses [Redis]({{% ref setup-redis.md %}}) by default for state management and pub/sub messaging, which are fundamental to Dapr Agents' agentic workflows. To inspect the Redis instance and see both **conversation** state for this durable agent, you can use Redis Insight.
 
 Run Redis Insight:
 
@@ -366,12 +453,12 @@ Inside Redis Insight, you can connect to the Redis instance used by Dapr:
 * Host (Linux): `172.17.0.1`
 * Host (Windows/Mac): `host.docker.internal` (for example, `host.docker.internal:6379`)
 
-Redis Insight makes it easy to inspect keys and values stored in the state stores (such as `conversation-statestore` and `workflow-statestore`), which is useful for debugging and understanding how your durable agents behave.
+Redis Insight makes it easy to inspect keys and values stored in the state stores (such as `agent-memory` and `agent-workflow`), which is useful for debugging and understanding how your durable agents behave.
 
 ![Redis Dashboard](/images/dapr-agents/redis_dashboard.png)
 
-Here you can browse the state stores used by the agent (`conversation-statestore`) and explore their data.
+Here you can browse the state stores used by the agent (`agent-memory`) and explore their data.
 
 ## Next Steps
 
-Now that you have Dapr Agents installed via the quickstart, and a durable HTTP agent running end-to-end, explore more examples and patterns in the [quickstarts]({{% ref dapr-agents-quickstarts.md %}}) section to learn about multi-agent workflows, pub/sub-driven agents, tracing, and deeper integration with Dapr’s building blocks.
+Now that you have Dapr Agents installed via the quickstart, and a durable HTTP agent running end-to-end, explore more examples and patterns in the [quickstarts]({{% ref dapr-agents-quickstarts.md %}}) section to learn about multi-agent workflows, pub/sub-driven agents, tracing, and deeper integration with Dapr's building blocks.
