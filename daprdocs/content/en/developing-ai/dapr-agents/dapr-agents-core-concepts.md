@@ -8,7 +8,7 @@ aliases:
   - /developing-applications/dapr-agents/dapr-agents-core-concepts
 ---
 
-Dapr Agents provides a structured way to build and orchestrate applications that use LLMs without getting bogged down in infrastructure details. The primary goal is to enable AI development by abstracting away the complexities of working with LLMs, tools, memory management, and distributed systems, allowing developers to focus on the business logic of their AI applications. Agents in this framework are the fundamental building blocks.
+Dapr Agents provides a structured way to build and orchestrate applications that use LLMs without getting bogged down in infrastructure details and with durability guarantees. The primary goal is to enable AI development by abstracting away the complexities of working with LLMs, tools, memory management, and distributed systems, allowing developers to focus on the business logic of their AI applications. Agents in this framework are the fundamental building blocks.
 
 ## Agents
 
@@ -19,7 +19,12 @@ Agents are autonomous units powered by Large Language Models (LLMs), designed to
 Dapr Agents provides two agent types, each designed for different use cases:
 
 ### Agent
-The standard `Agent` class is a conversational agent that manages tool calls and conversations using a language model. It provides, synchronous execution with built-in conversation memory.
+
+{{% alert title="Deprecated" color="warning" %}}
+The `Agent` class is **deprecated as of v1.0.0-rc.1** and will be removed in a future release. Use [`DurableAgent`](#durable-agent) for all new development.
+{{% /alert %}}
+
+The `Agent` class is a conversational agent that manages tool calls and conversations using a language model. It provides synchronous execution with built-in conversation memory.
 
 ```python
 @tool
@@ -103,10 +108,10 @@ This example demonstrates creating a workflow-backed agent that runs autonomousl
 
 In Summary:
 
-| Agent Type      | Memory Type             | Execution | Interaction Mode         |
-|-----------------|-------------------------|-----------|--------------------------|
-| `Agent`         | In-memory or Persistent | Ephemeral | Embedded                 |
-| `Durable Agent` | Persistent | Durable   | PubSub / HTTP / Embedded |
+| Agent Type      | Memory Type             | Execution | Interaction Mode         | Status |
+|-----------------|-------------------------|-----------|--------------------------|--------|
+| `Agent`         | In-memory or Persistent | Ephemeral | Embedded                 | **Deprecated** (v1.0.0-rc.1) |
+| `DurableAgent`  | Persistent              | Durable   | PubSub / HTTP / Embedded | Recommended |
 
 
 - Regular `Agent`: Interaction is synchronous—you send conversational prompts and receive responses immediately. The conversation can be stored in memory or persisted, but the execution is ephemeral and does not survive restarts.
@@ -180,6 +185,28 @@ Each tool has a descriptive docstring that helps the LLM understand when to use 
 
 This is supported directly through LLM parametric knowledge and enhanced by [Function Calling](https://platform.openai.com/docs/guides/function-calling), ensuring tools are invoked efficiently and accurately.
 
+#### Tool Execution Modes
+
+When an LLM returns multiple tool calls in a single turn, `DurableAgent` can execute them in two modes, configured via `AgentExecutionConfig.tool_execution_mode`:
+
+| Mode | Enum Value | Behavior |
+|------|-----------|----------|
+| **Parallel** (default) | `ToolExecutionMode.PARALLEL` | All tool calls from a single LLM turn are dispatched and awaited concurrently. Best latency when tools are independent. |
+| **Sequential** | `ToolExecutionMode.SEQUENTIAL` | Tool calls are executed one-by-one in the order returned by the LLM. Use this when tools have side-effects that depend on results of earlier calls in the same turn. |
+
+```python
+from dapr_agents.agents.configs import AgentExecutionConfig, ToolExecutionMode
+
+travel_planner = DurableAgent(
+    name="TravelBuddy",
+    ...
+    execution=AgentExecutionConfig(
+        max_iterations=10,
+        tool_execution_mode=ToolExecutionMode.SEQUENTIAL,
+    ),
+)
+```
+
 
 ### MCP Support
 Dapr Agents includes built-in support for the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/), enabling agents to dynamically discover and invoke external tools through a standardized interface. Using the provided MCPClient, agents can connect to MCP servers via three transport options: stdio for local development, sse for remote or distributed environments, and via streamable HTTP transport.
@@ -246,6 +273,70 @@ travel_planner = DurableAgent(
 | `ConversationListMemory` (Default) | In-Memory | ❌ | Linear | Development |
 | `ConversationVectorMemory` | Vector Store | ✅ | Semantic | RAG/AI Apps |
 | `ConversationDaprStateMemory` | Dapr State Store | ✅ | Query | Production |
+
+`ConversationVectorMemory` can be backed by any of the supported vector store implementations:
+
+| Vector Store | Class | Backend | Notes |
+|---|---|---|---|
+| Chroma | `ChromaVectorStore` | ChromaDB | In-memory or persistent; no extra infrastructure |
+| PostgreSQL | `PostgresVectorStore` | pgvector extension | Requires PostgreSQL with `pgvector` |
+| Redis | `RedisVectorStore` | Redis Stack / Redis with Search | Requires `redisvl` |
+
+```python
+from dapr_agents.storage.vectorstores import RedisVectorStore
+from dapr_agents.document.embedder.openai import OpenAIEmbedder
+from dapr_agents.memory import ConversationVectorMemory
+
+vector_store = RedisVectorStore(
+    url="redis://localhost:6379",
+    index_name="my_agent",
+    embedding_function=OpenAIEmbedder(),
+    embedding_dimensions=1536,
+)
+
+memory = ConversationVectorMemory(
+    vector_store=vector_store,
+    distance_metric="cosine",
+)
+```
+
+
+### Agents as Tools
+
+Dapr Agents supports invoking other agents - whether Dapr Agents or 3rd party agent frameworks - as tools within a `DurableAgent` reasoning loop. This lets a parent agent delegate sub-tasks to specialized child agents and compose multi-agent systems without using a pub/sub message broker.
+
+Agents registered in the same registry are available to use as tools automatically. This includes invoking 3rd party framework agents. Alternatively, use `agent_to_tool` from `dapr_agents.tool.workflow` for explicit wiring, cross-app routing, or invoking agents from other frameworks:
+
+```python
+from dapr_agents.tool.workflow import agent_to_tool
+
+# Invoke a separate agent as a tool call
+aragorn_tool = agent_to_tool(
+    "aragorn",
+    description="Military Strategy. Goal: Lead the forces of Gondor.",
+    target_app_id="aragorn-app",
+)
+# Use an agent as a tool within a DurableAgent
+frodo = DurableAgent(
+    name="frodo",
+    role="Ring Bearer",
+    goal="Carry the One Ring to Mordor",
+    tools=[aragorn_tool],
+    ...
+)
+```
+
+When the LLM calls one of these tools, Dapr Agents schedules the target agent's workflow as a `DurableAgent` (child workflow) and returns the result—handling cross-app routing and result marshalling transparently.
+
+| Parameter | Description |
+|---|---|
+| `agent_name` | Name of the target agent (used to derive the tool name and workflow ID) |
+| `description` | Human-readable description shown to the parent LLM in the tool schema |
+| `target_app_id` | Dapr app-id for cross-app routing; `None` for in-process invocation |
+| `framework` | Framework name for non-Dapr-Agents targets (e.g. `"openai"`, `"langgraph"`) |
+| `workflow_name` | Explicit Dapr workflow name; takes precedence over `framework` |
+
+See the [Agents as Tools example](https://github.com/dapr/dapr-agents/tree/main/examples/08-agents-as-tools) for a complete working implementation.
 
 
 ### Agent Runner
