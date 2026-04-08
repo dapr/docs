@@ -129,6 +129,7 @@ Dapr Agents provides a unified interface to connect with LLM inference APIs. Thi
 - `DaprChatClient`: Unified API for LLM interactions via Dapr's Conversation API with built-in security (scopes, secrets, PII obfuscation), resiliency (timeouts, retries, circuit breakers), and observability via OpenTelemetry & Prometheus
 - `OpenAIChatClient`: Full spectrum support for OpenAI models including chat, embeddings, and audio
 - `HFHubChatClient`: For Hugging Face models supporting both chat and embeddings
+- `MistralChatClient`: Native support for Mistral models via the official SDK, enabling custom endpoints and advanced multimodal features
 - `NVIDIAChatClient`: For NVIDIA AI Foundation models supporting local inference and chat
 - `ElevenLabs`: Support for speech and voice capabilities
 
