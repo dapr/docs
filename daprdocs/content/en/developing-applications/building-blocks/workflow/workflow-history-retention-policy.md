@@ -21,6 +21,24 @@ The duration is defined as a [Go duration string](https://pkg.go.dev/time#ParseD
 It can be useful to configure a short retention duration for `Completed` workflows, while retaining `Failed` and `Terminated` workflows for longer periods to allow for investigation.
 {{% /alert %}}
 
+{{% alert title="Important" color="warning" %}}
+When adding or changing a retention policy, the policy only applies to workflows that **newly reach** a configured terminal state after the policy is in effect. It does **not** retroactively clean up workflows that are already in a terminal state.
+
+To retroactively purge existing terminal workflows, use the Dapr CLI:
+
+```bash
+# Purge all terminal workflows older than a specific duration
+dapr workflow purge --app-id <app-id> --all-older-than <duration>
+
+# Purge only workflows with a specific status older than a duration
+dapr workflow purge --app-id <app-id> --all-older-than <duration> --all-filter-status COMPLETED
+dapr workflow purge --app-id <app-id> --all-older-than <duration> --all-filter-status FAILED
+dapr workflow purge --app-id <app-id> --all-older-than <duration> --all-filter-status TERMINATED
+```
+
+Note: Purge operations require a running workflow client in your application. See [How to: Manage workflows]({{% ref howto-manage-workflow.md %}}) for more details on the purge command and its requirements, including usage of the `--force` flag.
+{{% /alert %}}
+
 The following example configuration sets each of the terminal states.
 The `anyTerminal` property set here would take no effect as all terminal states are explicitly configured, however it is included for reference.
 
