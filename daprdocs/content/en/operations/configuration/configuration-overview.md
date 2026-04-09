@@ -268,12 +268,16 @@ For more information, see:
 
 #### Workflow
 
-The `workflow` section contains properties for configuring [Workflows]({{% ref "workflow-overview.md" %}}).
+The `workflow` section contains properties for configuring [Workflows]({{% ref "workflow-overview.md" %}}). See [Workflow Concurrency Limits]({{% ref "workflow-concurrency.md" %}}) for detailed guidance on how these settings interact.
 
 | Property | Type   | Description |
 |------------------|--------|-----|
-| `maxConcurrentWorkflowInvocations` | int32 | Maximum number of concurrent workflow executions per Dapr sidecar. Default is infinite. |
-| `maxConcurrentActivityInvocations` | int32 | Maximum number of concurrent activity executions per Dapr sidecar. Default is infinite. |
+| `maxConcurrentWorkflowInvocations` | int32 | Maximum concurrent workflow executions per Dapr sidecar. Default is unlimited. |
+| `maxConcurrentActivityInvocations` | int32 | Maximum concurrent activity executions per Dapr sidecar. Default is unlimited. |
+| `globalMaxConcurrentWorkflowInvocations` | int32 | Maximum concurrent workflow executions across all replicas, enforced by the scheduler. Default is unlimited. |
+| `globalMaxConcurrentActivityInvocations` | int32 | Maximum concurrent activity executions across all replicas, enforced by the scheduler. Default is unlimited. |
+| `workflowConcurrencyLimits` | list | Per-workflow-name concurrency limits across all replicas. Each entry has `name` (string) and `maxConcurrent` (int32). |
+| `activityConcurrencyLimits` | list | Per-activity-name concurrency limits across all replicas. Each entry has `name` (string) and `maxConcurrent` (int32). |
 
 #### Scope secret store access
 

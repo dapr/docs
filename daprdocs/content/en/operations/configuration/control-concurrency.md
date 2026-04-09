@@ -12,12 +12,15 @@ Default `app-max-concurreny` is set to `-1`, meaning no concurrency limit is enf
 
 ## Different approaches
 
-While this guide focuses on `app-max-concurrency`, you can also limit request rate per second using the **`middleware.http.ratelimit`** middleware. However, it's important to understand the difference between the two approaches:
+Dapr provides several approaches to concurrency and rate limiting. It's important to understand the differences:
 
-- `middleware.http.ratelimit`: Time bound and limits the number of requests per second
-- `app-max-concurrency`: Specifies the max number of concurrent requests (and events) at any point of time. 
+| Approach | What it controls | Scope |
+|----------|-----------------|-------|
+| `app-max-concurrency` | Max concurrent requests and events to an app | Per-sidecar |
+| `middleware.http.ratelimit` | HTTP requests per second by remote IP | Per-sidecar |
+| [Workflow concurrency limits]({{% ref workflow-concurrency.md %}}) | Workflow and activity executions, with per-name granularity | Per-sidecar or global (across all replicas) |
 
-See [Rate limit middleware]({{% ref middleware-rate-limit.md %}}) for more information about that approach.
+This guide focuses on `app-max-concurrency`. See [Rate limit middleware]({{% ref middleware-rate-limit.md %}}) and [Workflow Concurrency Limits]({{% ref workflow-concurrency.md %}}) for the other approaches.
 
 ## Demo
 
