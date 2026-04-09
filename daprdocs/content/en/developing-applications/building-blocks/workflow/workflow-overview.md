@@ -156,6 +156,12 @@ See [How-To: Manage workflows]({{< ref howto-manage-workflow.md >}}) for detaile
 - Azure Cosmos DB has [payload and workflow complexity limitations]({{% ref "setup-azure-cosmosdb.md#workflow-limitations" %}}).
 - AWS DynamoDB has [workflow complexity limitations]({{% ref "setup-azure-cosmosdb.md#workflow-limitations" %}}).
 
+## Workflow security
+
+Dapr provides fine-grained access control for workflow and activity scheduling through the `WorkflowAccessPolicy` resource. You can restrict which applications are permitted to start specific workflows or call specific activities on your application.
+
+This is especially important for multi-application workflows, where activities and child workflows execute across application boundaries. Read [How-To: Apply workflow access policies]({{% ref workflow-access-policy %}}) for full configuration details.
+
 ## Watch the demo
 
 Watch [this video for an overview on Dapr Workflow](https://youtu.be/s1p9MNl4VGo?t=131):
