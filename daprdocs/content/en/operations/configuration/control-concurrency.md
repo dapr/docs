@@ -8,7 +8,7 @@ description: "Learn how to control how many requests and events can invoke your 
 
 Typically, in distributed computing, you may only want to allow for a given number of requests to execute concurrently. Using Dapr's `app-max-concurrency`, you can control how many requests and events can invoke your application simultaneously.
 
-Default `app-max-concurreny` is set to `-1`, meaning no concurrency limit is enforced.
+Default `app-max-concurrency` is set to `-1`, meaning no concurrency limit is enforced.
 
 ## Different approaches
 

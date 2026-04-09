@@ -81,8 +81,8 @@ spec:
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `activityConcurrencyLimits` | list | Per-activity-name concurrency limits. |
-| `workflowConcurrencyLimits` | list | Per-workflow-name concurrency limits. |
+| `activityConcurrencyLimits` | array | Per-activity-name concurrency limits. |
+| `workflowConcurrencyLimits` | array | Per-workflow-name concurrency limits. |
 | `activityConcurrencyLimits[].name` | string | Activity name to limit. |
 | `activityConcurrencyLimits[].maxConcurrent` | int32 | Max concurrent executions across all replicas for this activity. |
 | `workflowConcurrencyLimits[].name` | string | Workflow name to limit. |
