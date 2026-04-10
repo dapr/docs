@@ -73,17 +73,11 @@ In a standard Dapr deployment with the [Sentry service]({{% ref "security-concep
 ## Configuration
 
 History signing is controlled by the `WorkflowSignState` feature flag. It is
-**enabled by default** when mTLS is active.
+**disabled by default** and must be explicitly enabled.
 
-### Default behavior (signing enabled)
+### Enabling signing
 
-No configuration is needed. When Dapr starts with mTLS, workflow history
-signing is automatically active.
-
-### Disabling signing
-
-To explicitly disable signing, set the feature flag to `false` in your Dapr
-configuration:
+To enable signing, set the feature flag to `true` in your Dapr configuration:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -93,14 +87,8 @@ metadata:
 spec:
   features:
     - name: WorkflowSignState
-      enabled: false
+      enabled: true
 ```
-
-When signing is disabled:
-
-- New history events are written without signatures.
-- Existing signatures in the state store are ignored during loading.
-- No signing certificates are stored.
 
 ### Conditions for signing to be active
 
@@ -109,10 +97,19 @@ Both conditions must be true for signing to occur:
 | Condition | How to check |
 |-----------|-------------|
 | mTLS is enabled | Sentry is running and the sidecar has a valid SVID |
-| `WorkflowSignState` is not disabled | Feature flag is absent (defaults to `true`) or explicitly set to `true` |
+| `WorkflowSignState` is enabled | Feature flag is explicitly set to `true` |
 
 If mTLS is disabled (no Sentry), the signer is `nil` regardless of the feature
 flag, and signing does not occur.
+
+{{% alert title="Important" color="warning" %}}
+**Signing is a one-way commitment.** Once a workflow is created with signing
+enabled, it must always run on signing-enabled hosts. Disabling signing on a
+host that loads a previously signed workflow will cause the workflow to fail.
+Similarly, enabling signing on a host that loads a previously unsigned workflow
+will cause the workflow to fail. See [one-way commitment](#one-way-commitment)
+for details.
+{{% /alert %}}
 
 ## How signing works
 
@@ -163,25 +160,28 @@ the full signature chain is verified.
 
 {{< mermaid >}}
 flowchart TD
-    A["Load workflow state<br/>from state store"] --> B["Signatures<br/>present?"]
-    B -->|No| C["Continue without<br/>verification"]
-    B -->|Yes| D["Signer<br/>configured?"]
-    D -->|No| W["Log warning,<br/>skip verification"]
+    A["Load workflow state<br/>from state store"] --> B{"Signatures<br/>present?"}
+    B -->|"No, but signer<br/>configured and<br/>history exists"| N["FAIL: unsigned<br/>history cannot<br/>be loaded with<br/>signing enabled"]
+    B -->|"No, signer not<br/>configured"| C["Continue without<br/>verification"]
+    B -->|Yes| D{"Signer<br/>configured?"}
+    D -->|No| W["FAIL: signed<br/>history cannot<br/>be loaded without<br/>a signer"]
     D -->|Yes| E["Verify chain<br/>linkage"]
     E --> F["Verify event<br/>range contiguity"]
     F --> G["Recompute events<br/>digest from raw bytes"]
     G --> H["Verify cryptographic<br/>signature"]
     H --> I["Validate certificate<br/>time window"]
     I --> J["Verify certificate<br/>chain-of-trust to CA"]
-    J --> K["All events<br/>covered?"]
-    K -->|Yes| L["Verification<br/>passed ✓"]
-    K -->|No| M["Verification<br/>failed ✗"]
+    J --> K["Verify SPIFFE<br/>app identity"]
+    K --> L["All events<br/>covered?"]
+    L -->|Yes| P["Verification<br/>passed ✓"]
+    L -->|No| M["Verification<br/>failed ✗"]
     E -->|Mismatch| M
     F -->|Gap| M
     G -->|Mismatch| M
     H -->|Failed| M
     I -->|Expired| M
     J -->|Untrusted| M
+    K -->|Wrong app| M
 {{< /mermaid >}}
 
 The verification steps for each signature in the chain are:
@@ -194,11 +194,24 @@ The verification steps for each signature in the chain are:
 | Cryptographic signature | Verify against public key from the signing certificate | Forged signatures |
 | Certificate validity | Certificate was valid at the time of the last signed event | Expired or backdated certificates |
 | Chain-of-trust | Certificate chains to a trusted Sentry CA root | Signing by untrusted identity |
+| App identity | SPIFFE ID in certificate matches the workflow's owning app | Cross-app signature forgery |
 | Full coverage | Signatures cover every event from index 0 to the end | Partially unsigned history |
 
 Verification uses the **raw bytes from the state store**, not re-marshaled
 events. This ensures that any byte-level modification to persisted events is
 detected.
+
+### Inbox event validation
+
+When signing is enabled, the orchestrator validates inbox events before
+processing them. Result events (`TaskCompleted`, `TaskFailed`,
+`ChildWorkflowInstanceCompleted`, `ChildWorkflowInstanceFailed`) must reference
+an operation that was actually scheduled in the signed history. Events that
+reference non-existent operations — such as a `TaskCompleted` for a task ID
+that was never scheduled — are considered injected and are purged from the
+inbox. This prevents an attacker with state store access from injecting fake
+activity or child workflow results that would otherwise be signed into the
+history chain.
 
 ## What happens when verification fails
 
@@ -218,15 +231,9 @@ When the orchestrator actor loads workflow state and verification fails:
 ### Metadata queries (API path)
 
 When a workflow metadata query (such as `GET /v1.0/workflows/<id>` or
-`FetchWorkflowMetadata`) encounters a verification error:
-
-1. The workflow is reported as **FAILED** with the following failure details:
-   - **Error type**: `SignatureVerificationFailed`
-   - **Error message**: Contains `"signature verification failed"` and the
-     specific reason (for example, digest mismatch or certificate trust failure)
-   - **Non-retriable**: `true`
-
-2. The actual history and signatures remain untouched in the state store.
+`FetchWorkflowMetadata`) encounters a verification error, the error is returned
+directly to the caller. The error message contains the specific reason for
+failure (for example, digest mismatch or certificate trust failure).
 
 {{< mermaid >}}
 flowchart TD
@@ -234,7 +241,7 @@ flowchart TD
     B -->|Pass| C["Continue normal<br/>execution"]
     B -->|Fail| D{"Code path?"}
     D -->|Orchestrator| E["Delete reminders<br/>to stop retries"]
-    D -->|Metadata query| F["Return FAILED status<br/>ErrorType: SignatureVerificationFailed"]
+    D -->|Metadata query| F["Return error to caller"]
     E --> G["State store<br/>NOT modified"]
     F --> G
 {{< /mermaid >}}
@@ -247,14 +254,40 @@ flowchart TD
 | Deleted event | A history event was removed from the state store | Event count or coverage mismatch |
 | Inserted event | An event was added outside of normal workflow execution | Events digest mismatch |
 | Reordered events | Events were rearranged in the state store | Events digest mismatch |
+| Injected inbox event | A fake result was written to the inbox in the state store | Inbox validation: no matching scheduled operation |
 | CA change | Sentry CA was rotated to a completely new root | Certificate chain-of-trust failure |
+| Cross-app forgery | A certificate from a different app was used to sign | SPIFFE app identity mismatch |
 | Corrupted signature | A signature entry was modified in the state store | Cryptographic signature verification failure or chain linkage mismatch |
+| Signing disabled | A signed workflow was loaded by a non-signing host | "signed history but no signer is configured" |
+| Signing enabled on unsigned | An unsigned workflow was loaded by a signing host | "unsigned history events but signing is enabled" |
+
+## One-way commitment
+
+Signing is a permanent commitment per workflow. Once a workflow is created with
+signing enabled, all subsequent operations on that workflow must occur on
+signing-enabled hosts. There are two invariants:
+
+1. **Signed workflow on non-signing host**: If a workflow has signed history but
+   the current host does not have a signer configured (mTLS is off or the
+   feature flag is disabled), loading the workflow fails. The workflow cannot
+   execute and is effectively terminated.
+
+2. **Unsigned workflow on signing host**: If a workflow was created without
+   signing (the feature flag was off) and is later loaded by a signing-enabled
+   host, loading fails. The unsigned history has no integrity proof and
+   cannot be retroactively signed.
+
+{{% alert title="Migration guidance" color="warning" %}}
+Before enabling signing cluster-wide, ensure all existing unsigned workflows
+have completed or been purged. Once signing is enabled, new workflows will be
+signed and existing unsigned workflows will fail to load.
+{{% /alert %}}
 
 ## Certificate rotation
 
 Dapr handles certificate rotation transparently. When the sidecar's SVID
 rotates (for example, after a restart where Sentry issues a new short-lived
-certificate), the signing system:
+certificate, or when the SVID naturally expires), the signing system:
 
 1. Detects that the current certificate differs from the last entry in the
    certificate table.
@@ -286,6 +319,12 @@ gantt
 Both Cert A and Cert B chain to the same Sentry CA, so all signatures remain
 valid.
 
+In multi-replica deployments, each replica has its own private key and SVID
+certificate. When the workflow orchestrator migrates between replicas (for
+example, due to scaling or rebalancing), the new replica's certificate is
+appended to the table. All certificates are validated as belonging to the same
+app ID via SPIFFE identity binding.
+
 {{% alert title="Important" color="warning" %}}
 **Certificate rotation** (new leaf SVID, same CA root) works seamlessly.
 
@@ -294,37 +333,6 @@ to fail for workflows signed under the old CA, because the old signing
 certificates will not chain to the new trust anchors. This is by design: if
 the trust root changes, previously signed data cannot be verified.
 {{% /alert %}}
-
-## Catch-up signing
-
-When a workflow starts on a host where signing is disabled (or mTLS is not
-configured) and later moves to a signing-enabled host (for example, after enabling the
-feature flag and restarting), Dapr creates **catch-up signatures** to cover the
-previously unsigned events.
-
-{{< mermaid >}}
-flowchart LR
-    subgraph Phase1["Phase 1: No signing"]
-        U0["Event 0<br/>(unsigned)"]
-        U1["Event 1<br/>(unsigned)"]
-        U2["Event 2<br/>(unsigned)"]
-    end
-
-    subgraph Phase2["Phase 2: Signing enabled"]
-        CS["Catch-up Sig<br/>covers [0,3)<br/>using raw<br/>stored bytes"]
-        E3["Event 3"]
-        E4["Event 4"]
-        NS["New Sig<br/>covers [3,5)"]
-    end
-
-    U0 & U1 & U2 -.-> CS
-    CS -->|prev digest| NS
-    E3 & E4 -.-> NS
-{{< /mermaid >}}
-
-The catch-up signature uses the raw bytes already stored in the state store
-(not re-marshaled), ensuring it signs exactly what was persisted. After
-catch-up, the signature chain provides contiguous coverage from event index 0.
 
 ## State store layout
 
@@ -347,29 +355,6 @@ exactly how many keys to fetch. All writes (history events, signatures,
 certificates, metadata) are persisted in a single transactional state
 operation, ensuring atomicity.
 
-## Warnings and logging
-
-### Signed history without signer configured
-
-If Dapr loads workflow state that contains signatures but the current sidecar
-does not have a signer configured (mTLS is off or the feature flag is
-disabled), a warning is logged:
-
-```
-WARN: Workflow '<id>' has signed history but no signer is configured; signature verification skipped
-```
-
-The workflow continues to execute, but signatures are not verified and
-new events are not signed.
-
-### Signature verification failure
-
-When verification fails, a warning is logged with the workflow actor ID:
-
-```
-WARN: Workflow actor '<id>': signature verification failed, deleting reminders to stop retries
-```
-
 ## Security properties
 
 | Property | Guarantee |
@@ -377,9 +362,12 @@ WARN: Workflow actor '<id>': signature verification failed, deleting reminders t
 | **Tamper detection** | Any modification to persisted history events changes the events digest, breaking verification |
 | **Chain integrity** | The `previousSignatureDigest` linkage prevents reordering, inserting, or removing signatures |
 | **Non-repudiation** | Each signature is bound to a specific X.509 identity (SPIFFE SVID) |
+| **App identity binding** | The SPIFFE ID in each signing certificate is validated against the workflow's owning app ID, preventing cross-app forgery |
 | **Time binding** | Certificate validity is checked against the event timestamp, preventing use of expired credentials |
 | **Trust anchoring** | All signing certificates are verified against the Sentry CA trust bundle |
+| **Inbox validation** | Activity and child workflow results are validated against scheduled operations in signed history, preventing injection of fake results |
 | **Immutable history** | Dapr never modifies workflow history after it is written, even on verification failure |
+| **One-way commitment** | Signing cannot be disabled for signed workflows or enabled for unsigned workflows |
 
 ## Frequently asked questions
 
@@ -392,15 +380,17 @@ transactional write as the history events.
 
 ### What happens if I disable signing on a workflow that was previously signed?
 
-The workflow continues to execute normally. Existing signatures in the
-state store are ignored when no signer is configured. A warning is logged. New
-events are not signed.
+The workflow **fails to load**. Signing is a [one-way commitment](#one-way-commitment):
+once a workflow has signed history, it must always run on a signing-enabled
+host. This prevents an attacker from disabling signing to bypass verification.
 
-### Can I re-enable signing after disabling it?
+### Can I enable signing on workflows that were created without it?
 
-Yes. When signing is re-enabled, [catch-up signatures](#catch-up-signing) are created to cover the
-events that were written while signing was disabled. This restores contiguous
-signature coverage from index 0.
+**No.** Enabling signing on a host that loads unsigned workflow history causes a
+verification error. The unsigned history has no integrity proof and cannot be
+retroactively signed, because events written without signing could have been
+tampered with. Ensure all unsigned workflows complete or are purged before
+enabling signing cluster-wide.
 
 ### What happens during a Sentry CA rotation?
 
@@ -413,6 +403,14 @@ whose signing certificates were issued by the old CA. The workflow is
 reported as FAILED with `SignatureVerificationFailed`. This is intentional —
 the trust root has changed and previously signed data cannot be verified
 against the new trust anchors.
+
+### What about multi-replica deployments?
+
+Each replica of the same app ID has its own private key and SVID certificate.
+When the workflow orchestrator migrates between replicas, each replica's
+certificate is stored in the certificate table and the signature chain remains
+valid. All certificates are verified as belonging to the same app ID via SPIFFE
+identity binding.
 
 ### What state store backends are supported?
 
