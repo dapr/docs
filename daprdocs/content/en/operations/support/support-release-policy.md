@@ -45,7 +45,8 @@ The table below shows the versions of Dapr releases that have been tested togeth
 
 | Release date | Runtime     | CLI  | SDKs  | Dashboard  | Status | Release notes |
 |--------------------|:--------:|:--------|---------|---------|---------|------------|
-| Mar 26th 2026 | 1.17.3</br> | 1.17.1 | Java 1.17.0 </br>Go 1.14.2 </br>PHP 1.2.0 </br>Python 1.17.0 </br>.NET 1.17.5 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported (current) | [v1.17.3 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.3)   |
+| Apr 10th 2026 | 1.17.4</br> | 1.17.1 | Java 1.17.0 </br>Go 1.14.2 </br>PHP 1.2.0 </br>Python 1.17.0 </br>.NET 1.17.5 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported (current) | [v1.17.4 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.4)   |
+| Mar 26th 2026 | 1.17.3</br> | 1.17.1 | Java 1.17.0 </br>Go 1.14.2 </br>PHP 1.2.0 </br>Python 1.17.0 </br>.NET 1.17.5 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.17.3 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.3)   |
 | Mar 19th 2026 | 1.17.2</br> | 1.17.0 | Java 1.17.0 </br>Go 1.14.2 </br>PHP 1.2.0 </br>Python 1.17.0 </br>.NET 1.17.5 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported (current) | [v1.17.2 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.2)   |
 | Mar 9th 2026 | 1.17.1</br> | 1.17.0 | Java 1.17.0 </br>Go 1.14.1 </br>PHP 1.2.0 </br>Python 1.17.0 </br>.NET 1.17.3 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.17.1 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.1)   |
 | Feb 26th 2026 | 1.17.0</br> | 1.17.0 | Java 1.17.0 </br>Go 1.14.0 </br>PHP 1.2.0 </br>Python 1.17.0 </br>.NET 1.17.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.17.0 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.0)   |
