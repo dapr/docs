@@ -95,6 +95,12 @@ spec:
 
 OAuth is optional. If any OAuth metadata field is set, all of these fields are required: `clientId`, `clientSecret`, `authorizationServerUrl`, and `tokenAudience`.
 
+### OAuth cache path guidance
+
+- `clientConfigPath` points to the OAuth credentials cache file used by the Zeebe client.
+- The Dapr sidecar must have write permissions to this file path.
+- To preserve cached credentials across restarts, use a persistent mounted path.
+
 ## Binding support
 
 This component supports **input** binding interfaces.
