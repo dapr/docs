@@ -4,7 +4,7 @@
 # We DO NOT check out PR code; we only read PR metadata via the API.
 on:
   pull_request_target:
-    types: [opened, synchronize, reopened, ready_for_review, edited, unlabeled]
+    types: [opened, synchronize, reopened, ready_for_review, edited, labeled, unlabeled]
     paths:
       - 'sdkdocs/**'
 
@@ -43,59 +43,125 @@ jobs:
               { label: 'automerge: rust',   teamSlug: 'maintainers-rust-sdk',   prefixes: ['sdkdocs/rust/content/en/'] },
             ];
 
-            const username = pr.user.login;
+            const action = context.payload.action;
 
-            // 1) List changed files
-            const files = await github.paginate(
-              github.rest.pulls.listFiles,
-              { owner, repo, pull_number: number, per_page: 100 }
-            );
-
-            if (files.length === 0) {
-              core.info('No files changed in PR; skipping.');
-              core.setOutput('eligible', 'false');
-              return;
-            }
-
-            // 2) Determine which single SDK mapping the PR targets
-            let currentMapping = null, ineligible = false;
-            for (const f of files) {
-              const matched = MAPPINGS.find(m => m.prefixes.some(p => f.filename.startsWith(p)));
-              if (!matched) { ineligible = true; break; }
-              if (!currentMapping) currentMapping = matched;
-              else if (currentMapping !== matched) { ineligible = true; break; }
-            }
-
-            if (ineligible || !currentMapping) {
-              core.info('PR is not eligible: outside mapped paths or touches multiple SDK directories.');
-              core.setOutput('eligible', 'false');
-              return;
-            }
-
-            // 3) Verify author is active in the corresponding team (org-scoped token)
-            try {
+            // Helper: verify a user is an active member of a team
+            async function checkMembership(teamSlug, username) {
               const membership = await github.rest.teams.getMembershipForUserInOrg({
-                org: owner,
-                team_slug: currentMapping.teamSlug,
-                username
+                org: owner, team_slug: teamSlug, username
               });
-              if (membership.data.state !== 'active') {
-                core.info(`User ${username} is not active in team ${currentMapping.teamSlug}.`);
+              return membership.data.state === 'active';
+            }
+
+            // Helper: verify all PR files fall within a single mapping's prefixes
+            async function resolveMapping(number) {
+              const files = await github.paginate(
+                github.rest.pulls.listFiles,
+                { owner, repo, pull_number: number, per_page: 100 }
+              );
+              if (files.length === 0) return null;
+              let mapping = null;
+              for (const f of files) {
+                const matched = MAPPINGS.find(m => m.prefixes.some(p => f.filename.startsWith(p)));
+                if (!matched) return null;
+                if (!mapping) mapping = matched;
+                else if (mapping !== matched) return null;
+              }
+              return mapping;
+            }
+
+            if (action === 'labeled') {
+              // --- Maintainer-approved flow ---
+              // A maintainer adds an automerge label to a PR they didn't necessarily author.
+              // Validate: label is a known automerge label, adder is in that team, PR only
+              // touches that SDK's directory.
+              const addedLabel = context.payload.label.name;
+              const mapping = MAPPINGS.find(m => m.label === addedLabel);
+
+              if (!mapping) {
+                core.info(`Label "${addedLabel}" is not a recognized automerge label; skipping.`);
                 core.setOutput('eligible', 'false');
                 return;
               }
-            } catch (err) {
-              core.info(`Membership check failed or user not in team ${currentMapping.teamSlug}: ${err.status} ${err.message}`);
-              core.setOutput('eligible', 'false');
-              return;
+
+              const labelAdder = context.payload.sender.login;
+              try {
+                const active = await checkMembership(mapping.teamSlug, labelAdder);
+                if (!active) {
+                  core.info(`User ${labelAdder} is not active in team ${mapping.teamSlug}; removing label.`);
+                  core.setOutput('eligible', 'false');
+                  core.setOutput('remove_label', addedLabel);
+                  return;
+                }
+              } catch (err) {
+                core.info(`Membership check failed for ${labelAdder} in team ${mapping.teamSlug}: ${err.status} ${err.message}`);
+                core.setOutput('eligible', 'false');
+                core.setOutput('remove_label', addedLabel);
+                return;
+              }
+
+              const resolvedMapping = await resolveMapping(number);
+              if (!resolvedMapping || resolvedMapping !== mapping) {
+                core.info('PR touches files outside the labeled SDK directory or multiple directories; removing label.');
+                core.setOutput('eligible', 'false');
+                core.setOutput('remove_label', addedLabel);
+                return;
+              }
+
+              core.info(`Maintainer ${labelAdder} approved merge via label for ${mapping.label}.`);
+              core.setOutput('eligible', 'true');
+              core.setOutput('label', mapping.label);
+              core.setOutput('teamSlug', mapping.teamSlug);
+              core.setOutput('lang', (mapping.label.split(': ')[1] || 'sdk'));
+
+            } else {
+              // --- Author-is-maintainer flow ---
+              // PR author must themselves be a maintainer of the single SDK directory the PR touches.
+              const username = pr.user.login;
+
+              const currentMapping = await resolveMapping(number);
+              if (!currentMapping) {
+                core.info('PR is not eligible: no changed files, outside mapped paths, or touches multiple SDK directories.');
+                core.setOutput('eligible', 'false');
+                return;
+              }
+
+              try {
+                const active = await checkMembership(currentMapping.teamSlug, username);
+                if (!active) {
+                  core.info(`User ${username} is not active in team ${currentMapping.teamSlug}.`);
+                  core.setOutput('eligible', 'false');
+                  return;
+                }
+              } catch (err) {
+                core.info(`Membership check failed or user not in team ${currentMapping.teamSlug}: ${err.status} ${err.message}`);
+                core.setOutput('eligible', 'false');
+                return;
+              }
+
+              core.setOutput('eligible', 'true');
+              core.setOutput('label', currentMapping.label);
+              core.setOutput('teamSlug', currentMapping.teamSlug);
+              core.setOutput('lang', (currentMapping.label.split(': ')[1] || 'sdk'));
             }
 
-            core.setOutput('eligible', 'true');
-            core.setOutput('label', currentMapping.label);
-            core.setOutput('teamSlug', currentMapping.teamSlug);
-            core.setOutput('lang', (currentMapping.label.split(': ')[1] || 'sdk'));
+      # 2) Remove unauthorized automerge labels (uses default repo-scoped token)
+      - name: Remove unauthorized automerge label
+        if: steps.teamcheck.outputs.remove_label != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const number = context.payload.pull_request.number;
+            const labelName = '${{ steps.teamcheck.outputs.remove_label }}';
+            try {
+              await github.rest.issues.removeLabel({ owner, repo, issue_number: number, name: labelName });
+              core.info(`Removed unauthorized label "${labelName}" from PR #${number}.`);
+            } catch (e) {
+              if (e.status !== 404) throw e; // 404 = already removed, ignore
+            }
 
-      # 2) If eligible, label, approve and merge with the default repo-scoped token
+      # 3) If eligible, label, approve and merge with the default repo-scoped token
       - name: Label, auto-approve & merge
         if: steps.teamcheck.outputs.eligible == 'true'
         uses: actions/github-script@v7
