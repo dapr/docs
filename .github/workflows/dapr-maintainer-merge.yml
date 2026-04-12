@@ -4,7 +4,7 @@
 # We DO NOT check out PR code; we only read PR metadata via the API.
 on:
   pull_request_target:
-    types: [opened, synchronize, reopened, ready_for_review, edited]
+    types: [opened, synchronize, reopened, ready_for_review, edited, unlabeled]
     paths:
       - 'sdkdocs/**'
 
@@ -131,6 +131,13 @@ jobs:
               });
             } catch (e) {
               core.warning(`Failed to create review: ${e.message}`);
+            }
+
+            // Block if "do-not-merge" label is present
+            const currentLabels = context.payload.pull_request.labels.map(l => l.name.toLowerCase());
+            if (currentLabels.includes('do-not-merge')) {
+              core.info('PR has "do-not-merge" label; skipping merge until it is removed.');
+              return;
             }
 
             // Poll mergeability
