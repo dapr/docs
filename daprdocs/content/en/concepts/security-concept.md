@@ -187,7 +187,7 @@ Dapr components can use Dapr's built-in secret management capability to manage s
 
 Dapr supports fine-grained access control for workflow and activity scheduling through the `WorkflowAccessPolicy` resource. A workflow access policy restricts which calling applications can schedule specific workflows and activities on a target application.
 
-Workflow access policies are enforced on the callee side. The caller’s identity is determined from the [SPIFFE](https://spiffe.io/) identity embedded in the mTLS certificate, which means mTLS must be active for cross-app enforcement. If policies are defined but mTLS is not enabled, all workflow scheduling requests are denied.
+Workflow access policies are enforced on the callee side. For cross-app requests, the caller’s identity is determined from the [SPIFFE](https://spiffe.io/) identity embedded in the mTLS certificate, which means mTLS must be active for cross-app enforcement. If policies are defined but mTLS is not enabled, remote cross-app workflow scheduling requests are denied, while local calls through the same sidecar can still be evaluated using the local app ID.
 
 Policies support glob pattern matching for workflow and activity names and use specificity-based rule resolution, where the most specific matching rule wins. Read [How-To: Apply workflow access policies]({{% ref workflow-access-policy %}}) for configuration details and examples.
 

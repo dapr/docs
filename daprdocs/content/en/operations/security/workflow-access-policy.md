@@ -2,11 +2,11 @@
 type: docs
 title: "How-To: Apply workflow access policies for workflow and activity scheduling"
 linkTitle: "Workflow access policy"
-weight: 4000
+weight: 5000
 description: "Restrict which applications can schedule workflows and activities on a target application"
 ---
 
-Using workflow access policies, you can control which calling applications are permitted to schedule specific workflows and activities on a target application. A `WorkflowAccessPolicy` is a standalone Kubernetes CRD (or YAML file in self-hosted mode) that is scoped to one or more target applications and evaluated on the callee side.
+Using workflow access policies, you can control which calling applications are permitted to schedule specific workflows and activities on a target application. A `WorkflowAccessPolicy` is a standalone Kubernetes CRD (or YAML file in self-hosted mode) that is evaluated on the callee side. You can scope it to one or more target applications with `scopes`, or omit `scopes` to apply the policy to all applications.
 
 Workflow access policies use glob pattern matching for workflow and activity names and a specificity-based rule resolution system. The most specific matching rule wins, and deny takes precedence over allow at the same specificity level.
 
