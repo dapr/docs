@@ -31,7 +31,7 @@ Service accounts are specified in `namespace:name` format. Multiple entries can 
 
 ### Examples
 
-Configure via Helm:
+Configure via [Helm](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md#dapr-sidecar-injector-options):
 
 ```bash
 helm install dapr dapr/dapr --namespace dapr-system \
@@ -55,6 +55,6 @@ Pattern examples:
 | `*:*` | All service accounts in all namespaces |
 
 {{% alert title="Note" color="primary" %}}
-The `dapr_sidecar_injector.allowedServiceAccountsPrefixNames` Helm value is deprecated. Migrate your entries to `dapr_sidecar_injector.allowedServiceAccounts` using glob patterns instead (for example, `my-ns:my-prefix*` replaces the previous prefix-matching behavior). The deprecated value still functions but logs a deprecation warning.
+The `dapr_sidecar_injector.allowedServiceAccountsPrefixNames` Helm value is deprecated as of v1.18. Migrate your entries to `dapr_sidecar_injector.allowedServiceAccounts` using glob patterns instead (for example, `my-ns:my-prefix*` replaces the previous prefix-matching behavior). The deprecated value still functions but logs a deprecation warning.
 {{% /alert %}}
 
