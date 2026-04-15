@@ -10,8 +10,8 @@ aliases:
 
 ![Concepts Agents](/images/dapr-agents/agents-blue.png)
 
-{{% alert title="Dapr Agents v1.0.0 — Generally Available" color="primary" %}}
-Dapr Agents has reached **v1.0.0** and is now **production ready**. The framework provides stable APIs, enterprise-grade reliability, and full support for building and operating LLM-powered agentic systems at scale.
+{{% alert title="Dapr Agents v1.0 — Generally Available" color="primary" %}}
+Dapr Agents has reached **v1.0** and is now **production ready**. The framework provides stable APIs, enterprise-grade reliability, and full support for building and operating LLM-powered agentic systems at scale.
 {{% /alert %}}
 
 ###  What is Dapr Agents?
