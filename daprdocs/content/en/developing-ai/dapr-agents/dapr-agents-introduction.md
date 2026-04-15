@@ -10,6 +10,9 @@ aliases:
 
 ![Agent Overview](/images/dapr-agents/concepts-agents-overview.png)
 
+{{% alert title="Dapr Agents v1.0.0 — Generally Available" color="primary" %}}
+Dapr Agents **v1.0.0** is production ready with stable APIs and enterprise-grade support for agentic workloads.
+{{% /alert %}}
 
 Dapr Agents is a developer framework for building durable and resilient AI agent systems powered by Large Language Models (LLMs). Built on the battle-tested Dapr project, it enables developers to create autonomous systems that have identity, reason through problems, make dynamic decisions, and collaborate seamlessly. It includes built-in observability and stateful workflow execution to ensure agentic workflows complete successfully, regardless of complexity. Whether you're developing single-agent applications or complex multi-agent workflows, Dapr Agents provides the infrastructure for intelligent, adaptive systems that scale across environments.
 

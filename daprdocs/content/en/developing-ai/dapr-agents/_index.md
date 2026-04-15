@@ -3,12 +3,16 @@ type: docs
 title: "Dapr Agents"
 linkTitle: "Dapr Agents"
 weight: 25
-description: "A framework for building durable and resilient AI agent systems at scale"
+description: "A production-ready framework for building durable and resilient AI agent systems at scale"
 aliases:
   - /developing-applications/dapr-agents
 ---
 
 ![Concepts Agents](/images/dapr-agents/agents-blue.png)
+
+{{% alert title="Dapr Agents v1.0.0 — Generally Available" color="primary" %}}
+Dapr Agents has reached **v1.0.0** and is now **production ready**. The framework provides stable APIs, enterprise-grade reliability, and full support for building and operating LLM-powered agentic systems at scale.
+{{% /alert %}}
 
 ###  What is Dapr Agents?
 
