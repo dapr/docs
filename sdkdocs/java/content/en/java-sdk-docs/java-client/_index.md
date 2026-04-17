@@ -307,6 +307,61 @@ public interface DemoActor {
 }
 ```
 
+### Actor implementation
+Below is an example implementation of the `DemoActor`:
+
+```java
+import io.dapr.actors.runtime.AbstractActor;
+import io.dapr.actors.runtime.ActorHost;
+import reactor.core.publisher.Mono;
+
+public class DemoActorImpl extends AbstractActor implements DemoActor {
+
+  public DemoActorImpl(ActorHost host) {
+    super(host);
+  }
+
+  @Override
+  public void registerReminder() {
+    // Example: register a reminder (implementation omitted for brevity)
+  }
+
+  @Override
+  public String say(String something) {
+    return "Echo: " + something;
+  }
+
+  @Override
+  public void clock(String message) {
+    System.out.println("Clock message: " + message);
+  }
+
+  @Override
+  public Mono<Integer> incrementAndGet(int delta) {
+    return Mono.just(delta);
+  }
+}
+```
+### Calling an actor from a client
+You can invoke actor methods using the Dapr client:
+
+```java
+import io.dapr.client.DaprClient;
+import io.dapr.client.DaprClientBuilder;
+
+try (DaprClient client = new DaprClientBuilder().build()) {
+  String result = client.invokeActorMethod(
+      "DemoActor",
+      "myActorId",
+      "say",
+      "Hello World",
+      String.class
+  ).block();
+
+  System.out.println(result);
+}
+```
+
 - For a full guide on actors visit [How-To: Use virtual actors in Dapr]({{% ref howto-actors.md %}}).
 - Visit [Java SDK examples](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/actors) for code samples and instructions to try actors
 
