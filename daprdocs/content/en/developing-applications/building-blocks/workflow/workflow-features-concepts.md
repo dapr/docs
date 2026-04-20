@@ -118,6 +118,10 @@ You can use the following two techniques to write workflows that may need to sch
 1. **Use the _continue-as-new_ API**:
     Each workflow SDK exposes a _continue-as-new_ API that workflows can invoke to restart themselves with a new input and history. The _continue-as-new_ API is especially ideal for implementing "eternal workflows", like monitoring agents, which would otherwise be implemented using a `while (true)`-like construct. Using _continue-as-new_ is a great way to keep the workflow history size small.
 
+    {{% alert title="Note" color="primary" %}}
+    _Continue-as-new_ proceeds immediately without waiting for child workflows that were started but not awaited.
+    {{% /alert %}}
+
     > The _continue-as-new_ API truncates the existing history, replacing it with a new history.
 
 1. **Use child workflows**:
