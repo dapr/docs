@@ -2,7 +2,7 @@
 type: docs
 title: "Getting started with dapr-mcp-server"
 linkTitle: "Getting started"
-weight: 40
+weight: 20
 description: "Install dapr-mcp-server, point it at a Dapr sidecar, and make your first tool call"
 ---
 

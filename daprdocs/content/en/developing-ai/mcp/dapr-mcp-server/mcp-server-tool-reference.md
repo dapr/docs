@@ -2,7 +2,7 @@
 type: docs
 title: "MCP server tool reference"
 linkTitle: "Tool reference"
-weight: 50
+weight: 30
 description: "Complete reference for every MCP tool exposed by dapr-mcp-server, including input schemas, safety classifications, and example payloads"
 ---
 

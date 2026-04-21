@@ -2,7 +2,7 @@
 type: docs
 title: "Connecting MCP clients to dapr-mcp-server"
 linkTitle: "Integrations"
-weight: 60
+weight: 40
 description: "Wiring dapr-mcp-server into Claude Desktop, Claude Code, VS Code, Cursor, Dapr Agents, and custom clients"
 ---
 
@@ -105,7 +105,7 @@ Restart Cursor, open Settings → MCP, and confirm the server is in the "Connect
 
 ## Dapr Agents (Python)
 
-[Dapr Agents]({{% ref "dapr-agents/_index.md" %}}) consumes MCP servers natively via `dapr_agents.tool.mcp.MCPClient`. Run `dapr-mcp-server` with HTTP transport, then point the agent at it:
+[Dapr Agents]({{% ref "../../dapr-agents" %}}) consumes MCP servers natively via `dapr_agents.tool.mcp.MCPClient`. Run `dapr-mcp-server` with HTTP transport, then point the agent at it:
 
 ```bash
 # terminal 1 — the MCP server

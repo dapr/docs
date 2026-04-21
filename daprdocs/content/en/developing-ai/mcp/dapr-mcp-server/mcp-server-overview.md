@@ -2,7 +2,7 @@
 type: docs
 title: "dapr-mcp-server overview"
 linkTitle: "Server overview"
-weight: 30
+weight: 10
 description: "What dapr-mcp-server is, how it fits alongside the Dapr sidecar, and when to use it"
 ---
 
@@ -10,31 +10,11 @@ description: "What dapr-mcp-server is, how it fits alongside the Dapr sidecar, a
 
 [`dapr-mcp-server`](https://github.com/dapr/dapr-mcp-server) is a production-ready [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server, written in Go, that exposes Dapr's building blocks as MCP tools for AI agents. Instead of teaching every agent how to call Dapr's gRPC / HTTP APIs, you point the agent at this server and it gets a curated, safety-classified tool surface for state, pub/sub, secrets, service invocation, actors, bindings, distributed locks, cryptography, and conversation components.
 
-It is the *server-side* counterpart to clients like Claude Desktop, Cursor, VS Code Copilot, or [Dapr Agents]({{% ref "dapr-agents/_index.md" %}}). It does not generate text itself; it gives an LLM-powered client a safe, discoverable path into Dapr.
+It is the *server-side* counterpart to clients like Claude Desktop, Cursor, VS Code Copilot, or [Dapr Agents]({{% ref "../../dapr-agents" %}}). It does not generate text itself; it gives an LLM-powered client a safe, discoverable path into Dapr.
 
 ## How it fits
 
-```text
- ┌───────────────────┐      MCP (stdio /      ┌────────────────────┐       Dapr APIs        ┌──────────────┐
- │  MCP client       │  ◄── streamable HTTP)──►  dapr-mcp-server    │◄── gRPC / HTTP ──────►│ Dapr sidecar │
- │  (agent / IDE)    │                         │  (18 tools, 9 pkgs)│                        │   (daprd)    │
- └───────────────────┘                         └──────────────┬─────┘                        └──────┬───────┘
-                                                              │                                    │
-                                                              │                                    ▼
-                                                              │                             ┌────────────────────┐
-                                                              │                             │ Dapr components    │
-                                                              │                             │ state, pubsub,     │
-                                                              │                             │ secrets, bindings, │
-                                                              │                             │ actors, lock, LLM, │
-                                                              │                             │ crypto ...         │
-                                                              │                             └────────────────────┘
-                                                              ▼
-                                                   OpenTelemetry (traces,
-                                                   metrics, logs) to any
-                                                   OTLP-compatible backend
-```
-
-The MCP client speaks only MCP. The Dapr sidecar speaks only Dapr's own APIs. `dapr-mcp-server` is the deterministic translator in the middle: every tool call becomes a specific, parameter-validated Dapr call, annotated with OpenTelemetry spans and enforced by an optional authentication layer.
+An MCP client (agent or IDE) speaks MCP over stdio or streamable HTTP. The Dapr sidecar (`daprd`) speaks Dapr's own gRPC / HTTP APIs and fronts your components (state, pub/sub, secrets, bindings, actors, distributed lock, cryptography, conversation). `dapr-mcp-server` is the deterministic translator between the two: every tool call becomes a specific, parameter-validated Dapr call, annotated with OpenTelemetry spans (exported to any OTLP-compatible backend) and enforced by an optional authentication layer.
 
 ## Capabilities
 
@@ -77,7 +57,7 @@ Authentication is **off by default**. For anything beyond local development, set
 | `dapr-sentry` | Dapr-native clients that already hold a Dapr Sentry JWT | Validates JWTs issued by the local Dapr Sentry instance. Set `DAPR_SENTRY_JWKS_URL`, `DAPR_SENTRY_TRUST_DOMAIN`, `DAPR_SENTRY_AUDIENCE`. |
 | `hybrid` | Mixed workloads — humans with OIDC and services with SPIFFE/Sentry on the same endpoint | Accepts any of the above; first successful validator wins. |
 
-See the [MCP authentication guide]({{% ref mcp-authentication.md %}}) for full per-mode setup and the [getting started page]({{% ref mcp-server-getting-started.md %}}) for the complete environment-variable reference.
+See the [MCP authentication guide]({{% ref "../mcp-authentication.md" %}}) for full per-mode setup and the [getting started page]({{% ref mcp-server-getting-started.md %}}) for the complete environment-variable reference.
 
 ## Observability
 
@@ -105,4 +85,4 @@ It's **not** the right answer for pure local computation, ad-hoc shell tasks, or
 - [Get started]({{% ref mcp-server-getting-started.md %}}) — install, configure a sidecar, make a first tool call.
 - [Tool reference]({{% ref mcp-server-tool-reference.md %}}) — schemas and safety tags for every tool.
 - [Integrations]({{% ref mcp-server-integrations.md %}}) — Claude Desktop, VS Code, Cursor, Dapr Agents.
-- [Authentication]({{% ref mcp-authentication.md %}}) — secure the server with OIDC, SPIFFE, or Dapr Sentry.
+- [Authentication]({{% ref "../mcp-authentication.md" %}}) — secure the server with OIDC, SPIFFE, or Dapr Sentry.
