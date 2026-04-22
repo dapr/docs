@@ -113,19 +113,19 @@ Dapr has its HTTP health endpoint `/v1.0/healthz` on port 3500. This can be used
 ```yaml
     livenessProbe:
       httpGet:
-        path: v1.0/healthz
+        path: /v1.0/healthz
         port: 3500
       initialDelaySeconds: 180
       periodSeconds: 10
-      timeoutSeconds : 3
-      failureThreshold : 5
+      timeoutSeconds: 3
+      failureThreshold: 5
     readinessProbe:
       httpGet:
-        path: v1.0/healthz
+        path: /v1.0/healthz
         port: 3500
       initialDelaySeconds: 1
       periodSeconds: 1
-      timeoutSeconds : 1
+      timeoutSeconds: 1
       failureThreshold: 5
 ```
 
