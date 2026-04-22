@@ -12,7 +12,7 @@ on:
 
 jobs:
   build_and_deploy_job:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    if: github.event.action != 'closed'
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
@@ -38,7 +38,7 @@ jobs:
           app_location: "/daprdocs" # App source code path
           api_location: "api" # Api source code path - optional
           output_location: "public" # Built app content directory - optional
-          app_build_command: "git config --global --add safe.directory /github/workspace && hugo"
+          app_build_command: "git config --global --add safe.directory /github/workspace && rm -rf content/zh-hans ../translations && hugo --minify --disableKinds RSS,sitemap"
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
