@@ -22,6 +22,10 @@ jobs:
           fetch-depth: 0
       - name: Setup Docsy
         run: cd daprdocs && git submodule update --init --recursive && sudo npm install -D --save autoprefixer && sudo npm install -D --save postcss-cli
+      - name: Exclude translations (reduce build size for Free tier)
+        run: |
+          rm -rf daprdocs/content/zh-hans translations/docs-zh
+          # SDK docs kept for reference integrity
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
