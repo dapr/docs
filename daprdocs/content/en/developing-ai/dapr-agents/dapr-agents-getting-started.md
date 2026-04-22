@@ -145,7 +145,7 @@ Dapr also supports Anthropic, Mistral, and other providers through the [Conversa
 
 ## Prepare your environment
 
-In this getting started guide, you'll work directly from the [Dapr Agents quickstarts](https://github.com/dapr/dapr-agents/tree/main/quickstarts). You'll focus on `02_durable_agent_http.py`—a reliable durable agent backed by Dapr's workflow engine and exposed over HTTP.
+In this getting started guide, you'll work directly from the [Dapr Agents quickstarts](https://github.com/dapr/dapr-agents/tree/main/quickstarts). You'll focus on `03_durable_agent_http.py`—a reliable durable agent backed by Dapr's workflow engine and exposed over HTTP.
 
 ### 1. Clone the repository
 
@@ -179,14 +179,14 @@ This example creates an agent that assists with weather information and uses Dap
 
 For this quickstart you'll primarily work with:
 
-* `02_durable_agent_http.py` – the main durable weather agent application exposed over HTTP
+* `03_durable_agent_http.py` – the main durable weather agent application exposed over HTTP
 * `function_tools.py` – contains `slow_weather_func`, the tool used by the agent
 * `resources/llm-provider.yaml` – Conversation API and LLM configuration
 * `resources/agent-memory.yaml` – conversation memory state store
 * `resources/agent-workflow.yaml` – workflow and durable execution state store
 
 
-Open `02_durable_agent_http.py`:
+Open `03_durable_agent_http.py`:
 
 ```python
 from dapr_agents.llm import DaprChatClient
@@ -347,13 +347,13 @@ Together, these features make the agent **durable**, **reliable**, and **provide
 From the `quickstarts` folder, with your virtual environment activated:
 
 ```bash
-uv run dapr run --app-id durable-agent --resources-path resources -- python 02_durable_agent_http.py
+uv run dapr run --app-id durable-agent --resources-path resources -- python 03_durable_agent_http.py
 ```
 
 This:
 
 * Starts a Dapr sidecar using the components in `resources/`.
-* Runs `02_durable_agent_http.py` with the durable `WeatherAgent`.
+* Runs `03_durable_agent_http.py` with the durable `WeatherAgent`.
 * Exposes the agent's HTTP API on port `8001`.
 
 ### Trigger the agent with a prompt
@@ -407,7 +407,7 @@ To see durable execution in action:
    Start it again with the same command:
 
 ```bash
-   uv run dapr run --app-id durable-agent --resources-path resources -- python 02_durable_agent_http.py
+   uv run dapr run --app-id durable-agent --resources-path resources -- python 03_durable_agent_http.py
 ```
 
 4. **Query the same workflow**
