@@ -70,11 +70,11 @@ In the pod configuration file, the liveness probe is added in the containers spe
       httpGet:
         path: /healthz
         port: 8080
-      initialDelaySeconds: 3
-      periodSeconds: 3
+      initialDelaySeconds: 180
+      periodSeconds: 10
 ```
 
-In the above example, the `periodSeconds` field specifies that the kubelet should perform a liveness probe every 3 seconds. The `initialDelaySeconds` field tells the kubelet that it should wait 3 seconds before performing the first probe. To perform a probe, the kubelet sends an HTTP GET request to the server that is running in the container and listening on port 8080. If the handler for the server's `/healthz` path returns a success code, the kubelet considers the container to be alive and healthy. If the handler returns a failure code, the kubelet kills the container and restarts it.
+In the above example, the `periodSeconds` field specifies that the kubelet should perform a liveness probe every 10 seconds. The `initialDelaySeconds` field tells the kubelet that it should wait 180 seconds before performing the first probe. To perform a probe, the kubelet sends an HTTP GET request to the server that is running in the container and listening on port 8080. If the handler for the server's `/healthz` path returns a success code, the kubelet considers the container to be alive and healthy. If the handler returns a failure code, the kubelet kills the container and restarts it.
 
 Any HTTP status code between 200 and 399 indicates success; any other status code indicates failure.
 
@@ -94,8 +94,8 @@ Readiness probes are configured similarly to liveness probes. The only differenc
       httpGet:
         path: /healthz
         port: 8080
-      initialDelaySeconds: 3
-      periodSeconds: 3
+      initialDelaySeconds: 1
+      periodSeconds: 1
 ```
 
 ### Sidecar Injector
@@ -115,18 +115,18 @@ Dapr has its HTTP health endpoint `/v1.0/healthz` on port 3500. This can be used
       httpGet:
         path: v1.0/healthz
         port: 3500
-      initialDelaySeconds: 5
+      initialDelaySeconds: 180
       periodSeconds: 10
-      timeoutSeconds : 5
-      failureThreshold : 3
+      timeoutSeconds : 3
+      failureThreshold : 5
     readinessProbe:
       httpGet:
         path: v1.0/healthz
         port: 3500
-      initialDelaySeconds: 5
-      periodSeconds: 10
-      timeoutSeconds : 5
-      failureThreshold: 3
+      initialDelaySeconds: 1
+      periodSeconds: 1
+      timeoutSeconds : 1
+      failureThreshold: 5
 ```
 
 ## Delay graceful shutdown
