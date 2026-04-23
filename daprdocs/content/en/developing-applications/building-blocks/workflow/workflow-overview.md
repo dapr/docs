@@ -54,7 +54,7 @@ Multi-application workflows, enable you to orchestrate complex business processe
 
 ### History signing
 
-When mTLS and the `WorkflowSignState` feature flag are enabled, Dapr cryptographically signs every workflow history event using the sidecar's X.509 SPIFFE identity.
+When mTLS and the `WorkflowHistorySigning` feature flag are enabled, Dapr cryptographically signs every workflow history event using the sidecar's X.509 SPIFFE identity.
 On each load, the full signature chain is verified, detecting any tampering of workflow state in the state store.
 Signing is a one-way commitment: once enabled for a workflow, it cannot be disabled.
 

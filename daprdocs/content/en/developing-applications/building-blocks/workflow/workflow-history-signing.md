@@ -72,7 +72,7 @@ In a standard Dapr deployment with the [Sentry service]({{% ref "security-concep
 
 ## Configuration
 
-History signing is controlled by the `WorkflowSignState` feature flag. It is
+History signing is controlled by the `WorkflowHistorySigning` feature flag. It is
 **disabled by default** and must be explicitly enabled.
 
 ### Enabling signing
@@ -86,7 +86,7 @@ metadata:
   name: my-config
 spec:
   features:
-    - name: WorkflowSignState
+    - name: WorkflowHistorySigning
       enabled: true
 ```
 
@@ -97,7 +97,7 @@ Both conditions must be true for signing to occur:
 | Condition | How to check |
 |-----------|-------------|
 | mTLS is enabled | Sentry is running and the sidecar has a valid SVID |
-| `WorkflowSignState` is enabled | Feature flag is explicitly set to `true` |
+| `WorkflowHistorySigning` is enabled | Feature flag is explicitly set to `true` |
 
 If mTLS is disabled (no Sentry), the signer is `nil` regardless of the feature
 flag, and signing does not occur.
