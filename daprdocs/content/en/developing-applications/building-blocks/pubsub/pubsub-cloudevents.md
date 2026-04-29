@@ -239,6 +239,48 @@ Invoke-RestMethod -Method Post -ContentType 'application/cloudevents+json' -Body
 
 {{< /tabpane >}}
 
+### Publish binary CloudEvents
+
+In binary mode, the transport payload only contains the event body, while
+CloudEvent attributes are supplied via transport metadata that begins with the
+`ce_` prefix (HTTP headers, Kafka headers, NATS headers, and so on). This is
+useful when you already produce binary mode events or you want to send arbitrary
+binary data without wrapping it in an additional JSON envelope.
+
+To publish a binary CloudEvent to Dapr (via HTTP/gRPC publish APIs or directly
+into a broker that Dapr reads from):
+
+1. Set the transport’s native content-type metadata (for example the HTTP
+   `Content-Type` header or a Kafka `content-type` message header) to the MIME
+   type that represents binary data, which is `application/octet-stream`.
+
+2. Add the required CloudEvent attributes (`ce_specversion`, `ce_type`,
+   `ce_source`, `ce_id`) as transport metadata. Optional attributes such as
+   `ce_subject`, `ce_time`, or `ce_traceparent` are also honored.
+
+3. Send the payload bytes in the message body.
+
+{{< tabpane text=true >}}
+
+{{% tab "HTTP API (Bash)" %}}
+
+Publish a Binary CloudEvent to orders topic:
+
+```bash
+curl -X POST http://localhost:3500/v1.0/publish/order-pub-sub/orders \
+  -H "Content-Type: application/octet-stream" \
+  -H "ce_specversion: 1.0" \
+  -H "ce_type: com.example.order.created" \
+  -H "ce_source: urn:example:/checkout" \
+  -H "ce_id: 2a8bbf52-1222-4c2c-85f0-8a8875c7bc10" \
+  -H "ce_subject: orders/100" \
+  --data-binary $'\x01\x02\x03\x04'
+```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
+
 ## Event deduplication
 
 When using cloud events created by Dapr, the envelope contains an `id` field which can be used by the app to perform message deduplication. Dapr does not handle deduplication automatically. Dapr supports using message brokers that natively enable message deduplication.

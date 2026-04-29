@@ -274,7 +274,7 @@ This:
 In a separate terminal, ask the agent about the weather.
 
 ```bash
-curl -i -X POST http://localhost:8001/run \
+curl -i -X POST http://localhost:8001/agent/run \
   -H "Content-Type: application/json" \
   -d '{"task": "What is the weather in London?"}'
 ```
@@ -286,16 +286,16 @@ The response includes a `WORKFLOW_ID` that represents the workflow execution.
 Use the `WORKFLOW_ID` from the POST response to query progress or final result:
 
 ```bash
-curl -i -X GET http://localhost:8001/run/WORKFLOW_ID
+curl -i -X GET http://localhost:8001/agent/instances/WORKFLOW_ID
 ```
 
 Replace `WORKFLOW_ID` with the value you received from the POST request.
 
 ### Expected behavior
 
-* The agent exposes a REST endpoint at `/run`.
-* A POST to `/run` accepts a prompt, schedules a workflow execution, and returns a workflow ID.
-* You can GET `/run/{WORKFLOW_ID}` at any time (even after stopping and restarting the agent) to check status or retrieve the final answer.
+* The agent exposes a REST endpoint at `/agent/run`.
+* A POST to `/agent/run` accepts a prompt, schedules a workflow execution, and returns a workflow ID.
+* You can GET `/agent/instances/{WORKFLOW_ID}` at any time (even after stopping and restarting the agent) to check status or retrieve the final answer.
 * The workflow orchestrates:
 
     * An LLM call to interpret the task and decide if a tool is needed.
@@ -308,7 +308,7 @@ Replace `WORKFLOW_ID` with the value you received from the POST request.
 To see durable execution in action:
 
 1. **Start a run**
-   Send the POST request to `/run` as shown above and note the `WORKFLOW_ID`.
+   Send the POST request to `/agent/run` as shown above and note the `WORKFLOW_ID`.
 
 2. **Kill the agent process**
    While the request is being processed (during the `slow_weather_func` which is on purpose 5 seconds delayed), stop the agent process:
@@ -327,7 +327,7 @@ To see durable execution in action:
    In the other terminal, query the same workflow ID:
 
    ```bash
-   curl -i -X GET http://localhost:8001/run/WORKFLOW_ID
+   curl -i -X GET http://localhost:8001/agent/instances/WORKFLOW_ID
    ```
 
 You’ll see that the workflow continues from its last persisted step instead of starting over. The tool call or LLM calls are not re-executed unless required, and you do not need to send a new prompt. Once the workflow completes, the GET request returns the final result.

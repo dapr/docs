@@ -254,7 +254,7 @@ travel_planner = DurableAgent(
 
 1. **`run`** – trigger a durable workflow directly from Python (CLIs, tests, notebooks) and optionally wait for completion.
 2. **`subscribe`** – automatically register every `@message_router` decorated handler on the agent (including `DurableAgent.agent_workflow`) so CloudEvents on the configured topics are validated against their `message_model` and scheduled as workflow runs.
-3. **`serve`** – host the agent as a web service by combining `subscribe` with FastAPI route registration and an auto-started Uvicorn server. By default it exposes `POST /run` (schedules the `@workflow_entry`) and `GET /run/{instance_id}` (fetches workflow status), but you can supply your own FastAPI app or customize host/port/paths.
+3. **`serve`** – host the agent as a web service by combining `subscribe` with FastAPI route registration and an auto-started Uvicorn server. By default it exposes `POST /agent/run` (schedules the `@workflow_entry`) and `GET /agent/instances/{instance_id}` (fetches workflow status), but you can supply your own FastAPI app or customize host/port/paths.
 
 ```python
 travel_planner = DurableAgent(
@@ -302,8 +302,8 @@ Add your own `@message_router` methods to support extra topics or broadcast chan
 
 `serve` is the one-line way to run a DurableAgent as a web service. It first calls `subscribe(...)`, then spins up a FastAPI app (unless you pass your own) with two default endpoints:
 
-- `POST /run`: Validates the JSON body against the agent's `@workflow_entry` signature and schedules a new workflow instance.
-- `GET /run/{instance_id}`: Proxies workflow status queries (including payloads, if requested).
+- `POST /agent/run`: Validates the JSON body against the agent's `@workflow_entry` signature and schedules a new workflow instance.
+- `GET /agent/instances/{instance_id}`: Proxies workflow status queries (including payloads, if requested).
 
 ```python
 runner.serve(

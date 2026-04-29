@@ -10,7 +10,7 @@ A core tenet of the [virtual actor pattern](https://www.microsoft.com/research/p
 
 Reentrancy solves this by allowing requests from the same chain, or context, to re-enter into an already locked actor. This proves useful in scenarios where:
 - An actor wants to call a method on itself
-- Actors are used in workflows to perform work, then call back onto the coordinating actor. 
+- Actors are used in workflows to perform work, then call back onto the coordinating actor.
 
 Examples of chains that reentrancy allows are shown below:
 

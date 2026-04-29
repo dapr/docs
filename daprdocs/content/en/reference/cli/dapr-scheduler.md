@@ -153,4 +153,3 @@ Import jobs and reminders from a file.
 ```bash
 dapr scheduler import -f backup.bin
 ```
-

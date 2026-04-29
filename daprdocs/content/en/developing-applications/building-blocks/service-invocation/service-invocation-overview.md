@@ -156,6 +156,6 @@ For quick testing, try using the Dapr CLI for service invocation:
 
 ## Next steps
 - Read the [service invocation API specification]({{% ref service_invocation_api %}}). This reference guide for service invocation describes how to invoke methods on other services.
-- Understand the [service invocation performance numbers]({{% ref perf-service-invocation %}}).
+- Understand the [service invocation performance numbers](https://github.com/dapr/dapr/tree/release-1.16/tests/perf/report/charts/).
 - Take a look at [observability]({{% ref observability %}}). Here you can dig into Dapr's monitoring tools like tracing, metrics and logging.
 - Read up on our [security practices]({{% ref security-concept %}}) around mTLS encryption, token authentication, and endpoint authorization.

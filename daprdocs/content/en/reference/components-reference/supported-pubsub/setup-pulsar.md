@@ -81,11 +81,15 @@ The above example uses secrets as plain strings. It is recommended to use a [sec
 | persistent         | N  | Pulsar supports two kinds of topics: [persistent](https://pulsar.apache.org/docs/en/concepts-architecture-overview#persistent-storage) and [non-persistent](https://pulsar.apache.org/docs/en/concepts-messaging/#non-persistent-topics). With persistent topics, all messages are durably persisted on disks (if the broker is not standalone, messages are durably persisted on multiple disks), whereas data for non-persistent topics is not persisted to storage disks.
 | disableBatching | N | disable batching.When batching enabled default batch delay is set to 10 ms and default batch size is 1000 messages,Setting `disableBatching: true` will make the producer to send messages individually. Default: `"false"` | `"true"`, `"false"`|
 | receiverQueueSize | N | Sets the size of the consumer receiver queue. Controls how many messages can be accumulated by the consumer before it is explicitly called to read messages by Dapr. Default: `"1000"` | `"1000"` |
+| redeliveryDelay | N | Delay before redelivering a message that was not acknowledged by the app. Default: `"30s"` | `"30s"`, `"200ms"` |
 | batchingMaxPublishDelay | N | batchingMaxPublishDelay set the time period within which the messages sent will be batched,if batch messages are enabled. If set to a non zero value, messages will be queued until this time interval or  batchingMaxMessages (see below) or  batchingMaxSize (see below). There are two valid formats, one is the fraction with a unit suffix format, and the other is the pure digital format that is processed as milliseconds. Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h". Default: `"10ms"` | `"10ms"`, `"10"`|
 | batchingMaxMessages | N | batchingMaxMessages set the maximum number of messages permitted in a batch.If set to a value greater than 1, messages will be queued until this threshold is reached or  batchingMaxSize (see below) has been reached or the batch interval has elapsed. Default: `"1000"` | `"1000"`|
 | batchingMaxSize | N | batchingMaxSize sets the maximum number of bytes permitted in a batch. If set to a value greater than 1, messages will be queued until this threshold is reached or batchingMaxMessages (see above) has been reached or the batch interval has elapsed. Default: `"128KB"` | `"131072"`|
+| compressionType | N | Sets the compression type for messages sent by the producer. Default: `"none"` | `"none"`, `"lz4"`, `"zlib"`, `"zstd"` |
+| compressionLevel | N | Sets the compression level used when `compressionType` is enabled. Default: `"default"` | `"default"`, `"faster"`, `"better"` |
 | <topic-name>.jsonschema          | N  | Enforces JSON schema validation for the configured topic. |
 | <topic-name>.avroschema          | N  | Enforces Avro schema validation for the configured topic. |
+| <topic-name>.rawschema          | N  | Registers the provided Avro or JSON schema as-is instead of wrapping it in a CloudEvents envelope schema. Default: `"false"` | `"true"`, `"false"` |
 | publicKey          | N  | A public key to be used for publisher and consumer encryption. Value can be one of two options: file path for a local PEM cert, or the cert data string value  |
 | privateKey          | N  | A private key to be used for consumer encryption. Value can be one of two options: file path for a local PEM cert, or the cert data string value  |
 | keys          | N  | A comma delimited string containing names of [Pulsar session keys](https://pulsar.apache.org/docs/3.0.x/security-encryption/#how-it-works-in-pulsar). Used in conjunction with `publicKey` for publisher encryption |
@@ -168,6 +172,70 @@ spec:
     secretKeyRef:
       name: pulsar-oauth2
       key:  my-client-secret
+  - name: oauth2Audiences
+    value: "my.pulsar.example.com,another.pulsar.example.com"
+  - name: oauth2Scopes
+    value: "openid,profile,email"
+  - name: oauth2ClientSecretPath
+    value: "/path/to/oauth2/client_secret.json"
+```
+
+#### Using a JSON credentials file
+
+You can store credentials in a JSON file with the following format:
+
+```json
+{
+  "client_id": "my-client-id",
+  "client_secret": "my-client-secret",
+  "issuer_url": "https://oauth.example.com/o/oauth2/token"
+}
+```
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: messagebus
+spec:
+  type: pubsub.pulsar
+  version: v1
+  metadata:
+  - name: host
+    value: "pulsar.example.com:6650"
+  - name: oauth2CredentialsFile
+    value: "/path/to/oauth2/credentials.json"
+  - name: oauth2TokenCAPEM
+    value: "---BEGIN CERTIFICATE---\n...\n---END CERTIFICATE---"
+  - name: oauth2Audiences
+    value: "my.pulsar.example.com,another.pulsar.example.com"
+  - name: oauth2Scopes
+    value: "openid,profile,email"
+```
+
+#### Using a plain text secret file
+
+You can store just the client secret in a plain text file:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: messagebus
+spec:
+  type: pubsub.pulsar
+  version: v1
+  metadata:
+  - name: host
+    value: "pulsar.example.com:6650"
+  - name: oauth2TokenURL
+    value: https://oauth.example.com/o/oauth2/token
+  - name: oauth2ClientID
+    value: my-client-id
+  - name: oauth2ClientSecretPath
+    value: "/path/to/oauth2/client_secret.txt"
+  - name: oauth2TokenCAPEM
+    value: "---BEGIN CERTIFICATE---\n...\n---END CERTIFICATE---"
   - name: oauth2Audiences
     value: "my.pulsar.example.com,another.pulsar.example.com"
   - name: oauth2Scopes
@@ -272,6 +340,42 @@ curl -X POST http://localhost:3500/v1.0/publish/myPulsar/myTopic?metadata.delive
         }
       }'
 ```
+
+### Enabling message compression
+
+Message compression can reduce message size at the cost of slightly more CPU usage during publishing. Compression is applied at the producer level.
+
+| Compression Type | Description |
+|------------------|-------------|
+| `none` | No compression (default) |
+| `lz4` | LZ4 compression - fast compression/decompression |
+| `zlib` | ZLib compression - balanced compression ratio |
+| `zstd` | ZSTD compression - high compression ratio |
+
+| Compression Level | Description |
+|-------------------|-------------|
+| `default` | Default compression level for the selected type |
+| `faster` | Prioritizes speed over compression ratio |
+| `better` | Prioritizes compression ratio over speed |
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: messagebus
+spec:
+  type: pubsub.pulsar
+  version: v1
+  metadata:
+  - name: host
+    value: "localhost:6650"
+  - name: compressionType
+    value: lz4
+  - name: compressionLevel
+    value: faster
+```
+
+> **Note:** The metadata keys `compressionType` and `compressionLevel` are case-sensitive and must be specified exactly as shown. Compression is applied when publishing messages; consumers automatically decompress regardless of settings.
 
 ### E2E Encryption
 

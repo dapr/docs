@@ -17,6 +17,7 @@ Topics covered include:
 - Error handling strategies across Dapr building blocks
 - Managing experimental features and suppressing related warnings
 - Leveraging source analyzers and generators to reduce boilerplate and catch issues early
+- Running integration tests with Dapr.Testcontainers
 - General .NET development practices in Dapr-based applications
 
 ## Error model guidance
@@ -51,3 +52,4 @@ Read more about how to install and use these analyzers [here]({{% ref dotnet-gui
 
 This section is designed to support a wide range of development scenarios. As your applications grow in complexity, you'll find increasingly relevant practices and patterns for working with Dapr in .NET—from actor lifecycle management to configuration strategies and performance tuning.
 
+Learn how to run integration tests with `Dapr.Testcontainers` [here]({{% ref dotnet-guidance-testcontainers.md %}}).

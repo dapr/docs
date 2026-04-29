@@ -78,16 +78,21 @@ spec:
 | `consumeRetryEnabled` | N | Input/Output | Enable consume retry by setting to `"true"`. Default to `false` in Kafka binding component. | `"true"`, `"false"` |
 | `publishTopic` | Y | Output | The topic to publish to. | `"mytopic"` |
 | `authRequired` | N | *Deprecated* | Enable [SASL](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) authentication with the Kafka brokers. | `"true"`, `"false"` |
-| `authType`            | Y | Input/Output | Configure or disable authentication. Supported values: `none`, `password`, `mtls`, or `oidc` | `"password"`, `"none"` |
+| `authType`            | Y | Input/Output | Configure or disable authentication. Supported values: `none`, `password`, `mtls`, `oidc` or `oidc_private_key_jwt` | `"password"`, `"none"` |
 | `saslUsername` | N | Input/Output | The SASL username used for authentication. Only required if `authRequired` is set to `"true"`. | `"adminuser"` |
 | `saslPassword` | N | Input/Output | The SASL password used for authentication. Can be `secretKeyRef` to use a [secret reference]({{% ref component-secrets.md %}}). Only required if `authRequired` is set to `"true"`. | `""`, `"KeFg23!"` |
 | `saslMechanism` | N | Input/Output | The SASL authentication mechanism you'd like to use. Only required if `authtype` is set to `"password"`. If not provided, defaults to `PLAINTEXT`, which could cause a break for some services, like Amazon Managed Service for Kafka. | `"SHA-512", "SHA-256", "PLAINTEXT"` |
 | `initialOffset`   | N | Input | The initial offset to use if no offset was previously committed. Should be "newest" or "oldest". Defaults to "newest". | `"oldest"` |
 | `maxMessageBytes` | N | Input/Output | The maximum size in bytes allowed for a single Kafka message. Defaults to 1024. | `"2048"` |
-| `oidcTokenEndpoint` | N | Input/Output | Full URL to an OAuth2 identity provider access token endpoint. Required when `authType` is set to `oidc` | "https://identity.example.com/v1/token" |
-| `oidcClientID` | N | Input/Output | The OAuth2 client ID that has been provisioned in the identity provider. Required when `authType` is set to `oidc` | `"dapr-kafka"` |
+| `oidcTokenEndpoint` | N | Input/Output | Full URL to an OAuth2 identity provider access token endpoint. Required when `authType` is set to `oidc` or `oidc_private_key_jwt` | "https://identity.example.com/v1/token" |
+| `oidcClientID` | N | Input/Output | The OAuth2 client ID that has been provisioned in the identity provider. Required when `authType` is set to `oidc` or `oidc_private_key_jwt` | `"dapr-kafka"` |
 | `oidcClientSecret` | N | Input/Output | The OAuth2 client secret that has been provisioned in the identity provider: Required when `authType` is set to `oidc` | `"KeFg23!"` |
-| `oidcScopes` | N | Input/Output | Comma-delimited list of OAuth2/OIDC scopes to request with the access token. Recommended when `authType` is set to `oidc`. Defaults to `"openid"` | `"openid,kafka-prod"` |
+| `oidcScopes` | N | Input/Output | Comma-delimited list of OAuth2/OIDC scopes to request with the access token. Recommended when `authType` is set to `oidc` or `oidc_private_key_jwt`. Defaults to `"openid"` | `"openid,kafka-prod"` |
+| `oidcClientAssertionCert` | N | Input/Output | The OAuth2 client assertion certificate used for authentication. Required when `authType` is set to `oidc_private_key_jwt`. Can be `secretKeyRef` to use a secret reference | `"-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----"` |
+| `oidcClientAssertionKey` | N | Input/Output | The OAuth2 client assertion key used for authentication. Required when `authType` is set to `oidc_private_key_jwt`. Can be `secretKeyRef` to use a secret reference | `"-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----"` |
+| `oidcResource` | N | Input/Output | The OAuth2 resource to request with the access token. Recommended when `authType` is set to `oidc_private_key_jwt`. | `"api://kafka"` |
+| `oidcAudience` | N | Input/Output | The OAuth2 audience to request with the access token. Recommended when `authType` is set to `oidc_private_key_jwt`. | `"http://<idp-host>/realms/local"` |
+| `oidcKid` | N | Input/Output | The OAuth2 key ID (kid) to request with the access token. Recommended when `authType` is set to `oidc_private_key_jwt`. | `"1234567890"` |
 | `version` | N | Input/Output | Kafka cluster version. Defaults to 2.0.0. Please note that this needs to be mandatorily set to `1.0.0` for EventHubs with Kafka. | `"1.0.0"` |
 | `direction` | N | Input/Output | The direction of the binding. | `"input"`, `"output"`, `"input, output"` |
 | `oidcExtensions` | N | Input/Output | String containing a JSON-encoded dictionary of OAuth2/OIDC extensions to request with the access token | `{"cluster":"kafka","poolid":"kafkapool"}` |

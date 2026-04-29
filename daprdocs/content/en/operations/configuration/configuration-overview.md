@@ -88,6 +88,12 @@ tracing:
   samplingRate: "1"
   otel: 
     endpointAddress: "otelcollector.observability.svc.cluster.local:4317"
+    headers:
+      - name: "x-api-key"
+        secretKeyRef:
+          name: "my-secret"
+          key: "otel-api-key"
+    timeout: "30s"
   zipkin:
     endpointAddress: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
 ```
@@ -101,6 +107,8 @@ The following table lists the properties for tracing:
 | `otel.endpointAddress` | string | Set the Open Telemetry (OTEL) server address to send traces to. This may or may not require the https:// or http:// depending on your OTEL provider.
 | `otel.isSecure` | bool | Is the connection to the endpoint address encrypted
 | `otel.protocol` | string | Set to `http` or `grpc` protocol
+| `otel.headers` | array | Headers to include in OTLP exporter requests. Each entry has a `name` and either a plaintext `value` or a `secretKeyRef` to reference a Kubernetes secret (only Kubernetes secrets are supported, no other secret type)
+| `otel.timeout` | string | Timeout for OTLP exporter requests (for example `30s`, `5m`).
 | `zipkin.endpointAddress` | string | Set the Zipkin server address to send traces to. This should include the protocol (http:// or https://) on the endpoint.
 
 ##### `samplingRate`
@@ -121,6 +129,8 @@ turns on tracing for the sidecar.
 | `OTEL_EXPORTER_OTLP_ENDPOINT` | Sets the Open Telemetry (OTEL) server address, turns on tracing |
 | `OTEL_EXPORTER_OTLP_INSECURE` | Sets the connection to the endpoint as unencrypted (true/false) |
 | `OTEL_EXPORTER_OTLP_PROTOCOL` | Transport protocol (`grpc`, `http/protobuf`, `http/json`) |
+| `OTEL_EXPORTER_OTLP_TRACES_HEADERS` | Comma-separated list of `key=value` headers for the OTLP traces exporter |
+| `OTEL_EXPORTER_OTLP_TRACES_TIMEOUT` | Timeout in milliseconds for the OTLP traces exporter (for example `30000`) |
 
 See [Observability distributed tracing]({{% ref "tracing-overview.md" %}}) for more information.
 
@@ -331,6 +341,12 @@ spec:
       endpointAddress: "localhost:4317"
       isSecure: false
       protocol: "grpc"
+      headers:
+        - name: "x-api-key"
+          secretKeyRef:
+            name: "my-secret"
+            key: "otel-api-key"
+      timeout: "30s"
   httpPipeline:
     handlers:
       - name: oauth2

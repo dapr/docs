@@ -17,7 +17,9 @@ runtime and which do not require an endpoint to be pre-configured. In this guide
 ## Prerequisites
 - [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/)
 - [Initialized Dapr environment](https://docs.dapr.io/getting-started/install-dapr-selfhost)
-- [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0) or [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0) installed
+- [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0),
+  [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0), or
+  [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0) installed
 - [Dapr.Messaging](https://www.nuget.org/packages/Dapr.Messaging) NuGet package installed to your project
 
 ## Set up the environment

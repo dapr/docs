@@ -1,13 +1,15 @@
 ---
 type: docs
-title: "How to: Create an use Dapr Cryptography in the .NET SDK"
+title: "How to: Create and use Dapr Cryptography in the .NET SDK"
 linkTitle: "How to: Use the Cryptography client"
 weight: 510100
 description: Learn how to create and use the Dapr Cryptography client using the .NET SDK
 ---
 
 ## Prerequisites
-- [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0), or [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0) installed
+- [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0),
+  [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0), or
+  [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0) installed
 - [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/)
 - [Initialized Dapr environment](https://docs.dapr.io/getting-started/install-dapr-selfhost)
 

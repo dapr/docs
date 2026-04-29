@@ -2118,7 +2118,7 @@ Open a separate terminal and run the following CLI commands.
 
 ```bash
 # List all workflows
-dapr workflow list --app-id order-processor --connection-string=redis://127.0.0.1:6379 -o wide
+dapr workflow list --app-id order-processor -o wide
 ```
 
 You should see output like:
@@ -2202,10 +2202,10 @@ failed to purge orchestration state: rpc error: code = FailedPrecondition desc =
 
 ```bash
 # Purge a specific workflow
-dapr workflow purge e4d3807c --app-id order-processor --connection-string=redis://127.0.0.1:6379
+dapr workflow purge e4d3807c --app-id order-processor
 
 # Or purge all completed workflows
-dapr workflow purge --app-id order-processor --connection-string=redis://127.0.0.1:6379 --all-older-than 1h
+dapr workflow purge --app-id order-processor
 ```
 
 ## Tell us what you think!

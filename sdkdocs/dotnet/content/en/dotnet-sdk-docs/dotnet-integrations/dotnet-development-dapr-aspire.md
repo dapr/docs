@@ -27,8 +27,9 @@ An end-to-end demonstration featuring the following and demonstrating service in
 services can be found [here](https://github.com/dapr/dotnet-sdk/tree/master/examples/Hosting/Aspire/ServiceInvocationDemo).
 
 ## Prerequisites
-- Both the Dapr .NET SDK and .NET Aspire are compatible with [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0) 
-or [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0)
+- The Dapr .NET SDK supports [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0),
+  [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0), and
+  [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0). Use a .NET Aspire version that supports the runtime you choose.
 - An OCI compliant container runtime such as [Docker Desktop](https://www.docker.com/products/docker-desktop) or 
 [Podman](https://podman.io/)
 - Install and initialize Dapr v1.16 or later
@@ -152,4 +153,3 @@ page to demonstrate that Dapr is working as expected.
 When you open the solution in your IDE, ensure that the `aspiredemo.AppHost` is configured as your startup project, but 
 when you launch it in a debug configuration, you'll note that your integrated console should reflect your expected Dapr 
 logs and it will be available to your application.
-

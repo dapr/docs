@@ -20,11 +20,22 @@
     etag: true
     ttl: true
     workflow: false
-- component: Microsoft SQL Server
+- component: Microsoft SQL Server V1
   link: setup-sqlserver
   state: Stable
   version: v1
   since: "1.5"
+  features:
+    crud: true
+    transactions: true
+    etag: true
+    ttl: true
+    workflow: true
+- component: Microsoft SQL Server V2
+  link: setup-sqlserver-v2
+  state: Stable
+  version: v2
+  since: "1.17"
   features:
     crud: true
     transactions: true
