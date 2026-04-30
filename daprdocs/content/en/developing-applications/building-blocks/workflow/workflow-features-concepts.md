@@ -203,6 +203,17 @@ Workflows can also wait for multiple external event signals of the same name, in
 
 Learn more about [external system interaction.]({{% ref "workflow-patterns.md#external-system-interaction" %}})
 
+## Workflow history propagation
+
+A parent workflow can opt to share its execution history with downstream child workflows and activities. Two scopes are available:
+
+- **Lineage** — caller's events plus the full ancestor chain (chain-of-custody)
+- **Own history** — caller's events only (a trust boundary, ancestral lineage dropped)
+
+The receiving workflow/activity reads its inherited history via `ctx.GetPropagatedHistory()` and can verify what happened upstream — useful for fraud checks, compliance gates, and long-running AI agents that need context across hops.
+
+For details, the scope comparison, and code examples, see [History propagation]({{< ref workflow-history-propagation.md >}}).
+
 ## Purging
 
 Workflow state can be purged from a state store, purging all its history and removing all metadata related to a specific workflow instance. The purge capability is used for workflows that have run to a `COMPLETED`, `FAILED`, or `TERMINATED` state.
