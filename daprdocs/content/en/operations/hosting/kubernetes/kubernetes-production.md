@@ -127,7 +127,7 @@ To scale scheduler and placement to three instances independently of the `global
 With HA enabled, the Helm chart adds pod anti-affinity so **Scheduler** and **Placement** replicas tend to land on different failure domains. Configure that with:
 
 - `global.ha.topologyKey` — label Kubernetes uses for “different domain” (default `topology.kubernetes.io/zone`).
-- `global.ha.podAntiAffinityPolicy` — **soft** spreading (`preferredDuringSchedulingIgnoredDuringExecution`, default) or **hard** spreading (`requiredDuringSchedulingIgnoredDuringExecution`). Full field names and defaults are documented in the [Helm chart readme](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md).
+- `global.ha.podAntiAffinityPolicy`: Enables soft spreading with `preferredDuringSchedulingIgnoredDuringExecution` (the default) or hard spreading with `requiredDuringSchedulingIgnoredDuringExecution`. 
 
 When running in production, consider:
 
