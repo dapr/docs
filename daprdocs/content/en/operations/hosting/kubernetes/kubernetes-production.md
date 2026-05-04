@@ -136,7 +136,7 @@ When running in production, consider:
 3. **Soft spreading** — Leave the default unless you have a reason to change it: scheduling still succeeds when the cluster is short on zones or nodes.
 4. **Hard spreading** — Only when you must never place two replicas on the same topology value. You need at least as many distinct values for `topologyKey` as replicas, or pods can stay Pending.
 
-For example, hard spreading by hostname in a single-zone cluster:
+For example, too configure hard spreading by hostname in a single-zone cluster, use the following Helm values:
 
 ```yaml
 global:
