@@ -129,7 +129,7 @@ With HA enabled, the default Helm values add pod anti-affinity so Scheduler and 
 - `global.ha.topologyKey`: Kubernetes label used meaning “different domain”. Set by default to `topology.kubernetes.io/zone`.
 - `global.ha.podAntiAffinityPolicy`: Enables soft spreading with `preferredDuringSchedulingIgnoredDuringExecution` (the default) or hard spreading with `requiredDuringSchedulingIgnoredDuringExecution`. 
 
-When running in production, consider:
+When running in production, consider the following recommendations.
 
 1. **Availability zones**: The default topology key spreads pods across zones. This limits the chance that a single zone outage removes multiple Scheduler or Placement pods at the same time.
 2. **Single zone, many nodes**:  Zone labels are often identical across the cluster; set `topologyKey` to `kubernetes.io/hostname` to enable spreading by node.
