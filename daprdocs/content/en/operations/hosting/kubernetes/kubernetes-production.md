@@ -132,7 +132,7 @@ With HA enabled, the default Helm values add pod anti-affinity so Scheduler and 
 When running in production, consider:
 
 1. **Availability zones** — The default topology key spreads across zones. That limits the chance that one zone outage removes multiple Raft or etcd members at the same time.
-2. **Single zone, many nodes** — Zone labels are often identical across the cluster; set `topologyKey` to `kubernetes.io/hostname` if you need separation by node.
+2. **Single zone, many nodes**:  Zone labels are often identical across the cluster; set `topologyKey` to `kubernetes.io/hostname` to enable spreading by node.
 3. **Soft spreading** — Leave the default unless you have a reason to change it: scheduling still succeeds when the cluster is short on zones or nodes.
 4. **Hard spreading** — Only when you must never place two replicas on the same topology value. You need at least as many distinct values for `topologyKey` as replicas, or pods can stay Pending.
 
