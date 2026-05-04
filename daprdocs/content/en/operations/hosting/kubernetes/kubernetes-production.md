@@ -133,7 +133,7 @@ When running in production, consider:
 
 1. **Availability zones**: The default topology key spreads pods across zones. This limits the chance that a single zone outage removes multiple Scheduler or Placement pods at the same time.
 2. **Single zone, many nodes**:  Zone labels are often identical across the cluster; set `topologyKey` to `kubernetes.io/hostname` to enable spreading by node.
-3. **Soft spreading** — Leave the default unless you have a reason to change it: scheduling still succeeds when the cluster is short on zones or nodes.
+3. **Soft spreading**: The default behaviour is recommended here allowing pod scheduling to succeed when the cluster is short on zones or nodes.
 4. **Hard spreading** — Only when you must never place two replicas on the same topology value. You need at least as many distinct values for `topologyKey` as replicas, or pods can stay Pending.
 
 For example, too configure hard spreading by hostname in a single-zone cluster, use the following Helm values:
