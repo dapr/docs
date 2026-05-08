@@ -89,6 +89,8 @@ Poll for the result as in Step 2. The output is a `CallMCPToolResponse` proto se
 
 If the tool call fails at the MCP level (e.g. unknown tool, auth error), `is_error` is `true` and the error is in `content`. The workflow itself completes successfully — `is_error` is not a workflow failure.
 
+If your call is missing a required argument, you get the same `is_error: true` shape immediately — Dapr validates against the tool's cached JSON Schema before contacting the MCP server, so agents/LLMs see actionable errors without burning a network round-trip.
+
 ## Step 4 (optional): Add authentication
 
 Add OAuth2 client credentials to authenticate with the MCP server:
@@ -141,6 +143,19 @@ spec:
 ```
 
 When `mutate: true`, the hook's return value replaces the arguments flowing to the tool call. The hook receives and returns a `{mcpServerName, toolName, arguments}` payload — modify the `arguments` map to redact, transform, or inject defaults.
+
+To run the hook on a different Dapr app instead of locally, add `appID`:
+
+```yaml
+spec:
+  middleware:
+    beforeCallTool:
+    - workflow:
+        workflowName: rbac-check
+        appID: policy-service   # runs on the Dapr app named "policy-service"
+```
+
+This lets a single shared policy app (RBAC, audit, PII redaction) govern many agent apps without each app embedding the policy. Operators update the central app once; every MCPServer that references it picks up the change.
 
 ## Related links
 
