@@ -119,7 +119,9 @@ Dapr fetches a token from the issuer and injects it as a Bearer token on every M
 
 ## Step 5 (optional): Add middleware
 
-Add a `beforeCallTool` hook for RBAC:
+Middleware hooks let you run authorization, redaction, and audit as Dapr workflows on every tool call — no agent code change. Hooks are wired in the MCPServer spec and registered as plain workflows in your application (or in a dedicated policy app via `appID`).
+
+### Step 5.1: Add an RBAC hook (deny on policy violation)
 
 ```yaml
 spec:
@@ -129,9 +131,36 @@ spec:
         workflowName: rbac-check
 ```
 
-Register a workflow named `rbac-check` in your application. It receives `{mcpServerName, toolName, arguments}` as input. Return an error to deny the call; return nil to allow it.
+Register a workflow named `rbac-check` in your application. It receives an `MCPBeforeCallToolHookInput`:
 
-Add a mutating `beforeCallTool` hook to redact arguments before the tool call:
+```text
+{ name, tool_name, arguments }
+```
+
+`name` is the MCPServer resource name; `arguments` is the JSON object the caller passed. Return an error to deny; return nil to allow.
+
+```text
+workflow rbac-check(input):
+  # Argument-level RBAC: inspect the payload and decide.
+  if input.tool_name == "issue_refund":
+    if input.arguments["amount"] > 10_000:
+      return error("rbac: refunds over $10K require manual approval")
+
+  if input.tool_name in DESTRUCTIVE_TOOLS:
+    if not input.arguments.get("dry_run", false):
+      return error("rbac: %s requires dry_run=true",
+                   input.tool_name)
+
+  return ok   # nil error so tool call proceeds
+```
+
+The hook runs as a durable workflow — if daprd restarts mid-policy-check, Scheduler re-delivers and the decision completes.
+
+> **Caller-keyed RBAC ("which apps can call which tools") belongs at the [`WorkflowAccessPolicy`]({{% ref workflow_api %}}) layer, not the hook.** The hook input doesn't carry caller appID; the policy is. Use the policy as the perimeter and hooks for argument-level decisions.
+
+### Step 5.2: Add a mutating PII redaction hook
+
+To transform `arguments` before they reach the tool — redact PII, normalize values, inject defaults — set `mutate: true`:
 
 ```yaml
 spec:
@@ -142,9 +171,22 @@ spec:
       mutate: true
 ```
 
-When `mutate: true`, the hook's return value replaces the arguments flowing to the tool call. The hook receives and returns a `{mcpServerName, toolName, arguments}` payload — modify the `arguments` map to redact, transform, or inject defaults.
+```text
+workflow redact-pii(input):
+  # input: { name, tool_name, arguments }
+  args = copy(input.arguments)
+  if "email" in args:
+    args["email"] = mask_email(args["email"])
+  return { name: input.name, tool_name: input.tool_name, arguments: args }
+```
 
-To run the hook on a different Dapr app instead of locally, add `appID`:
+The hook returns the same shape it receives. The MCP server (and any subsequent hooks in the chain) sees only the transformed `arguments`.
+
+For after-the-fact response filtering or audit logging, wire the same way under `afterCallTool` — see the [overview examples]({{% ref "mcp-server-resource.md#examples-common-patterns" %}}) for the full set of patterns.
+
+### Step 5.3: Centralize policy on a shared app
+
+To run the hook on a dedicated policy app instead of locally, add `appID`:
 
 ```yaml
 spec:
@@ -155,7 +197,9 @@ spec:
         appID: policy-service   # runs on the Dapr app named "policy-service"
 ```
 
-This lets a single shared policy app (RBAC, audit, PII redaction) govern many agent apps without each app embedding the policy. Operators update the central app once; every MCPServer that references it picks up the change.
+The same workflow runs on the named app via service invocation. One shared policy app (RBAC, audit, PII redaction) governs many agent apps without each app embedding the policy. Update the central workflow once; every MCPServer that references it picks up the change without redeploying its callers.
+
+> See the [overview examples]({{% ref "mcp-server-resource.md#examples-common-patterns" %}}) for canonical hook patterns (RBAC, rate limiting, audit, response filtering, tool catalog filtering).
 
 ## Related links
 

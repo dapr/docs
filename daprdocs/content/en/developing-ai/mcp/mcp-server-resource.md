@@ -15,11 +15,11 @@ The `MCPServer` resource lets you declare MCP (Model Context Protocol) server co
 MCPServer turns MCP integration into a deploy-time concern instead of an application-code concern. The benefits compound across the system:
 
 - **Zero MCP SDK in your app.** Your application starts a Dapr workflow by name. Dapr speaks MCP to the server. Swap MCP servers, change transports, or rotate credentials without touching application code.
+- **Per-tool RBAC, audit, and redaction in YAML.** Order-preserving `beforeCallTool` / `afterCallTool` / `beforeListTools` / `afterListTools` hooks run argument-level authorization, rate limiting, PII redaction, audit logging, and response filtering as Dapr workflows. Set `appID` on a hook to route it to a centralized policy app, so one shared RBAC service governs every agent without each app embedding the policy.
 - **Durable execution.** Tool calls run as workflow activities backed by Dapr Scheduler reminders. If daprd is restarted mid-call, the scheduler re-delivers the activity to the new instance and the call completes — agents don't have to implement their own retry/resume logic. Inside a single activity, transient connection drops are absorbed automatically: Dapr keeps one warm session per MCPServer (with keep-alive pings) and reconnects once on `ErrConnectionClosed` before the workflow ever sees the blip.
 - **Fast feedback for callers.** Required-field validation runs against the cached JSON Schema *before* the MCP server is contacted. Missing arguments come back as a structured `CallMCPToolResponse{is_error: true}` immediately — agents and LLMs get an actionable error without burning a network round-trip.
 - **Per-tool observability.** Each tool gets its own workflow name (`dapr.internal.mcp.<server>.CallTool.<tool>`), so traces, metrics, and audit logs are sliced per-tool out of the box. You see exactly which tool was called, by whom, with what arguments, and what came back.
 - **Declarative authentication.** OAuth2 client credentials, SPIFFE workload identity, and static-header auth are all configured in YAML. Dapr fetches and refreshes tokens, caches per-MCPServer HTTP clients, and never exposes raw credentials to your app.
-- **Pluggable governance pipelines.** Order-preserving `beforeCallTool` / `afterCallTool` / `beforeListTools` / `afterListTools` hooks can run RBAC, rate limiting, PII redaction, audit logging, or argument transformation as Dapr workflows — locally or on a remote app.
 - **Scoping and multi-tenancy.** MCPServers are namespaced and `scopes`-restricted, just like other Dapr resources. One MCP server can be shared across many apps with different access policies.
 - **Hot reload.** Add, remove, or modify MCPServer resources at runtime — Dapr reloads them without a sidecar restart.
 
@@ -29,20 +29,7 @@ MCPServer turns MCP integration into a deploy-time concern instead of an applica
 | Sidecar crash mid-call = lost call | Scheduler reminder re-delivers the activity, workflow resumes |
 | Per-tool tracing/metrics requires custom instrumentation | One workflow per tool — built-in observability slicing |
 | Each app hardcodes its own MCP connection logic | Single resource, shared across apps via `scopes` |
-| Auth, PII redaction, RBAC scattered through app code | Declarative middleware hooks per operation |
-
-### What if I just write my own workflow that calls an MCP server?
-
-You can — but then you own all of this:
-
-- **Connection / session lifecycle.** MCP sessions are stateful (handshake, capability negotiation, persistent SSE channel for the streamable HTTP transport). Your workflow code would need to open, hold, and tear down that session, with retry logic if the server drops you mid-call. With `MCPServer`, the sidecar maintains one connection per resource, runs keep-alive pings, and auto-reconnects on connection-closed errors — transparently to the workflow.
-- **Credential plumbing.** OAuth2 token fetch + refresh, SPIFFE SVID minting per request, secret-store resolution for headers — all of that runs in your workflow code, with credentials reachable from every place your workflow runs. With `MCPServer`, credentials never leave the sidecar; tokens refresh in the background, SVIDs mint per-request from Sentry, and your workflow code sees nothing.
-- **Tool discovery.** Listing tools is itself a stateful MCP call. A homegrown workflow has to call `tools/list` every cold start (or build its own caching, with cache-invalidation on hot-reload). With `MCPServer`, daprd does this once at load time and serves subsequent `ListTools` workflow calls from cache — zero upstream round-trips.
-- **Per-tool observability.** A homegrown workflow gives you one workflow name across all tools — every span and metric is bucketed together. `MCPServer` registers `dapr.internal.mcp.<server>.CallTool.<tool>` per tool, so traces, metrics, and audit logs are sliced per-tool out of the box.
-- **Governance hooks.** RBAC, rate limiting, PII redaction, audit logging, etc. all become hand-rolled middleware in your workflow. With `MCPServer`, the same hooks are declared in YAML (`spec.middleware.beforeCallTool` / `afterCallTool` / `beforeListTools` / `afterListTools`) and can run locally or be routed to a central policy app via `appID`.
-- **Hot reload.** Updating credentials, headers, or the endpoint URL requires redeploying or reloading your code. `MCPServer` resources are watched and reloaded by daprd without a sidecar restart.
-
-The `MCPServer` workflows are themselves Dapr Workflows — you get all the durable-execution properties (Scheduler reminder re-delivery on daprd restart, replay determinism, future support for `wait_for_external_event`-based MCP elicitation / sampling) without writing them.
+| Tool-call RBAC and audit logic embedded in agent code | Declared per MCPServer in YAML, enforced as durable workflows, centralizable via `appID` |
 
 ## How it works
 
@@ -240,39 +227,130 @@ spec:
 
 ## Middleware pipelines
 
-Optional workflow hooks can be invoked before and after tool calls and tool listing. Hooks execute in array order.
+Middleware hooks turn tool-call governance into declarative YAML enforced by Dapr Workflows. Optional hooks run in array order before and after tool calls and tool listing. See the [examples](#examples-common-patterns) below for the canonical patterns.
 
 - **Before hooks**: if any hook returns an error, the chain stops and the operation is aborted.
 - **After hooks**: errors **fail the workflow** — after-hooks can act as authz gates that block the response from reaching the caller.
 - **Mutating hooks**: set `mutate: true` to make the hook's return value replace the data flowing through the pipeline (arguments before the tool call, result after it). Default is `false` (observe-only — the hook validates or audits but its output is discarded).
+
+### Hook input shapes
+
+Each hook is a Dapr workflow that receives a typed input from the runtime. Field names match the proto definitions:
+
+```text
+beforeCallTool input:  { name, tool_name, arguments }
+afterCallTool  input:  { name, tool_name, arguments, result }   # result is CallMCPToolResponse
+beforeListTools input: { name }
+afterListTools  input: { name, result }                          # result is ListMCPToolsResponse
+```
+
+`name` is the MCPServer resource name. `arguments` is the JSON object the caller passed. `result` is whatever the MCP server (or a previous mutating hook) produced. Mutating hooks return the same shape they receive — modify, then return.
+
+### Worked example: argument-level RBAC
+
+A common need is "deny this tool call based on what's in `arguments`" — for example, refuse refunds above a threshold, block tools that touch a tenant the request doesn't belong to, or reject calls whose payload matches a denylist. Wire a `beforeCallTool` hook with `mutate: false`:
 
 ```yaml
 spec:
   middleware:
     beforeCallTool:
     - workflow:
-        workflowName: rate-limiter
-    - workflow:
-        workflowName: redact-pii
-        appID: auth-service  # Run on a remote Dapr app
-      mutate: true             # Hook's return value replaces the arguments
+        workflowName: rbac-check
+        appID: policy-service   # optional — see "Centralized policy app" below
+```
+
+Workflow body (pseudocode — language-neutral):
+
+```text
+workflow rbac-check(input):
+  # input: { name, tool_name, arguments }
+  if input.tool_name == "issue_refund":
+    amount = input.arguments["amount"]
+    if amount > 10_000:
+      return error("rbac: refunds over $10K require manual approval")
+
+  if input.tool_name in DESTRUCTIVE_TOOLS:
+    if not input.arguments.get("dry_run", false):
+      return error("rbac: %s requires dry_run=true in this environment",
+                   input.tool_name)
+
+  return ok   # mutate=false → return value is discarded; nil error means allow
+```
+
+A few choices worth naming:
+
+- **`mutate: false`** because the hook only decides allow/deny — it never reshapes arguments. (For PII redaction, you'd flip to `mutate: true` and return the cleaned `arguments`.)
+- **`beforeCallTool`** because denial should run *before* the MCP server sees the request. An equivalent `afterCallTool` hook can also gate (after-hook errors fail the workflow), but you've already paid for the upstream call.
+- **Caller-keyed RBAC ("who can call which tool") belongs at the [policy layer](#observability-and-access-control), not the hook** — the hook input doesn't carry caller appID.
+
+### Worked example: audit logging
+
+After-hooks observe the result. Wire an `afterCallTool` hook with `mutate: false` to write an audit record without altering the response:
+
+```yaml
+spec:
+  middleware:
     afterCallTool:
     - workflow:
         workflowName: audit-logger
-    - workflow:
-        workflowName: response-filter
-      mutate: true             # Hook's return value replaces the tool result
 ```
 
-When a hook sets `appID: <other-app>`, that hook workflow runs on the named remote Dapr app via service invocation rather than locally. This is how a single shared policy app — a centralized RBAC service, audit logger, or PII redactor — can govern many agent apps without each app embedding the policy. Operators update the central app once; every MCPServer that references it picks up the change without redeploying its callers.
+```text
+workflow audit-logger(input):
+  # input: { name, tool_name, arguments, result }
+  emit_audit({
+    server:    input.name,
+    tool:      input.tool_name,
+    args:      redact(input.arguments),
+    succeeded: not input.result.is_error,
+    at:        now(),
+  })
+  return ok   # mutate=false → result reaches the caller unchanged
+```
 
-See [MCPServer spec]({{% ref mcpserver-schema %}}) for the full middleware field reference.
+Because the audit hook is itself a Dapr Workflow, the write is durable: an emitter restart between `emit_audit` activity start and ack does not drop the record.
+
+### Centralized policy app
+
+When a hook sets `appID: <other-app>`, the hook workflow runs on the named remote Dapr app via service invocation rather than locally. A single shared policy app — RBAC service, audit logger, PII redactor — can govern many agent apps without each app embedding the policy. Update the central workflow once; every MCPServer that references it picks up the change without redeploying its callers.
+
+```yaml
+spec:
+  middleware:
+    beforeCallTool:
+    - workflow:
+        workflowName: rbac-check
+        appID: policy-service
+    - workflow:
+        workflowName: redact-pii
+        appID: policy-service
+      mutate: true
+    afterCallTool:
+    - workflow:
+        workflowName: audit-logger
+        appID: policy-service
+```
+
+### Examples: common patterns
+
+| Pattern | Phase | `mutate` | Sketch |
+|---|---|---|---|
+| Argument RBAC | `beforeCallTool` | `false` | Inspect `arguments`, return error to deny. |
+| Rate limiting | `beforeCallTool` | `false` | Look up budget keyed by `tool_name`; return error when exhausted. |
+| PII redaction (request) | `beforeCallTool` | `true` | Transform `arguments`, return the cleaned shape. |
+| Audit logging | `afterCallTool` | `false` | Emit `{tool_name, arguments, result.is_error}` to a state store / log sink. |
+| Response filtering | `afterCallTool` | `true` | Strip / mask fields in `result.content`, return updated `CallMCPToolResponse`. |
+| Tool catalog filtering | `afterListTools` | `true` | Drop tools the caller isn't entitled to discover, return updated `ListMCPToolsResponse`. |
+
+Each pattern is a single workflow with the input/output shape from [Hook input shapes](#hook-input-shapes) above. See the [MCPServer spec]({{% ref mcpserver-schema %}}) for the full middleware field reference.
 
 ## Observability and access control
 
 Because each MCP tool gets its own workflow name (`dapr.internal.mcp.<server>.CallTool.<tool>`), every standard Dapr Workflow telemetry surface — instance status, traces, metrics — slices automatically per-tool. No custom instrumentation required. Operators can build per-tool dashboards or alerts using the workflow name as the slicing dimension.
 
 For access control, MCP workflows participate in `WorkflowAccessPolicy` the same way user workflows do. The policy is an allow-list keyed by workflow name + caller appID, so operators can deny or restrict who is permitted to invoke `dapr.internal.mcp.<server>.CallTool.<tool>` (or `ListTools`) from outside the daprd that owns the resource. Self-call exemption (caller appID equals target appID) keeps in-process invocations open by default. This is how a central agent platform restricts which agents can call which tools, even when many agents share a single MCP gateway.
+
+`WorkflowAccessPolicy` and [middleware hooks](#middleware-pipelines) compose, they don't overlap. `WorkflowAccessPolicy` decides *whether a caller can start `CallTool.<tool>` at all* — coarse-grained, appID-keyed, enforced at the workflow boundary. Middleware hooks decide *what happens once the call is in flight* — fine-grained, with full visibility into `arguments` and `result`. Use both: the policy as the perimeter, hooks for tool-call-level argument RBAC, redaction, and audit.
 
 ## Deployment topologies
 
