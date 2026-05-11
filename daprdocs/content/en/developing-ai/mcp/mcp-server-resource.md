@@ -179,10 +179,10 @@ spec:
     streamableHTTP:
       url: https://api.example.com/mcp
       headers:
-      - name: Authorization
-        secretKeyRef:
-          name: mcp-token
-          key: token
+        - name: Authorization
+          secretKeyRef:
+            name: mcp-token
+            key: token
       auth:
         secretStore: kubernetes
 ```
@@ -230,8 +230,9 @@ spec:
 Middleware hooks turn tool-call governance into declarative YAML enforced by Dapr Workflows. Optional hooks run in array order before and after tool calls and tool listing. See the [examples](#examples-common-patterns) below for the canonical patterns.
 
 - **Before hooks**: if any hook returns an error, the chain stops and the operation is aborted.
-- **After hooks**: errors **fail the workflow** — after-hooks can act as authz gates that block the response from reaching the caller.
-- **Mutating hooks**: set `mutate: true` to make the hook's return value replace the data flowing through the pipeline (arguments before the tool call, result after it). Default is `false` (observe-only — the hook validates or audits but its output is discarded).
+- **`afterCallTool` hooks**: errors **fail the workflow** — these hooks can act as authz gates that block the response from reaching the caller.
+- **`afterListTools` hooks**: errors are logged but do not affect the result returned to the caller.
+- **Mutating hooks**: set `mutate: true` to make the hook's return value replace the data flowing through the pipeline (arguments before the tool call, result after it). Default is `false` (observe-only — the hook validates or audits but its output is discarded). `mutate` is not supported on `beforeListTools`.
 
 ### Hook input shapes
 
@@ -254,9 +255,9 @@ A common need is "deny this tool call based on what's in `arguments`" — for ex
 spec:
   middleware:
     beforeCallTool:
-    - workflow:
-        workflowName: rbac-check
-        appID: policy-service   # optional — see "Centralized policy app" below
+      - workflow:
+          workflowName: rbac-check
+          appID: policy-service   # optional — see "Centralized policy app" below
 ```
 
 Workflow body (pseudocode — language-neutral):
@@ -291,8 +292,8 @@ After-hooks observe the result. Wire an `afterCallTool` hook with `mutate: false
 spec:
   middleware:
     afterCallTool:
-    - workflow:
-        workflowName: audit-logger
+      - workflow:
+          workflowName: audit-logger
 ```
 
 ```text
@@ -318,17 +319,17 @@ When a hook sets `appID: <other-app>`, the hook workflow runs on the named remot
 spec:
   middleware:
     beforeCallTool:
-    - workflow:
-        workflowName: rbac-check
-        appID: policy-service
-    - workflow:
-        workflowName: redact-pii
-        appID: policy-service
-      mutate: true
+      - workflow:
+          workflowName: rbac-check
+          appID: policy-service
+      - workflow:
+          workflowName: redact-pii
+          appID: policy-service
+        mutate: true
     afterCallTool:
-    - workflow:
-        workflowName: audit-logger
-        appID: policy-service
+      - workflow:
+          workflowName: audit-logger
+          appID: policy-service
 ```
 
 ### Examples: common patterns
@@ -376,8 +377,8 @@ spec:
     streamableHTTP:
       url: https://payments.internal/mcp
 scopes:
-- agent-app-1
-- agent-app-2
+  - agent-app-1
+  - agent-app-2
 ```
 
 ## Catalog metadata

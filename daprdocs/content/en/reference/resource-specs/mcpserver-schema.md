@@ -24,25 +24,27 @@ kind: MCPServer
 metadata:
   name: <NAME>
 spec:
+  ignoreErrors: <REPLACE-WITH-BOOL> # Optional. When true, daprd keeps running if this MCPServer fails to load.
   endpoint:
     streamableHTTP:
       url: <REPLACE-WITH-URL> # Required. The endpoint URL of the MCP server.
       protocolVersion: <REPLACE-WITH-VERSION> # Optional. MCP spec version (e.g. "2025-06-18").
       timeout: <REPLACE-WITH-TIMEOUT> # Optional. Per-call deadline (e.g. "30s").
       headers: # Optional
-      - name: <REPLACE-WITH-HEADER-NAME>
-        value: <REPLACE-WITH-HEADER-VALUE>
-      - name: <REPLACE-WITH-HEADER-NAME>
-        secretKeyRef:
-          name: <REPLACE-WITH-SECRET-NAME>
-          key: <REPLACE-WITH-SECRET-KEY>
+        - name: <REPLACE-WITH-HEADER-NAME>
+          value: <REPLACE-WITH-HEADER-VALUE>
+        - name: <REPLACE-WITH-HEADER-NAME>
+          secretKeyRef:
+            name: <REPLACE-WITH-SECRET-NAME>
+            key: <REPLACE-WITH-SECRET-KEY>
       auth: # Optional
         secretStore: <REPLACE-WITH-SECRETSTORE>
         oauth2:
           issuer: <REPLACE-WITH-TOKEN-ENDPOINT>
+          clientID: <REPLACE-WITH-CLIENT-ID> # Optional. OAuth2 client identifier.
           audience: <REPLACE-WITH-AUDIENCE>
           scopes:
-          - <REPLACE-WITH-SCOPE>
+            - <REPLACE-WITH-SCOPE>
           secretKeyRef:
             name: <REPLACE-WITH-SECRET-NAME>
             key: <REPLACE-WITH-SECRET-KEY>
@@ -53,18 +55,21 @@ spec:
             audience: <REPLACE-WITH-AUDIENCE>
   middleware: # Optional
     beforeCallTool:
-    - workflow:
-        workflowName: <REPLACE-WITH-WORKFLOW-NAME>
-        appID: <REPLACE-WITH-APP-ID> # Optional. Remote app.
+      - workflow:
+          workflowName: <REPLACE-WITH-WORKFLOW-NAME>
+          appID: <REPLACE-WITH-APP-ID> # Optional. Remote app.
+        mutate: <REPLACE-WITH-BOOL> # Optional. When true, hook return value replaces the arguments.
     afterCallTool:
-    - workflow:
-        workflowName: <REPLACE-WITH-WORKFLOW-NAME>
+      - workflow:
+          workflowName: <REPLACE-WITH-WORKFLOW-NAME>
+        mutate: <REPLACE-WITH-BOOL> # Optional. When true, hook return value replaces the result.
     beforeListTools:
-    - workflow:
-        workflowName: <REPLACE-WITH-WORKFLOW-NAME>
+      - workflow:
+          workflowName: <REPLACE-WITH-WORKFLOW-NAME>
     afterListTools:
-    - workflow:
-        workflowName: <REPLACE-WITH-WORKFLOW-NAME>
+      - workflow:
+          workflowName: <REPLACE-WITH-WORKFLOW-NAME>
+        mutate: <REPLACE-WITH-BOOL> # Optional. When true, hook return value replaces the result.
   catalog: # Optional. Informational only.
     displayName: <REPLACE-WITH-DISPLAY-NAME>
     description: <REPLACE-WITH-DESCRIPTION>
@@ -72,11 +77,11 @@ spec:
       team: <REPLACE-WITH-TEAM>
       contact: <REPLACE-WITH-CONTACT>
     tags:
-    - <REPLACE-WITH-TAG>
+      - <REPLACE-WITH-TAG>
     links:
       docs: <REPLACE-WITH-URL>
 scopes: # Optional
-- <REPLACE-WITH-SCOPED-APPIDS>
+  - <REPLACE-WITH-SCOPED-APPIDS>
 ```
 
 ### SSE transport
@@ -93,8 +98,8 @@ spec:
       protocolVersion: <REPLACE-WITH-VERSION> # Optional
       timeout: <REPLACE-WITH-TIMEOUT> # Optional
       headers: # Optional. Same format as streamableHTTP.
-      - name: <REPLACE-WITH-HEADER-NAME>
-        value: <REPLACE-WITH-HEADER-VALUE>
+        - name: <REPLACE-WITH-HEADER-NAME>
+          value: <REPLACE-WITH-HEADER-VALUE>
       auth: # Optional. Same format as streamableHTTP.
         secretStore: <REPLACE-WITH-SECRETSTORE>
 ```
@@ -113,23 +118,32 @@ spec:
     stdio:
       command: <REPLACE-WITH-COMMAND> # Required.
       args: # Optional
-      - <REPLACE-WITH-ARG>
+        - <REPLACE-WITH-ARG>
       env: # Optional
-      - name: <REPLACE-WITH-ENV-NAME>
-        value: <REPLACE-WITH-ENV-VALUE>
-      - name: <REPLACE-WITH-ENV-NAME>
-        secretKeyRef:
-          name: <REPLACE-WITH-SECRET-NAME>
-          key: <REPLACE-WITH-SECRET-KEY>
+        - name: <REPLACE-WITH-ENV-NAME>
+          value: <REPLACE-WITH-ENV-VALUE>
+        - name: <REPLACE-WITH-ENV-NAME>
+          secretKeyRef:
+            name: <REPLACE-WITH-SECRET-NAME>
+            key: <REPLACE-WITH-SECRET-KEY>
 ```
 
 ## Spec fields
+
+### Top-level
+
+| Field | Required | Details | Example |
+|-------|:--------:|---------|---------|
+| ignoreErrors | N | When `true`, daprd keeps running if this MCPServer fails validation or secret resolution. When `false` (default), such failures cause daprd to exit gracefully. | `true` |
+| endpoint | Y | The transport and target of the MCP server. See [Endpoint](#endpoint) below. | |
+| middleware | N | Optional workflow hooks invoked around tool and list operations. See [Middleware fields](#middleware-fields) below. | |
+| catalog | N | Informational governance metadata. See [Catalog fields](#catalog-fields) below. | |
 
 ### Endpoint
 
 | Field | Required | Details | Example |
 |-------|:--------:|---------|---------|
-| endpoint.streamableHTTP | N* | Configuration for the streamable_http transport. | See format above |
+| endpoint.streamableHTTP | N* | Configuration for the streamable HTTP transport. | See format above |
 | endpoint.sse | N* | Configuration for the legacy SSE transport. | See format above |
 | endpoint.stdio | N* | Configuration for the stdio subprocess transport. | See format above |
 
@@ -151,6 +165,7 @@ spec:
 |-------|:--------:|---------|---------|
 | auth.secretStore | N | Dapr secret store for resolving `secretKeyRef` entries in headers. Defaults to `"kubernetes"`. | `"my-secret-store"` |
 | auth.oauth2.issuer | Y (if oauth2) | Token endpoint of the authorization server. | `"https://auth.example.com/token"` |
+| auth.oauth2.clientID | N | OAuth2 client identifier sent to the token endpoint. Required by RFC 6749 for standard `client_credentials` flow; may be left empty for non-standard flows. | `"my-client-id"` |
 | auth.oauth2.audience | N | Audience claim for the token request. | `"mcp://payments"` |
 | auth.oauth2.scopes | N | Scopes requested in the token. | `["read", "write"]` |
 | auth.oauth2.secretKeyRef | N | Reference to the client secret in the secret store. | `name: "oauth-secret"` `key: "clientSecret"` |
@@ -168,7 +183,12 @@ spec:
 
 ### Middleware fields
 
-Middleware hooks are executed in array order. "Before" hooks abort on error; "after" hooks log errors without affecting the result.
+Middleware hooks are executed in array order. Error behavior differs by hook type:
+
+- `beforeCallTool` errors abort the chain; the workflow completes with `CallToolResult{isError: true}` so the caller can self-correct.
+- `beforeListTools` errors abort the chain and the error is returned.
+- `afterCallTool` errors **fail the workflow** — these hooks can act as authorization gates that block the response.
+- `afterListTools` errors are logged but do not affect the result.
 
 | Field | Required | Details | Example |
 |-------|:--------:|---------|---------|
@@ -183,6 +203,7 @@ Each hook entry:
 |-------|:--------:|---------|---------|
 | workflow.workflowName | Y | Name of the workflow to invoke. | `"rbac-check"` |
 | workflow.appID | N | Target a remote Dapr app. When unset, runs locally. | `"auth-service"` |
+| mutate | N | When `true`, the hook's return value replaces the data flowing through the pipeline (arguments for `beforeCallTool`; result for `afterCallTool` and `afterListTools`). When `false` (default), the hook is observe-only. Not supported on `beforeListTools`. | `true` |
 
 ### Catalog fields
 

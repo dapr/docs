@@ -127,8 +127,8 @@ Middleware hooks let you run authorization, redaction, and audit as Dapr workflo
 spec:
   middleware:
     beforeCallTool:
-    - workflow:
-        workflowName: rbac-check
+      - workflow:
+          workflowName: rbac-check
 ```
 
 Register a workflow named `rbac-check` in your application. It receives an `MCPBeforeCallToolHookInput`:
@@ -166,9 +166,9 @@ To transform `arguments` before they reach the tool — redact PII, normalize va
 spec:
   middleware:
     beforeCallTool:
-    - workflow:
-        workflowName: redact-pii
-      mutate: true
+      - workflow:
+          workflowName: redact-pii
+        mutate: true
 ```
 
 ```text
@@ -192,9 +192,9 @@ To run the hook on a dedicated policy app instead of locally, add `appID`:
 spec:
   middleware:
     beforeCallTool:
-    - workflow:
-        workflowName: rbac-check
-        appID: policy-service   # runs on the Dapr app named "policy-service"
+      - workflow:
+          workflowName: rbac-check
+          appID: policy-service   # runs on the Dapr app named "policy-service"
 ```
 
 The same workflow runs on the named app via service invocation. One shared policy app (RBAC, audit, PII redaction) governs many agent apps without each app embedding the policy. Update the central workflow once; every MCPServer that references it picks up the change without redeploying its callers.
