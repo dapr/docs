@@ -447,7 +447,7 @@ spec:
 
 ## Hot Reloading
 
-When the [`HotReload` feature gate]({{% ref "support-preview-features" %}}) is enabled, changes to Configuration resources are automatically detected and trigger a graceful restart of the Dapr sidecar (via SIGHUP) to apply the new configuration. Unchanged Configuration resources are silently ignored. SIGHUP is not supported on Windows.
+Since Dapr v1.18, changes to Configuration resources are automatically detected and trigger a graceful restart of the Dapr sidecar (via SIGHUP) to apply the new configuration. Unchanged Configuration resources are silently ignored. SIGHUP is not supported on Windows. To opt out, disable the `HotReload` feature in the [Dapr application configuration]({{% ref "preview-features.md" %}}).
 
 See [Updating resources]({{% ref "component-updates.md" %}}) for more information.
 
