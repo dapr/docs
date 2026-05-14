@@ -18,10 +18,11 @@ This is useful for:
 
 Two scopes are exposed. The default is no propagation.
 
-| Scope | What gets sent                                                                          | When to use it                                                                                                    |
-| ----- |-----------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
-| `PropagateLineage` | Caller's own events plus the full ancestor chain inherited from the caller's own parent | Full chain-of-custody, downstream wants to see everything that happened before, all the way to the root           |
-| `PropagateOwnHistory` | Caller's own events only, ancestral lineage is dropped                              | Trust boundary — the caller is willing to vouch for what *it* did but the receiver shouldn't see further upstream |
+| Option helper | Scope value on `propagatedHistory.Scope()` | What gets sent | When to use it |
+| ------------- | --------------------------- | -------------- | -------------- |
+| `workflow.PropagateLineage()` | `LINEAGE` (`HISTORY_PROPAGATION_SCOPE_LINEAGE`) | Caller's own events plus the full ancestor chain inherited from the caller's own parent | Full chain-of-custody, downstream wants to see everything that happened before, all the way to the root |
+| `workflow.PropagateOwnHistory()` | `OWN_HISTORY` (`HISTORY_PROPAGATION_SCOPE_OWN_HISTORY`) | Caller's own events only, ancestral lineage is dropped | Trust boundary — the caller is willing to vouch for what *it* did but the receiver shouldn't see further upstream |
+
 
 `PropagateOwnHistory` is the trust boundary: choosing it tells the runtime to stop forwarding any history the caller itself received. This is the right choice when the receiver is a less-trusted app, a third party, or operates under different compliance rules.
 
@@ -31,20 +32,19 @@ A parent opts a single `CallActivity` or `CallChildWorkflow` into propagation vi
 
 ```go
 import (
-    "github.com/dapr/durabletask-go/api"
-    "github.com/dapr/durabletask-go/task"
+    "github.com/dapr/durabletask-go/workflow"
 )
 
-func ParentWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+func MerchantCheckout(ctx *workflow.WorkflowContext) (any, error) {
     // Activity does NOT receive propagated history (default).
-    if err := ctx.CallActivity("validateMerchant").Await(nil); err != nil {
+    if err := ctx.CallActivity("ValidateMerchant").Await(nil); err != nil {
         return nil, err
     }
 
     // Child workflow DOES receive parent's history (LINEAGE).
     var result string
-    if err := ctx.CallChildWorkflow("processPayment",
-        task.WithHistoryPropagation(api.PropagateLineage()),
+    if err := ctx.CallChildWorkflow("ProcessPayment",
+        workflow.WithHistoryPropagation(workflow.PropagateLineage()),
     ).Await(&result); err != nil {
         return nil, err
     }
@@ -57,18 +57,26 @@ func ParentWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 Inside a child workflow or activity, call `ctx.GetPropagatedHistory()`. It returns the propagated history if the caller opted in, or `nil` if it didn't.
 
 ```go
-func FraudCheck(ctx *workflow.WorkflowContext) (any, error) {
-    ph := ctx.GetPropagatedHistory()
-    if ph == nil {
+import (
+    "fmt"
+
+    "github.com/dapr/durabletask-go/workflow"
+)
+
+func FraudDetection(ctx *workflow.WorkflowContext) (any, error) {
+    propagatedHistory := ctx.GetPropagatedHistory()
+    if propagatedHistory == nil {
         return "no upstream history", nil
     }
 
     // The history exposes both raw events and per-app/per-instance chunks.
     fmt.Printf("scope: %s, %d events from apps %v\n",
-        ph.Scope(), len(ph.Events()), ph.GetAppIDs())
+        propagatedHistory.Scope(), len(propagatedHistory.Events()), propagatedHistory.GetAppIDs())
 
-    // Drill into a specific upstream workflow's activities:
-    merchantWf, err := ph.GetWorkflowByName("MerchantCheckout")
+    // Drill into a specific upstream workflow's activities. The names here
+    // match the parent workflow and activity shown above (registered as
+    // "MerchantCheckout" and "ValidateMerchant").
+    merchantWf, err := propagatedHistory.GetWorkflowByName("MerchantCheckout")
     if err != nil {
         return nil, fmt.Errorf("expected MerchantCheckout in propagated history: %w", err)
     }
