@@ -23,6 +23,7 @@ Two scopes are exposed. The default is no propagation.
 | `workflow.PropagateLineage()` | `LINEAGE` (`HISTORY_PROPAGATION_SCOPE_LINEAGE`) | Caller's own events plus the full ancestor chain inherited from the caller's own parent | Full chain-of-custody, downstream wants to see everything that happened before, all the way to the root |
 | `workflow.PropagateOwnHistory()` | `OWN_HISTORY` (`HISTORY_PROPAGATION_SCOPE_OWN_HISTORY`) | Caller's own events only, ancestral lineage is dropped | Trust boundary — the caller is willing to vouch for what *it* did but the receiver shouldn't see further upstream |
 
+The helpers (`PropagateLineage` / `PropagateOwnHistory`) are what you pass when scheduling. The scope values (`LINEAGE` / `OWN_HISTORY`) are what `propagatedHistory.Scope()` returns on the receiver — they're the same thing.
 
 `PropagateOwnHistory` is the trust boundary: choosing it tells the runtime to stop forwarding any history the caller itself received. This is the right choice when the receiver is a less-trusted app, a third party, or operates under different compliance rules.
 
