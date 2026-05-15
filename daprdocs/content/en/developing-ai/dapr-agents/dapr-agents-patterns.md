@@ -358,11 +358,11 @@ In Dapr Agents this pattern is implemented through the **hook system**: register
 
 ```python
 from dapr_agents import DurableAgent, Hooks
-from dapr_agents.hooks import HookContext, HookDecision, Proceed, RequireApproval
+from dapr_agents.hooks import ToolHookContext, HookDecision, Proceed, RequireApproval
 from dapr_agents.agents.configs import AgentApprovalConfig, AgentExecutionConfig
 
 
-def gate_deletions(ctx: HookContext) -> HookDecision:
+def gate_deletions(ctx: ToolHookContext) -> HookDecision:
     if ctx.step_name.startswith("delete_"):
         return RequireApproval(
             timeout_seconds=3600,
@@ -393,7 +393,7 @@ The benefits of using Dapr for this pattern include:
 - **Timeout safety** - Pending requests auto-deny if no human responds, so workflows never hang forever
 - **Composable with other patterns** - HITL is a hook decision, so it layers cleanly on top of any of the patterns above
 
-For the full hook API surface, including the other decisions (`Skip`, `Modify`, `Deny`) and LLM-level hooks, see [Hooks and Human-in-the-Loop]({{< ref dapr-agents-hooks.md >}}).
+For the full hook API surface, including the other decisions (`Skip`, `Mutate`, `Deny`) and LLM-level hooks, see [Hooks and Human-in-the-Loop]({{< ref dapr-agents-hooks.md >}}).
 
 ## Durable Agent
 
