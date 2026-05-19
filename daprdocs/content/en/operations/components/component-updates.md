@@ -21,6 +21,8 @@ When running in Kubernetes, the process of updating a component involves two ste
 
 Unless the [`HotReload` feature gate is enabled](#hot-reloading-preview-feature), the process of updating a component involves a single step of stopping and restarting the `daprd` process to pick up the latest component.
 
+> **Note:** On POSIX-compatible systems (Linux, macOS), you can also send a `SIGHUP` signal to the `daprd` process to reload the runtime in-process without fully restarting it. See [Reloading configuration with SIGHUP]({{% ref "configuration-overview.md#reloading-configuration-with-sighup" %}}) for more information.
+
 ## Hot Reloading (Preview Feature)
 
 > This feature is currently in [preview]({{% ref "preview-features.md" %}}).
