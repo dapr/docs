@@ -6,7 +6,7 @@ description: "The basic spec for a Dapr WorkflowAccessPolicy resource"
 weight: 6000
 ---
 
-The `WorkflowAccessPolicy` is a Dapr resource that controls which applications are permitted to schedule specific workflows and activities on a target application.
+The `WorkflowAccessPolicy` is a Dapr resource that controls which applications can invoke workflow and activity operations on a target application. Policies are a pure allow-list: a call is permitted if any loaded rule matches.
 
 ## Format
 
@@ -15,32 +15,35 @@ apiVersion: dapr.io/v1alpha1
 kind: WorkflowAccessPolicy
 metadata:
   name: <REPLACE-WITH-NAME>
+scopes:
+  - <TARGET-APP-ID>
 spec:
-  defaultAction: <ALLOW-OR-DENY>
   rules:
     - callers:
         - appID: <CALLER-APP-ID>
-      operations:
-        - type: <WORKFLOW-OR-ACTIVITY>
-          name: <OPERATION-NAME-OR-GLOB-PATTERN>
-          action: <ALLOW-OR-DENY>
-  scopes:
-    - <TARGET-APP-ID>
+      workflows:
+        - name: <WORKFLOW-NAME-OR-GLOB-PATTERN>
+          operations:
+            - <OPERATION>
+      activities:
+        - name: <ACTIVITY-NAME-OR-GLOB-PATTERN>
 ```
 
 ## Spec fields
 
 | Field | Required | Type | Description | Example |
 |-------|:--------:|------|-------------|---------|
-| `defaultAction` | N | string | Global default action when no rule matches. Accepted values: `allow` or `deny`. Defaults to `deny`. | `deny` |
-| `rules` | N | list | List of access rules. Each rule maps callers to permitted or denied operations. | See below |
-| `rules[].callers` | Y | list | List of caller objects that this rule applies to. | See below |
+| `rules` | N | list | Allow-list of rules. A call is permitted if any rule matches. If `rules` is omitted or empty while policies are loaded, all cross-app calls are denied. | See below |
+| `rules[].callers` | Y | list | List of caller objects that this rule applies to. Must contain at least one entry. | See below |
 | `rules[].callers[].appID` | Y | string | The Dapr App ID of the calling application. | `frontend-app` |
-| `rules[].operations` | Y | list | List of operations controlled by this rule. | See below |
-| `rules[].operations[].type` | Y | string | The type of operation. Accepted values: `workflow` or `activity`. | `workflow` |
-| `rules[].operations[].name` | Y | string | The name of the workflow or activity. Supports glob patterns: `*` (any sequence), `?` (single character), `[abc]` (character set). | `OrderWorkflow`, `Report*` |
-| `rules[].operations[].action` | Y | string | The access action for this operation. Accepted values: `allow` or `deny`. | `allow` |
-| `scopes` | N | list | List of target App IDs to which this policy applies. If omitted or empty, the policy applies to all applications. | `["order-service"]` |
+| `rules[].workflows` | N* | list | Workflow rules granted to the matched callers. | See below |
+| `rules[].workflows[].name` | Y | string | Exact name or glob pattern of the workflow. Glob: `*`, `?`, `[abc]`. | `OrderWF`, `Report*` |
+| `rules[].workflows[].operations` | Y | list | One or more of: `schedule`, `terminate`, `raise`, `pause`, `resume`, `purge`, `get`, `rerun`. | `[schedule, get]` |
+| `rules[].activities` | N* | list | Activity rules granted to the matched callers. Activities only have the `schedule` operation, so no `operations` field. | See below |
+| `rules[].activities[].name` | Y | string | Exact name or glob pattern of the activity. | `ChargePayment`, `Refund*` |
+| `scopes` | N | list | App IDs to which this policy applies. If omitted or empty, the policy applies to all applications. | `["order-service"]` |
+
+\* At least one of `workflows` or `activities` must be present in each rule.
 
 ## Example
 
@@ -49,33 +52,27 @@ apiVersion: dapr.io/v1alpha1
 kind: WorkflowAccessPolicy
 metadata:
   name: order-processing-policy
+scopes:
+  - order-service
 spec:
-  defaultAction: deny
   rules:
     - callers:
         - appID: frontend-app
         - appID: api-gateway
-      operations:
-        - type: workflow
-          name: "OrderWorkflow"
-          action: allow
-        - type: workflow
-          name: "CheckoutWorkflow"
-          action: allow
-        - type: activity
-          name: "ProcessPayment"
-          action: allow
+      workflows:
+        - name: OrderWF
+          operations: [schedule, get, terminate]
+        - name: CheckoutWF
+          operations: [schedule, get]
+      activities:
+        - name: ProcessPayment
     - callers:
         - appID: admin-app
-      operations:
-        - type: workflow
-          name: "*"
-          action: allow
-        - type: activity
-          name: "*"
-          action: allow
-  scopes:
-    - order-service
+      workflows:
+        - name: "*"
+          operations: [schedule, terminate, raise, pause, resume, purge, get, rerun]
+      activities:
+        - name: "*"
 ```
 
 ## Related links

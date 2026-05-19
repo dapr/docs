@@ -247,43 +247,25 @@ public sealed class BusinessWorkflow : Workflow<string, string>
 
 When using multi-application workflows, you may want to restrict which applications can schedule activities or child workflows on a target application. Dapr provides the `WorkflowAccessPolicy` resource for this purpose.
 
-{{% alert title="Important" color="warning" %}}
-When workflow access policies are active, the target application must include itself in the `callers` list for its own activities. This is because activities are executed internally via actor reminders, and the self-invocation is also subject to policy enforcement.
-{{% /alert %}}
-
-The following example policy allows `orchestrator-app` to call activities on `ml-worker`, and also allows `ml-worker` to execute its own activities:
+Policies are a pure allow-list and self-calls are always permitted, so the target application does not need to list itself in the `callers` to execute its own activities. The following example allows `orchestrator-app` to schedule the `TrainModel` and `ValidateModel` activities on `ml-worker`:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: WorkflowAccessPolicy
 metadata:
   name: ml-worker-policy
+scopes:
+  - ml-worker
 spec:
-  defaultAction: deny
   rules:
     - callers:
         - appID: orchestrator-app
-      operations:
-        - type: activity
-          name: "TrainModel"
-          action: allow
-        - type: activity
-          name: "ValidateModel"
-          action: allow
-    - callers:
-        - appID: ml-worker
-      operations:
-        - type: activity
-          name: "TrainModel"
-          action: allow
-        - type: activity
-          name: "ValidateModel"
-          action: allow
-  scopes:
-    - ml-worker
+      activities:
+        - name: TrainModel
+        - name: ValidateModel
 ```
 
-Read [How-To: Apply workflow access policies]({{% ref workflow-access-policy %}}) for full configuration details, policy evaluation rules, and additional examples.
+Read [How-To: Apply workflow access policies]({{% ref workflow-access-policy %}}) for the full operation set (`schedule`, `terminate`, `raise`, `pause`, `resume`, `purge`, `get`, `rerun`), more examples, and details on the cross-app enforcement model.
 
 ## Related links
 
