@@ -26,6 +26,8 @@ spec:
     value: <bool> # Optional. Allowed: true, false.
   - name: enableTLS
     value: <bool> # Optional. Allowed: true, false.
+  - name: insecureSkipTLSVerify
+    value: <bool> # Optional. Allowed: true, false.
   - name: failover
     value: <bool> # Optional. Allowed: true, false.
   - name: sentinelMasterName
@@ -82,6 +84,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | redisUsername         |    N     | Username for Redis host. Defaults to empty. Make sure your redis server version is 6 or above, and have created acl rule correctly.                                                                                                                                                                               | `""`, `"default"`                                               |
 | useEntraID            |    N     | Implements EntraID support for Azure Cache for Redis. Before enabling this: <ul><li>The `redisHost` name must be specified in the form of `"server:port"`</li><li>TLS must be enabled</li></ul> Learn more about this setting under [Create a Redis instance > Azure Cache for Redis]({{% ref "#setup-redis" %}}) | `"true"`, `"false"`                                             |
 | enableTLS             |    N     | If the Redis instance supports TLS with public certificates, can be configured to be enabled or disabled. Defaults to `"false"`                                                                                                                                                                                   | `"true"`, `"false"`                                             |
+| insecureSkipTLSVerify |    N     | Skip TLS certificate verification when `enableTLS` is `"true"`. Only use for testing. Defaults to `"false"`                                                                                                                                                                                                       | `"true"`, `"false"`                                             |
 | maxRetries            |    N     | Maximum number of retries before giving up. Defaults to `3`                                                                                                                                                                                                                                                       | `5`, `10`                                                       |
 | maxRetryBackoff       |    N     | Maximum backoff between each retry. Defaults to `2` seconds; `"-1"` disables backoff.                                                                                                                                                                                                                             | `3000000000`                                                    |
 | failover              |    N     | Property to enable failover configuration. Needs sentinelMasterName to be set. When enabled, redisHost should contain the sentinel addresses. Defaults to `"false"` | `"true"`, `"false"`                                             |
