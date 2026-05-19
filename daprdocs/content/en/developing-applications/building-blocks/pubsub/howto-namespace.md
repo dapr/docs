@@ -68,7 +68,7 @@ For example, with namespace `team-a` and a logical topic `orders`, the entities 
 
 From your application code's perspective the topic name is preserved end-to-end — Dapr strips the prefix on the receive path before delivering messages to your app, and the `app is subscribed to the following topics: [...]` sidecar log line also shows the un-prefixed name. The prefix only exists on the wire and on the broker.
 
-This behavior applies to **all** pub/sub brokers (the prefix is applied in the broker-agnostic runtime layer), including brokers where topics and consumer groups are distinct concepts (e.g., Azure Service Bus, Kafka, RabbitMQ). If you want a **shared** broker topic with unique-per-app subscriptions, drop `{namespace}` from the component metadata and make the `consumerID` unique another way (for example, `consumerID: "{appID}"`).
+If you want a **shared** broker topic with unique-per-app subscriptions, drop `{namespace}` from the component metadata and make the `consumerID` unique another way (for example, `consumerID: "{appID}"`).
 {{% /alert %}}
 
 {{% alert title="Note" color="primary" %}}
