@@ -114,7 +114,7 @@ the suffix is parsed and what to do when no suffix is present.
 
 ### 1. Install the versioning package
 
-Add the `Dapr.Workflow.Versioning` package to your project.
+If you haven't already added it, you need to add the `Dapr.Workflow` package to your project.
 
 ### 2. Register workflow versioning
 
