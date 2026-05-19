@@ -24,7 +24,7 @@ Unless the [`HotReload` feature gate is enabled](#hot-reloading-preview-feature)
 ## Hot Reloading (Preview Feature)
 
 > This feature is currently in [preview]({{% ref "preview-features.md" %}}).
-> Hot reloading is enabled by via the [`HotReload` feature gate]({{% ref "support-preview-features.md" %}}).
+> Hot reloading is enabled via the [`HotReload` feature gate]({{% ref "support-preview-features.md" %}}).
 
 Dapr can be made to "hot reload" resources whereby updates are picked up automatically without the need to manually restart the Dapr sidecar process or Kubernetes pod.
 
