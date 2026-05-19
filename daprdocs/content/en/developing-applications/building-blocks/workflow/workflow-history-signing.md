@@ -207,43 +207,152 @@ When signing is enabled, the orchestrator validates inbox events before
 processing them. Result events (`TaskCompleted`, `TaskFailed`,
 `ChildWorkflowInstanceCompleted`, `ChildWorkflowInstanceFailed`) must reference
 an operation that was actually scheduled in the signed history. Events that
-reference non-existent operations — such as a `TaskCompleted` for a task ID
-that was never scheduled — are considered injected and are purged from the
+reference non-existent operations, such as a `TaskCompleted` for a task ID
+that was never scheduled, are considered injected and are purged from the
 inbox. This prevents an attacker with state store access from injecting fake
 activity or child workflow results that would otherwise be signed into the
 history chain.
 
+### Child workflow and activity attestation
+
+The same-workflow signature chain only protects history that the workflow
+itself produced. Cross-identity completion events (a child workflow or activity
+running under a different SPIFFE identity reporting back to the parent) need
+their own cryptographic proof. Dapr emits an attestation on every cross-identity
+completion and verifies it before the event enters the parent's inbox.
+
+When a child workflow or activity completes, the executor attaches one of:
+
+- `ChildCompletionAttestation` (on `ChildWorkflowInstanceCompleted` /
+  `ChildWorkflowInstanceFailed`).
+- `ActivityCompletionAttestation` (on `TaskCompleted` / `TaskFailed`).
+
+Each attestation commits to a deterministic, language-independent payload:
+
+| Field | Description |
+| --- | --- |
+| `parentInstanceId` + `parentTaskScheduledId` | Bind the proof to a specific invocation. Prevents cross-instance and cross-task replay. |
+| `ioDigest` | SHA-256 over canonicalized, NFC-normalized input and output bytes. Identical across SDKs because the encoding is wire-format-independent and spec-versioned. |
+| `signerCertDigest` | SHA-256 of the signer's DER-encoded X.509 chain. The chain itself travels alongside the attestation as a wire-only companion field. |
+| `terminalStatus` | The workflow or activity outcome. For activities, the activity name is also committed. |
+
+On receipt, the parent's orchestrator runs `verifyInboxAttestation` before the
+event is appended to the inbox:
+
+1. The attestation must be present (signing on implies sender must attest).
+2. The companion certificate's digest must match the committed
+   `signerCertDigest`.
+3. The certificate chain must validate against a Sentry trust anchor.
+4. The signature must verify over the exact attestation payload bytes (no
+   re-marshaling on the receiver side).
+5. `parentInstanceId` must equal the receiving workflow's actor ID.
+6. `parentTaskScheduledId` must resolve to a `TaskScheduled` or
+   `ChildWorkflowInstanceCreated` event already present in the signed history.
+7. `ioDigest` must equal the canonical digest of the parent's scheduling input
+   together with the reported output.
+8. `terminalStatus` must match the enclosing event type.
+
+If any check fails, the inbound completion is rejected and the workflow is
+tombstoned into failure. Once verified, the foreign certificate is absorbed
+into a content-addressed `ext-sigcert-NNNNNN` table on the receiver so the same
+signer is not re-validated on every subsequent completion. The chain-of-trust
+result is also cached per orchestrator instance for the lifetime of the actor,
+so a workflow that calls the same foreign signer repeatedly pays chain
+validation cost only once.
+
+### Lineage propagation verification
+
+When a workflow's history is forwarded to another workflow as
+`IncomingHistory` under `PropagateLineage` (typically multi-hop child
+invocations across apps), the receiving workflow needs to verify the forwarded
+content. Because the propagated bytes do not become part of the receiver's own
+signed `History`, an independent per-chunk signature is attached at dispatch
+time.
+
+Each `PropagatedHistoryChunk` carries:
+
+- The original events as produced by the chunk's authoring app, byte-for-byte.
+- A fresh chunk-local signature over those events, produced by the chunk's app
+  using its current SPIFFE X.509 key.
+- The DER-encoded certificate chain for that signing key.
+
+On ingestion, every chunk is verified independently:
+
+| Check | Detects |
+| --- | --- |
+| Chain-of-trust to a Sentry trust anchor (reusing the per-orchestrator cache) | Forged or self-signed lineage |
+| Leaf SPIFFE ID's app component matches the chunk's declared `appId` | Lineage produced by the wrong app |
+| Per-chunk signature covers exactly the events in the chunk, contiguously | Splicing, gaps, or partial omission |
+| Empty-with-signatures, missing-signatures, missing-certificate variants | Malformed chunks that would otherwise short-circuit verification |
+
+Verified foreign certificates are absorbed into the same `ext-sigcert-NNNNNN`
+table used by completion attestations, so downstream attestation lookups can
+content-address them.
+
 ## What happens when verification fails
 
-When signature verification fails, Dapr takes two actions depending on the
-code path. In both cases, the history and signatures in the state store are
-**never modified** — the original data is preserved for forensic analysis.
+When signature verification fails, Dapr's response depends on whether the
+workflow is still in custody of the executor, and on whether the failure is a
+genuine tamper or a host configuration mismatch. In every case the original
+history, signatures, and inbox are **never modified**; the untrusted data is
+preserved for forensic analysis.
 
-### Running workflows (orchestrator path)
+### Tamper of an in-flight workflow
 
-When the orchestrator actor loads workflow state and verification fails:
+When the orchestrator actor loads a running workflow and detects tampering,
+Dapr stops the executor from acting on forged input by appending a single
+**unsigned terminal `ExecutionCompleted` event** marked with the well-known
+error type `DAPR_WORKFLOW_HISTORY_TAMPERED`. This:
 
-1. **Reminders are deleted** for both the workflow and its activities. This
-   prevents the workflow engine from endlessly retrying a workflow whose
-   history has been compromised.
-2. The error is propagated. The workflow will not execute further.
+1. Halts further execution: the workflow is now in a terminal state and the
+   executor will not replay or schedule new work on it.
+2. Provides a stable, machine-matchable signal for clients
+   (`DAPR_WORKFLOW_HISTORY_TAMPERED`).
+3. Preserves the original (untrusted) history and signatures so operators can
+   inspect what was tampered with.
+
+`LoadWorkflowState` recognises the tamper marker and bypasses signature
+verification on subsequent loads, so the workflow can be read back and surfaced
+as `FAILED` rather than failing to load entirely. Reminders for the workflow
+and its activities are deleted to stop the engine from endlessly retrying a
+compromised workflow.
+
+The tamper-recovery path is scoped to workflows still in custody of the
+executor. **Workflows that had already completed** before the tamper happened
+are left untouched: there is nothing for the executor to do, and the
+verification error is surfaced to readers (metadata queries) who are
+responsible for detecting the tampering at read time.
+
+### Configuration error
+
+A mismatch between signed history and host signing configuration (signed
+workflow loaded by a host without a signer, or unsigned workflow loaded by a
+signing-enabled host) is reported as a distinct `ConfigurationError`, not as
+tampering. The tamper-recovery path described above does not run against these
+intact-but-unloadable workflows: their history is byte-identical to what was
+written, so appending a tamper-terminal event would itself be a destructive
+edit. Fix the host configuration, or purge the workflow, to recover.
 
 ### Metadata queries (API path)
 
 When a workflow metadata query (such as `GET /v1.0/workflows/<id>` or
 `FetchWorkflowMetadata`) encounters a verification error, the error is returned
 directly to the caller. The error message contains the specific reason for
-failure (for example, digest mismatch or certificate trust failure).
+failure (for example, digest mismatch, attestation verification failure, or
+certificate trust failure).
 
 {{< mermaid >}}
 flowchart TD
-    A["Load workflow state"] --> B["Verify signature chain"]
+    A["Load workflow state"] --> B["Verify signature chain<br/>+ attestations + lineage"]
     B -->|Pass| C["Continue normal<br/>execution"]
-    B -->|Fail| D{"Code path?"}
-    D -->|Orchestrator| E["Delete reminders<br/>to stop retries"]
-    D -->|Metadata query| F["Return error to caller"]
-    E --> G["State store<br/>NOT modified"]
-    F --> G
+    B -->|Fail| D{"Failure type"}
+    D -->|Tamper, in-flight| E["Append unsigned<br/>terminal event<br/>(DAPR_WORKFLOW_HISTORY_TAMPERED)<br/>+ delete reminders"]
+    D -->|Tamper, completed| F["Return error<br/>to reader"]
+    D -->|ConfigurationError| G["Return error<br/>to reader<br/>(no terminal append)"]
+    D -->|Metadata query path| F
+    E --> H["Workflow surfaces<br/>as FAILED on<br/>next read"]
+    F --> I["State store<br/>NOT modified"]
+    G --> I
 {{< /mermaid >}}
 
 ### Common failure causes
@@ -258,8 +367,10 @@ flowchart TD
 | CA change | Sentry CA was rotated to a completely new root | Certificate chain-of-trust failure |
 | Cross-app forgery | A certificate from a different app was used to sign | SPIFFE app identity mismatch |
 | Corrupted signature | A signature entry was modified in the state store | Cryptographic signature verification failure or chain linkage mismatch |
-| Signing disabled | A signed workflow was loaded by a non-signing host | "signed history but no signer is configured" |
-| Signing enabled on unsigned | An unsigned workflow was loaded by a signing host | "unsigned history events but signing is enabled" |
+| Forged child or activity completion | A cross-identity completion event was injected without a valid attestation | Inbox attestation verification fails (missing attestation, bad signature, wrong parent ID or task scheduled ID, ioDigest mismatch) |
+| Tampered propagated lineage | A `PropagatedHistoryChunk` was modified, swapped, or signed by the wrong app | Per-chunk signature, chain-of-trust, or SPIFFE app-ID check fails |
+| Signing disabled (ConfigurationError) | A signed workflow was loaded by a non-signing host | "signed history but no signer is configured" |
+| Signing enabled on unsigned (ConfigurationError) | An unsigned workflow was loaded by a signing host | "unsigned history events but signing is enabled" |
 
 ## One-way commitment
 
@@ -344,7 +455,8 @@ ID.
 |------------|---------|--------|
 | `history-NNNNNN` | History events | Protobuf `HistoryEvent` |
 | `signature-NNNNNN` | Signature entries | Protobuf `HistorySignature` |
-| `sigcert-NNNNNN` | Signing certificates | Protobuf `SigningCertificate` (DER-encoded X.509 chain) |
+| `sigcert-NNNNNN` | Signing certificates (own SPIFFE identity) | Protobuf `SigningCertificate` (DER-encoded X.509 chain) |
+| `ext-sigcert-NNNNNN` | Foreign signing certificates absorbed from verified completion attestations and lineage chunks (deduped by digest) | Protobuf `SigningCertificate` (DER-encoded X.509 chain) |
 | `metadata` | Counts and generation | Protobuf `WorkflowStateMetadata` |
 
 The `NNNNNN` suffix is a zero-padded 6-digit index (for example, `signature-000000`,
@@ -366,7 +478,9 @@ operation, ensuring atomicity.
 | **Time binding** | Certificate validity is checked against the event timestamp, preventing use of expired credentials |
 | **Trust anchoring** | All signing certificates are verified against the Sentry CA trust bundle |
 | **Inbox validation** | Activity and child workflow results are validated against scheduled operations in signed history, preventing injection of fake results |
-| **Immutable history** | Dapr never modifies workflow history after it is written, even on verification failure |
+| **Cross-identity attestation** | Child workflow and activity completions are cryptographically attested by the executing identity and verified by the parent before they enter the inbox |
+| **Lineage integrity** | Forwarded `PropagatedHistoryChunk`s are individually signed and verified against the producing app's SPIFFE identity |
+| **Immutable history** | Dapr never modifies the existing workflow history, signatures, or inbox; the only write on tamper detection is an unsigned terminal `ExecutionCompleted` event with error type `DAPR_WORKFLOW_HISTORY_TAMPERED` |
 | **One-way commitment** | Signing cannot be disabled for signed workflows or enabled for unsigned workflows |
 
 ## Frequently asked questions
