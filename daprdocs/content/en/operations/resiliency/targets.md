@@ -19,6 +19,8 @@ With the `apps` target, you can apply `retry`, `timeout`, and `circuitBreaker` p
 
 > Dapr provides [built-in service invocation retries]({{% ref "service-invocation-overview.md#retries" %}}), so any applied `retry` policies are additional.
 
+> For HTTP service invocation, `retry` policies are automatically bypassed for streaming requests (those without a known `Content-Length`). Circuit breakers continue to apply. See [Streaming requests and resiliency]({{% ref "service-invocation-overview#streaming-requests-and-resiliency" %}}).
+
 <img src="/images/resiliency_svc_invocation.png" width=1000 alt="Diagram showing service invocation resiliency" />
 
 Example of policies to a target app with the `app-id` "appB":
