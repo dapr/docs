@@ -445,6 +445,12 @@ spec:
     workloadCertTTL: 24h
 ```
 
+## Hot Reloading
+
+When the [`HotReload` feature gate]({{% ref "support-preview-features" %}}) is enabled, changes to Configuration resources are automatically detected and trigger a graceful restart of the Dapr sidecar (via SIGHUP) to apply the new configuration. Unchanged Configuration resources are silently ignored. SIGHUP is not supported on Windows.
+
+See [Updating resources]({{% ref "component-updates.md" %}}) for more information.
+
 ## Next steps
 
 {{< button text="Learn about concurrency and rate limits" page="control-concurrency.md" >}}
