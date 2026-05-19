@@ -20,11 +20,11 @@ install.
 
 Rule violations will typically be marked as `Info` or `Warning` so that if the analyzer identifies an issue, it won't
 necessarily break builds. All code analysis violations appear with the prefix "DAPR" and are uniquely distinguished
-by a number following this prefix. 
+by a number following this prefix.
 
 {{% alert title="Note" color="primary" %}}
 
-At this time, the first two digits of the diagnostic identifier map one-to-one to distinct Dapr packages, but this 
+At this time, the first two digits of the diagnostic identifier map one-to-one to distinct Dapr packages, but this
 is subject to change in the future as more analyzers are developed.
 
 {{% /alert %}}
@@ -42,8 +42,8 @@ issues in your existing code and warn you about new issues as you build your pro
 Many of our analyzers have associated code fixes that can be applied to automatically correct the problem. If your IDE
 supports this capability, any available code fixes will show up as an inline menu option in your code.
 
-Further, most of our analyzers should also report a specific line and column number in your code of the syntax that's 
-been identified as a key aspect of the rule. If your IDE supports it, double clicking any of the analyzer warnings 
+Further, most of our analyzers should also report a specific line and column number in your code of the syntax that's
+been identified as a key aspect of the rule. If your IDE supports it, double clicking any of the analyzer warnings
 should jump directly to the part of your code responsible for the violating the analyzer's rule.
 
 ### Suppress specific analyzers
@@ -57,18 +57,21 @@ the `EnableNETAnalyzers` property to `false` in your csproj file.
 
 ## Available Analyzers
 
-| Diagnostic ID | Dapr Package | Category         | Severity     | Version Added                                                                                                                           | Description                                                                                                                        | Code Fix Available |
-| -- | -- |------------------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------| -- |
-| DAPR1301 | Dapr.Workflow | Usage | Warning      | 1.16                                                                                                                                    | The workflow type is not registered with the dependency injection provider                                                         | Yes |
-| DAPR1302 | Dapr.Workflow | Usage | Warning | 1.16                                                                                                                                    | The workflow activity type is not registered with the dependency injection provider                                                | Yes | 
-| DAPR1401 | Dapr.Actors | Usage            | Warning      | 1.16                                                                                                                                    | Actor timer method invocations require the named callback method to exist on type                                                  | No                 |
-| DAPR1402 | Dapr.Actors | Usage            | Warning      | 1.16                                                                                                                                    | The actor type is not registered with dependency injection                                                                         | Yes                                                                                 |
-| DAPR1403 | Dapr.Actors | Interoperability | Info         | 1.16                                                                                                                                    | Set options.UseJsonSerialization to true to support interoperability with non-.NET actors                                          | Yes                                                                                 |
-| DAPR1404 | Dapr.Actors | Usage            | Warning      | 1.16                                                                                                                                    | Call app.MapActorsHandlers to map endpoints for Dapr actors                                                                        | Yes                                                                                       |
-| DAPR1501 | Dapr.Jobs | Usage            | Warning      | 1.16 |  Job invocations require the MapDaprScheduledJobHandler to be set and configured for each anticipated job on IEndpointRouteBuilder | No                                                                                        |
+| Diagnostic ID | Dapr Package  | Category         | Severity | Version Added | Description                                                                                                                                  | Code Fix Available |
+|---------------|---------------|------------------|----------|---------------|----------------------------------------------------------------------------------------------------------------------------------------------|--------------------|
+| DAPR1001      | Dapr.Common   | Compatibility    | Warning  | 1.18          | API requires a newer Dapr runtime than the configured target.                                                                                | No                 |
+| DAPR1002      | Dapr.Common   | Compatibility    | Warning  | 1.18          | "Unable to parse the Configured Dapr runtime target version                                                                                  | No                 |
+| DAPR1003      | Dapr.Common   | Compatibility    | Warning  | 1.18          | Unable to parse the minimum Dapr runtime version declared on an API                                                                          | No                 |
+| DAPR1301      | Dapr.Workflow | Usage            | Warning  | 1.16          | The workflow type is not registered with the dependency injection provider. **Note:** Not applied when `Dapr.Workflow.Versioning` installed. | Yes                |
+| DAPR1302      | Dapr.Workflow | Usage            | Warning  | 1.16          | The workflow activity type is not registered with the dependency injection provider                                                          | Yes                | 
+| DAPR1401      | Dapr.Actors   | Usage            | Warning  | 1.16          | Actor timer method invocations require the named callback method to exist on type                                                            | No                 |
+| DAPR1402      | Dapr.Actors   | Usage            | Warning  | 1.16          | The actor type is not registered with dependency injection                                                                                   | Yes                |
+| DAPR1403      | Dapr.Actors   | Interoperability | Info     | 1.16          | Set options.UseJsonSerialization to true to support interoperability with non-.NET actors                                                    | Yes                |
+| DAPR1404      | Dapr.Actors   | Usage            | Warning  | 1.16          | Call app.MapActorsHandlers to map endpoints for Dapr actors                                                                                  | Yes                |
+| DAPR1501      | Dapr.Jobs     | Usage            | Warning  | 1.16          | Job invocations require the MapDaprScheduledJobHandler to be set and configured for each anticipated job on IEndpointRouteBuilder            | No                 |
 
 ## Analyzer Categories
-The following are each of the eligible categories that an analyzer can be assigned to and are modeled after the 
+The following are each of the eligible categories that an analyzer can be assigned to and are modeled after the
 standard categories used by the .NET analyzers:
 - Design
 - Documentation
@@ -80,3 +83,4 @@ standard categories used by the .NET analyzers:
 - Reliability
 - Security
 - Usage
+- Compatibility
