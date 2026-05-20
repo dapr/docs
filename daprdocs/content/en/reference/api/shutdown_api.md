@@ -49,7 +49,7 @@ curl -X POST -H "Dapr-Force-Shutdown: 1" http://localhost:3500/v1.0/shutdown
 
 ## gRPC request
 
-The gRPC equivalent is `dapr.proto.runtime.v1.Dapr/Shutdown` (`v1`) and `dapr.proto.runtime.v1.Dapr/ShutdownAlpha1` is **not** offered; the Shutdown RPC is GA at `v1`.
+The gRPC equivalent is `dapr.proto.runtime.v1.Dapr/Shutdown` (GA at `v1`).
 
 ### gRPC metadata
 
