@@ -173,6 +173,12 @@ spec:
           circuitBreaker: pubsubCB
 ```
 
+## Hot Reloading
+
+When the [`HotReload` feature gate]({{% ref "support-preview-features" %}}) is enabled, changes to Resiliency resources are automatically detected and trigger a graceful restart of the Dapr sidecar (via SIGHUP) to apply the updated resiliency policies. Unchanged Resiliency resources are silently ignored. SIGHUP is not supported on Windows.
+
+See [Updating resources]({{% ref "component-updates.md" %}}) for more information.
+
 ## Limitations
 
 - **Service invocation via gRPC:** Currently, resiliency policies are not supported for service invocation via gRPC.

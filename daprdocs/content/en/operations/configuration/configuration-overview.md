@@ -76,6 +76,7 @@ The following menu includes all of the configuration settings you can set:
 - [Disallow usage of certain component types](#disallow-usage-of-certain-component-types)
 - [Turning on preview features](#turning-on-preview-features)
 - [Example sidecar configuration](#example-sidecar-configuration)
+- [Reloading configuration with SIGHUP](#reloading-configuration-with-sighup)
 
 #### Tracing
 
@@ -384,9 +385,31 @@ spec:
             action: allow
 ```
 
+#### Reloading configuration with SIGHUP
+
+On POSIX-compatible systems (Linux, macOS), you can reload the Dapr sidecar configuration without fully restarting the process by sending a `SIGHUP` signal to `daprd`. When `daprd` receives a `SIGHUP`, it gracefully shuts down the internal runtime and re-initializes it in-process using the current configuration file. This allows you to apply changes to configuration settings such as [tracing](#tracing), [metrics](#metrics), and [logging](#logging) without a full process restart.
+
+To send a `SIGHUP` signal:
+
+```bash
+# Using the kill command
+kill -SIGHUP <daprd-pid>
+
+# Or using pkill
+pkill -HUP daprd
+```
+
+{{% alert title="Note" color="primary" %}}
+During a SIGHUP reload, the Dapr sidecar is briefly unavailable while the runtime reinitializes. The sidecar will continue to handle graceful shutdown of existing connections before reloading.
+{{% /alert %}}
+
+{{% alert title="Note" color="primary" %}}
+SIGHUP-based reloading is only available on POSIX-compatible systems (Linux, macOS). On Windows, a full restart of `daprd` is required to pick up configuration changes.
+{{% /alert %}}
+
 ## Control plane configuration
 
-A single configuration file called `daprsystem` is installed with the Dapr control plane system services that applies global settings. 
+A single configuration file called `daprsystem` is installed with the Dapr control plane system services that applies global settings.
 
 > **This is only set up when Dapr is deployed to Kubernetes.**
 
@@ -425,6 +448,12 @@ spec:
     allowedClockSkew: 15m
     workloadCertTTL: 24h
 ```
+
+## Hot Reloading
+
+When the [`HotReload` feature gate]({{% ref "support-preview-features" %}}) is enabled, changes to Configuration resources are automatically detected and trigger a graceful restart of the Dapr sidecar (via SIGHUP) to apply the new configuration. Unchanged Configuration resources are silently ignored. SIGHUP is not supported on Windows.
+
+See [Updating resources]({{% ref "component-updates.md" %}}) for more information.
 
 ## Next steps
 
