@@ -20,11 +20,11 @@ When a dispatch would exceed the budget:
 
 This is a per-workflow safety mechanism only, not a backpressure or quota feature. The intended response is for the operator to either:
 
-1. **Raise `--max-body-size`** on the affected sidecar (and restart it). The next dispatch will pass the precheck and the workflow resumes. Activity dispatches inherit the same headroom rule, so consider the activity input/output size as well.
+1. **Raise `--max-body-size`** on the affected sidecar (and restart it). The next dispatch will pass the pre-check and the workflow resumes. Activity dispatches inherit the same headroom rule, so consider the activity input/output size as well.
 2. **Force-purge the workflow** if the payload has grown unboundedly (for example, a workflow that has been appending to a large list for too long, or an unintended `ContinueAsNew` accumulating history). See [How-to: Manage workflows]({{% ref howto-manage-workflow.md %}}).
 3. **Restructure the workflow** to avoid carrying large payloads across activities, for example by passing references (object store URLs, state-store keys) instead of inline data.
 
-The same precheck applies to activity dispatches; an oversized activity request stalls only that activity, not the parent workflow.
+The same pre-check applies to activity dispatches; an oversized activity request stalls only that activity, not the parent workflow.
 
 ## Metrics
 
