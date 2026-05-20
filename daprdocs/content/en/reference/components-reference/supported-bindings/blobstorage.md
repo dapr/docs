@@ -66,6 +66,9 @@ This component supports **output binding** with the following operations:
 - `delete` : [Delete blob](#delete-blob)
 - `list`: [List blobs](#list-blobs)
 - `presign`: [Generate presigned SAS URL](#presign-blob)
+- `bulkGet`: [Bulk get blobs](#bulk-get-blobs)
+- `bulkCreate`: [Bulk create blobs](#bulk-create-blobs)
+- `bulkDelete`: [Bulk delete blobs](#bulk-delete-blobs)
 
 The Blob storage component's **input binding** triggers and pushes events using [Azure Event Grid]({{% ref eventgrid.md %}}). 
  
@@ -226,6 +229,7 @@ The metadata parameters are:
 
 - `blobName` - the name of the blob
 - `includeMetadata`- (optional) defines if the user defined metadata should be returned or not, defaults to: false
+- `filePath` - (optional) if set, the blob content is streamed directly to this local file path instead of being returned in the response body. This is recommended for large blobs to avoid loading the entire content into memory. When used, the response body will be empty and the path of the written file is returned as a `Metadata.filePath` HTTP header.
 
 #### Example
 
@@ -459,18 +463,17 @@ The metadata parameters are:
 
 {{< tabpane text=true >}}
 
-  {{% tab "Windows" %}}
+    {{% tab "Windows" %}}
   ```bash
   curl -d "{ \"operation\": \"presign\", \"metadata\": { \"blobName\": \"my-test-file.txt\", \"signTTL\": \"15m\" } }" \
-        http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+          http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /tab %}}
 
   {{% tab "Linux" %}}
   ```bash
   curl -d '{ "operation": "presign", "metadata": { "blobName": "my-test-file.txt", "signTTL": "15m" } }' \
-        http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
-  ```
+          http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   {{% /tab %}}
 
 {{< /tabpane >}}
@@ -483,6 +486,365 @@ The response body contains the following JSON:
 {
     "presignURL": "https://<your account name>.blob.core.windows.net/<your container name>/my-test-file.txt?sv=2023-11-03&se=2024-01-01T00%3A15%3A00Z&sr=b&sp=r&sig=<signature>"
 }
+```
+
+### Bulk get blobs
+
+To perform a bulk get operation, invoke the Azure Blob Storage binding with a `POST` method and the following JSON body. Blobs can be retrieved either to local files (streaming mode) or returned inline in the response (inline mode).
+
+#### Streaming mode (to files)
+
+Use explicit items with `filePath` to stream each blob directly to a file, or use `prefix` with `destinationDir` to download all matching blobs:
+
+```json
+{
+  "operation": "bulkGet",
+  "data": {
+    "items": [
+      { "blobName": "file1.txt", "filePath": "/tmp/downloads/file1.txt" },
+      { "blobName": "file2.txt", "filePath": "/tmp/downloads/file2.txt" }
+    ],
+    "concurrency": 10
+  }
+}
+```
+
+Or using a prefix to download all matching blobs to a directory:
+
+```json
+{
+  "operation": "bulkGet",
+  "data": {
+    "prefix": "logs/2024/",
+    "destinationDir": "/tmp/downloads/logs",
+    "concurrency": 10
+  }
+}
+```
+
+#### Inline mode (in response)
+
+Omit `filePath` from items to receive blob contents inline (base64-encoded) in the response:
+
+```json
+{
+  "operation": "bulkGet",
+  "data": {
+    "items": [
+      { "blobName": "config1.json" },
+      { "blobName": "config2.json" }
+    ]
+  }
+}
+```
+
+The data parameters are:
+
+- `items` - (optional) an array of objects specifying which blobs to retrieve. Each item has:
+  - `blobName` - the name of the blob to retrieve
+  - `filePath` - (optional) local file path to stream the blob to. If omitted, blob content is returned inline in the response
+- `prefix` - (optional) retrieves all blobs matching this prefix. Requires `destinationDir`
+- `destinationDir` - (required when using `prefix`) the local directory to download prefix-matched blobs into
+- `concurrency` - (optional) maximum number of parallel downloads. Defaults to `10`
+
+At least one of `items` or `prefix` must be provided. Both can be combined in a single request.
+
+{{% alert title="Note" color="primary" %}}
+For large files, use streaming mode (with `filePath`) to avoid loading entire blob contents into memory. File paths are validated to prevent path traversal attacks.
+{{% /alert %}}
+
+#### Examples
+
+##### Bulk get blobs to files
+
+{{< tabpane text=true >}}
+
+  {{% tab "Windows" %}}
+  ```bash
+  curl -d "{ \"operation\": \"bulkGet\", \"data\": { \"items\": [{ \"blobName\": \"file1.txt\", \"filePath\": \"C:\\\\tmp\\\\file1.txt\" }, { \"blobName\": \"file2.txt\", \"filePath\": \"C:\\\\tmp\\\\file2.txt\" }] } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
+
+  {{% tab "Linux" %}}
+  ```bash
+  curl -d '{ "operation": "bulkGet", "data": { "items": [{ "blobName": "file1.txt", "filePath": "/tmp/file1.txt" }, { "blobName": "file2.txt", "filePath": "/tmp/file2.txt" }] } }' \
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
+
+{{< /tabpane >}}
+
+##### Bulk get blobs by prefix
+
+{{< tabpane text=true >}}
+
+  {{% tab "Windows" %}}
+  ```bash
+  curl -d "{ \"operation\": \"bulkGet\", \"data\": { \"prefix\": \"backups/\", \"destinationDir\": \"C:\\\\tmp\\\\backups\", \"concurrency\": 5 } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
+
+  {{% tab "Linux" %}}
+  ```bash
+  curl -d '{ "operation": "bulkGet", "data": { "prefix": "backups/", "destinationDir": "/tmp/backups", "concurrency": 5 } }' \
+  ```
+  {{% /tab %}}
+
+{{< /tabpane >}}
+
+#### Response
+
+The response body contains a JSON array of results:
+
+```json
+[
+  {
+    "blobName": "file1.txt",
+    "filePath": "/tmp/file1.txt"
+  },
+  {
+    "blobName": "file2.txt",
+    "filePath": "/tmp/file2.txt"
+  }
+]
+```
+
+When using inline mode (no `filePath`), each item includes a `data` field with the base64-encoded blob content:
+
+```json
+[
+  {
+    "blobName": "config1.json",
+    "data": "eyJrZXkiOiAidmFsdWUifQ=="
+  }
+]
+```
+
+If an individual blob fails, its entry will contain an `error` field instead of `filePath`/`data`:
+
+```json
+[
+  {
+    "blobName": "missing.txt",
+    "error": "BlobNotFound"
+  }
+]
+```
+
+### Bulk create blobs
+
+To perform a bulk create operation, invoke the Azure Blob Storage binding with a `POST` method and the following JSON body. Blobs can be uploaded from local files or from inline data.
+
+#### From files
+
+```json
+{
+  "operation": "bulkCreate",
+  "data": {
+    "items": [
+      { "blobName": "file1.txt", "sourcePath": "/tmp/uploads/file1.txt" },
+      { "blobName": "file2.jpg", "sourcePath": "/tmp/uploads/file2.jpg", "contentType": "image/jpeg" }
+    ],
+    "concurrency": 10
+  }
+}
+```
+
+#### From inline data
+
+```json
+{
+  "operation": "bulkCreate",
+  "data": {
+    "items": [
+      { "blobName": "greeting.txt", "data": "Hello World" },
+      { "blobName": "config.json", "data": "{\"key\": \"value\"}", "contentType": "application/json" }
+    ]
+  }
+}
+```
+
+The data parameters are:
+
+- `items` - (required) an array of objects specifying blobs to create. Each item has:
+  - `blobName` - (required) the name of the blob to create
+  - `sourcePath` - (optional) local file path to stream as the blob's content. For large files, this streams directly without loading into memory
+  - `data` - (optional) inline string data for the blob content. One of `sourcePath` or `data` must be provided
+  - `contentType` - (optional) the MIME type for this specific blob (e.g. `"image/jpeg"`, `"application/json"`)
+- `concurrency` - (optional) maximum number of parallel uploads. Defaults to `10`
+
+{{% alert title="Note" color="primary" %}}
+When `decodeBase64` is enabled in the component configuration, both inline `data` and file-based `sourcePath` content are base64-decoded before upload. This means `sourcePath` should point to a base64-encoded file when `decodeBase64` is `true`. When `decodeBase64` is `false` (the default), content is uploaded as-is.
+{{% /alert %}}
+
+#### Examples
+
+##### Bulk create blobs from files
+
+{{< tabpane text=true >}}
+
+  {{% tab "Windows" %}}
+  ```bash
+  curl -d "{ \"operation\": \"bulkCreate\", \"data\": { \"items\": [{ \"blobName\": \"report.pdf\", \"sourcePath\": \"C:\\\\tmp\\\\report.pdf\", \"contentType\": \"application/pdf\" }, { \"blobName\": \"data.csv\", \"sourcePath\": \"C:\\\\tmp\\\\data.csv\", \"contentType\": \"text/csv\" }] } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
+
+  {{% tab "Linux" %}}
+  ```bash
+  curl -d '{ "operation": "bulkCreate", "data": { "items": [{ "blobName": "report.pdf", "sourcePath": "/tmp/report.pdf", "contentType": "application/pdf" }, { "blobName": "data.csv", "sourcePath": "/tmp/data.csv", "contentType": "text/csv" }] } }' \
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
+
+{{< /tabpane >}}
+
+##### Bulk create blobs from inline data
+
+{{< tabpane text=true >}}
+
+  {{% tab "Windows" %}}
+  ```bash
+  curl -d "{ \"operation\": \"bulkCreate\", \"data\": { \"items\": [{ \"blobName\": \"hello.txt\", \"data\": \"Hello World\" }, { \"blobName\": \"goodbye.txt\", \"data\": \"Goodbye World\" }] } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
+
+  {{% tab "Linux" %}}
+  ```bash
+  curl -d '{ "operation": "bulkCreate", "data": { "items": [{ "blobName": "hello.txt", "data": "Hello World" }, { "blobName": "goodbye.txt", "data": "Goodbye World" }] } }' \
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
+
+{{< /tabpane >}}
+
+#### Response
+
+The response body contains a JSON array of results:
+
+```json
+[
+  {
+    "blobName": "report.pdf",
+    "blobURL": "https://<account>.blob.core.windows.net/<container>/report.pdf"
+  },
+  {
+    "blobName": "data.csv",
+    "blobURL": "https://<account>.blob.core.windows.net/<container>/data.csv"
+  }
+]
+```
+
+If an individual blob fails, its entry will contain an `error` field:
+
+```json
+[
+  {
+    "blobName": "report.pdf",
+    "error": "open /tmp/report.pdf: no such file or directory"
+  }
+]
+```
+
+### Bulk delete blobs
+
+To perform a bulk delete operation, invoke the Azure Blob Storage binding with a `POST` method and the following JSON body:
+
+```json
+{
+  "operation": "bulkDelete",
+  "data": {
+    "blobNames": ["file1.txt", "file2.txt", "file3.txt"],
+    "concurrency": 10
+  }
+}
+```
+
+Or delete all blobs matching a prefix:
+
+```json
+{
+  "operation": "bulkDelete",
+  "data": {
+    "prefix": "logs/2023/",
+    "deleteSnapshots": "include"
+  }
+}
+```
+
+The data parameters are:
+
+- `blobNames` - (optional) an array of blob names to delete
+- `prefix` - (optional) deletes all blobs matching this prefix
+- `deleteSnapshots` - (optional) how to handle snapshots when deleting. One of:
+  - `include` - delete the base blob and all of its snapshots
+  - `only` - delete only the blob's snapshots, not the blob itself
+- `concurrency` - (optional) maximum number of parallel delete operations. Defaults to `10`
+
+At least one of `blobNames` or `prefix` must be provided. Both can be combined.
+
+{{% alert title="Note" color="primary" %}}
+Bulk delete uses the Azure Blob Batch API for efficient deletion (up to 256 blobs per batch request). If the batch API is unavailable, it falls back to concurrent individual deletes.
+{{% /alert %}}
+
+#### Examples
+
+##### Bulk delete by blob names
+
+{{< tabpane text=true >}}
+
+  {{% tab "Windows" %}}
+  ```bash
+  curl -d "{ \"operation\": \"bulkDelete\", \"data\": { \"blobNames\": [\"file1.txt\", \"file2.txt\", \"file3.txt\"] } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
+
+  {{% tab "Linux" %}}
+  ```bash
+  curl -d '{ "operation": "bulkDelete", "data": { "blobNames": ["file1.txt", "file2.txt", "file3.txt"] } }' \
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
+
+{{< /tabpane >}}
+
+##### Bulk delete by prefix
+
+{{< tabpane text=true >}}
+
+  {{% tab "Windows" %}}
+  ```bash
+  curl -d "{ \"operation\": \"bulkDelete\", \"data\": { \"prefix\": \"temp/\", \"deleteSnapshots\": \"include\" } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
+
+  {{% tab "Linux" %}}
+  ```bash
+  curl -d '{ "operation": "bulkDelete", "data": { "prefix": "temp/", "deleteSnapshots": "include" } }' \
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /tab %}}
+
+{{< /tabpane >}}
+
+#### Response
+
+The response body contains a JSON array of results:
+
+```json
+[
+  { "blobName": "file1.txt" },
+  { "blobName": "file2.txt" },
+  { "blobName": "file3.txt" }
+]
+```
+
+If an individual blob fails to delete, its entry will contain an `error` field:
+
+```json
+[
+  { "blobName": "file1.txt" },
+  { "blobName": "file2.txt", "error": "BlobNotFound" }
+]
 ```
 
 ## Metadata information
