@@ -127,6 +127,7 @@ To prevent duplicate logs from polluting your output during these rehydration cy
 
 ```python
 from dapr_agents.utils import get_context_aware_logger
+from dapr_agents.workflow.decorators import workflow_entry
 
 # Initialize the logger at the module level
 logger = get_context_aware_logger(__name__)
@@ -137,7 +138,6 @@ def my_workflow(self, ctx: DaprWorkflowContext, wf_input: dict) -> str:
     logger.info("Starting workflow execution...")
     # ...
 ```
-
 
 ## Core Agent Features
 An agentic system is a distributed system that requires a variety of behaviors and supporting infrastructure.
