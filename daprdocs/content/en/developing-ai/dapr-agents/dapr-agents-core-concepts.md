@@ -137,7 +137,7 @@ Dapr Agents provides a unified interface to connect with LLM inference APIs. Thi
 
 Dapr Agents supports flexible prompt templates to shape agent behavior and reasoning. Users can define placeholders within prompts, enabling dynamic input of context for inference calls. By leveraging prompt formatting with [Jinja templates](https://jinja.palletsprojects.com/en/stable/templates/) and Python f-string formatting, users can include loops, conditions, and variables, providing precise control over the structure and content of prompts. This flexibility ensures that LLM responses are tailored to the task at hand, offering modularity and adaptability for diverse use cases.
 
-#### Using Prompty Templates
+### Using Prompty Templates
 
 You can easily configure a Dapr Agent's prompt, model parameters, and LLM provider all in one place using a `.prompty` file. For example, to configure an agent using Mistral:
 
@@ -156,6 +156,7 @@ model:
 system:
 You are a helpful assistant.
 ```
+> **Note:** `mistral-large-latest` is used as an example. Please check the Mistral documentation for the most current model names.
 
 ### Structured Outputs
 
