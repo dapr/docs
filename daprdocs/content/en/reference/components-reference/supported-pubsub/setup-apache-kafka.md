@@ -561,9 +561,29 @@ curl -X POST http://localhost:3500/v1.0/publish/myKafka/myTopic?metadata.partiti
       }'
 ```
 
+### Partition Number
+
+When invoking the Kafka pub/sub, you can provide an optional partition number by using the `metadata` query param in the request url. This allows you to target a specific Kafka partition directly, bypassing the hash-based partition assignment used by `partitionKey`.
+
+The param name is `partitionNumber` and the value must be a non-negative integer within the topic's partition range (`0` to `partitionCount - 1`). Publishing fails with an error if the value is out of range, negative, or not a valid integer.
+
+If both `partitionNumber` and `partitionKey` (or `__key`) are provided, `partitionNumber` takes precedence for partition selection. The `partitionKey` is still set on the Kafka message record.
+
+Example:
+
+```shell
+curl -X POST http://localhost:3500/v1.0/publish/myKafka/myTopic?metadata.partitionNumber=3 \
+  -H "Content-Type: application/json" \
+  -d '{
+        "data": {
+          "message": "Hi"
+        }
+      }'
+```
+
 ### Message headers
 
-All other metadata key/value pairs (that are not `partitionKey` or `__key`) are set as headers in the Kafka message. Here is an example setting a `correlationId` for the message.
+All other metadata key/value pairs (that are not `partitionKey`, `__key`, or `partitionNumber`) are set as headers in the Kafka message. Here is an example setting a `correlationId` for the message.
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/publish/myKafka/myTopic?metadata.correlationId=myCorrelationID&metadata.partitionKey=key1 \
