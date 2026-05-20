@@ -3,7 +3,7 @@ type: docs
 title: "Shutdown API reference"
 linkTitle: "Shutdown API"
 description: "Detailed documentation on the Shutdown API"
-weight: 1100
+weight: 1150
 ---
 
 The Shutdown API triggers a graceful shutdown of the Dapr sidecar (`daprd`). It is the same shutdown path that runs when daprd receives a `SIGTERM`: input bindings and pub/sub subscriptions are closed, in-flight requests are allowed to complete (subject to `--dapr-graceful-shutdown-seconds`), reminders and components are flushed, and then the process exits.
