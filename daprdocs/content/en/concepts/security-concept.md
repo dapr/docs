@@ -84,16 +84,16 @@ Starting with Dapr **1.18**, Sentry generates workload identity keys using **Ed2
 | Injector / Operator webhook serving certs | ECDSA P-256 | **RSA** (intentional — see below) |
 | JWT / OIDC signing | RSA-2048 | RSA-2048 (unchanged) |
 
-**Why Ed25519?** Ed25519 keys are 32 bytes (vs. 32-byte EC point + 32-byte scalar for P-256), signatures are 64 bytes (vs. ~72 bytes for P-256 DER), signing and verification are faster, and the curve design eliminates several known side-channel attack surfaces. For a workload identity system that signs a certificate on every sidecar start and re-signs every 24 hours, these savings compound at scale.
+**Why Ed25519?** Ed25519 keys are smaller than P-256 (32-byte private key; 32-byte public key vs. 65 bytes uncompressed for P-256), signatures are 64 bytes (vs. ~72 bytes for P-256 DER), signing and verification are faster, and the curve design eliminates several known side-channel attack surfaces.
 
 **What stays RSA?** The Dapr injector and operator use RSA keys for their webhook serving certificates. Some managed Kubernetes distributions (including certain versions of GKE, EKS, and AKS) reject Ed25519 TLS certificates on admission webhook endpoints. RSA is retained there to ensure the sidecar injector and CRD conversion webhook remain reachable on all target environments. See [dapr/dapr#9873](https://github.com/dapr/dapr/pull/9873) for details.
 
 **JWT signing** remains RSA-2048 for compatibility with cloud provider OIDC implementations, which have broad RSA support but inconsistent Ed25519 support.
 
-**Mixed-version rolling upgrades** are fully supported. Sentry's CA accepts CSRs of any algorithm — Ed25519, RSA, or ECDSA — so a 1.17.x sidecar presenting an ECDSA CSR is signed normally by a 1.18 Sentry during a rolling upgrade.
+**Mixed-version rolling upgrades** are fully supported. Sentry signs workload CSRs from any algorithm client — the signature algorithm on the issued cert is determined by Sentry's issuer key, not the CSR. A 1.17.x sidecar submitting an ECDSA CSR receives an Ed25519-signed workload cert from a 1.18 Sentry during a rolling upgrade.
 
 {{% alert title="FIPS / regulated environments" color="warning" %}}
-Ed25519 (Curve25519) is **not** on the NIST FIPS 140 approved-algorithm list. If your environment requires FIPS 140 compliance, you must supply your own root and issuer certificates generated with an approved algorithm (RSA or ECDSA P-256/P-384) using the [bring-your-own-certificates]({{% ref "mtls#bringing-your-own-certificates" %}}) path. When you bring your own CA, Sentry signs workload CSRs using the algorithm of the issuer key you provide, not Ed25519.
+Ed25519 (Curve25519) may not satisfy FIPS 140 requirements; consult your compliance scope. FIPS 140-2 does not include Ed25519. FIPS 140-3 has provisional EdDSA support but approval status varies by module and jurisdiction. If your environment requires FIPS 140 compliance, supply your own root and issuer certificates generated with an approved algorithm (RSA or ECDSA P-256/P-384) using the [bring-your-own-certificates]({{% ref "mtls#bringing-your-own-certificates" %}}) path. When you bring your own CA, Sentry signs workload CSRs using the algorithm of the issuer key you provide, not Ed25519.
 {{% /alert %}}
 
 {{% alert title="Downgrade floor: 1.17.7" color="warning" %}}

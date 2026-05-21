@@ -14,7 +14,7 @@ For detailed information on mTLS, read the [security concepts section]({{% ref "
 
 ## Workload identity key algorithm (Ed25519, Dapr 1.18+) {#workload-identity-key-algorithm}
 
-Starting with Dapr **1.18**, Sentry generates all workload identity keys using **Ed25519** instead of ECDSA P-256. On a normal install or upgrade this is transparent — no configuration change is needed.
+Starting with Dapr **1.18**, Sentry generates workload identity keys using **Ed25519** instead of ECDSA P-256. On a normal install or upgrade this is transparent — no configuration change is needed.
 
 For a full explanation of what changed, why, and the compatibility matrix (including FIPS requirements and the 1.17.7 downgrade floor), see [Workload identity key algorithm]({{% ref "security-concept.md#workload-identity-key-algorithm" %}}) in the security concepts page.
 
@@ -139,7 +139,9 @@ basicConstraints = critical, CA:true, pathlen:0
 
 Run the following to generate the root cert and key
 
-> **Note (Dapr 1.18+):** The example below generates an ECDSA P-256 key. RSA keys (`openssl genrsa`) are also accepted. When you supply your own CA, Sentry signs workload CSRs using the algorithm of the issuer key you provide. Choose whichever algorithm your security policy requires; ECDSA P-256 and RSA are the recommended choices for FIPS-compliant environments.
+{{% alert title="Dapr 1.18+" color="primary" %}}
+The example below generates an ECDSA P-256 key. RSA keys (`openssl genrsa`) are also accepted. When you supply your own CA, Sentry signs workload CSRs using the algorithm of the issuer key you provide. ECDSA P-256 and RSA are the recommended choices for FIPS-compliant environments.
+{{% /alert %}}
 
 ```bash
 # skip the following line to reuse an existing root key, required for rotating expiring certificates
