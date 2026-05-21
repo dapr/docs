@@ -71,7 +71,34 @@ Unless you've provided existing root certificates, the Sentry service automatica
 
 When root certificates are replaced (secret in Kubernetes mode and filesystem for self-hosted mode), Sentry picks them up and rebuilds the trust chain, without restart and with zero downtime to Sentry.
 
-When a new Dapr sidecar initializes, it checks if mTLS is enabled. If so, an ECDSA private key and certificate signing request are generated and sent to Sentry via a gRPC interface. The communication between the Dapr sidecar and Sentry is authenticated using the trust chain certificate, which is injected into each Dapr instance by the Dapr Sidecar Injector system service.
+When a new Dapr sidecar initializes, it checks if mTLS is enabled. If so, a private key and certificate signing request are generated and sent to Sentry via a gRPC interface. The communication between the Dapr sidecar and Sentry is authenticated using the trust chain certificate, which is injected into each Dapr instance by the Dapr Sidecar Injector system service.
+
+### Workload identity key algorithm
+
+Starting with Dapr **1.18**, Sentry generates workload identity keys using **Ed25519** instead of ECDSA P-256.
+
+| Scope | Algorithm (pre-1.18) | Algorithm (1.18+) |
+|---|---|---|
+| Root CA and issuer CA keys | ECDSA P-256 (`ECDSAWithSHA256`) | Ed25519 (`PureEd25519`) |
+| Workload (sidecar) X.509 certificates | ECDSA P-256 | Ed25519 |
+| Injector / Operator webhook serving certs | ECDSA P-256 | **RSA** (intentional — see below) |
+| JWT / OIDC signing | RSA-2048 | RSA-2048 (unchanged) |
+
+**Why Ed25519?** Ed25519 keys are 32 bytes (vs. 32-byte EC point + 32-byte scalar for P-256), signatures are 64 bytes (vs. ~72 bytes for P-256 DER), signing and verification are faster, and the curve design eliminates several known side-channel attack surfaces. For a workload identity system that signs a certificate on every sidecar start and re-signs every 24 hours, these savings compound at scale.
+
+**What stays RSA?** The Dapr injector and operator use RSA keys for their webhook serving certificates. Some managed Kubernetes distributions (including certain versions of GKE, EKS, and AKS) reject Ed25519 TLS certificates on admission webhook endpoints. RSA is retained there to ensure the sidecar injector and CRD conversion webhook remain reachable on all target environments. See [dapr/dapr#9873](https://github.com/dapr/dapr/pull/9873) for details.
+
+**JWT signing** remains RSA-2048 for compatibility with cloud provider OIDC implementations, which have broad RSA support but inconsistent Ed25519 support.
+
+**Mixed-version rolling upgrades** are fully supported. Sentry's CA accepts CSRs of any algorithm — Ed25519, RSA, or ECDSA — so a 1.17.x sidecar presenting an ECDSA CSR is signed normally by a 1.18 Sentry during a rolling upgrade.
+
+{{% alert title="FIPS / regulated environments" color="warning" %}}
+Ed25519 (Curve25519) is **not** on the NIST FIPS 140 approved-algorithm list. If your environment requires FIPS 140 compliance, you must supply your own root and issuer certificates generated with an approved algorithm (RSA or ECDSA P-256/P-384) using the [bring-your-own-certificates]({{% ref "mtls#bringing-your-own-certificates" %}}) path. When you bring your own CA, Sentry signs workload CSRs using the algorithm of the issuer key you provide, not Ed25519.
+{{% /alert %}}
+
+{{% alert title="Downgrade floor: 1.17.7" color="warning" %}}
+Sentry writes the Ed25519-keyed CA bundle to the `dapr-trust-bundle` Kubernetes secret. Sentry versions **before 1.17.7** cannot parse this bundle and crash on startup. Do not roll back from 1.18 to a version earlier than 1.17.7 without first rotating the CA. See the [1.18 release notes](https://github.com/dapr/dapr/releases/tag/v1.18.0) for the safe rollback path.
+{{% /alert %}}
 
 ### Configuring mTLS
 
