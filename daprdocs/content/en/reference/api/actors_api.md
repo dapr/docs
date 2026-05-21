@@ -778,8 +778,8 @@ Messages sent **from the app to daprd**. The first message must be `initial_requ
 |-------|------|----------|-------------|
 | `entities` | `[]string` | Yes | Actor types hosted by this app. |
 | `actor_idle_timeout` | `Duration` | No | Idle timeout before deactivation. Unset = Dapr default (60 min). |
-| `drain_ongoing_call_timeout` | `Duration` | No | How long to wait for in-flight calls during rebalancing. Unset = Dapr default (60 s). |
-| `drain_rebalanced_actors` | `bool` | No | Drain in-flight calls before deactivating rebalanced actors. Unset = `true`. |
+| `drain_ongoing_call_timeout` | `Duration` | No | How long to wait for in-flight calls during rebalancing. Unset = Dapr default. |
+| `drain_rebalanced_actors` | `bool` | No | Drain in-flight calls before deactivating rebalanced actors. Unset = Dapr default. |
 | `reentrancy` | `ActorReentrancyConfig` | No | Reentrancy configuration for all actor types on this stream. |
 | `entities_config` | `[]ActorEntityConfig` | No | Per-actor-type overrides. Each entry must reference a type listed in `entities`. |
 

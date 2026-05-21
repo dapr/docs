@@ -7,12 +7,10 @@ description: "Open a gRPC stream from your app to daprd to receive actor callbac
 ---
 
 {{% alert title="Alpha" color="warning" %}}
-The `SubscribeActorEventsAlpha1` API is in **alpha**. The API shape may change in a future release.
+`SubscribeActorEventsAlpha1` is in alpha. The API shape may change in a future release.
 {{% /alert %}}
 
-This guide shows how to use the `SubscribeActorEventsAlpha1` gRPC stream so your actor host application receives all four callback types — method invocations, reminders, timers, and deactivations — over a single app-initiated connection to the Dapr sidecar.
-
-Read the [concept doc]({{% ref "actors-app-initiated-streams" %}}) first to understand the protocol and when to use this approach.
+This guide shows how to implement `SubscribeActorEventsAlpha1` in Go using the generated gRPC client. Read the [concept doc]({{% ref "actors-app-initiated-streams" %}}) first for protocol details and when to prefer this approach over traditional callbacks.
 
 ## Prerequisites
 
@@ -62,6 +60,7 @@ import (
     "google.golang.org/grpc/credentials/insecure"
 
     runtimev1pb "github.com/dapr/dapr/pkg/proto/runtime/v1"
+    anypb "google.golang.org/protobuf/types/known/anypb"
     durationpb "google.golang.org/protobuf/types/known/durationpb"
 )
 
@@ -223,9 +222,9 @@ func handleCallbacks(stream runtimev1pb.Dapr_SubscribeActorEventsAlpha1Client) {
 
 // Stubs — replace with your actor logic.
 func dispatchMethod(actorType, actorID, method string, data []byte) ([]byte, error) { return nil, nil }
-func handleReminder(actorType, actorID, name string, data interface{}) bool         { return false }
-func handleTimer(actorType, actorID, name string, data interface{}) bool            { return false }
-func releaseActorState(actorType, actorID string)                                    {}
+func handleReminder(actorType, actorID, name string, data *anypb.Any) bool         { return false }
+func handleTimer(actorType, actorID, name string, data *anypb.Any) bool            { return false }
+func releaseActorState(actorType, actorID string)                                   {}
 ```
 
 {{% /tab %}}
@@ -260,8 +259,8 @@ The stream is a long-lived connection. If daprd restarts or the network is inter
 
 ```go
 import (
-    "time"
     "math/rand"
+    "time"
 )
 
 func runWithReconnect(ctx context.Context, client runtimev1pb.DaprClient) {
@@ -277,21 +276,16 @@ func runWithReconnect(ctx context.Context, client runtimev1pb.DaprClient) {
             backoff = min(backoff*2, 30*time.Second)
             continue
         }
-        backoff = 1 * time.Second  // reset on success
+        backoff = 1 * time.Second // reset on success
 
         if err := sendInitialRequest(stream); err != nil {
             continue
         }
-        if _, err := stream.Recv(); err != nil {  // wait for initial ack
+        if _, err := stream.Recv(); err != nil { // wait for initial ack
             continue
         }
-        handleCallbacks(stream)  // blocks until stream closes
+        handleCallbacks(stream) // blocks until stream closes
     }
-}
-
-func min(a, b time.Duration) time.Duration {
-    if a < b { return a }
-    return b
 }
 ```
 
@@ -302,9 +296,9 @@ The initial registration message can include the following optional fields to ov
 | Field | Type | Description |
 |-------|------|-------------|
 | `entities` | `[]string` | **Required.** Actor types this app hosts. |
-| `actor_idle_timeout` | `Duration` | Deactivate an actor after this idle period. Default: 60 minutes. |
-| `drain_ongoing_call_timeout` | `Duration` | How long to wait for in-flight calls during rebalancing. Default: 60 seconds. |
-| `drain_rebalanced_actors` | `bool` | If true, wait for drain before deactivating rebalanced actors. Default: true. |
+| `actor_idle_timeout` | `Duration` | Deactivate an actor after this idle period. Unset = Dapr default (60 minutes). |
+| `drain_ongoing_call_timeout` | `Duration` | How long to wait for in-flight calls during rebalancing. Unset = Dapr default. |
+| `drain_rebalanced_actors` | `bool` | If true, wait for drain before deactivating rebalanced actors. Unset = Dapr default. |
 | `reentrancy` | `ActorReentrancyConfig` | Enable actor reentrancy and set max stack depth. Default: disabled. |
 | `entities_config` | `[]ActorEntityConfig` | Per-actor-type overrides for any of the fields above. |
 
@@ -312,12 +306,7 @@ See [actor runtime configuration]({{% ref "actors-runtime-config" %}}) for a des
 
 ## Coexistence with traditional callbacks
 
-The app-initiated stream and traditional HTTP/gRPC actor callbacks are not mutually exclusive. During a migration you can run both:
-
-- Pods that have opened `SubscribeActorEventsAlpha1` receive callbacks via the stream.
-- Pods that have not opened the stream continue to receive callbacks via the traditional inbound endpoints.
-
-Migrate all pods before removing the inbound ports and NetworkPolicy rules.
+The app-initiated stream and traditional HTTP/gRPC callbacks are not mutually exclusive. Pods that have opened `SubscribeActorEventsAlpha1` receive callbacks via the stream; pods that have not opened the stream continue to use traditional inbound endpoints. Migrate all pods before removing inbound ports and NetworkPolicy rules.
 
 ## Related links
 
