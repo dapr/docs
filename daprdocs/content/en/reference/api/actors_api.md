@@ -741,6 +741,136 @@ Example of getting a health check response from the app:
 curl -X GET http://localhost:3000/healthz \
 ```
 
+## SubscribeActorEventsAlpha1 (gRPC)
+
+{{% alert title="Alpha" color="warning" %}}
+`SubscribeActorEventsAlpha1` is in **alpha**. The API shape may change in future releases.
+{{% /alert %}}
+
+`SubscribeActorEventsAlpha1` is a bidirectional gRPC streaming RPC on the **Dapr service** (`dapr.proto.runtime.v1.Dapr`). The application is the gRPC _client_: it dials daprd, opens the stream, and receives all actor callbacks — method invocations, reminders, timers, and deactivations — over that single connection. Apps using this RPC do not need to expose an HTTP or gRPC server port.
+
+See the [actor app-initiated streams concept doc]({{% ref "actors-app-initiated-streams" %}}) and [how-to guide]({{% ref "howto-actors-app-initiated-streams" %}}) for usage guidance and code examples.
+
+### gRPC service definition
+
+```protobuf
+// On the Dapr service (app dials daprd):
+rpc SubscribeActorEventsAlpha1(stream SubscribeActorEventsRequestAlpha1)
+    returns (stream SubscribeActorEventsResponseAlpha1) {}
+```
+
+### App → Dapr: SubscribeActorEventsRequestAlpha1
+
+Messages sent **from the app to daprd**. The first message must be `initial_request`; all subsequent messages must be responses correlated by `id`.
+
+| Field (oneof `request_type`) | When to send |
+|---|---|
+| `initial_request` (`SubscribeActorEventsRequestInitialAlpha1`) | **First message only.** Registers actor types and runtime config. |
+| `invoke_response` (`SubscribeActorEventsRequestInvokeResponseAlpha1`) | Response to an `invoke_request` callback. |
+| `reminder_response` (`SubscribeActorEventsRequestReminderResponseAlpha1`) | Response to a `reminder_request` callback. |
+| `timer_response` (`SubscribeActorEventsRequestReminderResponseAlpha1`) | Response to a `timer_request` callback. |
+| `deactivate_response` (`SubscribeActorEventsRequestDeactivateResponseAlpha1`) | Response to a `deactivate_request` callback. |
+| `request_failed` (`SubscribeActorEventsRequestFailedAlpha1`) | Sent instead of any typed response when the app cannot handle the callback. |
+
+#### SubscribeActorEventsRequestInitialAlpha1
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `entities` | `[]string` | Yes | Actor types hosted by this app. |
+| `actor_idle_timeout` | `Duration` | No | Idle timeout before deactivation. Unset = Dapr default (60 min). |
+| `drain_ongoing_call_timeout` | `Duration` | No | How long to wait for in-flight calls during rebalancing. Unset = Dapr default (60 s). |
+| `drain_rebalanced_actors` | `bool` | No | Drain in-flight calls before deactivating rebalanced actors. Unset = `true`. |
+| `reentrancy` | `ActorReentrancyConfig` | No | Reentrancy configuration for all actor types on this stream. |
+| `entities_config` | `[]ActorEntityConfig` | No | Per-actor-type overrides. Each entry must reference a type listed in `entities`. |
+
+#### SubscribeActorEventsRequestInvokeResponseAlpha1
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `string` | Correlation ID from the originating `invoke_request`. |
+| `data` | `bytes` | Response payload. |
+| `metadata` | `map<string,string>` | Response-level headers, including `content-type`. |
+| `error` | `bool` | When `true`, `data` is an application-defined error payload passed verbatim to the caller. |
+
+#### SubscribeActorEventsRequestReminderResponseAlpha1
+
+Used for both `reminder_response` and `timer_response`.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `string` | Correlation ID from the originating reminder or timer request. |
+| `cancel` | `bool` | When `true`, instructs Dapr to cancel the reminder or timer after this firing. |
+
+#### SubscribeActorEventsRequestDeactivateResponseAlpha1
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `string` | Correlation ID from the originating `deactivate_request`. |
+
+#### SubscribeActorEventsRequestFailedAlpha1
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `string` | Correlation ID from the originating request. |
+| `code` | `uint32` | gRPC status code. `codes.NotFound` (5) signals a permanent, non-retryable failure. |
+| `message` | `string` | Human-readable error description. |
+
+### Dapr → App: SubscribeActorEventsResponseAlpha1
+
+Messages sent **from daprd to the app**. The first message is `initial_response`; all subsequent messages are callback requests.
+
+| Field (oneof `response_type`) | Description |
+|---|---|
+| `initial_response` (`SubscribeActorEventsResponseInitialAlpha1`) | Empty ack confirming successful registration. Errors surface as a gRPC stream error. |
+| `invoke_request` (`SubscribeActorEventsResponseInvokeRequestAlpha1`) | Actor method invocation. |
+| `reminder_request` (`SubscribeActorEventsResponseReminderRequestAlpha1`) | Actor reminder fired. |
+| `timer_request` (`SubscribeActorEventsResponseTimerRequestAlpha1`) | Actor timer fired. |
+| `deactivate_request` (`SubscribeActorEventsResponseDeactivateRequestAlpha1`) | Actor instance being deactivated. |
+
+#### SubscribeActorEventsResponseInvokeRequestAlpha1
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `string` | Unique correlation ID. Echo on `invoke_response`. |
+| `actor_type` | `string` | Actor type. |
+| `actor_id` | `string` | Actor ID. |
+| `method` | `string` | Method name to invoke. |
+| `data` | `bytes` | Request payload. |
+| `metadata` | `map<string,string>` | Request-level headers including `content-type` and `Dapr-Reentrancy-Id` (when reentrancy is enabled). |
+
+#### SubscribeActorEventsResponseReminderRequestAlpha1
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `string` | Unique correlation ID. Echo on `reminder_response`. |
+| `actor_type` | `string` | Actor type. |
+| `actor_id` | `string` | Actor ID. |
+| `name` | `string` | Reminder name. |
+| `due_time` | `string` | Reminder due time (time.ParseDuration format). |
+| `period` | `string` | Reminder period (time.ParseDuration format). |
+| `data` | `google.protobuf.Any` | Reminder data payload. |
+
+#### SubscribeActorEventsResponseTimerRequestAlpha1
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `string` | Unique correlation ID. Echo on `timer_response`. |
+| `actor_type` | `string` | Actor type. |
+| `actor_id` | `string` | Actor ID. |
+| `name` | `string` | Timer name. |
+| `due_time` | `string` | Timer due time. |
+| `period` | `string` | Timer period. |
+| `callback` | `string` | Callback method name registered with the timer. |
+| `data` | `google.protobuf.Any` | Timer data payload. |
+
+#### SubscribeActorEventsResponseDeactivateRequestAlpha1
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `string` | Unique correlation ID. Echo on `deactivate_response`. |
+| `actor_type` | `string` | Actor type. |
+| `actor_id` | `string` | Actor ID. |
+
 ## Activating an Actor
 
 Conceptually, activating an actor means creating the actor's object and adding the actor to a tracking table. [Review an example from the .NET SDK](https://github.com/dapr/dotnet-sdk/blob/6c271262231c41b21f3ca866eb0d55f7ce8b7dbc/src/Dapr.Actors/Runtime/ActorManager.cs#L199).
