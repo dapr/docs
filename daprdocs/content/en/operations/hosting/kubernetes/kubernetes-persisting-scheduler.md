@@ -136,9 +136,11 @@ In case your Kubernetes deployment does not have a default storage class or you 
 
 A persistent volume is backed by a real disk that is provided by the hosted Cloud Provider or Kubernetes infrastructure platform.
 Disk size is determined by how many jobs are expected to be persisted at once; however, 64Gb should be more than sufficient for most production scenarios.
-For production, use a premium SSD-backed storage class (or equivalent) to provide predictable Etcd IOPS and low latency.
-Also prefer storage classes that support multi-zone failover (for example, regional or zone-redundant persistent disks where available) so Scheduler PVCs are not locked to a single availability zone.
-Zone-locked PVCs can block Scheduler recovery during cluster upgrades or zonal disruption until the original zone becomes available again.
+
+For production, use a premium SSD-backed storage class to give Etcd the IOPS and latency profile it requires. On lower-tier storage classes the Scheduler's embedded Etcd can log slow-disk heartbeat warnings (`leader failed to send out heartbeat on time; took too long, leader is overloaded likely from slow disk`). 
+
+Where supported, also prefer storage classes that support multi-zone failover (for example, zone-redundant or regional persistent disks) so Scheduler PVCs are not locked to a single availability zone. Zone-locked PVCs can block Scheduler recovery during cluster upgrades or zonal disruption until the original zone becomes available again.
+
 Some Kubernetes providers recommend using a [CSI driver](https://kubernetes.io/docs/concepts/storage/volumes/#csi) to provision the underlying disks.
 Below are a list of useful links to the relevant documentation for creating a persistent disk for the major cloud providers:
 - [Google Cloud Persistent Disk](https://cloud.google.com/compute/docs/disks)
