@@ -17,6 +17,7 @@ For more information on how workflow state is managed, see the [workflow archite
 Dapr Workflows are functions you write that define a series of tasks to be executed in a particular order.
 The Dapr Workflow engine takes care of scheduling and execution of the tasks, including managing failures and retries.
 If the app hosting your workflows is scaled out across multiple machines, the workflow engine load balances the execution of workflows and their tasks across multiple machines.
+You can [configure concurrency limits]({{% ref "workflow-concurrency.md" %}}) to control how many workflows and activities run simultaneously, either per-sidecar or globally across all replicas.
 
 There are several different kinds of tasks that a workflow can schedule, including
 - [Activities]({{% ref "workflow-features-concepts.md#workflow-activities" %}}) for executing custom logic
