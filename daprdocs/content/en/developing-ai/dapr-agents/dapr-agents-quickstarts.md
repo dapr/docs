@@ -24,12 +24,13 @@ The [Dapr Agents Fundamentals quickstart](https://github.com/dapr/dapr-agents/tr
 | Step | File | What You'll Learn |
 |------|------|-------------------|
 | 1 | [`01_llm_client.py`](https://github.com/dapr/dapr-agents/blob/main/quickstarts/01_llm_client.py) | Call an LLM via the Dapr Conversation API using `DaprChatClient` |
-| 2 | [`02_durable_agent_http.py`](https://github.com/dapr/dapr-agents/blob/main/quickstarts/02_durable_agent_http.py) | Run a durable agent backed by Dapr Workflows, exposed over HTTP |
-| 3 | [`03_durable_agent_pubsub.py`](https://github.com/dapr/dapr-agents/blob/main/quickstarts/03_durable_agent_pubsub.py) | Trigger a durable agent via pub/sub instead of HTTP |
-| 4 | [`04_workflow_llm.py`](https://github.com/dapr/dapr-agents/blob/main/quickstarts/04_workflow_llm.py) | Build a deterministic Dapr Workflow that calls LLMs as activities |
-| 5 | [`05_workflow_agents.py`](https://github.com/dapr/dapr-agents/blob/main/quickstarts/05_workflow_agents.py) | Orchestrate multiple specialized agents as child workflows |
-| 6 | [`06_durable_agent_tracing.py`](https://github.com/dapr/dapr-agents/blob/main/quickstarts/06_durable_agent_tracing.py) | Enable distributed tracing for agents and workflows with Zipkin |
-| 7 | [`07_durable_agent_hot_reload.py`](https://github.com/dapr/dapr-agents/blob/main/quickstarts/07_durable_agent_hot_reload.py) | Hot-reload agent configuration at runtime via Dapr Configuration Store |
+| 2 | [`02_durable_agent_workflow.py`](https://github.com/dapr/dapr-agents/blob/main/quickstarts/02_durable_agent_workflow.py) | Run a durable agent triggered programmatically via the Dapr Workflow API, using `trigger_agent` from client code or `call_agent` from within another orchestrator |
+| 3 | [`03_durable_agent_http.py`](https://github.com/dapr/dapr-agents/blob/main/quickstarts/03_durable_agent_http.py) | Run a durable agent backed by Dapr Workflows, exposed over HTTP |
+| 4 | [`04_durable_agent_pubsub.py`](https://github.com/dapr/dapr-agents/blob/main/quickstarts/04_durable_agent_pubsub.py) | Trigger a durable agent via pub/sub instead of HTTP |
+| 5 | [`05_workflow_llm.py`](https://github.com/dapr/dapr-agents/blob/main/quickstarts/05_workflow_llm.py) | Build a deterministic Dapr Workflow that calls LLMs as activities |
+| 6 | [`06_workflow_agents.py`](https://github.com/dapr/dapr-agents/blob/main/quickstarts/06_workflow_agents.py) | Orchestrate multiple specialized agents as child workflows |
+| 7 | [`07_durable_agent_tracing.py`](https://github.com/dapr/dapr-agents/blob/main/quickstarts/07_durable_agent_tracing.py) | Enable distributed tracing for agents and workflows with Zipkin |
+| 8 | [`08_durable_agent_hot_reload.py`](https://github.com/dapr/dapr-agents/blob/main/quickstarts/08_durable_agent_hot_reload.py) | Hot-reload agent configuration at runtime via Dapr Configuration Store |
 
 See the [quickstarts README](https://github.com/dapr/dapr-agents/tree/main/quickstarts#readme) for full setup instructions including LLM configuration and prerequisites.
 
