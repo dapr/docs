@@ -13,10 +13,21 @@ You can modify the default Dapr actor runtime behavior using the following confi
 | `entities` | The actor types supported by this host. | N/A |
 | `actorIdleTimeout` | The timeout before deactivating an idle actor. Checks for timeouts occur every `actorScanInterval` interval. | 60 minutes |
 | `actorScanInterval` | The duration which specifies how often to scan for actors to deactivate idle actors. Actors that have been idle longer than actor_idle_timeout will be deactivated. | 30 seconds |
-| `drainOngoingCallTimeout` | The duration when in the process of draining rebalanced actors. This specifies the timeout for the current active actor method to finish. If there is no current actor method call, this is ignored. | 60 seconds |
+| `drainOngoingCallTimeout` | The duration when in the process of draining rebalanced actors. This specifies the timeout for the current active actor method to finish. If there is no current actor method call, this is ignored. The effective value is clamped against the placement dissemination budget (see [Drain timeout clamping](#drain-timeout-clamping)). | 60 seconds |
 | `drainRebalancedActors` | If true, Dapr will wait for `drainOngoingCallTimeout` duration to allow a current actor call to complete before trying to deactivate an actor. | true |
 | `reentrancy` (`ActorReentrancyConfig`) | Configure the reentrancy behavior for an actor. If not provided, reentrancy is disabled. | disabled, false |
-| `entitiesConfig` | Configure each actor type individually with an array of configurations. Any entity specified in the individual entity configurations must also be specified in the top level `entities` field. | N/A |
+| `entitiesConfig` | Configure each actor type individually with an array of configurations. Any entity specified in the individual entity configurations must also be specified in the top level `entities` field. Per-entity `drainOngoingCallTimeout` values are honored and subject to the same clamping rule as the top-level value. | N/A |
+
+## Drain timeout clamping
+
+When a daprd host is being drained (for example during a rolling upgrade), the LOCK -> UPDATE -> UNLOCK round on placement holds the host out of the dissemination loop for the configured `drainOngoingCallTimeout`. If that timeout meets or exceeds the daprd-side placement dissemination timeout (default 30 seconds), placement gives up on the host and resets the stream, which produces noisy reconnects and reschedules. A common case is an SDK that hard-codes a 60-second drain default against the 30-second dissemination default.
+
+Starting in Dapr v1.18, daprd clamps the effective drain timeout:
+
+- If the configured `drainOngoingCallTimeout` is less than the placement dissemination timeout, the configured value is used verbatim.
+- If it is greater than or equal to the dissemination timeout, daprd logs a warning and reduces the effective value to **80%** of the dissemination timeout, with a floor of the runtime's `DefaultOngoingCallTimeout`. The 80% ratio is applied so the proportion stays stable across small and large dissemination timeouts.
+
+The clamp is applied at both registration sites: the global `drainOngoingCallTimeout` and any per-actor-type `drainOngoingCallTimeout` set under `entitiesConfig`. The configuration values your app reports to daprd via the actor config endpoint are unchanged; only the effective in-process value used during drain is clamped. If you see the warning in daprd logs, lower the configured value so that it is comfortably below the placement dissemination timeout, or raise the placement dissemination timeout on the control plane.
 
 ## Examples
 
