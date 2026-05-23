@@ -76,6 +76,7 @@ The following menu includes all of the configuration settings you can set:
 - [Disallow usage of certain component types](#disallow-usage-of-certain-component-types)
 - [Turning on preview features](#turning-on-preview-features)
 - [Example sidecar configuration](#example-sidecar-configuration)
+- [Reloading configuration with SIGHUP](#reloading-configuration-with-sighup)
 
 #### Tracing
 
@@ -88,6 +89,12 @@ tracing:
   samplingRate: "1"
   otel: 
     endpointAddress: "otelcollector.observability.svc.cluster.local:4317"
+    headers:
+      - name: "x-api-key"
+        secretKeyRef:
+          name: "my-secret"
+          key: "otel-api-key"
+    timeout: "30s"
   zipkin:
     endpointAddress: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
 ```
@@ -101,6 +108,8 @@ The following table lists the properties for tracing:
 | `otel.endpointAddress` | string | Set the Open Telemetry (OTEL) server address to send traces to. This may or may not require the https:// or http:// depending on your OTEL provider.
 | `otel.isSecure` | bool | Is the connection to the endpoint address encrypted
 | `otel.protocol` | string | Set to `http` or `grpc` protocol
+| `otel.headers` | array | Headers to include in OTLP exporter requests. Each entry has a `name` and either a plaintext `value` or a `secretKeyRef` to reference a Kubernetes secret (only Kubernetes secrets are supported, no other secret type)
+| `otel.timeout` | string | Timeout for OTLP exporter requests (for example `30s`, `5m`).
 | `zipkin.endpointAddress` | string | Set the Zipkin server address to send traces to. This should include the protocol (http:// or https://) on the endpoint.
 
 ##### `samplingRate`
@@ -121,6 +130,8 @@ turns on tracing for the sidecar.
 | `OTEL_EXPORTER_OTLP_ENDPOINT` | Sets the Open Telemetry (OTEL) server address, turns on tracing |
 | `OTEL_EXPORTER_OTLP_INSECURE` | Sets the connection to the endpoint as unencrypted (true/false) |
 | `OTEL_EXPORTER_OTLP_PROTOCOL` | Transport protocol (`grpc`, `http/protobuf`, `http/json`) |
+| `OTEL_EXPORTER_OTLP_TRACES_HEADERS` | Comma-separated list of `key=value` headers for the OTLP traces exporter |
+| `OTEL_EXPORTER_OTLP_TRACES_TIMEOUT` | Timeout in milliseconds for the OTLP traces exporter (for example `30000`) |
 
 See [Observability distributed tracing]({{% ref "tracing-overview.md" %}}) for more information.
 
@@ -258,12 +269,16 @@ For more information, see:
 
 #### Workflow
 
-The `workflow` section contains properties for configuring [Workflows]({{% ref "workflow-overview.md" %}}).
+The `workflow` section contains properties for configuring [Workflows]({{% ref "workflow-overview.md" %}}). See [Workflow Concurrency Limits]({{% ref "workflow-concurrency.md" %}}) for detailed guidance on how these settings interact.
 
 | Property | Type   | Description |
 |------------------|--------|-----|
-| `maxConcurrentWorkflowInvocations` | int32 | Maximum number of concurrent workflow executions per Dapr sidecar. Default is infinite. |
-| `maxConcurrentActivityInvocations` | int32 | Maximum number of concurrent activity executions per Dapr sidecar. Default is infinite. |
+| `maxConcurrentWorkflowInvocations` | int32 | Maximum concurrent workflow executions per Dapr sidecar. Default is unlimited. |
+| `maxConcurrentActivityInvocations` | int32 | Maximum concurrent activity executions per Dapr sidecar. Default is unlimited. |
+| `globalMaxConcurrentWorkflowInvocations` | int32 | Maximum concurrent workflow executions across all replicas, enforced by the scheduler. Default is unlimited. |
+| `globalMaxConcurrentActivityInvocations` | int32 | Maximum concurrent activity executions across all replicas, enforced by the scheduler. Default is unlimited. |
+| `workflowConcurrencyLimits` | array | Per-workflow-name concurrency limits across all replicas. Each entry has `name` (string) and `maxConcurrent` (int32). |
+| `activityConcurrencyLimits` | array | Per-activity-name concurrency limits across all replicas. Each entry has `name` (string) and `maxConcurrent` (int32). |
 
 #### Scope secret store access
 
@@ -331,6 +346,12 @@ spec:
       endpointAddress: "localhost:4317"
       isSecure: false
       protocol: "grpc"
+      headers:
+        - name: "x-api-key"
+          secretKeyRef:
+            name: "my-secret"
+            key: "otel-api-key"
+      timeout: "30s"
   httpPipeline:
     handlers:
       - name: oauth2
@@ -364,9 +385,31 @@ spec:
             action: allow
 ```
 
+#### Reloading configuration with SIGHUP
+
+On POSIX-compatible systems (Linux, macOS), you can reload the Dapr sidecar configuration without fully restarting the process by sending a `SIGHUP` signal to `daprd`. When `daprd` receives a `SIGHUP`, it gracefully shuts down the internal runtime and re-initializes it in-process using the current configuration file. This allows you to apply changes to configuration settings such as [tracing](#tracing), [metrics](#metrics), and [logging](#logging) without a full process restart.
+
+To send a `SIGHUP` signal:
+
+```bash
+# Using the kill command
+kill -SIGHUP <daprd-pid>
+
+# Or using pkill
+pkill -HUP daprd
+```
+
+{{% alert title="Note" color="primary" %}}
+During a SIGHUP reload, the Dapr sidecar is briefly unavailable while the runtime reinitializes. The sidecar will continue to handle graceful shutdown of existing connections before reloading.
+{{% /alert %}}
+
+{{% alert title="Note" color="primary" %}}
+SIGHUP-based reloading is only available on POSIX-compatible systems (Linux, macOS). On Windows, a full restart of `daprd` is required to pick up configuration changes.
+{{% /alert %}}
+
 ## Control plane configuration
 
-A single configuration file called `daprsystem` is installed with the Dapr control plane system services that applies global settings. 
+A single configuration file called `daprsystem` is installed with the Dapr control plane system services that applies global settings.
 
 > **This is only set up when Dapr is deployed to Kubernetes.**
 
@@ -405,6 +448,12 @@ spec:
     allowedClockSkew: 15m
     workloadCertTTL: 24h
 ```
+
+## Hot Reloading
+
+When the [`HotReload` feature gate]({{% ref "support-preview-features" %}}) is enabled, changes to Configuration resources are automatically detected and trigger a graceful restart of the Dapr sidecar (via SIGHUP) to apply the new configuration. Unchanged Configuration resources are silently ignored. SIGHUP is not supported on Windows.
+
+See [Updating resources]({{% ref "component-updates.md" %}}) for more information.
 
 ## Next steps
 

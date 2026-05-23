@@ -17,7 +17,13 @@ Dapr offers a variety of packages to help with the development of .NET applicati
 ## Prerequisites
 - [Dapr CLI]({{< ref install-dapr-cli.md >}}) installed
 - Initialized [Dapr environment]({{< ref install-dapr-selfhost.md >}})
-- [.NET 8](https://dotnet.microsoft.com/download) or [.NET 9](https://dotnet.microsoft.com/download) installed
+- [.NET 8](https://dotnet.microsoft.com/download), [.NET 9](https://dotnet.microsoft.com/download), or
+  [.NET 10](https://dotnet.microsoft.com/download) installed
+
+{{% alert title="Note" color="primary" %}}
+The Dapr .NET SDK supports .NET 8, .NET 9, and .NET 10. .NET 8 and .NET 9 will remain supported until the first Dapr
+release after their end of life in November 2026, after which we expect to support .NET 10 and .NET 11 instead.
+{{% /alert %}}
 
 ## Installation
 
@@ -58,7 +64,9 @@ Put the Dapr .NET SDK to the test. Walk through the .NET quickstarts and tutoria
 | [Dapr.PluggableComponents.AspNetCore](https://www.nuget.org/packages/Dapr.PluggableComponents.AspNetCore) |                                                               | Implement pluggable components with Dapr using .NET with rich ASP.NET Core support.                                                                 |
 | [Dapr.PluggableComponents.Protos](https://www.nuget.org/packages/Dapr.PluggableComponents.Protos)         |                                                               | **Note:** Developers needn't install this package directly in their applications.                                                                   |
 | [Dapr.Messaging](https://www.nuget.org/packages/Dapr.Messaging)                                           | [Documentation]({{% ref dotnet-messaging %}})                 | Build distributed applications using the Dapr Messaging SDK that utilize messaging components like streaming pub/sub subscriptions.                 |
+| [Dapr.Testcontainers](https://www.nuget.org/packages/Dapr.Testcontainers)                                 | [Documentation]({{% ref dotnet-guidance-testcontainers.md %}}) | Run Dapr integration tests using Testcontainers-based harnesses.                                                                                    |
 | [Dapr.Workflow](https://www.nuget.org/packages/Dapr.Workflow)                                             | [Documentation]({{% ref dotnet-workflow %}})                  | Create and manage workflows that work with other Dapr APIs.                                                                                         |
+| [Dapr.Workflow.Versioning](https://www.nuget.org/packages/Dapr.Workflow.Versioning)                       | [Documentation]({{% ref dotnet-workflow-versioning.md %}})    | Add workflow versioning strategies for evolving long-running workflows.                                                                              |
 | [Dapr.Workflow.Analyzers](https://www.nuget.org/packages/Dapr.Workflow.Analyzers)                         | [Documentation]({{% ref dotnet-guidance-source-generators %}}) | A collection of Roslyn source generators and analyzers for enabling better practices and preventing common errors when using Dapr Workflows in .NET |
 
 ## More information

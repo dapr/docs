@@ -79,7 +79,6 @@ Application code is completely unaware that these actors exist.
 {{% alert title="Note" color="primary" %}}
 The workflow actor types are only registered after an app has registered a workflow using a Dapr Workflow SDK.
 If an app never registers a workflow, then the internal workflow actors are never registered.
-{{% /alert %}}
 
 ### Workflow actors
 
@@ -155,6 +154,9 @@ However, if the node or the sidecar hosting the associated workflow or activity 
 
 Dapr Workflows use actors internally to drive the execution of workflows.
 Like any actors, these workflow actors store their state in the configured actor state store.
+This is done by specifying a state store component in your Dapr configuration and then referencing that state store in the `actorStateStore` property of the configuration's `actors` section.
+Read the [state API reference]({{% ref state_api %}}) and the [actors API reference]({{% ref actors_api %}}) to learn more about state stores for actors.
+{{% /alert %}}
 Any state store that supports actors implicitly supports Dapr Workflow.
 
 As discussed in the [workflow actors]({{% ref "workflow-architecture.md#workflow-actors" %}}) section, workflows save their state incrementally by appending to a history log.
@@ -189,30 +191,11 @@ This number may be larger or smaller depending on retries or concurrency.
 | Raise event | 3 records |
 | Start child workflow | 8 records |
 
-#### Direct Database Access
-
-For advanced operations, you can access workflow data directly:
+#### Query Workflow History
 
 ```bash
-# Port forward to a postgres database in Kubernetes
-kubectl port-forward service/postgres 5432:5432
-
-# Query workflows directly
-dapr workflow list \
-  --app-id myapp \
-  --connection-string "host=localhost user=dapr password=dapr dbname=dapr port=5432 sslmode=disable" \
-  --table-name workflows
-```
-
-```bash
-# Port forward to redis database in Kubernetes
-kubectl port-forward service/redis 6379:6379
-
-# Query workflows directly
-dapr workflow list \
-  --app-id myapp \
-  --connection-string redis://127.0.0.1:6379 \
-  --table-name workflows
+dapr workflow --app-id myapp list
+dapr workflow --app-id myapp history <instance-id>
 ```
 
 ### Supported State Stores
@@ -248,28 +231,13 @@ Each workflow instance executes on a single node at a time, but a workflow can s
 
 Workflows can also schedule these activities and child workflows to run in parallel, allowing a single workflow to potentially distribute compute tasks across all available nodes in the cluster.
 
-<img src="/images/workflow-overview/workflow-actor-scale-out.png" width=800 alt="Diagram of workflow and activity actors scaled out across multiple Dapr instances"/>
+You can configure the maximum concurrency of workflows and activities using the [Dapr configuration]({{% ref workflow-concurrency.md %}}) as described in the next section.
 
 {{% alert title="Important" color="warning" %}}
 By default, there are no global limits imposed on workflow and activity concurrency.
 A runaway workflow could therefore potentially consume all resources in a cluster if it attempts to schedule too many tasks in parallel.
 Use care when authoring Dapr Workflows that schedule large batches of work in parallel.
 {{% /alert %}}
-
-You can configure the maximum concurrent workflows and activities that can be executed at any one time with the following configuration.
-These limits are imposed on a _per_ sidecar basis, meaning that if you have 10 replicas of your workflow app, the effective limit is 10 times the configured value.
-These limits do not distinguish between different workflow or activity definitions.
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: appconfig
-spec:
-  workflow:
-    maxConcurrentWorkflowInvocations: 100 # Default is infinite
-    maxConcurrentActivityInvocations: 1000 # Default is infinite
-```
 
 {{% alert title="Important" color="warning" %}}
 The Dapr Workflow engine requires that all instances of a workflow app register the exact same set of workflows and activities.
@@ -280,6 +248,8 @@ All workflows and activities within an app must be scaled together.
 Workflows don't control the specifics of how load is distributed across the cluster.
 For example, if a workflow schedules 10 activity tasks to run in parallel, all 10 tasks may run on as many as 10 different compute nodes or as few as a single compute node.
 The actual scale behavior is determined by the actor placement service, which manages the distribution of the actors that represent each of the workflow's tasks.
+
+<img src="/images/workflow-overview/workflow-actor-scale-out.png" width=800 alt="Diagram of workflow and activity actors scaled out across multiple Dapr instances"/>
 
 ## Workflow latency
 

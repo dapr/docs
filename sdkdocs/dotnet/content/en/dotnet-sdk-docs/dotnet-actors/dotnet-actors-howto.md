@@ -44,7 +44,8 @@ This project contains the implementation of the actor client which calls MyActor
 ## Prerequisites
 - [Dapr CLI]({{< ref install-dapr-cli.md >}}) installed.
 - Initialized [Dapr environment]({{< ref install-dapr-selfhost.md >}}).
-- [.NET 8](https://dotnet.microsoft.com/download) or [.NET 9](https://dotnet.microsoft.com/download) installed
+- [.NET 8](https://dotnet.microsoft.com/download), [.NET 9](https://dotnet.microsoft.com/download), or
+  [.NET 10](https://dotnet.microsoft.com/download) installed
 
 ## Step 0: Prepare
 

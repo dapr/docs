@@ -21,7 +21,7 @@ spec:
     value: mykey
   - name: model
     value: open-mistral-7b
-  - name: cacheTTL
+  - name: responseCacheTTL
     value: 10m
 ```
 
@@ -35,7 +35,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|---------|---------|
 | `key`   | Y | API key for Mistral. | `mykey` |
 | `model` | N | The Mistral LLM to use. Defaults to `open-mistral-7b`.  | `open-mistral-7b` |
-| `cacheTTL` | N | A time-to-live value for a prompt cache to expire. Uses Golang duration format.  | `10m` |
+| `responseCacheTTL` | N | Time-to-live for the in-memory response cache. When set, identical requests are served from cache until they expire. | `10m` |
 
 ## Related links
 

@@ -19,7 +19,7 @@ spec:
   metadata:
   - name: model
     value: llama3.2:latest
-  - name: cacheTTL
+  - name: responseCacheTTL
     value: 10m
 ```
 
@@ -32,7 +32,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | `model` | N | The Ollama LLM to use. Defaults to `llama3.2:latest`.  | `phi4:latest` |
-| `cacheTTL` | N | A time-to-live value for a prompt cache to expire. Uses Golang duration format.  | `10m` |
+| `responseCacheTTL` | N | Time-to-live for the in-memory response cache. When set, identical requests are served from cache until they expire. | `10m` |
 
 ### OpenAI Compatibility
 

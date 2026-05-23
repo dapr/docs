@@ -85,6 +85,14 @@ In this example, the soft limit has been set to be 90% to leave 5-10% for other 
 
 The `GOMEMLIMIT` environment variable [allows certain suffixes for the memory size: `B`, `KiB`, `MiB`, `GiB`, and `TiB`.](https://pkg.go.dev/runtime)
 
+## Sidecar service annotations for enterprise policies
+
+In enterprise environments, cluster policies may enforce mandatory annotations on all Service resources for security, billing, or network policy purposes. The Dapr operator creates a Service for the sidecar, which might need these custom annotations to comply with your organization's policies.
+
+You can use the `dapr.io/sidecar-svc-annotations` annotation to add these required annotations to the Dapr sidecar service.
+
+[Learn how to configure custom annotations for the Dapr sidecar service]({{% ref "sidecar-service-annotations.md" %}}).
+
 ## High availability mode
 
 When deploying Dapr in a production-ready configuration, it's best to deploy with a high availability (HA) configuration of the control plane. This creates three replicas of each control plane pod in the `dapr-system` namespace, allowing the Dapr control plane to retain three running instances and survive individual node failures and other outages.
@@ -113,6 +121,30 @@ To scale scheduler and placement to three instances independently of the `global
     --set dapr_placement.ha=true \
     --wait
    ```
+
+### Spreading Placement and Scheduler replicas
+
+With HA enabled, the default Helm values add pod anti-affinity so Scheduler and Placement service replicas are attempted to be scheduled across different failure domains if cluster resourcing allows. This is configured using the following Helm chart [options](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md)
+
+- `global.ha.topologyKey`: Kubernetes label used meaning “different domain”. Set by default to `topology.kubernetes.io/zone`.
+- `global.ha.podAntiAffinityPolicy`: Enables soft spreading with `preferredDuringSchedulingIgnoredDuringExecution` (the default) or hard spreading with `requiredDuringSchedulingIgnoredDuringExecution`. 
+
+When running in production, consider the following recommendations.
+
+1. **Availability zones**: The default topology key spreads pods across zones. This limits the chance that a single zone outage removes multiple Scheduler or Placement pods at the same time.
+2. **Single zone, many nodes**:  Zone labels are often identical across the cluster; set `topologyKey` to `kubernetes.io/hostname` to enable spreading by node.
+3. **Soft spreading**: The default behaviour is recommended here allowing pod scheduling to succeed when the cluster is short on zones or nodes.
+4. **Hard spreading**: Only use when you must never place two replicas on the same topology value. This requires as many distinct values for `topologyKey` as replicas, or pods will stay `Pending`.
+
+For example, too configure hard spreading by hostname in a single-zone cluster, use the following Helm values:
+
+```yaml
+global:
+  ha:
+    enabled: true
+    topologyKey: kubernetes.io/hostname
+    podAntiAffinityPolicy: requiredDuringSchedulingIgnoredDuringExecution
+```
 
 ## Setting cluster critical priority class name for control plane services
 

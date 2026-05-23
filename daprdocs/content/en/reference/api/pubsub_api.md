@@ -71,7 +71,7 @@ This endpoint lets you publish multiple messages to consumers who are listening 
 ### HTTP Request
 
 ```
-POST http://localhost:<daprPort>/v1.0-alpha1/publish/bulk/<pubsubname>/<topic>[?<metadata>]
+POST http://localhost:<daprPort>/v1.0/publish/bulk/<pubsubname>/<topic>[?<metadata>]
 ```
 
 The request body should contain a JSON array of entries with:
@@ -84,7 +84,7 @@ If the content type for an event is not `application/cloudevents+json`, it is au
 Example:
 
 ```bash
-curl -X POST http://localhost:3500/v1.0-alpha1/publish/bulk/pubsubName/deathStarStatus \
+curl -X POST http://localhost:3500/v1.0/publish/bulk/pubsubName/deathStarStatus \
   -H 'Content-Type: application/json' \
   -d '[
         {
@@ -299,6 +299,28 @@ HTTP Status | Description
 2xx | message is processed as per status in payload.
 404 | error is logged and all messages are dropped
 other | warning is logged and all messages to be retried
+
+#### CloudEvents binary mode
+
+Supports publishing CloudEvents that use the binary mode defined by
+the CloudEvents HTTP binding. In this mode, the HTTP body only contains the
+payload bytes, and CloudEvent attributes are passed as headers with the `ce_`
+prefix. Provide the required headers (`ce_specversion`, `ce_type`, `ce_source`,
+`ce_id`) along with any optional ones (for example `ce_subject` or `ce_time`).
+Dapr copies the HTTP `Content-Type` header into the CloudEvent's
+`datacontenttype` attribute and forwards the resulting event to subscribers.
+
+Example sending four raw bytes:
+
+```bash
+curl -X POST http://localhost:3500/v1.0/publish/pubsubName/deathStarStatus \
+  -H "Content-Type: application/octet-stream" \
+  -H "ce_specversion: 1.0" \
+  -H "ce_type: com.example.deathstar.status.changed" \
+  -H "ce_source: urn:example:/deathstar" \
+  -H "ce_id: 3a58b9b8-24d2-4f62-84f4-6177c2fe0633" \
+  --data-binary $'\x01\x02\x03\x04'
+```
 
 ## Message envelope
 

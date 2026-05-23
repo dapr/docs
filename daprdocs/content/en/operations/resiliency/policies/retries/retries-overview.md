@@ -20,6 +20,10 @@ Dapr provides [default resiliency policies]({{% ref default-policies.md %}}), wh
 Each [pub/sub component]({{% ref supported-pubsub %}}) has its own built-in retry behaviors. Explicity applying a Dapr resiliency policy doesn't override these implicit retry policies. Rather, the resiliency policy augments the built-in retry, which can cause repetitive clustering of messages.
 {{% /alert %}}
 
+{{% alert title="Note" color="primary" %}}
+For HTTP [service invocation]({{% ref service-invocation-overview %}}), retry policies are automatically bypassed for streaming requests (those using chunked transfer encoding or without a known `Content-Length`). Since the request body is consumed as it is read, it cannot be replayed on retry. Non-streaming requests with a known `Content-Length` continue to support retries as before. Learn more about [streaming HTTP service invocation and resiliency]({{% ref "service-invocation-overview#streaming-requests-and-resiliency" %}}).
+{{% /alert %}}
+
 ## Retry policy format
 
 **Example 1**

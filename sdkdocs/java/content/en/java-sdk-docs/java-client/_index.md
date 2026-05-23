@@ -18,6 +18,7 @@ If you haven't already, [try out one of the quickstarts]({{% ref quickstarts %}}
 [Complete initial setup and import the Java SDK into your project]({{% ref java %}})
 
 ## Initializing the client
+
 You can initialize a Dapr client as so:
 
 ```java
@@ -197,19 +198,17 @@ public class SubscriberController {
 ```
 
 ##### Bulk Publish Messages
-> Note: API is in Alpha stage
-
 
 ```java
+import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
-import io.dapr.client.DaprPreviewClient;
 import io.dapr.client.domain.BulkPublishResponse;
 import io.dapr.client.domain.BulkPublishResponseFailedEntry;
 import java.util.ArrayList;
 import java.util.List;
 class Solution {
   public void publishMessages() {
-    try (DaprPreviewClient client = (new DaprClientBuilder()).buildPreviewClient()) {
+    try (DaprClient client = (new DaprClientBuilder()).build()) {
       // Create a list of messages to publish
       List<String> messages = new ArrayList<>();
       for (int i = 0; i < NUM_MESSAGES; i++) {
@@ -411,9 +410,9 @@ try (DaprClient client = builder.build(); DaprPreviewClient previewClient = buil
         }
 }
 ```
+
 - For a full how-to on query state, visit [How-To: Query state]({{% ref howto-state-query-api.md %}}).
 - Visit [Java SDK examples](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/querystate) for complete code sample.
-
 ### Distributed lock
 
 ```java

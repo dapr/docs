@@ -163,6 +163,17 @@
     etag: true
     ttl: true
     workflow: true
+- component: RavenDB
+  link: setup-ravendb
+  state: Stable
+  version: v1
+  since: "1.16"
+  features:
+    crud: true
+    transactions: true
+    etag: true
+    ttl: true
+    workflow: false
 - component: Redis
   link: setup-redis
   state: Stable

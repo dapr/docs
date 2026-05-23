@@ -30,6 +30,8 @@ spec:
     value: "true"
   - name: enableTLS
     value: "false"
+  - name: insecureSkipTLSVerify
+    value: "false"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -46,6 +48,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | consumerID         | N        | The consumer group ID.  | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{% ref "component-schema.md#templated-metadata-values" %}})
 | useEntraID | N | Implements EntraID support for Azure Cache for Redis. Before enabling this: <ul><li>The `redisHost` name must be specified in the form of `"server:port"`</li><li>TLS must be enabled</li></ul> Learn more about this setting under [Create a Redis instance > Azure Cache for Redis]({{% ref "#setup-redis" %}}) | `"true"`, `"false"` |
 | enableTLS          | N        | If the Redis instance supports TLS with public certificates, can be configured to be enabled or disabled. Defaults to `"false"` | `"true"`, `"false"` |
+| insecureSkipTLSVerify | N     | Skip TLS certificate verification when `enableTLS` is `"true"`. Only use for testing. Defaults to `"false"` | `"true"`, `"false"` |
 | clientCert        | N        | The content of the client certificate, used for Redis instances that require client-side certificates. Must be used with `clientKey` and `enableTLS` must be set to true. It is recommended to use a secret store as described [here]({{% ref component-secrets.md %}})   | `"----BEGIN CERTIFICATE-----\nMIIC..."` |
 | clientKey        | N        | The content of the client private key, used in conjunction with `clientCert` for authentication. It is recommended to use a secret store as described [here]({{% ref component-secrets.md %}}) | `"----BEGIN PRIVATE KEY-----\nMIIE..."` |
 | redeliverInterval  | N        | The interval between checking for pending messages to redeliver. Can use either be Go duration string (for example "ms", "s", "m") or milliseconds number. Defaults to `"60s"`. `"0"` disables redelivery. | `"30s"`, `"5000"`
@@ -58,7 +61,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | redisMinRetryInterval        | N        | Minimum backoff for redis commands between each retry. Default is `"8ms"`;  `"-1"` disables backoff. | `"8ms"`
 | redisMaxRetryInterval        | N        | Maximum backoff for redis commands between each retry. Default is `"512ms"`;`"-1"` disables backoff. | `"5s"`
 | dialTimeout        | N        | Dial timeout for establishing new connections. Defaults to `"5s"`.  | `"5s"`
-| readTimeout        | N        | Timeout for socket reads. If reached, redis commands will fail with a timeout instead of blocking. Defaults to `"3s"`, `"-1"` for no timeout. | `"3s"`
+| readTimeout        | N        | Timeout for socket reads, if set to `"0s"`, the read will be blocking. If reached, redis commands will fail with a timeout instead of blocking. Defaults to `"0s"`, `"-1"` for no timeout. | `"3s"`
 | writeTimeout        | N        | Timeout for socket writes. If reached, redis commands will fail with a timeout instead of blocking. Defaults is readTimeout. | `"3s"`
 | poolSize        | N        | Maximum number of socket connections. Default is 10 connections per every CPU as reported by runtime.NumCPU. | `"20"`
 | poolTimeout        | N        | Amount of time client waits for a connection if all connections are busy before returning an error. Default is readTimeout + 1 second. | `"5s"`
@@ -182,6 +185,13 @@ When using Redis Sentinel for high availability, set `redisType` to `"node"`, en
       - name: sentinelMasterName
         value: "mymaster"
     ```
+
+## Resiliency and redelivery
+
+The Redis Streams pubsub component honors the [Dapr resiliency policy]({{% ref "resiliency-overview" %}}). After your 
+application handler returns (success, retry, or drop), the component acknowledges the message to Redis. Redis 
+then stops redelivering that message. Retries and dead-letter behavior are controlled by your resiliency policy (for 
+example, `maxRetries` and retry duration).
 
 ## Related links
 - [Basic schema for a Dapr component]({{% ref component-schema %}})

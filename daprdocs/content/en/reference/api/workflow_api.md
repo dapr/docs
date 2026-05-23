@@ -2,11 +2,18 @@
 type: docs
 title: "Workflow API reference"
 linkTitle: "Workflow API"
-description: "Detailed documentation on the workflow API"
 weight: 1600
 ---
 
-Dapr provides users with the ability to interact with workflows through its built-in workflow engine, which is implemented using Dapr Actors. This workflow engine is accessed using the name `dapr` in API calls as the `workflowComponentName`.
+Dapr provides users with the ability to interact with workflows through its built-in workflow engine, which is implemented using Dapr Actors.
+
+To interact with the workflow engine, see [how to author]{{% ref howto-author-workflow.md %}} and [manage workflows]({{% ref howto-manage-workflow.md %}}).
+
+
+# HTTP API reference (Deprecated)
+
+Below is the reference for the Dapr Workflow API.
+This API is deprecated and will eventually be removed.
 
 ## Start workflow request
 
@@ -243,8 +250,3 @@ The API call will provide a JSON response similar to this:
 Parameter | Description
 --------- | -----------
 `runtimeStatus` | The status of the workflow instance. Values include: `"RUNNING"`, `"COMPLETED"`, `"CONTINUED_AS_NEW"`, `"FAILED"`, `"CANCELED"`, `"TERMINATED"`, `"PENDING"`, `"SUSPENDED"`  
-
-## Next Steps
-
-- [Workflow API overview]({{% ref workflow-overview.md %}})
-- [Route user to workflow patterns ]({{% ref workflow-patterns.md %}})
