@@ -30,6 +30,8 @@ spec:
     value: "true"
   - name: enableTLS
     value: "false"
+  - name: insecureSkipTLSVerify
+    value: "false"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -46,6 +48,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | consumerID         | N        | The consumer group ID.  | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{% ref "component-schema.md#templated-metadata-values" %}})
 | useEntraID | N | Implements EntraID support for Azure Cache for Redis. Before enabling this: <ul><li>The `redisHost` name must be specified in the form of `"server:port"`</li><li>TLS must be enabled</li></ul> Learn more about this setting under [Create a Redis instance > Azure Cache for Redis]({{% ref "#setup-redis" %}}) | `"true"`, `"false"` |
 | enableTLS          | N        | If the Redis instance supports TLS with public certificates, can be configured to be enabled or disabled. Defaults to `"false"` | `"true"`, `"false"` |
+| insecureSkipTLSVerify | N     | Skip TLS certificate verification when `enableTLS` is `"true"`. Only use for testing. Defaults to `"false"` | `"true"`, `"false"` |
 | clientCert        | N        | The content of the client certificate, used for Redis instances that require client-side certificates. Must be used with `clientKey` and `enableTLS` must be set to true. It is recommended to use a secret store as described [here]({{% ref component-secrets.md %}})   | `"----BEGIN CERTIFICATE-----\nMIIC..."` |
 | clientKey        | N        | The content of the client private key, used in conjunction with `clientCert` for authentication. It is recommended to use a secret store as described [here]({{% ref component-secrets.md %}}) | `"----BEGIN PRIVATE KEY-----\nMIIE..."` |
 | redeliverInterval  | N        | The interval between checking for pending messages to redeliver. Can use either be Go duration string (for example "ms", "s", "m") or milliseconds number. Defaults to `"60s"`. `"0"` disables redelivery. | `"30s"`, `"5000"`
