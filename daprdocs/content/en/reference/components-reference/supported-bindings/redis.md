@@ -28,6 +28,8 @@ spec:
     value: "true"
   - name: enableTLS
     value: "<bool>"
+  - name: insecureSkipTLSVerify
+    value: "<bool>"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -43,6 +45,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `redisUsername` | N | Output | Username for Redis host. Defaults to empty. Make sure your redis server version is 6 or above, and have created acl rule correctly. | `"username"` |
 | `useEntraID` | N | Output | Implements EntraID support for Azure Cache for Redis. Before enabling this: <ul><li>The `redisHost` name must be specified in the form of `"server:port"`</li><li>TLS must be enabled</li></ul> Learn more about this setting under [Create a Redis instance > Azure Cache for Redis]({{% ref "#create-a-redis-instance" %}}) | `"true"`, `"false"` |
 | `enableTLS` | N | Output |  If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS. Defaults to `"false"` | `"true"`, `"false"` |
+| `insecureSkipTLSVerify` | N | Output | Skip TLS certificate verification when `enableTLS` is `"true"`. Only use for testing. Defaults to `"false"` | `"true"`, `"false"` |
 | `clientCert`        | N | Output        | The content of the client certificate, used for Redis instances that require client-side certificates. Must be used with `clientKey` and `enableTLS` must be set to true. It is recommended to use a secret store as described [here]({{% ref component-secrets.md %}})  | `"----BEGIN CERTIFICATE-----\nMIIC..."` |
 | `clientKey`        | N | Output        | The content of the client private key, used in conjunction with `clientCert` for authentication. It is recommended to use a secret store as described [here]({{% ref component-secrets.md %}})  | `"----BEGIN PRIVATE KEY-----\nMIIE..."` |
 | `failover`           | N | Output         | Property to enable failover configuration. Needs sentinelMasterName to be set. When enabled, redisHost should contain the sentinel addresses. Defaults to `"false"` | `"true"`, `"false"`
