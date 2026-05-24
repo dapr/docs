@@ -1423,7 +1423,7 @@ Here's an example workflow for an e-commerce process:
 1. The payment is processed.
 1. The order is shipped.
 1. If any of the above actions results in an error, the actions are compensated with another action:
-   - The shipment is cancelled.
+   - The shipment is canceled.
    - The payment is refunded.
    - The inventory reservation is released.
 
