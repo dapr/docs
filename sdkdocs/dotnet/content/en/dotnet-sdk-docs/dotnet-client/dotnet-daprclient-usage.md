@@ -12,6 +12,12 @@ A `DaprClient` holds access to networking resources in the form of TCP sockets u
 
 ### Dependency Injection
 
+To get started with ASP.NET Core dependency injection, install the [Dapr.AspNetCore](https://www.nuget.org/packages/Dapr.AspNetCore) package from NuGet:
+
+```bash
+dotnet add package Dapr.AspNetCore
+```
+
 The `AddDaprClient()` method will register the Dapr client with ASP.NET Core dependency injection. This method accepts an optional
 options delegate for configuring the `DaprClient` and an `ServiceLifetime` argument, allowing you to specify a different lifetime
 for the registered resources instead of the default `Singleton` value.
@@ -27,7 +33,7 @@ as in the following example:
 
 ```csharp
 services.AddDaprClient(daprBuilder => {
-    daprBuilder.UseJsonSerializerOptions(new JsonSerializerOptions {
+    daprBuilder.UseJsonSerializationOptions(new JsonSerializerOptions {
             WriteIndented = true,
             MaxDepth = 8
         });
@@ -54,7 +60,7 @@ Rather than using dependency injection, a `DaprClient` can also be built using t
 
 For best performance, create a single long-lived instance of `DaprClient` and provide access to that shared instance throughout your application. `DaprClient` instances are thread-safe and intended to be shared.
 
-Avoid creating a `DaprClient` per-operation and disposing it when the operation is complete. 
+Avoid creating a `DaprClient` per-operation and disposing it when the operation is complete.
 
 ## Configuring DaprClient
 
@@ -135,7 +141,7 @@ var daprClient = new DaprClientBuilder()
 
 The APIs on DaprClient that perform asynchronous operations accept an optional `CancellationToken` parameter. This follows a standard .NET idiom for cancellable operations. Note that when cancellation occurs, there is no guarantee that the remote endpoint stops processing the request, only that the client has stopped waiting for completion.
 
-When an operation is cancelled, it will throw an `OperationCancelledException`. 
+When an operation is cancelled, it will throw an `OperationCancelledException`.
 
 ## Understanding DaprClient JSON serialization
 
