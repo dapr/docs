@@ -29,7 +29,7 @@ spec:
   - name: tableName
     value: "<NAME OF DATABASE TABLE TO STORE STATE IN >" # Optional, defaults to STATE
   - name: bulkGetChunkSize
-    value: "1000" # Optional, defaults to 1000 (Oracle's IN-list limit)
+    value: "1000" # Optional, defaults to 1000 (max limited by Oracle's IN-list expression limit)
   # Uncomment this if you wish to use Oracle Database as a state store for actors (optional)
   #- name: actorStateStore
   #  value: "true"
