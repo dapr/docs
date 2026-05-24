@@ -60,6 +60,10 @@ Component reloading occurs when a component resource is created, updated, or del
 When a component is updated, the component is first closed, and then reinitialized using the new configuration.
 The component is unavailable for a short period of time during reload and reinitialization.
 
+Hot reloading also extends to [Configuration]({{% ref "configuration-overview.md" %}}), [Resiliency]({{% ref "resiliency-overview.md" %}}), and HTTPEndpoint resources.
+Changes to these resource types trigger a graceful restart of the Dapr sidecar (via SIGHUP) to apply the new configuration. SIGHUP is not supported on Windows.
+See [Updating resources]({{% ref "component-updates.md" %}}) for more details.
+
 ## Available component types
 
 The following are the component types provided by Dapr:
