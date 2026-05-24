@@ -149,12 +149,34 @@ Dapr Agents provides a unified interface to connect with LLM inference APIs. Thi
 - `DaprChatClient`: Unified API for LLM interactions via Dapr's Conversation API with built-in security (scopes, secrets, PII obfuscation), resiliency (timeouts, retries, circuit breakers), and observability via OpenTelemetry & Prometheus
 - `OpenAIChatClient`: Full spectrum support for OpenAI models including chat, embeddings, and audio
 - `HFHubChatClient`: For Hugging Face models supporting both chat and embeddings
+- `MistralChatClient`: Native support for Mistral models via the official SDK, enabling custom endpoints and advanced multimodal features. Falls back to the `MISTRAL_MODEL` environment variable or `mistral-large-latest` if a model is not explicitly provided.
 - `NVIDIAChatClient`: For NVIDIA AI Foundation models supporting local inference and chat
 - `ElevenLabs`: Support for speech and voice capabilities
 
 ### Prompt Flexibility
 
 Dapr Agents supports flexible prompt templates to shape agent behavior and reasoning. Users can define placeholders within prompts, enabling dynamic input of context for inference calls. By leveraging prompt formatting with [Jinja templates](https://jinja.palletsprojects.com/en/stable/templates/) and Python f-string formatting, users can include loops, conditions, and variables, providing precise control over the structure and content of prompts. This flexibility ensures that LLM responses are tailored to the task at hand, offering modularity and adaptability for diverse use cases.
+
+### Using Prompty Templates
+
+You can easily configure a Dapr Agent's prompt, model parameters, and LLM provider all in one place using a `.prompty` file. For example, to configure an agent using Mistral:
+
+```yaml
+---
+name: Mistral Agent
+model:
+  api: chat
+  configuration:
+    type: mistral
+    name: mistral-large-latest
+  parameters:
+    temperature: 0.7
+    max_tokens: 500
+---
+system:
+You are a helpful assistant.
+```
+> **Note:** `mistral-large-latest` is used as an example. Please check the Mistral documentation for the most current model names.
 
 ### Structured Outputs
 
