@@ -6,7 +6,7 @@ weight: 8000
 description: "Define retention policy to manage workflow state history state"
 ---
 
-Dapr workflow state is stored in the [actor state store]{{ %ref workflow-architecture.md#state-store-usage %}}.
+Dapr workflow state is stored in the [actor state store]({{% ref "workflow-architecture.md#state-store-usage" %}}).
 By default, Dapr Workflows retains the complete history of workflow state changes indefinitely.
 This means historical workflows can be queried and inspected at any time.
 Running many workflows or workflows which generate large amounts of state change history can lead to increased storage usage, which can eventually fill up the state store disk space.
