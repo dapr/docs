@@ -1,0 +1,150 @@
+﻿name: Auto-approve & merge SDK docs PRs (per directory/team)
+
+# Run on PRs (including forks) but act with repo-level permissions.
+# We DO NOT check out PR code; we only read PR metadata via the API.
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review, edited]
+    paths:
+      - 'sdkdocs/**'
+
+# Token scopes needed: label, review, and merge for repo actions.
+permissions:
+  contents: write        # required to merge
+  pull-requests: write   # required to approve/merge
+  issues: write          # required to create/add labels
+
+jobs:
+  sdk-docs-automerge:
+    runs-on: ubuntu-latest
+    # Ignore drafts
+    if: ${{ github.event.pull_request.draft == false }}
+
+    steps:
+      # 1) Check team membership with an org-scoped token
+      - name: Check SDK team membership
+        id: teamcheck
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.ORG_READ_MEMBERS_TOKEN }} # PAT read:org or fine-grained Members: Read
+          script: |
+            const { owner, repo } = context.repo;
+            const pr = context.payload.pull_request;
+            const number = pr.number;
+
+            // --- Mapping: directory prefixes -> team slug + label ---
+            const MAPPINGS = [
+              { label: 'automerge: dotnet', teamSlug: 'maintainers-dotnet-sdk', prefixes: ['sdkdocs/dotnet/'] },
+              { label: 'automerge: go',     teamSlug: 'maintainers-go-sdk',     prefixes: ['sdkdocs/go/'] },
+              { label: 'automerge: java',   teamSlug: 'maintainers-java-sdk',   prefixes: ['sdkdocs/java/content/en/'] },
+              { label: 'automerge: js',     teamSlug: 'maintainers-js-sdk',     prefixes: ['sdkdocs/js/'] },
+              { label: 'automerge: php',    teamSlug: 'maintainers-php-sdk',    prefixes: ['sdkdocs/php/'] },
+              { label: 'automerge: python', teamSlug: 'maintainers-python-sdk', prefixes: ['sdkdocs/python/'] },
+              { label: 'automerge: rust',   teamSlug: 'maintainers-rust-sdk',   prefixes: ['sdkdocs/rust/content/en/'] },
+            ];
+
+            const username = pr.user.login;
+
+            // 1) List changed files
+            const files = await github.paginate(
+              github.rest.pulls.listFiles,
+              { owner, repo, pull_number: number, per_page: 100 }
+            );
+
+            if (files.length === 0) {
+              core.info('No files changed in PR; skipping.');
+              core.setOutput('eligible', 'false');
+              return;
+            }
+
+            // 2) Determine which single SDK mapping the PR targets
+            let currentMapping = null, ineligible = false;
+            for (const f of files) {
+              const matched = MAPPINGS.find(m => m.prefixes.some(p => f.filename.startsWith(p)));
+              if (!matched) { ineligible = true; break; }
+              if (!currentMapping) currentMapping = matched;
+              else if (currentMapping !== matched) { ineligible = true; break; }
+            }
+
+            if (ineligible || !currentMapping) {
+              core.info('PR is not eligible: outside mapped paths or touches multiple SDK directories.');
+              core.setOutput('eligible', 'false');
+              return;
+            }
+
+            // 3) Verify author is active in the corresponding team (org-scoped token)
+            try {
+              const membership = await github.rest.teams.getMembershipForUserInOrg({
+                org: owner,
+                team_slug: currentMapping.teamSlug,
+                username
+              });
+              if (membership.data.state !== 'active') {
+                core.info(`User ${username} is not active in team ${currentMapping.teamSlug}.`);
+                core.setOutput('eligible', 'false');
+                return;
+              }
+            } catch (err) {
+              core.info(`Membership check failed or user not in team ${currentMapping.teamSlug}: ${err.status} ${err.message}`);
+              core.setOutput('eligible', 'false');
+              return;
+            }
+
+            core.setOutput('eligible', 'true');
+            core.setOutput('label', currentMapping.label);
+            core.setOutput('teamSlug', currentMapping.teamSlug);
+            core.setOutput('lang', (currentMapping.label.split(': ')[1] || 'sdk'));
+
+      # 2) If eligible, label, approve and merge with the default repo-scoped token
+      - name: Label, auto-approve & merge
+        if: steps.teamcheck.outputs.eligible == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const number = context.payload.pull_request.number;
+            const labelName = '${{ steps.teamcheck.outputs.label }}';
+            const lang = '${{ steps.teamcheck.outputs.lang }}';
+            const mergeMethod = process.env.MERGE_METHOD || 'squash';
+
+            // Ensure label exists then add it
+            try {
+              await github.rest.issues.getLabel({ owner, repo, name: labelName });
+            } catch (e) {
+              if (e.status === 404) {
+                await github.rest.issues.createLabel({
+                  owner, repo, name: labelName, color: '6A9286',
+                  description: 'Auto-merged language-specific SDK docs'
+                });
+              } else {
+                throw e;
+              }
+            }
+            await github.rest.issues.addLabels({ owner, repo, issue_number: number, labels: [labelName] });
+
+            // Auto-approve
+            try {
+              await github.rest.pulls.createReview({
+                owner, repo, pull_number: number,
+                event: 'APPROVE',
+                body: `Auto-approval: ${lang} SDK docs`
+              });
+            } catch (e) {
+              core.warning(`Failed to create review: ${e.message}`);
+            }
+
+            // Poll mergeability
+            const wait = ms => new Promise(r => setTimeout(r, ms));
+            for (let i = 0; i < 12; i++) {
+              const pr = await github.rest.pulls.get({ owner, repo, pull_number: number });
+              if (pr.data.mergeable && ['clean','unstable'].includes(pr.data.mergeable_state)) break;
+              await wait(5000);
+            }
+
+            // Merge
+            await github.rest.pulls.merge({
+              owner, repo, pull_number: number,
+              merge_method: mergeMethod,
+              commit_title: `${lang}: ${context.payload.pull_request.title}`,
+              commit_message: `Auto-merged by SDK maintainer merge bot (${lang})`
+            });

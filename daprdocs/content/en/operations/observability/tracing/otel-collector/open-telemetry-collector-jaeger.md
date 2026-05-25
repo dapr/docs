@@ -17,8 +17,10 @@ Dapr supports writing traces using the OpenTelemetry (OTLP) protocol, and Jaeger
 
 The simplest way to start Jaeger is to run the pre-built, all-in-one Jaeger image published to DockerHub and expose the OTLP port:
 
+> **Note:** Port 9411 is commonly used by Zipkin. If you have Zipkin running (starts by default when you run `dapr init`), stop the `dapr_zipkin` container first to avoid port conflicts: `docker stop dapr_zipkin` 
+
 ```bash
-docker run --rm --name jaeger \
+docker run -d --rm --name jaeger \
   -p 16686:16686 \
   -p 4317:4317 \
   -p 4318:4318 \
@@ -27,7 +29,19 @@ docker run --rm --name jaeger \
   cr.jaegertracing.io/jaegertracing/jaeger:2.11.0
 ```
 
-Next, create the following `config.yaml` file locally:
+You can also view the logs from the jaeger container using: 
+
+```bash
+docker logs jaeger
+```
+
+### Configure Dapr for tracing
+
+You have two options to configure Dapr to send traces to Jaeger V2:
+
+#### Option 1: Use a custom config file
+
+Create a `config.yaml` file with the following content:
 
 > **Note:** Because you are using the Open Telemetry protocol to talk to Jaeger, you need to fill out the `otel` section of the tracing configuration and set the `endpointAddress` to the address of the Jaeger container.
 
@@ -54,6 +68,10 @@ the `--config` option. For example:
 dapr run --app-id myapp --app-port 3000 node app.js --config config.yaml
 ```
 
+#### Option 2: Update the default Dapr config (development environment)
+
+Alternatively, in your development environment, navigate to your [local Dapr components directory](https://docs.dapr.io/getting-started/install-dapr-selfhost/#step-5-verify-components-directory-has-been-initialized) and update the default `config.yaml` file with the OTLP configuration above. This way, all Dapr applications will use the Jaeger V2 tracing configuration by default without needing to specify the `--config` flag each time.
+
 ### View traces
 
 To view traces in your browser, go to `http://localhost:16686` to see the Jaeger UI.
@@ -77,20 +95,22 @@ Jaeger V2 can be deployed using the OpenTelemetry Operator for simplified manage
 
 #### Installation
 
-1. **Install cert-manager** to manage certificates:
-   ```bash
-   kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.19.1/cert-manager.yaml -n cert-manager
-   ```
-   Verify that all resources in the `cert-manager` namespace are ready.
+> **Note:** In order for the API server to communicate with the webhook component of the operator, the webhook requires a TLS certificate that the API server is configured to trust. There are a few different ways you can use to generate/configure the required TLS certificate detailed in the [otel operator chart docs](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-operator#tls-certificate-requirement)
+
+For simplicity you can use Helm to create an automatically generated self-signed certificate.
 
 1. **Install the OpenTelemetry Operator**:
+
    ```bash
-   kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml
+   helm install opentelemetry-operator open-telemetry/opentelemetry-operator -n opentelemetry-operator-system --create-namespace \
+    --set "manager.collectorImage.repository=ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-k8s" \
+    --set admissionWebhooks.certManager.enabled=false \
+    --set admissionWebhooks.autoGenerateCert.enabled=true
    ```
    Confirm that all resources in the `opentelemetry-operator-system` namespace are ready.
 
 1. **Deploy a Jaeger V2 instance with in-memory storage**:
-   Apply the following configuration to create a Jaeger V2 instance:
+   Create a file named `jaeger-inmemory.yaml` with the following configuration:
    ```yaml
    apiVersion: opentelemetry.io/v1beta1
    kind: OpenTelemetryCollector
@@ -139,7 +159,7 @@ Jaeger V2 can be deployed using the OpenTelemetry Operator for simplified manage
 
 Create a Dapr configuration file to enable tracing and export the sidecar traces directly to the Jaeger V2 instance.
 
-1. Create a configuration file (e.g., `tracing.yaml`) with the following content, updating the `namespace` and `otel.endpointAddress` to match your Jaeger V2 instance:
+1. Create a configuration file (for example `tracing.yaml`) with the following content, updating the `namespace` and `otel.endpointAddress` to match your Jaeger V2 instance:
    ```yaml
    apiVersion: dapr.io/v1alpha1
    kind: Configuration
@@ -190,7 +210,7 @@ That’s it! There’s no need to include the OpenTelemetry SDK or instrument yo
 To view Dapr sidecar traces, port-forward the Jaeger V2 service and open the UI:
 
 ```bash
-kubectl port-forward svc/jaeger-inmemory-instance-collector 16686 -n observability
+kubectl port-forward svc/jaeger-inmemory-instance-collector 16686:16686 -n observability
 ```
 
 In your browser, go to `http://localhost:16686` to see the Jaeger V2 UI.
