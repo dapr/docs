@@ -103,9 +103,9 @@ It is therefore undesirable to execute these activities more than once for the s
 Before 1.17 in multi-application scenarios, Activities would publish responses over a network call to the other application which is hosting the owning Workflow.
 In the case where the hosting workflow application is down or otherwise unreachable, the result would be lost and the Activity would be retried, leading to duplicate execution of the Activity.
 
-In 1.17, enabling the [`WorkflowsRemoteActivityReminder feature gate]({{% ref "support-preview-features.md" %}}) will make the activity result be sent to the owning workflow application with a [reminder]({{% ref "workflow-features-concepts.md#durable-timers" %}}) in the event that the workflow application is offline or unreachable, ensuring that the result is not lost and duplicate execution is avoided.
-This option should be enabled by all users who are using Dapr version 1.17 on all applications.
-It has been _**disabled** by default_ for backwards compatibility between Dapr versions, but will be enabled by default in a future release.
+In 1.17, enabling the [`WorkflowsRemoteActivityReminder` feature gate]({{% ref "support-preview-features.md" %}}) will make the activity result be sent to the owning workflow application with a [reminder]({{% ref "workflow-features-concepts.md#durable-timers" %}}) in the event that the workflow application is offline or unreachable, ensuring that the result is not lost and duplicate execution is avoided.
+This option should be enabled by all users who have all applications running Dapr version 1.17 or later.
+As of 1.18 it is _**enabled** by default_. In 1.17 it was disabled by default for backwards compatibility between Dapr versions, and can be opted into via the feature gate.
 
 ## Multi-application activity example
 
