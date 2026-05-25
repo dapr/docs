@@ -12,6 +12,16 @@ Dapr allows operators and developers to bring in their own certificates, or inst
 
 For detailed information on mTLS, read the [security concepts section]({{% ref "security-concept.md" %}}).
 
+## Workload identity key algorithm (Ed25519, Dapr 1.18+) {#workload-identity-key-algorithm}
+
+Starting with Dapr **1.18**, Sentry generates workload identity keys using **Ed25519** instead of ECDSA P-256. On a normal install or upgrade this is transparent — no configuration change is needed.
+
+For a full explanation of what changed, why, and the compatibility matrix (including FIPS requirements and the 1.17.7 downgrade floor), see [Workload identity key algorithm]({{% ref "security-concept.md#workload-identity-key-algorithm" %}}) in the security concepts page.
+
+{{% alert title="Bringing your own CA" color="primary" %}}
+When you supply your own root and issuer certificates, Sentry signs workload CSRs using the algorithm of the **issuer key you provide**, not Ed25519. If your CA key is RSA or ECDSA, workload certs will be signed with that algorithm. This is the recommended path for FIPS-compliant environments.
+{{% /alert %}}
+
 If custom certificates have not been provided, Dapr automatically creates and persist self-signed certs valid for one year.
 In Kubernetes, the certs are persisted to a secret that resides in the namespace of the Dapr system pods, accessible only to them.
 In self-hosted mode, the certs are persisted to disk.
@@ -128,6 +138,10 @@ basicConstraints = critical, CA:true, pathlen:0
 ```
 
 Run the following to generate the root cert and key
+
+{{% alert title="Dapr 1.18+" color="primary" %}}
+The example below generates an ECDSA P-256 key. RSA keys (`openssl genrsa`) are also accepted. When you supply your own CA, Sentry signs workload CSRs using the algorithm of the issuer key you provide. ECDSA P-256 and RSA are the recommended choices for FIPS-compliant environments.
+{{% /alert %}}
 
 ```bash
 # skip the following line to reuse an existing root key, required for rotating expiring certificates
@@ -449,7 +463,7 @@ In order to start Sentry service with a custom config, use the following flag:
 
 ### Bringing your own certificates
 
-In order to provide your own credentials, create ECDSA PEM encoded root and issuer certificates and place them on the file system.
+In order to provide your own credentials, create PEM encoded root and issuer certificates (RSA, ECDSA, or Ed25519) and place them on the file system.
 Tell the Sentry service where to load the certificates from using the `--issuer-credentials` flag.
 
 The next examples creates root and issuer certs and loads them with the Sentry service.
