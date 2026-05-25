@@ -47,9 +47,9 @@ Any create, update, or deletion of these component types is ignored by the sidec
 - [Actor State Stores]({{% ref "state_api.md#configuring-state-store-for-actors" %}})
 - [Workflow Backends]({{% ref "workflow-architecture.md#workflow-backend" %}})
 
-### Configurations, Resiliency, and HTTPEndpoints
+### Configurations, Resiliency, WorkflowAccessPolicies, and HTTPEndpoints
 
-The Dapr sidecar also reloads [Configuration]({{% ref "configuration-overview.md" %}}), [Resiliency]({{% ref "resiliency-overview.md" %}}), and [HTTPEndpoint]({{% ref "service-invocation-overview.md" %}}) resources.
+The Dapr sidecar also reloads [Configuration]({{% ref "configuration-overview.md" %}}), [Resiliency]({{% ref "resiliency-overview.md" %}}), [WorkflowAccessPolicy]({{% ref "workflow-access-policy.md" %}}), and [HTTPEndpoint]({{% ref "service-invocation-overview.md" %}}) resources.
 
 Unlike Components and Subscriptions which are reloaded in-place, changes to these resource types trigger an automatic **graceful restart** of the Dapr sidecar process. This ensures that the new configuration is applied cleanly. Unchanged resources are detected and silently ignored, so a restart only occurs when an actual change is detected.
 
