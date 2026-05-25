@@ -6,7 +6,7 @@ weight: 300
 description: "Updating deployed components, configurations, resiliency, and HTTPEndpoints used by applications"
 ---
 
-Since Dapr v1.18, updates to deployed resources (Components, Subscriptions, Configurations, Resiliency, and HTTPEndpoints) are picked up automatically by the sidecar via [hot reloading](#hot-reloading). Hot reloading is enabled by default; to opt out, disable the `HotReload` feature in the [Dapr application configuration]({{% ref "preview-features.md" %}}).
+Updates to deployed resources (Components, Subscriptions, Configurations, Resiliency, WorkflowAccessPolicies and HTTPEndpoints) are picked up automatically by the sidecar via [hot reloading](#hot-reloading). Hot reloading is enabled by default; to opt out, disable the `HotReload` feature in the [Dapr application configuration]({{% ref "preview-features.md" %}}).
 When hot reloading is disabled, the Dapr sidecar needs to be restarted in order to pick up the latest version of the resource. How this is done depends on the hosting environment.
 
 ### Kubernetes

@@ -188,7 +188,7 @@ The example above shows an event subscription to topic `orders`, for the pubsub 
 Place `subscription.yaml` in the same directory as your `pubsub.yaml` component. When Dapr starts up, it loads subscriptions along with the components.
 
 {{% alert title="Note" color="primary" %}}
-Since Dapr v1.18, declarative subscriptions are "hot reloaded" by default, whereby updates are picked up automatically without needing a restart. To opt out, disable the `HotReload` feature in the Dapr application configuration:
+Declarative subscriptions are "hot reloaded" by default, whereby updates are picked up automatically without needing a restart. To opt out, disable the `HotReload` feature in the Dapr application configuration:
 
 ```yaml
 spec:

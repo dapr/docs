@@ -21,7 +21,7 @@ The examples below demonstrate pub/sub messaging between a `checkout` app and an
 ### Declarative subscriptions
 
 {{% alert title="Note" color="primary" %}}
-Since Dapr v1.18, declarative subscriptions are "hot reloaded" by default, whereby updates are picked up automatically without needing a restart. To opt out, disable the `HotReload` feature in the Dapr application configuration:
+Declarative subscriptions are "hot reloaded" by default, whereby updates are picked up automatically without needing a restart. To opt out, disable the `HotReload` feature in the Dapr application configuration:
 
 ```yaml
 spec:
