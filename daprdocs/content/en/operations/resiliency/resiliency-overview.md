@@ -175,7 +175,7 @@ spec:
 
 ## Hot Reloading
 
-Since Dapr v1.18, changes to Resiliency resources are automatically detected and trigger a graceful restart of the Dapr sidecar (via SIGHUP) to apply the updated resiliency policies. Unchanged Resiliency resources are silently ignored. SIGHUP is not supported on Windows. To opt out, disable the `HotReload` feature in the [Dapr application configuration]({{% ref "preview-features.md" %}}).
+Since Dapr v1.18, changes to Resiliency resources are automatically detected and trigger a graceful restart of the Dapr sidecar to apply the updated resiliency policies. Unchanged Resiliency resources are silently ignored. To opt out, disable the `HotReload` feature in the [Dapr application configuration]({{% ref "preview-features.md" %}}).
 
 See [Updating resources]({{% ref "component-updates.md" %}}) for more information.
 

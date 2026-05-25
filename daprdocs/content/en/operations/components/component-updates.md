@@ -51,11 +51,7 @@ Any create, update, or deletion of these component types is ignored by the sidec
 
 The Dapr sidecar also reloads [Configuration]({{% ref "configuration-overview.md" %}}), [Resiliency]({{% ref "resiliency-overview.md" %}}), and [HTTPEndpoint]({{% ref "service-invocation-overview.md" %}}) resources.
 
-Unlike Components and Subscriptions which are reloaded in-place, changes to these resource types trigger an automatic **graceful restart** of the Dapr sidecar process (via SIGHUP). This ensures that the new configuration is applied cleanly. Unchanged resources are detected and silently ignored, so a restart only occurs when an actual change is detected.
-
-{{% alert title="Windows" color="warning" %}}
-SIGHUP is not supported on Windows. On Windows, you must fully restart the `daprd` process to pick up changes to Configuration, Resiliency, and HTTPEndpoint resources.
-{{% /alert %}}
+Unlike Components and Subscriptions which are reloaded in-place, changes to these resource types trigger an automatic **graceful restart** of the Dapr sidecar process. This ensures that the new configuration is applied cleanly. Unchanged resources are detected and silently ignored, so a restart only occurs when an actual change is detected.
 
 ## Further reading
 - [Components concept]({{% ref components-concept.md %}})
