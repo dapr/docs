@@ -313,7 +313,7 @@ Deploy a new Azure Static Web App for the future Dapr release. For this example,
 1. Log into Azure Developer CLI (`azd`) using the Dapr Azure subscription.
 
    ```bash
-   azd login
+   azd auth login
    ```
 
 1. In the browser prompt, verify you're logging in as Dapr and complete the login.
@@ -374,38 +374,7 @@ You can repeat these steps for any preview versions.
 1. Merge the PR from `release_v1.0` to `v1.0`. Delete the release/v1.0 branch.
 1. Merge the PR from `release_v1.1` to `v1.1`. Delete the release/v1.1 branch.
 1. Merge the PR from `release_v1.2` to `v1.2`. Delete the release/v1.2 branch.
+1. In the GitHub UI **Settings > General**, update the **Default branch** to the latest version (e.g. `v1.1`).
 
 Congrats on the new docs release! 🚀 🎉 🎈
-
-## Pull in SDK doc updates
-
-SDK docs live in each of the SDK repos. Changes made to the SDK docs are pushed to the relevant SDK repo. For example, to update the Go SDK docs, you push changes to the `dapr/go-sdk` repo. Until you pull the latest `dapr/go-sdk` commit into the `dapr/docs` current version branch, your Go SDK docs updates won't be reflected on the Dapr docs site. 
-
-To bring updates to the SDK docs live to the Dapr docs site, you need to perform a straightforward `git pull`. This example refers to the Go SDK, but applies to all SDKs.
-
-1. Pull the latest upstream into your local `dapr/docs` version branch.
-
-1. Change into the root of the `dapr/docs` directory.
-
-1. Change into the Go SDK repo. This command takes you out of the `dapr/docs` context and into the `dapr/go-sdk` context.
-
-   ```bash
-   cd sdkdocs/go
-   ```
-
-1. Switch to the `main` branch in `dapr/go-sdk`.
-
-   ```bash
-   git checkout main
-   ```
-
-1. Pull the latest Go SDK commit.
-
-   ```bash
-   git pull upstream main
-   ```
-
-1. Change into the `dapr/docs` context to commit, push, and create a PR.
-
-## Next steps
 
