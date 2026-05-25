@@ -21,7 +21,7 @@ When a dispatch would exceed the budget:
 This is a per-workflow safety mechanism only, not a backpressure or quota feature. The intended response is for the operator to either:
 
 1. **Raise `--max-body-size`** on the affected sidecar (and restart it). The next dispatch will pass the pre-check and the workflow resumes. Activity dispatches inherit the same headroom rule, so consider the activity input/output size as well.
-2. **Force-purge the workflow** if the payload has grown unboundedly (for example, a workflow that has been appending to a large list for too long, or an unintended `ContinueAsNew` accumulating history). See [How-to: Manage workflows]({{% ref howto-manage-workflow.md %}}).
+2. **Force-purge the workflow** if the payload has grown unboundedly (for example, a workflow that has been appending to a large list for too long). See [How to: Manage workflows]({{% ref howto-manage-workflow.md %}}).
 3. **Restructure the workflow** to avoid carrying large payloads across activities, for example by passing references (object store URLs, state-store keys) instead of inline data.
 
 The same pre-check applies to activity dispatches; an oversized activity request stalls only that activity, not the parent workflow.
@@ -43,7 +43,7 @@ Both histograms share buckets concentrated around the 0.95 stall threshold:
 
 Values at or above `1.0` correspond to dispatches that exceeded `--max-body-size` itself. Values in the `(0.95, 1.0]` range correspond to dispatches that tripped the safety threshold and were stalled.
 
-Recording is skipped entirely when `--max-body-size` is not configured, because the ratio is undefined without a limit.
+Recording is skipped entirely when `--max-body-size` is set to a non-positive value (`0` or negative), which signals "no limit" and matches the convention used by the Dapr HTTP server. The ratio is undefined without a limit. With the default `4Mi` (or any explicit positive value) recording is always active.
 
 ### Suggested alerts
 
@@ -73,5 +73,5 @@ Both queries are independent of the actual `--max-body-size` setting, so they co
 
 - [How-To: Handle larger body requests]({{% ref increase-request-size.md %}}) (raising `--max-body-size`)
 - [Workflow features and concepts]({{% ref workflow-features-concepts.md %}})
-- [How-To: Manage workflows]({{% ref howto-manage-workflow.md %}}) (force-purge)
+- [How to: Manage workflows]({{% ref howto-manage-workflow.md %}}) (force-purge)
 - [Workflow architecture]({{% ref workflow-architecture.md %}})
