@@ -28,6 +28,18 @@ spec:
     value: "true"
   - name: caCertificatePath
     value: "/path/to/ca-cert"
+  - name: clientId
+    value: "zeebe-client"
+  - name: clientSecret
+    value: "zeebe-secret"
+  - name: authorizationServerUrl
+    value: "https://issuer.example.com/oauth/token"
+  - name: tokenAudience
+    value: "zeebe-api"
+  - name: tokenScope
+    value: "read write"
+  - name: clientConfigPath
+    value: "/tmp/zeebe-credentials.yaml"
   - name: workerName
     value: "products-worker"
   - name: workerTimeout
@@ -62,6 +74,12 @@ spec:
 | `gatewayKeepAlive`        | N | Input | Sets how often keep alive messages should be sent to the gateway. Defaults to 45 seconds                                         | `"45s"` |
 | `usePlainTextConnection`  | N | Input | Whether to use a plain text connection or not                                                                                    | `"true"`, `"false"` |
 | `caCertificatePath`       | N | Input | The path to the CA cert                                                                                                          | `"/path/to/ca-cert"` |
+| `clientId`                | N | Input | OAuth client ID used to request an access token. When OAuth is configured, set this together with `clientSecret`, `authorizationServerUrl`, and `tokenAudience` | `"zeebe-client"` |
+| `clientSecret`            | N | Input | OAuth client secret used to request an access token. When OAuth is configured, set this together with `clientId`, `authorizationServerUrl`, and `tokenAudience` | `"zeebe-secret"` |
+| `authorizationServerUrl`  | N | Input | OAuth authorization server URL used to obtain access tokens. When OAuth is configured, set this together with `clientId`, `clientSecret`, and `tokenAudience` | `"https://issuer.example.com/oauth/token"` |
+| `tokenAudience`           | N | Input | OAuth token audience for Zeebe API access. When OAuth is configured, set this together with `clientId`, `clientSecret`, and `authorizationServerUrl` | `"zeebe-api"` |
+| `tokenScope`              | N | Input | Optional OAuth scope requested in the access token when OAuth is configured | `"read write"` |
+| `clientConfigPath`        | N | Input | Optional path to the OAuth credentials cache file when OAuth is configured | `"/tmp/zeebe-credentials.yaml"` |
 | `workerName`              | N | Input | The name of the worker activating the jobs, mostly used for logging purposes                                                     | `"products-worker"` |
 | `workerTimeout`           | N | Input | A job returned after this call will not be activated by another call until the timeout has been reached; defaults to 5 minutes   | `"5m"` |
 | `requestTimeout`          | N | Input | The request will be completed when at least one job is activated or after the requestTimeout. If the requestTimeout = 0, a default timeout is used. If the requestTimeout < 0, long polling is disabled and the request is completed immediately, even when no job is activated. Defaults to 10 seconds  | `"30s"` |
@@ -74,6 +92,14 @@ spec:
 | `autocomplete`            | N | Input | Indicates if a job should be autocompleted or not. If not set, all jobs will be auto-completed by default. Disable it if the worker should manually complete or fail the job with either a business error or an incident | `"true"`, `"false"` |
 | `retryBackOff`            | N | Input | The back-off timeout for the next retry if a job fails                                                                           | `15s` |
 | `direction`            | N | Input | The direction of the binding | `"input"` |
+
+OAuth is optional. If any OAuth metadata field is set, all of these fields are required: `clientId`, `clientSecret`, `authorizationServerUrl`, and `tokenAudience`.
+
+### OAuth cache path guidance
+
+- `clientConfigPath` points to the OAuth credentials cache file used by the Zeebe client.
+- The Dapr sidecar must have write permissions to this file path.
+- To preserve cached credentials across restarts, use a persistent mounted path.
 
 ## Binding support
 
