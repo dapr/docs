@@ -16,39 +16,37 @@ Workflow access policies are a pure allow-list. A request is permitted if, and o
 
 ## Terminology
 
-### Caller App ID
+### Caller and target applications
 
-The Dapr application identity (App ID) of the application making the request. For cross-app calls the caller identity is taken from the SPIFFE ID in the mTLS certificate. For same-sidecar (self) calls the local App ID is used directly.
+Workflow access policies describe what *caller* applications are allowed to do against a *target* application:
 
-### SPIFFE identity
+- The **target** application is the application that hosts the workflow or activity being scheduled. The policy is enforced inside the target's Dapr sidecar (callee-side enforcement). A policy applies to a target through the `spec.scopes` field, which lists the target App IDs the policy applies to.
+- The **caller** application is the application that is invoking the workflow or activity. For cross-app calls, the caller's App ID is taken from the [SPIFFE](https://spiffe.io/) identity in the mTLS client certificate. For same-sidecar (self) calls, the local App ID is used directly.
 
-Dapr uses [SPIFFE](https://spiffe.io/) identities embedded in mTLS certificates to identify callers. The SPIFFE ID has the format `spiffe://<trustdomain>/ns/<namespace>/<appid>`. The App ID is extracted from this identity when a workflow access policy is evaluated.
+The SPIFFE ID embedded in the mTLS certificate has the format `spiffe://<trustdomain>/ns/<namespace>/<appid>`. The App ID and namespace are extracted from this identity when a workflow access policy is evaluated.
 
-### Glob pattern
+### Workflow and activity name matching
 
-Workflow and activity names in policy rules support glob pattern matching:
-- `*` matches any sequence of characters
-- `?` matches any single character
-- `[abc]` matches any character in the set
+Workflow and activity names in policy rules are matched as either exact names or glob patterns. Glob matching follows Go's [`path.Match`](https://pkg.go.dev/path#Match) semantics:
+
+- `*` matches any sequence of non-separator characters
+- `?` matches any single non-separator character
+- `[abc]` matches any character in the set (a character class)
 
 ### Operations
 
-A workflow rule grants the listed callers access to one or more of these operations:
+Workflow and activity rules grant the listed callers permission to `schedule` the named workflow or activity. A parent workflow on one app can schedule a child workflow or activity on a target app; the target's policy decides whether the call is permitted.
 
-| Operation | Triggered by |
-| --- | --- |
-| `schedule` | `StartWorkflow` / `CreateWorkflowInstance` |
-| `terminate` | `TerminateWorkflow` |
-| `raise` | `RaiseEventWorkflow` |
-| `pause` | `PauseWorkflow` |
-| `resume` | `ResumeWorkflow` |
-| `purge` | `PurgeWorkflow` |
-| `get` | `GetWorkflow` / `WaitForRuntimeStatus` |
-| `rerun` | `RerunWorkflowFromEvent` |
+- Workflow rules require an `operations` field. Set it to `[schedule]`.
+- Activity rules don't have an `operations` field. Activities only support scheduling.
 
-Activities only support the `schedule` operation, so an activity rule has no `operations` field.
+{{% alert title="Operations are scheduling-only today" color="warning" %}}
+`schedule` is the only operation that takes effect through the standard Dapr workflow APIs. The CRD enum accepts additional values (`terminate`, `raise`, `pause`, `resume`, `purge`, `get`, `rerun`) for forward compatibility with future cross-app workflow APIs, but those operations currently target the local sidecar, resolve to self-calls, and so always succeed regardless of policy. Use `[schedule]` in your rules until cross-app variants of the other APIs are available.
+{{% /alert %}}
 
 ## CRD specification
+
+The example below shows every field in a workflow access policy. The policy is applied to `orders-target` in the `production` namespace (via `scopes`). It grants the `frontend` and `ops-console` applications (the `callers`) permission to schedule `OrderWF`, schedule any workflow whose name starts with `Report`, and schedule the `ChargePayment` activity and any activity whose name starts with `RefundEvent`.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -65,17 +63,9 @@ spec:
         - appID: ops-console
       workflows:
         - name: OrderWF
-          operations:
-            - schedule
-            - terminate
-            - raise
-            - pause
-            - resume
-            - purge
-            - get
-            - rerun
+          operations: [schedule]
         - name: "Report*"
-          operations: [get]
+          operations: [schedule]
       activities:
         - name: ChargePayment
         - name: "RefundEvent*"
@@ -83,26 +73,28 @@ spec:
 
 ### Spec fields
 
+Fields are listed in the order they appear in the YAML document.
+
 | Field | Required | Type | Description |
 |-------|:--------:|------|-------------|
-| `rules` | N | list | Allow-list of rules. A call is permitted if any rule matches. With no rules and policies loaded, all cross-app calls are denied. |
-| `rules[].callers` | Y | list | List of caller objects this rule applies to. Must contain at least one entry. |
-| `rules[].callers[].appID` | Y | string | The Dapr App ID of the calling application. |
+| `scopes` | N | list | Target App IDs this policy applies to. If omitted or empty, the policy applies to all applications. The policy is always enforced on the callee (target) side. |
+| `rules` | N | list | Allow-list of rules. A call is permitted if any rule matches. If `rules` is omitted or empty while a policy is loaded for the target, all cross-app calls are denied. |
+| `rules[].callers` | Y | list | List of caller objects this rule applies to. Must contain at least one entry. Every caller must be listed explicitly (with the exception of self-calls, which are always allowed). |
+| `rules[].callers[].appID` | Y | string | The Dapr App ID of the calling application. The caller must be in the same namespace as the target; cross-namespace calls are denied when policies are active. |
 | `rules[].workflows` | N* | list | Workflow rules granted to the matched callers. |
-| `rules[].workflows[].name` | Y | string | Exact name or glob pattern of the workflow. |
-| `rules[].workflows[].operations` | Y | list | One or more of `schedule`, `terminate`, `raise`, `pause`, `resume`, `purge`, `get`, `rerun`. |
+| `rules[].workflows[].name` | Y | string | Exact name or [glob pattern](https://pkg.go.dev/path#Match) of the workflow. |
+| `rules[].workflows[].operations` | Y | list | Set to `[schedule]`. The CRD also accepts `terminate`, `raise`, `pause`, `resume`, `purge`, `get`, `rerun` for forward compatibility; these have no effect today because the matching public workflow APIs do not route cross-app. |
 | `rules[].activities` | N* | list | Activity rules granted to the matched callers. |
-| `rules[].activities[].name` | Y | string | Exact name or glob pattern of the activity. Activities only support the `schedule` operation, so there is no `operations` field. |
-| `scopes` | N | list | App IDs to which this policy applies. If omitted or empty, the policy applies to all applications. |
+| `rules[].activities[].name` | Y | string | Exact name or [glob pattern](https://pkg.go.dev/path#Match) of the activity. Activities only support the `schedule` operation, so there is no `operations` field. |
 
 \* At least one of `workflows` or `activities` must be present in each rule.
 
 ## Policy semantics
 
 1. **No policies loaded:** All workflow and activity requests are allowed. This preserves backward compatibility when no policies exist.
-2. **One or more policies loaded:** The target defaults to deny. A request is permitted only if some rule matches the caller, the operation, and the workflow or activity name.
-3. **Self-calls are always allowed:** If the caller App ID is the same as the target App ID, the request is permitted regardless of policy contents. This means a target app does not need to list itself in its own policy to call its own workflows or activities (including the internal reminder-based execution path).
-4. **Cross-namespace calls are denied** when policies are active.
+2. **One or more policies loaded:** The target defaults to deny. A cross-app schedule is permitted only if some rule matches the caller and the workflow or activity name.
+3. **Self-calls are always allowed:** If the caller App ID is the same as the target App ID, the request is permitted regardless of policy contents. This means a target app does not need to list itself in its own policy to schedule its own workflows or activities (including the internal reminder-based execution path).
+4. **Cross-namespace calls are denied** when policies are active. A policy is namespaced and applies to target apps in its own namespace via `scopes`. The caller must also be in the same namespace as the target; calls from any other namespace are rejected even if the caller App ID appears in a rule.
 5. **mTLS is required for cross-app enforcement:** if any policy is loaded and mTLS is not active, cross-app calls are denied because the caller's SPIFFE identity cannot be verified.
 6. **Glob matching:** `*`, `?`, and character classes work on both workflow and activity names.
 
@@ -110,42 +102,41 @@ spec:
 
 Workflow access policies are enforced inside the orchestrator and activity actors, under the actor lock, after the workflow's internal state has been loaded. This eliminates any time-of-check-to-time-of-use race between resolving a workflow's name and dispatching the operation.
 
-The gRPC and HTTP public APIs (`StartWorkflow`, `TerminateWorkflow`, `RaiseEventWorkflow`, `PauseWorkflow`, `ResumeWorkflow`, `PurgeWorkflow`, `GetWorkflow`, `RerunWorkflowFromEvent`) all flow through this enforcement point, so coverage is the same regardless of which protocol the caller uses. Cross-app callers attempting non-subject actor methods, or attempting to inject reminders, are also denied.
+The cross-app paths covered today are scheduling a child workflow or activity on another app: a parent workflow on the calling app reaches the target app's workflow/activity actor, which evaluates the policy before dispatching. The same enforcement point also blocks cross-app callers attempting non-subject actor methods or trying to inject reminders into a target actor.
 
-## Example scenarios
+## Example policies
 
-### Scenario 1: Allow a frontend to drive a specific workflow
+### Scenario 1: Restrict who can schedule a cross-app workflow
 
-Allow `frontend-app` to schedule and observe `OrderWF` on the `order-service` application.
+Allow `orchestrator-app` to schedule `OrderWF` on the `order-service` application in the `default` namespace. No other applications can schedule this workflow, with the exception of `order-service` itself (self-calls are always allowed).
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: WorkflowAccessPolicy
 metadata:
   name: order-service-policy
+  namespace: default
 scopes:
   - order-service
 spec:
   rules:
     - callers:
-        - appID: frontend-app
+        - appID: orchestrator-app
       workflows:
         - name: OrderWF
-          operations:
-            - schedule
-            - get
-            - terminate
+          operations: [schedule]
 ```
 
-### Scenario 2: Read-only access for a reporting tool
+### Scenario 2: Glob-matched workflow scheduling
 
-Grant a reporting application read-only access to any workflow whose name begins with `Report`.
+Allow `analytics-app` to schedule any workflow whose name begins with `Report` on the `reporting-service` application.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: WorkflowAccessPolicy
 metadata:
-  name: reporting-readonly
+  name: reporting-glob
+  namespace: default
 scopes:
   - reporting-service
 spec:
@@ -154,18 +145,19 @@ spec:
         - appID: analytics-app
       workflows:
         - name: "Report*"
-          operations: [get]
+          operations: [schedule]
 ```
 
 ### Scenario 3: Cross-app activities (multi-application workflows)
 
-When using multi-application workflows, the target application no longer needs to list itself in the `callers` to execute its own activities. Self-calls are always allowed, so the policy only describes which other apps may schedule activities on the target.
+When using multi-application workflows, the target application does not need to list itself in the `callers` to execute its own activities. Self-calls are always allowed, so the policy only describes which *other* apps may schedule activities on the target. In the policy below, `orchestrator-app` can schedule the `TrainModel` and `ValidateModel` activities on the `ml-worker` application. No other applications can. The `orchestrator-app` must be in the same namespace as `ml-worker`, because cross-namespace calls are denied when policies are active.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: WorkflowAccessPolicy
 metadata:
   name: ml-worker-policy
+  namespace: production
 scopes:
   - ml-worker
 spec:
@@ -181,13 +173,14 @@ spec:
 
 ### Scenario 4: Mixed workflow and activity access for a single caller
 
-A single rule can grant a caller both workflow and activity access.
+A single rule can grant a caller scheduling access to both workflows and activities. Here the `api-gateway` application can schedule the `ChargeCustomer` workflow, the `ChargePayment` activity, and any activity whose name starts with `Refund` on the `payments-service` application.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: WorkflowAccessPolicy
 metadata:
   name: payments-policy
+  namespace: default
 scopes:
   - payments-service
 spec:
@@ -196,7 +189,7 @@ spec:
         - appID: api-gateway
       workflows:
         - name: ChargeCustomer
-          operations: [schedule, get]
+          operations: [schedule]
       activities:
         - name: ChargePayment
         - name: "Refund*"
@@ -212,7 +205,7 @@ spec:
 
 ## Self-hosted setup
 
-In self-hosted mode, place the workflow access policy YAML in the resources directory (default: `$HOME/.dapr/components`, or the path passed via `--resources-path`).
+In self-hosted mode, place the workflow access policy YAML in the resources directory (`$HOME/.dapr/components` by default, or the path passed via `--resources-path`).
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -227,10 +220,14 @@ spec:
         - appID: frontend
       workflows:
         - name: MyWorkflow
-          operations: [schedule, get]
+          operations: [schedule]
 ```
 
-Ensure mTLS is enabled by running Sentry locally. See [Setup & configure mTLS certificates]({{% ref mtls %}}) for details on configuring mTLS in self-hosted mode.
+For cross-app enforcement, mTLS must be enabled by running Sentry locally. See [Setup & configure mTLS certificates]({{% ref mtls %}}) for details on configuring mTLS in self-hosted mode.
+
+{{% alert title="Local development without mTLS" color="primary" %}}
+mTLS is required only for *cross-app* enforcement, because the caller identity is taken from the SPIFFE ID in the mTLS certificate. Same-sidecar (self) calls do not depend on mTLS and are always permitted, so you can develop and test a single-app workflow locally without running Sentry. As soon as you need to validate cross-app policy enforcement, run with mTLS enabled.
+{{% /alert %}}
 
 ## Kubernetes setup
 

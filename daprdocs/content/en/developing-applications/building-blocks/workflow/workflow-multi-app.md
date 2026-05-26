@@ -247,13 +247,16 @@ public sealed class BusinessWorkflow : Workflow<string, string>
 
 When using multi-application workflows, you may want to restrict which applications can schedule activities or child workflows on a target application. Dapr provides the `WorkflowAccessPolicy` resource for this purpose.
 
-Policies are a pure allow-list and self-calls are always permitted, so the target application does not need to list itself in the `callers` to execute its own activities. The following example allows `orchestrator-app` to schedule the `TrainModel` and `ValidateModel` activities on `ml-worker`:
+Policies are a pure allow-list and self-calls are always permitted, so the target application does not need to list itself in the `callers` to execute its own activities. The following example of a workflow access policy is applied to the `ml-worker` application. All policies that target a given appID (in this case `ml-worker`) are loaded by the sidecar when the application is instantiated.
+
+This policy allows the `orchestrator-app` application to schedule the `TrainModel` and `ValidateModel` activities on the `ml-worker` application.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: WorkflowAccessPolicy
 metadata:
   name: ml-worker-policy
+  namespace: production
 scopes:
   - ml-worker
 spec:
@@ -265,7 +268,7 @@ spec:
         - name: ValidateModel
 ```
 
-Read [How-To: Apply workflow access policies]({{% ref workflow-access-policy %}}) for the full operation set (`schedule`, `terminate`, `raise`, `pause`, `resume`, `purge`, `get`, `rerun`), more examples, and details on the cross-app enforcement model.
+Read [How-To: Apply workflow access policies]({{% ref workflow-access-policy %}}) for more examples and details on the cross-app enforcement model.
 
 ## Related links
 

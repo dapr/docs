@@ -160,6 +160,8 @@ See [How-To: Manage workflows]({{< ref howto-manage-workflow.md >}}) for detaile
 
 Dapr provides fine-grained access control for workflow and activity scheduling through the `WorkflowAccessPolicy` resource. You can restrict which applications are permitted to start specific workflows or call specific activities on your application.
 
+Workflow access policies for a given application (appID) are loaded by the sidecar when the application is instantiated, and are hot-reloaded thereafter when policies are added, updated, or removed. Policies are a pure allow-list evaluated on the callee side: a cross-app schedule is permitted only if some rule in some loaded policy matches the caller and the workflow or activity name.
+
 This is especially important for multi-application workflows, where activities and child workflows execute across application boundaries. Read [How-To: Apply workflow access policies]({{% ref workflow-access-policy %}}) for full configuration details.
 
 ## Watch the demo
