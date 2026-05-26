@@ -57,28 +57,56 @@ The Java SDK allows you to interface with all of the [Dapr building blocks]({{% 
 
 ### Invoke a service
 
+{{% alert title="Deprecated" color="warning" %}}
+The `DaprClient.invokeMethod` wrappers for service invocation are deprecated. Use the SDK's `DaprClient.invokeHttpClient(appId)` helper described below, or any native HTTP (or gRPC) client against the Dapr sidecar.
+{{% /alert %}}
+
+The SDK provides a pre-configured HTTP client wrapper bound to the target app's invoke prefix. Relative paths resolve against `{daprHttpEndpoint}/v1.0/invoke/{appId}/method/`, and the `dapr-api-token` header is attached automatically when one is configured:
+
 ```java
+import io.dapr.client.DaprBodyPublishers;
 import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
+import io.dapr.client.DaprInvokeHttpClient;
 
-try (DaprClient client = (new DaprClientBuilder()).build()) {
-  // invoke a 'GET' method (HTTP) skipping serialization: \say with a Mono<byte[]> return type
-  // for gRPC set HttpExtension.NONE parameters below
-  response = client.invokeMethod(SERVICE_TO_INVOKE, METHOD_TO_INVOKE, "{\"name\":\"World!\"}", HttpExtension.GET, byte[].class).block();
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
-  // invoke a 'POST' method (HTTP) skipping serialization: to \say with a Mono<byte[]> return type     
-  response = client.invokeMethod(SERVICE_TO_INVOKE, METHOD_TO_INVOKE, "{\"id\":\"100\", \"FirstName\":\"Value\", \"LastName\":\"Value\"}", HttpExtension.POST, byte[].class).block();
+try (DaprClient client = new DaprClientBuilder().build()) {
+  DaprInvokeHttpClient invoker = client.invokeHttpClient("order-processor");
 
-  System.out.println(new String(response));
+  HttpRequest request = invoker.newRequestBuilder("orders")
+      .header("Content-Type", "application/json")
+      .POST(DaprBodyPublishers.json(order))
+      .build();
 
-  // invoke a 'POST' method (HTTP) with serialization: \employees with a Mono<Employee> return type      
-  Employee newEmployee = new Employee("Nigel", "Guitarist");
-  Employee employeeResponse = client.invokeMethod(SERVICE_TO_INVOKE, "employees", newEmployee, HttpExtension.POST, Employee.class).block();
+  HttpResponse<String> response = invoker.send(request, HttpResponse.BodyHandlers.ofString());
 }
 ```
 
+`DaprBodyPublishers.json(...)` serializes the payload using the SDK's default Jackson serializer, matching the JSON encoding the deprecated `invokeMethod` APIs applied internally. For raw payloads use any `HttpRequest.BodyPublisher` (for example `HttpRequest.BodyPublishers.ofString(...)`).
+
+Alternatively, you can use a raw `java.net.http.HttpClient` against the sidecar with the `dapr-app-id` header — no SDK dependency required for the call itself:
+
+```java
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+HttpClient httpClient = HttpClient.newHttpClient();
+
+HttpRequest request = HttpRequest.newBuilder()
+    .POST(HttpRequest.BodyPublishers.ofString("{\"orderId\":100}"))
+    .uri(URI.create("http://localhost:" + DAPR_HTTP_PORT + "/orders"))
+    .header("Content-Type", "application/json")
+    .header("dapr-app-id", "order-processor")
+    .build();
+
+HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+```
+
 - For a full guide on service invocation visit [How-To: Invoke a service]({{% ref howto-invoke-discover-services.md %}}).
-- Visit [Java SDK examples](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/invoke) for code samples and instructions to try out service invocation
 
 ### Save & get application state
 
