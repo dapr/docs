@@ -56,7 +56,9 @@ Multi-application workflows, enable you to orchestrate complex business processe
 
 When mTLS and the `WorkflowHistorySigning` feature flag are enabled, Dapr cryptographically signs every workflow history event using the sidecar's X.509 SPIFFE identity.
 On each load, the full signature chain is verified, detecting any tampering of workflow state in the state store.
-This means an attacker who gains write access to the state store cannot, for example, change the price of a purchased item, add a recipient to an outbound message, swap an approved status to denied, or inject a fake activity result, without verification failing and the workflow being marked as tampered.
+
+For example, consider an order-processing workflow that captures payment, ships the goods, and emails a receipt. Without signing, an attacker with write access to the state store could rewrite the recorded order total between the payment step and the shipping step, so the workflow ships at a lower price than was actually charged, and Dapr would have no way to know. With signing enabled, the modified event no longer matches its signature, the next load fails verification, and Dapr marks the workflow as `FAILED` with error type `DAPR_WORKFLOW_HISTORY_TAMPERED` instead of acting on the forged data. The same protection applies to approvals being flipped from denied to approved, extra recipients being added to outbound messages, or fake activity results being injected into the inbox.
+
 Signing is a one-way commitment: once enabled for a workflow, it cannot be disabled.
 
 [Learn more about workflow history signing.]({{% ref "workflow-history-signing.md" %}})

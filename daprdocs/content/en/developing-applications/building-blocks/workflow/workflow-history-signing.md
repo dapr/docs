@@ -12,6 +12,45 @@ lifetime is signed using the sidecar's mTLS identity (X.509 SPIFFE Verifiable Id
 auditable chain of signatures that is verified each time the workflow state is
 loaded.
 
+{{% alert title="Before you enable signing: plan your root CA lifecycle" color="warning" %}}
+Workflow history signing trusts your Dapr **root CA**. The default Dapr-generated
+self-signed root is valid for **one year**. If that root expires, or if you
+rotate to a new root with a different private key, **every signed workflow
+issued under the old root stops verifying** and fails to load with error type
+`SignatureVerificationFailed`. There is no re-sign path.
+
+Before turning the feature on, decide which of the following you will commit to:
+
+1. **Renew the leaf/issuer with the same root key** (recommended). Back up the
+   Dapr-generated root private key now and reuse it for every renewal, or
+2. **Bring your own CA** with a root key you control and store securely (HSM
+   or secret store), and reuse it for all issuer renewals, or
+3. **Drain before rotating to a new root.** Only run workflows short enough
+   to complete (or be purged) inside one root-CA validity window, and complete
+   or purge all signed workflows before rotating the root.
+
+If you cannot guarantee one of these for the full lifetime of your longest
+workflow, **do not enable signing yet**. See
+[long-running workflows and root CA expiry](#long-running-workflows-and-root-ca-expiry)
+for the full guidance.
+{{% /alert %}}
+
+## About SPIFFE Verifiable Identity Documents (SVIDs)
+
+An SVID is the workload's digital passport. Each Dapr sidecar gets one from
+Sentry and uses it both for mTLS and for signing workflow history.
+
+- **SPIFFE ID**: embedded in the X.509 certificate (in the URI Subject
+  Alternative Name) as `spiffe://<trust-domain>/ns/<namespace>/<app-id>`. It
+  identifies the workload that produced the signature.
+- **Cryptographic proof**: the sidecar holds the matching private key and uses
+  it to sign each history batch.
+- **Trust roots**: every SVID chains to a Sentry CA. Verifiers accept a
+  signature only if its certificate chains to a CA in the trust bundle.
+
+For background on Sentry, mTLS, and trust domains, see [setup & configure
+mTLS]({{% ref "mtls.md" %}}) and [security concepts]({{% ref "security-concept.md" %}}).
+
 ## Overview
 
 Workflows in Dapr execute as a series of deterministic replay steps. Each step
