@@ -227,7 +227,7 @@ spec:
           operations: [schedule]
 ```
 
-For cross-app enforcement, mTLS must be enabled by running Sentry locally. See [Setup & configure mTLS certificates for self hosted]({{% ref mtls/#self-hosted %}}) for details on configuring mTLS in self-hosted mode.
+For cross-app enforcement, mTLS must be enabled by running Sentry locally. See [Setup & configure mTLS certificates for self hosted]({{% ref "mtls/#self-hosted" %}}) for details on configuring mTLS in self-hosted mode.
 
 {{% alert title="Local development without mTLS" color="primary" %}}
 mTLS is required only for *cross-app* enforcement, because the caller identity is taken from the SPIFFE ID in the mTLS certificate. Same-sidecar (self) calls do not depend on mTLS and are always permitted, so you can develop and test a single-app workflow locally without running Sentry. As soon as you need to validate cross-app policy enforcement, run with mTLS enabled.
