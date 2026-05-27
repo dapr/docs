@@ -207,7 +207,7 @@ func FraudDetection(ctx *workflow.WorkflowContext) (any, error) {
 
 {{< /tabpane >}}
 
-Whatever the language, the returned propagated-history object exposes the same conceptual shape:
+For all SDKs the returned `propagated-history`object exposes the same properties:
 
 - **Events** — A list of upstream history events in order
 - **Scope** — which scope the parent chose (`OWN_HISTORY` or `LINEAGE`)
