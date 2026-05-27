@@ -8,6 +8,10 @@ weight: 6000
 
 The `WorkflowAccessPolicy` is a Dapr resource that controls which applications can schedule workflows and activities cross-app on a target application. Policies are a pure allow-list: a call is permitted if any loaded rule matches.
 
+{{% alert title="Cross-namespace workflows are not supported" color="warning" %}}
+Workflows are always scoped to a single namespace. Cross-namespace workflow and activity calls are always denied, regardless of policy contents and regardless of whether any policy is loaded. All callers and targets in a multi-application workflow must be in the same namespace.
+{{% /alert %}}
+
 {{% alert title="Scheduling is the only operation today" color="warning" %}}
 Use `operations: [schedule]` in workflow rules. The CRD enum reserves additional values (`terminate`, `raise`, `pause`, `resume`, `purge`, `get`, `rerun`) for forward compatibility with future cross-app workflow APIs, but those operations currently target the local sidecar and resolve to self-calls, so they always succeed regardless of policy.
 {{% /alert %}}
@@ -42,7 +46,7 @@ Fields are listed in the order they appear in the YAML document.
 | `scopes` | N | list | Target App IDs that this policy applies to. If omitted or empty, the policy applies to all applications. The policy is enforced on the callee (target) side. | `["order-service"]` |
 | `rules` | N | list | Allow-list of rules. A call is permitted if any rule matches. If `rules` is omitted or empty while policies are loaded, all cross-app calls are denied. | See below |
 | `rules[].callers` | Y | list | List of caller objects that this rule applies to. Must contain at least one entry. | See below |
-| `rules[].callers[].appID` | Y | string | The Dapr App ID of the calling application. | `frontend-app` |
+| `rules[].callers[].appID` | Y | string | The Dapr App ID of the calling application. The caller must be in the same namespace as the target; cross-namespace workflow calls are always denied and are not supported. | `frontend-app` |
 | `rules[].workflows` | N* | list | Workflow rules granted to the matched callers. | See below |
 | `rules[].workflows[].name` | Y | string | Exact name or [glob pattern](https://pkg.go.dev/path#Match) of the workflow. Supports `*`, `?`, and `[abc]` character classes. | `OrderWF`, `Report*` |
 | `rules[].workflows[].operations` | Y | list | Set to `[schedule]`. The CRD also accepts `terminate`, `raise`, `pause`, `resume`, `purge`, `get`, `rerun` for forward compatibility; these have no effect today because the matching public workflow APIs do not route cross-app. | `[schedule]` |

@@ -10,6 +10,10 @@ Using workflow access policies, you can control which calling applications are p
 
 Workflow access policies are a pure allow-list. A request is permitted if, and only if, some rule in some loaded policy matches the caller, the operation, and the workflow or activity name. With no policies loaded, all calls are allowed (open by default), preserving backward compatibility. Self-calls (where the caller App ID is the same as the target App ID) are always allowed, regardless of policy contents.
 
+{{% alert title="Cross-namespace workflows are not supported" color="warning" %}}
+Workflows are always scoped to a single namespace. Any workflow or activity call from a caller in a different namespace than the target is always denied, regardless of policy contents and regardless of whether any policy is loaded. All app IDs involved in a multi-application workflow must be in the same namespace.
+{{% /alert %}}
+
 ## Prerequisites
 
 - [Dapr installed with mTLS enabled]({{% ref mtls %}}). mTLS is required for cross-app enforcement because the caller's identity is extracted from the SPIFFE ID embedded in the mTLS client certificate.
@@ -80,7 +84,7 @@ Fields are listed in the order they appear in the YAML document.
 | `scopes` | N | list | Target App IDs this policy applies to. If omitted or empty, the policy applies to all applications. The policy is always enforced on the callee (target) side. |
 | `rules` | N | list | Allow-list of rules. A call is permitted if any rule matches. If `rules` is omitted or empty while a policy is loaded for the target, all cross-app calls are denied. |
 | `rules[].callers` | Y | list | List of caller objects this rule applies to. Must contain at least one entry. Every caller must be listed explicitly (with the exception of self-calls, which are always allowed). |
-| `rules[].callers[].appID` | Y | string | The Dapr App ID of the calling application. The caller must be in the same namespace as the target; cross-namespace calls are denied when policies are active. |
+| `rules[].callers[].appID` | Y | string | The Dapr App ID of the calling application. The caller must be in the same namespace as the target; cross-namespace workflow calls are always denied and are not supported. |
 | `rules[].workflows` | N* | list | Workflow rules granted to the matched callers. |
 | `rules[].workflows[].name` | Y | string | Exact name or [glob pattern](https://pkg.go.dev/path#Match) of the workflow. |
 | `rules[].workflows[].operations` | Y | list | Set to `[schedule]`. The CRD also accepts `terminate`, `raise`, `pause`, `resume`, `purge`, `get`, `rerun` for forward compatibility; these have no effect today because the matching public workflow APIs do not route cross-app. |
@@ -94,7 +98,7 @@ Fields are listed in the order they appear in the YAML document.
 1. **No policies loaded:** All workflow and activity requests are allowed. This preserves backward compatibility when no policies exist.
 2. **One or more policies loaded:** The target defaults to deny. A cross-app schedule is permitted only if some rule matches the caller and the workflow or activity name.
 3. **Self-calls are always allowed:** If the caller App ID is the same as the target App ID, the request is permitted regardless of policy contents. This means a target app does not need to list itself in its own policy to schedule its own workflows or activities (including the internal reminder-based execution path).
-4. **Cross-namespace calls are denied** when policies are active. A policy is namespaced and applies to target apps in its own namespace via `scopes`. The caller must also be in the same namespace as the target; calls from any other namespace are rejected even if the caller App ID appears in a rule.
+4. **Cross-namespace workflow calls are always denied.** Cross-namespace workflows are not supported. A policy is namespaced and applies to target apps in its own namespace via `scopes`. The caller must be in the same namespace as the target; calls from any other namespace are always rejected, regardless of whether policies are loaded and even if the caller App ID appears in a rule.
 5. **mTLS is required for cross-app enforcement:** if any policy is loaded and mTLS is not active, cross-app calls are denied because the caller's SPIFFE identity cannot be verified.
 6. **Glob matching:** `*`, `?`, and character classes work on both workflow and activity names.
 
@@ -150,7 +154,7 @@ spec:
 
 ### Scenario 3: Cross-app activities (multi-application workflows)
 
-When using multi-application workflows, the target application does not need to list itself in the `callers` to execute its own activities. Self-calls are always allowed, so the policy only describes which *other* apps may schedule activities on the target. In the policy below, `orchestrator-app` can schedule the `TrainModel` and `ValidateModel` activities on the `ml-worker` application. No other applications can. The `orchestrator-app` must be in the same namespace as `ml-worker`, because cross-namespace calls are denied when policies are active.
+When using multi-application workflows, the target application does not need to list itself in the `callers` to execute its own activities. Self-calls are always allowed, so the policy only describes which *other* apps may schedule activities on the target. In the policy below, `orchestrator-app` can schedule the `TrainModel` and `ValidateModel` activities on the `ml-worker` application. No other applications can. The `orchestrator-app` must be in the same namespace as `ml-worker`, because cross-namespace workflows are not supported and are always denied.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

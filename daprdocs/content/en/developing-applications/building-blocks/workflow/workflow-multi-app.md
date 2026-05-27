@@ -68,6 +68,7 @@ The final history of the workflow will be saved by the app ID that hosts the ver
 {{% alert title="Restrictions" color="primary" %}}
 Like other API building blocks and resources in Dapr, workflows are scoped to a single namespace.
 This means that all app IDs involved in a multi-application workflow must be in the same namespace.
+Cross-namespace workflows are not supported: any workflow or activity call from a caller in a different namespace than the target is always denied.
 Similarly, all app IDs must use the same workflow (or actor) state store.
 Finally, the target app ID must have the activity or child workflow defined and registered, otherwise the parent workflow retries indefinitely.
 {{% /alert %}}
