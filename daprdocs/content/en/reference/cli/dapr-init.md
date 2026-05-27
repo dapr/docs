@@ -24,7 +24,6 @@ dapr init [flags]
 
 | Name                  | Environment Variable | Default       | Description                                                                          |
 | --------------------- | -------------------- | ------------- | ------------------------------------------------------------------------------------ |
-| `--dashboard-version` |                      | `latest`       | The version of the Dapr dashboard to install, for example: `1.0.0`                                                   |
 | `--enable-ha`         |                      | `false`       | Enable high availability (HA) mode                                                   |
 | `--enable-mtls`       |                      | `true`        | Enable mTLS in your cluster                                                          |
 | `--from-dir`          |                      |               | Path to a local directory containing a downloaded "Dapr Installer Bundle" release which is used to `init` the airgap environment      |
