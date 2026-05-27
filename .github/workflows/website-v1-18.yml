@@ -11,8 +11,38 @@ on:
       - v1.18
 
 jobs:
+  check_state:
+    name: Check branch state
+    runs-on: ubuntu-latest
+    outputs:
+      is_latest: ${{ steps.read_state.outputs.is_latest }}
+    steps:
+      - name: Checkout docs repo
+        uses: actions/checkout@v4
+      - name: Read version_menu from hugo.yaml
+        id: read_state
+        run: |
+          # Gate signal: this workflow only deploys when hugo.yaml's
+          # params.version_menu does NOT contain "(latest)" — i.e., the
+          # branch is currently preview or archived. While the branch is
+          # the live "latest", website-root.yml owns the deploy.
+          VERSION_MENU=$(yq '.params.version_menu' hugo.yaml)
+          echo "version_menu read from hugo.yaml: '$VERSION_MENU'"
+          if [[ -z "$VERSION_MENU" || "$VERSION_MENU" == "null" ]]; then
+            echo "::error::params.version_menu is missing from hugo.yaml — cannot determine branch state."
+            exit 1
+          fi
+          if [[ "$VERSION_MENU" == *"(latest)"* ]]; then
+            echo "Branch is the live 'latest' — deploy job will be skipped."
+            echo "is_latest=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Branch is preview or archived — deploy job will run."
+            echo "is_latest=false" >> "$GITHUB_OUTPUT"
+          fi
+
   build_and_deploy_job:
-    if: github.event.action != 'closed'
+    needs: check_state
+    if: needs.check_state.outputs.is_latest != 'true' && github.event.action != 'closed'
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
@@ -58,7 +88,8 @@ jobs:
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    needs: check_state
+    if: needs.check_state.outputs.is_latest != 'true' && github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
     name: Close Pull Request Job
     steps:
