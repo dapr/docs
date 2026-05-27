@@ -6,7 +6,7 @@ weight: 2500
 description: "Share a parent workflow's execution history with child workflows and activities for chain-of-custody, audit, and AI-agent context"
 ---
 
-By default, a child workflow or activity only sees the input it was scheduled with. The parent's execution history — what activities ran, what child workflows it spawned, what events it observed — is invisible. Workflow history propagation lets a parent opt-in to share that history with the work it schedules.
+By default, a child workflow or activity only sees the input it was scheduled with. The parent's execution history — what activities ran, what child workflows it spawned, what events it observed — is invisible. Workflow history propagation lets a parent opt-in to share that history with the workflows it schedules.
 
 This is useful for:
 
@@ -40,10 +40,10 @@ import dapr.ext.workflow as wf
 
 @wfr.workflow(name='MerchantCheckout')
 def merchant_checkout(ctx: wf.DaprWorkflowContext, order_json: str):
-    # Activity does NOT receive propagated history (default).
+    # The validate_merchant activity does NOT receive propagated history (default).
     yield ctx.call_activity(validate_merchant, input=order_json)
 
-    # Child workflow DOES receive parent's history (LINEAGE).
+    # The process_payment child workflow DOES receive parent's history (LINEAGE).
     result = yield ctx.call_child_workflow(
         process_payment,
         input=order_json,
@@ -63,10 +63,10 @@ public sealed class MerchantCheckoutWorkflow : Workflow<Order, string>
 {
     public override async Task<string> RunAsync(WorkflowContext ctx, Order order)
     {
-        // Activity does NOT receive propagated history (default).
+        // The ValidateMerchantActivity does NOT receive propagated history (default).
         await ctx.CallActivityAsync<bool>(nameof(ValidateMerchantActivity), order);
 
-        // Child workflow DOES receive parent's history (Lineage).
+        // The ProcessPaymentWorkflow child workflow DOES receive parent's history (Lineage).
         return await ctx.CallChildWorkflowAsync<string>(
             nameof(ProcessPaymentWorkflow),
             order,
@@ -105,11 +105,11 @@ func MerchantCheckout(ctx *workflow.WorkflowContext) (any, error) {
 
 {{< /tabpane >}}
 
-## Receiving propagated history
+## Accessing propagated history
 
 Inside a child workflow or activity, call `GetPropagatedHistory()` (Go / .NET) or `get_propagated_history()` (Python). It returns the propagated history if the caller opted in, or `None` / `nil` if it didn't.
 
-The example below assumes the parent shown above registered as `MerchantCheckout` with an activity `ValidateMerchant` and a child workflow `FraudDetection` (called with `Lineage`).
+The example below assumes the parent workflow shown above is registered as `MerchantCheckout` with an activity `ValidateMerchant` and a child workflow `ProcessPayment` (called with `Lineage`).
 
 {{< tabpane text=true >}}
 
@@ -209,7 +209,7 @@ func FraudDetection(ctx *workflow.WorkflowContext) (any, error) {
 
 Whatever the language, the returned propagated-history object exposes the same conceptual shape:
 
-- **Events** — the flat list of upstream history events in order
+- **Events** — A list of upstream history events in order
 - **Scope** — which scope the parent chose (`OWN_HISTORY` or `LINEAGE`)
 - **Per-workflow entries** — one entry per ancestor workflow, each tagged with that workflow's app ID, name, instance ID, and the index range of events it covers
 - **App IDs** — deduplicated list of every app that contributed events to the chain
@@ -217,27 +217,27 @@ Whatever the language, the returned propagated-history object exposes the same c
 
 Exact method names differ by SDK (`GetWorkflowByName` in Go and .NET, `get_workflow_by_name` in Python; `WorkflowResult` vs `Entries`; etc.) — see the per-SDK docs for the precise surface.
 
-## Cross-app workflows
+## History propagation in multi-app workflows
 
-When a parent workflow in App A calls a child workflow in App B, the propagated chunks travel between sidecars. Two security knobs apply:
+When a parent workflow in App A calls a child workflow in App B using multi-app workflow calling, the propagated contexts travels between applications. In this usage there are two security settings:
 
 - **mTLS** — when Dapr is deployed with mTLS (the default for Helm / `dapr init -k`), inter-sidecar traffic is encrypted and authenticated.
 - **`WorkflowHistorySigning`** — an opt-in `Configuration` feature that signs each propagated chunk with the producing app's SPIFFE identity. Receivers can verify chunks weren't tampered with after they left the producer.
 
 If `WorkflowHistorySigning` is not enabled, daprd logs a warning per dispatch:
 
-> `propagating unsigned workflow history to child workflow '...' (signing is not configured; chunks cannot be cryptographically verified by the receiver)`
+> `propagating unsigned workflow history to child workflow '...' (signing is not configured; context cannot be cryptographically verified by the receiver)`
 
 {{% alert title="Treat unsigned chunks as untrusted" color="warning" %}}
-Without signing, propagated chunks are functional but not cryptographically verifiable. Don't treat unsigned propagated history as authoritative for high-value decisions (payments, approvals). Enable `WorkflowHistorySigning` for production deployments that depend on chain-of-custody.
+Without signing, propagated context is functional but not cryptographically verifiable. Don't treat unsigned propagated history as authoritative for high-value decisions (payments, approvals). Enable `WorkflowHistorySigning` for production deployments that depend on chain-of-custody.
 {{% /alert %}}
 
 ## ContinueAsNew and rerun
 
-Propagated history flows correctly through both `ContinueAsNew` and rerun:
+Propagated history is correctly maintained with both `ContinueAsNew` and `Rerun` workflow operations. 
 
-- A workflow that received propagated history and calls `ContinueAsNew` passes the same incoming chunks to its next generation.
-- Rerunning a workflow re-issues activity / child-workflow calls with the same propagation scope they were originally scheduled with — `LINEAGE` stays `LINEAGE`, `OWN_HISTORY` stays `OWN_HISTORY`.
+- A workflow that received propagated history and calls `ContinueAsNew` passes the same incoming context to its next generation.
+- Re-running a workflow re-issues activity / child-workflow calls with the same propagation scope they were originally scheduled with — `LINEAGE` stays `LINEAGE`, `OWN_HISTORY` stays `OWN_HISTORY`.
 
 This makes long-running agents and crash-recovery scenarios behave the way you'd expect: the receiving generation/rerun sees the same history the original run did.
 

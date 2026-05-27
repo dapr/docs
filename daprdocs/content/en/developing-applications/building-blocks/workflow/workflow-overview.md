@@ -60,7 +60,12 @@ Same as Dapr actors, you can schedule reminder-like durable delays for any time 
 
 ### History propagation
 
+Workflow history propagation enables a current workflow to look back over the set of events that the workflow or a another workflow has executed and verify these actually occurred. Scenarios include fraud checks, checking compliance gates (was this activity called or not), or enabling long-running AI agents/workflows to  maintain context across calls (multi-agent, multi-app workflows) to determine what the agent or workflows claims to have done, it actually true.
+
 A parent workflow can opt to share its execution history with child workflows and activities — useful for chain-of-custody verification, fraud detection, audit, and AI-agent context that must flow across hops.
+
+For details, read [workflow history propagation ]({{% ref "workflow-history-propagation.md" %}} to understand how to apply this to a workflow, child workflow and activities.
+
 
 [Learn more about workflow history propagation.]({{< ref workflow-history-propagation.md >}})
 

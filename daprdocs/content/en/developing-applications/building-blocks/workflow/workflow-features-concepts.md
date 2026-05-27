@@ -206,14 +206,18 @@ Learn more about [external system interaction.]({{% ref "workflow-patterns.md#ex
 
 ## Workflow history propagation
 
+ Workflow history propagation enables a current workflow to look back over the set of events that the workflow or a another workflow has executed and verify these actually occurred. Some scenarios include performance fraud checks, checking compliance gates, or enable long-running AI agents/workflows to  maintain context across calls (multi-agent, multi-app workflows) to determine what the agent or workflows claims to have done, it actually true. 
+ 
+For example if you have a workflow that verifies a credit check for a user, you can use workflow history propagation to verify this actually happened for the named user. When this is combined with workflow history signing, you can further cryptographically confirm or attest this. 
+  
 A parent workflow can opt to share its execution history with downstream child workflows and activities. Two scopes are available:
 
 - **Lineage** — caller's events plus the full ancestor chain (chain-of-custody)
 - **Own history** — caller's events only (a trust boundary, ancestral lineage dropped)
 
-The receiving workflow/activity reads its inherited history via `ctx.GetPropagatedHistory()` and can verify what happened upstream — useful for fraud checks, compliance gates, and long-running AI agents that need context across hops.
+The receiving workflow/activity reads its inherited history via the SDKs `GetPropagatedHistory()` API and can verify what happened upstream. 
 
-For details, the scope comparison, and code examples, see [History propagation]({{< ref workflow-history-propagation.md >}}).
+For details, the scope comparison, and code examples, see [workflow history propagation]({{< ref workflow-history-propagation.md >}}).
 
 ## Purging
 
