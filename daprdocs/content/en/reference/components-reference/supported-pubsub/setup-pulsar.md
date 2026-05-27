@@ -306,7 +306,7 @@ spec:
 
 ### Enabling message delivery retries
 
-The Pulsar pub/sub component has no built-in support for retry strategies. This means that sidecar sends a message to the service only once and is not retried in case of failures. To make Dapr use more spohisticated retry policies, you can apply a [retry resiliency policy]({{% ref "retries-overview.md" %}}) to the Pulsar pub/sub component. Note that it will be the same Dapr sidecar retrying the redelivery the message to the same app instance and not other instances.
+The Pulsar pub/sub component has no built-in support for retry strategies. This means that sidecar sends a message to the service only once and is not retried in case of failures. To make Dapr use more spohisticated retry policies, you can apply a [retry resiliency policy]({{% ref "retries-overview.md" %}}) to the Pulsar pub/sub component. This retry policy will work on top of whatever is set for the `sendTimeoutMs` on the Pulsar message broker, which is by default [30 seconds](https://pulsar.apache.org/reference/#/4.2.x/client/client-configuration-producer?id=sendtimeoutms). Note that it will be the same Dapr sidecar retrying the redelivery the message to the same app instance and not other instances.
 
 ### Delay queue
 
