@@ -288,8 +288,16 @@ If you signed the new cert root with the **same private key** the Dapr Sentry se
 
 If you signed the new cert root with a **different private key**, you must restart the Dapr Sentry service, followed by the remainder of the Dapr control plane service.
 
-{{% alert title="Workflow history signing" color="warning" %}}
-If you rotate to a completely new root CA (different private key), any running workflows with [signed history]({{% ref "workflow-history-signing.md" %}}) will fail signature verification because their signing certificates were issued by the old CA. Those workflows will be reported as FAILED with error type `SignatureVerificationFailed`. To avoid this, complete or purge in-flight workflows before performing a full CA rotation.
+{{% alert title="Workflow history signing: protect long-running workflows during CA rotation" color="warning" %}}
+If you rotate to a completely new root CA (different private key), any running workflows with [signed history]({{% ref "workflow-history-signing.md" %}}) will fail signature verification because their signing certificates were issued by the old CA. Those workflows will be reported as FAILED with error type `SignatureVerificationFailed`.
+
+For long-running workflows (anything that may outlive your CA's validity period, typically one year for the Dapr-generated self-signed root), plan ahead:
+
+- **Preferred:** Sign your renewed issuer cert with the **same root private key** you used previously. Existing signed workflows continue to verify against the same root, so you can rotate the leaf/issuer without downtime. The CLI command `dapr mtls renew-certificate -k --private-key <existing-root-key> --valid-until <days>` does this.
+- **Bring your own CA:** Generate your own root key, store it securely (HSM or secret store), and reuse it across all issuer renewals. Self-signed Dapr-generated roots cannot be reused this way.
+- **Last resort:** If you must rotate to a new root key, complete or [purge]({{% ref "howto-manage-workflow.md" %}}) all signed in-flight workflows first. Signing is a one-way commitment, so there is no re-sign path under the new root.
+
+See [long-running workflows and root CA expiry]({{% ref "workflow-history-signing.md#long-running-workflows-and-root-ca-expiry" %}}) for the full guidance.
 {{% /alert %}}
 
 ```bash
@@ -506,8 +514,8 @@ By default, system services will look for the credentials in `/var/run/dapr/cred
 
 *Note: If you signed the cert root with a different private key, restart the Dapr instances.*
 
-{{% alert title="Workflow history signing" color="warning" %}}
-If you rotate to a completely new root CA (different private key), any running workflows with [signed history]({{% ref "workflow-history-signing.md" %}}) will fail signature verification. Complete or purge in-flight workflows before performing a full CA rotation.
+{{% alert title="Workflow history signing: protect long-running workflows during CA rotation" color="warning" %}}
+If you rotate to a completely new root CA (different private key), any running workflows with [signed history]({{% ref "workflow-history-signing.md" %}}) will fail signature verification. To avoid this in self-hosted mode, renew the issuer with the **same root private key** (reuse `ca.key`), or complete and purge signed in-flight workflows before rotating to a new root key. See [long-running workflows and root CA expiry]({{% ref "workflow-history-signing.md#long-running-workflows-and-root-ca-expiry" %}}) for the full guidance.
 {{% /alert %}}
 
 ## Community call video on certificate rotation

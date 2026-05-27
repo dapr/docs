@@ -8,7 +8,7 @@ description: "Cryptographic tamper detection for workflow execution histories"
 
 Dapr workflow history signing provides cryptographic tamper detection for
 workflow execution histories. Every history event produced during a workflow's
-lifetime is signed using the sidecar's mTLS identity (X.509 SVID), creating an
+lifetime is signed using the sidecar's mTLS identity (X.509 SPIFFE Verifiable Identity Document (SVID)), creating an
 auditable chain of signatures that is verified each time the workflow state is
 loaded.
 
@@ -23,7 +23,7 @@ When signing is active, Dapr:
 1. Deterministically marshals each new history event.
 2. Computes a SHA-256 digest over the batch of events.
 3. Chains the new digest to the previous signature's digest.
-4. Signs the combined input using the sidecar's [SPIFFE](https://spiffe.io/) X.509 private key.
+4. Signs the combined input using the sidecar's [SPIFFE](https://spiffe.io/) X.509 private key (SVID).
 5. Persists the signature and the signing certificate alongside the history.
 
 On every subsequent load of that workflow's state, Dapr walks the full
@@ -96,7 +96,7 @@ Both conditions must be true for signing to occur:
 
 | Condition | How to check |
 |-----------|-------------|
-| mTLS is enabled | Sentry is running and the sidecar has a valid SVID |
+| mTLS is enabled | Sentry service is running and the sidecar has a valid SVID |
 | `WorkflowHistorySigning` is enabled | Feature flag is explicitly set to `true` |
 
 If mTLS is disabled (no Sentry), the signer is `nil` regardless of the feature
@@ -111,11 +111,150 @@ will cause the workflow to fail. See [one-way commitment](#one-way-commitment)
 for details.
 {{% /alert %}}
 
+### Scope
+
+Signing is applied at the sidecar level. When the feature flag is enabled on
+a Dapr configuration, **every workflow that runs on a sidecar using that
+configuration is signed** - there is no per-workflow-type or per-instance
+opt-in. If you need to introduce signing only for a subset of workflows, run
+those workflows under a separate appID with a configuration that enables the
+feature.
+
+### Activating signing on an existing deployment
+
+Because signing is a [one-way commitment](#one-way-commitment), turning the
+feature on against a cluster that already has running unsigned workflows will
+cause those in-flight workflows to fail to load. You do **not** need a brand
+new deployment, but you do need to drain unsigned work before flipping the
+flag. A typical rollout looks like:
+
+1. Stop scheduling new workflow instances on the appIDs that will get signing.
+2. Allow in-flight workflows to complete naturally, or
+   [purge]({{% ref "howto-manage-workflow.md" %}}) ones you don't need to keep.
+3. Confirm there is no unsigned workflow state remaining for those appIDs.
+4. Update the Dapr configuration to set `WorkflowHistorySigning` to `true`.
+5. Wait for the configuration change to propagate to the sidecars (Dapr
+   [hot-reloads]({{% ref "component-updates.md" %}}) configurations by default,
+   so no restart is needed; just allow time for propagation across all
+   sidecars).
+6. Resume scheduling. New workflow instances are signed from the first event.
+
+If you cannot drain in-flight workflows, run a parallel appID (with signing
+enabled) for new work and let the original appID complete its workflows
+without signing. Once the original appID has no remaining instances, retire it.
+
+## One-way commitment
+
+Signing is a permanent commitment per workflow. Once a workflow is created with
+signing enabled, all subsequent operations on that workflow must occur on
+signing-enabled hosts. There are two invariants:
+
+1. **Signed workflow on non-signing host**: If a workflow has signed history but
+   the current host does not have a signer configured (mTLS is off or the
+   feature flag is disabled), loading the workflow fails. The workflow cannot
+   execute and is effectively terminated.
+
+2. **Unsigned workflow on signing host**: If a workflow was created without
+   signing (the feature flag was off) and is later loaded by a signing-enabled
+   host, loading fails. The unsigned history has no integrity proof and
+   cannot be retroactively signed.
+
+{{% alert title="Migration guidance" color="warning" %}}
+Before enabling signing cluster-wide, ensure all existing unsigned workflows
+have completed or been purged. Once signing is enabled, new workflows are
+signed and existing unsigned workflows fail to load.
+{{% /alert %}}
+
+## Certificate rotation
+
+Dapr handles certificate rotation transparently. When the sidecar's SVID
+rotates (for example, after a restart where Sentry issues a new short-lived
+certificate, or when the SVID naturally expires), the signing system:
+
+1. Detects that the current certificate differs from the last entry in the
+   certificate table.
+2. Appends a new certificate entry to the table.
+3. New signatures reference the new certificate index.
+
+Previous signatures remain valid because they reference their original
+certificate, which is still in the table and verifiable against the CA trust
+anchors.
+
+{{< mermaid >}}
+gantt
+    title Signature Certificate Usage Over Time
+    dateFormat X
+    axisFormat %s
+
+    section Boot 1
+    Sig 0 - Cert A : 0, 2
+    Sig 1 - Cert A : 2, 4
+
+    section Restart
+    SVID rotates : milestone, 4, 0
+
+    section Boot 2
+    Sig 2 - Cert B : 4, 6
+    Sig 3 - Cert B : 6, 8
+{{< /mermaid >}}
+
+Both Cert A and Cert B chain to the same Sentry CA, so all signatures remain
+valid.
+
+In multi-replica deployments, each replica has its own private key and SVID
+certificate. When the workflow runtime migrates between replicas (for
+example, due to scaling or rebalancing), the new replica's certificate is
+appended to the table. All certificates are validated as belonging to the same
+app ID via SPIFFE identity binding.
+
+{{% alert title="Important" color="warning" %}}
+**Certificate rotation** (new leaf SVID, same CA root) works seamlessly.
+
+A full **CA rotation** (completely different root CA) will cause verification
+to fail for workflows signed under the old CA, because the old signing
+certificates will not chain to the new trust anchors. This is by design: if
+the trust root changes, previously signed data cannot be verified.
+{{% /alert %}}
+
+### Long-running workflows and root CA expiry
+
+This is the operational consideration that has the biggest practical impact
+on signed workflows, and is worth calling out separately.
+
+By default Dapr generates a self-signed root CA that is valid for **one year**.
+If that root expires (or is replaced with a CA built from a different private
+key), any workflow whose signature chain trusts the old root **stops being
+verifiable**. Signed long-running workflows that outlive a CA rotation will
+fail to load and surface as `FAILED` with `SignatureVerificationFailed`.
+
+To keep long-running signed workflows healthy across CA renewals, do **one**
+of the following:
+
+1. **Rotate the leaf/issuer cert, keep the same root key.** This is the
+   recommended path. The Dapr CLI supports it with
+   `dapr mtls renew-certificate -k --private-key <existing-root-key>` (see
+   [renew certificates]({{% ref "mtls.md#root-and-issuer-certificate-upgrade-using-cli-recommended" %}})).
+   Existing signed workflows continue to verify against the same root.
+2. **Bring your own CA.** Provide a root certificate whose private key you
+   control and store securely (for example, in your own HSM or secret store).
+   Renew the leaf/issuer with the same root key indefinitely. See
+   [bringing your own certificates]({{% ref "mtls.md#bringing-your-own-certificates" %}}).
+3. **Drain before rotating to a new root.** If you must rotate to a brand new
+   root key, complete or purge in-flight signed workflows first. Signing is a
+   one-way commitment, so there is no "re-sign with the new root" operation.
+
+{{% alert title="Plan your CA lifecycle before enabling signing" color="warning" %}}
+If your workflows can run for weeks or months, **back up your root private
+key** and treat root CA rotation as a planned, drain-and-rotate event. Losing
+the root key or rotating to a freshly generated root will permanently break
+verification for any signed workflow that was issued under the old root.
+{{% /alert %}}
+
 ## How signing works
 
 ### Signing new events
 
-After each workflow execution step, the orchestrator signs the newly appended
+After each workflow execution step, Dapr signs the newly appended
 history events.
 
 {{< mermaid >}}
@@ -142,7 +281,11 @@ The signing process works as follows:
    `SHA-256(previousSignatureDigest || eventsDigest)`.
 
 5. **Cryptographic signing**: The input is signed using the sidecar's SPIFFE
-   X.509 private key. Supported key types are Ed25519, ECDSA P-256, and RSA.
+   X.509 private key. The signing key type is whatever Sentry issues to the
+   sidecar; Dapr supports Ed25519, ECDSA P-256, and RSA. You don't choose the
+   key type per workflow: it follows from the [mTLS]({{% ref "mtls.md" %}})
+   setup (Dapr-generated keys default to Ed25519 from 1.18 onwards, custom CAs
+   sign with whatever algorithm the issuer key uses).
 
 6. **Certificate resolution**: If the current SVID certificate matches the
    last entry in the certificate table, the existing index is reused.
@@ -155,7 +298,7 @@ The signing process works as follows:
 
 ### Verification on load
 
-Every time workflow state is loaded — whether for execution or a metadata query —
+Every time workflow state is loaded (whether for execution or a metadata query)
 the full signature chain is verified.
 
 {{< mermaid >}}
@@ -203,7 +346,7 @@ detected.
 
 ### Inbox event validation
 
-When signing is enabled, the orchestrator validates inbox events before
+When signing is enabled, the Dapr workflow runtime validates inbox events before
 processing them. Result events (`TaskCompleted`, `TaskFailed`,
 `ChildWorkflowInstanceCompleted`, `ChildWorkflowInstanceFailed`) must reference
 an operation that was actually scheduled in the signed history. Events that
@@ -236,7 +379,7 @@ Each attestation commits to a deterministic, language-independent payload:
 | `signerCertDigest` | SHA-256 of the signer's DER-encoded X.509 chain. The chain itself travels alongside the attestation as a wire-only companion field. |
 | `terminalStatus` | The workflow or activity outcome. For activities, the activity name is also committed. |
 
-On receipt, the parent's orchestrator runs `verifyInboxAttestation` before the
+On receipt, the parent's Dapr workflow runtime runs `verifyInboxAttestation` before the
 event is appended to the inbox:
 
 1. The attestation must be present (signing on implies sender must attest).
@@ -256,7 +399,7 @@ If any check fails, the inbound completion is rejected and the workflow is
 tombstoned into failure. Once verified, the foreign certificate is absorbed
 into a content-addressed `ext-sigcert-NNNNNN` table on the receiver so the same
 signer is not re-validated on every subsequent completion. The chain-of-trust
-result is also cached per orchestrator instance for the lifetime of the actor,
+result is also cached per workflow instance for the lifetime of that instance,
 so a workflow that calls the same foreign signer repeatedly pays chain
 validation cost only once.
 
@@ -280,7 +423,7 @@ On ingestion, every chunk is verified independently:
 
 | Check | Detects |
 | --- | --- |
-| Chain-of-trust to a Sentry trust anchor (reusing the per-orchestrator cache) | Forged or self-signed lineage |
+| Chain-of-trust to a Sentry trust anchor (reusing the per-instance cache) | Forged or self-signed lineage |
 | Leaf SPIFFE ID's app component matches the chunk's declared `appId` | Lineage produced by the wrong app |
 | Per-chunk signature covers exactly the events in the chunk, contiguously | Splicing, gaps, or partial omission |
 | Empty-with-signatures, missing-signatures, missing-certificate variants | Malformed chunks that would otherwise short-circuit verification |
@@ -299,17 +442,26 @@ preserved for forensic analysis.
 
 ### Tamper of an in-flight workflow
 
-When the orchestrator actor loads a running workflow and detects tampering,
+When the Dapr workflow runtime loads a running workflow and detects tampering,
 Dapr stops the executor from acting on forged input by appending a single
 **unsigned terminal `ExecutionCompleted` event** marked with the well-known
 error type `DAPR_WORKFLOW_HISTORY_TAMPERED`. This:
 
 1. Halts further execution: the workflow is now in a terminal state and the
-   executor will not replay or schedule new work on it.
+   Dapr workflow runtime will not replay or schedule new work on it.
 2. Provides a stable, machine-matchable signal for clients
    (`DAPR_WORKFLOW_HISTORY_TAMPERED`).
 3. Preserves the original (untrusted) history and signatures so operators can
    inspect what was tampered with.
+
+From an application perspective the workflow surfaces as `FAILED`, and any
+client that calls `GetWorkflow` (or the equivalent SDK method) on the instance
+receives the failure with the `DAPR_WORKFLOW_HISTORY_TAMPERED` error type in
+the failure details. SDKs raise this as the same exception type that a normal
+workflow failure would raise, so existing error-handling paths can match on
+the error type to specifically detect tampering. The Dapr sidecar also emits
+an error-level log entry naming the workflow instance ID and the specific
+verification check that failed.
 
 `LoadWorkflowState` recognises the tamper marker and bypasses signature
 verification on subsequent loads, so the workflow can be read back and surfaced
@@ -332,6 +484,12 @@ tampering. The tamper-recovery path described above does not run against these
 intact-but-unloadable workflows: their history is byte-identical to what was
 written, so appending a tamper-terminal event would itself be a destructive
 edit. Fix the host configuration, or purge the workflow, to recover.
+
+The error is visible in two places: the Dapr sidecar logs an error-level entry
+on the failed load (naming the workflow instance ID and whether the host was
+expected to have or not have a signer), and callers that issue a workflow
+metadata query (`GET /v1.0/workflows/<id>` or the SDK equivalent) receive the
+`ConfigurationError` directly in the response, allowing programmatic detection.
 
 ### Metadata queries (API path)
 
@@ -372,83 +530,10 @@ flowchart TD
 | Signing disabled (ConfigurationError) | A signed workflow was loaded by a non-signing host | "signed history but no signer is configured" |
 | Signing enabled on unsigned (ConfigurationError) | An unsigned workflow was loaded by a signing host | "unsigned history events but signing is enabled" |
 
-## One-way commitment
-
-Signing is a permanent commitment per workflow. Once a workflow is created with
-signing enabled, all subsequent operations on that workflow must occur on
-signing-enabled hosts. There are two invariants:
-
-1. **Signed workflow on non-signing host**: If a workflow has signed history but
-   the current host does not have a signer configured (mTLS is off or the
-   feature flag is disabled), loading the workflow fails. The workflow cannot
-   execute and is effectively terminated.
-
-2. **Unsigned workflow on signing host**: If a workflow was created without
-   signing (the feature flag was off) and is later loaded by a signing-enabled
-   host, loading fails. The unsigned history has no integrity proof and
-   cannot be retroactively signed.
-
-{{% alert title="Migration guidance" color="warning" %}}
-Before enabling signing cluster-wide, ensure all existing unsigned workflows
-have completed or been purged. Once signing is enabled, new workflows will be
-signed and existing unsigned workflows will fail to load.
-{{% /alert %}}
-
-## Certificate rotation
-
-Dapr handles certificate rotation transparently. When the sidecar's SVID
-rotates (for example, after a restart where Sentry issues a new short-lived
-certificate, or when the SVID naturally expires), the signing system:
-
-1. Detects that the current certificate differs from the last entry in the
-   certificate table.
-2. Appends a new certificate entry to the table.
-3. New signatures reference the new certificate index.
-
-Previous signatures remain valid because they reference their original
-certificate, which is still in the table and verifiable against the CA trust
-anchors.
-
-{{< mermaid >}}
-gantt
-    title Signature Certificate Usage Over Time
-    dateFormat X
-    axisFormat %s
-
-    section Boot 1
-    Sig 0 - Cert A : 0, 2
-    Sig 1 - Cert A : 2, 4
-
-    section Restart
-    SVID rotates : milestone, 4, 0
-
-    section Boot 2
-    Sig 2 - Cert B : 4, 6
-    Sig 3 - Cert B : 6, 8
-{{< /mermaid >}}
-
-Both Cert A and Cert B chain to the same Sentry CA, so all signatures remain
-valid.
-
-In multi-replica deployments, each replica has its own private key and SVID
-certificate. When the workflow orchestrator migrates between replicas (for
-example, due to scaling or rebalancing), the new replica's certificate is
-appended to the table. All certificates are validated as belonging to the same
-app ID via SPIFFE identity binding.
-
-{{% alert title="Important" color="warning" %}}
-**Certificate rotation** (new leaf SVID, same CA root) works seamlessly.
-
-A full **CA rotation** (completely different root CA) will cause verification
-to fail for workflows signed under the old CA, because the old signing
-certificates will not chain to the new trust anchors. This is by design: if
-the trust root changes, previously signed data cannot be verified.
-{{% /alert %}}
-
 ## State store layout
 
 Workflow signing data is stored alongside the workflow state using the
-following key prefixes. All keys are scoped to the workflow instance's actor
+following key prefixes. All keys are scoped to the workflow instance's
 ID.
 
 | Key pattern | Content | Format |
@@ -487,10 +572,15 @@ operation, ensuring atomicity.
 
 ### Does signing add latency to workflow execution?
 
-The signing operation (SHA-256 hashing and ECDSA/Ed25519 signing) is fast and
-adds negligible latency. The main cost is the additional state store writes for
-the signature and certificate entries, which are batched in the same
-transactional write as the history events.
+The signing operation itself (SHA-256 hashing and ECDSA/Ed25519/RSA signing) is
+fast and adds negligible CPU latency. The measurable cost is on the state store
+side: each workflow step now persists additional entries (a signature entry,
+and on certificate rotation a new certificate entry) alongside the history
+events. These extra entries are written in the same transactional batch as the
+history events, so they cost one larger transaction rather than additional
+round-trips, but they do increase the payload size and the storage footprint
+per workflow. The exact impact depends on your state store's pricing and write
+characteristics.
 
 ### What happens if I disable signing on a workflow that was previously signed?
 
@@ -514,14 +604,16 @@ references its specific certificate. All certificates chain to the same CA.
 
 **CA rotation** (completely new root CA): verification fails for workflows
 whose signing certificates were issued by the old CA. The workflow is
-reported as FAILED with `SignatureVerificationFailed`. This is intentional —
+reported as FAILED with `SignatureVerificationFailed`. This is intentional:
 the trust root has changed and previously signed data cannot be verified
-against the new trust anchors.
+against the new trust anchors. See [long-running workflows and root CA
+expiry](#long-running-workflows-and-root-ca-expiry) for the operational
+guidance to avoid this.
 
 ### What about multi-replica deployments?
 
 Each replica of the same app ID has its own private key and SVID certificate.
-When the workflow orchestrator migrates between replicas, each replica's
+When the workflow runtime migrates between replicas, each replica's
 certificate is stored in the certificate table and the signature chain remains
 valid. All certificates are verified as belonging to the same app ID via SPIFFE
 identity binding.
