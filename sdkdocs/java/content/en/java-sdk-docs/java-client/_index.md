@@ -86,6 +86,25 @@ try (DaprClient client = new DaprClientBuilder().build()) {
 
 `DaprBodyPublishers.json(...)` serializes the payload using the SDK's default Jackson serializer, matching the JSON encoding the deprecated `invokeMethod` APIs applied internally. For raw payloads use any `HttpRequest.BodyPublisher` (for example `HttpRequest.BodyPublishers.ofString(...)`).
 
+The table below summarizes which concerns `DaprInvokeHttpClient` handles for you and which now belong to the caller:
+
+| Concern | Handled by the SDK | Caller's responsibility |
+|---|---|---|
+| Invoke URL (`/v1.0/invoke/{appId}/method/...`) | ✓ | |
+| `dapr-api-token` header (when configured on `DaprClientBuilder`) | ✓ | |
+| HTTP read timeout (from `DaprClientBuilder`) | ✓ | |
+| `User-Agent: dapr-sdk-java/<version>` | ✓ | |
+| `Content-Type` header | | Set via `.header("Content-Type", "...")` |
+| Request body serialization | | Use `DaprBodyPublishers.json(...)` for default JSON, or any `HttpRequest.BodyPublisher` |
+| Response body deserialization | | Pick an `HttpResponse.BodyHandler` (`ofString`, `ofByteArray`, custom) |
+| Response status / error handling | | Inspect `HttpResponse.statusCode()` and react to non-2xx responses |
+| Trace context propagation (`traceparent`, `tracestate`, `baggage`) | | Attach headers from your OpenTelemetry context |
+| Request body framing (`Content-Length` vs `Transfer-Encoding: chunked`) | | Use a length-known `BodyPublisher` — see the note below |
+
+{{% alert title="Prefer length-known body publishers" color="primary" %}}
+The JDK `HttpClient` emits `Transfer-Encoding: chunked` whenever a `BodyPublisher` reports an unknown content length (for example `BodyPublishers.fromInputStream`). Chunked requests can interact poorly with downstream HTTP servers under high concurrency, so prefer length-known publishers: `DaprBodyPublishers.json(...)`, `BodyPublishers.ofByteArray(...)`, `BodyPublishers.ofString(...)`, or `BodyPublishers.ofFile(...)`. These produce `Content-Length` framing and match the wire format the deprecated `invokeMethod` APIs used.
+{{% /alert %}}
+
 Alternatively, you can use a raw `java.net.http.HttpClient` against the sidecar with the `dapr-app-id` header — no SDK dependency required for the call itself:
 
 ```java
