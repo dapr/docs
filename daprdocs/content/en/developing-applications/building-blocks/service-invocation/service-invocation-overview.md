@@ -61,6 +61,10 @@ For more information read the [service-to-service security]({{% ref "security-co
 
 In the event of call failures and transient errors, service invocation provides a resiliency feature that performs automatic retries with backoff time periods. To find out more, see the [Resiliency article here]({{% ref resiliency-overview %}}).
 
+{{% alert title="Note" color="primary" %}}
+For HTTP service invocation, retry policies (both built-in and user-configured) are automatically bypassed for streaming requests (those using chunked transfer encoding or without a known `Content-Length`). Since the request body is consumed as it is read, it cannot be replayed on retry. Non-streaming requests with a known `Content-Length` continue to support retries as before. See [Streaming for HTTP service invocation](#streaming-for-http-service-invocation) for more details.
+{{% /alert %}}
+
 ### Tracing and metrics with observability
 
 By default, all calls between applications are traced and metrics are gathered to provide insights and diagnostics for applications. This is especially important in production scenarios, providing call graphs and metrics on the calls between your services. For more information read about [observability]({{% ref observability-concept %}}).
@@ -98,11 +102,17 @@ Self-hosted machines can use the mDNS name resolution component. As an alternati
 
 The Consul name resolution component is particularly suited to multi-machine deployments and can be used in any hosting environment, including Kubernetes, multiple VMs, or self-hosted.
 
+### Hop-by-hop header stripping
+
+When proxying HTTP service invocation, Dapr removes the standard hop-by-hop headers defined in [RFC 7230 Section 6.1](https://datatracker.ietf.org/doc/html/rfc7230#section-6.1) before forwarding the request to the upstream application or [HTTPEndpoint]({{% ref "httpendpoints-schema.md" %}}), and again before forwarding the upstream's response back to the caller. These headers are: `Connection`, `Keep-Alive`, `Proxy-Connection`, `Transfer-Encoding`, `Upgrade`, `HTTP2-Settings`, `TE`, `Trailer`, and `Proxy-Authorization`.
+
+End-to-end headers (`Accept`, `Authorization`, `Content-Type`, custom `X-*` headers, etc.) are not affected and continue to be forwarded unchanged.
+
 ### Streaming for HTTP service invocation
 
 You can handle data as a stream in HTTP service invocation. This can offer improvements in performance and memory utilization when using Dapr to invoke another service using HTTP with large request or response bodies.
 
-The diagram below demonstrates the six steps of data flow. 
+The diagram below demonstrates the six steps of data flow.
 
 <img src="/images/service-invocation-simple.webp" width=600 alt="Diagram showing the steps of service invocation described in the table below" />
 
@@ -112,6 +122,16 @@ The diagram below demonstrates the six steps of data flow.
 1. Response: "App B" to "Dapr sidecar B"
 1. Response: "Dapr sidecar B" to "Dapr sidecar A"
 1. Response: "Dapr sidecar A" to "App A"
+
+#### Streaming requests and resiliency
+
+Dapr automatically detects streaming HTTP requests — those using chunked transfer encoding or without a known `Content-Length` header (for example, file uploads, piped bodies, or long-running data streams). For these requests:
+
+- **Request bodies are not buffered in memory.** The sidecar forwards the request body directly as it is read, avoiding excessive memory usage for large payloads.
+- **Response bodies are not buffered in memory.** Streaming responses (such as server-sent events, file downloads, or long-running data streams) are forwarded directly to the caller.
+- **Retry policies are bypassed.** Both built-in retry logic and any user-configured [resiliency retry policies]({{% ref resiliency-overview %}}) are automatically skipped, since the request body is consumed as it is read and cannot be replayed.
+- **Other resiliency features still apply.** Circuit breakers continue to track failures normally for streaming requests.
+- **Non-streaming requests are unaffected.** Requests with a known `Content-Length` continue to support retries and buffered error handling as before.
 
 ## Example Architecture
 
