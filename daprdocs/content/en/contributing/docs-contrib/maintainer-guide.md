@@ -73,6 +73,23 @@ The release process for docs requires the following:
 - A new DNS entry for the next version's website
 - A new git branch for the next version
 
+### How deploys are gated by branch state
+
+The Dapr docs repo deploys via two GitHub Actions workflows per branch:
+
+- `.github/workflows/website-root.yml` — deploys to the root domain `docs.dapr.io`. Present **only** on the branch that is currently the live "latest."
+- `.github/workflows/website-v1-X.yml` — deploys to the per-version subdomain `v1-X.docs.dapr.io`. Present on every released branch (preview, latest, and archived).
+
+To avoid both workflows firing simultaneously while a branch is the live "latest" (which would produce a redundant deploy to `v1-X.docs.dapr.io`), `website-v1-X.yml` contains a `check_state` job that reads `params.version_menu` from `hugo.yaml`:
+
+| Branch state | `params.version_menu` value | `website-root.yml`        | `website-v1-X.yml`             |
+| ------------ | --------------------------- | ------------------------- | ------------------------------ |
+| Preview      | `v1.X (preview)`            | not present               | deploys to `v1-X.docs.dapr.io` |
+| Latest       | `v1.X (latest)`             | deploys to `docs.dapr.io` | **skipped by `check_state`**   |
+| Archived     | `v1.X`                      | deleted on archival       | deploys to `v1-X.docs.dapr.io` |
+
+The gate signal is the literal substring `(latest)` inside `version_menu`. The release-process steps below already toggle this string at the correct points — no extra action is required beyond following them.
+
 ### Upmerge
 
 First, perform a [docs upmerge](#upmerge-from-current-release-branch-to-the-pre-release-branch) from the latest release to the upcoming release branch. 
@@ -107,6 +124,10 @@ These steps will prepare the latest release branch for archival.
 1. Add the following configuration to the `# Versioning` section (around line 121 and onwards):
 
    ```yaml
+   # NOTE: dropping the "(latest)" suffix below is what activates
+   # .github/workflows/website-v1-0.yml on this branch — the workflow's
+   # check_state job reads params.version_menu and skips deploys while
+   # the value contains "(latest)".
    version_menu: "v1.0"
    version: "v1.0"
    archived_version: true
@@ -120,6 +141,8 @@ These steps will prepare the latest release branch for archival.
     - version: v1.0
       url: https://v1-0.docs.dapr.io
    ```
+
+   Removing the `(latest)` parenthetical from `version_menu` flips the version-specific workflow (`.github/workflows/website-v1-0.yml`) from dormant to active. While the parenthetical was present, that workflow's `check_state` job marked the branch as the live "latest" and skipped its deploy job — leaving `docs.dapr.io` (driven by `website-root.yml`) as the sole deploy target. Once you commit this change, future pushes to `v1.0` will deploy to `v1-0.docs.dapr.io` via `website-v1-0.yml`.
 
 1. Delete `.github/workflows/website-root.yml`.
 1. Commit the staged changes and push to your branch (`release_v1.0`).
@@ -150,6 +173,12 @@ These steps will prepare the upcoming release branch for promotion to latest rel
 
    ```yaml
    # Versioning
+   # NOTE: adding the "(latest)" suffix below silences the version-specific
+   # workflow (.github/workflows/website-v1-1.yml). Its check_state job
+   # detects "(latest)" in params.version_menu and skips its deploy job,
+   # leaving website-root.yml as the sole deploy target while v1.1 is latest.
+   # Do not delete website-v1-1.yml — it must remain so that it can take
+   # over deploying v1-1.docs.dapr.io once v1.1 is later archived.
    version_menu: "v1.1 (latest)"
    version: "v1.1"
    archived_version: false
