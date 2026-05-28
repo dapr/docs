@@ -83,9 +83,11 @@ public sealed class ProcessPaymentWorkflow : Workflow<Order, PaymentResult>
 
         if (history != null)
         {
-            foreach (var entry in history.Entries)
+            foreach (var evt in history.Events)
             {
-                // entry.WorkflowName, entry.InstanceId, entry.AppId, entry.Events
+                // evt.Name, evt.InstanceId, evt.AppId
+                // evt.Activities — activity results for this ancestor
+                // evt.Workflows  — child workflow results for this ancestor
             }
         }
 
@@ -97,28 +99,77 @@ public sealed class ProcessPaymentWorkflow : Workflow<Order, PaymentResult>
 
 ### PropagatedHistory type
 
-`GetPropagatedHistory()` returns a `PropagatedHistory` object (or `null`). Its `Entries` property is a collection of `PropagatedHistoryEntry` records, each representing one workflow in the ancestor chain:
+`GetPropagatedHistory()` returns a `PropagatedHistory` object (or `null`). Its `Events` property is an ordered list of `PropagatedHistoryEvent` values — one per ancestor workflow, in execution order (oldest ancestor first, immediate parent last).
+
+Each `PropagatedHistoryEvent` represents a single ancestor workflow's contribution to the propagated history:
 
 | Member | Type | Description |
 |---|---|---|
-| `AppId` | `string` | Dapr app ID that hosted the workflow |
+| `AppId` | `string` | Dapr app ID that ran this workflow |
 | `InstanceId` | `string` | Workflow instance ID |
-| `WorkflowName` | `string` | Registered name of the workflow |
-| `Events` | `IReadOnlyList<PropagatedHistoryEvent>` | History events for this workflow |
+| `Name` | `string` | The name of the workflow |
+| `Activities` | `IReadOnlyList<PropagatedHistoryActivityResult>` | Activity results for this workflow, in execution order |
+| `Workflows` | `IReadOnlyList<PropagatedHistoryWorkflowResult>` | Child workflow results for this workflow, in execution order |
 
-Each `PropagatedHistoryEvent` has:
+### PropagatedHistoryActivityResult type
+
+Each `PropagatedHistoryActivityResult` is a sealed record describing a single activity invocation:
 
 | Member | Type | Description |
 |---|---|---|
-| `EventId` | `int` | Sequence number within the workflow history |
-| `Kind` | `HistoryEventKind` | The type of event (see below) |
-| `Timestamp` | `DateTimeOffset` | When the event occurred |
+| `Name` | `string` | The scheduled name of the activity |
+| `Status` | `PropagatedHistoryStatus` | Lifecycle status — `Pending`, `Completed`, or `Failed` |
+| `Input` | `string?` | JSON-encoded input payload, or `null` when unset |
+| `Output` | `string?` | JSON-encoded output payload, or `null` when the activity has not completed |
+| `FailureDetails` | `WorkflowTaskFailureDetails?` | Failure details when `Status` is `Failed`, otherwise `null` |
 
-`HistoryEventKind` values include `ExecutionStarted`, `ExecutionCompleted`, `TaskScheduled`, `TaskCompleted`, `TaskFailed`, `SubOrchestrationInstanceCreated`, `SubOrchestrationInstanceCompleted`, `SubOrchestrationInstanceFailed`, `TimerCreated`, `TimerFired`, `OrchestratorStarted`, `OrchestratorCompleted`, `EventSent`, `EventRaised`, `ContinueAsNew`, `ExecutionSuspended`, and `ExecutionResumed`.
+### PropagatedHistoryWorkflowResult type
 
-## Filter propagated history
+Each `PropagatedHistoryWorkflowResult` is a sealed record describing a single child workflow invocation:
 
-`PropagatedHistory` provides filter methods to narrow the entries to a specific workflow in the chain:
+| Member | Type | Description |
+|---|---|---|
+| `Name` | `string` | The scheduled name of the child workflow |
+| `Status` | `PropagatedHistoryStatus` | Lifecycle status — `Pending`, `Completed`, or `Failed` |
+| `Output` | `string?` | JSON-encoded output payload, or `null` when the workflow has not completed |
+| `FailureDetails` | `WorkflowTaskFailureDetails?` | Failure details when `Status` is `Failed`, otherwise `null` |
+
+### PropagatedHistoryStatus enum
+
+`PropagatedHistoryStatus` reflects how far a task progressed past scheduling:
+
+| Value | Description |
+|---|---|
+| `Pending` | The task was scheduled but has not yet completed or failed |
+| `Completed` | The task completed successfully |
+| `Failed` | The task failed |
+
+## Query propagated history
+
+### PropagatedHistory query methods
+
+`PropagatedHistory` provides `Get` methods that return lists and `TryGet` methods that return a single match (the most recent) via an `out` parameter. All `Get` methods return an empty list when no match is found.
+
+| Method | Return type | Description |
+|---|---|---|
+| `GetByAppId(string)` | `IReadOnlyList<PropagatedHistoryEvent>` | All events from the given Dapr app ID |
+| `GetByInstanceId(string)` | `IReadOnlyList<PropagatedHistoryEvent>` | All events from the given workflow instance ID |
+| `GetEventsByWorkflowName(string)` | `IReadOnlyList<PropagatedHistoryEvent>` | All events with the given workflow name |
+| `TryGetLastWorkflowEventByName(string, out PropagatedHistoryEvent?)` | `bool` | Gets the most recent event matching the workflow name |
+| `GetAppIds()` | `IReadOnlyList<string>` | Ordered, deduplicated list of app IDs in the history |
+
+### PropagatedHistoryEvent query methods
+
+Each `PropagatedHistoryEvent` also provides query methods to inspect the activities and child workflows within that ancestor:
+
+| Method | Return type | Description |
+|---|---|---|
+| `GetActivitiesByName(string)` | `IReadOnlyList<PropagatedHistoryActivityResult>` | All activities matching the given name |
+| `TryGetLastActivityByName(string, out PropagatedHistoryActivityResult?)` | `bool` | Gets the most recent activity matching the name |
+| `GetWorkflowsByName(string)` | `IReadOnlyList<PropagatedHistoryWorkflowResult>` | All child workflows matching the given name |
+| `TryGetLastWorkflowByName(string, out PropagatedHistoryWorkflowResult?)` | `bool` | Gets the most recent child workflow matching the name |
+
+### Example
 
 ```csharp
 var history = context.GetPropagatedHistory();
@@ -126,21 +177,27 @@ var history = context.GetPropagatedHistory();
 if (history != null)
 {
     // By app ID — useful in multi-app workflows
-    var fromOrderApp = history.FilterByAppId("order-app");
+    var fromOrderApp = history.GetByAppId("order-app");
 
     // By workflow instance ID
-    var fromSpecificRun = history.FilterByInstanceId("checkout-abc123");
+    var fromSpecificRun = history.GetByInstanceId("checkout-abc123");
 
-    // By workflow name
-    var checkoutEntries = history.FilterByWorkflowName(nameof(MerchantCheckoutWorkflow));
+    // By workflow name — returns all matches (e.g. recursion or ContinueAsNew)
+    var checkoutEvents = history.GetEventsByWorkflowName(nameof(MerchantCheckoutWorkflow));
 
-    foreach (var entry in checkoutEntries)
+    // TryGet for a single match — avoids null ambiguity
+    if (history.TryGetLastWorkflowEventByName(nameof(MerchantCheckoutWorkflow), out var parentEvent))
     {
-        var failedTasks = entry.Events
-            .Where(e => e.Kind == HistoryEventKind.TaskFailed)
+        // Inspect the parent's activities
+        var failedActivities = parentEvent.Activities
+            .Where(a => a.Status == PropagatedHistoryStatus.Failed)
             .ToList();
 
-        // Use failedTasks for audit or routing decisions
+        // Or look up a specific activity by name
+        if (parentEvent.TryGetLastActivityByName(nameof(ValidateMerchantActivity), out var validation))
+        {
+            // validation.Status, validation.Output, validation.FailureDetails
+        }
     }
 }
 ```
