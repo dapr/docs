@@ -166,7 +166,7 @@ workflow       <ID>        STALLED    9m39s
 
 The following is what the `dapr workflow history` command would look like when a workflow is stalled:
 ```bash
-❯ go run . workflow history <ID> -k -o wide
+> dapr workflow history <ID> -k -o wide
 PLAY  TYPE                 NAME      TIMESTAMP    ELAPSED    STATUS   DETAILS        ROUTER     EXECUTION ID  ATTRS
 0     ExecutionStarted     workflow  <TIMESTAMP>  Age:15.8h  RUNNING  workflowStart  workflows  <EXEC_ID>     input=2026-01-22T14:44:02.728101
 1     OrchestratorStarted            <TIMESTAMP>  25.3ms     RUNNING  replay                                  versionName=workflow_v1

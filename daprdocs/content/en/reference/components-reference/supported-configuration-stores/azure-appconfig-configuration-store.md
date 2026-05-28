@@ -103,6 +103,15 @@ The label can be populated using query parameters in the request URL:
 GET curl http://localhost:<daprPort>/v1.0/configuration/<store-name>?key=<key name>&metadata.label=<label value>
 ```
 
+## Azure App Configuration response metadata
+
+When retrieving configuration items from Azure App Configuration, Dapr includes the following Azure properties in each returned configuration item's metadata. This is included under `items.<key>.metadata` in the payload:
+
+- `label`: The label set for the key-value.
+- `contentType`: The content type set for the key-value, for example `application/json`.
+
+If a property is not set on the Azure App Configuration item, that metadata entry is omitted from the response.
+
 ## Related links
 - [Basic schema for a Dapr component]({{% ref component-schema %}})
 - [Configuration building block]({{% ref configuration-api-overview %}})
