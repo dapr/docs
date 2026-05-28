@@ -119,6 +119,26 @@ In Summary:
 - `DurableAgent` (Workflow-backed): Interaction is asynchronous—you trigger the agent once, and it runs autonomously in the background until completion. The conversation state and the execution are persisted  and can resume across failures or restarts.
 
 
+#### Replay-Aware Logging
+
+Because `DurableAgent` relies on Dapr Workflows, the underlying execution model uses event sourcing. This means the workflow code is re-executed (replayed) from the beginning to rebuild local state after awaiting external activities or tool calls. 
+
+To prevent duplicate logs from polluting your output during these rehydration cycles, Dapr Agents provides a `ContextAwareLogger`. This logger automatically hooks into the `DaprWorkflowContext` and silently suppresses log records when the workflow is actively replaying.
+
+```python
+from dapr_agents.utils import get_context_aware_logger
+from dapr_agents.workflow.decorators import workflow_entry
+
+# Initialize the logger at the module level
+logger = get_context_aware_logger(__name__)
+
+@workflow_entry
+def my_workflow(self, ctx: DaprWorkflowContext, wf_input: dict) -> str:
+    # This will only print once, even if the workflow suspends and replays 5 times
+    logger.info("Starting workflow execution...")
+    # ...
+```
+
 ## Core Agent Features
 An agentic system is a distributed system that requires a variety of behaviors and supporting infrastructure.
 
@@ -129,12 +149,34 @@ Dapr Agents provides a unified interface to connect with LLM inference APIs. Thi
 - `DaprChatClient`: Unified API for LLM interactions via Dapr's Conversation API with built-in security (scopes, secrets, PII obfuscation), resiliency (timeouts, retries, circuit breakers), and observability via OpenTelemetry & Prometheus
 - `OpenAIChatClient`: Full spectrum support for OpenAI models including chat, embeddings, and audio
 - `HFHubChatClient`: For Hugging Face models supporting both chat and embeddings
+- `MistralChatClient`: Native support for Mistral models via the official SDK, enabling custom endpoints and advanced multimodal features. Falls back to the `MISTRAL_MODEL` environment variable or `mistral-large-latest` if a model is not explicitly provided.
 - `NVIDIAChatClient`: For NVIDIA AI Foundation models supporting local inference and chat
 - `ElevenLabs`: Support for speech and voice capabilities
 
 ### Prompt Flexibility
 
 Dapr Agents supports flexible prompt templates to shape agent behavior and reasoning. Users can define placeholders within prompts, enabling dynamic input of context for inference calls. By leveraging prompt formatting with [Jinja templates](https://jinja.palletsprojects.com/en/stable/templates/) and Python f-string formatting, users can include loops, conditions, and variables, providing precise control over the structure and content of prompts. This flexibility ensures that LLM responses are tailored to the task at hand, offering modularity and adaptability for diverse use cases.
+
+### Using Prompty Templates
+
+You can easily configure a Dapr Agent's prompt, model parameters, and LLM provider all in one place using a `.prompty` file. For example, to configure an agent using Mistral:
+
+```yaml
+---
+name: Mistral Agent
+model:
+  api: chat
+  configuration:
+    type: mistral
+    name: mistral-large-latest
+  parameters:
+    temperature: 0.7
+    max_tokens: 500
+---
+system:
+You are a helpful assistant.
+```
+> **Note:** `mistral-large-latest` is used as an example. Please check the Mistral documentation for the most current model names.
 
 ### Structured Outputs
 

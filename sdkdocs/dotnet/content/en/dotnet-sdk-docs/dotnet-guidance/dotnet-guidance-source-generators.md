@@ -69,6 +69,7 @@ the `EnableNETAnalyzers` property to `false` in your csproj file.
 | DAPR1404      | Dapr.Actors   | Usage            | Warning  | 1.16          | Call app.MapActorsHandlers to map endpoints for Dapr actors                                                                       | Yes                |
 | DAPR1501      | Dapr.Jobs     | Usage            | Warning  | 1.16          | Job invocations require the MapDaprScheduledJobHandler to be set and configured for each anticipated job on IEndpointRouteBuilder | No                 |
 
+
 ## Analyzer Categories
 The following are each of the eligible categories that an analyzer can be assigned to and are modeled after the 
 standard categories used by the .NET analyzers:
