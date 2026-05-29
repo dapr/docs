@@ -68,6 +68,7 @@ The final history of the workflow will be saved by the app ID that hosts the ver
 {{% alert title="Restrictions" color="primary" %}}
 Like other API building blocks and resources in Dapr, workflows are scoped to a single namespace.
 This means that all app IDs involved in a multi-application workflow must be in the same namespace.
+Cross-namespace workflows are not supported: any workflow or activity call from a caller in a different namespace than the target is always denied.
 Similarly, all app IDs must use the same workflow (or actor) state store.
 Finally, the target app ID must have the activity or child workflow defined and registered, otherwise the parent workflow retries indefinitely.
 {{% /alert %}}
@@ -103,9 +104,9 @@ It is therefore undesirable to execute these activities more than once for the s
 Before 1.17 in multi-application scenarios, Activities would publish responses over a network call to the other application which is hosting the owning Workflow.
 In the case where the hosting workflow application is down or otherwise unreachable, the result would be lost and the Activity would be retried, leading to duplicate execution of the Activity.
 
-In 1.17, enabling the [`WorkflowsRemoteActivityReminder feature gate]({{% ref "support-preview-features.md" %}}) will make the activity result be sent to the owning workflow application with a [reminder]({{% ref "workflow-features-concepts.md#durable-timers" %}}) in the event that the workflow application is offline or unreachable, ensuring that the result is not lost and duplicate execution is avoided.
-This option should be enabled by all users who are using Dapr version 1.17 on all applications.
-It has been _**disabled** by default_ for backwards compatibility between Dapr versions, but will be enabled by default in a future release.
+In 1.17, enabling the [`WorkflowsRemoteActivityReminder` feature gate]({{% ref "support-preview-features.md" %}}) will make the activity result be sent to the owning workflow application with a [reminder]({{% ref "workflow-features-concepts.md#durable-timers" %}}) in the event that the workflow application is offline or unreachable, ensuring that the result is not lost and duplicate execution is avoided.
+This option should be enabled by all users who have all applications running Dapr version 1.17 or later.
+As of 1.18 it is _**enabled** by default_. In 1.17 it was disabled by default for backwards compatibility between Dapr versions, and can be opted into via the feature gate.
 
 ## Multi-application activity example
 
@@ -242,6 +243,33 @@ public sealed class BusinessWorkflow : Workflow<string, string>
 {{% /tab %}}
 
 {{< /tabpane >}}
+
+## Security: Workflow access policies
+
+When using multi-application workflows, you may want to restrict which applications can schedule activities or child workflows on a target application. Dapr provides the `WorkflowAccessPolicy` resource for this purpose.
+
+Policies are a pure allow-list and self-calls are always permitted, so the target application does not need to list itself in the `callers` to execute its own activities. The following example of a workflow access policy is applied to the `ml-worker` application. All policies that target a given appID (in this case `ml-worker`) are loaded by the sidecar when the application is instantiated.
+
+This policy allows the `orchestrator-app` application to schedule the `TrainModel` and `ValidateModel` activities on the `ml-worker` application.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: WorkflowAccessPolicy
+metadata:
+  name: ml-worker-policy
+  namespace: production
+scopes:
+  - ml-worker
+spec:
+  rules:
+    - callers:
+        - appID: orchestrator-app
+      activities:
+        - name: TrainModel
+        - name: ValidateModel
+```
+
+Read [How-To: Apply workflow access policies]({{% ref workflow-access-policy %}}) for more examples and details on the cross-app enforcement model.
 
 ## Related links
 

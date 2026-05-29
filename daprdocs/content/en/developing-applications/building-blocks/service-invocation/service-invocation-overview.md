@@ -102,6 +102,12 @@ Self-hosted machines can use the mDNS name resolution component. As an alternati
 
 The Consul name resolution component is particularly suited to multi-machine deployments and can be used in any hosting environment, including Kubernetes, multiple VMs, or self-hosted.
 
+### Hop-by-hop header stripping
+
+When proxying HTTP service invocation, Dapr removes the standard hop-by-hop headers defined in [RFC 7230 Section 6.1](https://datatracker.ietf.org/doc/html/rfc7230#section-6.1) before forwarding the request to the upstream application or [HTTPEndpoint]({{% ref "httpendpoints-schema.md" %}}), and again before forwarding the upstream's response back to the caller. These headers are: `Connection`, `Keep-Alive`, `Proxy-Connection`, `Transfer-Encoding`, `Upgrade`, `HTTP2-Settings`, `TE`, `Trailer`, and `Proxy-Authorization`.
+
+End-to-end headers (`Accept`, `Authorization`, `Content-Type`, custom `X-*` headers, etc.) are not affected and continue to be forwarded unchanged.
+
 ### Streaming for HTTP service invocation
 
 You can handle data as a stream in HTTP service invocation. This can offer improvements in performance and memory utilization when using Dapr to invoke another service using HTTP with large request or response bodies.

@@ -135,6 +135,9 @@ dapr workflow purge order-12345
 # Purge all completed workflows older than 30 days
 dapr workflow purge --all-older-than 720h
 
+# Purge only FAILED workflows older than 30 days
+dapr workflow purge --all-older-than 720h --all-filter-status FAILED
+
 # Purge all terminal workflows (use with caution!)
 dapr workflow purge --app-id orderprocessing --all
 

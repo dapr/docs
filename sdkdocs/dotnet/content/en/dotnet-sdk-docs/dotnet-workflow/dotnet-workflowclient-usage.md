@@ -14,6 +14,17 @@ A `DaprWorkflowClient` holds access to networking resources in the form of TCP s
 
 The `AddDaprWorkflow()` method will register the Dapr workflow services with ASP.NET Core dependency injection. This method requires an options delegate that defines each of the workflows and activities you wish to register and use in your application.
 
+### Change gRPC Message Size Limits 
+You can also configure gRPC message size limits for the workflow client during registration. This is useful when workflow payloads are larger than the default gRPC limits.
+
+```csharp
+services
+    .AddDaprWorkflowClient()
+    .WithGrpcMessageSizeLimits( 
+        maxReceiveMessageSize: 16 * 1024 * 1024, 
+        maxSendMessageSize: 16 * 1024 * 1024);
+```
+
 ### Singleton Registration
 
 By default, the `AddDaprWorkflow` method registers the `DaprWorkflowClient` and associated services using a singleton lifetime. This means that the services are instantiated only a single time.
