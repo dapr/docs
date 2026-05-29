@@ -68,6 +68,7 @@ The final history of the workflow will be saved by the app ID that hosts the ver
 {{% alert title="Restrictions" color="primary" %}}
 Like other API building blocks and resources in Dapr, workflows are scoped to a single namespace.
 This means that all app IDs involved in a multi-application workflow must be in the same namespace.
+Cross-namespace workflows are not supported: any workflow or activity call from a caller in a different namespace than the target is always denied.
 Similarly, all app IDs must use the same workflow (or actor) state store.
 Finally, the target app ID must have the activity or child workflow defined and registered, otherwise the parent workflow retries indefinitely.
 {{% /alert %}}
@@ -242,6 +243,33 @@ public sealed class BusinessWorkflow : Workflow<string, string>
 {{% /tab %}}
 
 {{< /tabpane >}}
+
+## Security: Workflow access policies
+
+When using multi-application workflows, you may want to restrict which applications can schedule activities or child workflows on a target application. Dapr provides the `WorkflowAccessPolicy` resource for this purpose.
+
+Policies are a pure allow-list and self-calls are always permitted, so the target application does not need to list itself in the `callers` to execute its own activities. The following example of a workflow access policy is applied to the `ml-worker` application. All policies that target a given appID (in this case `ml-worker`) are loaded by the sidecar when the application is instantiated.
+
+This policy allows the `orchestrator-app` application to schedule the `TrainModel` and `ValidateModel` activities on the `ml-worker` application.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: WorkflowAccessPolicy
+metadata:
+  name: ml-worker-policy
+  namespace: production
+scopes:
+  - ml-worker
+spec:
+  rules:
+    - callers:
+        - appID: orchestrator-app
+      activities:
+        - name: TrainModel
+        - name: ValidateModel
+```
+
+Read [How-To: Apply workflow access policies]({{% ref workflow-access-policy %}}) for more examples and details on the cross-app enforcement model.
 
 ## Related links
 
