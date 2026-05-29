@@ -46,7 +46,7 @@ Poll for the result:
 curl "http://localhost:3500/v1.0-beta1/workflows/dapr/abc123"
 ```
 
-When `runtimeStatus` is `"COMPLETED"`, the `properties["dapr.workflow.output"]` field contains the tool list. Each tool's `input_schema` is the raw JSON Schema for its arguments:
+When `runtimeStatus` is `"COMPLETED"`, the `properties["dapr.workflow.output"]` field contains the tool list. Each tool's `inputSchema` is the raw JSON Schema for its arguments:
 
 ```json
 {
@@ -54,7 +54,7 @@ When `runtimeStatus` is `"COMPLETED"`, the `properties["dapr.workflow.output"]` 
     {
       "name": "get_weather",
       "description": "Get current weather for a city",
-      "input_schema": {
+      "inputSchema": {
         "type": "object",
         "properties": {"city": {"type": "string"}},
         "required": ["city"]
@@ -76,20 +76,20 @@ curl -X POST "http://localhost:3500/v1.0-beta1/workflows/dapr/dapr.internal.mcp.
   }'
 ```
 
-Poll for the result as in Step 2. The output is a `CallMCPToolResponse` proto serialized as JSON. Each entry in `content` is a oneof — text, image, audio, resource_link, or embedded_resource:
+Poll for the result as in Step 2. The output is an [MCP `CallToolResult`](https://modelcontextprotocol.io/specification/2024-11-05/server/tools) — byte-for-byte the same shape as the MCP wire spec. Each entry in `content` is a flat tagged union with a `type` discriminator:
 
 ```json
 {
-  "is_error": false,
+  "isError": false,
   "content": [
-    {"text": {"text": "Weather in Seattle: sunny, 72°F"}}
+    {"type": "text", "text": "Weather in Seattle: sunny, 72°F"}
   ]
 }
 ```
 
-If the tool call fails at the MCP level (e.g. unknown tool, auth error), `is_error` is `true` and the error is in `content`. The workflow itself completes successfully — `is_error` is not a workflow failure.
+If the tool call fails at the MCP level (e.g. unknown tool, auth error), `isError` is `true` and the error is in `content`. The workflow itself completes successfully — `isError` is not a workflow failure.
 
-If your call is missing a required argument, you get the same `is_error: true` shape immediately — Dapr validates against the tool's cached JSON Schema before contacting the MCP server, so agents/LLMs see actionable errors without burning a network round-trip.
+If your call is missing a required argument, you get the same `isError: true` shape immediately — Dapr validates against the tool's cached JSON Schema before contacting the MCP server, so agents/LLMs see actionable errors without burning a network round-trip.
 
 ## Step 4 (optional): Add authentication
 
@@ -134,7 +134,7 @@ spec:
 Register a workflow named `rbac-check` in your application. It receives an `MCPBeforeCallToolHookInput`:
 
 ```text
-{ name, tool_name, arguments }
+{ name, toolName, arguments }
 ```
 
 `name` is the MCPServer resource name; `arguments` is the JSON object the caller passed. Return an error to deny; return nil to allow.
@@ -142,14 +142,14 @@ Register a workflow named `rbac-check` in your application. It receives an `MCPB
 ```text
 workflow rbac-check(input):
   # Argument-level RBAC: inspect the payload and decide.
-  if input.tool_name == "issue_refund":
+  if input.toolName == "issue_refund":
     if input.arguments["amount"] > 10_000:
       return error("rbac: refunds over $10K require manual approval")
 
-  if input.tool_name in DESTRUCTIVE_TOOLS:
+  if input.toolName in DESTRUCTIVE_TOOLS:
     if not input.arguments.get("dry_run", false):
       return error("rbac: %s requires dry_run=true",
-                   input.tool_name)
+                   input.toolName)
 
   return ok   # nil error so tool call proceeds
 ```
@@ -173,11 +173,11 @@ spec:
 
 ```text
 workflow redact-pii(input):
-  # input: { name, tool_name, arguments }
+  # input: { name, toolName, arguments }
   args = copy(input.arguments)
   if "email" in args:
     args["email"] = mask_email(args["email"])
-  return { name: input.name, tool_name: input.tool_name, arguments: args }
+  return { name: input.name, toolName: input.toolName, arguments: args }
 ```
 
 The hook returns the same shape it receives. The MCP server (and any subsequent hooks in the chain) sees only the transformed `arguments`.

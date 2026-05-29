@@ -17,7 +17,7 @@ MCPServer turns MCP integration into a deploy-time concern instead of an applica
 - **Zero MCP SDK in your app.** Your application starts a Dapr workflow by name. Dapr speaks MCP to the server. Swap MCP servers, change transports, or rotate credentials without touching application code.
 - **Per-tool RBAC, audit, and redaction in YAML.** Order-preserving `beforeCallTool` / `afterCallTool` / `beforeListTools` / `afterListTools` hooks run argument-level authorization, rate limiting, PII redaction, audit logging, and response filtering as Dapr workflows. Set `appID` on a hook to route it to a centralized policy app, so one shared RBAC service governs every agent without each app embedding the policy.
 - **Durable execution.** Tool calls run as workflow activities backed by Dapr Scheduler reminders. If daprd is restarted mid-call, the scheduler re-delivers the activity to the new instance and the call completes — agents don't have to implement their own retry/resume logic. Inside a single activity, transient connection drops are absorbed automatically: Dapr keeps one warm session per MCPServer (with keep-alive pings) and reconnects once on `ErrConnectionClosed` before the workflow ever sees the blip.
-- **Fast feedback for callers.** Required-field validation runs against the cached JSON Schema *before* the MCP server is contacted. Missing arguments come back as a structured `CallMCPToolResponse{is_error: true}` immediately — agents and LLMs get an actionable error without burning a network round-trip.
+- **Fast feedback for callers.** Required-field validation runs against the cached JSON Schema *before* the MCP server is contacted. Missing arguments come back as a structured `mcp.CallToolResult{isError: true}` immediately — agents and LLMs get an actionable error without burning a network round-trip.
 - **Per-tool observability.** Each tool gets its own workflow name (`dapr.internal.mcp.<server>.CallTool.<tool>`), so traces, metrics, and audit logs are sliced per-tool out of the box. You see exactly which tool was called, by whom, with what arguments, and what came back.
 - **Declarative authentication.** OAuth2 client credentials, SPIFFE workload identity, and static-header auth are all configured in YAML. Dapr fetches and refreshes tokens, caches per-MCPServer HTTP clients, and never exposes raw credentials to your app.
 - **Scoping and multi-tenancy.** MCPServers are namespaced and `scopes`-restricted, just like other Dapr resources. One MCP server can be shared across many apps with different access policies.
@@ -58,20 +58,20 @@ Content-Type: application/json
 }
 ```
 
-Poll for the result with `GET /v1.0-beta1/workflows/dapr/<instanceID>`. The workflow output is a `CallMCPToolResponse` proto serialized as JSON. Each entry in `content` is a oneof — text, image, audio, resource_link, or embedded_resource:
+Poll for the result with `GET /v1.0-beta1/workflows/dapr/<instanceID>`. The workflow output is a [MCP `CallToolResult`](https://modelcontextprotocol.io/specification/2024-11-05/server/tools) — byte-for-byte the same shape as the MCP wire spec. Each entry in `content` is a flat tagged union (`type` discriminator + per-variant fields):
 
 ```json
 {
-  "is_error": false,
+  "isError": false,
   "content": [
-    {"text": {"text": "Weather in Seattle: sunny, 72°F"}}
+    {"type": "text", "text": "Weather in Seattle: sunny, 72°F"}
   ]
 }
 ```
 
-For binary content the shape is `{"image": {"mime_type": "image/png", "data": "<base64>"}}` (likewise for `audio`); for resource references it is `{"resource_link": {"resource": "<base64-bytes>"}}` or `{"embedded_resource": {...}}`.
+Other content shapes are similarly flat: `{"type": "image", "data": "<base64>", "mimeType": "image/png"}` (likewise for `audio`); resource references use `{"type": "resource_link", "uri": "...", "name": "...", "mimeType": "...", "description": "..."}` or `{"type": "resource", "resource": {"uri": "...", "mimeType": "...", "text": "..." | "blob": "<base64>"}}`.
 
-If the tool call fails at the MCP level (unknown tool, validation failure, server-side auth error), `is_error` is `true` and the failure is described in `content` — the workflow itself completes successfully so the calling agent or LLM receives a structured error it can act on (retry, pick a different tool, or surface to the user).
+If the tool call fails at the MCP level (unknown tool, validation failure, server-side auth error), `isError` is `true` and the failure is described in `content` — the workflow itself completes successfully so the calling agent or LLM receives a structured error it can act on (retry, pick a different tool, or surface to the user).
 
 If daprd restarts while the tool call is in flight, Dapr Scheduler re-delivers the pending activity to the new daprd instance and the workflow resumes — no application-side retry logic required.
 
@@ -92,7 +92,7 @@ Output:
     {
       "name": "get_weather",
       "description": "Get current weather for a city",
-      "input_schema": {
+      "inputSchema": {
         "type": "object",
         "properties": {"city": {"type": "string"}},
         "required": ["city"]
@@ -236,16 +236,28 @@ Middleware hooks turn tool-call governance into declarative YAML enforced by Dap
 
 ### Hook input shapes
 
-Each hook is a Dapr workflow that receives a typed input from the runtime. Field names match the proto definitions:
+Each hook is a Dapr workflow that receives a typed input from the runtime:
 
 ```text
-beforeCallTool input:  { name, tool_name, arguments }
-afterCallTool  input:  { name, tool_name, arguments, result }   # result is CallMCPToolResponse
+beforeCallTool input:  { name, toolName, arguments }
+afterCallTool  input:  { name, toolName, arguments, result }   # result: bytes — JSON-encoded MCP CallToolResult
 beforeListTools input: { name }
-afterListTools  input: { name, result }                          # result is ListMCPToolsResponse
+afterListTools  input: { name, result }                         # result: bytes — JSON-encoded MCP ListToolsResult
 ```
 
-`name` is the MCPServer resource name. `arguments` is the JSON object the caller passed. `result` is whatever the MCP server (or a previous mutating hook) produced. Mutating hooks return the same shape they receive — modify, then return.
+`name` is the MCPServer resource name. `arguments` is the JSON object the caller passed. `result` is the JSON-encoded MCP-spec result (camelCase wire shape, byte-compatible with the [MCP specification](https://modelcontextprotocol.io/specification/)). Hook workflows deserialize it with the language's MCP SDK or with plain JSON decoding:
+
+```python
+# Python hook example
+import json
+def after_call_tool(ctx, input):
+    result = json.loads(input["result"])
+    is_error = result["isError"]
+    text = result["content"][0]["text"] if result["content"] else ""
+    ...
+```
+
+Mutating hooks return the same shape they receive — modify, then return.
 
 ### Worked example: argument-level RBAC
 
@@ -264,16 +276,16 @@ Workflow body (pseudocode — language-neutral):
 
 ```text
 workflow rbac-check(input):
-  # input: { name, tool_name, arguments }
-  if input.tool_name == "issue_refund":
+  # input: { name, toolName, arguments }
+  if input.toolName == "issue_refund":
     amount = input.arguments["amount"]
     if amount > 10_000:
       return error("rbac: refunds over $10K require manual approval")
 
-  if input.tool_name in DESTRUCTIVE_TOOLS:
+  if input.toolName in DESTRUCTIVE_TOOLS:
     if not input.arguments.get("dry_run", false):
       return error("rbac: %s requires dry_run=true in this environment",
-                   input.tool_name)
+                   input.toolName)
 
   return ok   # mutate=false → return value is discarded; nil error means allow
 ```
@@ -298,12 +310,14 @@ spec:
 
 ```text
 workflow audit-logger(input):
-  # input: { name, tool_name, arguments, result }
+  # input: { name, toolName, arguments, result }
+  # `result` is bytes carrying a JSON-encoded MCP CallToolResult; decode first.
+  result = json_decode(input.result)
   emit_audit({
     server:    input.name,
-    tool:      input.tool_name,
+    tool:      input.toolName,
     args:      redact(input.arguments),
-    succeeded: not input.result.is_error,
+    succeeded: not result.isError,
     at:        now(),
   })
   return ok   # mutate=false → result reaches the caller unchanged
@@ -337,11 +351,11 @@ spec:
 | Pattern | Phase | `mutate` | Sketch |
 |---|---|---|---|
 | Argument RBAC | `beforeCallTool` | `false` | Inspect `arguments`, return error to deny. |
-| Rate limiting | `beforeCallTool` | `false` | Look up budget keyed by `tool_name`; return error when exhausted. |
+| Rate limiting | `beforeCallTool` | `false` | Look up budget keyed by `toolName`; return error when exhausted. |
 | PII redaction (request) | `beforeCallTool` | `true` | Transform `arguments`, return the cleaned shape. |
-| Audit logging | `afterCallTool` | `false` | Emit `{tool_name, arguments, result.is_error}` to a state store / log sink. |
-| Response filtering | `afterCallTool` | `true` | Strip / mask fields in `result.content`, return updated `CallMCPToolResponse`. |
-| Tool catalog filtering | `afterListTools` | `true` | Drop tools the caller isn't entitled to discover, return updated `ListMCPToolsResponse`. |
+| Audit logging | `afterCallTool` | `false` | Emit `{toolName, arguments, result.isError}` (decode `result` bytes first) to a state store / log sink. |
+| Response filtering | `afterCallTool` | `true` | Strip / mask fields inside the decoded `CallToolResult` `content`, then JSON-encode and return. |
+| Tool catalog filtering | `afterListTools` | `true` | Drop tools the caller isn't entitled to discover, return the updated `ListToolsResult` as JSON bytes. |
 
 Each pattern is a single workflow with the input/output shape from [Hook input shapes](#hook-input-shapes) above. See the [MCPServer spec]({{% ref mcpserver-schema %}}) for the full middleware field reference.
 
@@ -352,6 +366,8 @@ Because each MCP tool gets its own workflow name (`dapr.internal.mcp.<server>.Ca
 For access control, MCP workflows participate in `WorkflowAccessPolicy` the same way user workflows do. The policy is an allow-list keyed by workflow name + caller appID, so operators can deny or restrict who is permitted to invoke `dapr.internal.mcp.<server>.CallTool.<tool>` (or `ListTools`) from outside the daprd that owns the resource. Self-call exemption (caller appID equals target appID) keeps in-process invocations open by default. This is how a central agent platform restricts which agents can call which tools, even when many agents share a single MCP gateway.
 
 `WorkflowAccessPolicy` and [middleware hooks](#middleware-pipelines) compose, they don't overlap. `WorkflowAccessPolicy` decides *whether a caller can start `CallTool.<tool>` at all* — coarse-grained, appID-keyed, enforced at the workflow boundary. Middleware hooks decide *what happens once the call is in flight* — fine-grained, with full visibility into `arguments` and `result`. Use both: the policy as the perimeter, hooks for tool-call-level argument RBAC, redaction, and audit.
+
+For agents that reach MCP servers through the [service invocation path]({{% ref mcp-service-invocation.md %}}) instead of the workflow client, the equivalent perimeter is `Configuration` `accessControl` attached to the MCP server's App ID — see [MCP access control]({{% ref mcp-access-control.md %}}).
 
 ## Deployment topologies
 
@@ -425,5 +441,7 @@ When `ignoreErrors` is `true` and load fails, the MCPServer's workflows are not 
 - [MCPServer spec reference]({{% ref mcpserver-schema %}})
 - [How-To: Use MCPServer resources]({{% ref howto-use-mcpserver.md %}})
 - [Workflow API reference]({{% ref workflow_api %}})
+- [MCP through Dapr service invocation]({{% ref mcp-service-invocation.md %}}) — for agents that need to keep using off-the-shelf MCP clients
+- [MCP access control]({{% ref mcp-access-control.md %}}) — App-ID-keyed `Configuration` `accessControl` for the service-invocation path
 - Python SDK: `DaprMCPClient` — framework-agnostic client for invoking MCPServer tools from any agent framework (see the python-sdk docs)
 - dapr-agents: zero-config MCPServer tool discovery — `DurableAgent` automatically picks up MCPServer tools from sidecar metadata (see the dapr-agents docs)
