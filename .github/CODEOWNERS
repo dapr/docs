@@ -8,3 +8,8 @@
 # Default rule: anything that doesn't match a more specific rule goes here
 
 * @dapr/approvers-docs @dapr/maintainers-docs
+
+# Other rules (last matching rule takes precedence)
+
+/sdkdocs/ @dapr/approvers-docs @dapr/maintainers-docs @dapr/maintainers-dotnet-sdk @dapr/maintainers-rust-sdk @dapr/maintainers-go-sdk @dapr/maintainers-java-sdk @dapr/maintainers-python-sdk @dapr/maintainers-js-sdk
+
