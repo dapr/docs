@@ -29,6 +29,9 @@ dapr workflow run OrderProcessingWorkflow \
   --input '{"orderId": "12345", "amount": 100.50}'
 
 # Start with a new workflow with a specific instance ID
+# Note: instance IDs cannot be reused. If a workflow with this ID
+# already exists (in any state), the request will be rejected.
+# Purge a completed workflow first to free up its instance ID.
 dapr workflow run OrderProcessingWorkflow \
   --app-id orderprocessing \
   --instance-id order-12345 \
@@ -563,6 +566,10 @@ curl -X POST "http://localhost:3500/v1.0/workflows/dapr/OrderProcessingWorkflow/
 ```
 
 Note that workflow instance IDs can only contain alphanumeric characters, underscores, and dashes.
+
+{{% alert title="Important" color="warning" %}}
+Workflow instance IDs cannot be reused. If a workflow with the given instance ID already exists (whether running, completed, failed, or terminated), the request will be rejected. To reuse an instance ID, first purge the existing workflow using the [purge API]({{% ref "workflow_api.md#purge-workflow-request" %}}). This ensures that workflow histories remain immutable and are only removed through explicit purge operations or a configured [retention policy]({{% ref workflow-history-retention-policy.md %}}).
+{{% /alert %}}
 
 ### Terminate workflow
 
