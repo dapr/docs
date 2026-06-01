@@ -73,8 +73,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | sentinelMasterName | N         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/latest/operate/oss_and_stack/management/sentinel/) | `""`,  `"mymaster"`
 | sentinelUsername   | N         | Username for Redis Sentinel. Applicable only when "failover" is true, and Redis Sentinel has authentication enabled | `"username"`
 | sentinelPassword   | N         | Password for Redis Sentinel. Applicable only when "failover" is true, and Redis Sentinel has authentication enabled | `"password"`
-| maxLenApprox        | N        | Maximum number of items inside a stream.The old entries are automatically evicted when the specified length is reached, so that the stream is left at a constant size. Defaults to unlimited. | `"10000"`
-| streamTTL        | N        | TTL duration for stream entries. Entries older than this duration will be evicted. This is an approximate value, as it's implemented using Redis stream's `MINID` trimming with the '~' modifier. The actual retention may include slightly more entries than strictly defined by the TTL, as Redis optimizes the trimming operation for efficiency by potentially keeping some additional entries. | `"30d"`
+| maxLenApprox        | N        | Maximum number of items inside a stream.The old entries are automatically evicted when the specified length is reached, so that the stream is left at a constant size. Defaults to unlimited. Cannot be used together with streamTTL; only one stream trimming strategy can be active at a time. | `"10000"`
+| streamTTL        | N        | TTL duration for stream entries. Entries older than this duration will be evicted. This is an approximate value, as it's implemented using Redis stream's `MINID` trimming with the '~' modifier. The actual retention may include slightly more entries than strictly defined by the TTL, as Redis optimizes the trimming operation for efficiency by potentially keeping some additional entries. Cannot be used together with maxLenApprox; only one stream trimming strategy can be active at a time. | `"30d"`
 
 ## Create a Redis instance
 
