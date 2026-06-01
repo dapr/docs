@@ -12,7 +12,7 @@ This is useful for:
 
 - **Chain-of-custody and audit** — a fraud check, compliance gate, or settlement step can verify what already happened upstream rather than trusting the caller's claims.
 - **Cross-app workflows** — a downstream app, often owned by a different team, can confirm an upstream activity ran without an out-of-band query.
-- **AI agents and long-running orchestrations** — agents that loop with `ContinueAsNew` or fan out to sub-agents can carry context (tool calls, model outputs, intermediate decisions) forward without re-prompting from scratch.
+- **AI agents and long-running orchestrations** — agents that loop with `ContinueAsNew` or fan out to sub-agents can carry context (tool calls, model outputs, intermediate decisions) forward without re-prompting expensive calls from scratch.
 
 ## Propagation scopes
 
