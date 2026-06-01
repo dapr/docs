@@ -210,7 +210,7 @@ Learn more about [external system interaction.]({{% ref "workflow-patterns.md#ex
  
 For example if you have a workflow that verifies a credit check for a user, you can use workflow history propagation to verify this actually happened for the named user. When this is combined with workflow history signing, you can further cryptographically confirm or attest this. 
   
-A parent workflow can opt to share its execution history with downstream child workflows and activities. Two scopes are available:
+A parent workflow can opt to share its execution history with downstream child and grandchild workflows and activities. Two scopes are available:
 
 - **Lineage** — caller's events plus the full ancestor chain (chain-of-custody)
 - **Own history** — caller's events only (a trust boundary, ancestral lineage dropped)
