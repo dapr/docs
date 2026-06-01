@@ -90,10 +90,10 @@ The table below summarizes which concerns `DaprInvokeHttpClient` handles for you
 
 | Concern | Handled by the SDK | User's responsibility |
 |---|---|---|
-| Invoke URL (`/v1.0/invoke/{appId}/method/...`) | ✓ | |
-| `dapr-api-token` header | ✓ | |
-| HTTP read timeout | ✓ | |
-| `User-Agent: dapr-sdk-java/<version>` header | ✓ | |
+| Invoke URL (`/v1.0/invoke/{appId}/method/...`) | ✓ — resolved against the sidecar endpoint, which defaults to `http://localhost:3500` (override via `DAPR_HTTP_ENDPOINT`, or `DAPR_SIDECAR_IP` + `DAPR_HTTP_PORT`) | |
+| `dapr-api-token` header | ✓ — attached only when configured via the `dapr.api.token` system property or `DAPR_API_TOKEN` environment variable | |
+| HTTP read timeout | ✓ — defaults to **60 seconds**; override via the `dapr.http.client.readTimeoutSeconds` system property or `DAPR_HTTP_CLIENT_READ_TIMEOUT_SECONDS` environment variable | |
+| `User-Agent: dapr-sdk-java/<version>` header | ✓ — value tracks the SDK version automatically | |
 | `Content-Type` header | | Set via `.header("Content-Type", "...")` |
 | Request body serialization | | Use `DaprBodyPublishers.json(...)` for default JSON, or any `HttpRequest.BodyPublisher` |
 | Response body deserialization | | Pick an `HttpResponse.BodyHandler` (`ofString`, `ofByteArray`, custom) |
