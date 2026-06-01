@@ -44,7 +44,7 @@ This pattern is ideal for scenarios where you need an LLM with enhanced capabili
 **Implementation with Dapr Agents:**
 
 ```python
-from dapr_agents import Agent, tool
+from dapr_agents import DurableAgent, tool
 
 @tool
 def search_flights(destination: str) -> List[FlightOption]:
@@ -56,7 +56,7 @@ def search_flights(destination: str) -> List[FlightOption]:
     ]
 
 # Create agent with memory and tools
-travel_planner = Agent(
+travel_planner = DurableAgent(
     name="TravelBuddy",
     role="Travel Planner Assistant",
     instructions=["Remember destinations and help find flights"],
@@ -69,7 +69,7 @@ Dapr Agents automatically handles:
 - **Memory persistence** - The agent manages conversation memory 
 - **Tool integration** - The `@tool` decorator handles input validation, type conversion, and output formatting
 
-The foundational building block of any agentic system is the Augmented LLM - a language model enhanced with external capabilities like memory, tools, and retrieval. In Dapr Agents, this is represented by the `Agent` class. However, while this provides essential capabilities, it alone is often not sufficient for complex enterprise scenarios. This is why it's typically combined with workflow orchestration that provides structure, reliability, and coordination for multi-step processes.
+The foundational building block of any agentic system is the Augmented LLM - a language model enhanced with external capabilities like memory, tools, and retrieval. In Dapr Agents, this is represented by the `DurableAgent` class. While a simple `Agent` class also exists, it is **deprecated as of v1.0.0-rc.1**; `DurableAgent` is the recommended choice for all new development. Augmented LLM capabilities alone are often not sufficient for complex enterprise scenarios, so they are typically combined with workflow orchestration that provides structure, reliability, and coordination for multi-step processes.
 
 ## Prompt Chaining
 
