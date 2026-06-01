@@ -49,15 +49,27 @@ By configuring `consumerID` with the `{namespace}` value, you'll be able to use 
 
 <img src="/images/howto-namespace/with-namespace.png" width=1000 alt="Diagram showing how namespace consumer groups help with multi-tenancy.">
 
-In the diagram above, you have two namespaces, each with applications of the same `app-id`, publishing and subscribing to the same centralized message broker `orders`. This time, however, Dapr has created consumer group names prefixed with the namespace in which they're running. 
+In the diagram above, you have two namespaces, each with applications of the same `app-id`, publishing and subscribing to the same logical topic `orders`. Dapr namespaces the underlying broker entities so the two namespaces do not interfere with each other.
 
 Without you needing to change your code/`app-id`, the namespace consumer group allows you to:
 - Add more namespaces
-- Keep the same topics
+- Use the same topic names **in your application code** across namespaces
 - Keep the same `app-id` across namespaces
 - Have your entire deployment pipeline remain intact
 
 Simply include the `"{namespace}"` consumer group construct in your component metadata. You don't need to encode the namespace in the metadata. Dapr understands the namespace it is running in and completes the namespace value for you, like a dynamic metadata value injected by the runtime.
+
+{{% alert title="Important: how namespacing appears on the broker" color="warning" %}}
+When `{namespace}` appears anywhere in a pub/sub component's metadata, Dapr namespace-scopes the **whole component** — not just the `consumerID` field. The Kubernetes namespace is prefixed onto **both** the topic and the subscription/consumer-group on every publish and subscribe.
+
+For example, with namespace `team-a` and a logical topic `orders`, the entities created on the broker are:
+- Topic: `team-aorders`
+- Subscription / consumer group: `team-a.<appID>`
+
+From your application code's perspective the topic name is preserved end-to-end — Dapr strips the prefix on the receive path before delivering messages to your app, and the `app is subscribed to the following topics: [...]` sidecar log line also shows the un-prefixed name. The prefix only exists on the wire and on the broker.
+
+If you want a **shared** broker topic with unique-per-app subscriptions, drop `{namespace}` from the component metadata and make the `consumerID` unique another way (for example, `consumerID: "{appID}"`).
+{{% /alert %}}
 
 {{% alert title="Note" color="primary" %}}
 If you add the namespace consumer group to your metadata afterwards, Dapr updates everything for you. This means that you can add namespace metadata value to existing pub/sub deployments.

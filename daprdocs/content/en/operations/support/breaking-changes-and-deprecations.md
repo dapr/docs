@@ -70,6 +70,7 @@ After announcing a future breaking change, the change will happen in 2 releases 
 | NATS Streaming PubSub Component                                                                                                                                                                                                                                                                             | 1.11.0                   | 1.13.0         |
 | Workflows API Alpha1 `/v1.0-alpha1/workflows` being deprecated in favor of Workflow Client                                                                                                                                                                                                                  | 1.15.0                   | 1.17.0         |
 | Migration of `http-max-request-size` flags/annotations to `max-body-size`. See [How-To: Handle larger body requests]({{% ref increase-request-size.md %}})                                                                                                                                                  | 1.14.0                   | 1.17.0         |
+| Removal of workflow instance ID reuse policy. Workflow instance IDs can no longer be reused once a workflow completes or fails. This prevents the history of a completed workflow from being overwritten. Users must use a unique instance ID for each new workflow execution.                                 | 1.18.0                   | 1.18.0         |
 
 ## Related links
 

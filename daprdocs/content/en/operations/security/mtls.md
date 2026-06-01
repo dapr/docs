@@ -12,6 +12,16 @@ Dapr allows operators and developers to bring in their own certificates, or inst
 
 For detailed information on mTLS, read the [security concepts section]({{% ref "security-concept.md" %}}).
 
+## Workload identity key algorithm (Ed25519, Dapr 1.18+) {#workload-identity-key-algorithm}
+
+Starting with Dapr **1.18**, Sentry generates workload identity keys using **Ed25519** instead of ECDSA P-256. On a normal install or upgrade this is transparent — no configuration change is needed.
+
+For a full explanation of what changed, why, and the compatibility matrix (including FIPS requirements and the 1.17.7 downgrade floor), see [Workload identity key algorithm]({{% ref "security-concept.md#workload-identity-key-algorithm" %}}) in the security concepts page.
+
+{{% alert title="Bringing your own CA" color="primary" %}}
+When you supply your own root and issuer certificates, Sentry signs workload CSRs using the algorithm of the **issuer key you provide**, not Ed25519. If your CA key is RSA or ECDSA, workload certs will be signed with that algorithm. This is the recommended path for FIPS-compliant environments.
+{{% /alert %}}
+
 If custom certificates have not been provided, Dapr automatically creates and persist self-signed certs valid for one year.
 In Kubernetes, the certs are persisted to a secret that resides in the namespace of the Dapr system pods, accessible only to them.
 In self-hosted mode, the certs are persisted to disk.
@@ -128,6 +138,10 @@ basicConstraints = critical, CA:true, pathlen:0
 ```
 
 Run the following to generate the root cert and key
+
+{{% alert title="Dapr 1.18+" color="primary" %}}
+The example below generates an ECDSA P-256 key. RSA keys (`openssl genrsa`) are also accepted. When you supply your own CA, Sentry signs workload CSRs using the algorithm of the issuer key you provide. ECDSA P-256 and RSA are the recommended choices for FIPS-compliant environments.
+{{% /alert %}}
 
 ```bash
 # skip the following line to reuse an existing root key, required for rotating expiring certificates
@@ -273,6 +287,18 @@ Replace the `ca.crt`, `issuer.crt` and `issuer.key` keys in the Kubernetes secre
 If you signed the new cert root with the **same private key** the Dapr Sentry service will pick up the new certificates automatically. You can restart your application deployments using `kubectl rollout restart` with zero downtime. It is not necessary to restart all deployments at once, as long as deployments are restarted before original certificate expiration.
 
 If you signed the new cert root with a **different private key**, you must restart the Dapr Sentry service, followed by the remainder of the Dapr control plane service.
+
+{{% alert title="Workflow history signing: protect long-running workflows during CA rotation" color="warning" %}}
+If you rotate to a completely new root CA (different private key), any running workflows with [signed history]({{% ref "workflow-history-signing.md" %}}) will fail signature verification because their signing certificates were issued by the old CA. Those workflows will be reported as FAILED with error type `SignatureVerificationFailed`.
+
+For long-running workflows (anything that may outlive your CA's validity period, typically one year for the Dapr-generated self-signed root), plan ahead:
+
+- **Preferred:** Sign your renewed issuer cert with the **same root private key** you used previously. Existing signed workflows continue to verify against the same root, so you can rotate the leaf/issuer without downtime. The CLI command `dapr mtls renew-certificate -k --private-key <existing-root-key> --valid-until <days>` does this.
+- **Bring your own CA:** Generate your own root key, store it securely (HSM or secret store), and reuse it across all issuer renewals. Self-signed Dapr-generated roots cannot be reused this way.
+- **Last resort:** If you must rotate to a new root key, complete or [purge]({{% ref "howto-manage-workflow.md" %}}) all signed in-flight workflows first. Signing is a one-way commitment, so there is no re-sign path under the new root.
+
+See [long-running workflows and root CA expiry]({{% ref "workflow-history-signing.md#long-running-workflows-and-root-ca-expiry" %}}) for the full guidance.
+{{% /alert %}}
 
 ```bash
 kubectl rollout restart deploy/dapr-sentry -n <DAPR_NAMESPACE>
@@ -445,7 +471,7 @@ In order to start Sentry service with a custom config, use the following flag:
 
 ### Bringing your own certificates
 
-In order to provide your own credentials, create ECDSA PEM encoded root and issuer certificates and place them on the file system.
+In order to provide your own credentials, create PEM encoded root and issuer certificates (RSA, ECDSA, or Ed25519) and place them on the file system.
 Tell the Sentry service where to load the certificates from using the `--issuer-credentials` flag.
 
 The next examples creates root and issuer certs and loads them with the Sentry service.
@@ -487,6 +513,10 @@ Copy `ca.crt`, `issuer.crt` and `issuer.key` to the filesystem path of every con
 By default, system services will look for the credentials in `/var/run/dapr/credentials`. The examples above use `$HOME/.dapr/certs` as a custom location.
 
 *Note: If you signed the cert root with a different private key, restart the Dapr instances.*
+
+{{% alert title="Workflow history signing: protect long-running workflows during CA rotation" color="warning" %}}
+If you rotate to a completely new root CA (different private key), any running workflows with [signed history]({{% ref "workflow-history-signing.md" %}}) will fail signature verification. To avoid this in self-hosted mode, renew the issuer with the **same root private key** (reuse `ca.key`), or complete and purge signed in-flight workflows before rotating to a new root key. See [long-running workflows and root CA expiry]({{% ref "workflow-history-signing.md#long-running-workflows-and-root-ca-expiry" %}}) for the full guidance.
+{{% /alert %}}
 
 ## Community call video on certificate rotation
 Watch this [video](https://www.youtube.com/watch?v=Hkcx9kBDrAc&feature=youtu.be&t=1400) on how to perform certificate rotation if your certificates are expiring.
