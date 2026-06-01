@@ -18,18 +18,28 @@ This is useful for:
 
 Two scopes are exposed. The default is no propagation.
 
-| Option helper | Scope value on `propagatedHistory.Scope()` | What gets sent | When to use it |
-| ------------- | --------------------------- | -------------- | -------------- |
-| `workflow.PropagateLineage()` | `LINEAGE` (`HISTORY_PROPAGATION_SCOPE_LINEAGE`) | Caller's own events plus the full ancestor chain inherited from the caller's own parent | Full chain-of-custody, downstream wants to see everything that happened before, all the way to the root |
-| `workflow.PropagateOwnHistory()` | `OWN_HISTORY` (`HISTORY_PROPAGATION_SCOPE_OWN_HISTORY`) | Caller's own events only, ancestral lineage is dropped | Trust boundary — the caller is willing to vouch for what *it* did but the receiver shouldn't see further upstream |
+| Option helper | Scope value carried | What gets sent | When to use it |
+| ------------- | ------------------- | -------------- | -------------- |
+| `workflow.PropagateLineage()` | `LINEAGE` (`HISTORY_PROPAGATION_SCOPE_LINEAGE`) | Caller's own events plus the full ancestor chain inherited from the caller's parent | Full chain-of-custody, downstream wants to see everything that happened before, all the way to the root |
+| `workflow.PropagateOwnHistory()` | `OWN_HISTORY` (`HISTORY_PROPAGATION_SCOPE_OWN_HISTORY`) | Caller's own events only, ancestral (parents) lineage is dropped | Trust boundary — the caller is willing to vouch for what *it* did but the receiver shouldn't see further upstream |
 
-The helpers (`PropagateLineage` / `PropagateOwnHistory`) are what you pass when scheduling. The scope values (`LINEAGE` / `OWN_HISTORY`) are what `propagatedHistory.Scope()` returns on the receiver — they're the same thing.
+The helpers (`PropagateLineage` / `PropagateOwnHistory`) are what you pass when scheduling — each SDK has its own equivalent (see the examples below). The scope values (`LINEAGE` / `OWN_HISTORY`) are the runtime enum names carried on the propagation.
 
 `PropagateOwnHistory` is the trust boundary: choosing it tells the runtime to stop forwarding any history the caller itself received. This is the right choice when the receiver is a less-trusted app, a third party, or operates under different compliance rules.
 
+### Which scope should I use?
+
+`PropagateLineage` is the most common choice, as most workflows will want the receiver to see the full chain of what happened upstream — that's what makes the chain-of-custody, audit, and agent-context use cases above work. The decision is about how far down the chain you're willing to share.
+
+Use `PropagateOwnHistory` only when you're crossing a trust boundary: the receiver is a less-trusted app, a third party, or runs under different compliance rules, and you're willing to vouch for your own steps but not forward everything you inherited from your own parent. Outside those cases, prefer lineage.
+
+{{% alert title="Mind the payload size" color="primary" %}}
+Propagated history is carried as part of the scheduled call's payload and stored in the receiver's history. With `PropagateLineage` the payload grows with the depth of the ancestor chain — deep workflow trees and long-running orchestrations can approach Dapr's default gRPC message limit (4 MB), which is configurable. `PropagateOwnHistory` keeps the payload smaller by dropping the inherited ancestor chain.
+{{% /alert %}}
+
 ## Setting it up
 
-A parent opts a single child workflow or activity into propagation via a per-call option. Other calls in the same workflow are unaffected. The default is no propagation.
+A parent enables propagation for a single child workflow or activity with a per-call option. Other calls in the same workflow are unaffected, and the default remains no propagation.
 
 {{< tabpane text=true >}}
 
@@ -67,10 +77,12 @@ public sealed class MerchantCheckoutWorkflow : Workflow<Order, string>
         await ctx.CallActivityAsync<bool>(nameof(ValidateMerchantActivity), order);
 
         // The ProcessPaymentWorkflow child workflow DOES receive parent's history (Lineage).
+        var childOptions = new ChildWorkflowTaskOptions()
+            .WithHistoryPropagation(HistoryPropagationScope.Lineage);
         return await ctx.CallChildWorkflowAsync<string>(
             nameof(ProcessPaymentWorkflow),
             order,
-            new ChildWorkflowTaskOptions(PropagationScope: HistoryPropagationScope.Lineage));
+            options: childOptions);
     }
 }
 ```
@@ -109,6 +121,8 @@ func MerchantCheckout(ctx *workflow.WorkflowContext) (any, error) {
 
 Inside a child workflow or activity, call `GetPropagatedHistory()` (Go / .NET) or `get_propagated_history()` (Python). It returns the propagated history if the caller opted in, or `None` / `nil` if it didn't.
 
+What you get back is a point-in-time snapshot of the caller's execution *at the moment it scheduled this call* — the steps that had already run, not anything the caller does afterward. In the `MerchantCheckout` parent above, `ValidateMerchant` completed before the child workflow was scheduled, so it appears in the propagated history the child receives.
+
 The example below assumes the parent workflow shown above is registered as `MerchantCheckout` with an activity `ValidateMerchant` and a child workflow `ProcessPayment` (called with `Lineage`).
 
 {{< tabpane text=true >}}
@@ -124,12 +138,13 @@ def fraud_detection(ctx: wf.DaprWorkflowContext, order_json: str):
     if history is None:
         return 'no upstream history'
 
+    # Logs once instead of repeatedly during replays — not required, just keeps logging clean.
     if not ctx.is_replaying:
         print(f'scope={history.scope}, workflows={[w.name for w in history.get_workflows()]}')
 
     try:
-        merchant_wf = history.get_workflow_by_name('MerchantCheckout')
-        validation = merchant_wf.get_activity_by_name('ValidateMerchant')
+        merchant_wf = history.get_last_workflow_by_name('MerchantCheckout')
+        validation = merchant_wf.get_last_activity_by_name('ValidateMerchant')
     except wf.PropagationNotFoundError as exc:
         return f'missing required upstream step: {exc}'
 
@@ -153,12 +168,12 @@ public sealed class FraudDetectionWorkflow : Workflow<Order, string>
         if (history is null)
             return Task.FromResult("no upstream history");
 
+        // Logs once instead of repeatedly during replays — not required, just keeps logging clean.
         if (!ctx.IsReplaying)
-            Console.WriteLine($"received {history.Entries.Count} workflow segment(s)");
+            Console.WriteLine($"received {history.Events.Count} ancestor workflow event(s)");
 
         // Verify MerchantCheckout is present in the ancestor chain.
-        var merchant = history.FilterByWorkflowName(nameof(MerchantCheckoutWorkflow));
-        if (merchant.Entries.Count == 0)
+        if (!history.TryGetLastWorkflowEventByName(nameof(MerchantCheckoutWorkflow), out _))
             return Task.FromResult("MerchantCheckout missing from propagated history, rejecting");
 
         return Task.FromResult("approved");
@@ -188,11 +203,11 @@ func FraudDetection(ctx *workflow.WorkflowContext) (any, error) {
         propagatedHistory.Scope(), len(propagatedHistory.Events()), propagatedHistory.GetAppIDs())
 
     // Drill into a specific upstream workflow's activities.
-    merchantWf, err := propagatedHistory.GetWorkflowByName("MerchantCheckout")
+    merchantWf, err := propagatedHistory.GetLastWorkflowByName("MerchantCheckout")
     if err != nil {
         return nil, fmt.Errorf("expected MerchantCheckout in propagated history: %w", err)
     }
-    validation, err := merchantWf.GetActivityByName("ValidateMerchant")
+    validation, err := merchantWf.GetLastActivityByName("ValidateMerchant")
     if err != nil {
         return nil, fmt.Errorf("expected ValidateMerchant in propagated history: %w", err)
     }
@@ -207,22 +222,27 @@ func FraudDetection(ctx *workflow.WorkflowContext) (any, error) {
 
 {{< /tabpane >}}
 
-For all SDKs the returned `propagated-history` object exposes the same properties:
+Every SDK gives you the same underlying model — an execution-ordered chain of ancestor workflows, each carrying its identity (app ID, instance ID, name) plus the activities and child workflows it ran. From the returned object you can:
 
-- **Events** — A list of upstream history events in order
-- **Scope** — which scope the parent chose (`OWN_HISTORY` or `LINEAGE`)
-- **Per-workflow entries** — one entry per ancestor workflow, each tagged with that workflow's app ID, name, instance ID, and the index range of events it covers
-- **App IDs** — deduplicated list of every app that contributed events to the chain
-- **Filters** — convenience accessors to find an entry by workflow name, or events by app / instance / workflow name. Drilling into an entry lets you look up the specific activities or child workflows the upstream workflow ran
+- **List the ancestor chain** — one entry per ancestor workflow, in execution order.
+- **Look up an ancestor workflow by name** — either the most-recent match or all matches.
+- **Look up activities or child workflows within an entry** by name, with the same pattern.
+- **See which apps contributed** to the chain (deduplicated).
+- **Read the propagation scope** the parent chose (`LINEAGE` or `OWN_HISTORY`), where the SDK exposes it on the receiver.
 
-Exact method names differ by SDK (`GetWorkflowByName` in Go and .NET, `get_workflow_by_name` in Python; `WorkflowResult` vs `Entries`; etc.) — see the per-SDK docs for the precise surface.
+For exact method signatures in each language see the runnable examples linked under [Related links](#related-links).
 
 ## History propagation in multi-app workflows
 
-When a parent workflow in App A calls a child workflow in App B using multi-app workflow calling, the propagated contexts travels between applications. In this usage there are two security settings:
+When a parent workflow in App A calls a child workflow in App B using multi-app workflow calling, the propagated context travels across the network between the two sidecars. Two things secure that hop: the channel it travels over, and the signature on the context itself.
 
-- **mTLS** — when Dapr is deployed with mTLS (the default for Helm / `dapr init -k`), inter-sidecar traffic is encrypted and authenticated.
-- **`WorkflowHistorySigning`** — an opt-in `Configuration` feature that signs each propagated chunk with the producing app's SPIFFE identity. Receivers can verify chunks weren't tampered with after they left the producer.
+### Transport security (mTLS)
+
+The propagated context rides the inter-sidecar gRPC channel, so it inherits whatever protects that channel. When Dapr runs with mTLS — the default for Helm and `dapr init -k` — that traffic is encrypted and the two sidecars are mutually authenticated, so the context can't be read or injected by anything sitting between App A and App B. mTLS is also the prerequisite for signing below: the SPIFFE X.509 identity it provides is the key the producer signs with.
+
+### Workflow history signing
+
+mTLS protects the context in transit, but says nothing about whether the contents are authentic once they arrive. Signing closes that gap. With the `WorkflowHistorySigning` `Configuration` feature enabled, the producing app signs each propagated chunk with its SPIFFE identity, and the receiver can cryptographically verify the chunk wasn't tampered with after it left the producer. For the full mechanism — how signatures are chained, stored, and verified on load — see [Workflow history signing]({{% ref "workflow-history-signing.md" %}}).
 
 If `WorkflowHistorySigning` is not enabled, daprd logs a warning per dispatch:
 
@@ -243,10 +263,13 @@ This makes long-running agents and crash-recovery scenarios behave the way you'd
 
 ## Next steps
 
+Discover [how to apply workflow history signing]({{% ref "workflow-history-signing.md" %}}) to cryptographically attest the validity of a previous workflow or activity step.
+
 {{< button text="Workflow patterns >>" page="workflow-patterns.md" >}}
 
 ## Related links
 
+- [Workflow history signing]({{< ref workflow-history-signing.md >}})
 - [Workflow overview]({{< ref workflow-overview.md >}})
 - [Workflow features and concepts]({{< ref workflow-features-concepts.md >}})
 - [Workflow architecture]({{< ref workflow-architecture.md >}})
