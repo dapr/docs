@@ -210,6 +210,14 @@ Dapr provides application-level scoping for components by allowing you to specif
 
 Dapr components can use Dapr's built-in secret management capability to manage secrets. Read the [secret store overview]({{% ref secrets-overview %}}) and [How-To: Reference secrets in components]({{% ref component-secrets %}}) for more details.
 
+## Workflow access control
+
+Dapr supports fine-grained access control for cross-app workflow and activity scheduling through the `WorkflowAccessPolicy` resource. A workflow access policy restricts which calling applications can schedule specific workflows and activities on a target application.
+
+Workflow access policies are enforced on the callee side as a pure allow-list. For cross-app requests, the caller's identity is taken from the [SPIFFE](https://spiffe.io/) identity embedded in the mTLS certificate, so mTLS must be active for cross-app enforcement. Self-calls (where the caller and target are the same app) are always permitted. Policies support glob pattern matching for workflow and activity names.
+
+Read [How-To: Apply workflow access policies]({{% ref workflow-access-policy %}}) for configuration details and examples.
+
 ## Bindings security
 
 Authentication with a binding target is configured by the binding’s configuration file. Generally, you should configure the minimum required access rights. For example, if you only read from a binding target, you should configure the binding to use an account with read-only access rights.
