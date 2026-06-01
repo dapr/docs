@@ -25,6 +25,10 @@ POST http://localhost:<daprPort>/v1.0/workflows/<workflowComponentName>/<workflo
 
 Note that workflow instance IDs can only contain alphanumeric characters, underscores, and dashes.
 
+{{% alert title="Important" color="warning" %}}
+Workflow instance IDs cannot be reused. If a workflow with the given instance ID already exists (in any state), the request will be rejected. To reuse an instance ID, first purge the workflow using the [purge API]({{% ref "workflow_api.md#purge-workflow-request" %}}). See [workflow identity]({{% ref "workflow-features-concepts.md#workflow-identity" %}}) for more details.
+{{% /alert %}}
+
 ### URL parameters
 
 Parameter | Description
@@ -43,6 +47,7 @@ Code | Description
 ---- | -----------
 `202`  | Accepted
 `400`  | Request was malformed
+`409`  | A workflow with the given instance ID already exists
 `500`  | Request formatted correctly, error in dapr code
 
 ### Response content
