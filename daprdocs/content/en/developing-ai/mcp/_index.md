@@ -24,29 +24,13 @@ The two paths are not exclusive — most MCP traffic can flow through service in
 
 ### Path A — Service invocation (recommended for most teams)
 
-The agent's existing MCP client points at the local Dapr sidecar (`http://localhost:3500/v1.0/invoke/<mcp-server-app-id>/method/mcp`, or sets `dapr-app-id: <server>`). Dapr resolves the target by App ID, applies the `accessControl` policies and HTTP middleware attached to the MCP server's App ID, and forwards the request. **Off-the-shelf MCP clients and agent frameworks work unchanged.**
+The agent's existing MCP client points at the local Dapr sidecar (`http://localhost:3500/v1.0/invoke/<mcp-server-app-id>/method/mcp`, or sets `dapr-app-id: <server>`). Dapr resolves the target by App ID, applies the `accessControl` policies and HTTP middleware attached to the MCP server's App ID, and forwards the request:
 
-```mermaid
-flowchart LR
-  CLIENT(Agent / MCP client)
-  subgraph Dapr
-    CID(mcp-client App ID)
-    POLICY{Access policy}:::decision
-    BEARER{Bearer middleware}:::decision
-    SID(mcp-server App ID)
-  end
-  SERVER(MCP server)
-
-  CLIENT-->CID
-  CID-->POLICY
-  POLICY-- allow -->BEARER
-  POLICY-. deny .->CID
-  BEARER-- valid JWT -->SID
-  BEARER-. 401 .->CID
-  SID-->SERVER
-
-  classDef decision stroke:#ed8936
-```
+- **Off-the-shelf MCP clients and agent frameworks work unchanged** — no Dapr-specific MCP SDK to adopt.
+- **App-ID identity and mTLS** — every Dapr-to-Dapr call is mutually authenticated using SPIFFE identities issued and rotated by Sentry.
+- **`Configuration` `accessControl`** — coarse-grained, App-ID-keyed allow/deny policies attached to the MCP server's App ID.
+- **HTTP middleware** — bearer / OAuth2 token validation on inbound, token acquisition on outbound, configured declaratively.
+- **Observability, resiliency, and retries** — the same primitives Dapr already provides for service-to-service traffic apply to MCP traffic.
 
 Get started:
 

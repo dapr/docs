@@ -76,7 +76,7 @@ curl -X POST "http://localhost:3500/v1.0-beta1/workflows/dapr/dapr.internal.mcp.
   }'
 ```
 
-Poll for the result as in Step 2. The output is an [MCP `CallToolResult`](https://modelcontextprotocol.io/specification/2024-11-05/server/tools) — byte-for-byte the same shape as the MCP wire spec. Each entry in `content` is a flat tagged union with a `type` discriminator:
+Poll for the result as in Step 2. The output is an [MCP `CallToolResult`](https://modelcontextprotocol.io/specification/2025-11-25/server/tools) — byte-for-byte the same shape as the MCP wire spec. Each entry in `content` is a flat tagged union with a `type` discriminator:
 
 ```json
 {
@@ -199,7 +199,7 @@ spec:
 
 The same workflow runs on the named app via service invocation. One shared policy app (RBAC, audit, PII redaction) governs many agent apps without each app embedding the policy. Update the central workflow once; every MCPServer that references it picks up the change without redeploying its callers.
 
-> See the [overview examples]({{% ref "mcp-server-resource.md#examples-common-patterns" %}}) for canonical hook patterns (RBAC, rate limiting, audit, response filtering, tool catalog filtering).
+> See the [overview examples]({{% ref "mcp-server-resource.md#examples-common-patterns" %}}) for canonical hook patterns (RBAC, rate limiting, audit, response filtering, tool list filtering).
 
 ## Related links
 

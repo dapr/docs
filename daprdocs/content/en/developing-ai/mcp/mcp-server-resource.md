@@ -58,7 +58,7 @@ Content-Type: application/json
 }
 ```
 
-Poll for the result with `GET /v1.0-beta1/workflows/dapr/<instanceID>`. The workflow output is a [MCP `CallToolResult`](https://modelcontextprotocol.io/specification/2024-11-05/server/tools) — byte-for-byte the same shape as the MCP wire spec. Each entry in `content` is a flat tagged union (`type` discriminator + per-variant fields):
+Poll for the result with `GET /v1.0-beta1/workflows/dapr/<instanceID>`. The workflow output is a [MCP `CallToolResult`](https://modelcontextprotocol.io/specification/2025-11-25/server/tools) — byte-for-byte the same shape as the MCP wire spec. Each entry in `content` is a flat tagged union (`type` discriminator + per-variant fields):
 
 ```json
 {
@@ -355,7 +355,7 @@ spec:
 | PII redaction (request) | `beforeCallTool` | `true` | Transform `arguments`, return the cleaned shape. |
 | Audit logging | `afterCallTool` | `false` | Emit `{toolName, arguments, result.isError}` (decode `result` bytes first) to a state store / log sink. |
 | Response filtering | `afterCallTool` | `true` | Strip / mask fields inside the decoded `CallToolResult` `content`, then JSON-encode and return. |
-| Tool catalog filtering | `afterListTools` | `true` | Drop tools the caller isn't entitled to discover, return the updated `ListToolsResult` as JSON bytes. |
+| Tool list filtering | `afterListTools` | `true` | Drop tools the caller isn't entitled to discover, return the updated `ListToolsResult` as JSON bytes. |
 
 Each pattern is a single workflow with the input/output shape from [Hook input shapes](#hook-input-shapes) above. See the [MCPServer spec]({{% ref mcpserver-schema %}}) for the full middleware field reference.
 
@@ -397,27 +397,6 @@ scopes:
   - agent-app-2
 ```
 
-## Catalog metadata
-
-`spec.catalog` carries informational fields that don't affect runtime behavior but are useful for service catalogs, internal portals, ownership tracking, and compliance tooling. Populate them when publishing MCPServer resources to a wider org so operators can see at a glance who owns each integration and where to find documentation:
-
-```yaml
-spec:
-  catalog:
-    displayName: Payments MCP
-    description: Tools for charging customers and issuing refunds.
-    owner:
-      team: payments-platform
-      contact: payments-oncall@example.com
-    tags: ["payments", "production", "pii"]
-    links:
-      docs: https://wiki.internal/payments-mcp
-      runbook: https://wiki.internal/payments-mcp/runbook
-      dashboard: https://grafana.internal/d/payments-mcp
-```
-
-See the [MCPServer spec]({{% ref mcpserver-schema %}}) for the full list of catalog fields.
-
 ## Tolerating load failures
 
 By default, an MCPServer that fails to load (validation error, unreachable endpoint, bad credentials) causes daprd to exit. Set `spec.ignoreErrors: true` to keep the sidecar running and log the failure instead — useful when one MCP server is optional or when other resources on the same daprd must remain available:
@@ -443,5 +422,5 @@ When `ignoreErrors` is `true` and load fails, the MCPServer's workflows are not 
 - [Workflow API reference]({{% ref workflow_api %}})
 - [MCP through Dapr service invocation]({{% ref mcp-service-invocation.md %}}) — for agents that need to keep using off-the-shelf MCP clients
 - [MCP access control]({{% ref mcp-access-control.md %}}) — App-ID-keyed `Configuration` `accessControl` for the service-invocation path
-- Python SDK: `DaprMCPClient` — framework-agnostic client for invoking MCPServer tools from any agent framework (see the python-sdk docs)
-- dapr-agents: zero-config MCPServer tool discovery — `DurableAgent` automatically picks up MCPServer tools from sidecar metadata (see the dapr-agents docs)
+- [Python SDK MCP example](https://github.com/dapr/python-sdk/tree/main/examples/mcp) — `DaprMCPClient`, a framework-agnostic client for invoking MCPServer tools from any agent framework
+- [dapr-agents MCPServer example](https://github.com/dapr/dapr-agents/tree/main/examples/10-mcpserver) — zero-config MCPServer tool discovery; `DurableAgent` automatically picks up MCPServer tools from sidecar metadata

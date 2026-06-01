@@ -2,7 +2,7 @@
 type: docs
 title: "MCP through Dapr service invocation"
 linkTitle: "Service invocation path"
-weight: 25
+weight: 5
 description: "Run MCP clients and servers as Dapr apps and govern the traffic between them with App ID identity, access policies, bearer middleware, mTLS, and observability"
 ---
 
