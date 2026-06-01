@@ -179,7 +179,7 @@ agent = DurableAgent(
 
 When `pubsub_name` is set, the agent publishes an `ApprovalRequiredEvent` to the topic and waits for an `ApprovalResponseEvent` in reply.
 
-When `pubsub_name` is left `None` and the agent is exposed via `AgentRunner.serve()`, approvals are managed in-memory and surfaced via two auto-mounted HTTP endpoints:
+When `pubsub_name` is `None` and the agent is exposed via `AgentRunner.serve()`, approvals are managed in-memory and surfaced via two auto-mounted HTTP endpoints:
 
 | Method + Path | Purpose |
 |---------------|---------|
