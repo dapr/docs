@@ -206,7 +206,7 @@ Learn more about [external system interaction.]({{% ref "workflow-patterns.md#ex
 
 ## Workflow history propagation
 
- Workflow history propagation enables a current workflow to look back over the set of events that the workflow or a another workflow has executed and verify these actually occurred. Some scenarios include performance fraud checks, checking compliance gates, or enable long-running AI agents/workflows to  maintain context across calls (multi-agent, multi-app workflows) to determine what the agent or workflows claims to have done, it actually true. 
+ Workflow history propagation enables a workflow instance to look back over the set of events that the workflow or a another workflow has executed and verify these actually occurred. Some scenarios include performance fraud checks, checking compliance gates, or enable long-running AI agents/workflows to  maintain context across calls (multi-agent, multi-app workflows) to determine what the agent or workflows claims to have done, it actually true. 
  
 For example if you have a workflow that verifies a credit check for a user, you can use workflow history propagation to verify this actually happened for the named user. When this is combined with workflow history signing, you can further cryptographically confirm or attest this. 
   
