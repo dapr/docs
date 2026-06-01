@@ -39,106 +39,6 @@ On Kubernetes, the sidecar image can be overwritten for the application Deployme
 
 Learn more about [Dapr components' certification lifecycle]({{% ref "certification-lifecycle.md" %}}).
 
-## Supported versions
-
-The table below shows the versions of Dapr releases that have been tested together and form a "packaged" release. Any other combinations of releases are not supported.
-
-| Release date | Runtime     | CLI  | SDKs  | Dashboard  | Status | Release notes |
-|--------------------|:--------:|:--------|---------|---------|---------|------------|
-| May 15th 2026 | 1.17.7</br> | 1.17.1 | Java 1.17.2 </br>Go 1.14.2 </br>PHP 1.2.0 </br>Python 1.17.4 </br>.NET 1.17.8 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported (current) | [v1.17.7 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.7)   |
-| Apr 28th 2026 | 1.17.6</br> | 1.17.1 | Java 1.17.2 </br>Go 1.14.2 </br>PHP 1.2.0 </br>Python 1.17.4 </br>.NET 1.17.8 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.17.6 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.6)   |
-| Apr 16th 2026 | 1.17.5</br> | 1.17.1 | Java 1.17.2 </br>Go 1.14.2 </br>PHP 1.2.0 </br>Python 1.17.4 </br>.NET 1.17.8 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.17.5 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.5)   |
-| Apr 10th 2026 | 1.17.4</br> | 1.17.1 | Java 1.17.0 </br>Go 1.14.2 </br>PHP 1.2.0 </br>Python 1.17.0 </br>.NET 1.17.5 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.17.4 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.4)   |
-| Mar 26th 2026 | 1.17.3</br> | 1.17.1 | Java 1.17.0 </br>Go 1.14.2 </br>PHP 1.2.0 </br>Python 1.17.0 </br>.NET 1.17.5 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.17.3 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.3)   |
-| Mar 19th 2026 | 1.17.2</br> | 1.17.0 | Java 1.17.0 </br>Go 1.14.2 </br>PHP 1.2.0 </br>Python 1.17.0 </br>.NET 1.17.5 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.17.2 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.2)   |
-| Mar 9th 2026 | 1.17.1</br> | 1.17.0 | Java 1.17.0 </br>Go 1.14.2 </br>PHP 1.2.0 </br>Python 1.17.0 </br>.NET 1.17.3 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.17.1 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.1)   |
-| Feb 27th 2026 | 1.17.0</br> | 1.17.0 | Java 1.17.0 </br>Go 1.14.2 </br>PHP 1.2.0 </br>Python 1.17.0 </br>.NET 1.17.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.17.0 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.0)   |
-| Apr 16th 2026 | 1.16.14</br> | 1.16.5 | Java 1.16.2 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.16.14 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.14)   |
-| Apr 15th 2026 | 1.16.13</br> | 1.16.5 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.16.13 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.13)   |
-| Mar 30th 2026 | 1.16.12</br> | 1.16.5 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.16.12 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.12)   |
-| Mar 26th 2026 | 1.16.11</br> | 1.16.5 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.16.11 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.11)   |
-| Mar 6th 2026 | 1.16.10</br> | 1.16.5 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.16.10 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.10)   |
-| Feb 12th 2026 | 1.16.9</br> | 1.16.5 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.16.9 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.9)   |
-| Jan 26th 2026 | 1.16.8</br> | 1.16.5 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.16.8 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.8)   |
-| Jan 20th 2026 | 1.16.7</br> | 1.16.5 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.16.7 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.7)   |
-| Jan 9th 2026 | 1.16.6</br> | 1.16.5 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.16.6 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.6)   |
-| Dec 19th 2025 | 1.16.5</br> | 1.16.5 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.16.5 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.5)   |
-| Dec 8th 2025 | 1.16.4</br> | 1.16.5 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.16.4 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.4)   |
-| Nov 21st 2025| 1.16.3</br> | 1.16.4 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.16.3 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.3)   |
-| Oct 30th 2025 | 1.16.2</br>  | 1.16.3 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.16.2 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.2) |
-| Oct 6th 2025 | 1.16.1</br>  | 1.16.1 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.16.1 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.1) |
-| Sep 16th 2025 | 1.16.0</br>  | 1.16.0 | Java 1.16.0 </br>Go 1.13.0 </br>PHP 1.2.0 </br>Python 1.16.0 </br>.NET 1.16.0 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.16.0 release notes](https://github.com/dapr/dapr/releases/tag/v1.16.0) |
-| Apr 16th 2026 | 1.15.14</br>  | 1.15.0 | Java 1.15.2 </br>Go 1.12.0 </br>PHP 1.2.0 </br>Python 1.15.0 </br>.NET 1.15.4 </br>JS 3.5.2 </br>Rust 0.16.1 | 0.15.0 | Supported | [v1.15.14 release notes](https://github.com/dapr/dapr/releases/tag/v1.15.14) |
-| Oct 30th 2025 | 1.15.13</br>  | 1.15.0 | Java 1.14.2, 1.15.0 </br>Go 1.12.0 </br>PHP 1.2.0 </br>Python 1.15.0 </br>.NET 1.15.4 </br>JS 3.5.2 </br>Rust 0.16.1 | 0.15.0 | Supported | [v1.15.13 release notes](https://github.com/dapr/dapr/releases/tag/v1.15.13) |
-| Sep 17th 2025 | 1.15.12</br>  | 1.15.0 | Java 1.14.2, 1.15.0 </br>Go 1.12.0 </br>PHP 1.2.0 </br>Python 1.15.0 </br>.NET 1.15.4 </br>JS 3.5.2 </br>Rust 0.16.1 | 0.15.0 | Supported | [v1.15.12 release notes](https://github.com/dapr/dapr/releases/tag/v1.15.12) |
-| Aug 28th 2025 | 1.15.11</br>  | 1.15.0 | Java 1.14.2, 1.15.0 </br>Go 1.12.0 </br>PHP 1.2.0 </br>Python 1.15.0 </br>.NET 1.15.4 </br>JS 3.5.2 </br>Rust 0.16.1 | 0.15.0 | Supported | [v1.15.11 release notes](https://github.com/dapr/dapr/releases/tag/v1.15.11) |
-| Aug 21st 2025 | 1.15.10</br>  | 1.15.0 | Java 1.14.2, 1.15.0 </br>Go 1.12.0 </br>PHP 1.2.0 </br>Python 1.15.0 </br>.NET 1.15.4 </br>JS 3.5.2 </br>Rust 0.16.1 | 0.15.0 | Supported | [v1.15.10 release notes](https://github.com/dapr/dapr/releases/tag/v1.15.10) |
-| Jul 31st 2025 | 1.15.9</br>  | 1.15.0 | Java 1.14.2, 1.15.0 </br>Go 1.12.0 </br>PHP 1.2.0 </br>Python 1.15.0 </br>.NET 1.15.4 </br>JS 3.5.2 </br>Rust 0.16.1 | 0.15.0 | Supported | [v1.15.9 release notes](https://github.com/dapr/dapr/releases/tag/v1.15.9) |
-| Jul 18th 2025 | 1.15.8</br>  | 1.15.0 | Java 1.14.2, 1.15.0 </br>Go 1.12.0 </br>PHP 1.2.0 </br>Python 1.15.0 </br>.NET 1.15.4 </br>JS 3.5.2 </br>Rust 0.16.1 | 0.15.0 | Supported | [v1.15.8 release notes](https://github.com/dapr/dapr/releases/tag/v1.15.8) |
-| Jul 16th 2025 | 1.15.7</br>  | 1.15.0 | Java 1.14.1, 1.15.0 </br>Go 1.12.0 </br>PHP 1.2.0 </br>Python 1.15.0 </br>.NET 1.15.4 </br>JS 3.5.2 </br>Rust 0.16.1 | 0.15.0 | Supported | [v1.15.7 release notes](https://github.com/dapr/dapr/releases/tag/v1.15.7) |
-| Jun 30th 2025 | 1.15.6</br>  | 1.15.0 | Java 1.14.1, 1.15.0 </br>Go 1.12.0 </br>PHP 1.2.0 </br>Python 1.15.0 </br>.NET 1.15.4 </br>JS 3.5.2 </br>Rust 0.16.1 | 0.15.0 | Supported | [v1.15.6 release notes](https://github.com/dapr/dapr/releases/tag/v1.15.6) |
-| May 16th 2025 | 1.15.5</br>  | 1.15.0 | Java 1.14.1, 1.15.0 </br>Go 1.12.0 </br>PHP 1.2.0 </br>Python 1.15.0 </br>.NET 1.15.4 </br>JS 3.5.2 </br>Rust 0.16.1 | 0.15.0 | Supported | [v1.15.5 release notes](https://github.com/dapr/dapr/releases/tag/v1.15.5) |
-| Apr 4th 2025 | 1.15.4</br>  | 1.15.0 | Java 1.14.0, 1.15.0 </br>Go 1.12.0 </br>PHP 1.2.0 </br>Python 1.15.0 </br>.NET 1.15.4 </br>JS 3.5.2 </br>Rust 0.16.1 | 0.15.0 | Supported | [v1.15.4 release notes](https://github.com/dapr/dapr/releases/tag/v1.15.4) |
-| Mar 5th 2025 | 1.15.3</br>  | 1.15.0 | Java 1.14.0, 1.15.0 </br>Go 1.12.0 </br>PHP 1.2.0 </br>Python 1.15.0 </br>.NET 1.15.4 </br>JS 3.5.2 </br>Rust 0.16.1 | 0.15.0 | Supported | [v1.15.3 release notes](https://github.com/dapr/dapr/releases/tag/v1.15.3) |
-| Mar 3rd 2025 | 1.15.2</br>  | 1.15.0 | Java 1.14.0, 1.15.0 </br>Go 1.12.0 </br>PHP 1.2.0 </br>Python 1.15.0 </br>.NET 1.15.0 </br>JS 3.5.0 </br>Rust 0.16 | 0.15.0 | Supported | [v1.15.2 release notes](https://github.com/dapr/dapr/releases/tag/v1.15.2) |
-| Feb 28th 2025 | 1.15.1</br>  | 1.15.0 | Java 1.14.0, 1.15.0 </br>Go 1.12.0 </br>PHP 1.2.0 </br>Python 1.15.0 </br>.NET 1.15.0 </br>JS 3.5.0 </br>Rust 0.16 | 0.15.0 | Supported | [v1.15.1 release notes](https://github.com/dapr/dapr/releases/tag/v1.15.1) |
-| Feb 27th 2025 | 1.15.0</br>  | 1.15.0 | Java 1.14.0, 1.15.0 </br>Go 1.12.0 </br>PHP 1.2.0 </br>Python 1.15.0 </br>.NET 1.15.0 </br>JS 3.5.0 </br>Rust 0.16 | 0.15.0 | Supported | [v1.15.0 release notes](https://github.com/dapr/dapr/releases/tag/v1.15.0) |
-| September 16th 2024 | 1.14.4</br>  | 1.14.1 | Java 1.12.0 </br>Go 1.11.0 </br>PHP 1.2.0 </br>Python 1.14.0 </br>.NET 1.14.0 </br>JS 3.3.1 | 0.15.0 | Unsupported | [v1.14.4 release notes](https://github.com/dapr/dapr/releases/tag/v1.14.4) |
-| September 13th 2024 | 1.14.3</br>  | 1.14.1 | Java 1.12.0 </br>Go 1.11.0 </br>PHP 1.2.0 </br>Python 1.14.0 </br>.NET 1.14.0 </br>JS 3.3.1 | 0.15.0 | ⚠️ Recalled | [v1.14.3 release notes](https://github.com/dapr/dapr/releases/tag/v1.14.3) |
-| September 6th 2024 | 1.14.2</br>  | 1.14.1 | Java 1.12.0 </br>Go 1.11.0 </br>PHP 1.2.0 </br>Python 1.14.0 </br>.NET 1.14.0 </br>JS 3.3.1 | 0.15.0 | Unsupported | [v1.14.2 release notes](https://github.com/dapr/dapr/releases/tag/v1.14.2) |
-| August 14th 2024 | 1.14.1</br>  | 1.14.1 | Java 1.12.0 </br>Go 1.11.0 </br>PHP 1.2.0 </br>Python 1.14.0 </br>.NET 1.14.0 </br>JS 3.3.1 | 0.15.0 | Unsupported | [v1.14.1 release notes](https://github.com/dapr/dapr/releases/tag/v1.14.1) |
-| August 14th 2024 | 1.14.0</br>  | 1.14.0 | Java 1.12.0 </br>Go 1.11.0 </br>PHP 1.2.0 </br>Python 1.14.0 </br>.NET 1.14.0 </br>JS 3.3.1 | 0.15.0 | Unsupported | [v1.14.0 release notes](https://github.com/dapr/dapr/releases/tag/v1.14.0) |
-| May 29th 2024 | 1.13.4</br>  | 1.13.0 | Java 1.11.0 </br>Go 1.10.0 </br>PHP 1.2.0 </br>Python 1.13.0 </br>.NET 1.13.0 </br>JS 3.3.0 | 0.14.0 | Unsupported  | [v1.13.4 release notes](https://github.com/dapr/dapr/releases/tag/v1.13.4) |
-| May 21st 2024 | 1.13.3</br>  | 1.13.0 | Java 1.11.0 </br>Go 1.10.0 </br>PHP 1.2.0 </br>Python 1.13.0 </br>.NET 1.13.0 </br>JS 3.3.0 | 0.14.0 | Unsupported | [v1.13.3 release notes](https://github.com/dapr/dapr/releases/tag/v1.13.3) |
-| April 3rd 2024 | 1.13.2</br>  | 1.13.0 | Java 1.11.0 </br>Go 1.10.0 </br>PHP 1.2.0 </br>Python 1.13.0 </br>.NET 1.13.0 </br>JS 3.3.0 | 0.14.0 | Unsupported | [v1.13.2 release notes](https://github.com/dapr/dapr/releases/tag/v1.13.2) |
-| March 26th 2024 | 1.13.1</br>  | 1.13.0 | Java 1.11.0 </br>Go 1.10.0 </br>PHP 1.2.0 </br>Python 1.13.0 </br>.NET 1.13.0 </br>JS 3.3.0 | 0.14.0 | Unsupported | [v1.13.1 release notes](https://github.com/dapr/dapr/releases/tag/v1.13.1) |
-| March 6th 2024 | 1.13.0</br>  | 1.13.0 | Java 1.11.0 </br>Go 1.10.0 </br>PHP 1.2.0 </br>Python 1.13.0 </br>.NET 1.13.0 </br>JS 3.3.0 | 0.14.0 | Unsupported | [v1.13.0 release notes](https://github.com/dapr/dapr/releases/tag/v1.13.0) |
-| January 17th 2024 | 1.12.4</br>  | 1.12.0 | Java 1.10.0 </br>Go 1.9.1 </br>PHP 1.2.0 </br>Python 1.12.0 </br>.NET 1.12.0 </br>JS 3.2.0 | 0.14.0 | Unsupported | [v1.12.4 release notes](https://github.com/dapr/dapr/releases/tag/v1.12.4) |
-| January 2nd 2024 | 1.12.3</br>  | 1.12.0 | Java 1.10.0 </br>Go 1.9.1 </br>PHP 1.2.0 </br>Python 1.12.0 </br>.NET 1.12.0 </br>JS 3.2.0 | 0.14.0 | Unsupported | [v1.12.3 release notes](https://github.com/dapr/dapr/releases/tag/v1.12.3) |
-| November 18th 2023 | 1.12.2</br>  | 1.12.0 | Java 1.10.0 </br>Go 1.9.1 </br>PHP 1.2.0 </br>Python 1.12.0 </br>.NET 1.12.0 </br>JS 3.2.0 | 0.14.0 | Unsupported | [v1.12.2 release notes](https://github.com/dapr/dapr/releases/tag/v1.12.2) |
-| November 16th 2023 | 1.12.1</br>  | 1.12.0 | Java 1.10.0 </br>Go 1.9.1 </br>PHP 1.2.0 </br>Python 1.12.0 </br>.NET 1.12.0 </br>JS 3.2.0 | 0.14.0 | Unsupported | [v1.12.1 release notes](https://github.com/dapr/dapr/releases/tag/v1.12.1) |
-| October 11th 2023 | 1.12.0</br>  | 1.12.0 | Java 1.10.0 </br>Go 1.9.0 </br>PHP 1.1.0 </br>Python 1.11.0 </br>.NET 1.12.0 </br>JS 3.1.2 | 0.14.0 | Unsupported | [v1.12.0 release notes](https://github.com/dapr/dapr/releases/tag/v1.12.0) |
-| November 18th 2023 | 1.11.6</br>  | 1.11.0 | Java 1.9.0 </br>Go 1.8.0 </br>PHP 1.1.0 </br>Python 1.10.0 </br>.NET 1.11.0 </br>JS 3.1.0 | 0.13.0 | Unsupported | [v1.11.6 release notes](https://github.com/dapr/dapr/releases/tag/v1.11.6) |
-| November 3rd 2023 | 1.11.5</br>  | 1.11.0 | Java 1.9.0 </br>Go 1.8.0 </br>PHP 1.1.0 </br>Python 1.10.0 </br>.NET 1.11.0 </br>JS 3.1.0 | 0.13.0 | Unsupported | [v1.11.5 release notes](https://github.com/dapr/dapr/releases/tag/v1.11.5) |
-| October 5th 2023 | 1.11.4</br>  | 1.11.0 | Java 1.9.0 </br>Go 1.8.0 </br>PHP 1.1.0 </br>Python 1.10.0 </br>.NET 1.11.0 </br>JS 3.1.0 | 0.13.0 | Unsupported | [v1.11.4 release notes](https://github.com/dapr/dapr/releases/tag/v1.11.4) |
-| August 31st 2023 | 1.11.3</br>  | 1.11.0 | Java 1.9.0 </br>Go 1.8.0 </br>PHP 1.1.0 </br>Python 1.10.0 </br>.NET 1.11.0 </br>JS 3.1.0 | 0.13.0 | Unsupported | [v1.11.3 release notes](https://github.com/dapr/dapr/releases/tag/v1.11.3) |
-| July 20th 2023 | 1.11.2</br>  | 1.11.0 | Java 1.9.0 </br>Go 1.8.0 </br>PHP 1.1.0 </br>Python 1.10.0 </br>.NET 1.11.0 </br>JS 3.1.0 | 0.13.0 | Unsupported | [v1.11.2 release notes](https://github.com/dapr/dapr/releases/tag/v1.11.2) |
-| June 22nd 2023 | 1.11.1</br>  | 1.11.0 | Java 1.9.0 </br>Go 1.8.0 </br>PHP 1.1.0 </br>Python 1.10.0 </br>.NET 1.11.0 </br>JS 3.1.0 | 0.13.0 | Unsupported | [v1.11.1 release notes](https://github.com/dapr/dapr/releases/tag/v1.11.1) |
-| June 12th 2023 | 1.11.0</br>  | 1.11.0 | Java 1.9.0 </br>Go 1.8.0 </br>PHP 1.1.0 </br>Python 1.10.0 </br>.NET 1.11.0 </br>JS 3.1.0 | 0.13.0 | Unsupported | [v1.11.0 release notes](https://github.com/dapr/dapr/releases/tag/v1.11.0) |
-| November 18th 2023 | 1.10.10</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.7.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 3.0.0 | 0.11.0 | Unsupported |  |
-| July 20th 2023 | 1.10.9</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.7.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 3.0.0 | 0.11.0 | Unsupported |  |
-| June 22nd 2023 | 1.10.8</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.7.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 3.0.0 | 0.11.0 | Unsupported |  |
-| May 15th 2023 | 1.10.7</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.7.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 3.0.0 | 0.11.0 | Unsupported |  |
-| May 12th 2023 | 1.10.6</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.7.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 3.0.0 | 0.11.0 | Unsupported |  |
-| April 13 2023 |1.10.5</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 3.0.0 | 0.11.0 | Unsupported  |  |
-| March 16 2023 | 1.10.4</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 2.5.0 | 0.11.0 | Unsupported |  |
-| March 14 2023 | 1.10.3</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 2.5.0 | 0.11.0 | Unsupported |  |
-| February 24 2023 | 1.10.2</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 2.5.0 | 0.11.0 | Unsupported |  |
-| February 20 2023 | 1.10.1</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 2.5.0 | 0.11.0 | Unsupported |  |
-| February 14 2023 | 1.10.0</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 2.5.0 | 0.11.0 | Unsupported |  |
-| December 2nd 2022 | 1.9.5</br>  | 1.9.1 | Java 1.7.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.8.3 </br>.NET 1.9.0 </br>JS 2.4.2 | 0.11.0 | Unsupported |  |
-| November 17th 2022 | 1.9.4</br>  | 1.9.1 | Java 1.7.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.8.3 </br>.NET 1.9.0 </br>JS 2.4.2 | 0.11.0 | Unsupported |  |
-| November 4th 2022 | 1.9.3</br>  | 1.9.1 | Java 1.7.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.8.3 </br>.NET 1.9.0 </br>JS 2.4.2 | 0.11.0 | Unsupported |  |
-| November 1st 2022 | 1.9.2</br>  | 1.9.1 | Java 1.7.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.8.1 </br>.NET 1.9.0 </br>JS 2.4.2 | 0.11.0 | Unsupported |  |
-| October 26th 2022 | 1.9.1</br>  | 1.9.1 | Java 1.7.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.8.1 </br>.NET 1.9.0 </br>JS 2.4.2 | 0.11.0 | Unsupported |  |
-| October 13th 2022 | 1.9.0</br>  | 1.9.1 | Java 1.7.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.8.3 </br>.NET 1.9.0 </br>JS 2.4.2 | 0.11.0 | Unsupported |  |
-| October 26th 2022 | 1.8.6</br>  | 1.8.1 | Java 1.6.0 </br>Go 1.5.0 </br>PHP 1.1.0 </br>Python 1.7.0 </br>.NET 1.8.0 </br>JS 2.3.0 | 0.11.0 | Unsupported |  |
-| October 13th 2022 | 1.8.5</br>  | 1.8.1 | Java 1.6.0 </br>Go 1.5.0 </br>PHP 1.1.0 </br>Python 1.7.0 </br>.NET 1.8.0 </br>JS 2.3.0 | 0.11.0 | Unsupported |  |
-| August 10th 2022 | 1.8.4</br>  | 1.8.1 | Java 1.6.0 </br>Go 1.5.0 </br>PHP 1.1.0 </br>Python 1.7.0 </br>.NET 1.8.0 </br>JS 2.3.0 | 0.11.0 | Unsupported |  |
-| July 29th 2022 | 1.8.3</br>  | 1.8.0 | Java 1.6.0 </br>Go 1.5.0 </br>PHP 1.1.0 </br>Python 1.7.0 </br>.NET 1.8.0 </br>JS 2.3.0 | 0.11.0 | Unsupported |  |
-| July 21st 2022 | 1.8.2</br>  | 1.8.0 | Java 1.6.0 </br>Go 1.5.0 </br>PHP 1.1.0 </br>Python 1.7.0 </br>.NET 1.8.0 </br>JS 2.3.0 | 0.11.0 | Unsupported |  |
-| July 20th 2022 | 1.8.1</br>  | 1.8.0 | Java 1.6.0 </br>Go 1.5.0 </br>PHP 1.1.0 </br>Python 1.7.0 </br>.NET 1.8.0 </br>JS 2.3.0 | 0.11.0 | Unsupported |  |
-| July 7th 2022 | 1.8.0</br>   | 1.8.0 | Java 1.6.0 </br>Go 1.5.0 </br>PHP 1.1.0 </br>Python 1.7.0 </br>.NET 1.8.0 </br>JS 2.3.0 | 0.11.0 | Unsupported |  |
-| October 26th 2022 | 1.7.5</br>   | 1.7.0 | Java 1.5.0 </br>Go 1.4.0 </br>PHP 1.1.0 </br>Python 1.6.0 </br>.NET 1.7.0 </br>JS 2.2.1 | 0.10.0 | Unsupported |  |
-| May 31st 2022 | 1.7.4</br>   | 1.7.0 | Java 1.5.0 </br>Go 1.4.0 </br>PHP 1.1.0 </br>Python 1.6.0 </br>.NET 1.7.0 </br>JS 2.2.1 | 0.10.0 | Unsupported |  |
-| May 17th 2022 | 1.7.3</br>   | 1.7.0 | Java 1.5.0 </br>Go 1.4.0 </br>PHP 1.1.0 </br>Python 1.6.0 </br>.NET 1.7.0 </br>JS 2.2.1 | 0.10.0 | Unsupported |  |
-| Apr 22th 2022 | 1.7.2</br>   | 1.7.0 | Java 1.5.0 </br>Go 1.4.0 </br>PHP 1.1.0 </br>Python 1.6.0 </br>.NET 1.7.0 </br>JS 2.1.0 | 0.10.0 | Unsupported |  |
-| Apr 20th 2022 | 1.7.1</br>   | 1.7.0 | Java 1.5.0 </br>Go 1.4.0 </br>PHP 1.1.0 </br>Python 1.6.0 </br>.NET 1.7.0 </br>JS 2.1.0 | 0.10.0 | Unsupported |  |
-| Apr 7th 2022 | 1.7.0</br>   | 1.7.0 | Java 1.5.0 </br>Go 1.4.0 </br>PHP 1.1.0 </br>Python 1.6.0 </br>.NET 1.7.0 </br>JS 2.1.0 | 0.10.0 | Unsupported |  |
-| Apr 20th 2022 | 1.6.2</br>   | 1.6.0 | Java 1.4.0 </br>Go 1.3.1 </br>PHP 1.1.0 </br>Python 1.5.0 </br>.NET 1.6.0 </br>JS 2.0.0 | 0.9.0 | Unsupported |  |
-| Mar 25th 2022 | 1.6.1</br>   | 1.6.0 | Java 1.4.0 </br>Go 1.3.1 </br>PHP 1.1.0 </br>Python 1.5.0 </br>.NET 1.6.0 </br>JS 2.0.0 | 0.9.0 | Unsupported |  |
-| Jan 25th 2022 | 1.6.0</br>   | 1.6.0 | Java 1.4.0 </br>Go 1.3.1 </br>PHP 1.1.0 </br>Python 1.5.0 </br>.NET 1.6.0 </br>JS 2.0.0 | 0.9.0 | Unsupported |  |
-
 ## SDK compatibility
 The SDKs and runtime are committed to non-breaking changes other than those required for security issues.  All breaking changes are announced if required in the release notes. 
 
@@ -159,31 +59,6 @@ Dapr only has a seamless guarantee when upgrading patch versions in a single min
 The table below shows the tested upgrade paths for the Dapr runtime. Any other combinations of upgrades have not been tested.
 
 General guidance on upgrading can be found for [self hosted mode]({{% ref self-hosted-upgrade %}}) and [Kubernetes]({{% ref kubernetes-upgrade %}}) deployments. It is best to review the target version release notes for specific guidance.
-
-|  Current Runtime version | Must upgrade through  | Target Runtime version   |
-|--------------------------|-----------------------|------------------------- |
-| 1.5.0 to 1.5.2           |                   N/A |                    1.6.0 |
-|                          |                 1.6.0 |                    1.6.2 |
-|                          |                 1.6.2 |                    1.7.5 |
-|                          |                 1.7.5 |                    1.8.6 |
-|                          |                 1.8.6 |                    1.9.6 |
-|                          |                 1.9.6 |                   1.10.7 |
-| 1.6.0 to 1.6.2           |                   N/A |                    1.7.5 |
-|                          |                 1.7.5 |                    1.8.6 |
-|                          |                 1.8.6 |                    1.9.6 |
-|                          |                 1.9.6 |                   1.10.7 |
-| 1.7.0 to 1.7.5           |                   N/A |                    1.8.6 |
-|                          |                 1.8.6 |                    1.9.6 |
-|                          |                 1.9.6 |                   1.10.7 |
-| 1.8.0 to 1.8.6           |                   N/A |                    1.9.6 |
-| 1.9.0 to 1.9.6           |                   N/A |                   1.10.8 |
-| 1.10.0 to 1.10.8         |                   N/A |                   1.11.4 |
-| 1.11.0 to 1.11.4         |                   N/A |                   1.12.4 |
-| 1.12.0 to 1.12.4         |                   N/A |                   1.13.5 |
-| 1.13.0 to 1.13.5         |                   N/A |                   1.14.0 |
-| 1.14.0 to 1.14.4         |                   N/A |                   1.14.4 |
-| 1.15.0 to 1.15.12        |                   N/A |                   1.16.9 |
-| 1.16.0 to 1.16.9         |                   N/A |                   1.17.2 |
 
 ## Upgrade on Hosting platforms
 
