@@ -61,7 +61,7 @@ The framework passes a copy of the payload to the hook. In-place mutation of `ct
 
 ### `HookDecision`
 
-A hook returns one of:
+A hook returns one of the following decisions:
 
 | Decision | Effect | Where it's honored |
 |----------|--------|---------------------|
