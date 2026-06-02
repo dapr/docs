@@ -81,9 +81,16 @@
     }
 
     a.btn {
-        background-color: $highlight1;
         text-decoration: none;
         color: white;
+    }
+
+    // Buttons are orange by default. The button shortcode's `color` parameter
+    // defaults to "tertiary", so a button without an explicit color renders
+    // orange. Specifying e.g. color="secondary" or color="primary" falls
+    // through to Bootstrap's theme colors instead.
+    a.btn-tertiary {
+        background-color: $highlight1;
     }
 
     .alert:not(:first-child) {
