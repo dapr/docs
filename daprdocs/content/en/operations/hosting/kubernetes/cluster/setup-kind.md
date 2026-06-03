@@ -101,17 +101,8 @@ If you are using Docker Desktop, verify that you have [the recommended settings]
      dapr-sentry            dapr-system  True     Running  1         1.5.1    53s  2021-12-10 09:27.17
      dapr-operator          dapr-system  True     Running  1         1.5.1    53s  2021-12-10 09:27.17
      dapr-sidecar-injector  dapr-system  True     Running  1         1.5.1    53s  2021-12-10 09:27.17
-     dapr-dashboard         dapr-system  True     Running  1         0.9.0    53s  2021-12-10 09:27.17
      dapr-placement-server  dapr-system  True     Running  1         1.5.1    52s  2021-12-10 09:27.18
    ```
-
-1. Forward a port to [Dapr dashboard](https://docs.dapr.io/reference/cli/dapr-dashboard/):
-
-   ```bash
-   dapr dashboard -k -p 9999
-   ```
-
-1. Navigate to `http://localhost:9999` to validate a successful setup.
 
 ## Install metrics-server on the Kind Kubernetes Cluster
 
