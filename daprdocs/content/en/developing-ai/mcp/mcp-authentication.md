@@ -2,7 +2,7 @@
 type: docs
 title: "Authenticating an MCP server"
 linkTitle: "Authenticating an MCP server"
-weight: 20
+weight: 10
 description: "How to enable MCP client-side and server-side authentication"
 ---
 

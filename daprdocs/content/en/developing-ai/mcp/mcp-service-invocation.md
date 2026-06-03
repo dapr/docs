@@ -10,6 +10,25 @@ Dapr lets you run [Model Context Protocol (MCP)](https://modelcontextprotocol.io
 
 Because [service invocation]({{% ref service-invocation-overview.md %}}) speaks plain HTTP, the agent's existing MCP client can target the local Dapr sidecar and reach the MCP server by App ID. **Off-the-shelf MCP clients and agent frameworks work unchanged** — there is no Dapr-specific MCP SDK to adopt on this path.
 
+## Why service invocation?
+
+The service invocation path reuses Dapr primitives you almost certainly already operate, so MCP traffic gets enterprise controls without a new programming model:
+
+- **Zero MCP SDK lock-in.** Any MCP client or framework (LangGraph, the official MCP SDK, custom JSON-RPC HTTP clients) drives MCP servers through the sidecar unchanged. Adopting Dapr is a deployment-time change, not a code change.
+- **App ID identity with mTLS by default.** Every Dapr-to-Dapr call is mutually authenticated using SPIFFE identities issued and rotated by [Sentry]({{% ref mtls.md %}}). The MCP server sees the caller's verified App ID; you don't need to bolt on a separate identity layer.
+- **Coarse-grained App-ID access control.** A [`Configuration` `accessControl`]({{% ref mcp-access-control.md %}}) attached to the MCP server's App ID gates which agent App IDs may reach it, with `deny` as the default action so untrusted callers cannot reach an MCP server by accident.
+- **Per-tool authorization via OPA.** When App-ID gating isn't fine-grained enough, an [OPA middleware]({{% ref mcp-access-control.md %}}) on the MCP server's inbound pipeline inspects the JSON-RPC body, extracts the tool name (and arguments, if needed), and applies a Rego policy keyed by `(caller App ID, tool name)`. This brings per-tool authz to off-the-shelf MCP clients without an SDK change.
+- **Declarative OAuth 2.0 / bearer auth.** A [bearer middleware]({{% ref mcp-authentication.md %}}) on the inbound pipeline validates JWTs against the issuer's JWKS, `iss`, and `aud` claims. Outbound, a separate middleware acquires tokens for upstream MCP servers. All declarative, no code in the MCP server.
+- **Built-in observability.** Service invocation generates traces, metrics, and logs sliced by caller and target App ID — the same telemetry you already use for non-MCP traffic.
+- **Resiliency policies.** Retries, timeouts, and circuit breakers attach to the MCP server's App ID via a [`Resiliency` resource]({{% ref policies.md %}}). MCP calls inherit Dapr's resiliency primitives the same way other service-invocation calls do.
+
+| Without Dapr service invocation | With Dapr service invocation |
+|---|---|
+| Each agent embeds an MCP client and a separate identity / authz layer | One identity stack for all service traffic, MCP included |
+| Per-server bearer-token plumbing in the application | Declarative OAuth 2.0 / bearer middleware |
+| Per-tool RBAC requires forking the MCP client | OPA reads the JSON-RPC body and applies per-tool policy |
+| Observability bolted onto MCP traffic separately | Same traces / metrics / logs as the rest of the system |
+
 ## How it works
 
 Both the agent and the MCP server run as Dapr apps, each with its own App ID. The MCP client directs requests to its local sidecar and sets the `dapr-app-id` header (or uses the full service-invocation URL). Dapr resolves the target by App ID, applies the policies attached to the MCP server's App ID, and forwards the request.

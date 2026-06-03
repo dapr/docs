@@ -6,66 +6,50 @@ weight: 25
 description: "Dapr helps developers run secure, reliable, and durable Model Context Protocol (MCP) server integrations"
 ---
 
-Dapr governs MCP traffic the same way it governs any other service-to-service call: App ID identity, access policies, HTTP middleware, mTLS, observability, and resiliency. There are two ways to plug MCP into Dapr — pick the one that matches your client and your authorization needs.
+Dapr supports MCP by using its [service invocation API]({{% ref service-invocation-overview.md %}}). Off-the-shelf [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) clients and agent frameworks (LangGraph, the official MCP SDK, custom HTTP clients) point at the local Dapr sidecar and reach MCP servers by App ID. Dapr governs the traffic with the same controls it applies to any other service-to-service call: App ID identity, access policies, HTTP middleware, mTLS, observability, and resiliency.
 
-## Two integration paths
+## How it works
 
-### Choosing your path
+Both the agent and the MCP server run as Dapr apps, each with its own App ID. The MCP client directs requests to its local sidecar and sets the `dapr-app-id` header (or uses the full service-invocation URL). Dapr resolves the target by App ID, applies the policies attached to the MCP server's App ID, and forwards the request.
 
-| If you… | Use |
-|---|---|
-| Use an off-the-shelf MCP client or framework (LangGraph, the official MCP SDK, etc.) and want unchanged client code | **[Service invocation path]({{% ref mcp-service-invocation.md %}})** |
-| Need argument-level RBAC, audit, or redaction hooks on a per-tool basis | **[`MCPServer` resource path]({{% ref mcp-server-resource.md %}})** |
-| Need durable retries that survive a sidecar restart mid-call | **[`MCPServer` resource path]({{% ref mcp-server-resource.md %}})** |
-| Want the simplest setup that works with any framework | **[Service invocation path]({{% ref mcp-service-invocation.md %}})** |
-| Want per-tool observability slicing (one workflow per tool) | **[`MCPServer` resource path]({{% ref mcp-server-resource.md %}})** |
+For each call, Dapr can:
 
-The two paths are not exclusive — most MCP traffic can flow through service invocation, with specific servers switched to the `MCPServer` resource when their policy needs become argument-aware and if you want durable MCP interactions.
+- **Route the request** from the calling app to the target app by App ID.
+- **Authenticate the caller's workload identity** using [mTLS]({{% ref mtls.md %}}) with SPIFFE-issued credentials. On by default.
+- **Apply access control policies** defined for the target MCP server's App ID — coarse-grained App-ID gating, plus per-tool authorization via [OPA]({{% ref mcp-access-control.md %}}).
+- **Apply HTTP middleware** on the inbound pipeline, such as [OAuth 2.0 bearer validation]({{% ref middleware-bearer.md %}}).
+- **Capture observability** — logs, metrics, and traces for the call, sliced by caller and target App ID.
 
-### Path A — Service invocation (recommended for most teams)
+Off-the-shelf MCP clients work unchanged — there is no Dapr-specific MCP SDK to adopt for this path.
 
-The agent's existing MCP client points at the local Dapr sidecar (`http://localhost:3500/v1.0/invoke/<mcp-server-app-id>/method/mcp`, or sets `dapr-app-id: <server>`). Dapr resolves the target by App ID, applies the `accessControl` policies and HTTP middleware attached to the MCP server's App ID, and forwards the request:
+## Get started
 
-- **Off-the-shelf MCP clients and agent frameworks work unchanged** — no Dapr-specific MCP SDK to adopt.
-- **App-ID identity and mTLS** — every Dapr-to-Dapr call is mutually authenticated using SPIFFE identities issued and rotated by Sentry.
-- **`Configuration` `accessControl`** — coarse-grained, App-ID-keyed allow/deny policies attached to the MCP server's App ID.
-- **HTTP middleware** — bearer / OAuth2 token validation on inbound, token acquisition on outbound, configured declaratively.
-- **Observability, resiliency, and retries** — the same primitives Dapr already provides for service-to-service traffic apply to MCP traffic.
-
-Get started:
-
-- [MCP through Dapr service invocation]({{% ref mcp-service-invocation.md %}}) — quickstart and architecture
-- [Authenticating an MCP server]({{% ref mcp-authentication.md %}}) — OAuth2 and bearer middleware
-- [MCP access control]({{% ref mcp-access-control.md %}}) — `Configuration` `accessControl` for MCP
-
-### Path B — `MCPServer` resource (workflow-centric)
-
-The **[`MCPServer` resource]({{% ref mcp-server-resource.md %}})** turns MCP integration into a deploy-time concern instead of an application-code concern. Declare a YAML resource and Dapr takes over:
-
-- **No MCP SDK in your app** — Dapr speaks MCP to the server. Your code starts a Dapr workflow by name.
-- **Per-tool RBAC, audit, and redaction in YAML** — `beforeCallTool` / `afterCallTool` (and ListTools equivalents) hooks run as Dapr workflows; centralizable across apps via `appID`.
-- **Durable tool calls** — backed by Dapr Workflows + Scheduler reminders. A sidecar restart mid-call doesn't drop the request; the workflow resumes on the new instance.
-- **Per-tool observability** — each tool gets its own workflow (`dapr.internal.mcp.<server>.CallTool.<tool>`), so traces, metrics, and audit logs are sliced per-tool out of the box.
-- **Declarative auth** — OAuth2 client credentials, SPIFFE workload identity, or static headers configured in YAML. Dapr fetches and refreshes tokens; secrets stay out of application code.
-- **Scoping, multi-tenancy, hot reload** — namespaced like other Dapr resources, restricted via `scopes`, and reloaded without sidecar restart.
-
-This path requires the [Dapr Workflow]({{% ref workflow-overview %}}) client to invoke tools — off-the-shelf MCP clients and agent frameworks won't drive `MCPServer`-backed tool calls.
-
-Get started:
-
-- [`MCPServer` resource overview]({{% ref mcp-server-resource.md %}})
-- [How-To: Use MCPServer resources]({{% ref howto-use-mcpserver.md %}})
-- [MCPServer spec reference]({{% ref mcpserver-schema %}})
+- **[MCP through Dapr service invocation]({{% ref mcp-service-invocation.md %}})** — quickstart and architecture
+- **[Authenticating an MCP server]({{% ref mcp-authentication.md %}})** — OAuth 2.0 and bearer middleware
+- **[MCP access control]({{% ref mcp-access-control.md %}})** — `Configuration` `accessControl` and OPA for MCP
+- **[MCP security posture]({{% ref mcp-security.md %}})** — threat model and defense-in-depth narrative
 
 ## Security at a glance
-
-Both paths use the same underlying Dapr security primitives. The three layers compose for defense in depth:
 
 | Layer | What it controls | Reference |
 |---|---|---|
 | **mTLS + SPIFFE identity** | Every Dapr-to-Dapr call is mutually authenticated using identities Sentry issues and rotates automatically. On by default. | [Dapr mTLS]({{% ref mtls.md %}}) |
 | **`Configuration` `accessControl`** | Which caller App IDs may reach which MCP servers. Default-deny is supported. | [MCP access control]({{% ref mcp-access-control.md %}}) |
 | **HTTP middleware (bearer / OAuth2)** | Inbound JWT validation on `appHttpPipeline`; outbound token acquisition on `httpPipeline`. | [Authenticating an MCP server]({{% ref mcp-authentication.md %}}) |
-| **(`MCPServer` resource only) Workflow hooks** | Argument-level RBAC, audit, redaction, response filtering — runs as durable workflows around the tool call. | [`MCPServer` resource]({{% ref mcp-server-resource.md %}}) |
+| **OPA per-tool policies** | Argument- and tool-aware authorization that inspects the MCP JSON-RPC body. | [MCP access control]({{% ref mcp-access-control.md %}}) |
 
 For the threat-model framing, default postures, and what stays your responsibility, see [MCP security posture]({{% ref mcp-security.md %}}).
+
+## Alternative: the `MCPServer` resource (workflow-centric path)
+
+There is a second way to use MCP with Dapr — the [`MCPServer` resource]({{% ref mcp-server-resource.md %}}). This path turns MCP integration into a deploy-time concern: you declare each MCP server as a YAML resource, and Dapr discovers tools, manages connections, and registers a built-in durable workflow per tool. Calling a tool becomes "start a workflow."
+
+Use the `MCPServer` resource when you specifically need:
+
+- **Argument-level RBAC, audit, or redaction hooks** on a per-tool basis (`beforeCallTool` / `afterCallTool` / `beforeListTools` / `afterListTools`).
+- **Durable retries** that survive a sidecar restart mid-call (backed by Dapr Workflows + Scheduler reminders).
+- **Per-tool observability slicing** — one workflow name per tool, so traces, metrics, and audit logs are sliced per-tool out of the box.
+
+In exchange, you adopt the [Dapr Workflow]({{% ref workflow-overview %}}) client to invoke tools — off-the-shelf MCP clients won't drive `MCPServer`-backed tool calls.
+
+See the [`MCPServer` resource page]({{% ref mcp-server-resource.md %}}) for the full comparison with the service invocation path and a step-by-step guide.

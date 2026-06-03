@@ -2,13 +2,33 @@
 type: docs
 title: "MCPServer resource"
 linkTitle: "MCPServer resource"
-weight: 10
+weight: 25
 description: "Declare MCP server connections as first-class Dapr resources for durable tool execution"
 ---
 
 ## Overview
 
 The `MCPServer` resource lets you declare MCP (Model Context Protocol) server connections as first-class Dapr resources. When daprd loads an MCPServer, it discovers the server's tools and registers a built-in durable workflow orchestration *per tool*. Calling a tool then becomes "start a workflow" — and Dapr handles the connection, retries, credentials, observability, and crash recovery for you. Your application never imports an MCP SDK or holds a long-lived MCP connection.
+
+{{% alert title="When to use this path" color="primary" %}}
+The `MCPServer` resource is **not the default MCP integration in Dapr** — most teams should start with the [service invocation path]({{% ref mcp-service-invocation.md %}}), which keeps existing MCP clients and agent frameworks unchanged.
+
+`MCPServer` is the right choice when you specifically need argument-level RBAC, audit, redaction, durable retries that survive a sidecar restart mid-call, or per-tool observability slicing. In exchange, you adopt the [Dapr Workflow]({{% ref workflow-overview %}}) client to invoke tools — off-the-shelf MCP clients won't drive `MCPServer`-backed tool calls.
+{{% /alert %}}
+
+## Choosing between `MCPServer` and the service invocation path
+
+Dapr offers two integration paths for MCP. The [service invocation path]({{% ref mcp-service-invocation.md %}}) is the default; `MCPServer` is the workflow-centric path. Use this table to decide which fits your needs.
+
+| If you… | Use |
+|---|---|
+| Use an off-the-shelf MCP client or framework (LangGraph, the official MCP SDK, etc.) and want unchanged client code | **[Service invocation path]({{% ref mcp-service-invocation.md %}})** |
+| Want the simplest setup that works with any framework | **[Service invocation path]({{% ref mcp-service-invocation.md %}})** |
+| Need argument-level RBAC, audit, or redaction hooks on a per-tool basis | **`MCPServer` resource** (this page) |
+| Need durable retries that survive a sidecar restart mid-call | **`MCPServer` resource** (this page) |
+| Want per-tool observability slicing (one workflow per tool) | **`MCPServer` resource** (this page) |
+
+The two paths are not exclusive — most MCP traffic can flow through service invocation, with specific servers switched to the `MCPServer` resource when their policy needs become argument-aware or when you want durable MCP interactions.
 
 ## Why MCPServer?
 
@@ -58,7 +78,7 @@ Content-Type: application/json
 }
 ```
 
-Poll for the result with `GET /v1.0-beta1/workflows/dapr/<instanceID>`. The workflow output is a [MCP `CallToolResult`](https://modelcontextprotocol.io/specification/2025-11-25/server/tools) — byte-for-byte the same shape as the MCP wire spec. Each entry in `content` is a flat tagged union (`type` discriminator + per-variant fields):
+Poll for the result with `GET /v1.0-beta1/workflows/dapr/<instanceID>`. The workflow output is an [MCP `CallToolResult`](https://modelcontextprotocol.io/specification/2025-11-25/schema#calltoolresult) — byte-for-byte the same shape as the MCP wire spec. Each entry in `content` is a flat tagged union (`type` discriminator + per-variant fields):
 
 ```json
 {

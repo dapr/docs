@@ -2,7 +2,7 @@
 type: docs
 title: "MCP security and trust posture"
 linkTitle: "Security posture"
-weight: 35
+weight: 20
 description: "How Dapr enforces agent identity, authorization, and auditability across agents and MCP servers, and what stays your responsibility"
 ---
 

@@ -2,7 +2,7 @@
 type: docs
 title: "How-To: Use MCPServer resources"
 linkTitle: "How-To: Use MCPServer"
-weight: 15
+weight: 30
 description: "Use MCPServer resources to discover and call tools on MCP servers"
 ---
 
@@ -76,7 +76,7 @@ curl -X POST "http://localhost:3500/v1.0-beta1/workflows/dapr/dapr.internal.mcp.
   }'
 ```
 
-Poll for the result as in Step 2. The output is an [MCP `CallToolResult`](https://modelcontextprotocol.io/specification/2025-11-25/server/tools) — byte-for-byte the same shape as the MCP wire spec. Each entry in `content` is a flat tagged union with a `type` discriminator:
+Poll for the result as in Step 2. The output is an [MCP `CallToolResult`](https://modelcontextprotocol.io/specification/2025-11-25/schema#calltoolresult) — byte-for-byte the same shape as the MCP wire spec. Each entry in `content` is a flat tagged union with a `type` discriminator:
 
 ```json
 {
