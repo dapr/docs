@@ -22,7 +22,7 @@ Dapr access control evaluates **caller App ID → target App ID** at the service
 
 MCP transports — `streamable-http` and `sse` — route all tool calls through a **single HTTP endpoint**. The tool name lives inside the [JSON-RPC](https://www.jsonrpc.org/specification) body (`params.name`), not in the URL path, so HTTP-path-based ACL rules don't give you per-tool granularity on their own. For finer-grained authorization, layer an [OPA middleware](#per-tool-authorization-with-opa) on the MCP server's inbound pipeline — it reads the JSON-RPC body, extracts the tool name, and applies a Rego policy keyed by `(caller App ID, tool name)`.
 
-You can also split tools across separate MCP servers (one App ID per group) and let the App-ID policy do the work — see [Per-tool granularity through separate MCP servers](#per-tool-granularity-through-separate-mcp-servers). For workflow-centric, argument-level RBAC inside a single server, see the [`MCPServer` resource]({{% ref "mcp-server-resource.md#middleware-pipelines" %}}) middleware hooks.
+For workflow-centric, argument-level RBAC inside a single server, see the [`MCPServer` resource]({{% ref "mcp-server-resource.md#middleware-pipelines" %}}) middleware hooks.
 
 ## How it works
 
@@ -215,26 +215,6 @@ Restart the MCP server's sidecar with the updated `Configuration`. Requests for 
 - **`readBody: "true"` buffers each request fully in memory.** For very large tool argument payloads, factor this into capacity planning.
 - **Defense in depth, not a replacement.** Keep the App-ID `accessControl` policy in place — OPA's job is the *tool-level* refinement, not the *server-level* perimeter.
 - **Workflow-centric alternative.** If you want argument-level RBAC, audit, redaction, or response filtering inside one MCP server *and* you're willing to invoke tools through the [Dapr Workflow]({{% ref workflow-overview %}}) client, use the [`MCPServer` resource]({{% ref "mcp-server-resource.md#middleware-pipelines" %}}) middleware hooks instead.
-
-## Per-tool granularity through separate MCP servers
-
-When you need per-tool authorization at the service-invocation layer, split the tools across separate MCP servers (one per group) and gate each one with its own `Configuration`:
-
-```
-analyst-agent  ──► mcp-db-schema   (schema introspection only)
-analyst-agent  ──► mcp-db-query    (read queries only)
-ops-agent      ──► mcp-db-schema
-ops-agent      ──► mcp-db-query
-ops-agent      ──► mcp-db-write    (write operations)
-admin-agent    ──► mcp-db-schema
-admin-agent    ──► mcp-db-query
-admin-agent    ──► mcp-db-write
-admin-agent    ──► mcp-db-ddl      (destructive DDL operations)
-```
-
-Each MCP server has its own App ID and its own `Configuration` with a deny-by-default policy listing the App IDs allowed to call it. The policy boundary matches the trust boundary, and an agent cannot reach a server its App ID isn't allow-listed for.
-
-If splitting servers is not an option, use [OPA](#per-tool-authorization-with-opa) on the MCP server's inbound pipeline for `(caller, tool)` decisions, or the [`MCPServer` resource]({{% ref "mcp-server-resource.md#middleware-pipelines" %}}) `beforeCallTool` hook for argument-level RBAC inside a single server.
 
 ## Combining ACLs with OAuth 2.0 bearer middleware
 
