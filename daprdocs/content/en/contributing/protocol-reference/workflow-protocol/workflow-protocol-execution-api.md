@@ -95,7 +95,7 @@ Common event types:
 
 #### Timer origin
 
-`TimerCreated` events record an `origin` that identifies why the timer was scheduled. This is internal engine bookkeeping (also surfaced by the `dapr workflow history` command); it does not change how workflows author or use timers. The possible origins are:
+`TimerCreated` events record an `origin` that identifies why the timer was scheduled. This is internal engine bookkeeping (also surfaced by the `dapr workflow history` command); it does not change how developers author workflows or how timers behave. The possible origins are:
 
 *   `createTimer`: An explicit durable timer created by the workflow (for example, `ctx.create_timer(...)`).
 *   `externalEvent`: A timer backing a "wait for external event" call that has a timeout. Carries the event name.
