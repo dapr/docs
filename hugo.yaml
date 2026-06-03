@@ -98,8 +98,19 @@ markup:
 
 # Everything below this are Site Params
 
+# Custom output format: renders the sidebar nav tree once per language to
+# /sidebar-nav.html (injected client-side by /js/sidebar-nav.js) so the tree
+# is not serialized into every page.
+outputFormats:
+  SidebarNav:
+    mediaType: text/html
+    baseName: sidebar-nav
+    isHTML: true
+    notAlternative: true
+
 # Comment out if you don't want the "print entire section" link enabled.
 outputs:
+  home: [HTML, RSS, SidebarNav]
   section: [HTML, print, RSS]
 
 params:
