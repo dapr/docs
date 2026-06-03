@@ -4,6 +4,7 @@ title: "Dapr command line interface (CLI) reference"
 linkTitle: "Overview"
 description: "Detailed information on the Dapr CLI"
 weight: 10
+aliases: [/reference/cli/dapr-dashboard/]
 ---
 
 The Dapr CLI allows you to setup Dapr on your local dev machine or on a Kubernetes cluster, provides debugging support, and launches and manages Dapr instances.
@@ -29,7 +30,6 @@ Available Commands:
   completion     Generates shell completion scripts
   components     List all Dapr components. Supported platforms: Kubernetes
   configurations List all Dapr configurations. Supported platforms: Kubernetes
-  dashboard      Start Dapr dashboard. Supported platforms: Kubernetes and self-hosted
   help           Help about any command
   init           Install Dapr on supported hosting platforms. Supported platforms: Kubernetes and self-hosted
   invoke         Invoke a method on a given Dapr application. Supported platforms: Self-hosted
@@ -61,7 +61,6 @@ You can learn more about each Dapr command from the links below.
  - [`dapr completion`]({{% ref dapr-completion.md %}})
  - [`dapr components`]({{% ref dapr-components.md %}})
  - [`dapr configurations`]({{% ref dapr-configurations.md %}})
- - [`dapr dashboard`]({{% ref dapr-dashboard.md %}})
  - [`dapr help`]({{% ref dapr-help.md %}})
  - [`dapr init`]({{% ref dapr-init.md %}})
  - [`dapr invoke`]({{% ref dapr-invoke.md %}})
