@@ -263,16 +263,14 @@ Update pods that are running Dapr to pick up the new version of the Dapr runtime
    kubectl rollout restart deploy/<Application deployment name>
    ```
 
-1. View a list of all your Dapr enabled deployments via either:  
-   - The [Dapr Dashboard](https://github.com/dapr/dashboard) 
-   - Running the following command using the Dapr CLI:
+1. View a list of all your Dapr enabled deployments by running the following command using the Dapr CLI:
 
-      ```bash
-      dapr list -k
-      
-      APP ID     APP PORT  AGE  CREATED
-      nodeapp    3000      16h  2020-07-29 17:16.22
-      ```
+   ```bash
+   dapr list -k
+   
+   APP ID     APP PORT  AGE  CREATED
+   nodeapp    3000      16h  2020-07-29 17:16.22
+   ```
 
 ### Enable high availability in an existing Dapr deployment
 
