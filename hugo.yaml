@@ -103,6 +103,18 @@ outputs:
   section: [HTML, print, RSS]
 
 params:
+  # Site-wide announcement banner (see _partials/announcement-banner.html).
+  # Items are filtered by their optional start/end date window at build time.
+  announcements:
+    enabled: true
+    rotate_interval: 6000   # ms between auto-advances; 0 disables auto-rotate
+    items:
+      - text: "Need enterprise support for Dapr?"
+        link: "https://docs.dapr.io/enterprise-support/"
+        link_text: "Contact Diagrid"
+      - text: "Read how Dapr is used for workflow orchestration and AI agent development in 2026."
+        link: "https://www.diagrid.io/reports-and-ebooks/state-of-dapr-2026"
+        link_text: "Download the State of Dapr Report"
   taxonomy:
     # set taxonomyCloud = [] to hide taxonomy clouds
     taxonomyCloud: [tags, categories]

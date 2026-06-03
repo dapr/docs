@@ -1,0 +1,126 @@
+.announcement-banner {
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  z-index: 33;
+  background-color: #0d2192;
+  color: #ffffff;
+  font-family: inherit;
+}
+
+.announcement-banner[hidden] {
+  display: none;
+}
+
+.announcement-banner__inner {
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 40px;
+}
+
+.announcement-banner__viewport {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: center;
+}
+
+.announcement-banner__slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.announcement-banner__slide[hidden] {
+  display: none;
+}
+
+.announcement-banner__text {
+  font-size: 0.95rem;
+  line-height: 1.3;
+}
+
+.announcement-banner__link {
+  color: #ffffff;
+  text-decoration: underline;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.announcement-banner__link:hover,
+.announcement-banner__link:focus {
+  color: #ffffff;
+  opacity: 0.85;
+}
+
+.announcement-banner__nav,
+.announcement-banner__close {
+  flex: 0 0 auto;
+  background: transparent;
+  border: 0;
+  color: #ffffff;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 8px;
+}
+
+.announcement-banner__nav {
+  font-size: 1.4rem;
+}
+
+.announcement-banner__close {
+  font-size: 1.25rem;
+  margin-left: 4px;
+}
+
+.announcement-banner__nav:hover,
+.announcement-banner__close:hover {
+  opacity: 0.8;
+}
+
+.announcement-banner__nav:focus-visible,
+.announcement-banner__close:focus-visible,
+.announcement-banner__dot:focus-visible,
+.announcement-banner__link:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.announcement-banner__dots {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.announcement-banner__dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+}
+
+.announcement-banner__dot.is-active {
+  background: #ffffff;
+}
+
+@media (max-width: 575.98px) {
+  .announcement-banner__inner {
+    padding: 6px 10px;
+    gap: 6px;
+  }
+
+  .announcement-banner__text {
+    font-size: 0.85rem;
+  }
+}
