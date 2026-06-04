@@ -7,13 +7,13 @@ description: "Configure Scheduler to persist its database to make it resilient t
 ---
 
 The [Scheduler]({{% ref scheduler.md %}}) service is responsible for writing jobs to its Etcd database and scheduling them for execution.
-By default, the Scheduler service database embeds Etcd and writes data to a Persistent Volume Claim volume of size `1Gb`, using the cluster's default [storage class](https://kubernetes.io/docs/concepts/storage/storage-classes/).
+On fresh Dapr v1.18+ installs, the Scheduler service database embeds Etcd and writes data to a Persistent Volume Claim volume of size `16Gi`, using the cluster's default [storage class](https://kubernetes.io/docs/concepts/storage/storage-classes/). Earlier versions defaulted to `1Gi`, and clusters upgraded from those versions keep their original PVC size because `spec.volumeClaimTemplates` is immutable on an existing StatefulSet; the Helm chart detects the existing StatefulSet and pins `storageSize` to the value already in use.
 This means that there is no additional parameter required to run the scheduler service reliably on most Kubernetes deployments, although you will need [additional configuration](#storage-class) if a default StorageClass is not available or when running a production environment.
 
 {{% alert title="Warning" color="warning" %}}
-The default storage size for the Scheduler is `1Gi`, which is likely not sufficient for most production deployments.
+Clusters upgraded from before Dapr v1.18 keep their original Scheduler PVC size (typically `1Gi`), which is likely not sufficient for most production deployments.
 Remember that the Scheduler is used for [Actor Reminders]({{% ref actors-timers-reminders.md %}}) & [Workflows]({{% ref workflow-overview.md %}}), and the [Jobs API]({{% ref jobs_api.md %}}).
-You may want to consider reinstalling Dapr with a larger Scheduler storage of at least `16Gi` or more.
+If your cluster is in this state, see [Increase existing Scheduler Storage Size](#increase-existing-scheduler-storage-size) below to expand the PVCs in place, or reinstall Dapr with a larger Scheduler storage.
 For more information, see the [ETCD Storage Disk Size](#etcd-storage-disk-size) section below.
 {{% /alert %}}
 
@@ -21,8 +21,8 @@ For more information, see the [ETCD Storage Disk Size](#etcd-storage-disk-size) 
 
 ### ETCD Storage Disk Size
 
-The default storage size for the Scheduler is `1Gb`.
-This size is likely not sufficient for most production deployments.
+The default storage size for the Scheduler is `16Gi` on fresh Dapr v1.18+ installs, and `1Gi` on earlier versions (and clusters upgraded from them).
+The legacy `1Gi` is likely not sufficient for most production deployments, and even the new `16Gi` default may need to be raised for higher-throughput workloads.
 When the storage size is exceeded, the Scheduler will log an error similar to the following:
 
 ```
@@ -41,7 +41,7 @@ This means the actual disk usage of Scheduler will be higher than the current ob
 ### Setting the Storage Size on Installation
 
 If you need to increase an **existing** Scheduler storage size, see the [Increase Scheduler Storage Size](#increase-existing-scheduler-storage-size) section below.
-To increase the storage size (in this example- `16Gi`) for a **fresh** Dapr installation, you can use the following command:
+To set the storage size explicitly (in this example matching the `16Gi` default) for a **fresh** Dapr installation, you can use the following command:
 
 {{< tabpane text=true >}}
  <!-- Dapr CLI -->
@@ -84,7 +84,7 @@ Not all storage providers support dynamic volume expansion.
 Please see your storage provider documentation to determine if this feature is supported, and what to do if it is not.
 {{% /alert %}}
 
-By default, each Scheduler will create a Persistent Volume and Persistent Volume Claim of size `1Gi` against the [default `standard` storage class](#storage-class) for each Scheduler replica.
+On clusters upgraded from before Dapr v1.18, each Scheduler PVC is typically `1Gi` (inherited from the earlier default) against the [default `standard` storage class](#storage-class) for each Scheduler replica. The procedure below applies whenever you need to grow existing PVCs, regardless of their starting size.
 These will look similar to the following, where in this example we are running Scheduler in HA mode.
 
 ```
@@ -136,6 +136,11 @@ In case your Kubernetes deployment does not have a default storage class or you 
 
 A persistent volume is backed by a real disk that is provided by the hosted Cloud Provider or Kubernetes infrastructure platform.
 Disk size is determined by how many jobs are expected to be persisted at once; however, 64Gb should be more than sufficient for most production scenarios.
+
+For production, use a premium SSD-backed storage class to give Etcd the IOPS and latency profile it requires. On lower-tier storage classes the Scheduler's embedded Etcd can log slow-disk heartbeat warnings (`leader failed to send out heartbeat on time; took too long, leader is overloaded likely from slow disk`). 
+
+Where supported, also prefer storage classes that support multi-zone failover (for example, zone-redundant or regional persistent disks) so Scheduler PVCs are not locked to a single availability zone. Zone-locked PVCs can block Scheduler recovery during cluster upgrades or zonal disruption until the original zone becomes available again.
+
 Some Kubernetes providers recommend using a [CSI driver](https://kubernetes.io/docs/concepts/storage/volumes/#csi) to provision the underlying disks.
 Below are a list of useful links to the relevant documentation for creating a persistent disk for the major cloud providers:
 - [Google Cloud Persistent Disk](https://cloud.google.com/compute/docs/disks)

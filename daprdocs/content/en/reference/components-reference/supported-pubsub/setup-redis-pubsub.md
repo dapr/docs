@@ -30,6 +30,8 @@ spec:
     value: "true"
   - name: enableTLS
     value: "false"
+  - name: insecureSkipTLSVerify
+    value: "false"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -46,6 +48,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | consumerID         | N        | The consumer group ID.  | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{% ref "component-schema.md#templated-metadata-values" %}})
 | useEntraID | N | Implements EntraID support for Azure Cache for Redis. Before enabling this: <ul><li>The `redisHost` name must be specified in the form of `"server:port"`</li><li>TLS must be enabled</li></ul> Learn more about this setting under [Create a Redis instance > Azure Cache for Redis]({{% ref "#setup-redis" %}}) | `"true"`, `"false"` |
 | enableTLS          | N        | If the Redis instance supports TLS with public certificates, can be configured to be enabled or disabled. Defaults to `"false"` | `"true"`, `"false"` |
+| insecureSkipTLSVerify | N     | Skip TLS certificate verification when `enableTLS` is `"true"`. Only use for testing. Defaults to `"false"` | `"true"`, `"false"` |
 | clientCert        | N        | The content of the client certificate, used for Redis instances that require client-side certificates. Must be used with `clientKey` and `enableTLS` must be set to true. It is recommended to use a secret store as described [here]({{% ref component-secrets.md %}})   | `"----BEGIN CERTIFICATE-----\nMIIC..."` |
 | clientKey        | N        | The content of the client private key, used in conjunction with `clientCert` for authentication. It is recommended to use a secret store as described [here]({{% ref component-secrets.md %}}) | `"----BEGIN PRIVATE KEY-----\nMIIE..."` |
 | redeliverInterval  | N        | The interval between checking for pending messages to redeliver. Can use either be Go duration string (for example "ms", "s", "m") or milliseconds number. Defaults to `"60s"`. `"0"` disables redelivery. | `"30s"`, `"5000"`
@@ -70,8 +73,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | sentinelMasterName | N         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/latest/operate/oss_and_stack/management/sentinel/) | `""`,  `"mymaster"`
 | sentinelUsername   | N         | Username for Redis Sentinel. Applicable only when "failover" is true, and Redis Sentinel has authentication enabled | `"username"`
 | sentinelPassword   | N         | Password for Redis Sentinel. Applicable only when "failover" is true, and Redis Sentinel has authentication enabled | `"password"`
-| maxLenApprox        | N        | Maximum number of items inside a stream.The old entries are automatically evicted when the specified length is reached, so that the stream is left at a constant size. Defaults to unlimited. | `"10000"`
-| streamTTL        | N        | TTL duration for stream entries. Entries older than this duration will be evicted. This is an approximate value, as it's implemented using Redis stream's `MINID` trimming with the '~' modifier. The actual retention may include slightly more entries than strictly defined by the TTL, as Redis optimizes the trimming operation for efficiency by potentially keeping some additional entries. | `"30d"`
+| maxLenApprox        | N        | Maximum number of items inside a stream.The old entries are automatically evicted when the specified length is reached, so that the stream is left at a constant size. Defaults to unlimited. Cannot be used together with streamTTL; only one stream trimming strategy can be active at a time. | `"10000"`
+| streamTTL        | N        | TTL duration for stream entries. Entries older than this duration will be evicted. This is an approximate value, as it's implemented using Redis stream's `MINID` trimming with the '~' modifier. The actual retention may include slightly more entries than strictly defined by the TTL, as Redis optimizes the trimming operation for efficiency by potentially keeping some additional entries. Cannot be used together with maxLenApprox; only one stream trimming strategy can be active at a time. | `"30d"`
 
 ## Create a Redis instance
 

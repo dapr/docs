@@ -57,28 +57,75 @@ The Java SDK allows you to interface with all of the [Dapr building blocks]({{% 
 
 ### Invoke a service
 
+{{% alert title="Deprecated" color="warning" %}}
+The `DaprClient.invokeMethod` wrappers for service invocation are deprecated. Use the SDK's `DaprClient.invokeHttpClient(appId)` helper described below, or any native HTTP (or gRPC) client against the Dapr sidecar.
+{{% /alert %}}
+
+The SDK provides a pre-configured HTTP client wrapper bound to the target app's invoke prefix. Relative paths resolve against `{daprHttpEndpoint}/v1.0/invoke/{appId}/method/`, and the `dapr-api-token` header is attached automatically when one is configured:
+
 ```java
+import io.dapr.client.DaprBodyPublishers;
 import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
+import io.dapr.client.DaprInvokeHttpClient;
 
-try (DaprClient client = (new DaprClientBuilder()).build()) {
-  // invoke a 'GET' method (HTTP) skipping serialization: \say with a Mono<byte[]> return type
-  // for gRPC set HttpExtension.NONE parameters below
-  response = client.invokeMethod(SERVICE_TO_INVOKE, METHOD_TO_INVOKE, "{\"name\":\"World!\"}", HttpExtension.GET, byte[].class).block();
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
-  // invoke a 'POST' method (HTTP) skipping serialization: to \say with a Mono<byte[]> return type     
-  response = client.invokeMethod(SERVICE_TO_INVOKE, METHOD_TO_INVOKE, "{\"id\":\"100\", \"FirstName\":\"Value\", \"LastName\":\"Value\"}", HttpExtension.POST, byte[].class).block();
+try (DaprClient client = new DaprClientBuilder().build()) {
+  DaprInvokeHttpClient invoker = client.invokeHttpClient("order-processor");
 
-  System.out.println(new String(response));
+  HttpRequest request = invoker.newRequestBuilder("orders")
+      .header("Content-Type", "application/json")
+      .POST(DaprBodyPublishers.json(order))
+      .build();
 
-  // invoke a 'POST' method (HTTP) with serialization: \employees with a Mono<Employee> return type      
-  Employee newEmployee = new Employee("Nigel", "Guitarist");
-  Employee employeeResponse = client.invokeMethod(SERVICE_TO_INVOKE, "employees", newEmployee, HttpExtension.POST, Employee.class).block();
+  HttpResponse<String> response = invoker.send(request, HttpResponse.BodyHandlers.ofString());
 }
 ```
 
+`DaprBodyPublishers.json(...)` serializes the payload using the SDK's default Jackson serializer, matching the JSON encoding the deprecated `invokeMethod` APIs applied internally. For raw payloads use any `HttpRequest.BodyPublisher` (for example `HttpRequest.BodyPublishers.ofString(...)`).
+
+The table below summarizes which concerns `DaprInvokeHttpClient` handles for you (when configured with `DaprClientBuilder`) and which belong to the user:
+
+| Concern | Handled by the SDK | User's responsibility |
+|---|---|---|
+| Invoke URL (`/v1.0/invoke/{appId}/method/...`) | ✓ — resolved against the sidecar endpoint, which defaults to `http://localhost:3500` (override via `DAPR_HTTP_ENDPOINT`, or `DAPR_SIDECAR_IP` + `DAPR_HTTP_PORT`) | |
+| `dapr-api-token` header | ✓ — attached only when configured via the `dapr.api.token` system property or `DAPR_API_TOKEN` environment variable | |
+| HTTP read timeout | ✓ — defaults to **60 seconds**; override via the `dapr.http.client.readTimeoutSeconds` system property or `DAPR_HTTP_CLIENT_READ_TIMEOUT_SECONDS` environment variable | |
+| `User-Agent: dapr-sdk-java/<version>` header | ✓ — value tracks the SDK version automatically | |
+| `Content-Type` header | | Set via `.header("Content-Type", "...")` |
+| Request body serialization | | Use `DaprBodyPublishers.json(...)` for default JSON, or any `HttpRequest.BodyPublisher` |
+| Response body deserialization | | Pick an `HttpResponse.BodyHandler` (`ofString`, `ofByteArray`, custom) |
+| Response status / error handling | | Inspect `HttpResponse.statusCode()` and react to non-2xx responses |
+| Trace context propagation (`traceparent`, `tracestate`, `baggage`) | | Attach custom headers from your own OpenTelemetry context unless you want to use the Dapr defaults |
+| Request body framing (`Content-Length` vs `Transfer-Encoding: chunked`) | | Use a known-length `BodyPublisher`. See warning below. |
+
+{{% alert title="Prefer length-known body publishers" color="primary" %}}
+The JDK `HttpClient` emits `Transfer-Encoding: chunked` header whenever a `BodyPublisher` reports an unknown content length (for example when using `BodyPublishers.fromInputStream`). Chunked requests can interact poorly with downstream HTTP servers under high concurrency, so its recommended to use known-length publishers such as `DaprBodyPublishers.json(...)`, `BodyPublishers.ofByteArray(...)`, `BodyPublishers.ofString(...)`, or `BodyPublishers.ofFile(...)`. These produce `Content-Length` framing and match the wire format the deprecated `invokeMethod` APIs used.
+{{% /alert %}}
+
+Alternatively, you can use a raw `java.net.http.HttpClient` against the sidecar with the `dapr-app-id` header — no SDK dependency required for the call itself:
+
+```java
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+HttpClient httpClient = HttpClient.newHttpClient();
+
+HttpRequest request = HttpRequest.newBuilder()
+    .POST(HttpRequest.BodyPublishers.ofString("{\"orderId\":100}"))
+    .uri(URI.create("http://localhost:" + DAPR_HTTP_PORT + "/orders"))
+    .header("Content-Type", "application/json")
+    .header("dapr-app-id", "order-processor")
+    .build();
+
+HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+```
+
 - For a full guide on service invocation visit [How-To: Invoke a service]({{% ref howto-invoke-discover-services.md %}}).
-- Visit [Java SDK examples](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/invoke) for code samples and instructions to try out service invocation
 
 ### Save & get application state
 

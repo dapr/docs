@@ -52,11 +52,33 @@ Multi-application workflows, enable you to orchestrate complex business processe
 
 [Learn more about multi-application workflows.]({{% ref "workflow-multi-app.md" %}})
 
+### History signing
+
+When mTLS and the `WorkflowHistorySigning` feature flag are enabled, Dapr cryptographically signs every workflow history event using the sidecar's X.509 SPIFFE identity.
+On each load, the full signature chain is verified, detecting any tampering of workflow state in the state store.
+
+For example, consider an order-processing workflow that captures payment, ships the goods, and emails a receipt. Without signing, an attacker with write access to the state store could rewrite the recorded order total between the payment step and the shipping step, so the workflow ships at a lower price than was actually charged, and Dapr would have no way to know. With signing enabled, the modified event no longer matches its signature, the next load fails verification, and Dapr marks the workflow as `FAILED` with error type `DAPR_WORKFLOW_HISTORY_TAMPERED` instead of acting on the forged data. The same protection applies to approvals being flipped from denied to approved, extra recipients being added to outbound messages, or fake activity results being injected into the inbox.
+
+Signing is a one-way commitment: once enabled for a workflow, it cannot be disabled.
+
+[Learn more about workflow history signing.]({{% ref "workflow-history-signing.md" %}})
+
 ### Timers and reminders
 
 Same as Dapr actors, you can schedule reminder-like durable delays for any time range.
 
 [Learn more about workflow timers]({{% ref "workflow-features-concepts.md#durable-timers" %}}) and [reminders]({{% ref "workflow-architecture.md#reminder-usage-and-execution-guarantees" %}})
+
+### History propagation
+
+Workflow history propagation enables a current workflow to look back over the set of events that the workflow or a another workflow has executed and verify these actually occurred. Scenarios include fraud checks, checking compliance gates (was this activity called or not), or enabling long-running AI agents/workflows to  maintain context across calls (multi-agent, multi-app workflows) to determine what the agent or workflows claims to have done, it actually true.
+
+A parent workflow can opt to share its execution history with child workflows and activities — useful for chain-of-custody verification, fraud detection, audit, and AI-agent context that must flow across hops.
+
+For details, read [workflow history propagation ]({{% ref "workflow-history-propagation.md" %}} to understand how to apply this to a workflow, child workflow and activities.
+
+
+[Learn more about workflow history propagation.]({{< ref workflow-history-propagation.md >}})
 
 ### Workflow HTTP calls to manage a workflow
 
@@ -155,6 +177,14 @@ See [How-To: Manage workflows]({{< ref howto-manage-workflow.md >}}) for detaile
 - **State stores:** You can only use state stores which support workflows, as [described here]({{% ref supported-state-stores %}}).
 - Azure Cosmos DB has [payload and workflow complexity limitations]({{% ref "setup-azure-cosmosdb.md#workflow-limitations" %}}).
 - AWS DynamoDB has [workflow complexity limitations]({{% ref "setup-azure-cosmosdb.md#workflow-limitations" %}}).
+
+## Workflow security
+
+Dapr provides fine-grained access control for workflow and activity scheduling through the `WorkflowAccessPolicy` resource. You can restrict which applications are permitted to start specific workflows or call specific activities on your application.
+
+Workflow access policies for a given application (appID) are loaded by the sidecar when the application is instantiated, and are hot-reloaded thereafter when policies are added, updated, or removed. Policies are a pure allow-list evaluated on the callee side: a cross-app schedule is permitted only if some rule in some loaded policy matches the caller and the workflow or activity name.
+
+This is especially important for multi-application workflows, where activities and child workflows execute across application boundaries. Read [How-To: Apply workflow access policies]({{% ref workflow-access-policy %}}) for full configuration details.
 
 ## Watch the demo
 

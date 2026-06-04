@@ -17,7 +17,11 @@ Named policies are applied to targets. Dapr supports three target types that app
 
 With the `apps` target, you can apply `retry`, `timeout`, and `circuitBreaker` policies to service invocation calls between Dapr apps. Under `targets/apps`, policies are applied to each target service's `app-id`. The policies are invoked when a failure occurs in communication between sidecars, as shown in the diagram below.
 
-> Dapr provides [built-in service invocation retries]({{% ref "service-invocation-overview.md#retries" %}}), so any applied `retry` policies are additional.
+> Dapr provides [built-in service invocation retries]({{% ref "service-invocation-overview.md#resiliency-including-retries" %}}), so any applied `retry` policies are additional.
+
+> For HTTP service invocation, `retry` policies are automatically bypassed for streaming requests (those without a known `Content-Length`). Circuit breakers continue to apply. See [Streaming requests and resiliency]({{% ref "service-invocation-overview#streaming-requests-and-resiliency" %}}).
+
+> For HTTP service invocation, `retry` policies are automatically bypassed for streaming requests (those without a known `Content-Length`). Circuit breakers continue to apply. See [Streaming requests and resiliency]({{% ref "service-invocation-overview#streaming-requests-and-resiliency" %}}).
 
 <img src="/images/resiliency_svc_invocation.png" width=1000 alt="Diagram showing service invocation resiliency" />
 

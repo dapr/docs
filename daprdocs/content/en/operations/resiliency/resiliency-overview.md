@@ -173,6 +173,12 @@ spec:
           circuitBreaker: pubsubCB
 ```
 
+## Hot Reloading
+
+Changes to Resiliency resources are automatically detected and trigger a graceful restart of the Dapr sidecar to apply the updated resiliency policies. To opt out, disable the `HotReload` feature in the [Dapr application configuration]({{% ref "configuration-overview.md" %}}).
+
+See [Updating resources]({{% ref "component-updates.md" %}}) for more information.
+
 ## Limitations
 
 - **Service invocation via gRPC:** Currently, resiliency policies are not supported for service invocation via gRPC.

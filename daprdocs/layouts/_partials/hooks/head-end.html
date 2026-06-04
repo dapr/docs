@@ -1,3 +1,42 @@
+<link rel="stylesheet" href="/css/cookie-banner.css" />
+
+<!-- Reo analytics (loaded only with cookie consent) -->
+<script>
+(function () {
+  var COOKIE_NAME = "dapr_cookie_consent";
+
+  function readConsent() {
+    var prefix = COOKIE_NAME + "=";
+    var parts = document.cookie ? document.cookie.split("; ") : [];
+    for (var i = 0; i < parts.length; i++) {
+      if (parts[i].indexOf(prefix) === 0) {
+        return parts[i].substring(prefix.length);
+      }
+    }
+    return null;
+  }
+
+  var injected = false;
+  window.daprInjectReo = function () {
+    if (injected) { return; }
+    injected = true;
+    var clientId = "5901cc15fcf7e10";
+    var onLoad = function () { Reo.init({ clientID: clientId }); };
+    var s = document.createElement("script");
+    s.src = "https://static.reo.dev/" + clientId + "/reo.js";
+    s.defer = true;
+    s.onload = onLoad;
+    document.head.appendChild(s);
+  };
+
+  if (readConsent() === "accepted") {
+    window.daprInjectReo();
+  }
+})();
+</script>
+
 {{ with .Site.Params.search.algolia }}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
 {{ end }}
+
+<link rel="stylesheet" href="/css/announcement-banner.css" />

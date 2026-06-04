@@ -130,7 +130,7 @@ See this list of values corresponding to the different Dapr APIs:
 | [Workflow]({{% ref workflow_api.md %}}) | `workflows` (`v1.0`) |`workflows` (`v1`) |
 | [Conversation]({{% ref conversation_api.md %}}) | `conversation` (`v1.0-alpha1`) | `conversation` (`v1alpha1`) |
 | [Health]({{% ref health_api.md %}}) | `healthz`  (`v1.0`) | n/a |
-| Shutdown | `shutdown` (`v1.0`) | `shutdown` (`v1`) |
+| [Shutdown]({{% ref shutdown_api.md %}}) | `shutdown` (`v1.0`) | `shutdown` (`v1`) |
 
 ## Next steps
 

@@ -28,6 +28,18 @@ spec:
     value: "true"
   - name: caCertificatePath
     value: "/path/to/ca-cert"
+  - name: clientId
+    value: "zeebe-client"
+  - name: clientSecret
+    value: "zeebe-secret"
+  - name: authorizationServerUrl
+    value: "https://issuer.example.com/oauth/token"
+  - name: tokenAudience
+    value: "zeebe-api"
+  - name: tokenScope
+    value: "read write"
+  - name: clientConfigPath
+    value: "/tmp/zeebe-credentials.yaml"
 ```
 
 ## Spec metadata fields
@@ -38,6 +50,20 @@ spec:
 | `gatewayKeepAlive`        | N | Output | Sets how often keep alive messages should be sent to the gateway. Defaults to 45 seconds  | `"45s"` |
 | `usePlainTextConnection`  | N | Output | Whether to use a plain text connection or not                                             | `"true"`, `"false"` |
 | `caCertificatePath`       | N | Output | The path to the CA cert                                                                    | `"/path/to/ca-cert"` |
+| `clientId`                | N | Output | OAuth client ID used to request an access token. When OAuth is configured, set this together with `clientSecret`, `authorizationServerUrl`, and `tokenAudience` | `"zeebe-client"` |
+| `clientSecret`            | N | Output | OAuth client secret used to request an access token. When OAuth is configured, set this together with `clientId`, `authorizationServerUrl`, and `tokenAudience` | `"zeebe-secret"` |
+| `authorizationServerUrl`  | N | Output | OAuth authorization server URL used to obtain access tokens. When OAuth is configured, set this together with `clientId`, `clientSecret`, and `tokenAudience` | `"https://issuer.example.com/oauth/token"` |
+| `tokenAudience`           | N | Output | OAuth token audience for Zeebe API access. When OAuth is configured, set this together with `clientId`, `clientSecret`, and `authorizationServerUrl` | `"zeebe-api"` |
+| `tokenScope`              | N | Output | Optional OAuth scope requested in the access token when OAuth is configured | `"read write"` |
+| `clientConfigPath`        | N | Output | Optional path to the OAuth credentials cache file when OAuth is configured | `"/tmp/zeebe-credentials.yaml"` |
+
+OAuth is optional. If any OAuth metadata field is set, all of these fields are required: `clientId`, `clientSecret`, `authorizationServerUrl`, and `tokenAudience`.
+
+### OAuth cache path guidance
+
+- `clientConfigPath` points to the OAuth credentials cache file used by the Zeebe client.
+- The Dapr sidecar must have write permissions to this file path.
+- To preserve cached credentials across restarts, use a persistent mounted path.
 
 ## Binding support
 
