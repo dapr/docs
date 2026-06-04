@@ -379,7 +379,7 @@ The Dapr client Go SDK allows you to schedule, get, and delete jobs. Jobs enable
 
 #### Scheduling a Job
 
-To schedule a new job, use the `ScheduleJobAlpha1` method:
+To schedule a new job, use the `ScheduleJob` method:
 
 ```go
 import (
@@ -399,7 +399,7 @@ job := client.NewJob("my-scheduled-job",
 )
 
 // Schedule the job
-err = client.ScheduleJobAlpha1(ctx, job)
+err = client.ScheduleJob(ctx, job)
 if err != nil {
     panic(err)
 }
@@ -417,7 +417,7 @@ job := client.NewJob("recurring-job",
     client.WithJobTTL("1h"),              // Job expires after 1 hour
 )
 
-err = client.ScheduleJobAlpha1(ctx, job)
+err = client.ScheduleJob(ctx, job)
 ```
 
 #### Job with Failure Policy
@@ -434,7 +434,7 @@ job := client.NewJob("resilient-job",
     client.WithJobConstantFailurePolicyInterval(30*time.Second),
 )
 
-err = client.ScheduleJobAlpha1(ctx, job)
+err = client.ScheduleJob(ctx, job)
 ```
 
 For jobs that should not be retried on failure, use the drop policy:
@@ -446,7 +446,7 @@ job := client.NewJob("one-shot-job",
     client.WithJobDropFailurePolicy(),
 )
 
-err = client.ScheduleJobAlpha1(ctx, job)
+err = client.ScheduleJob(ctx, job)
 ```
 
 #### Getting a Job
@@ -454,7 +454,7 @@ err = client.ScheduleJobAlpha1(ctx, job)
 To get information about a scheduled job:
 
 ```go
-job, err := client.GetJobAlpha1(ctx, "my-scheduled-job")
+job, err := client.GetJob(ctx, "my-scheduled-job")
 if err != nil {
     panic(err)
 }
@@ -468,7 +468,7 @@ fmt.Printf("Job: %s, Schedule: %s, Repeats: %d\n",
 To cancel a scheduled job:
 
 ```go
-err = client.DeleteJobAlpha1(ctx, "my-scheduled-job")
+err = client.DeleteJob(ctx, "my-scheduled-job")
 if err != nil {
     panic(err)
 }
