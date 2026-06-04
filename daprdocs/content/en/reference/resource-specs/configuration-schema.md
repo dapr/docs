@@ -75,6 +75,9 @@ spec:
   components:
     deny:
       - <COMPONENT-TO-DENY>
+  features:
+    - name: <FEATURE-NAME>
+      enabled: <TRUE-OR-FALSE>
   accessControl:
     defaultAction: <ALLOW-OR-DENY>
     trustDomain: <REPLACE-WITH-TRUST-DOMAIN>
@@ -98,7 +101,7 @@ spec:
 | httpPipeline       | N        | Configure API middleware pipelines | [Middleware pipeline configuration overview]({{% ref "configuration-overview.md#middleware" %}})<br>[Learn more about the `httpPipeline` configuration.]({{% ref "middleware.md#configure-api-middleware-pipelines" %}}) |
 | appHttpPipeline    | N        | Configure application middleware pipelines | [Middleware pipeline configuration overview]({{% ref "configuration-overview.md#middleware" %}})<br>[Learn more about the `appHttpPipeline` configuration.]({{% ref "middleware.md#configure-app-middleware-pipelines" %}}) |
 | components         | N        | Used to specify a denylist of component types that can't be initialized. | [Learn more about the `components` configuration.]({{% ref "configuration-overview.md#disallow-usage-of-certain-component-types" %}}) |
-| features           | N        | Defines the preview features that are enabled/disabled. | [Learn more about the `features` configuration.]({{% ref preview-features.md %}}) |
+| features           | N        | Enables or disables Dapr features, including preview features and on-by-default features such as `HotReload`. | [Learn more about the `features` configuration.]({{% ref preview-features.md %}}) |
 | logging            | N        | Configure how logging works in the Dapr runtime. | [Learn more about the `logging` configuration.]({{% ref "configuration-overview.md#logging" %}})  |
 | metrics            | N        | Enable or disable metrics for an application. | [Learn more about the `metrics` configuration.]({{% ref "configuration-overview.md#metrics" %}}) |
 | nameResolution     | N        | Name resolution configuration spec for the service invocation building block. | [Learn more about the `nameResolution` configuration per components.]({{% ref supported-name-resolution.md %}}) |

@@ -77,6 +77,7 @@ The following menu includes all of the configuration settings you can set:
 - [Turning on preview features](#turning-on-preview-features)
 - [Example sidecar configuration](#example-sidecar-configuration)
 - [Reloading configuration with SIGHUP](#reloading-configuration-with-sighup)
+- [Hot reloading](#hot-reloading)
 
 #### Tracing
 
@@ -451,7 +452,7 @@ spec:
 
 ## Hot Reloading
 
-When the [`HotReload` feature gate]({{% ref "support-preview-features" %}}) is enabled, changes to Configuration resources are automatically detected and trigger a graceful restart of the Dapr sidecar (via SIGHUP) to apply the new configuration. Unchanged Configuration resources are silently ignored. SIGHUP is not supported on Windows.
+Changes to Configuration resources are automatically detected and trigger a graceful restart of the Dapr sidecar to apply the new configuration. To opt out, disable the `HotReload` feature in the [Dapr application configuration]({{% ref "configuration-overview.md" %}}).
 
 See [Updating resources]({{% ref "component-updates.md" %}}) for more information.
 

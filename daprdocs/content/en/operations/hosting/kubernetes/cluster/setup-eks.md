@@ -109,7 +109,6 @@ You should see the following response:
 
 ℹ️  Container images will be pulled from Docker Hub
 ✅  Deploying the Dapr control plane with latest version to your cluster...
-✅  Deploying the Dapr dashboard with latest version to your cluster...
 ✅  Success! Dapr has been installed to namespace dapr-system. To verify, run `dapr status -k' in your terminal. To get started, go here: https://docs.dapr.io/getting-started
 ```
 
