@@ -740,7 +740,7 @@ Depending on the business needs, there may be a single monitor or there may be m
 Dapr Workflow supports this pattern natively by allowing you to implement _eternal workflows_. Rather than writing infinite while-loops ([which is an anti-pattern]({{% ref "workflow-features-concepts.md#infinite-loops-and-eternal-workflows" %}})), Dapr Workflow exposes a _continue-as-new_ API that workflow authors can use to restart a workflow function from the beginning with a new input.
 
 {{% alert title="Note" color="primary" %}}
-_Continue-as-new_ proceeds immediately without waiting for child workflows that were started but not awaited. This allows the monitor pattern to continue its loop while child workflows are still running.
+Continue-as-new restarts the workflow immediately and discards the results of any incomplete tasks - including activities, timers, and child workflows that were started but not awaited.
 {{% /alert %}}
 
 
