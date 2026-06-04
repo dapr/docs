@@ -2,7 +2,7 @@
 type: docs
 title: "Overview"
 linkTitle: "Overview"
-weight: 100
+weight: 5
 description: >
   Introduction to the Distributed Application Runtime
 ---
@@ -15,11 +15,11 @@ Dapr is a portable, event-driven runtime that makes it easy for any developer to
 
 <img src="/images/overview.png" width=1200 style="padding-bottom:15px;">
 
-With the current wave of cloud adoption, web + database application architectures (such as classic 3-tier designs) are trending more toward microservice application architectures, which are inherently distributed. You shouldn't have to become a distributed systems expert just to create microservices applications. 
+With the current wave of cloud adoption, web + database application architectures (such as classic 3-tier designs) are trending more toward microservice application architectures, which are inherently distributed. You shouldn't have to become a distributed systems expert just to create microservices applications.
 
 This is where Dapr comes in. Dapr codifies the *best practices* for building microservice applications into open, independent APIs called [building blocks]({{% ref "#microservice-building-blocks-for-cloud-and-edge" %}}). Dapr's building blocks:
-- Enable you to build portable applications using the language and framework of your choice. 
-- Are completely independent 
+- Enable you to build portable applications using the language and framework of your choice.
+- Are completely independent
 - Have no limit to how many you use in your application
 
 Using Dapr, you can incrementally migrate your existing applications to a microservices architecture, thereby adopting cloud native patterns such scale out/in, resiliency, and independent deployments.
@@ -27,8 +27,8 @@ Using Dapr, you can incrementally migrate your existing applications to a micros
 Dapr is platform agnostic, meaning you can run your applications:
 - Locally
 - On any Kubernetes cluster
-- On virtual or physical machines 
-- In other hosting environments that Dapr integrates with. 
+- On virtual or physical machines
+- In other hosting environments that Dapr integrates with.
 
 This enables you to build microservice applications that can run on the cloud and edge.
 
@@ -38,22 +38,22 @@ This enables you to build microservice applications that can run on the cloud an
 
 Dapr provides distributed system building blocks for you to build microservice applications in a standard way and to deploy to any environment.
 
-Each of these building block APIs is independent, meaning that you can use any number of them in your application. 
+Each of these building block APIs is independent, meaning that you can use any number of them in your application.
 
 | Building Block | Description |
 |----------------|-------------|
 | [**Service-to-service invocation**]({{% ref "service-invocation-overview" %}})  | Resilient service-to-service invocation enables method calls, including retries, on remote services, wherever they are located in the supported hosting environment.
 | [**Publish and subscribe**]({{% ref "pubsub-overview" %}}) | Publishing events and subscribing to topics between services enables event-driven architectures to simplify horizontal scalability and make them resilient to failure. Dapr provides at-least-once message delivery guarantee, message TTL, consumer groups and other advance features.
-| [**Workflows**]({{% ref "workflow-overview" %}}) | The workflow API can be combined with other Dapr building blocks to define long running, persistent processes or data flows that span multiple microservices using Dapr workflows. 
-| [**State management**]({{% ref "state-management-overview" %}}) | With state management for storing and querying key/value pairs, long-running, highly available, stateful services can be easily written alongside stateless services in your application. The state store is pluggable and examples include AWS DynamoDB, Azure Cosmos DB, Azure SQL Server, GCP Firebase, PostgreSQL or Redis, among others.
+| [**Workflows**]({{% ref "workflow-overview" %}}) | The workflow API can be combined with other Dapr building blocks to define long running, persistent processes or data flows that span multiple microservices using Dapr workflows.
+| [**State management**]({{% ref "state-management-overview" %}}) | With state management for storing and querying key/value pairs, long-running, highly available, stateful services can be easily written alongside stateless services in your application. The state store is pluggable and examples include AWS DynamoDB, Azure Cosmos DB, Azure SQL Server, GCP Firebase, PostgreSQL or Redis, among others.
 | [**Resource bindings**]({{% ref "bindings-overview" %}}) | Resource bindings with triggers builds further on event-driven architectures for scale and resiliency by receiving and sending events to and from any external source such as databases, queues, file systems, etc.
 | [**Actors**]({{% ref "actors-overview" %}}) | A pattern for stateful and stateless objects that makes concurrency simple, with method and state encapsulation. Dapr provides many capabilities in its actor runtime, including concurrency, state, and life-cycle management for actor activation/deactivation, and timers and reminders to wake up actors.
 | [**Secrets**]({{% ref "secrets-overview" %}}) | The secrets management API integrates with public cloud and local secret stores to retrieve the secrets for use in application code.
-| [**Configuration**]({{% ref "configuration-api-overview" %}})  | The configuration API enables you to retrieve and subscribe to application configuration items from configuration stores. 
-| [**Distributed lock**]({{% ref "distributed-lock-api-overview" %}})  | The distributed lock API enables your application to acquire a lock for any resource that gives it exclusive access until either the lock is released by the application, or a lease timeout occurs. 
+| [**Configuration**]({{% ref "configuration-api-overview" %}})  | The configuration API enables you to retrieve and subscribe to application configuration items from configuration stores.
+| [**Distributed lock**]({{% ref "distributed-lock-api-overview" %}})  | The distributed lock API enables your application to acquire a lock for any resource that gives it exclusive access until either the lock is released by the application, or a lease timeout occurs.
 | [**Cryptography**]({{% ref "cryptography-overview" %}}) | The cryptography API provides an abstraction layer on top of security infrastructure such as key vaults. It contains APIs that allow you to perform cryptographic operations, such as encrypting and decrypting messages, without exposing keys to your applications.
 | [**Jobs**]({{% ref "jobs-overview" %}}) | The jobs API enables you to schedule jobs at specific times or intervals.
-| [**Conversation**]({{% ref "conversation-overview" %}}) | The conversation API enables you to abstract the complexities of interacting with large language models (LLMs) and includes features such as prompt caching, response formatting, usage metrics, and personally identifiable information (PII) obfuscation. Using [conversation components]({{% ref supported-conversation %}}), you can supply prompts to converse with different LLMs. 
+| [**Conversation**]({{% ref "conversation-overview" %}}) | The conversation API enables you to abstract the complexities of interacting with large language models (LLMs) and includes features such as prompt caching and personally identifiable information (PII) obfuscation. Using [conversation components]({{% ref supported-conversation %}}), you can supply prompts to converse with different LLMs.
 
 ### Cross-cutting APIs
 
@@ -81,20 +81,20 @@ Dapr can be hosted in multiple environments, including:
 
 In [self-hosted mode]({{% ref self-hosted-overview %}}), Dapr runs as a separate sidecar process, which your service code can call via HTTP or gRPC. Each running service has a Dapr runtime process (or sidecar) configured to use state stores, pub/sub, binding components, and the other building blocks.
 
-You can use the [Dapr CLI](https://github.com/dapr/cli#launch-dapr-and-your-app) to run a Dapr-enabled application on your local machine. In the following diagram, Dapr's local development environment gets configured with the CLI `init` command. Try this out with the [getting started samples]({{% ref getting-started %}}). 
+You can use the [Dapr CLI](https://github.com/dapr/cli#launch-dapr-and-your-app) to run a Dapr-enabled application on your local machine. In the following diagram, Dapr's local development environment gets configured with the CLI `init` command. Try this out with the [getting started samples]({{% ref getting-started %}}).
 
 <img src="/images/overview-standalone.png" width=1200 alt="Architecture diagram of Dapr in self-hosted mode">
 
 ### Kubernetes
 
 Kubernetes can be used for either:
-- Local development (for example, with [minikube](https://minikube.sigs.k8s.io/docs/) and [k3S](https://k3s.io/)), or 
-- In [production]({{% ref kubernetes %}}). 
+- Local development (for example, with [minikube](https://minikube.sigs.k8s.io/docs/) and [k3S](https://k3s.io/)), or
+- In [production]({{% ref kubernetes %}}).
 
 In container hosting environments such as Kubernetes, Dapr runs as a sidecar container with the application container in the same pod.
 
 Dapr's `dapr-sidecar-injector` and `dapr-operator` control plane services provide first-class integration to:
-- Launch Dapr as a sidecar container in the same pod as the service container 
+- Launch Dapr as a sidecar container in the same pod as the service container
 - Provide notifications of Dapr component updates provisioned in the cluster
 
 <!-- IGNORE_LINKS -->
@@ -107,7 +107,7 @@ Deploying and running a Dapr-enabled application into your Kubernetes cluster is
 
 ### Clusters of physical or virtual machines
 
-The Dapr control plane services can be deployed in high availability (HA) mode to clusters of physical or virtual machines in production. In the diagram below, the Actor `Placement` and security `Sentry` services are started on three different VMs to provide HA control plane. In order to provide name resolution using DNS for the applications running in the cluster, Dapr uses multicast DNS by default, but can also optionally support [Hashicorp Consul service]({{% ref setup-nr-consul %}}).  
+The Dapr control plane services can be deployed in high availability (HA) mode to clusters of physical or virtual machines in production. In the diagram below, the Actor `Placement` and security `Sentry` services are started on three different VMs to provide HA control plane. In order to provide name resolution using DNS for the applications running in the cluster, Dapr uses multicast DNS by default, but can also optionally support [Hashicorp Consul service]({{% ref setup-nr-consul %}}).
 
 <img src="/images/overview-vms-hosting.png" width=1200 alt="Architecture diagram of Dapr control plane and Consul deployed to VMs in high availability mode">
 
@@ -159,5 +159,7 @@ Visit the [integrations]({{% ref integrations %}}) page to learn about some of t
 ## Designed for operations
 
 Dapr is designed for [operations]({{% ref operations %}}) and security. The Dapr sidecars, runtime, components, and configuration can all be managed and deployed easily and securely to match your organization's needs.
+
+The [dashboard](https://github.com/dapr/dashboard), installed via the Dapr CLI, provides a web-based UI enabling you to see information, view logs, and more for running Dapr applications.
 
 Dapr supports [monitoring tools]({{% ref observability %}}) for deeper visibility into the Dapr system services and sidecars, while the [observability capabilities]({{% ref "observability-concept" %}}) of Dapr provide insights into your application, such as tracing and metrics.

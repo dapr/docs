@@ -60,19 +60,6 @@ The `-k` flag initializes Dapr on the Kubernetes cluster in your current context
     ✅  Success! Dapr has been installed to namespace dapr-system. To verify, run "dapr status -k" in your terminal. To get started, go here: https://aka.ms/dapr-getting-started
     ```
     
-1. Run the dashboard:
-
-    ```bash
-    dapr dashboard -k
-    ```
-
-    If you installed Dapr in a **non-default namespace**, run:
-    
-    ```bash
-    dapr dashboard -k -n <your-namespace>
-    ```
-
-
  #### Install Dapr from the offical Dapr Helm chart (with development flag)
 
 Adding the `--dev` flag initializes Dapr on the Kubernetes cluster on your current context, with the addition of Redis and Zipkin deployments.
@@ -91,7 +78,6 @@ Expected output:
 
 ℹ️  Container images will be pulled from Docker Hub
 ✅  Deploying the Dapr control plane with latest version to your cluster...
-✅  Deploying the Dapr dashboard with latest version to your cluster...
 ✅  Deploying the Dapr Redis with latest version to your cluster...
 ✅  Deploying the Dapr Zipkin with latest version to your cluster...
 ℹ️  Applying "statestore" component to Kubernetes "default" namespace.
@@ -246,22 +232,6 @@ You can install Dapr on Kubernetes using a Helm v3 chart.
    
 See [Guidelines for production ready deployments on Kubernetes]({{% ref kubernetes-production.md %}}) for more information on installing and upgrading Dapr using Helm.
 
-### (optional) Install the Dapr dashboard as part of the control plane
-
-If you want to install the Dapr dashboard, use this Helm chart with the additional settings of your choice:
-
-`helm install dapr dapr/dapr-dashboard --namespace dapr-system`
-
-For example:
-
-```bash
-helm repo add dapr https://dapr.github.io/helm-charts/
-helm repo update
-kubectl create namespace dapr-system
-# Install the Dapr dashboard
-helm install dapr-dashboard dapr/dapr-dashboard --namespace dapr-system
-```
-
 ### Verify installation
 
 Once the installation is complete, verify that the `dapr-operator`, `dapr-placement`, `dapr-sidecar-injector`, and `dapr-sentry` pods are running in the `dapr-system` namespace:
@@ -272,7 +242,6 @@ kubectl get pods --namespace dapr-system
 
 ```bash
 NAME                                     READY     STATUS    RESTARTS   AGE
-dapr-dashboard-7bd6cbf5bf-xglsr          1/1       Running   0          40s
 dapr-operator-7bd6cbf5bf-xglsr           1/1       Running   0          40s
 dapr-placement-7f8f76778f-6vhl2          1/1       Running   0          40s
 dapr-sidecar-injector-8555576b6f-29cqm   1/1       Running   0          40s

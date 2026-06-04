@@ -1,0 +1,48 @@
+{{- /*
+  Project override of Docsy v0.12.0 layouts/_partials/sidebar.html.
+
+  Instead of serializing the full nav tree into every page, this renders an
+  empty #td-section-nav container. The tree is rendered once per language to
+  /sidebar-nav.html (output format "SidebarNav", template home.sidebarnav.html)
+  and injected here client-side by /js/sidebar-nav.js, which also applies the
+  active-item highlighting.
+
+  data-nav-src : URL of the language's fragment (cache-busted by site version).
+  data-nav-mid : this page's active-item id (m-<anchorized RelPermalink>),
+                 matching the id the fragment generates for this page's link.
+*/ -}}
+<div id="td-sidebar-menu" class="td-sidebar__inner">
+  {{ if not .Site.Params.ui.sidebar_search_disable -}}
+  <form class="td-sidebar__search d-flex align-items-center">
+    {{ partial "search-input.html" . }}
+    <button class="btn btn-link td-sidebar__toggle d-md-none p-0 ms-3 fas fa-bars" type="button" data-bs-toggle="collapse" data-bs-target="#td-section-nav" aria-controls="td-section-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    </button>
+  </form>
+  {{ else -}}
+  <div id="content-mobile">
+  <form class="td-sidebar__search d-flex align-items-center">
+    {{ partial "search-input.html" . }}
+    <button class="btn btn-link td-sidebar__toggle d-md-none p-0 ms-3 fas fa-bars" type="button" data-bs-toggle="collapse" data-bs-target="#td-section-nav" aria-controls="td-section-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    </button>
+  </form>
+  </div>
+  <div id="content-desktop"></div>
+  {{ end -}}
+  <nav class="td-sidebar-nav collapse
+      {{- if .Site.Params.ui.sidebar_search_disable }} td-sidebar-nav--search-disabled{{ end -}}
+      {{- if .Site.Params.ui.sidebar_menu_foldable }} foldable-nav{{ end -}}
+      " id="td-section-nav"
+      data-nav-src="{{ .Site.Home.RelPermalink }}sidebar-nav.html?v={{ .Site.Params.version | urlquery }}"
+      data-nav-mid="m-{{ .RelPermalink | anchorize }}">
+    <noscript>
+      {{- $navRoot := cond (and (ne .Params.toc_root true) (eq .Site.Home.Type "docs")) .Site.Home .FirstSection -}}
+      <ul class="td-sidebar-nav__section pe-md-3 ul-0">
+        {{- range (where (union $navRoot.Pages $navRoot.Sections).ByWeight ".Params.toc_hide" "!=" true) }}
+        <li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child">
+          <a class="align-left ps-0 td-sidebar-link td-sidebar-link__section" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+        </li>
+        {{- end }}
+      </ul>
+    </noscript>
+  </nav>
+</div>
