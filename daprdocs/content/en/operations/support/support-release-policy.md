@@ -45,7 +45,9 @@ The table below shows the versions of Dapr releases that have been tested togeth
 
 | Release date | Runtime     | CLI  | SDKs  | Dashboard  | Status | Release notes |
 |--------------------|:--------:|:--------|---------|---------|---------|------------|
-| Apr 16th 2026 | 1.17.5</br> | 1.17.1 | Java 1.17.2 </br>Go 1.14.2 </br>PHP 1.2.0 </br>Python 1.17.4 </br>.NET 1.17.8 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported (current) | [v1.17.5 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.5)   |
+| May 15th 2026 | 1.17.7</br> | 1.17.1 | Java 1.17.2 </br>Go 1.14.2 </br>PHP 1.2.0 </br>Python 1.17.4 </br>.NET 1.17.8 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported (current) | [v1.17.7 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.7)   |
+| Apr 28th 2026 | 1.17.6</br> | 1.17.1 | Java 1.17.2 </br>Go 1.14.2 </br>PHP 1.2.0 </br>Python 1.17.4 </br>.NET 1.17.8 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.17.6 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.6)   |
+| Apr 16th 2026 | 1.17.5</br> | 1.17.1 | Java 1.17.2 </br>Go 1.14.2 </br>PHP 1.2.0 </br>Python 1.17.4 </br>.NET 1.17.8 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.17.5 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.5)   |
 | Apr 10th 2026 | 1.17.4</br> | 1.17.1 | Java 1.17.0 </br>Go 1.14.2 </br>PHP 1.2.0 </br>Python 1.17.0 </br>.NET 1.17.5 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.17.4 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.4)   |
 | Mar 26th 2026 | 1.17.3</br> | 1.17.1 | Java 1.17.0 </br>Go 1.14.2 </br>PHP 1.2.0 </br>Python 1.17.0 </br>.NET 1.17.5 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.17.3 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.3)   |
 | Mar 19th 2026 | 1.17.2</br> | 1.17.0 | Java 1.17.0 </br>Go 1.14.2 </br>PHP 1.2.0 </br>Python 1.17.0 </br>.NET 1.17.5 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.17.2 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.2)   |
