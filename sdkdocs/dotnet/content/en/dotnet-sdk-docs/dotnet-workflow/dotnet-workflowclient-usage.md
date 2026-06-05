@@ -25,6 +25,17 @@ services
         maxSendMessageSize: 16 * 1024 * 1024);
 ```
 
+### Change gRPC Message Size Limits 
+You can also configure gRPC message size limits for the workflow client during registration. This is useful when workflow payloads are larger than the default gRPC limits.
+
+```csharp
+services
+    .AddDaprWorkflowClient()
+    .WithGrpcMessageSizeLimits( 
+        maxReceiveMessageSize: 16 * 1024 * 1024, 
+        maxSendMessageSize: 16 * 1024 * 1024);
+```
+
 ### Singleton Registration
 
 By default, the `AddDaprWorkflow` method registers the `DaprWorkflowClient` and associated services using a singleton lifetime. This means that the services are instantiated only a single time.
