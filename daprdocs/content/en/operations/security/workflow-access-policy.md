@@ -213,7 +213,7 @@ spec:
   rules: []
 ```
 
-This is the strictest posture for a namespace: no application can schedule a workflow or activity on any other application in `production`, and every cross-app call is denied. Start from this default-deny baseline and layer on additional, narrowly `scoped` policies (following the earlier scenarios) to grant access to specific callers as needed. Because policies are a pure allow-list, the rules from those additional policies combine, opening up only the access they explicitly grant.
+This is the strictest posture for a namespace: no application can schedule a workflow or activity on any other application in `production`, and every cross-app call is denied. Start from this default-deny baseline and layer on additional, narrowly scoped policies (following the earlier scenarios) to grant access to specific callers as needed. Because policies are a pure allow-list, the rules from those additional policies combine, opening up only the access they explicitly grant.
 
 ## Production best practices
 
