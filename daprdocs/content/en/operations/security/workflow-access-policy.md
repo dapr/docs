@@ -199,9 +199,25 @@ spec:
         - name: "Refund*"
 ```
 
+### Scenario 5: Namespace-wide deny by default
+
+Much like a Kubernetes [`NetworkPolicy`](https://kubernetes.io/docs/concepts/services-networking/network-policies/#default-deny-all-ingress-traffic) that selects every pod in a namespace to default-deny ingress, you can apply a single policy to every application in a namespace. Omit `scopes` so the policy applies to all applications, and define no rules (an empty or omitted `rules` list). Because policies are a pure allow-list, a loaded policy with nothing to match denies every cross-app request. Self-calls are still always allowed, so each app can continue to schedule its own workflows and activities (including the internal reminder-based execution path).
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: WorkflowAccessPolicy
+metadata:
+  name: default-deny
+  namespace: production
+spec:
+  rules: []
+```
+
+This is the strictest posture for a namespace: no application can schedule a workflow or activity on any other application in `production`, and every cross-app call is denied. Start from this default-deny baseline and layer on additional, narrowly `scoped` policies (following the earlier scenarios) to grant access to specific callers as needed. Because policies are a pure allow-list, the rules from those additional policies combine, opening up only the access they explicitly grant.
+
 ## Production best practices
 
-- **Use deny by default.** Loading any `WorkflowAccessPolicy` for a target automatically denies cross-app requests that are not explicitly listed. Keep policies minimal and review them when adding new workflows.
+- **Use deny by default.** Loading any `WorkflowAccessPolicy` for a target automatically denies cross-app requests that are not explicitly listed. For the strictest baseline, start from a namespace-wide default-deny policy (see [Scenario 5](#scenario-5-namespace-wide-deny-by-default)) and add narrowly scoped policies only as needed. Keep policies minimal and review them when adding new workflows.
 - **Use glob patterns conservatively.** Patterns like `*` can grant broader access than intended. Prefer exact names where possible, and use glob patterns only for stable name families.
 - **Enable mTLS.** mTLS is required for cross-app enforcement. Without mTLS, cross-app requests are denied when any policy is loaded.
 - **Audit denial logs.** Dapr logs a warning whenever a request is denied by a workflow access policy. Use these logs to spot misconfiguration and unauthorized callers.

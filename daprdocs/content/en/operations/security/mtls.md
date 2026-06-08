@@ -585,3 +585,8 @@ spec:
           source: |
             {"keys":[ "12345.." ]}
 ```
+
+## Related links
+
+- [Security concepts]({{% ref security-concept.md %}})
+- [How-To: Apply workflow access policies]({{% ref workflow-access-policy.md %}}): mTLS is required for cross-app workflow access enforcement, because the caller's identity is taken from the SPIFFE ID in the mTLS certificate.

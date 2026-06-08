@@ -572,6 +572,7 @@ patch and introduce new named workflow versions to incorporate changes to your w
 
 - [Try out Dapr Workflow using the quickstart]({{% ref workflow-quickstart.md %}})
 - [Workflow overview]({{% ref workflow-overview.md %}})
+- [How-To: Apply workflow access policies]({{% ref workflow-access-policy.md %}})
 - [Workflow API reference]({{% ref workflow_api.md %}})
 - Try out the following examples:
    - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
