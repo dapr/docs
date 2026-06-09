@@ -111,7 +111,7 @@ Extensions ship as standalone distributions under the `dapr_agents.ext` namespac
 
 ```text
 ext/
-  dapr_agents-ext-<name>/
+  dapr-agents-ext-<name>/
     pyproject.toml                       # depends on dapr-agents
     dapr_agents/
       ext/
