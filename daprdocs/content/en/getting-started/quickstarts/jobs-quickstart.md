@@ -6,10 +6,6 @@ weight: 80
 description: Get started with the Dapr jobs building block
 ---
 
-{{% alert title="Alpha" color="warning" %}}
-The jobs building block is currently in **alpha**. 
-{{% /alert %}}
-
 Let's take a look at the [Dapr jobs building block]({{% ref jobs-overview %}}), which schedules and runs jobs at a specific time or interval. In this Quickstart, you'll schedule, get, and delete a job using Dapr's Job API.
 
 You can try out this jobs quickstart by either:
@@ -226,7 +222,7 @@ func scheduleJob(ctx context.Context, in *common.InvocationEvent) (out *common.C
 		},
 	}
 
-	err = app.daprClient.ScheduleJobAlpha1(ctx, &job)
+	err = app.daprClient.ScheduleJob(ctx, &job)
 	if err != nil {
 		fmt.Println("failed to schedule job. err: ", err)
 		return nil, err
@@ -252,7 +248,7 @@ func getJob(ctx context.Context, in *common.InvocationEvent) (out *common.Conten
 		return nil, err
 	}
 
-	job, err := app.daprClient.GetJobAlpha1(ctx, string(in.Data))
+	job, err := app.daprClient.GetJob(ctx, string(in.Data))
 	if err != nil {
 		fmt.Println("failed to get job. err: ", err)
 	}
@@ -273,7 +269,7 @@ func deleteJob(ctx context.Context, in *common.InvocationEvent) (out *common.Con
 		return nil, err
 	}
 
-	err = app.daprClient.DeleteJobAlpha1(ctx, string(in.Data))
+	err = app.daprClient.DeleteJob(ctx, string(in.Data))
 	if err != nil {
 		fmt.Println("failed to delete job. err: ", err)
 	}

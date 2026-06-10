@@ -122,7 +122,7 @@ await daprJobsClient.ScheduleJobAsync("prod-db-backup", DaprJobSchedule.FromDura
 
 <!--go-->
 
-The following Go SDK code sample schedules the job named `prod-db-backup`. Job data is housed in a backup database (`"my-prod-db"`) and is scheduled with `ScheduleJobAlpha1`. This provides the `jobData`, which includes:
+The following Go SDK code sample schedules the job named `prod-db-backup`. Job data is housed in a backup database (`"my-prod-db"`) and is scheduled with `ScheduleJob`. This provides the `jobData`, which includes:
 - The backup `Task` name
 - The backup task's `Metadata`, including:
   - The database name (`DBName`)
