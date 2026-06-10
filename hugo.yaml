@@ -121,7 +121,7 @@ params:
     rotate_interval: 6000   # ms between auto-advances; 0 disables auto-rotate
     items:
       - text: "Need enterprise support for Dapr?"
-        link: "https://docs.dapr.io/enterprise-support/"
+        link: "https://www.diagrid.io/"
         link_text: "Contact Diagrid"
       - text: "Read how Dapr is used for workflow orchestration and AI agent development in 2026."
         link: "https://www.diagrid.io/reports-and-ebooks/state-of-dapr-2026"
