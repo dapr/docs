@@ -632,6 +632,7 @@ Now that you've learned how to manage workflows, learn how to execute workflows 
 
 ## Related links
 - [Try out the Workflow quickstart]({{% ref workflow-quickstart.md %}})
+- [How-To: Apply workflow access policies]({{% ref workflow-access-policy.md %}})
 - Try out the full SDK examples:
   - [Python example](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py)
   - [JavaScript example](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
