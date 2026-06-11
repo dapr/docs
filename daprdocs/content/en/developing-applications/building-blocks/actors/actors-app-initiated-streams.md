@@ -16,7 +16,11 @@ Starting with Dapr v1.18, actor hosts can instead open a **single bidirectional 
 
 This aligns actor callback delivery with how Dapr handles pub/sub streaming subscriptions (`SubscribeTopicEventsAlpha1`), configuration watch streams, and scheduler job streams.
 
+The [Go SDK](https://github.com/dapr/go-sdk) provides a high-level helper for this API ([`client.SubscribeActorEvents`](https://github.com/dapr/go-sdk/tree/main/examples/actor-grpc)). Other Dapr SDKs currently expose `SubscribeActorEventsAlpha1` only through their generated gRPC client. See [SDK support](#sdk-support) for details.
+
 ## Why app-initiated streams?
+
+The app-initiated approach is useful when NetworkPolicies restrict inbound traffic to application pods, when actors run in restricted-networking environments, or when you want a single connection-management surface instead of per-callback HTTP/gRPC routes.
 
 | | Traditional callbacks | App-initiated stream |
 |---|---|---|
@@ -24,10 +28,8 @@ This aligns actor callback delivery with how Dapr handles pub/sub streaming subs
 | **App server port required** | Yes | No |
 | **NetworkPolicy / firewall** | Must allow sidecar→app inbound | Only app→sidecar outbound needed |
 | **Callback types** | Separate endpoints per type | All four types on one stream |
-| **SDK support** | All SDKs | SDKs adding support (see below) |
+| **SDK support** | All SDKs | Go SDK helper; other SDKs via generated gRPC client |
 | **Stability** | Stable | Alpha (v1.18+) |
-
-The app-initiated approach is useful when NetworkPolicies restrict inbound traffic to application pods, when actors run in restricted-networking environments, or when you want a single connection-management surface instead of per-callback HTTP/gRPC routes.
 
 ## How it works
 
@@ -101,7 +103,7 @@ spec:
 
 ## SDK support
 
-SDK helpers for `SubscribeActorEventsAlpha1` are not yet available; use the generated gRPC client directly. See the [how-to guide]({{% ref "howto-actors-app-initiated-streams" %}}) for a raw gRPC example in Go. SDK support is being tracked in the v1.18 SDK releases.
+The [Go SDK](https://github.com/dapr/go-sdk) provides a high-level helper, [`client.SubscribeActorEvents`](https://github.com/dapr/go-sdk/tree/main/examples/actor-grpc), that manages the stream lifecycle, callback dispatch, and reconnection for you. Other Dapr SDKs currently expose `SubscribeActorEventsAlpha1` only through their generated gRPC client; call it directly as shown in the [how-to guide]({{% ref "howto-actors-app-initiated-streams" %}}).
 
 ## Related links
 
