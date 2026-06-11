@@ -144,7 +144,7 @@ params:
   # Versioning
   # Menu title if your navbar has a versions selector to access old versions of your site.
   # This menu appears only if you have at least one [params.versions] set.
-  version_menu: v1.18 (preview)
+  version_menu: v1.18 (latest)
 
   # Flag used in the "version-banner" partial to decide whether to display a
   # banner on every page indicating that this is an archived version of the docs.
@@ -174,10 +174,12 @@ params:
   github_branch: v1.18
 
   versions:
-    - version: v1.18 (preview)
+    - version: v1.19 (preview)
+      url: "https://v1-19.docs.dapr.io"
+    - version: v1.18 (latest)
       url: "#"
-    - version: v1.17 (latest)
-      url: https://docs.dapr.io
+    - version: v1.17
+      url: https://v1-17.docs.dapr.io
     - version: v1.16
       url: https://v1-16.docs.dapr.io
     - version: v1.15
