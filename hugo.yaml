@@ -73,7 +73,7 @@ menu:
       url: https://blog.dapr.io/posts
       weight: 60
     - name: Discord
-      url: https://bit.ly/dapr-discord
+      url: https://diagrid.ws/dapr-discord
       weight: 70
     - name: Community
       url: https://dapr.io/community
@@ -277,7 +277,7 @@ params:
         icon: fab fa-github
         desc: Help contribute to Dapr!
       - name: Discord
-        url: https://bit.ly/dapr-discord
+        url: https://diagrid.ws/dapr-discord
         icon: fab fa-discord
         desc: Join our Discord server and talk with other Dapr developers
 
