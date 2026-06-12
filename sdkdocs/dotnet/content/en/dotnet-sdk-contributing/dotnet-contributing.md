@@ -11,7 +11,7 @@ If you're reading this, you're likely interested in contributing to Dapr and/or 
 and thank you for your interest in contributing!
 
 Please review the documentation, familiarize yourself with what Dapr is and what it's seeking to accomplish and reach
-out on [Discord](https://bit.ly/dapr-discord). Let us know how you'd like to contribute and we'd be happy to chime in
+out on [Discord](https://diagrid.ws/dapr-discord). Let us know how you'd like to contribute and we'd be happy to chime in
 with ideas and suggestions.
 
 There are many ways to contribute to Dapr:
