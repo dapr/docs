@@ -34,8 +34,8 @@ POST http://localhost:<daprPort>/v1.0-alpha2/conversation/<llm-name>/converse
 | --------- | ----------- |
 | `contextId` | The ID of an existing chat (like in ChatGPT). Optional |
 | `inputs` | Inputs for the conversation. Multiple inputs at one time are supported. Required |
-| `parameters` | Parameters for all custom fields. Optional |
-| `metadata` | Metadata passed to conversation components. Optional |
+| `parameters` | Typed per-request overrides for provider-specific fields (for example `model`, `max_tokens`). Values are wrapped in `google.protobuf.Any`. Optional |
+| `metadata` | Up to 16 key-value pairs to attach to the conversation for structured tagging (for example `user_id`, `session_id`). Not a mechanism for overriding component configuration. Optional |
 | `scrubPii` | A boolean value to enable obfuscation of sensitive information returning from the LLM. Optional |
 | `temperature` | A float value to control the temperature of the model. Used to optimize for consistency (0) or creativity (1). Optional |
 | `tools` | Tools register the tools available to be used by the LLM during the conversation. Optional |
@@ -78,39 +78,45 @@ Tools can be defined using the `tools` field with function definitions:
 
 The `toolChoice` is an optional parameter that controls how the model can use available tools:
 
+- **`none`**: The model will not call any tool and instead generates a message (default when no tools are present)
 - **`auto`**: The model can pick between generating a message or calling one or more tools (default when tools are present)
 - **`required`**: Requires one or more functions to be called
 - **`{tool_name}`**: Forces the model to call a specific tool by name
 
 
 #### Metadata
-The `metadata` field serves as a dynamic configuration mechanism that allows you to pass additional configuration and authentication information to conversation components on a per-request basis. This metadata overrides any corresponding fields configured in the component's YAML configuration file, enabling dynamic configuration without modifying static component definitions.
+The `metadata` field is a set of up to 16 key-value pairs that can be attached to the conversation. This mirrors [OpenAI's `metadata` field](https://platform.openai.com/docs/api-reference/chat/create#chat-create-metadata) and is intended for storing additional information about the conversation in a structured format, such as user IDs, session IDs, or other application-specific tags.
 
-**Common metadata fields:**
+This field is **not** a mechanism for overriding component configuration or passing authentication details such as API keys; provider credentials and connection settings belong in the component's YAML configuration file.
 
-| Field | Description | Example |
-| ----- | ----------- | ------- |
-| `api_key` | API key for authenticating with the LLM service | `"sk-1234567890abcdef"` |
-| `model` | Specific model identifier | `"gpt-4-turbo"`, `"claude-3-sonnet"` |
-| `version` | API version or service version | `"1.0"`, `"2023-12-01"` |
-| `endpoint` | Custom endpoint URL for the service | `"https://api.custom-llm.com/v1"` |
+**Constraints:**
 
-{{% alert title="Note" color="primary" %}}
-The exact metadata fields supported depend on the specific conversation component implementation. Refer to the component's documentation for the complete list of supported metadata fields.
-{{% /alert %}}
+- Maximum of 16 key-value pairs
+- Keys are strings up to 64 characters
+- Values are strings up to 512 characters
+
+**Example usage:**
+
+```json
+"metadata": {
+  "user_id": "user-1234",
+  "session_id": "session-abcd",
+  "environment": "production"
+}
+```
 
 In addition to passing metadata in the request body, you can also pass metadata as URL query parameters without modifying the request payload. Here is the format:
 
 - **Prefix**: All metadata parameters must be prefixed with `metadata.`
 - **Format**: `?metadata.<field_name>=<value>`
-- **Multiple parameters**: Separate with `&` (e.g., `?metadata.api_key=sk-123&metadata.model=gpt-4`)
+- **Multiple parameters**: Separate with `&` (e.g., `?metadata.user_id=user-1234&metadata.session_id=session-abcd`)
 
-Example of model override:
+Example:
 ```bash
-POST http://localhost:3500/v1.0-alpha2/conversation/openai/converse?metadata.model=sk-gpt-4-turbo
+POST http://localhost:3500/v1.0-alpha2/conversation/openai/converse?metadata.user_id=user-1234
 ```
 
-URL metadata parameters are merged with request body metadata, URL parameters take precedence if conflicts exist, and both override component configuration in the YAML file.
+URL metadata parameters are merged with request body metadata; URL parameters take precedence if conflicts exist.
 
 ### Request content examples
 
@@ -173,8 +179,8 @@ curl -X POST http://localhost:3500/v1.0-alpha2/conversation/openai/converse \
           }
         },
         "metadata": {
-          "api_key": "test-key",
-          "version": "1.0"
+          "user_id": "user-1234",
+          "session_id": "session-abcd"
         },
         "scrubPii": false,
         "temperature": 0.7,
