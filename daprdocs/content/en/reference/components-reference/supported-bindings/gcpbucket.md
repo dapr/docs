@@ -432,7 +432,8 @@ To perform a copy object operation, invoke the GCP bucket binding with a `POST` 
     "key": "source-file.txt"
   },
   "data": {
-    "destinationBucket": "destination-bucket-name"
+    "destinationBucket": "destination-bucket-name",
+    "destinationKey": "destination-file.txt"
   }
 }
 ```
@@ -443,7 +444,36 @@ The metadata parameters are:
 
 The data parameters are:
 
-- `destinationBucket` - the name of the destination bucket (required)
+- `destinationBucket` - (optional) the name of the destination bucket. Defaults to the component's configured `bucket` when omitted.
+- `destinationKey` - (optional) the key (name) of the destination object. Defaults to the source `key` when omitted.
+
+> **Note:** At least one of `destinationBucket` or `destinationKey` must be provided. Omitting both is an error.
+
+The copy is performed server-side and preserves the object's content type, metadata, and ACLs.
+
+#### Examples
+
+##### Copy an object to another bucket
+
+```json
+{
+  "operation": "copy",
+  "metadata": { "key": "my-file.txt" },
+  "data": { "destinationBucket": "other-bucket" }
+}
+```
+
+##### Copy an object within the same bucket (intra-bucket copy)
+
+Use `destinationKey` without `destinationBucket` to copy an object to a different key prefix inside the same bucket:
+
+```json
+{
+  "operation": "copy",
+  "metadata": { "key": "public/file.xlsx" },
+  "data": { "destinationKey": "adhoc/file.xlsx" }
+}
+```
 
 ### Move objects
 
@@ -456,7 +486,8 @@ To perform a move object operation, invoke the GCP bucket binding with a `POST` 
     "key": "source-file.txt"
   },
   "data": {
-    "destinationBucket": "destination-bucket-name"
+    "destinationBucket": "destination-bucket-name",
+    "destinationKey": "destination-file.txt"
   }
 }
 ```
@@ -467,7 +498,36 @@ The metadata parameters are:
 
 The data parameters are:
 
-- `destinationBucket` - the name of the destination bucket (required)
+- `destinationBucket` - (optional) the name of the destination bucket. Defaults to the component's configured `bucket` when omitted.
+- `destinationKey` - (optional) the key (name) of the destination object. Defaults to the source `key` when omitted.
+
+> **Note:** At least one of `destinationBucket` or `destinationKey` must be provided. Omitting both is an error.
+
+The move is performed as a server-side copy followed by deletion of the source object. Content type, metadata, and ACLs are preserved.
+
+#### Examples
+
+##### Move an object to another bucket
+
+```json
+{
+  "operation": "move",
+  "metadata": { "key": "my-file.txt" },
+  "data": { "destinationBucket": "archive-bucket" }
+}
+```
+
+##### Move an object within the same bucket (intra-bucket move)
+
+Use `destinationKey` without `destinationBucket` to move an object to a different key prefix inside the same bucket:
+
+```json
+{
+  "operation": "move",
+  "metadata": { "key": "public/file.xlsx" },
+  "data": { "destinationKey": "adhoc/file.xlsx" }
+}
+```
 
 ### Rename objects
 
