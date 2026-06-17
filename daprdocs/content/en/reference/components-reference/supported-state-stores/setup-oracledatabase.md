@@ -47,6 +47,10 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | tableName    | N         | Name of the database table in which this instance of the state store records the data default `"STATE"`| `"MY_APP_STATE_STORE"`
 | bulkGetChunkSize    | N         | Maximum number of keys per internal SQL query when using BulkGet. When the total number of requested keys exceeds this value, multiple chunked queries are executed sequentially. Valid values are between 1 and 1000 ([Oracle's IN-list expression limit](https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlrf/IN-Condition.html)). Values less than or equal to 0 use the default. Values above 1000 are chunked with a warning log. Defaults to `"1000"` | `"100"`
 | actorStateStore    | N        | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
+| `maxOpenConns`     | N        | Maximum number of open connections to the database. Defaults to unlimited (Go default: `0`) | `"10"` |
+| `maxIdleConns`     | N        | Maximum number of idle connections in the connection pool. Defaults to Go default (`2`) | `"5"` |
+| `connMaxLifetime`  | N        | Maximum lifetime of a connection as a [Go duration](https://pkg.go.dev/time#ParseDuration). Defaults to connections being reused forever | `"30s"`, `"5m"` |
+| `connMaxIdleTime`  | N        | Maximum idle time for a connection before it is closed, as a [Go duration](https://pkg.go.dev/time#ParseDuration). Defaults to no limit | `"5m"` |
 
 ## What Happens at Runtime?
 When the state store component initializes, it connects to the Oracle Database and checks if a table with the name specified with `tableName` exists. If it does not, it creates this table (with columns Key, Value, Binary_YN, ETag, Creation_Time, Update_Time, Expiration_time). 
