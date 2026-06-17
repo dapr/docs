@@ -87,7 +87,7 @@ The `toolChoice` is an optional parameter that controls how the model can use av
 #### Metadata
 The `metadata` field is a set of up to 16 key-value pairs that can be attached to the conversation. This mirrors [OpenAI's `metadata` field](https://platform.openai.com/docs/api-reference/chat/create#chat-create-metadata) and is intended for storing additional information about the conversation in a structured format, such as user IDs, session IDs, or other application-specific tags.
 
-This field is **not** a mechanism for overriding component configuration or passing authentication details such as API keys; provider credentials and connection settings belong in the component's YAML configuration file.
+This field is **not** a mechanism for overriding component configuration or passing authentication details such as API keys; provider credentials and connection settings belong in the component's YAML configuration file. If you're migrating from older examples that pass `api_key` via `metadata`, move those values into the component configuration (or a referenced secret) instead.
 
 **Constraints:**
 
@@ -98,10 +98,12 @@ This field is **not** a mechanism for overriding component configuration or pass
 **Example usage:**
 
 ```json
-"metadata": {
-  "user_id": "user-1234",
-  "session_id": "session-abcd",
-  "environment": "production"
+{
+  "metadata": {
+    "user_id": "user-1234",
+    "session_id": "session-abcd",
+    "environment": "production"
+  }
 }
 ```
 
@@ -112,7 +114,7 @@ In addition to passing metadata in the request body, you can also pass metadata 
 - **Multiple parameters**: Separate with `&` (e.g., `?metadata.user_id=user-1234&metadata.session_id=session-abcd`)
 
 Example:
-```bash
+```text
 POST http://localhost:3500/v1.0-alpha2/conversation/openai/converse?metadata.user_id=user-1234
 ```
 
