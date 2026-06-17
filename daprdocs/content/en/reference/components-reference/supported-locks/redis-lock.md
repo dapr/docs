@@ -107,6 +107,15 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | idleCheckFrequency    |    N     | Frequency of idle checks made by idle connections reaper. Default is `"1m"`. `"-1"` disables idle connections reaper.                                                                                                                                                                                             | `"-1"`                                                          |
 | idleTimeout           |    N     | Amount of time after which the client closes idle connections. Should be less than server's timeout. Default is `"5m"`. `"-1"` disables idle timeout check.                                                                                                                                                       | `"10m"`                                                         |
 
+## Supported servers and versions
+
+The Redis lock component works against any RESP-compatible server. Confirmed supported versions:
+
+| Server | Versions |
+|--------|----------|
+| Redis | 6.x, 7.x |
+| [Valkey](https://valkey.io) | 8.x, 9.x |
+
 ## Setup Redis
 
 Dapr can use any Redis instance: containerized, running on your local dev machine, or a managed cloud service.
