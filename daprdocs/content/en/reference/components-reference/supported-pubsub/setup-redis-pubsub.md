@@ -76,9 +76,18 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | maxLenApprox        | N        | Maximum number of items inside a stream.The old entries are automatically evicted when the specified length is reached, so that the stream is left at a constant size. Defaults to unlimited. Cannot be used together with streamTTL; only one stream trimming strategy can be active at a time. | `"10000"`
 | streamTTL        | N        | TTL duration for stream entries. Entries older than this duration will be evicted. This is an approximate value, as it's implemented using Redis stream's `MINID` trimming with the '~' modifier. The actual retention may include slightly more entries than strictly defined by the TTL, as Redis optimizes the trimming operation for efficiency by potentially keeping some additional entries. Cannot be used together with maxLenApprox; only one stream trimming strategy can be active at a time. | `"30d"`
 
+## Supported servers and versions
+
+The Redis pub/sub component works against any RESP-compatible server. Confirmed supported versions:
+
+| Server | Versions |
+|--------|----------|
+| Redis | 6.x, 7.x |
+| [Valkey](https://valkey.io) | 8.x, 9.x |
+
 ## Create a Redis instance
 
-Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service, provided the version of Redis is 5.x or 6.x.
+Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service, provided the version of Redis is 5.x, 6.x, or 7.x. [Valkey](https://valkey.io) 8.x and 9.x are also supported as a drop-in replacement.
 
 {{< tabpane text=true >}}
 
