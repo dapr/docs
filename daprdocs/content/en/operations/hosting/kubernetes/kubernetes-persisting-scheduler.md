@@ -132,9 +132,9 @@ kubectl edit pvc -n dapr-system dapr-scheduler-data-dir-dapr-scheduler-server-0 
 
 ### Persistent Volume Write Access (fsGroup)
 
-The Scheduler process runs as a non-root user (UID/GID `65532`). For the mounted persistent volume to be writable by that process, the Kubernetes kubelet must chown the volume to the correct group, which it does when an `fsGroup` is set in the pod's `securityContext`.
+The Scheduler process runs as a non-root user (UID/GID `65532`). For the mounted persistent volume to be writable by that process, the pod's `securityContext` can specify an `fsGroup`, which causes the kubelet to chown the volume on mount — though some storage drivers already set ownership and permissions correctly, so this may not always be necessary.
 
-As of Dapr 1.19, `dapr_scheduler.securityContext.fsGroup` is **opt-in** (no default value). Previously it was hardcoded to `65532`, which caused problems on OpenShift, where each project's Security Context Constraints (SCC) assigns its own `fsGroup` from an allowed range, making an explicit value invalid.
+As of Dapr v1.19, `dapr_scheduler.securityContext.fsGroup` is **opt-in** (no default value). Previously it was hardcoded to `65532`, which caused problems on OpenShift, where each project's Security Context Constraints (SCC) assigns its own `fsGroup` from an allowed range, making an explicit value invalid.
 
 The guidance is:
 
