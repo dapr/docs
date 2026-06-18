@@ -353,7 +353,7 @@ The data parameters are:
   "b" respectively, with their associated values. [{ "a": 1, "b": 2 }] would not be a
   valid argument, as the root of the JSON document is an array and not an object
 - `withResult` - (optional, default: false) if set to true, the process will be instantiated and executed synchronously
-- `requestTimeout` - (optional, only used if `withResult`=true) timeout after which the request will be closed if the process is not completed; must be a Go duration string (e.g. `"30s"`, `"5m"`, `"1h30m"`). If `requestTimeout` is `"0"`, uses the generic `requestTimeout` configured in the gateway.
+- `requestTimeout` - (optional, only used if `withResult` is `true`) timeout after which the request will be closed if the process is not completed; must be a Go duration string (e.g. `"30s"`, `"5m"`, `"1h30m"`). If `requestTimeout` is `"0"`, uses the generic `requestTimeout` configured in the gateway.
 - `fetchVariables` - (optional, only used if withResult=true) list of names of variables to be included in `variables` property of the response.
 	If empty, all visible variables in the root scope will be returned.
 
@@ -652,8 +652,8 @@ The data parameters are:
 
 - `jobKey` - the unique job identifier, as obtained when activating the job
 - `retries` - the amount of retries the job should have left
-- `errorMessage` - (optional) a message describing why the job failed this is particularly useful if a job runs out of retries and an
-  incident is raised, as it this message can help explain why an incident was raised
+- `errorMessage` - (optional) a message describing why the job failed. This is particularly useful if a job runs out of retries and an
+  incident is raised, as this message can help explain why an incident was raised
 - `retryBackOff` - (optional) the back-off duration before the next retry attempt; must be a Go duration string (e.g. `"30s"`, `"5m"`, `"1h30m"`)
 - `variables` - (optional) JSON document that will instantiate the variables at the local scope of the
 	job's associated task; it must be a JSON object, as variables will be mapped in a
