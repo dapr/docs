@@ -148,7 +148,7 @@ Dapr's Redis state store component is tested against the following Redis and Val
 | Server | Versions | Notes |
 |--------|----------|-------|
 | Redis | 6.x, 7.x | The Query API requires the RediSearch **and** RedisJSON modules |
-| [Valkey](https://valkey.io) | 8.x, 9.x | Stock `valkey/valkey` images do not ship RediSearch or RedisJSON; the Query API is not available |
+| [Valkey](https://valkey.io) | 8.x, 9.x | The Query API is not available by default; it requires the RediSearch and RedisJSON modules to be installed |
 
 {{% alert title="Valkey and the Query API" color="warning" %}}
 Stock Valkey images (`valkey/valkey:8.x`, `valkey/valkey:9.x`) do not bundle the RediSearch or RedisJSON modules. The [Query API]({{% ref "state_api.md#query-state" %}}) and the `queryIndexes` metadata field require both RediSearch and RedisJSON and will not work against a plain Valkey instance. All other state-store operations (CRUD, TTL, transactions, actor state) work normally.

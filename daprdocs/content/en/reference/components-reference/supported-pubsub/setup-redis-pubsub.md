@@ -87,7 +87,7 @@ Dapr's Redis pub/sub component is tested against the following Redis and Valkey 
 
 ## Create a Redis instance
 
-Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service. Confirmed supported versions are Redis 6.x and 7.x, and [Valkey](https://valkey.io) 8.x and 9.x as a drop-in replacement.
+Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service. The component has been tested against Redis 6.x and 7.x, and [Valkey](https://valkey.io) 8.x and 9.x.
 
 {{< tabpane text=true >}}
 
