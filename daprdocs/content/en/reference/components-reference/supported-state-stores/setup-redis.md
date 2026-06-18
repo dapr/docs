@@ -143,15 +143,15 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 
 ## Supported servers and versions
 
-The Redis state store component works against any RESP-compatible server. Confirmed supported versions:
+Dapr's Redis state store component is tested against the following Redis and Valkey versions:
 
 | Server | Versions | Notes |
 |--------|----------|-------|
-| Redis | 6.x, 7.x | v6 supports the Query API with the RediSearch module |
-| [Valkey](https://valkey.io) | 8.x, 9.x | Stock `valkey/valkey` images do not ship RediSearch; the Query API is not available |
+| Redis | 6.x, 7.x | The Query API requires the RediSearch **and** RedisJSON modules |
+| [Valkey](https://valkey.io) | 8.x, 9.x | Stock `valkey/valkey` images do not ship RediSearch or RedisJSON; the Query API is not available |
 
 {{% alert title="Valkey and the Query API" color="warning" %}}
-Stock Valkey images (`valkey/valkey:8.x`, `valkey/valkey:9.x`) do not bundle the RediSearch module. The [Query API]({{% ref "state_api.md#query-state" %}}) and the `queryIndexes` metadata field require RediSearch and will not work against a plain Valkey instance. All other state-store operations (CRUD, TTL, transactions, actor state) work normally.
+Stock Valkey images (`valkey/valkey:8.x`, `valkey/valkey:9.x`) do not bundle the RediSearch or RedisJSON modules. The [Query API]({{% ref "state_api.md#query-state" %}}) and the `queryIndexes` metadata field require both RediSearch and RedisJSON and will not work against a plain Valkey instance. All other state-store operations (CRUD, TTL, transactions, actor state) work normally.
 {{% /alert %}}
 
 ## Setup Redis

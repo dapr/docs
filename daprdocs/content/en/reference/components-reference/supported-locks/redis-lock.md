@@ -109,7 +109,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Supported servers and versions
 
-The Redis lock component works against any RESP-compatible server. Confirmed supported versions:
+Dapr's Redis lock component is tested against the following Redis and Valkey versions:
 
 | Server | Versions |
 |--------|----------|

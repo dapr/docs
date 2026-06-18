@@ -166,7 +166,7 @@ An HTTP 204 (No Content) and empty body is returned if successful.
 
 ## Supported servers and versions
 
-The Redis binding component works against any RESP-compatible server. Confirmed supported versions:
+Dapr's Redis binding component is tested against the following Redis and Valkey versions:
 
 | Server | Versions |
 |--------|----------|

@@ -78,7 +78,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Supported servers and versions
 
-The Redis pub/sub component works against any RESP-compatible server. Confirmed supported versions:
+Dapr's Redis pub/sub component is tested against the following Redis and Valkey versions:
 
 | Server | Versions |
 |--------|----------|
