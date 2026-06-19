@@ -6,7 +6,7 @@ weight: 2600
 description: "Schedule fire-and-forget workflows that run independently of their caller"
 ---
 
-Just like [child workflows]({{% ref "workflow-features-concepts.md#child-workflows" %}}), a workflow can schedule another workflow. With a _detached workflow_, however, the relationship is **fire-and-forget**: the calling workflow asks the runtime to start a new, fully independent workflow instance and then immediately continues with the rest of its own logic, without waiting for the detached workflow to complete.
+In addition to [child workflows]({{% ref "#child-workflows" %}}), a workflow can schedule another workflow as a _detached workflow_. With a _detached workflow_, however, the relationship is **fire-and-forget**: the calling workflow asks the runtime to start a new, fully independent workflow instance and then immediately continues with the rest of its own logic, without waiting for the detached workflow to complete.
 
 When you schedule a detached workflow, the call returns the new instance ID synchronously. The detached workflow then runs as its own top-level instance, with its own instance ID, history, and lifecycle, exactly as if it had been scheduled directly by a client. There is no parent linkage: the detached workflow's success or failure does not flow back to the caller, and terminating the caller does not terminate the detached workflow.
 
