@@ -105,6 +105,8 @@ The above example uses secrets as plain strings. It is recommended to use a [sec
 | subscribeType | N | Pulsar supports four kinds of [subscription types](https://pulsar.apache.org/docs/3.0.x/concepts-messaging/#subscription-types). Default: `"shared"` | `"shared"`, `"exclusive"`, `"failover"`, `"key_shared"`|
 | subscribeInitialPosition | N | Subscription position is the initial position which the cursor is set when start consuming. Default: `"latest"` | `"latest"`, `"earliest"` |
 | subscribeMode | N | Subscription mode indicates the cursor persistence, durable subscription retains messages and persists the current position. Default: `"durable"` | `"durable"`, `"non_durable"` |
+| topicsPattern | N | A regular expression used to subscribe to all topics whose name matches the pattern within the configured `tenant` and `namespace`, instead of a single explicit topic. When set, it takes precedence over the subscription's topic and Pulsar automatically discovers new matching topics over time (see `autoDiscoveryPeriod`). Can be set at the component level (applies to all subscriptions) or overridden per subscription via subscription request metadata. See [Subscribe to multiple topics with a pattern](#subscribe-to-multiple-topics-with-a-pattern). Default: `""` | `"orders-.*"`, `"event-.+-v2"` |
+| autoDiscoveryPeriod | N | When `topicsPattern` is set, controls how often Pulsar re-evaluates the pattern to pick up newly created (or removed) matching topics. A value of `"0"` uses the Pulsar client's own default interval. Has no effect unless `topicsPattern` is set. Can be overridden per subscription via subscription request metadata. Default: `"1m"` | `"30s"`, `"5m"` |
 | partitionKey | N | Sets the key of the message for routing policy. Default: `""` | |
 | `maxConcurrentHandlers` | N  | Defines the maximum number of concurrent message handlers in `async` process mode. A fixed worker pool of this size processes messages concurrently. When all workers are busy, backpressure is applied. A value of `0` falls back to the default. Default: `100` | `10`
 | replicateSubscriptionState | N | Enable replication of subscription state across geo-replicated Pulsar clusters. Default: `"false"` | `"true"`, `"false"` |
@@ -379,6 +381,46 @@ spec:
 ```
 
 
+
+### Subscribe to multiple topics with a pattern
+
+By default, a Dapr subscription maps to a single explicit Pulsar topic. Setting the `topicsPattern` metadata field instead subscribes a single consumer to **every topic whose name matches a regular expression** within the configured `tenant` and `namespace`. This is useful when topics are created dynamically, or when a service needs to consume a family of related topics (for example, one topic per tenant) without declaring each one individually.
+
+When `topicsPattern` is set:
+
+- It takes precedence over the subscription's explicit topic.
+- The pattern is a regular expression (not a shell-style glob) and is matched against the local topic name within the resolved `persistent`/`non-persistent` `tenant`/`namespace` scope. For example, with the default `public` tenant and `default` namespace, `orders-.*` matches `persistent://public/default/orders-eu`, `persistent://public/default/orders-us`, and so on.
+- Pulsar periodically re-evaluates the pattern and **automatically discovers newly created (or removed) matching topics**. Use `autoDiscoveryPeriod` to control how often this happens; a value of `"0"` uses the Pulsar client's default interval.
+- Each message is delivered to your application tagged with the **concrete topic it arrived on**, not the pattern. Routing and observability therefore see the real topic name.
+
+{{% alert title="Note" color="primary" %}}
+Per-topic schema validation (`<topic-name>.avroschema` / `<topic-name>.jsonschema`) is not applied to pattern subscriptions, because the set of matching topics is not known in advance. Pattern matching is scoped to a single `tenant`/`namespace`, which mirrors Pulsar's own [pattern subscription](https://pulsar.apache.org/docs/3.0.x/client-libraries-go/#use-regular-expressions) behavior.
+{{% /alert %}}
+
+The following example subscribes to all topics beginning with `orders-` and checks for new matching topics every 30 seconds:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: pulsar-pubsub
+spec:
+  type: pubsub.pulsar
+  version: v1
+  metadata:
+  - name: host
+    value: "localhost:6650"
+  - name: tenant
+    value: "public"
+  - name: namespace
+    value: "default"
+  - name: topicsPattern
+    value: "orders-.*"
+  - name: autoDiscoveryPeriod
+    value: "30s"
+```
+
+`topicsPattern` and `autoDiscoveryPeriod` can also be set per subscription via subscription request metadata, which overrides the component-level values for that subscription.
 
 ### Enabling message delivery retries
 
