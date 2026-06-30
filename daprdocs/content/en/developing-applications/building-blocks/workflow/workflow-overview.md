@@ -46,6 +46,12 @@ Child workflow also supports automatic retry policies.
 
 [Learn more about child workflows.]({{% ref "workflow-features-concepts.md#child-workflows" %}})
 
+### Detached workflows
+
+You can also schedule a new workflow as a _detached workflow_: a fire-and-forget instance that runs fully independently of the workflow that started it. The calling workflow receives the new instance ID immediately and continues, and the detached workflow's success or failure does not flow back to the caller. This is useful for triggering isolated, independent work, such as per-tenant fan-out.
+
+[Learn more about detached workflows.]({{% ref "workflow-detached.md" %}})
+
 ### Multi-application workflows
 
 Multi-application workflows, enable you to orchestrate complex business processes that span across multiple applications. This allows a workflow to call activities or start child workflows in different applications, distributing the workflow execution while maintaining the security, reliability and durability guarantees of Dapr's workflow engine.
