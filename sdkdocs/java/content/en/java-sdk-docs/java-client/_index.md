@@ -86,11 +86,26 @@ try (DaprClient client = new DaprClientBuilder().build()) {
 
 `DaprBodyPublishers.json(...)` serializes the payload using the SDK's default Jackson serializer, matching the JSON encoding the deprecated `invokeMethod` APIs applied internally. For raw payloads use any `HttpRequest.BodyPublisher` (for example `HttpRequest.BodyPublishers.ofString(...)`).
 
+{{% alert title="Encode path segments with special characters" color="primary" %}}
+`newRequestBuilder(relativePath)` resolves the path as-is — it does **not** encode it for you. If a path segment may contain characters that are illegal in a URI (for example spaces), encode it first with `io.dapr.utils.UriUtils.encodePath(...)`; passing such characters directly throws `IllegalArgumentException`. `encodePath` percent-encodes each `/`-delimited segment (preserving the separators and any leading slash) and appends the query string unchanged, mirroring the per-segment encoding the deprecated `invokeMethod` APIs applied internally.
+
+```java
+import io.dapr.utils.UriUtils;
+
+// "Name With Spaces" -> "Name%20With%20Spaces"
+HttpRequest request = invoker.newRequestBuilder(
+        UriUtils.encodePath("orders/Name With Spaces"))
+    .GET()
+    .build();
+```
+{{% /alert %}}
+
 The table below summarizes which concerns `DaprInvokeHttpClient` handles for you (when configured with `DaprClientBuilder`) and which belong to the user:
 
 | Concern | Handled by the SDK | User's responsibility |
 |---|---|---|
 | Invoke URL (`/v1.0/invoke/{appId}/method/...`) | ✓ — resolved against the sidecar endpoint, which defaults to `http://localhost:3500` (override via `DAPR_HTTP_ENDPOINT`, or `DAPR_SIDECAR_IP` + `DAPR_HTTP_PORT`) | |
+| URL path encoding | | Encode segments that may contain characters illegal in a URI (e.g. spaces) with `UriUtils.encodePath(...)`. `newRequestBuilder` resolves the path unchanged and throws `IllegalArgumentException` on illegal characters. |
 | `dapr-api-token` header | ✓ — attached only when configured via the `dapr.api.token` system property or `DAPR_API_TOKEN` environment variable | |
 | HTTP read timeout | ✓ — defaults to **60 seconds**; override via the `dapr.http.client.readTimeoutSeconds` system property or `DAPR_HTTP_CLIENT_READ_TIMEOUT_SECONDS` environment variable | |
 | `User-Agent: dapr-sdk-java/<version>` header | ✓ — value tracks the SDK version automatically | |
