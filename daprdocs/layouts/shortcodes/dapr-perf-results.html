@@ -1,0 +1,99 @@
+{{- /*
+  Renders the Dapr performance results for the Dapr version this docs set
+  represents. The version is read from site params (never hard-coded), and the
+  data is pulled at build time from the perf-charts branch manifest. Each Dapr
+  release only publishes a new manifest + charts; this page needs no changes.
+
+  Layout: each API is a collapsible group (collapsed by default) so the page
+  opens as a short, scannable list rather than a wall of ~300 charts. A jump
+  list at the top links to each group; individual scenarios are collapsible too.
+*/ -}}
+{{- $base := "https://cdn.jsdelivr.net/gh/dapr/dapr@perf-charts" -}}
+{{- $minor := .Site.Params.version -}}
+{{- $url := printf "%s/%s/manifest.json" $base $minor -}}
+{{- $m := false -}}
+{{- with try (resources.GetRemote $url) -}}
+  {{- with .Err -}}
+    {{- warnf "perf-results: could not fetch %q: %s" $url . -}}
+  {{- else with .Value -}}
+    {{- $m = . | transform.Unmarshal -}}
+  {{- end -}}
+{{- end -}}
+{{- if $m -}}
+<style>
+.dapr-perf-results details { border: 1px solid var(--bs-border-color, #dee2e6); border-radius: 6px; margin: 0.6rem 0; }
+.dapr-perf-results details[open] { padding-bottom: 0.5rem; }
+.dapr-perf-results summary { cursor: pointer; padding: 0.6rem 0.9rem; font-weight: 600; list-style-position: inside; }
+.dapr-perf-results details.perf-api > summary { font-size: 1.2rem; background: var(--bs-tertiary-bg, #f5f5f5); border-radius: 6px; }
+.dapr-perf-results details.perf-scenario { margin: 0.4rem 0; }
+.dapr-perf-results details.perf-scenario > summary { font-size: 1rem; font-family: var(--bs-font-monospace, monospace); }
+.dapr-perf-results .perf-count { font-weight: 400; opacity: 0.65; font-size: 0.85em; }
+.dapr-perf-results .perf-body { padding: 0.2rem 0.9rem; }
+.dapr-perf-results .perf-nav { margin: 0.5rem 0 1rem; line-height: 1.9; }
+.dapr-perf-results .perf-nav a { display: inline-block; margin-right: 0.6rem; }
+.dapr-perf-results img { max-width: 100%; height: auto; }
+.dapr-perf-results table { display: block; overflow-x: auto; }
+</style>
+<div class="dapr-perf-results">
+    <p><strong>Test environment:</strong> {{ $m.infra }}. Results for Dapr <code>{{ $m.version }}</code>.</p>
+    <nav class="perf-nav"><strong>Jump to:</strong>
+    {{- range $m.apis }}
+      <a href="#{{ .key }}">{{ .title }}</a>
+    {{- end }}
+    </nav>
+    {{- range $m.apis }}
+      {{- $scenarioCount := 0 }}
+      {{- range .sections }}{{ $scenarioCount = add $scenarioCount (len .scenarios) }}{{ end }}
+    <details class="perf-api" id="{{ .key }}">
+      <summary>{{ .title }} <span class="perf-count">({{ $scenarioCount }} scenario{{ if ne $scenarioCount 1 }}s{{ end }})</span></summary>
+      <div class="perf-body">
+      {{- range .sections }}
+        {{- with .label }}<h3>{{ . }}</h3>{{ end }}
+        {{- with .efficiency }}
+        <h4>Throughput per resource</h4>
+        <p>Iterations/sec relative to the CPU and memory consumed by the app and its Dapr sidecar combined. Resource figures are point-in-time samples taken at the end of each run.</p>
+        <table>
+          <thead><tr><th>Test</th><th>Iterations/sec</th><th>App CPU (m)</th><th>App Mem (MB)</th><th>Sidecar CPU (m)</th><th>Sidecar Mem (MB)</th><th>Iter/s per core</th><th>Iter/s per GB</th></tr></thead>
+          <tbody>
+          {{- range . }}
+            <tr><td>{{ .test }}</td><td>{{ printf "%.2f" .itPerSec }}</td><td>{{ printf "%.0f" .appCPUm }}</td><td>{{ printf "%.0f" .appMemMB }}</td><td>{{ printf "%.0f" .sidecarCPUm }}</td><td>{{ printf "%.0f" .sidecarMemMB }}</td><td>{{ .iterPerCore }}</td><td>{{ .iterPerGB }}</td></tr>
+          {{- end }}
+          </tbody>
+        </table>
+        {{- end }}
+        {{- $path := .path }}
+        {{- range .scenarios }}
+        <details class="perf-scenario">
+          <summary>{{ .name }} <span class="perf-count">({{ len .charts }} chart{{ if ne (len .charts) 1 }}s{{ end }})</span></summary>
+          <div class="perf-body">
+          {{- range .charts }}
+            <img loading="lazy" src="{{ printf "%s/%s/%s/%s" $base $minor $path .file }}" alt="{{ .name }}" />
+          {{- end }}
+          </div>
+        </details>
+        {{- end }}
+      {{- end }}
+      </div>
+    </details>
+    {{- end }}
+</div>
+<script>
+// Expand a collapsed group when its jump link (or any in-page anchor) targets it.
+(function () {
+  function openTarget() {
+    var el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (el && el.tagName === 'DETAILS') { el.open = true; }
+  }
+  document.querySelectorAll('.dapr-perf-results .perf-nav a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      var el = document.querySelector(a.getAttribute('href'));
+      if (el && el.tagName === 'DETAILS') { el.open = true; }
+    });
+  });
+  window.addEventListener('hashchange', openTarget);
+  openTarget();
+})();
+</script>
+{{- else -}}
+    <div class="alert alert-secondary" role="alert">Performance results for Dapr <code>{{ $minor }}</code> are not yet published. They are added shortly after each release.</div>
+{{- end -}}
