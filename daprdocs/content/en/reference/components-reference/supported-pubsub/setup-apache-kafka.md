@@ -135,6 +135,12 @@ spec:
 | consumerGroupRebalanceStrategy | N | The strategy to use for consumer group rebalancing. Supported values: `range`, `sticky`, `roundrobin`. Default is `range` | `"sticky"` |
 | escapeHeaders | N | Enables URL escaping of the message header values received by the consumer. Allows receiving content with special characters that are usually not allowed in HTTP headers. Default is `false`. | `true` |
 | excludeHeaderMetaRegex | N | A regular expression to exclude keys from being converted from headers to metadata when consuming messages and  from metadata to headers when publishing messages. This capability avoids unwanted downstream side effects for topic consumers. | '"^valueSchemaType$"`
+| dialTimeout | N | The maximum duration to wait for the initial TCP connection to a broker. Bounds how long `Init()` can block on an unreachable cluster. Default is `"30s"` (matches Sarama's built-in default). | `"10s"` |
+| readTimeout | N | The maximum duration to wait for a response from a broker after sending a request. Default is `"30s"`. | `"10s"` |
+| writeTimeout | N | The maximum duration to wait for a request to be transmitted to a broker. Default is `"30s"`. | `"10s"` |
+| metadataTimeout | N | The per-request timeout for metadata refresh operations. When `"0"` (default), Sarama computes the effective timeout from the Net timeouts and retry count. | `"5s"` |
+| producerRequiredAcks | N | The number of broker acknowledgements required before a produce request is considered successful. Accepted values: `"all"` (all in-sync replicas, highest durability), `"local"` (partition leader only), `"none"` (no acknowledgement). Default is `"all"`. | `"local"` |
+| producerRetryMax | N | The maximum number of times to retry sending a message before giving up. Default is `5`. | `3` |
 
 The `secretKeyRef` above is referencing  a [kubernetes secrets store]({{% ref kubernetes-secret-store.md %}}) to access the tls information. Visit [here]({{% ref setup-secret-store.md %}}) to learn more about how to configure a secret store component.
 
