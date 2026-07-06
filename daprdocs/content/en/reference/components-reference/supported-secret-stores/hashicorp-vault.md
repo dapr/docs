@@ -148,6 +148,14 @@ spec:
           -----END CERTIFICATE-----
 ```
 
+## Secret rotation
+
+Secrets retrieved through the [secrets API]({{% ref secrets_api.md %}}) are read from Vault on every request, so applications calling the API always receive the current version of a secret.
+
+However, secrets referenced in a component definition with `secretKeyRef` and `auth.secretStore` pointing to a Vault secret store are only resolved when the component is initialized. Rotating the secret in Vault does not trigger a reload of the component, which keeps using the old value until the Dapr sidecar is restarted or the component manifest is changed.
+
+To have Dapr components automatically pick up rotated Vault credentials when running in Kubernetes, sync the Vault secret to a native Kubernetes secret using the [Vault Secrets Operator](https://developer.hashicorp.com/vault/docs/platform/k8s/vso), and reference the Kubernetes secret in your component through the built-in [Kubernetes secret store]({{% ref kubernetes-secret-store.md %}}). With [hot reloading]({{% ref "component-updates.md#hot-reloading" %}}) enabled (the default), when Vault rotates the credential and the Vault Secrets Operator updates the Kubernetes secret, the component is re-initialized with the new credential within 60 seconds, without any pod rollout. Read [updating referenced secrets]({{% ref "component-secrets.md#updating-referenced-secrets" %}}) for more details.
+
 ## Related links
 - [Secrets building block]({{% ref secrets %}})
 - [How-To: Retrieve a secret]({{% ref "howto-secrets.md" %}})
