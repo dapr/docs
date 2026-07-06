@@ -62,7 +62,7 @@ In the examples above, the application code did not have to change to get the sa
 
 When configuring Dapr components such as state stores, you're often required to include credentials in components files. Alternatively, you can place the credentials within a Dapr supported secret store and reference the secret within the Dapr component. This is the preferred approach and recommended best practice, especially in production environments.
 
-When running in Kubernetes and referencing secrets from the built-in Kubernetes secret store, Dapr also automatically reloads components when the referenced secrets change, for example when a credential is rotated, without restarting the application.
+When running in Kubernetes and referencing secrets from the built-in Kubernetes secret store, Dapr also automatically reloads components when the referenced secrets change, for example when a credential is rotated, without restarting the application. This requires [hot reloading]({{% ref "component-updates.md#hot-reloading" %}}) to be enabled, which is the default.
 
 For more information, read [referencing secret stores in components]({{% ref component-secrets %}}) and [updating referenced secrets]({{% ref "component-secrets.md#updating-referenced-secrets" %}}).
 
