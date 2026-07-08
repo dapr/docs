@@ -45,6 +45,10 @@ spec:
     value: "newest"
   - name: maxMessageBytes # Optional.
     value: "1024"
+  - name: numPartitions # Optional.
+    value: 3
+  - name: replicationFactor # Optional.
+    value: 3
   - name: heartbeatInterval # Optional.
     value: 5s
   - name: sessionTimeout # Optional.
@@ -84,6 +88,8 @@ spec:
 | `saslMechanism` | N | Input/Output | The SASL authentication mechanism you'd like to use. Only required if `authtype` is set to `"password"`. If not provided, defaults to `PLAINTEXT`, which could cause a break for some services, like Amazon Managed Service for Kafka. | `"SHA-512", "SHA-256", "PLAINTEXT"` |
 | `initialOffset`   | N | Input | The initial offset to use if no offset was previously committed. Should be "newest" or "oldest". Defaults to "newest". | `"oldest"` |
 | `maxMessageBytes` | N | Input/Output | The maximum size in bytes allowed for a single Kafka message. Defaults to 1024. | `"2048"` |
+| `numPartitions` | N | Input/Output | If set to a value greater than 0, Dapr creates the topic with this many partitions if it doesn't already exist. Defaults to `0`, meaning Dapr does not create topics and leaves this to the broker's auto-create behavior or external provisioning. Not supported when `authType` is `awsiam`. | `"3"` |
+| `replicationFactor` | N | Input/Output | The replication factor used when Dapr creates the topic. Only applies when `numPartitions` is set. Defaults to `1`. | `"3"` |
 | `oidcTokenEndpoint` | N | Input/Output | Full URL to an OAuth2 identity provider access token endpoint. Required when `authType` is set to `oidc` or `oidc_private_key_jwt` | "https://identity.example.com/v1/token" |
 | `oidcClientID` | N | Input/Output | The OAuth2 client ID that has been provisioned in the identity provider. Required when `authType` is set to `oidc` or `oidc_private_key_jwt` | `"dapr-kafka"` |
 | `oidcClientSecret` | N | Input/Output | The OAuth2 client secret that has been provisioned in the identity provider: Required when `authType` is set to `oidc` | `"KeFg23!"` |
