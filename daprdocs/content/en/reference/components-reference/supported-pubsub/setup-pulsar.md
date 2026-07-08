@@ -78,6 +78,7 @@ The above example uses secrets as plain strings. It is recommended to use a [sec
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | host               | Y  | Address of the Pulsar broker. Default is `"localhost:6650"` | `"localhost:6650"` OR `"http://pulsar-pj54qwwdpz4b-pulsar.ap-sg.public.pulsar.com:8080"`|
+| listenerName       | N  | Configures the listener name the Pulsar client sends to the broker for connection redirects. Brokers configured with `advertisedListeners` resolve the redirect target using the matching named listener, enabling cross-network topologies (multi-cluster, internal/external endpoints) without a Pulsar proxy. See [Pulsar Multiple Advertised Listeners](https://pulsar.apache.org/docs/3.0.x/concepts-multiple-advertised-listeners/). When unset, behavior is unchanged. | `"external"` |
 | enableTLS          | N  | Enable TLS.  Default: `"false"` | `"true"`, `"false"` |
 | tenant             | N  | The topic tenant within the instance. Tenants are essential to multi-tenancy in Pulsar, and spread across clusters.  Default: `"public"` | `"public"` |
 | consumerID         | N  | Used to set the subscription name or consumer ID.  | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{% ref "component-schema.md#templated-metadata-values" %}})
