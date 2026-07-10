@@ -399,6 +399,10 @@ The durability difference is the thing to design around. A timer is in-memory an
 
 A timer registration has both a timer `name` and an `operationName`; the runtime routes the callback to `operationName`. A reminder registration has no separate callback field. The reminder `name` is both the durable reminder identity and the actor operation routed on callback, so choose a stable operation name and do not rename it casually. If the actor method is renamed, any already-registered durable reminders using the old name will continue to call the old operation name until they are updated or canceled. It's recommended to keep the original callback method and have it replace the reminder to directly register the new method.
 
+{{% alert title="Callback names are validated at build time" color="primary" %}}
+Because a callback is a string, a typo or a stale name after a rename would otherwise only surface when the timer or reminder fires. Analyzers catch this while you type. A callback must resolve to a method the runtime can dispatch, which means a method on an interface that both derives from `IActor` and carries `[GenerateActorClient]` (a method that exists only on the class, or on an actor interface without `[GenerateActorClient]`, is never dispatched). When the target actor type is defined in this application (or a referenced project), `DAPR1429` flags a callback that matches no dispatchable method (with a code fix that suggests the closest match), and `DAPR1431` flags one that names a method which exists but is not exposed through a `[GenerateActorClient]` contract. When the actor type string cannot be found in this application, `DAPR1430` warns that it may be hosted by another Dapr app and cannot be verified here. All three apply to the timer `operationName` and the reminder `name`.
+{{% /alert %}}
+
 Timer and reminder payloads can be scheduled as typed values or as raw `byte[]`. Passing a typed value uses the configured actor wire serializer, so the callback method can declare the matching typed argument. Use the `byte[]` overload when you have already serialized the payload yourself or when the callback takes no payload and you want to pass `Array.Empty<byte>()`.
 
 For timers, `dueTime` controls the first firing. If you omit `period`, or set it to `Timeout.InfiniteTimeSpan` or `TimeSpan.Zero`, the SDK treats the timer as one-shot and cancels it after the callback turn commits. Set a positive `period` to create a periodic timer. `ttl` is optional and limits how long the timer can live; when supplied, it must be greater than or equal to `dueTime`. Cancel a timer with the same actor type, actor id, and timer name:
@@ -577,6 +581,9 @@ The package ships analyzers that catch actor-specific mistakes at build time, se
 | `DAPR1426` | An actor state migration family with more than one fold path to a target | Compatibility | Warning |
 | `DAPR1427` | One persisted actor state name used with multiple migration families | Usage | Warning |
 | `DAPR1428` | Actor code that targets an older state type while a later reachable version exists | Usage | Info |
+| `DAPR1429` | A scheduled reminder/timer callback that matches no dispatchable actor method | Usage | Error |
+| `DAPR1430` | A scheduled reminder/timer that targets an actor type not found in this application | Usage | Warning |
+| `DAPR1431` | A scheduled reminder/timer callback method that is not exposed through a generated actor client | Usage | Error |
 
 ## Best practices
 

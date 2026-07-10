@@ -86,6 +86,9 @@ the `EnableNETAnalyzers` property to `false` in your csproj file.
 | DAPR1426      | Dapr.Actors.Next | Compatibility | Warning  | 1.18          | Actor state migration fold path is ambiguous                                                                                                 | No                 |
 | DAPR1427      | Dapr.Actors.Next | Usage         | Warning  | 1.18          | Actor state name maps to multiple migration families                                                                                         | No                 |
 | DAPR1428      | Dapr.Actors.Next | Usage         | Info     | 1.18          | Actor state usage should target the latest state version                                                                                     | No                 |
+| DAPR1429      | Dapr.Actors.Next | Usage         | Error    | 1.18          | Scheduled actor reminder/timer callback does not match a dispatchable actor method                                                          | Yes                |
+| DAPR1430      | Dapr.Actors.Next | Usage         | Warning  | 1.18          | Scheduled actor reminder/timer targets an actor type not found in this application                                                          | No                 |
+| DAPR1431      | Dapr.Actors.Next | Usage         | Error    | 1.18          | Scheduled actor reminder/timer callback method is not exposed through a generated actor client                                              | No                 |
 | DAPR1501      | Dapr.Jobs     | Usage            | Warning  | 1.16          | Job invocations require the MapDaprScheduledJobHandler to be set and configured for each anticipated job on IEndpointRouteBuilder            | No                 |
 
 ## Analyzer Categories
