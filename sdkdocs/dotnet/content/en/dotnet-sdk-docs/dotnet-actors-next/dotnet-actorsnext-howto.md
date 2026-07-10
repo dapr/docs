@@ -56,7 +56,7 @@ public sealed class CartActor(ActorActivationContext context, IPricingClient pri
 }
 ```
 
-On the `Actor` base, `Id` and `State` are abstract, so each actor supplies them. The established pattern is to inject an `ActorActivationContext` and override the two from it, as shown above. State is accessed by name through `IActorStateAccessor`: a read returns an `IActorState<T>` wrapper whose value you reach through `.Value`, and mutations to `.Value` are flushed once at the end of the turn.
+On the `Actor` base, `Id` and `State` are abstract, so each actor supplies them. The established pattern is to inject an `ActorActivationContext` and override the two from it, as shown above. State is accessed by name through `IActorStateAccessor`: a read returns an `IActorState<T>` wrapper whose value you reach through `.Value`, and mutations to `.Value` are saved once at the end of the turn unless you explicitly call `State.SaveStateAsync()` earlier.
 
 ### Both attributes are required, and they work together
 
@@ -416,6 +416,35 @@ await reminders.CancelAsync("Cart", Id, nameof(AbandonCart), ct);
 Timer and reminder callbacks arrive over the same actor event stream as normal invokes. The SDK acks the callback only after the actor turn commits and pending state has been saved. For one-shot timers, a successful ack includes `cancel: true` so the runtime does not fire the timer again. Periodic timers and reminders continue according to their registration until canceled, expired by TTL, or replaced. If the handler throws or the stream drops before the ack reaches the runtime, the runtime can redeliver the callback. Keep handlers idempotent, especially when they perform external side effects.
 
 See [Testing]({{< ref dotnet-actorsnext-testing.md >}}) for advancing virtual time to fire timers and reminders in tests. In the in-memory test runtime, `IActorTimerScheduler` and `IActorReminderScheduler` are backed by the virtual time provider, so actor code that schedules either through DI can be tested without a sidecar.
+
+## Saving actor state
+
+Actor state uses an activation-scoped write-behind cache. In the common case, mutate state through `.Value` or `SetAsync`, return from the actor method, and let the runtime save pending changes at the end of the turn:
+
+```csharp
+public async Task AddItem(CartItem item, CancellationToken ct = default)
+{
+    var cart = await State.GetOrCreateAsync("cart", () => new CartState(), ct);
+    cart.Value.Items.Add(item);
+}
+```
+
+Call `State.SaveStateAsync(ct)` only when you need the current changes to reach the underlying state store before the method continues, for example before making an external call that must observe durable actor state:
+
+```csharp
+public async Task AddItemAndNotify(CartItem item, CancellationToken ct = default)
+{
+    var cart = await State.GetOrCreateAsync("cart", () => new CartState(), ct);
+    cart.Value.Items.Add(item);
+
+    await State.SaveStateAsync(ct);
+    await notifications.CartUpdated(Id.Value, ct);
+}
+```
+
+After `SaveStateAsync` succeeds, the saved cache entries are marked clean. The end-of-turn save does not write them again unless the actor changes them after the explicit save. Multiple changes before a save still collapse into one write.
+
+`EvictCacheAsync` is different: it evicts cached entries from the current actor activation so the next read goes back to durable state. It does not persist dirty values. By default it rejects dirty cache entries; if you pass `new DaprEvictStateOptions { EvictOnDirtyState = true }`, those dirty in-memory values are discarded.
 
 ## Delivery guarantees you must design for
 
