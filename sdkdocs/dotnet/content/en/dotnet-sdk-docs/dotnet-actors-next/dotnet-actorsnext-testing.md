@@ -113,7 +113,7 @@ public async Task State_write_failure_does_not_corrupt_or_double_apply()
     await using var rt = new ActorTestRuntime();
     var cart = rt.CreateActor<ICartActor>(ActorId.Create("u1"), "CartActor");
 
-    rt.Faults.FailNextStateWrite<CartState>();    // first end-of-turn flush fails
+    rt.Faults.FailNextStateWrite<CartState>();    // first end-of-turn save fails
     var add = cart.AddItem(new CartItem("sku-1", 1));
     await rt.RunToIdle();
     await add;
@@ -191,7 +191,7 @@ public async Task Concurrent_bids_never_lose_the_high_bid()
 
 State writes:
 
-- `Faults.FailNextStateWrite<TState>()` fails the next end-of-turn flush of that state type. It is transient by default (it clears after one attempt); pass `transient: false` to keep failing, and `stateName:` to scope the fault to a single named entry.
+- `Faults.FailNextStateWrite<TState>()` fails the next end-of-turn save of that state type. It is transient by default (it clears after one attempt); pass `transient: false` to keep failing, and `stateName:` to scope the fault to a single named entry.
 
 State migration:
 
@@ -207,7 +207,7 @@ For example, a transient store failure that clears on retry, asserted to apply e
 await using var rt = new ActorTestRuntime();
 var cart = rt.CreateActor<ICartActor>(ActorId.Create("u1"), "CartActor");
 
-rt.Faults.FailNextStateWrite<CartState>();    // transient by default: the first flush fails, the retry succeeds
+rt.Faults.FailNextStateWrite<CartState>();    // transient by default: the first save fails, the retry succeeds
 var add = cart.AddItem(new CartItem("sku-1", 1));
 await rt.RunToIdle();
 await add;

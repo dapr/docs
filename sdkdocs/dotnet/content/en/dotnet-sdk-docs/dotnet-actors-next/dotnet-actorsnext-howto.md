@@ -45,7 +45,7 @@ public sealed class CartActor(ActorActivationContext context, IPricingClient pri
     public async Task AddItem(CartItem item, CancellationToken ct = default)
     {
         var cart = await State.GetOrCreateAsync("cart", () => new CartState(), ct);
-        cart.Value.Items.Add(item);            // mutate through .Value; flushed once at end of turn
+        cart.Value.Items.Add(item);            // mutate through .Value; saved at end of turn
     }
 
     public async Task<CartSummary> GetSummary(CancellationToken ct = default)
@@ -319,7 +319,7 @@ Avoid a turn filter for anything else, for several reasons:
 - It moves behavior away from the actor. You can no longer read a single actor and understand what a turn does, because part of the behavior lives in a filter the actor never mentions.
 - Ordering across multiple filters becomes a subtle, global concern that is easy to get wrong and hard to see.
 - Business logic in a filter is harder to discover and harder to test than the same logic in the actor, which you can drive directly with the test runtime.
-- The turn pipeline also performs framework work such as context restore and the end-of-turn state flush. Heavy or failure-prone logic in a filter shares a lifecycle with that work and can put the integrity of the turn at risk.
+- The turn pipeline also performs framework work such as context restore and the end-of-turn state save. Heavy or failure-prone logic in a filter shares a lifecycle with that work and can put the integrity of the turn at risk.
 
 For concerns specific to one actor, use that actor's lifecycle hooks (`OnPreActorMethodAsync`, `OnPostActorMethodAsync`, `OnActivateAsync`, `OnDeactivateAsync`) instead; they are discoverable on the actor and testable in isolation. For behavior shared by several actors, prefer composing it into the actors through injected services rather than intercepting their turns.
 
@@ -413,7 +413,7 @@ For reminders, `dueTime` controls the first firing and `period` controls repeat 
 await reminders.CancelAsync("Cart", Id, nameof(AbandonCart), ct);
 ```
 
-Timer and reminder callbacks arrive over the same actor event stream as normal invokes. The SDK acks the callback only after the actor turn commits and state has flushed. For one-shot timers, a successful ack includes `cancel: true` so the runtime does not fire the timer again. Periodic timers and reminders continue according to their registration until canceled, expired by TTL, or replaced. If the handler throws or the stream drops before the ack reaches the runtime, the runtime can redeliver the callback. Keep handlers idempotent, especially when they perform external side effects.
+Timer and reminder callbacks arrive over the same actor event stream as normal invokes. The SDK acks the callback only after the actor turn commits and pending state has been saved. For one-shot timers, a successful ack includes `cancel: true` so the runtime does not fire the timer again. Periodic timers and reminders continue according to their registration until canceled, expired by TTL, or replaced. If the handler throws or the stream drops before the ack reaches the runtime, the runtime can redeliver the callback. Keep handlers idempotent, especially when they perform external side effects.
 
 See [Testing]({{< ref dotnet-actorsnext-testing.md >}}) for advancing virtual time to fire timers and reminders in tests. In the in-memory test runtime, `IActorTimerScheduler` and `IActorReminderScheduler` are backed by the virtual time provider, so actor code that schedules either through DI can be tested without a sidecar.
 
@@ -421,7 +421,7 @@ See [Testing]({{< ref dotnet-actorsnext-testing.md >}}) for advancing virtual ti
 
 Actor callbacks are at-least-once, and this shapes how you write actor methods. It is worth understanding before you build anything non-trivial, because it is the assumption most likely to be wrong if you carry a mental model of a method that runs exactly once.
 
-An invoke can be redelivered. If the runtime delivered a call but did not receive the response (for example the stream dropped mid-turn), it treats the call as failed and retries it. Because the per-actor state cache flushes at the end of the turn and the response is sent after that flush, a retry can re-execute a turn against state the previous attempt already committed. Your actor methods must therefore be safe to run more than once. A method that only reads and mutates actor `State` is naturally safe, because a re-run lands on the same state. A method that also performs an external side effect (publishing an event, calling another actor, charging a card) is exposed, and that side effect must be made idempotent, for example by keying it on a stable request identity or by making the downstream operation naturally idempotent.
+An invoke can be redelivered. If the runtime delivered a call but did not receive the response (for example the stream dropped mid-turn), it treats the call as failed and retries it. Because pending actor state is saved at the end of the turn and the response is sent after that save, a retry can re-execute a turn against state the previous attempt already committed. Your actor methods must therefore be safe to run more than once. A method that only reads and mutates actor `State` is naturally safe, because a re-run lands on the same state. A method that also performs an external side effect (publishing an event, calling another actor, charging a card) is exposed, and that side effect must be made idempotent, for example by keying it on a stable request identity or by making the downstream operation naturally idempotent.
 
 A reminder re-fires until it is acked. A durable reminder that comes due is redelivered every second, indefinitely, until the turn that handles it commits. Two conclusions follow from this:
 1) Reminder handlers must be idempotent, because you will see the same reminder more than once under any failure or delay. 

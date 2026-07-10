@@ -18,7 +18,7 @@ Five ideas carry the whole feature.
 - Hops: an `IActorStateUpcaster<TFrom, TTo>` is a directed edge from one node to the next. Hops are the only migration code you write, and additive hops can be generated for you.
 - Families: a family is the connected set of nodes reachable from each other through hops (the `CartState` family is `{CartState, CartStateV2, CartStateV3}`). An actor can persist several independent named entries, each its own family; families never collide.
 - Current is the type your code asks for: when you read `GetOrCreateAsync<CartStateV3>("cart", ...)`, the runtime discovers whatever is stored, folds it up to `CartStateV3`, and hands you that.
-- Lazy re-persist: folding happens on read, in memory. The migrated value is written back only on the next save, the actor's normal end-of-turn flush. Over time the store heals to the current shape with no bulk migration job.
+- Lazy re-persist: folding happens on read, in memory. The migrated value is written back only on the next save, the actor's normal end-of-turn state save. Over time the store heals to the current shape with no bulk migration job.
 
 ## Authoring: write the hops, nothing else
 
@@ -70,7 +70,7 @@ public sealed class MigratingCartActor(ActorActivationContext context) : Actor, 
 Upcasters are discovered and registered for you by the source generator (subject to `EnableAutoStateMigrationRegistration`, see [Author, register, and call actors]({{< ref "dotnet-actorsnext-howto.md#controlling-automatic-registration" >}})); you do not register them by hand.
 
 {{% alert title="Keep upcasters pure and deterministic" color="warning" %}}
-An upcaster may take injected dependencies, but its body must be pure and deterministic: no wall-clock time, no randomness, no external side effects. This is not stylistic. Invokes are at-least-once, so a turn that folds-and-flushes can be re-run after a mid-flight failure, and only a deterministic upcaster produces the identical result on a re-run, which is what makes re-migration idempotent. The determinism analyzers (`DAPR1413` for wall-clock time, `DAPR1414` for unseeded randomness) apply to upcaster bodies for exactly this reason. Ensuring that non-deterministic functionality is not injected and used in the upcaster is ultimately the responsibility of the developer; by making injection available, the SDK cannot detect all non-deterministic usage.
+An upcaster may take injected dependencies, but its body must be pure and deterministic: no wall-clock time, no randomness, no external side effects. This is not stylistic. Invokes are at-least-once, so a turn that folds-and-saves can be re-run after a mid-flight failure, and only a deterministic upcaster produces the identical result on a re-run, which is what makes re-migration idempotent. The determinism analyzers (`DAPR1413` for wall-clock time, `DAPR1414` for unseeded randomness) apply to upcaster bodies for exactly this reason. Ensuring that non-deterministic functionality is not injected and used in the upcaster is ultimately the responsibility of the developer; by making injection available, the SDK cannot detect all non-deterministic usage.
 {{% /alert %}}
 
 ## Additive changes need no upcaster
@@ -180,7 +180,7 @@ public async Task V1_cart_folds_to_current_on_read()
 }
 ```
 
-`SeedStateAsync` plants either enveloped or plain forms directly in the in-memory store, so you can seed a "V1" instance and assert the actor reads it back at the current shape. The fault injector adds hooks during a migrating read and between hops (`FailNextMigration<T>()`, `FailNextUpcastHop<TFrom, TTo>()`) so the failure paths through the fold are unit-testable, and the state snapshot API handles both enveloped and graduated forms so a test can assert the store healed to the current node after a migrating read and flush. A useful test matrix is fold-by-default, an auto-generated additive chain, the corruption guard, multi-family isolation within one actor, exactly-one re-persist at the target, a `SetAsync` import that then folds, graduation followed by re-import, a fault during migration, and the full-disable opt-out. See [Testing]({{< ref dotnet-actorsnext-testing.md >}}) for the runtime surface.
+`SeedStateAsync` plants either enveloped or plain forms directly in the in-memory store, so you can seed a "V1" instance and assert the actor reads it back at the current shape. The fault injector adds hooks during a migrating read and between hops (`FailNextMigration<T>()`, `FailNextUpcastHop<TFrom, TTo>()`) so the failure paths through the fold are unit-testable, and the state snapshot API handles both enveloped and graduated forms so a test can assert the store healed to the current node after a migrating read and save. A useful test matrix is fold-by-default, an auto-generated additive chain, the corruption guard, multi-family isolation within one actor, exactly-one re-persist at the target, a `SetAsync` import that then folds, graduation followed by re-import, a fault during migration, and the full-disable opt-out. See [Testing]({{< ref dotnet-actorsnext-testing.md >}}) for the runtime surface.
 
 ## Interpreted actors
 

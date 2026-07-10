@@ -67,25 +67,25 @@ The compatibility above is a property of System.Text.Json, which is the default 
 
 ## The per-actor state cache
 
-State reads are served from an in-memory, write-behind cache scoped to the activation. Mutations are not written through on every change; instead the cache is flushed once at the end of each turn, which minimizes calls to the state store.
+State reads are served from an in-memory, write-behind cache scoped to the activation. Mutations are not written through on every change; instead pending state is saved once at the end of each turn, which minimizes calls to the state store.
 
 ```csharp
 public async Task AddItem(CartItem item, CancellationToken ct = default)
 {
     var cart = await State.GetOrCreateAsync("cart", () => new CartState(), ct);  // cache hit after first load
     cart.Value.Items.Add(item);                        // mutate through .Value within the turn
-    // no Save() needed; the turn flushes once when it completes
+    // no Save() needed; the turn saves once when it completes
 }
 ```
 
 You rarely call save explicitly, and multiple mutations in a single method (or across a reentrant call chain within the same turn) collapse into a single write.
 
-{{% alert title="The end-of-turn flush interacts with retries" color="primary" %}}
-The flush is what makes a turn's state changes durable, and the response the SDK sends afterward is the runtime's signal that the turn completed. Those two steps are not a single atomic operation, and invokes are at-least-once, so a turn can be retried after its state was already committed (see [delivery guarantees]({{< ref "dotnet-actorsnext-howto.md#delivery-guarantees-you-must-design-for" >}})). State-only changes are safe under a re-run because they land on the same state; external side effects in the same method are not, and must be made idempotent. Keeping mutations in `State` rather than in side effects is what keeps a turn re-run-safe.
+{{% alert title="The end-of-turn save interacts with retries" color="primary" %}}
+The save is what makes a turn's state changes durable, and the response the SDK sends afterward is the runtime's signal that the turn completed. Those two steps are not a single atomic operation, and invokes are at-least-once, so a turn can be retried after its state was already committed (see [delivery guarantees]({{< ref "dotnet-actorsnext-howto.md#delivery-guarantees-you-must-design-for" >}})). State-only changes are safe under a re-run because they land on the same state; external side effects in the same method are not, and must be made idempotent. Keeping mutations in `State` rather than in side effects is what keeps a turn re-run-safe.
 {{% /alert %}}
 
 {{% alert title="The serializer is part of your at-rest contract" color="warning" %}}
-State is stored using whatever serializer and settings are configured, so those settings are part of the durability contract, not just a runtime detail. Changing the serializer, or a setting that changes the output shape (enum-as-string versus number, a property naming policy, how nullability or defaults are emitted), can make existing state unreadable even though the CLR type did not change. Treat serializer configuration for state types as a versioned decision: change it deliberately, and if a change would alter the persisted shape, handle it the same way you would a state-shape change, with an upcaster (noting that upcasters do not migrate between serialization configurations) or a compatibility setting. Actor state also lives in a state store with its own value-size limits, so keep per-actor state reasonably sized; the whole state flushes as one value per turn.
+State is stored using whatever serializer and settings are configured, so those settings are part of the durability contract, not just a runtime detail. Changing the serializer, or a setting that changes the output shape (enum-as-string versus number, a property naming policy, how nullability or defaults are emitted), can make existing state unreadable even though the CLR type did not change. Treat serializer configuration for state types as a versioned decision: change it deliberately, and if a change would alter the persisted shape, handle it the same way you would a state-shape change, with an upcaster (noting that upcasters do not migrate between serialization configurations) or a compatibility setting. Actor state also lives in a state store with its own value-size limits, so keep per-actor state reasonably sized; the whole state saves as one value per turn.
 {{% /alert %}}
 
 ## Evolving state shapes: see State migration
@@ -96,7 +96,7 @@ When a state type's shape changes between releases, older persisted data must st
 
 - Register a `JsonSerializerContext` for your actor payloads to stay on the AOT-safe path.
 - Keep serializer configuration for state types stable, and treat a change that alters the persisted shape as a versioning decision (see [State migration]({{< ref dotnet-actorsnext-statemigration.md >}})).
-- Keep per-actor state reasonably sized, since the whole state flushes as one value per turn.
+- Keep per-actor state reasonably sized, since the whole state saves as one value per turn.
 - Keep mutations in `State` rather than in external side effects, so a re-run turn stays safe under at-least-once delivery.
 
 ## Next steps
