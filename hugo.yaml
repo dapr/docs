@@ -88,7 +88,7 @@ markup:
       unsafe: true
     renderHooks:
       link:
-        enableDefault: true
+        useEmbedded: fallback
     
   highlight:
     # See a complete list of available styles at https://xyproto.github.io/splash/docs/all.html
