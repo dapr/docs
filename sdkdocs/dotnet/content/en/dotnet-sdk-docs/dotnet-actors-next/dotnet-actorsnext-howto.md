@@ -330,7 +330,6 @@ An analyzer (`DAPR1416`, informational) flags when an `IActorTurnFilter` appears
 Register timers and reminders from inside the actor by injecting the scheduler you need. Timers use `IActorTimerScheduler`; durable reminders use `IActorReminderScheduler`.
 
 ```csharp
-using System.Text.Json;
 using Dapr.Actors.Next;
 using Dapr.Actors.Next.Core.Timers;
 
@@ -356,7 +355,7 @@ public sealed class CartActor(
             name: "refresh-prices-once",
             dueTime: TimeSpan.FromMinutes(1),
             operationName: nameof(RefreshPrices),
-            argumentsJson: JsonSerializer.Serialize(item.Sku),
+            arguments: item.Sku,
             cancellationToken: ct);
 
         // Periodic activation-local timer, limited by TTL.
@@ -366,7 +365,7 @@ public sealed class CartActor(
             name: "refresh-prices-periodic",
             dueTime: TimeSpan.FromMinutes(1),
             operationName: nameof(RefreshPrices),
-            argumentsJson: JsonSerializer.Serialize(item.Sku),
+            arguments: item.Sku,
             period: TimeSpan.FromMinutes(5),
             ttl: TimeSpan.FromMinutes(30),
             cancellationToken: ct);
@@ -377,7 +376,7 @@ public sealed class CartActor(
             name: nameof(AbandonCart),
             dueTime: TimeSpan.FromMinutes(30),
             period: TimeSpan.Zero,
-            argumentsJson: string.Empty,
+            arguments: Array.Empty<byte>(),
             ttl: TimeSpan.FromDays(1),
             overwrite: true,
             cancellationToken: ct);
@@ -399,6 +398,8 @@ public sealed class CartActor(
 The durability difference is the thing to design around. A timer is in-memory and tied to the activation: it does not survive deactivation or a process restart, so treat it as a best-effort convenience within a live activation, not a durable schedule. A reminder is durable and delivered by the Dapr scheduler, so it fires even if the actor was idle and had to be reactivated. Use a reminder whenever the wake-up must happen regardless of activation state, and a timer only for work that is fine to lose when the actor deactivates.
 
 A timer registration has both a timer `name` and an `operationName`; the runtime routes the callback to `operationName`. A reminder registration has no separate callback field. The reminder `name` is both the durable reminder identity and the actor operation routed on callback, so choose a stable operation name and do not rename it casually. If the actor method is renamed, any already-registered durable reminders using the old name will continue to call the old operation name until they are updated or canceled. It's recommended to keep the original callback method and have it replace the reminder to directly register the new method.
+
+Timer and reminder payloads can be scheduled as typed values or as raw `byte[]`. Passing a typed value uses the configured actor wire serializer, so the callback method can declare the matching typed argument. Use the `byte[]` overload when you have already serialized the payload yourself or when the callback takes no payload and you want to pass `Array.Empty<byte>()`.
 
 For timers, `dueTime` controls the first firing. If you omit `period`, or set it to `Timeout.InfiniteTimeSpan` or `TimeSpan.Zero`, the SDK treats the timer as one-shot and cancels it after the callback turn commits. Set a positive `period` to create a periodic timer. `ttl` is optional and limits how long the timer can live; when supplied, it must be greater than or equal to `dueTime`. Cancel a timer with the same actor type, actor id, and timer name:
 

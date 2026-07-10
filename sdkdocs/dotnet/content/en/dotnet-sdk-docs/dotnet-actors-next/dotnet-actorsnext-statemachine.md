@@ -133,7 +133,7 @@ sm.In(AuctionState.Open)
 
 ```csharp
 // inside an effect, using the injected scheduler instead of ctx.Timers:
-await timers.RescheduleAsync("Auction", Id, "soft-close", TimeSpan.FromSeconds(30), nameof(Close), argumentsJson: "");
+await timers.RescheduleAsync("Auction", Id, "soft-close", TimeSpan.FromSeconds(30), nameof(Close), arguments: Array.Empty<byte>());
 
 public Task Close(CancellationToken ct = default) => Raise<object?>(new CloseAuction(), ct);
 // handled by: sm.In(AuctionState.Open).On<CloseAuction>().GoTo(AuctionState.Sold);
