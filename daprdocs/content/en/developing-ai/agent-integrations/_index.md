@@ -3,7 +3,7 @@ type: docs
 title: "Agent Integrations"
 linkTitle: "Agent Integrations"
 weight: 25
-description: "Durable Execution for Google ADK, Claude Agent SDK, CrewAI, LangChain Deep Agents, HolmesGPT, LangGraph, OpenAI Agents SDK, Pydantic AI, and Strands Agents"
+description: "Durable Execution for Google ADK, Claude Agent SDK, CrewAI, LangChain Deep Agents, HolmesGPT, LangGraph, OpenAI Agents SDK, Pydantic AI, Strands Agents, and Microsoft Agent Framework"
 ---
 
 ###  What are community agent integrations in Dapr?
@@ -35,3 +35,4 @@ These extensions are community-built and maintained by Diagrid on top of Dapr Wo
 | [OpenAI Agents SDK](https://docs.diagrid.io/getting-started/quickstarts/ai-agents/?agentframework=openai-agents) | Every LLM call and tool execution | `pip install "diagrid[openai_agents]"` |
 | [Pydantic AI](https://docs.diagrid.io/getting-started/quickstarts/ai-agents/?agentframework=pydantic-ai) | Every LLM call and tool execution | `pip install "diagrid[pydantic_ai]"` |
 | [Strands Agents](https://docs.diagrid.io/getting-started/quickstarts/ai-agents/?agentframework=strands) | Every tool call in a Strands agent loop | `pip install "diagrid[strands]"` |
+| [Microsoft Agent Framework](https://docs.diagrid.io/getting-started/quickstarts/ai-agents/?agentframework=microsoft-dotnet) | Every agent invocation run as a Dapr Workflow activity | `dotnet add package Diagrid.AI.Microsoft.AgentFramework` |
