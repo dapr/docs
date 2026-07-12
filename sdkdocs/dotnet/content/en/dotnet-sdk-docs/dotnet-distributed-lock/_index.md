@@ -2,7 +2,7 @@
 type: docs
 title: "Dapr Distributed Lock .NET SDK"
 linkTitle: "Distributed Lock"
-weight: 61000
+weight: 240000
 description: Get up and running with the Dapr Distributed .NET SDK
 ---
 
