@@ -10,7 +10,15 @@ This tutorial walks through six worked examples, one improvement at a time, and 
 
 The runnable code lives in the solution under `/examples/Actor.Next/`, one folder per part, each with its actor code and its xUnit v3 tests. You can clone and run them, then come back here for the what and the why. Each part below links to its example folder. It's recommended that you install your local Dapr instance using `dapr init` so you get the sample state store and PubSub components created and to make sure you're on the latest v1.18 runtime version. 
 
-## The arc
+{{% alert title="Package references" color="primary" %}}
+All projects within the Dapr .NET SDK repository are referenced using relative paths. Meta-packages like `Dapr.Actors.Next` are comprised of all their individual projects (e.g. `Dapr.Actors.Next.Streams`, `Dapr.Actors.Next.Testing`, etc.) and are combined only an artifact of the build pipeline. As such, the individual projects in the examples below refernce each of these individual projects within the repository. These packages are not intended to be published to NuGet and only for local SDK experimentation and development. When using this package in your own projects, whether host or test projects, it is intended that you install `Dapr.Actors.Next` from NuGet. When cloning this repository, they'll build and run using these local references, but there are no corresponding packages for each in NuGet - only `Dapr.Actors.Next`.
+{{% /alert %}}
+
+{{% alert title="Temporarily placed in `feature-actors-next` branch" color="primary" %}}
+The `Dapr.Actors.Next` package has been released as a preview and is subject to change. It has not yet been merged into the `master` branch of the [Dapr .NET SDK repository](https://github.com/dapr/dotnet-sdk), but if you'd like to clone the branch to contribute or experiment with the examples, you can find it [here](https://github.com/dapr/dotnet-sdk/tree/feature-actors-next). This is expected to be released as stable alongside the v1.19 release of the Dapr runtime at this point it will be merged into master and easily accessible.
+{{% /alert %}}
+
+## Tutorial content
 
 The first three parts build on one shopping-cart scenario so the story is continuous; the last three stand on their own. Read top to bottom and the authoring gets a little more ambitious each time, while the testing is the consistent payoff: it needs less infrastructure and reaches further at every step.
 
