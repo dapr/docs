@@ -11,7 +11,7 @@ Testing is the headline capability of `Dapr.Actors.Next`. The hard parts of acto
 This page covers what is available at development time, how to write tests with xUnit v3, how to add Coyote for deeper exploration, and how to run integration tests against a real sidecar.
 
 {{% alert title="Package" color="primary" %}}
-The in-memory runtime is in `Dapr.Actors.Next.Testing`. It is one of the packages that make up the `Dapr.Actors.Next` meta-package, and it is also published to NuGet on its own, so you install it directly into your test project rather than pulling the full meta-package there. It drives your real actors through the same generated dispatchers used in production, so there are no test-only actor implementations.
+The in-memory runtime is in the `Dapr.Actors.Next.Testing` namespace. It is one of the packages that make up the `Dapr.Actors.Next` meta-package, and it is also published to NuGet on its own, so you install it directly into your test project rather than pulling the full meta-package there. It drives your real actors through the same generated dispatchers used in production, so there are no test-only actor implementations.
 {{% /alert %}}
 
 ## What is available at development time
@@ -24,11 +24,11 @@ A set of analyzers keeps actors inside the model the controlled scheduler can ex
 
 ## Testing with xUnit v3
 
-The Dapr .NET SDK tests with xUnit v3, and these examples assume it. Add the test runtime and xUnit v3 to your test project:
+The Dapr .NET SDK tests with xUnit v3, and these examples assume it. Add the Dapr .NET Actors SDK and xUnit v3 packages to your test project:
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="Dapr.Actors.Next.Testing" Version="..." />
+  <PackageReference Include="Dapr.Actors.Next" Version="..." />
   <PackageReference Include="xunit.v3" Version="..." />
   <PackageReference Include="xunit.runner.visualstudio" Version="..." />
   <PackageReference Include="Microsoft.NET.Test.Sdk" Version="..." />
@@ -248,7 +248,7 @@ dotnet tool install --global Microsoft.Coyote.CLI
 
 ### Enable the Coyote bridge
 
-`Dapr.Actors.Next.Testing` includes an opt-in Coyote bridge that routes the runtime's scheduling decisions through Coyote's systematic engine. It is compiled in through the `DAPR_ACTORS_NEXT_COYOTE` build constant rather than toggled per test, so a dedicated test configuration turns it on for the whole assembly:
+The testing apparatus in `Dapr.Actors.Next` includes an opt-in Coyote bridge that routes the runtime's scheduling decisions through Coyote's systematic engine. It is compiled in through the `DAPR_ACTORS_NEXT_COYOTE` build constant rather than toggled per test, so a dedicated test configuration turns it on for the whole assembly:
 
 ```xml
 <PropertyGroup Condition="'$(Configuration)' == 'Coyote'">

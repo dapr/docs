@@ -2,7 +2,7 @@
 type: docs
 title: "Dapr Actors (Next) in the .NET SDK"
 linkTitle: "Actors (Next)"
-weight: 100000
+weight: 80000
 description: "Overview of the modernized Dapr Actors implementation for .NET (Dapr.Actors.Next)"
 ---
 
@@ -15,10 +15,10 @@ The actor model itself is unchanged. Actors are still virtual, addressed by type
 {{% /alert %}}
 
 {{% alert title="Status of Dapr.Actors" color="warning" %}}
-Active development on `Dapr.Actors` has stopped; that package now receives security fixes only, and all new actor development happens in `Dapr.Actors.Next`. There is no deprecation date for `Dapr.Actors` yet but it's considered to be in a maintenance-only mode. Do not expect future development on this package going forward except for bug fixes.
+Active development on `Dapr.Actors` has stopped; this package now receives security fixes only, and all new actor development happens in [`Dapr.Actors.Next`]({{% ref dotnet-actors-next %}}). There is no deprecation date for `Dapr.Actors` but it's considered to be in a maintenance-only mode.
 {{% /alert %}}
 
-{{% alert title="Moving from Dapr.Actors is incremental, not a big bang" color="primary" %}}
+{{% alert title="Moving from Dapr.Actors is incremental, not necessarily all at once" color="primary" %}}
 `Dapr.Actors.Next` is a new package family with a different API, so adopting it is a rewrite of your actor layer rather than an in-place upgrade. It is wire-compatible with the runtime and addresses actors by the same type name, so you can migrate one actor type at a time rather than in a single big-bang cutover. We recommend performing that migration across separate projects or services rather than hosting both SDKs in the same one: `Dapr.Actors` and `Dapr.Actors.Next` have meaningfully different behaviors — around hosting, dispatch, and serialization — and mixing them in a single project invites confusion about which SDK owns a given actor. We also have no testing that conclusively demonstrates the two packages running side-by-side in the same project, so while it is technically possible, we don't recommend it. Cross-SDK calling works where the payload serialization matches: the new SDK uses System.Text.Json by default, which lines up with the old non-remoting (JSON) proxy but not with the old DataContract remoting path. The highest-stakes thing to verify before moving a type is that its existing persisted state remains readable under the new serializer. See the [migration guide]({{< ref "dotnet-actorsnext-migration.md" >}}) for more information.
 {{% /alert %}}
 

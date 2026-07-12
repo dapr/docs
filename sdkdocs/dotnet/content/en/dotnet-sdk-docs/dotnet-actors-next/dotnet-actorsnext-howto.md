@@ -22,6 +22,10 @@ Dapr runtime v1.18.0 or later, a port on your application for gRPC inbound conne
 Unlike `Dapr.Actors`, you do not map actor handler endpoints for the runtime to call into per invocation. The host opens a persistent gRPC connection to the runtime and receives actor callbacks over that stream, so there is nothing like `MapActorsHandlers()` to wire up. The application still exposes its gRPC server port as usual; the runtime continues to use it for its gRPC precondition checks. What changes is how actor callbacks are delivered, not whether the app runs a gRPC server.
 {{% /alert %}}
 
+{{% alert title="Package references" color="primary" %}}
+All projects within the Dapr .NET SDK repository are referenced using relative paths. As meta-packages like `Dapr.Workflows` or `Dapr.Actors.Next` are only an artifact of the build pipeline, the individual projects in the source code refernce each of the individual projects within the repository (e.g. `Dapr.Actors.Next.SourceGenerators` or `Dapr.Actors.Next.Abstractions`). These packages are not intended to be published to NuGet and only for local SDK experimentation and development. When using this package in your own projects, whether host or test projects, it is intended that you install `Dapr.Actors.Next` from NuGet.
+{{% /alert %}}
+
 ## Define an actor
 
 An actor has two parts: a contract interface that derives from `IActor` and is decorated with `[GenerateActorClient]`, and an implementation that derives from `Actor` and is decorated with `[DaprActor]`.
