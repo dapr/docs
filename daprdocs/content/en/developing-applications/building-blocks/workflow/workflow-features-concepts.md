@@ -23,6 +23,7 @@ There are several different kinds of tasks that a workflow can schedule, includi
 - [Activities]({{% ref "workflow-features-concepts.md#workflow-activities" %}}) for executing custom logic
 - [Durable timers]({{% ref "workflow-features-concepts.md#durable-timers" %}}) for putting the workflow to sleep for arbitrary lengths of time
 - [Child workflows]({{% ref "workflow-features-concepts.md#child-workflows" %}}) for breaking larger workflows into smaller pieces
+- [Detached workflows]({{% ref "workflow-features-concepts.md#detached-workflows" %}}) for spawning independent, fire-and-forget workflows that run on their own
 - [External event waiters]({{% ref "workflow-features-concepts.md#external-events" %}}) for blocking workflows until they receive external event signals. These tasks are described in more details in their corresponding sections.
 
 ## Workflow Instance Management
@@ -165,6 +166,12 @@ Child workflows have many benefits:
 The return value of a child workflow is its output. If a child workflow fails with an exception, then that exception is surfaced to the parent workflow, just like it is when an activity task fails with an exception. Child workflows also support automatic retry policies.
 
 Terminating a parent workflow terminates all of the child workflows created by the workflow instance. See [the terminate workflow api]({{% ref "workflow_api.md#terminate-workflow-request" %}}) for more information.
+
+## Detached workflows
+
+In addition to [child workflows]({{% ref "#child-workflows" %}}), a workflow can schedule another workflow as a _detached workflow_: a fire-and-forget instance that runs fully independently of the caller. The call returns the new instance ID synchronously and the scheduling workflow continues immediately, without waiting for the detached workflow. Unlike a child workflow, there is no parent linkage: the detached workflow's success or failure does not flow back to the caller, and terminating the caller does not terminate the detached workflow.
+
+For the comparison with child workflows, guidance on when to use them, and a code example, see [Detached workflows]({{% ref workflow-detached.md %}}).
 
 ## Durable timers
 
