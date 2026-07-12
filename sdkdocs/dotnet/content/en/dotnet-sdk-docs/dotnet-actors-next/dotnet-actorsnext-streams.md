@@ -9,7 +9,7 @@ description: "Drive actors from pub/sub topics with [Subscribe] using Dapr.Actor
 Subscription streams let an actor react to messages from an existing Dapr pub/sub component. You annotate an actor method with `[Subscribe]`, and a delivered topic event wakes the actor and invokes that method, much like a timer or reminder firing.
 
 {{% alert title="Package" color="primary" %}}
-Subscription streams ship in the `Dapr.Actors.Next.Streams` satellite package, included in the `Dapr.Actors.Next` meta-package. It uses Dapr pub/sub and actor invocation as they exist today, so it works against the current runtime with no runtime changes.
+Subscription streams ship in the `Dapr.Actors.Next.Streams` namespace, included in the `Dapr.Actors.Next` meta-package. It uses Dapr pub/sub and actor invocation as they exist today, so it works against the current runtime with no runtime changes.
 {{% /alert %}}
 
 ## How it works
@@ -124,7 +124,7 @@ public async Task Transient_failure_is_retried_not_acked()
 }
 ```
 
-The types used here (`ActorStreamSubscription`, `ActorStreamSubscriptionRunner`, `ActorStreamForwarder`, `ActorStreamRoutingKeyExtractor`, `DefaultActorStreamFailureClassifier`, `ActorStreamEvent`, and the `ActorStreamDeliveryAction` result) live in `Dapr.Actors.Next.Streams`.
+The types used here (`ActorStreamSubscription`, `ActorStreamSubscriptionRunner`, `ActorStreamForwarder`, `ActorStreamRoutingKeyExtractor`, `DefaultActorStreamFailureClassifier`, `ActorStreamEvent`, and the `ActorStreamDeliveryAction` result) live in the `Dapr.Actors.Next.Streams` namespace.
 
 End-to-end behavior against a real component is validated with the Testcontainers integration suite; see [Testing]({{< ref dotnet-actorsnext-testing.md >}}).
 

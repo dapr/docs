@@ -15,7 +15,7 @@ The actor model itself is unchanged. Actors are still virtual, addressed by type
 {{% /alert %}}
 
 {{% alert title="Status of Dapr.Actors" color="warning" %}}
-Active development on `Dapr.Actors` has stopped; that package now receives security fixes only, and all new actor development happens in `Dapr.Actors.Next`. There is no deprecation date for `Dapr.Actors` yet but it's considered to be in a maintenance-only mode. Do not expect future development on this package going forward except for bug fixes.
+Active development on `Dapr.Actors` has stopped; that package now receives security fixes only, and all new actor development happens in `Dapr.Actors.Next`. There is no deprecation date for `Dapr.Actors` yet but it's considered to be in a maintenance-only mode.
 {{% /alert %}}
 
 {{% alert title="Moving from Dapr.Actors is incremental, not a big bang" color="primary" %}}
