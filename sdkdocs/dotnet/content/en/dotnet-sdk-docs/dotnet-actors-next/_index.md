@@ -2,7 +2,7 @@
 type: docs
 title: "Dapr Actors (Next) in the .NET SDK"
 linkTitle: "Actors (Next)"
-weight: 100000
+weight: 80000
 description: "Overview of the modernized Dapr Actors implementation for .NET (Dapr.Actors.Next)"
 ---
 
