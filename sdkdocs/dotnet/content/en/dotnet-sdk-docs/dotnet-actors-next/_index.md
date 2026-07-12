@@ -15,7 +15,7 @@ The actor model itself is unchanged. Actors are still virtual, addressed by type
 {{% /alert %}}
 
 {{% alert title="Status of Dapr.Actors" color="warning" %}}
-Active development on `Dapr.Actors` has stopped; that package now receives security fixes only, and all new actor development happens in `Dapr.Actors.Next`. There is no deprecation date for `Dapr.Actors` yet but it's considered to be in a maintenance-only mode.
+Active development on `Dapr.Actors` has stopped; this package now receives security fixes only, and all new actor development happens in [`Dapr.Actors.Next`]({{% ref dotnet-actors-next %}}). There is no deprecation date for `Dapr.Actors` but it's considered to be in a maintenance-only mode.
 {{% /alert %}}
 
 {{% alert title="Moving from Dapr.Actors is incremental, not necessarily all at once" color="primary" %}}
