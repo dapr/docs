@@ -6,7 +6,7 @@ no_list: true
 
 ## Dapr, the distributed application runtime
 
-Dapr provides APIs for communication, state, workflow, and agentic AI. The APIs decouple the application code from the underlying infrastructure ensuring flexibility and portability. Dapr leverages industry best practices for security, resiliency, and observability, so you can focus on your code.
+Dapr provides APIs for building mission-critical applications, workflows, and AI agents that survive failure and keep running. With durable execution, state management, communication, and workflow primitives built in, Dapr automatically recovers from crashes and outages without losing progress. Its infrastructure-agnostic APIs give you portability across clouds and environments while delivering the security, resiliency, observability, and identity capabilities required for production systems.
 
 {{< button text="Get started" page="getting-started.md" >}}
 
@@ -27,8 +27,8 @@ Dapr provides APIs for communication, state, workflow, and agentic AI. The APIs 
       <h5 class="card-title">
       <img src="/images/homepage/dapr-agents.svg" alt="Dapr Agents" width=40>
       <b>Agentic AI</b></h5>
-      <p class="card-text">Create durable agentic AI applications with Dapr Agents.</p>
-      <a href="{{% ref "../developing-ai/dapr-agents" %}}" class="stretched-link"></a>
+      <p class="card-text">Create durable agents with Dapr.</p>
+      <a href="{{% ref "../developing-ai" %}}" class="stretched-link"></a>
     </div>
   </div>
 </div>
