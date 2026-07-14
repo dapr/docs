@@ -421,19 +421,43 @@ You'll see that the workflow continues from its last persisted step instead of s
 
 In summary, the Dapr Workflow engine preserves the execution state of the agent across restarts, enabling reliable long-running interactions that combine LLM calls, tools, and stateful reasoning.
 
-## Inspect workflow executions with Diagrid Dashboard
+## Inspect workflow executions with Diagrid Dev Dashboard
 
-After starting the durable agent with Dapr, you can use the local [Diagrid Dashboard](https://diagrid.ws/diagrid-dashboard-docs) to visualize and inspect your workflow state, including detailed execution history for each run. The dashboard runs as a container and connects to the same state store used by Dapr workflows (by default, the local Redis instance).
+After starting the durable agent with Dapr, you can use the local [Diagrid Dev Dashboard](https://diagrid.ws/diagrid-dashboard-docs) to visualize and inspect your workflow state, including detailed execution history for each run.
 
-<img src="/images/workflow-overview/workflow-diagrid-dashboard.png" width=800 alt="Diagrid Dashboard showing local workflow executions"/><br/>
+<img src="/images/workflow-overview/workflow-diagrid-dashboard.png" width=800 alt="Diagrid Dev Dashboard showing local workflow executions"/><br/>
 
-Start the Diagrid Dashboard container using Docker:
+{{< tabpane text=true >}}
+
+Download & install the dashboard via the terminal:
+
+{{% tab "Linux/MacOS" %}}
 
 ```bash
-docker run -p 8080:8080 ghcr.io/diagridio/diagrid-dashboard:latest
+curl -sSL https://raw.githubusercontent.com/diagridio/dev-dashboard/main/scripts/install.sh | sh
 ```
 
-Open the dashboard in a browser at `http://localhost:8080` to explore your local workflow executions.
+{{% /tab %}}
+
+{{% tab "Windows" %}}
+
+```bash
+iwr -useb https://raw.githubusercontent.com/diagridio/dev-dashboard/main/scripts/install.ps1 | iex
+```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
+
+Start the Diagrid Dev Dashboard with:
+
+```bash
+diagrid-dev-dashboard
+```
+
+<!-- IGNORE_LINKS -->
+The dashboard will open in a browser at [http://localhost:9090](http://localhost:9090). Navigate to the Workflows page to inspect the workflows.
+<!-- END_IGNORE -->
 
 ## Inspect Conversation History with Redis Insight
 
