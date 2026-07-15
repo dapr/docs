@@ -1,7 +1,12 @@
+// Brand (existing)
 $primary:#0D2192;
 $secondary: #3ea9f5;
 $highlight1:#ff4e00;
 $highlight2: #efca08;
+
+// Enable Bootstrap dark mode support
+$enable-dark-mode: true;
+$color-mode-type: data;   // uses [data-bs-theme]
 
 // Sidebar colors
 $td-sidebar-tree-root-color: $primary;
