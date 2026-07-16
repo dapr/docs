@@ -1,3 +1,37 @@
 //
 // toc
 //
+// Docsy (v0.12.0) renders the "On this page" markup (.td-toc > nav#TableOfContents)
+// but implements no scrollspy — the .active class toggled here is applied by
+// static/js/toc-scrollspy.js (added in Task 11), loaded from body-end.html.
+//
+
+.td-toc {
+    font-size: .8rem;
+
+    #TableOfContents a, a {
+        display: block;
+        color: var(--d-muted);
+        border-left: 2px solid var(--d-border);
+        padding: 4px 0 4px 11px;
+        text-decoration: none;
+    }
+
+    #TableOfContents a:hover, a:hover {
+        color: var(--d-body);
+    }
+
+    #TableOfContents a.active, a.active {
+        color: var(--d-heading);
+        font-weight: 500;
+        border-left-color: var(--d-orange);
+    }
+
+    .td-toc__title, .td-page-meta__title {
+        font-family: var(--font-head);
+        text-transform: uppercase;
+        letter-spacing: .1em;
+        font-size: .68rem;
+        color: var(--d-muted);
+    }
+}
