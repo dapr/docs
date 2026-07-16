@@ -1,5 +1,18 @@
 <script src="/js/copy-code-button.js"></script>
 
+{{ with resources.Get "js/theme-toggle.js" }}
+  {{ $opts := dict "minify" hugo.IsProduction "targetPath" "js/theme-toggle.js" }}
+  {{ with . | js.Build $opts }}
+    {{ if hugo.IsProduction }}
+      {{ with . | fingerprint }}
+        <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
+      {{ end }}
+    {{ else }}
+      <script src="{{ .RelPermalink }}"></script>
+    {{ end }}
+  {{ end }}
+{{ end }}
+
 {{ with .Site.Params.search.algolia }}
 <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
 <script type="text/javascript">

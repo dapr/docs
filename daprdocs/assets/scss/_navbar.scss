@@ -105,3 +105,42 @@
 .navbar-expand {
     justify-content: space-around;
 }
+
+// Dark/light theme toggle button.
+.dapr-theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin-left: .5rem;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    background: transparent;
+    color: $white;
+    cursor: pointer;
+    transition: background-color .15s ease-in-out, color .15s ease-in-out;
+
+    &:hover {
+        background: rgba($white, .15);
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--d-active);
+        outline-offset: 2px;
+    }
+
+    &__icon {
+        display: none;
+    }
+}
+
+// Icon shown = theme you switch TO: sun in dark mode, moon in light mode.
+[data-bs-theme="dark"] .dapr-theme-toggle__icon--sun {
+    display: block;
+}
+
+[data-bs-theme="light"] .dapr-theme-toggle__icon--moon {
+    display: block;
+}

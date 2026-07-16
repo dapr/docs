@@ -1,3 +1,14 @@
+<!-- Dapr theme: set data-bs-theme before first paint to avoid a flash of the wrong theme. -->
+<script>
+  (function () {
+    try {
+      var s = localStorage.getItem("dapr-theme");
+      var d = s ? s === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.setAttribute("data-bs-theme", d ? "dark" : "light");
+    } catch (e) {}
+  })();
+</script>
+
 <link rel="stylesheet" href="/css/cookie-banner.css" />
 
 <!-- Reo analytics (loaded only with cookie consent) -->
