@@ -1,42 +1,20 @@
 //
 // Main navbar
-// (moved from _nav.scss)
 //
 
-.td-navbar-cover {
-    background: $primary;
-
-    @include media-breakpoint-up(md) {
-        background: transparent !important;
-
-        .nav-link {
-            text-shadow: 1px 1px 2px $dark;
-        }
-
-    }
-
-    &.navbar-bg-onscroll .nav-link {
-        text-shadow: none;
-    }
-}
-
-.navbar-bg-onscroll {
-    background: $primary !important;
-    opacity: inherit;
-}
-
 .td-navbar {
-    background: $primary;
-    min-height: 4rem;
+    background: var(--d-ground);
+    border-bottom: 1px solid var(--d-border);
+    min-height: 56px;
     margin: 0;
     z-index: 32;
+    box-shadow: none;
 
     @include media-breakpoint-up(md) {
         position: fixed;
         top: 0;
         width: 100%;
     }
-
 
     .navbar-brand {
         text-transform: none !important;
@@ -58,16 +36,45 @@
         }
     }
 
-    .nav-link {
-        text-transform: none !important;
-        font-weight: $font-weight-bold;
+    .navbar-brand, .nav-link {
+        color: var(--d-heading);
     }
 
-    .td-search-input {
-        border: none;
+    .nav-link {
+        text-transform: none !important;
+        font-family: var(--font-head);
+        font-weight: 500;
+        font-size: .85rem;
+    }
+
+    .nav-link:hover {
+        color: var(--d-blue);
+    }
+
+    .nav-link.active {
+        color: var(--d-heading);
+        position: relative;
+    }
+
+    .nav-link.active::after {
+        content: "";
+        position: absolute;
+        left: .6rem;
+        right: .6rem;
+        bottom: 6px;
+        height: 2px;
+        background: var(--d-orange);
+        border-radius: 2px;
+    }
+
+    .td-search-input, .td-search__input {
+        background: var(--d-panel);
+        border: 1px solid var(--d-border);
+        border-radius: 7px;
+        color: var(--d-body);
 
         @include placeholder {
-            color: $navbar-dark-color;
+            color: var(--d-muted);
         }
     }
 
@@ -102,6 +109,12 @@
     }
 }
 
+// Explicit per-theme hook: background is already token-driven above, this
+// just keeps dark-mode navbar overrides discoverable in one place.
+[data-bs-theme="dark"] .td-navbar {
+    background: var(--d-ground);
+}
+
 .navbar-expand {
     justify-content: space-around;
 }
@@ -118,12 +131,13 @@
     border: 1px solid transparent;
     border-radius: 50%;
     background: transparent;
-    color: $white;
+    color: var(--d-body);
     cursor: pointer;
     transition: background-color .15s ease-in-out, color .15s ease-in-out;
 
     &:hover {
-        background: rgba($white, .15);
+        background: var(--d-panel);
+        color: var(--d-heading);
     }
 
     &:focus-visible {
