@@ -17,20 +17,25 @@
     }
 
     .navbar-brand {
+        display: inline-flex;
+        align-items: center;   // vertically center logo + wordmark
+        gap: 8px;
         text-transform: none !important;
-        text-align: middle;
+        font-family: var(--font-head);   // Geist for the "Dapr Docs" wordmark
 
         .nav-link {
             display: inline-block;
             margin-right: -30px;
         }
 
+        .navbar-logo {
+            display: inline-flex;
+            align-items: center;
+        }
+
         svg {
-            display: inline-block;
-            margin-right: 5px;
-            margin-left: 5px;
-            margin-top: 0px;
-            margin-bottom: 0px;
+            display: block;
+            margin: 0;
             height: 40px;
             width: 40px;
         }
