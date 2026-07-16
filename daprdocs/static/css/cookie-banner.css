@@ -90,6 +90,14 @@
   color: var(--d-on-accent);
 }
 
+/* In dark mode --d-blue is a light pastel; white text on it fails contrast.
+   Use the sky brand color with dark text for a legible, prominent CTA. */
+[data-bs-theme="dark"] #cookie-banner-accept.cookie-banner__btn {
+  background-color: var(--d-sky);
+  border-color: var(--d-sky);
+  color: var(--d-on-sky);
+}
+
 #cookie-banner-accept.cookie-banner__btn:hover {
   filter: brightness(1.06);
 }

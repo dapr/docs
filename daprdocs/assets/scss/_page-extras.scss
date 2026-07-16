@@ -206,11 +206,19 @@
 // this covers printing a regular page directly, where .td-navbar has no such
 // utility class.)
 @media print {
+    // Force ALL surface/text tokens light — [data-bs-theme="dark"] stays active
+    // on <html> when printing a page viewed in dark mode, so panel/code-bg must
+    // be reset too or inline code + table headers print black-on-near-black.
     :root {
         --d-ground: #fff;
         --d-body: #000;
         --d-heading: #000;
         --d-border: #ccc;
+        --d-panel: #f6f7f9;
+        --d-code-bg: #f6f7f9;
+        --d-muted: #444;
+        --d-blue: #0D2192;
+        --d-link: #0D2192;
     }
     .td-sidebar, .td-sidebar-toc, .td-navbar {
         display: none !important;
