@@ -120,30 +120,21 @@
         font-weight: $font-weight-bold;
     }
 
+    // Generous breathing room around code blocks (Docsy's default is 2rem; an
+    // earlier 0.5rem override crowded the surrounding text).
     .highlight {
-        margin: 0.5rem 0;
-        position: relative; // anchor for the copy-code icon
+        margin: 1.75rem 0;
     }
 
-    // Copy-code icon (injected by /js/copy-code-button.js). Positioned top-right
-    // and colored via tokens so it is visible on code backgrounds in both themes.
-    // (The JS no longer hard-codes a white color.) `display: inline !important`
-    // keeps it visible over the JS mouseenter/leave display toggle.
-    .highlight i.fas.copy-icon,
-    .highlight .copy-icon {
-        display: inline !important;
-        position: absolute;
-        top: 6px;
-        right: 8px;
+    // Docsy's built-in copy button (injected by Docsy's js/click-to-copy.js as
+    // `button.td-click-to-copy`). We rely on this ONE copy affordance — the
+    // redundant custom copy-code-button.js was removed. Tint it with our tokens
+    // and force the Font Awesome solid weight so the glyph renders as an icon.
+    .highlight pre button.td-click-to-copy {
         color: var(--d-muted);
-        cursor: pointer;
-        padding: 3px 5px;
-        border-radius: 5px;
-        font-size: .85rem;
-        transition: color .13s, background .13s;
+        font-weight: 900;
     }
-
-    .highlight .copy-icon:hover {
+    .highlight pre button.td-click-to-copy:hover {
         color: var(--d-heading);
         background: var(--d-panel);
     }

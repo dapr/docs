@@ -11,12 +11,12 @@
   .nav-tabs .nav-item { margin-bottom: -1px; }
   .nav-tabs .nav-link {
     font-family: var(--font-head); font-size: .8rem; font-weight: 500; color: var(--d-muted);
-    background: none; border: none; border-bottom: 2px solid transparent; border-radius: 0;
+    background: none; border: none; border-bottom: 3px solid transparent; border-radius: 0;
     padding: 7px 12px; white-space: nowrap;
   }
-  .nav-tabs .nav-link:hover { color: var(--d-body); border-color: transparent; }
+  .nav-tabs .nav-link:hover { color: var(--d-body); border-bottom-color: color-mix(in srgb, var(--d-orange) 35%, transparent); }
   .nav-tabs .nav-link.active {
-    color: var(--d-heading); background: none; border-bottom-color: var(--d-orange);
+    color: var(--d-heading); font-weight: 600; background: none; border-bottom-color: var(--d-orange);
   }
   // Blend the tab body with regular .td-content — no distinct panel background
   // or border. Code blocks inside keep their own .highlight background.

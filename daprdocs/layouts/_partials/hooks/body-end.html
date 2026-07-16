@@ -1,5 +1,7 @@
-<script src="/js/copy-code-button.js"></script>
-
+{{/* Note: the code-block copy button is provided by Docsy's own
+     js/click-to-copy.js (loaded via Docsy scripts.html). The previous custom
+     /js/copy-code-button.js was redundant and produced a duplicate button, so
+     it was removed. Docsy's button is styled in _content.scss. */}}
 {{ with resources.Get "js/theme-toggle.js" }}
   {{ $opts := dict "minify" hugo.IsProduction "targetPath" "js/theme-toggle.js" }}
   {{ with . | js.Build $opts }}
