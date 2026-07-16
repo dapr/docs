@@ -46,3 +46,173 @@
     border-color: var(--d-orange);
     color: var(--d-heading);
 }
+
+//
+// version / preview banners (version-banner.html)
+//
+// Docsy's .pageinfo/.pageinfo-primary is rendered above .td-content (see
+// docs/baseof.html), so _callouts.scss's `.td-content .alert-*` tokenization
+// never reaches it — style it here instead, matching the same visual
+// language (border-left accent + tinted panel) as the in-content callouts.
+.pageinfo {
+    border: 1px solid var(--d-border);
+    border-left: 3px solid var(--d-blue);
+    background: color-mix(in srgb, var(--d-blue) 8%, var(--d-ground));
+    color: var(--d-body);
+    border-radius: 0 var(--d-radius) var(--d-radius) 0;
+}
+
+.pageinfo a, .pageinfo a:visited {
+    color: var(--d-link);
+}
+
+//
+// feedback thumbs (feedback.html)
+//
+// The partial's body is currently commented out project-wide
+// (params.ui.feedback.enable is false), so these rules are inert today.
+// They're kept here, tokenized, so the widget is ready-to-go and on-brand
+// the moment it's re-enabled — mirrors the layout rules that used to live
+// inline in the (now-disabled) partial.
+.feedback--title {
+    margin-top: 3rem;
+}
+
+.feedback--question {
+    color: var(--d-muted);
+}
+
+.feedback--answer {
+    display: inline-block;
+}
+
+.feedback--answer-no {
+    margin-left: 1em;
+}
+
+.feedback--response {
+    display: none;
+    margin-top: 1em;
+    color: var(--d-muted);
+}
+
+.feedback--response__visible {
+    display: block;
+}
+
+//
+// Dapr performance results (shortcodes/dapr-perf-results.html)
+//
+// Moved out of that partial's inline <style> tag and tokenized, per Task 20.
+.dapr-perf-results {
+    details {
+        border: 1px solid var(--d-border);
+        border-radius: var(--d-radius);
+        margin: .6rem 0;
+        background: var(--d-ground);
+    }
+    details[open] {
+        padding-bottom: .5rem;
+    }
+    summary {
+        cursor: pointer;
+        padding: .6rem .9rem;
+        font-weight: 600;
+        list-style-position: inside;
+        color: var(--d-heading);
+    }
+    details.perf-api > summary {
+        font-size: 1.2rem;
+        background: var(--d-panel);
+        border-radius: var(--d-radius);
+    }
+    details.perf-scenario {
+        margin: .4rem 0;
+    }
+    details.perf-scenario > summary {
+        font-size: 1rem;
+        font-family: var(--font-mono);
+    }
+    .perf-count {
+        font-weight: 400;
+        opacity: .65;
+        font-size: .85em;
+        color: var(--d-muted);
+    }
+    .perf-body {
+        padding: .2rem .9rem;
+    }
+    .perf-nav {
+        margin: .5rem 0 1rem;
+        line-height: 1.9;
+    }
+    .perf-nav a {
+        display: inline-block;
+        margin-right: .6rem;
+        color: var(--d-link);
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    table {
+        display: block;
+        overflow-x: auto;
+        color: var(--d-body);
+        border-color: var(--d-border);
+    }
+}
+
+//
+// Blog (Docsy's inherited blog/list.html, blog/single.html)
+//
+// This site has no local blog content (Dapr's blog lives at blog.dapr.io —
+// see hugo.yaml's menu entry); these templates ship with Docsy but aren't
+// exercised today. blog/single.html wraps everything in one .td-content div
+// so it already inherits the site's typography/link/card styling from
+// _content.scss and _cards.scss. blog/list.html, however, closes .td-content
+// before rendering the post list/pagination, so those bits need their own
+// tokenized rules — kept minimal since the feature is unused.
+.td-blog-posts-list__item {
+    border-bottom: 1px solid var(--d-border);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+
+    h5 a, h5 a:visited {
+        color: var(--d-heading);
+        font-family: var(--font-head);
+        text-decoration: none;
+    }
+    h5 a:hover {
+        color: var(--d-link);
+    }
+}
+
+.td-byline, .article-meta {
+    color: var(--d-muted);
+}
+
+.td-blog-posts__pagination a {
+    color: var(--d-link);
+}
+
+//
+// Print
+//
+// Force light tokens and hide chrome that's already meant for on-screen
+// navigation, so a browser print / print-to-PDF of a docs page stays legible
+// even when the page was viewed in dark mode. (Docsy's dedicated /print/
+// output already hides the sidebar/toc via Bootstrap's d-print-none utility;
+// this covers printing a regular page directly, where .td-navbar has no such
+// utility class.)
+@media print {
+    :root {
+        --d-ground: #fff;
+        --d-body: #000;
+        --d-heading: #000;
+        --d-border: #ccc;
+    }
+    .td-sidebar, .td-sidebar-toc, .td-navbar {
+        display: none !important;
+    }
+}

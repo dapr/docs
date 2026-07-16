@@ -1,3 +1,6 @@
+/* Restyled with the project's --d-* design tokens (see daprdocs/assets/scss/_tokens.scss)
+   so this always-loaded static stylesheet follows both themes instead of
+   being hardcoded to a light-only look. */
 .cookie-banner {
   box-sizing: border-box;
   position: fixed;
@@ -6,12 +9,16 @@
   bottom: 0;
   width: 100%;
   z-index: 1000;
-  background-color: #ffffff;
-  border-top: 1px solid #dee2e6;
+  background-color: var(--d-ground);
+  border-top: 1px solid var(--d-border);
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
   font-family: inherit;
-  color: #212529;
+  color: var(--d-body);
   padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+[data-bs-theme="dark"] .cookie-banner {
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .cookie-banner[hidden] {
@@ -57,20 +64,34 @@
 }
 
 #cookie-banner-reject.cookie-banner__btn {
-  background-color: #ffffff;
-  border-color: #dee2e6;
-  color: #212529;
+  background-color: var(--d-ground);
+  border-color: var(--d-border);
+  color: var(--d-body);
 }
 
 #cookie-banner-reject.cookie-banner__btn:hover {
-  background-color: #f8f9fa;
-  border-color: #ced4da;
-  color: #212529;
+  background-color: var(--d-panel);
+  border-color: var(--d-muted);
+  color: var(--d-body);
 }
 
 .cookie-banner__btn:focus-visible {
-  outline: 2px solid #0d2192;
+  outline: 2px solid var(--d-blue);
   outline-offset: 2px;
+}
+
+/* .cookie-banner__accept relies on Bootstrap's plain .btn-primary (this
+   banner lives outside .td-content, so _buttons.scss's tokenized
+   `.td-content .btn-primary` rule doesn't reach it) — tokenize it directly,
+   scoped narrowly so it doesn't affect other .btn-primary usages. */
+#cookie-banner-accept.cookie-banner__btn {
+  background-color: var(--d-blue);
+  border-color: var(--d-blue);
+  color: var(--d-on-accent);
+}
+
+#cookie-banner-accept.cookie-banner__btn:hover {
+  filter: brightness(1.06);
 }
 
 @media (max-width: 640px) {
