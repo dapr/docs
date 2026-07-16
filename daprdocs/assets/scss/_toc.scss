@@ -9,10 +9,12 @@
 .td-toc {
     font-size: .8rem;
 
+    // Only the active item shows a border (like the left nav). Non-active items
+    // keep a transparent border so text alignment doesn't shift.
     #TableOfContents a, a {
         display: block;
         color: var(--d-muted);
-        border-left: 2px solid var(--d-border);
+        border-left: 2px solid transparent;
         padding: 4px 0 4px 11px;
         text-decoration: none;
     }
@@ -27,7 +29,21 @@
         border-left-color: var(--d-orange);
     }
 
-    .td-toc__title, .td-page-meta__title {
+    .td-toc__title {
+        font-family: var(--font-head);
+        text-transform: uppercase;
+        letter-spacing: .1em;
+        font-size: .68rem;
+        color: var(--d-muted);
+    }
+}
+
+// .td-page-meta is a SIBLING of .td-toc inside .td-sidebar-toc (not nested), so
+// it's styled at top level. Match the TOC's font size in the right aside.
+.td-sidebar-toc .td-page-meta {
+    font-size: .8rem;
+
+    .td-page-meta__title {
         font-family: var(--font-head);
         text-transform: uppercase;
         letter-spacing: .1em;
