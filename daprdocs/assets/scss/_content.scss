@@ -4,20 +4,37 @@
 
 .td-content {
     order: 1;
+    color: var(--d-body);
+    font-size: .95rem;
+    line-height: 1.65;
 
     p, li, td {
         font-weight: $font-weight-body-text;
     }
 
     > h1 {
-        font-weight: $font-weight-bold;
+        font-weight: 600;
         margin-bottom: .5rem;
-        color: $secondary;
+        color: var(--d-heading);
     }
 
     > h2 {
         font-weight: $font-weight-bold;
         margin-bottom: 1rem;
+        color: var(--d-heading);
+        border-bottom: 1px solid var(--d-border);
+        padding-bottom: .4rem;
+        position: relative;
+    }
+
+    > h2::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -1px;
+        width: 42px;
+        height: 2px;
+        background: var(--d-gold);
     }
 
     > h2:not(:first-child) {
@@ -47,14 +64,18 @@
     }
 
     > blockquote {
-        padding: 0 0 0 1rem;
+        padding: .2rem 0 .2rem 1rem;
         margin-bottom: $spacer;
-        color: $gray-600;
-        border-left: 6px solid $secondary;
+        color: var(--d-muted);
+        border-left: 3px solid var(--d-sky);
     }
 
     > ul li, > ol li {
         margin-bottom: .25rem;
+    }
+
+    > ul li::marker, > ol li::marker {
+        color: var(--d-sky);
     }
 
     strong {
@@ -66,32 +87,28 @@
     }
 
     a, a:visited {
-        color: $secondary;
+        color: var(--d-link);
         text-decoration: none;
+        border-bottom: 1px solid color-mix(in srgb, var(--d-link) 35%, transparent);
     }
 
     a:hover {
-        color: $primary;
-        text-decoration: none;;
-    }
-
-    .alert {
-        background-color: white;
-        border-color: $highlight2;
-    }
-
-    a.btn {
+        border-bottom-color: var(--d-link);
         text-decoration: none;
-        color: white;
     }
 
-    // Buttons are orange by default. The button shortcode's `color` parameter
-    // defaults to "tertiary", so a button without an explicit color renders
-    // orange. Specifying e.g. color="secondary" or color="primary" falls
-    // through to Bootstrap's theme colors instead.
-    a.btn-tertiary {
-        background-color: $highlight1;
+    p code, li code, td code {
+        font-family: var(--font-mono);
+        font-size: .82em;
+        background: var(--d-panel);
+        border: 1px solid var(--d-border);
+        border-radius: 4px;
+        padding: 1px 5px;
+        color: var(--d-heading);
     }
+
+    // .alert base/variant styling now owned by _callouts.scss (Task 6).
+    // a.btn / a.btn-tertiary styling now owned by _buttons.scss (Task 8).
 
     .alert:not(:first-child) {
         margin-top: 2 * $spacer;
@@ -181,18 +198,7 @@ nav#TableOfContents {
     margin-top: 1.5em;
 }
 
-.tab-content {
-    
-    max-width: 100%  !important;
-
-    .tab-pane {
-        background-color: white !important;
-        max-width: 100%  !important;
-        border-left: none !important;
-        border-right: none !important;
-        border-bottom: none !important;
-    }
-}
+// .tab-content / .tab-pane styling now owned by _code-tabs.scss (Task 5).
 
 .img-scarf {
     height: 1px ;
