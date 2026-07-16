@@ -1,3 +1,14 @@
 //
 // callouts
 //
+
+.td-content .alert {
+  border: 1px solid var(--d-border); border-left: 3px solid var(--d-sky);
+  background: color-mix(in srgb, var(--d-sky) 7%, var(--d-ground));
+  color: var(--d-body); border-radius: 0 var(--d-radius) var(--d-radius) 0; padding: 13px 15px;
+}
+.td-content .alert-warning { border-left-color: var(--d-orange); background: color-mix(in srgb, var(--d-orange) 7%, var(--d-ground)); }
+.td-content .alert-primary { border-left-color: var(--d-blue);  background: color-mix(in srgb, var(--d-blue) 8%, var(--d-ground)); }
+.td-content .alert-success { border-left-color: #2b9a66; }
+.td-content .alert-danger  { border-left-color: #d64545; }
+.td-content .alert a { color: var(--d-link); }
