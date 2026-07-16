@@ -9,6 +9,6 @@
 }
 .td-content .alert-warning { border-left-color: var(--d-orange); background: color-mix(in srgb, var(--d-orange) 7%, var(--d-ground)); }
 .td-content .alert-primary { border-left-color: var(--d-blue);  background: color-mix(in srgb, var(--d-blue) 8%, var(--d-ground)); }
-.td-content .alert-success { border-left-color: #2b9a66; }
-.td-content .alert-danger  { border-left-color: #d64545; }
+.td-content .alert-success { border-left-color: var(--d-success); }
+.td-content .alert-danger  { border-left-color: var(--d-danger); }
 .td-content .alert a { color: var(--d-link); }

@@ -8,6 +8,9 @@ $highlight2: #efca08;
 $font-family-sans-serif: "Inter", ui-sans-serif, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 $font-family-monospace:  "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
+// Disable Docsy Google Fonts CDN (we self-host fonts)
+$td-enable-google-fonts: false;
+
 // Enable Bootstrap dark mode support
 $enable-dark-mode: true;
 $color-mode-type: data;   // uses [data-bs-theme]

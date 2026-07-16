@@ -14,6 +14,10 @@
   --d-active: var(--d-orange);
   --d-code-bg:#f6f7f9;
   --d-radius: 9px;
+  --d-on-accent: #ffffff;
+  --d-on-sky: #06263f;
+  --d-success: #2b9a66;
+  --d-danger: #d64545;
 }
 [data-bs-theme="dark"] {
   --d-blue:   #6f9fe8;
@@ -29,4 +33,8 @@
   --d-link:   #6f9fe8;
   --d-active: #ff7a45;
   --d-code-bg:#0f131c;
+  --d-on-accent: #ffffff;
+  --d-on-sky: #06263f;
+  --d-success: #4cc38a;
+  --d-danger: #e06666;
 }
