@@ -1,3 +1,21 @@
 //
 // typography
 //
+@font-face { font-family:"Geist"; font-weight:400; font-display:swap; src:url("/fonts/geist-400.woff2") format("woff2"); }
+@font-face { font-family:"Geist"; font-weight:500; font-display:swap; src:url("/fonts/geist-500.woff2") format("woff2"); }
+@font-face { font-family:"Geist"; font-weight:600; font-display:swap; src:url("/fonts/geist-600.woff2") format("woff2"); }
+@font-face { font-family:"Geist"; font-weight:700; font-display:swap; src:url("/fonts/geist-700.woff2") format("woff2"); }
+@font-face { font-family:"Inter"; font-weight:400; font-display:swap; src:url("/fonts/inter-400.woff2") format("woff2"); }
+@font-face { font-family:"Inter"; font-weight:500; font-display:swap; src:url("/fonts/inter-500.woff2") format("woff2"); }
+@font-face { font-family:"Inter"; font-weight:600; font-display:swap; src:url("/fonts/inter-600.woff2") format("woff2"); }
+@font-face { font-family:"Geist Mono"; font-weight:400; font-display:swap; src:url("/fonts/geist-mono-400.woff2") format("woff2"); }
+@font-face { font-family:"Geist Mono"; font-weight:500; font-display:swap; src:url("/fonts/geist-mono-500.woff2") format("woff2"); }
+
+:root {
+  --font-head: "Geist", ui-sans-serif, -apple-system, "Segoe UI", Arial, sans-serif;
+  --font-body: "Inter", ui-sans-serif, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+body { font-family: var(--font-body); }
+h1,h2,h3,h4,h5,h6,.td-content h1,.td-content h2,.td-content h3 { font-family: var(--font-head); letter-spacing:-0.015em; text-wrap:balance; }
+code,pre,kbd,samp { font-family: var(--font-mono); }
