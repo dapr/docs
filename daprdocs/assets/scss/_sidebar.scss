@@ -24,13 +24,26 @@
         color: var(--d-heading);
     }
 
-    .td-sidebar-link.active, .td-sidebar-nav-active-item {
+    // Active item: the background lives on the block-level link so it spans the
+    // full width, including wrapped multi-line titles. The inner span
+    // (.td-sidebar-nav-active-item) gets NO separate highlight — that inline
+    // background was a second, tight highlight that didn't cover wrapped lines.
+    .td-sidebar-link.active {
         color: var(--d-heading);
         font-weight: 500;
         background: color-mix(in srgb, var(--d-blue) 12%, transparent);
         border-left: 2px solid var(--d-blue);
         border-radius: 0 6px 6px 0;
     }
+    .td-sidebar-nav-active-item {
+        background: none;
+        color: inherit;
+    }
+
+    // Tighter tree: half the nested indentation (Docsy default 1.5em) and no
+    // extra vertical margin on list items.
+    .ul-1 ul { padding-left: .75em; }
+    li { margin-top: 0; margin-bottom: 0; }
 
     // section group labels
     .tree-root {
