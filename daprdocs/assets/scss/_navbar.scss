@@ -158,3 +158,21 @@
 [data-bs-theme="light"] .dapr-theme-toggle__icon--moon {
     display: block;
 }
+
+// Theme-aware brand logo: the dark-blue mark (logo-blue.svg) shows on the light
+// navbar; the white mark (logo.svg) shows on the dark navbar. Both are inlined
+// in navbar.html; only one is displayed per theme.
+.navbar-logo--light,
+.navbar-logo--dark {
+    display: inline-flex;
+    align-items: center;
+}
+.navbar-logo--dark {
+    display: none;
+}
+[data-bs-theme="dark"] .navbar-logo--light {
+    display: none;
+}
+[data-bs-theme="dark"] .navbar-logo--dark {
+    display: inline-flex;
+}
