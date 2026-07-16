@@ -18,10 +18,9 @@
   .nav-tabs .nav-link.active {
     color: var(--d-heading); background: none; border-bottom-color: var(--d-orange);
   }
-  .tab-content {
-    border: 1px solid var(--d-border); border-top: none; border-radius: 0 0 var(--d-radius) var(--d-radius);
-    background: var(--d-code-bg); max-width: 100%;
-  }
-  .tab-content .tab-pane { background: none !important; border: none !important; padding: 0; }
-  .tab-content pre { margin: 0; padding: 14px 16px; overflow-x: auto; background: none; font-size: .82rem; line-height: 1.6; }
+  // Blend the tab body with regular .td-content — no distinct panel background
+  // or border. Code blocks inside keep their own .highlight background.
+  .tab-content { background: transparent; border: none; max-width: 100%; }
+  .tab-content .tab-pane { background: transparent; border: none; padding: .5rem 0 0; }
+  .tab-content pre { overflow-x: auto; max-width: 100%; font-size: .82rem; line-height: 1.6; }
 }

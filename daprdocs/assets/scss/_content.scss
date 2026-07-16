@@ -120,13 +120,32 @@
         font-weight: $font-weight-bold;
     }
 
-    .highlight i.fas {
-        // To prevent the margin change when doing mouseover.
-        display: inline !important;
-    }
-
     .highlight {
         margin: 0.5rem 0;
+        position: relative; // anchor for the copy-code icon
+    }
+
+    // Copy-code icon (injected by /js/copy-code-button.js). Positioned top-right
+    // and colored via tokens so it is visible on code backgrounds in both themes.
+    // (The JS no longer hard-codes a white color.) `display: inline !important`
+    // keeps it visible over the JS mouseenter/leave display toggle.
+    .highlight i.fas.copy-icon,
+    .highlight .copy-icon {
+        display: inline !important;
+        position: absolute;
+        top: 6px;
+        right: 8px;
+        color: var(--d-muted);
+        cursor: pointer;
+        padding: 3px 5px;
+        border-radius: 5px;
+        font-size: .85rem;
+        transition: color .13s, background .13s;
+    }
+
+    .highlight .copy-icon:hover {
+        color: var(--d-heading);
+        background: var(--d-panel);
     }
 }
 

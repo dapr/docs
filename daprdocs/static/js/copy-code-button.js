@@ -3,7 +3,8 @@ const highlightClass = document.querySelectorAll('.highlight');
 highlightClass.forEach(element => {
   const copyIcon = document.createElement('i');
   copyIcon.classList.add('fas', 'fa-copy', 'copy-icon');
-  copyIcon.style.color = 'white';
+  // Color and positioning are handled in SCSS (.copy-icon) via theme tokens so
+  // the icon stays visible on code backgrounds in both light and dark themes.
   copyIcon.style.display = 'none';
   element.appendChild(copyIcon);
 
