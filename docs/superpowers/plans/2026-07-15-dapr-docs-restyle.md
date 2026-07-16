@@ -299,6 +299,84 @@ git commit -m "style: self-host Geist/Inter/Geist Mono and set typography base"
 
 ---
 
+### Task 2b: Enable dark mode + theme toggle (discovered gap)
+
+**Why:** The site currently has NO dark mode — no `data-bs-theme` in the DOM, no toggle, no color-mode config. The design requires light + dark, and every later task verifies "in both themes", so a real, user-operable toggle must exist now. Our tokens (Task 2) and mermaid (Task 16) key off `[data-bs-theme]`, so the toggle just needs to set that attribute on `<html>`.
+
+**Files:**
+- Modify: `daprdocs/layouts/_partials/navbar.html` (toggle button)
+- Modify: `daprdocs/layouts/_partials/hooks/head-end.html` (no-flash init)
+- Create: `daprdocs/assets/js/theme-toggle.js` (bundled via Hugo Pipes like mermaid)
+- Modify: `daprdocs/layouts/_partials/hooks/body-end.html` (load the bundled toggle)
+- Modify: `daprdocs/assets/scss/_navbar.scss` (button styling)
+- Modify: `hugo.yaml` (only if enabling a Docsy built-in param)
+
+**Interfaces:**
+- Produces: `document.documentElement`'s `data-bs-theme` is `"light"|"dark"`, user-toggleable and persisted. Consumed by tokens (Task 2) and mermaid (Task 16).
+
+- [ ] **Step 1: Prefer Docsy's built-in, fall back to custom**
+
+First check whether Docsy v0.12.0 exposes a light/dark menu via config (e.g. `params.ui.showLightDarkModeMenu`) and a `theme-toggler.html` partial. If enabling it cleanly renders a toggle in our forked navbar, use that (least fork). If not, implement the minimal custom toggle below. Record which path you took.
+
+- [ ] **Step 2: No-flash init in `head-end.html`** (runs before paint)
+
+```html
+<script>
+  (function () {
+    try {
+      var s = localStorage.getItem("dapr-theme");
+      var d = s ? s === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.setAttribute("data-bs-theme", d ? "dark" : "light");
+    } catch (e) {}
+  })();
+</script>
+```
+
+- [ ] **Step 3: Toggle button in `navbar.html`** (sun/moon, accessible)
+
+Add to the nav-right cluster (keep the header override comment intact):
+
+```html
+<button id="dapr-theme-toggle" class="dapr-theme-toggle" type="button" aria-label="Toggle light and dark theme">
+  <span class="dapr-theme-toggle__sun" aria-hidden="true">☀️</span>
+  <span class="dapr-theme-toggle__moon" aria-hidden="true">🌙</span>
+</button>
+```
+(Use inline SVG icons matching the design rather than emoji if the navbar already uses SVGs.)
+
+- [ ] **Step 4: `theme-toggle.js` (bundled via Hugo Pipes)**
+
+```js
+const root = document.documentElement;
+function set(theme) {
+  root.setAttribute("data-bs-theme", theme);
+  try { localStorage.setItem("dapr-theme", theme); } catch (e) {}
+}
+const btn = document.getElementById("dapr-theme-toggle");
+if (btn) btn.addEventListener("click", () => {
+  set(root.getAttribute("data-bs-theme") === "dark" ? "light" : "dark");
+});
+```
+Load it from `body-end.html` via `js.Build` + fingerprint (same pattern as Task 15).
+
+- [ ] **Step 5: Button styling in `_navbar.scss`**
+
+Show the sun in dark mode and the moon in light mode; brand the button per the design (token colors, hover state, focus-visible outline).
+
+- [ ] **Step 6: Verify (macOS `hugo server`)**
+
+Load any page. Confirm: on first visit the theme follows the OS preference; clicking the toggle flips `data-bs-theme`, tokens change live (background/text), the icon swaps, and the choice persists across reload; no flash of the wrong theme on load.
+Expected: PASS.
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add daprdocs/layouts/_partials/navbar.html daprdocs/layouts/_partials/hooks/head-end.html daprdocs/layouts/_partials/hooks/body-end.html daprdocs/assets/js/theme-toggle.js daprdocs/assets/scss/_navbar.scss hugo.yaml
+git commit -m "feat: enable dark mode with a persisted theme toggle (data-bs-theme)"
+```
+
+---
+
 ## Phase 1 — Core reading experience
 
 ### Task 4: Content elements (prose, links, code, blockquote, lists, images)
