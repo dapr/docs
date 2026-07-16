@@ -15,8 +15,7 @@
         font-size: .84rem;
         color: var(--d-body);
         border-radius: 6px;
-        border-left: 2px solid transparent;
-        padding: 4px 8px;
+        padding: 2px 8px;
     }
 
     .td-sidebar-link:hover {
@@ -32,12 +31,18 @@
         color: var(--d-heading);
         font-weight: 500;
         background: color-mix(in srgb, var(--d-blue) 12%, transparent);
-        border-left: 2px solid var(--d-blue);
         border-radius: 0 6px 6px 0;
     }
     .td-sidebar-nav-active-item {
         background: none;
         color: inherit;
+    }
+
+    // Blue accent lives on the active item's <li> (tagged by sidebar-nav.js),
+    // not the <a>. Inset shadow = a left border that doesn't shift layout.
+    .td-sidebar-active-li {
+        box-shadow: inset 2px 0 0 var(--d-blue);
+        border-radius: 0 6px 6px 0;
     }
 
     // Tighter tree: half the nested indentation (Docsy default 1.5em) and no
