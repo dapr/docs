@@ -1,3 +1,4 @@
+{{/* Project override of Docsy v0.12.0 layouts/_partials/section-index.html — reason: card-forward section landing. Reconcile against upstream on Docsy upgrade. */}}
 <div class="section-index">
     {{ $pages := (where .Site.Pages "Section" .Section).ByWeight }}
     {{ if .IsHome }}
@@ -8,7 +9,7 @@
     {{/* If no_list is true we don't show a list of subpages */}}
     {{ else if $parent.Params.simple_list }}
     {{/* If simple_list is true we show a bulleted list of subpages */}}
-    <hr class="panel-line">  
+    <hr class="panel-line">
         <ul>
             {{ range $pages }}
                 {{ if eq .Parent $parent }}
@@ -17,17 +18,22 @@
             {{ end }}
         </ul>
     {{ else }}
-    {{/* Otherwise we show a nice formatted list of subpages with page descriptions */}}
+    {{/* Otherwise we show a card grid of subpages with page descriptions */}}
     <hr class="panel-line">
-        {{ range $pages }}
-            {{ if eq .Parent $parent }}
-                <div class="entry">
-                    <h5>
-                        <a href="{{ .RelPermalink }}">{{- .Title -}}</a>
-                    </h5>
-                    <p>{{ .Description | markdownify }}</p>
-                </div>
+        {{ $colors := slice "c-blue" "c-sky" "c-orange" "c-gold" }}
+        {{ $i := 0 }}
+        <div class="d-card-grid cols-3">
+            {{ range $pages }}
+                {{ if eq .Parent $parent }}
+                    {{ $c := index $colors (mod $i 4) }}
+                    <a class="d-card {{ $c }}" href="{{ .RelPermalink }}">
+                        <span class="d-card-title">{{ or .LinkTitle .Title }}</span>
+                        {{ with .Description }}<span class="d-card-desc">{{ . | markdownify }}</span>{{ end }}
+                        <span class="d-card-more">Learn more &rarr;</span>
+                    </a>
+                    {{ $i = add $i 1 }}
+                {{ end }}
             {{ end }}
-        {{ end }}
+        </div>
     {{ end }}
 </div>
