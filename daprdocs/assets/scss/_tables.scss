@@ -1,3 +1,10 @@
 //
 // tables
 //
+
+.td-content table {
+  width: 100%; border-collapse: collapse; font-size: .86rem; margin: 1rem 0;
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--d-border); vertical-align: top; }
+  thead th { font-family: var(--font-head); color: var(--d-heading); border-bottom: 2px solid var(--d-border); background: var(--d-panel); }
+  tbody tr:hover { background: color-mix(in srgb, var(--d-sky) 5%, transparent); }
+}
