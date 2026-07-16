@@ -1,3 +1,38 @@
 //
 // cards
 //
+
+// Project card grid (used by section-index.html for card-forward section landings)
+.d-card-grid { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:12px; margin:12px 0; }
+@media (min-width:1180px){ .d-card-grid.cols-3 { grid-template-columns: repeat(3, minmax(0,1fr)); } }
+@media (max-width:560px){ .d-card-grid { grid-template-columns:1fr; } }
+
+.d-card {
+  display:flex; flex-direction:column; gap:8px; text-decoration:none; color:var(--d-body);
+  border:1px solid var(--d-border); border-top-width:2px; border-radius:var(--d-radius);
+  padding:15px; background:var(--d-ground); transition:border-color .13s, transform .1s, box-shadow .13s;
+}
+.d-card:hover { transform:translateY(-2px); box-shadow:0 4px 14px rgba(15,21,34,.08); text-decoration:none; }
+[data-bs-theme="dark"] .d-card:hover { box-shadow:0 4px 16px rgba(0,0,0,.4); }
+.d-card .d-card-title { font-family:var(--font-head); font-weight:600; font-size:.9rem; color:var(--d-heading); }
+.d-card .d-card-desc { font-size:.8rem; color:var(--d-muted); flex:1; }
+.d-card .d-card-more { font-family:var(--font-head); font-size:.76rem; font-weight:600; color:var(--d-link); }
+.d-card.c-blue{border-top-color:var(--d-blue);}
+.d-card.c-sky{border-top-color:var(--d-sky);}
+.d-card.c-orange{border-top-color:var(--d-orange);}
+.d-card.c-gold{border-top-color:var(--d-gold);}
+
+// Docsy built-in cards (used e.g. by cardpane/card shortcodes in SDK docs)
+.td-content {
+  .card {
+    border:1px solid var(--d-border);
+    border-radius:var(--d-radius);
+    background:var(--d-ground);
+    color:var(--d-body);
+  }
+  .card-body { color:var(--d-body); }
+  .card-title {
+    font-family:var(--font-head);
+    color:var(--d-heading);
+  }
+}
