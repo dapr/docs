@@ -140,25 +140,11 @@
     }
 }
 
-.text-white a, .text-white a:visited {
-    color: white;
-    text-decoration: none;
-}
+// .text-white a / .text-white a:hover styling (previously hardcoded to raw
+// `white`) now owned by _footer.scss (Task 12) — `.text-white` is only ever
+// used inside the site footer.
 
-.text-white a:hover {
-    color: white;
-    text-decoration: underline;
-}
-
-.td-breadcrumbs a, .td-breadcrumbs a:visited {
-    color: $secondary;
-    text-decoration: none;
-}
-
-.td-breadcrumbs a:hover {
-    color: $primary;
-    text-decoration: none;
-}
+// .td-breadcrumbs styling now owned by _page-extras.scss (Task 12).
 
 .td-title {
     margin-top: 1rem;

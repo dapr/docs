@@ -1,3 +1,48 @@
 //
-// page-extras
+// page-extras — breadcrumbs + prev/next pager
 //
+// Breadcrumb color rules previously lived in _content.scss ($secondary /
+// $primary); they've moved here on tokens. Docsy's actual prev/next pager
+// (layouts/_partials/pager.html) renders <a class="btn btn-primary"> links,
+// not Bootstrap's .pagination/.page-link — those are already tokenized in
+// _buttons.scss (Task 8). The .pagination/.page-link rules below are kept as
+// a defensive match in case that markup is ever used (e.g. a future custom
+// pager), per the brief.
+//
+
+.td-breadcrumbs {
+    font-family: var(--font-head);
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+}
+
+.td-breadcrumbs a, .td-breadcrumbs a:visited {
+    color: var(--d-muted);
+    text-decoration: none;
+}
+
+.td-breadcrumbs a:hover {
+    color: var(--d-heading);
+}
+
+.td-breadcrumbs .active {
+    color: var(--d-blue);
+}
+
+// prev/next pager cards
+.td-content .pagination, .td-content nav[aria-label="Pagination"] {
+    gap: 12px;
+}
+
+.td-content .page-link {
+    border: 1px solid var(--d-border);
+    border-radius: var(--d-radius);
+    color: var(--d-body);
+    background: var(--d-ground);
+}
+
+.td-content .page-link:hover {
+    border-color: var(--d-orange);
+    color: var(--d-heading);
+}
