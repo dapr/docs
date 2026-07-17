@@ -224,3 +224,53 @@
         display: none !important;
     }
 }
+
+// ─── DESIGN EXPLORATION: home page (root _index.md) H1 hero band ───────────
+// Scoped via Docsy's .td-home body class. Full-bleed (square, flush to the
+// content column), faded dark→muted blue gradient chosen for AA-legible white
+// text, with the "Dapr Docs" text left and the Dapr logo right.
+// Uncommitted exploration; the H1 was changed to text in _index.md.
+// docs/list.html renders an empty <h1>{{ .LinkTitle }}</h1> on the home page
+// (home has no LinkTitle); hide it so only the markdown "Dapr Docs" h1 is styled.
+.td-home .td-content > h1:empty {
+    display: none;
+}
+
+.td-home .td-content > h1:not(:empty) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    max-width: none;
+    // Full-bleed to main's left/right edges. main = .col.ps-md-5: 0.75rem gutter
+    // both sides, left overridden to 3rem at >=md. Negative margins cancel them.
+    margin: -0.5rem -0.75rem 2rem;
+    padding: 2.75rem 2.25rem;
+    border-radius: 0;
+    // Radial gradient centered at the band's far right (= main's right edge):
+    // dark Dapr blue core (behind the white logo) fading out to white (behind
+    // the Dapr-blue "Dapr Docs" text on the left). Fixed colors, both themes.
+    background: radial-gradient(circle at right, #0D2192 0%, #3ea9f5 28%, #ffffff 72%);
+    color: #0D2192;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+@media (min-width: 768px) {
+    // >=md the main column uses ps-md-5 (3rem) on the left — bleed the full 3rem.
+    .td-home .td-content > h1:not(:empty) {
+        margin-left: -3rem;
+    }
+}
+// Dapr logo on the right (served from static; white mark reads on the dark band).
+.td-home .td-content > h1:not(:empty)::after {
+    content: "";
+    flex: 0 0 auto;
+    width: 92px;
+    height: 92px;
+    background: url("/images/dapr-logo-hero.svg") no-repeat center / contain;
+}
+@media (max-width: 600px) {
+    .td-home .td-content > h1:not(:empty) { padding: 2rem 1.25rem; font-size: 2rem; }
+    .td-home .td-content > h1:not(:empty)::after { width: 64px; height: 64px; }
+}

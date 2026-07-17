@@ -17,6 +17,11 @@
 .d-card .d-card-title { font-family:var(--font-head); font-weight:600; font-size:.9rem; color:var(--d-heading); }
 .d-card .d-card-desc { font-size:.8rem; color:var(--d-muted); flex:1; }
 .d-card .d-card-more { font-family:var(--font-head); font-size:.76rem; font-weight:600; color:var(--d-link); }
+// Optional icon slot. When present it's grouped with the title in .d-card-head
+// so the icon and title sit on the same row. Brand logos keep their own colors;
+// a fixed height keeps the grid aligned regardless of each logo's aspect ratio.
+.d-card .d-card-head { display:flex; align-items:center; gap:10px; }
+.d-card .d-card-icon { height:36px; width:auto; max-width:56px; object-fit:contain; flex:0 0 auto; }
 .d-card.c-blue{border-top-color:var(--d-blue);}
 .d-card.c-sky{border-top-color:var(--d-sky);}
 .d-card.c-orange{border-top-color:var(--d-orange);}
