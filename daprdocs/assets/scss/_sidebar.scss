@@ -1,0 +1,64 @@
+//
+// sidebar
+//
+// The tree itself is injected client-side by static/js/sidebar-nav.js (do not
+// change that file's behavior here — this is styling only). Docsy's own
+// foldable-nav collapse/expand CSS lives in the theme's vendored _nav.scss
+// and is left alone; we only touch colors/typography of the links.
+//
+
+.td-sidebar {
+    background: var(--d-ground);
+    border-right: 1px solid var(--d-border);
+    // Sticky offset tracks the fixed header bottom (banner + navbar), same as the
+    // right aside — see _toc.scss. Falls back to 4rem when there's no banner.
+    top: var(--dapr-header-bottom, 4rem);
+
+    .td-sidebar-nav__section-title, .td-sidebar-link {
+        font-size: .84rem;
+        color: var(--d-body);
+        border-radius: 6px;
+        padding: 2px 8px;
+    }
+
+    .td-sidebar-link:hover {
+        background: var(--d-panel);
+        color: var(--d-heading);
+    }
+
+    // Active item: the background lives on the block-level link so it spans the
+    // full width, including wrapped multi-line titles. The inner span
+    // (.td-sidebar-nav-active-item) gets NO separate highlight — that inline
+    // background was a second, tight highlight that didn't cover wrapped lines.
+    .td-sidebar-link.active {
+        color: var(--d-heading);
+        font-weight: 500;
+        background: color-mix(in srgb, var(--d-blue) 12%, transparent);
+        border-radius: 0 6px 6px 0;
+    }
+    .td-sidebar-nav-active-item {
+        background: none;
+        color: inherit;
+    }
+
+    // Blue accent lives on the active item's <li> (tagged by sidebar-nav.js),
+    // not the <a>. Inset shadow = a left border that doesn't shift layout.
+    .td-sidebar-active-li {
+        box-shadow: inset 2px 0 0 var(--d-blue);
+        border-radius: 0 6px 6px 0;
+    }
+
+    // Tighter tree: half the nested indentation (Docsy default 1.5em) and no
+    // extra vertical margin on list items.
+    .ul-1 ul { padding-left: .75em; }
+    li { margin-top: 0; margin-bottom: 0; }
+
+    // section group labels
+    .tree-root {
+        font-family: var(--font-head);
+        text-transform: uppercase;
+        letter-spacing: .08em;
+        font-size: .7rem;
+        color: var(--d-muted);
+    }
+}
