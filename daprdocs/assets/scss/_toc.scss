@@ -6,6 +6,14 @@
 // static/js/toc-scrollspy.js (added in Task 11), loaded from body-end.html.
 //
 
+// Sticky offset tracks the fixed header's actual bottom (announcement-banner.js
+// publishes --dapr-header-bottom = banner + navbar). Without this the sticky
+// aside sits under a static 4rem and the pushed-down navbar overlaps the
+// page-meta while the banner is visible. Falls back to 4rem when no banner.
+.td-sidebar-toc {
+    top: var(--dapr-header-bottom, 4rem);
+}
+
 .td-toc {
     font-size: .8rem;
 

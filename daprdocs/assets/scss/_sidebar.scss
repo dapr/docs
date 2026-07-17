@@ -10,6 +10,9 @@
 .td-sidebar {
     background: var(--d-ground);
     border-right: 1px solid var(--d-border);
+    // Sticky offset tracks the fixed header bottom (banner + navbar), same as the
+    // right aside — see _toc.scss. Falls back to 4rem when there's no banner.
+    top: var(--dapr-header-bottom, 4rem);
 
     .td-sidebar-nav__section-title, .td-sidebar-link {
         font-size: .84rem;
