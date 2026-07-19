@@ -1,4 +1,19 @@
-<script src="/js/copy-code-button.js"></script>
+{{/* Note: the code-block copy button is provided by Docsy's own
+     js/click-to-copy.js (loaded via Docsy scripts.html). The previous custom
+     /js/copy-code-button.js was redundant and produced a duplicate button, so
+     it was removed. Docsy's button is styled in _content.scss. */}}
+{{ with resources.Get "js/theme-toggle.js" }}
+  {{ $opts := dict "minify" hugo.IsProduction "targetPath" "js/theme-toggle.js" }}
+  {{ with . | js.Build $opts }}
+    {{ if hugo.IsProduction }}
+      {{ with . | fingerprint }}
+        <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
+      {{ end }}
+    {{ else }}
+      <script src="{{ .RelPermalink }}"></script>
+    {{ end }}
+  {{ end }}
+{{ end }}
 
 {{ with .Site.Params.search.algolia }}
 <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
@@ -26,3 +41,7 @@
 <script src="/js/announcement-banner.js" defer></script>
 
 <script src="/js/sidebar-nav.js" defer></script>
+
+{{/* Docsy ships the "On this page" TOC markup but no scrollspy — see
+     static/js/toc-scrollspy.js for why this is needed. */}}
+<script src="/js/toc-scrollspy.js" defer></script>

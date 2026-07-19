@@ -1125,26 +1125,44 @@ Because of how replay-based workflows execute, you'll write logic that does thin
 
 {{% /alert %}}
 
-## Run the workflow & inspect the workflow execution with the Diagrid Dashboard
+## Run the workflow & inspect the workflow execution with the Diagrid Dev Dashboard
 
 Start the workflow application via your IDE or the Dapr CLI ([Dapr multi-app run]({{%  ref multi-app-overview.md %}}) if you want to start multiple applications, or regular [Dapr run command](#testing-the-workflow-via-the-dapr-cli) for one application, and schedule a new workflow instance.
 
-Use the local [Diagrid Dashboard](https://diagrid.ws/diagrid-dashboard-docs) to visualize and inspect your workflow state, and drill down to see detailed workflow execution history. The dashboard runs as a container and is connected to the state store that is used by Dapr workflows (by default a local Redis instance).
+Use the local [Diagrid Dev Dashboard](https://diagrid.ws/diagrid-dashboard-docs) to visualize and inspect your workflow state, and drill down to see detailed workflow execution history. The dashboard runs as a standalone tool and is connected to the state store that is used by Dapr workflows (by default a local Redis instance).
 
-<img src="/images/workflow-overview/workflow-diagrid-dashboard.png" width=800 alt="Diagrid Dashboard showing local workflow executions"/><br/>
+<img src="/images/workflow-overview/workflow-diagrid-dashboard.png" width=800 alt="Diagrid Dev Dashboard showing local workflow executions"/><br/>
 
-Start the Diagrid Dashboard container using Docker:
+{{< tabpane text=true >}}
+
+Download & install the dashboard via the terminal:
+
+{{% tab "Linux/MacOS" %}}
 
 ```bash
-docker run -p 8080:8080 ghcr.io/diagridio/diagrid-dashboard:latest
+curl -sSL https://raw.githubusercontent.com/diagridio/dev-dashboard/main/scripts/install.sh | sh
 ```
 
-{{% alert title="Note" color="primary" %}}
-If you're using another state store than the default Redis instance, you need to provide some additional arguments to run the container, see the [Diagrid Dashboard reference docs](https://diagrid.ws/diagrid-dashboard-docs).
-{{% /alert %}}
+{{% /tab %}}
+
+{{% tab "Windows" %}}
+
+```bash
+iwr -useb https://raw.githubusercontent.com/diagridio/dev-dashboard/main/scripts/install.ps1 | iex
+```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
+
+Start the Diagrid Dev Dashboard with:
+
+```bash
+diagrid-dev-dashboard
+```
 
 <!-- IGNORE_LINKS -->
-Open the dashboard in a browser at [http://localhost:8080](http://localhost:8080).
+The dashboard will open in a browser at [http://localhost:9090](http://localhost:9090). Navigate to the Workflows page to inspect the workflows.
 <!-- END_IGNORE -->
 
 ## Testing the workflow via the Dapr CLI

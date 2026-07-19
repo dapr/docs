@@ -160,6 +160,4 @@ Visit the [integrations]({{% ref integrations %}}) page to learn about some of t
 
 Dapr is designed for [operations]({{% ref operations %}}) and security. The Dapr sidecars, runtime, components, and configuration can all be managed and deployed easily and securely to match your organization's needs.
 
-The [dashboard](https://github.com/dapr/dashboard), installed via the Dapr CLI, provides a web-based UI enabling you to see information, view logs, and more for running Dapr applications.
-
 Dapr supports [monitoring tools]({{% ref observability %}}) for deeper visibility into the Dapr system services and sidecars, while the [observability capabilities]({{% ref "observability-concept" %}}) of Dapr provide insights into your application, such as tracing and metrics.
