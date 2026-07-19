@@ -62,3 +62,45 @@
         color: var(--d-muted);
     }
 }
+
+// ── Mobile / tablet (< lg): section nav is a hamburger-toggled menu ──────────
+// Docsy force-shows .td-sidebar-nav at md (>=768px), but the mobile menu
+// container (#content-mobile) and the toggle only make sense below lg. That
+// left the full sidebar open on tablet / landscape-phone widths with no visible
+// toggle. Keep it collapsed until the hamburger opens it (Bootstrap adds .show).
+@media (max-width: 991.98px) {
+    // Keep the nav collapsed until the hamburger opens it (overrides Docsy's
+    // md force-show).
+    .td-sidebar-nav.collapse:not(.show) {
+        display: none !important;
+    }
+    // Stack the layout full-width below lg so the sidebar reads as a collapsible
+    // menu bar at the top rather than a cramped 25% side column (Docsy's grid
+    // makes it col-md-3 from 768px).
+    .td-sidebar,
+    main[role="main"] {
+        flex: 0 0 100%;
+        max-width: 100%;
+        width: 100%;
+    }
+    // No right border on the stacked (full-width) sidebar; a bottom rule reads
+    // better as a menu bar.
+    .td-sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--d-border);
+    }
+}
+
+// The hamburger toggle (button.td-sidebar__toggle.fas.fa-bars). Force the Font
+// Awesome solid weight so the glyph renders (Bootstrap's .btn font-weight would
+// otherwise break it), and tint it with tokens.
+.td-sidebar__toggle {
+    color: var(--d-heading);
+    font-weight: 900;
+    font-size: 1.15rem;
+    line-height: 1;
+}
+.td-sidebar__toggle:hover,
+.td-sidebar__toggle:focus {
+    color: var(--d-blue);
+}
