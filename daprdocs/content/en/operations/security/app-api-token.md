@@ -31,7 +31,15 @@ In self-hosting scenario, Dapr looks for the presence of `APP_API_TOKEN` environ
 export APP_API_TOKEN=<token>
 ```
 
-To rotate the configured token, update the `APP_API_TOKEN` environment variable to the new value and restart the `daprd` process.
+By default, Dapr sends this token in the `dapr-api-token` HTTP header or gRPC metadata key. To use a custom name instead, set `DAPR_APP_API_TOKEN_HEADER` when `daprd` launches:
+
+```shell
+export DAPR_APP_API_TOKEN_HEADER=<custom-name>
+```
+
+The custom name replaces `dapr-api-token`; Dapr does not send both names. If `DAPR_APP_API_TOKEN_HEADER` is unset or empty, Dapr uses `dapr-api-token`. Setting only the custom name without setting `APP_API_TOKEN` does not cause Dapr to send either header or metadata key.
+
+To rotate the configured token or change its header or metadata name, update the environment variable and restart the `daprd` process.
 
 ### Kubernetes
 
@@ -49,9 +57,10 @@ To indicate to Dapr to use the token in the secret when sending requests to the 
 annotations:
   dapr.io/enabled: "true"
   dapr.io/app-token-secret: "app-api-token" # name of the Kubernetes secret
+  dapr.io/app-token-header: "x-api-key" # optional custom HTTP header or gRPC metadata name
 ```
 
-When deployed, the Dapr Sidecar Injector automatically creates a secret reference and injects the actual value into `APP_API_TOKEN` environment variable.
+When deployed, the Dapr Sidecar Injector automatically creates a secret reference and injects the actual value into the `APP_API_TOKEN` environment variable. If `dapr.io/app-token-header` is present, the injector also sets `DAPR_APP_API_TOKEN_HEADER` on the sidecar. The custom name replaces the default `dapr-api-token` name.
 
 ## Rotate a token
 
@@ -89,7 +98,7 @@ kubectl rollout restart deployment/<deployment-name> --namespace <namespace-name
 
 ## Authenticating requests from Dapr
 
-Once app token authentication is configured using the environment variable or Kubernetes secret `app-api-token`, the Dapr sidecar always includes the HTTP header/gRPC metadata `dapr-api-token: <token>` in the calls to the app. From the app side, ensure you are authenticating using the `dapr-api-token` value which uses the `app-api-token` you set to authenticate requests from Dapr.
+Once app token authentication is configured using the environment variable or Kubernetes secret `app-api-token`, the Dapr sidecar includes the token in calls to the app. The default HTTP header or gRPC metadata name is `dapr-api-token`. If you configure `DAPR_APP_API_TOKEN_HEADER` or `dapr.io/app-token-header`, authenticate using that name instead.
 
 <img src="/images/tokens-auth.png" width=800 style="padding-bottom:15px;">
 
@@ -101,6 +110,12 @@ In your code, look for the HTTP header `dapr-api-token` in incoming requests:
 dapr-api-token: <token>
 ```
 
+If you configured a custom name such as `x-api-key`, look for only that header:
+
+```text
+x-api-key: <token>
+```
+
 ### gRPC
 
 When using gRPC protocol, inspect the incoming calls for the API token on the gRPC metadata:
@@ -108,6 +123,8 @@ When using gRPC protocol, inspect the incoming calls for the API token on the gR
 ```text
 dapr-api-token[0].
 ```
+
+If you configured a custom name, inspect the corresponding gRPC metadata key instead.
 
 ## Accessing the token from the app
 
