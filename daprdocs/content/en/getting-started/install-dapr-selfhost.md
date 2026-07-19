@@ -180,14 +180,42 @@ dapr init --slim
 
 ### Other tooling (optional)
 
-#### Diagrid Dashboard for Dapr Workflow
+#### Diagrid Dev Dashboard
 
-If you're planning to build Dapr Workflow applications, you can install the [Diagrid Dashboard](https://diagrid.ws/diagrid-dashboard-docs) to visualize workflow state during local development:
+The free [Diagrid Dev Dashboard](https://diagrid.ws/diagrid-dashboard-docs) is a companion for local Dapr development. It provides insights for applications, sidecars, components, actors, workflows, and logs. It can also be used to create Dapr component files and resiliency policies, without hand-editing yaml.
 
-Start the Diagrid Dashboard container using Docker:
+<img src="/images/install-dapr-selfhost/diagrid-dashboard-applications.png" width=800 alt="Diagrid Dev Dashboard showing local Dapr applications"/><br/>
+
+{{< tabpane text=true >}}
+
+Download & install the dashboard via the terminal:
+
+{{% tab "Linux/MacOS" %}}
 
 ```bash
-docker run -p 8080:8080 ghcr.io/diagridio/diagrid-dashboard:latest
+curl -sSL https://raw.githubusercontent.com/diagridio/dev-dashboard/main/scripts/install.sh | sh
 ```
+
+{{% /tab %}}
+
+{{% tab "Windows" %}}
+
+```bash
+iwr -useb https://raw.githubusercontent.com/diagridio/dev-dashboard/main/scripts/install.ps1 | iex
+```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
+
+Start the Diagrid Dev Dashboard with:
+
+```bash
+diagrid-dev-dashboard
+```
+
+<!-- IGNORE_LINKS -->
+The dashboard will open in a browser at [http://localhost:9090](http://localhost:9090).
+<!-- END_IGNORE -->
 
 {{< button text="Next step: Use the Dapr API >>" page="getting-started/get-started-api.md" >}}
