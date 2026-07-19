@@ -1,10 +1,16 @@
+/* Restyled with the project's --d-* design tokens (see daprdocs/assets/scss/_tokens.scss)
+   so this always-loaded static stylesheet stays on-brand and legible in both
+   themes. Light mode keeps the original brand-navy bar unchanged; dark mode is
+   overridden separately below because --d-blue becomes a light accent color in
+   dark mode (by design, for links/icons on dark surfaces) and would fail
+   contrast paired with white text here. */
 .announcement-banner {
   box-sizing: border-box;
   position: relative;
   width: 100%;
   z-index: 33;
-  background-color: #0d2192;
-  color: #ffffff;
+  background-color: var(--d-blue);
+  color: var(--d-on-accent);
   font-family: inherit;
 }
 
@@ -48,7 +54,7 @@
 }
 
 .announcement-banner__link {
-  color: #ffffff;
+  color: var(--d-on-accent);
   text-decoration: underline;
   font-weight: 600;
   white-space: nowrap;
@@ -56,7 +62,7 @@
 
 .announcement-banner__link:hover,
 .announcement-banner__link:focus {
-  color: #ffffff;
+  color: var(--d-on-accent);
   opacity: 0.85;
 }
 
@@ -65,7 +71,7 @@
   flex: 0 0 auto;
   background: transparent;
   border: 0;
-  color: #ffffff;
+  color: var(--d-on-accent);
   cursor: pointer;
   line-height: 1;
   padding: 4px 8px;
@@ -89,7 +95,7 @@
 .announcement-banner__close:focus-visible,
 .announcement-banner__dot:focus-visible,
 .announcement-banner__link:focus-visible {
-  outline: 2px solid #ffffff;
+  outline: 2px solid var(--d-on-accent);
   outline-offset: 2px;
 }
 
@@ -106,12 +112,12 @@
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.45);
+  background: color-mix(in srgb, var(--d-on-accent) 45%, transparent);
   cursor: pointer;
 }
 
 .announcement-banner__dot.is-active {
-  background: #ffffff;
+  background: var(--d-on-accent);
 }
 
 @media (max-width: 575.98px) {
@@ -123,4 +129,30 @@
   .announcement-banner__text {
     font-size: 0.85rem;
   }
+}
+
+[data-bs-theme="dark"] .announcement-banner {
+  background-color: var(--d-panel);
+  color: var(--d-heading);
+}
+
+[data-bs-theme="dark"] .announcement-banner__link,
+[data-bs-theme="dark"] .announcement-banner__nav,
+[data-bs-theme="dark"] .announcement-banner__close {
+  color: var(--d-heading);
+}
+
+[data-bs-theme="dark"] .announcement-banner__dot {
+  background: color-mix(in srgb, var(--d-heading) 35%, transparent);
+}
+
+[data-bs-theme="dark"] .announcement-banner__dot.is-active {
+  background: var(--d-heading);
+}
+
+[data-bs-theme="dark"] .announcement-banner__nav:focus-visible,
+[data-bs-theme="dark"] .announcement-banner__close:focus-visible,
+[data-bs-theme="dark"] .announcement-banner__dot:focus-visible,
+[data-bs-theme="dark"] .announcement-banner__link:focus-visible {
+  outline-color: var(--d-heading);
 }

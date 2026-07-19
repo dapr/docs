@@ -73,6 +73,8 @@
     // Reveal siblings of the active item and its direct children (compact mode).
     var activeLi = document.getElementById(mid + "-li");
     if (activeLi) {
+      activeLi.classList.add("td-sidebar-active-li"); // styling hook for the active item's <li>
+
       var container = activeLi.parentElement;
       if (container) {
         Array.prototype.forEach.call(container.children, function (el) {
