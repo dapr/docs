@@ -4,10 +4,12 @@ title: "Overview"
 linkTitle: "Overview"
 weight: 5
 description: >
-  Introduction to the Distributed Application Runtime
+  Introduction to Dapr, the durable execution engine for workflows and AI agents
 ---
 
-Dapr is a portable, event-driven runtime that makes it easy for any developer to build resilient, stateless, and stateful applications that run on the cloud and edge and embraces the diversity of languages and developer frameworks.
+Dapr provides durable, verifiable execution so your workflows and AI agents survive failure and keep running to completion. At its core is a durable execution workflow engine that guarantees every step runs to completion despite crashes, restarts, and network outages, recovering state from exactly where it left off. Workflow execution histories can be [cryptographically signed and verifiable]({{% ref workflow-history-signing.md %}}), making what ran tamper-evident and auditable, and the same engine powers durable AI agents that reason, call tools, and recover from any point of failure without losing progress.
+
+As a CNCF distributed application runtime, Dapr is portable and event-driven, making it easy for any developer to build resilient, stateless, and stateful applications that run on the cloud and edge, embracing the diversity of languages and developer frameworks.
 
 {{< youtube id=9o9iDAgYBA8 >}}
 
@@ -42,9 +44,9 @@ Each of these building block APIs is independent, meaning that you can use any n
 
 | Building Block | Description |
 |----------------|-------------|
+| [**Workflows**]({{% ref "workflow-overview" %}}) | Dapr's durable execution engine for defining long-running, persistent processes or data flows that span multiple microservices, guaranteeing each step runs to completion despite failures. The workflow API can be combined with other Dapr building blocks, and workflow histories can be cryptographically signed and verified.
 | [**Service-to-service invocation**]({{% ref "service-invocation-overview" %}})  | Resilient service-to-service invocation enables method calls, including retries, on remote services, wherever they are located in the supported hosting environment.
 | [**Publish and subscribe**]({{% ref "pubsub-overview" %}}) | Publishing events and subscribing to topics between services enables event-driven architectures to simplify horizontal scalability and make them resilient to failure. Dapr provides at-least-once message delivery guarantee, message TTL, consumer groups and other advance features.
-| [**Workflows**]({{% ref "workflow-overview" %}}) | The workflow API can be combined with other Dapr building blocks to define long running, persistent processes or data flows that span multiple microservices using Dapr workflows.
 | [**State management**]({{% ref "state-management-overview" %}}) | With state management for storing and querying key/value pairs, long-running, highly available, stateful services can be easily written alongside stateless services in your application. The state store is pluggable and examples include AWS DynamoDB, Azure Cosmos DB, Azure SQL Server, GCP Firebase, PostgreSQL or Redis, among others.
 | [**Resource bindings**]({{% ref "bindings-overview" %}}) | Resource bindings with triggers builds further on event-driven architectures for scale and resiliency by receiving and sending events to and from any external source such as databases, queues, file systems, etc.
 | [**Actors**]({{% ref "actors-overview" %}}) | A pattern for stateful and stateless objects that makes concurrency simple, with method and state encapsulation. Dapr provides many capabilities in its actor runtime, including concurrency, state, and life-cycle management for actor activation/deactivation, and timers and reminders to wake up actors.
