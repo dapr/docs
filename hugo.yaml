@@ -1,4 +1,4 @@
-baseURL: https://v1-18.docs.dapr.io
+baseURL: https://docs.dapr.io/
 title: Dapr Docs
 
 # Output directory for generated site
@@ -26,7 +26,9 @@ taxonomies:
 
 # Highlighting config
 pygmentsCodeFences: true
-pygmentsUseClasses: false
+# Class-based highlighting (not inline styles) so code can be themed for
+# light AND dark — see daprdocs/assets/scss/_chroma.scss.
+pygmentsUseClasses: true
 # Use the new Chroma Go highlighter in Hugo.
 pygmentsUseClassic: false
 # pygmentsOptions: "linenos=table"
@@ -93,6 +95,9 @@ markup:
   highlight:
     # See a complete list of available styles at https://xyproto.github.io/splash/docs/all.html
     style: tango
+    # Emit CSS classes instead of inline styles so both light and dark syntax
+    # palettes can be applied via _chroma.scss.
+    noClasses: false
     # Uncomment if you want your chosen highlight style used for code blocks without a specified language
     # guessSyntax: true
 

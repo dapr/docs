@@ -1,0 +1,40 @@
+//
+// typography
+//
+@font-face { font-family:"Geist"; font-weight:400; font-display:swap; src:url("/fonts/geist-400.woff2") format("woff2"); }
+@font-face { font-family:"Geist"; font-weight:500; font-display:swap; src:url("/fonts/geist-500.woff2") format("woff2"); }
+@font-face { font-family:"Geist"; font-weight:600; font-display:swap; src:url("/fonts/geist-600.woff2") format("woff2"); }
+@font-face { font-family:"Geist"; font-weight:700; font-display:swap; src:url("/fonts/geist-700.woff2") format("woff2"); }
+@font-face { font-family:"Inter"; font-weight:400; font-display:swap; src:url("/fonts/inter-400.woff2") format("woff2"); }
+@font-face { font-family:"Inter"; font-weight:500; font-display:swap; src:url("/fonts/inter-500.woff2") format("woff2"); }
+@font-face { font-family:"Inter"; font-weight:600; font-display:swap; src:url("/fonts/inter-600.woff2") format("woff2"); }
+@font-face { font-family:"Geist Mono"; font-weight:400; font-display:swap; src:url("/fonts/geist-mono-400.woff2") format("woff2"); }
+@font-face { font-family:"Geist Mono"; font-weight:500; font-display:swap; src:url("/fonts/geist-mono-500.woff2") format("woff2"); }
+
+:root {
+  --font-head: "Geist", ui-sans-serif, -apple-system, "Segoe UI", Arial, sans-serif;
+  --font-body: "Inter", ui-sans-serif, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+body { font-family: var(--font-body); }
+
+// Anchor-scroll offset. Fragment links (e.g. a link to a heading) must land
+// below the fixed navbar instead of at viewport top 0, where the heading would
+// sit hidden underneath it.
+//
+// This is applied as scroll-margin-top on the heading TARGETS rather than
+// scroll-padding-top on the scroll root: browsers honor target-side
+// scroll-margin reliably for fragment navigation, including the initial jump on
+// a cross-page load, whereas scroll-padding-top on <html> was being ignored on
+// that initial jump (the heading landed behind the navbar).
+//
+// The value is deliberately STABLE, not the dynamic --dapr-header-bottom the
+// sticky sidebar/TOC use. The announcement banner is position:relative (in
+// normal flow): it pushes content down and scrolls away, so it never overlays
+// content — only the fixed navbar (min-height 56px, see _navbar.scss) does. Any
+// anchor deep enough to scroll settles with the banner gone and just the navbar
+// pinned at the top, so navbar height + breathing room is the correct offset.
+// 4.5rem = 56px navbar + breathing room.
+main h1, main h2, main h3, main h4, main h5, main h6 { scroll-margin-top: 4.5rem; }
+h1,h2,h3,h4,h5,h6,.td-content h1,.td-content h2,.td-content h3 { font-family: var(--font-head); letter-spacing:-0.015em; text-wrap:balance; }
+code,pre,kbd,samp { font-family: var(--font-mono); }
