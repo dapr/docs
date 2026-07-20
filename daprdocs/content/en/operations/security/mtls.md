@@ -275,14 +275,25 @@ helm upgrade \
   dapr/dapr
 ```
 
-Alternatively, you can update the Kubernetes secret that holds them:
+Alternatively, you can update the Kubernetes objects that hold them. The trust bundle is stored in two objects in the Dapr system namespace: the `dapr-trust-bundle` **Secret** holds the root certificate, issuer certificate, and issuer key, while the `dapr-trust-bundle` **ConfigMap** distributes the public root certificate to the rest of the system. Sentry validates them as a pair: if the root certificate in the ConfigMap does not match the one in the Secret, Sentry discards the bundle and generates a new self-signed 1-year CA in its place, overwriting the certificates you just applied. Helm and the Dapr CLI keep both objects in sync automatically; when updating with `kubectl` you must update both yourself.
 
-```bash
-kubectl edit secret dapr-trust-bundle -n <DAPR_NAMESPACE>
-```
+1. Update the Secret:
 
-Replace the `ca.crt`, `issuer.crt` and `issuer.key` keys in the Kubernetes secret with their corresponding values from the new certificates.
-*__Note: The values must be base64 encoded__*
+    ```bash
+    kubectl edit secret dapr-trust-bundle -n <DAPR_NAMESPACE>
+    ```
+
+    Replace the `ca.crt`, `issuer.crt` and `issuer.key` keys in the Kubernetes secret with their corresponding values from the new certificates.
+    *__Note: The values must be base64 encoded__*
+
+2. If you replaced the root certificate (`ca.crt`), update the ConfigMap with the identical root certificate. Note the ConfigMap value is plain PEM, not base64:
+
+    ```bash
+    kubectl create configmap dapr-trust-bundle --from-file=ca.crt=root.pem \
+      --dry-run=client -o yaml | kubectl apply -n <DAPR_NAMESPACE> -f -
+    ```
+
+    The ConfigMap only contains the root certificate, so if `ca.crt` did not change — for example, you only renewed the issuer certificate and key — skip this step.
 
 If you signed the new cert root with the **same private key** the Dapr Sentry service will pick up the new certificates automatically. You can restart your application deployments using `kubectl rollout restart` with zero downtime. It is not necessary to restart all deployments at once, as long as deployments are restarted before original certificate expiration.
 
@@ -303,6 +314,8 @@ See [long-running workflows and root CA expiry]({{% ref "workflow-history-signin
 ```bash
 kubectl rollout restart deploy/dapr-sentry -n <DAPR_NAMESPACE>
 ```
+
+After Sentry reloads or restarts, check its logs to confirm your certificates were accepted. If you see `Root and issuer certs not found: generating self signed CA`, the root certificate in the ConfigMap does not match the Secret, and Sentry has replaced your certificates with a new self-signed CA.
 
 Once Sentry has been completely restarted run:
 
