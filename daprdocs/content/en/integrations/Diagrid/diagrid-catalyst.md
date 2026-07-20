@@ -6,7 +6,7 @@ description: "An agentic AI orchestration platform for governing, securing, and 
 weight: 3000
 ---
 
-[Diagrid Catalyst](https://www.diagrid.io/catalyst) is an agentic AI orchestration platform for governing, securing, and running agents and durable workflows in production. Built on open source Dapr, it adds production-grade governance, security, and durability for AI workloads while remaining compatible with popular agent frameworks.
+[Diagrid Catalyst](https://www.diagrid.io/catalyst) is an agentic AI orchestration platform that brings durable agentic execution to AI agents and workflows, governing, securing, and running them in production. Built on open source Dapr, it adds production-grade governance, security, and durability for AI workloads while remaining compatible with popular agent frameworks.
 
 **Durable execution**
 
