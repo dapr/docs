@@ -10,8 +10,11 @@
 
 ## Global Constraints
 
-- Site content root (Hugo working dir): `daprdocs/`. All Hugo commands run from there.
-- Local verification uses `hugo server` (macOS: SCSS compiles fine). Do **not** use `npm run serve` or a production `hugo --minify` build — those hit a known PostCSS `--permission` error in this environment.
+- Hugo config is `hugo.yaml` at the **repo root**; all Hugo commands run from the repo root (`/Users/marcduiker/dev/dapr/docs`), not from `daprdocs/`. Content lives under `daprdocs/content/en` (mounted to `content/`).
+- **Verification command (headless, tested):** from the repo root run
+  `hugo --environment development --renderToMemory --logLevel error`
+  The `development` environment avoids the known production PostCSS `--permission` error; `--renderToMemory` avoids writing files; a broken `{{< ref >}}` or bad front matter prints an `ERROR` line and fails the build. A task's build gate = the command exits cleanly and prints **no** `ERROR`/`REF_NOT_FOUND` lines (a clean run ends with a `Total in NNN ms` line and a page-count table). Do **not** use `hugo server` (it blocks) or `npm run serve` / `hugo --minify` (PostCSS error).
+- Per-task gate is a clean dev build plus confirming the changed source file contains the expected front matter/content. Visual checks (left-nav placement/order, browser redirects) are deferred to the controller's final verification.
 - URLs are lowercased by the site config: folder `Diagrid` → URL `/integrations/diagrid/`. All alias values and internal links must be **lowercase**.
 - Page style is **light**: 1–2 sentence intro, 3–5 short **bold-label** feature highlights each with a one-line description, and a `{{< button >}}` to the Diagrid docs. No long marketing copy.
 - Internal cross-links use the `{{< ref "filename.md" >}}` shortcode (Hugo validates it at build time and fails loudly on typos). External links use full `https://` URLs.
@@ -101,7 +104,7 @@ sed -i '' 's#docs.dapr.io/developing-applications/integrations/#docs.dapr.io/int
 - [ ] **Step 5: Build and verify**
 
 ```bash
-cd daprdocs && hugo server
+hugo --environment development --renderToMemory --logLevel error
 ```
 Expected: build succeeds with no `REF_NOT_FOUND` errors. In the browser, confirm **Integrations** is a top-level left-nav item (between "Developing AI with Dapr" and "Deploying and configuring…"), and that `http://localhost:1313/developing-applications/integrations/` redirects to `/integrations/`. Stop the server (Ctrl-C).
 
@@ -162,7 +165,7 @@ The Dev Dashboard works with applications started through `dapr run`, Docker Com
 - [ ] **Step 2: Build and verify**
 
 ```bash
-cd daprdocs && hugo server
+hugo --environment development --renderToMemory --logLevel error
 ```
 Expected: build succeeds. Confirm the page renders at `/integrations/diagrid/diagrid-dev-dashboard/` and the Learn-more button works. Stop the server.
 
@@ -227,7 +230,7 @@ Recommendations based on past resource behavior lead to significant CPU and memo
 - [ ] **Step 2: Build and verify**
 
 ```bash
-cd daprdocs && hugo server
+hugo --environment development --renderToMemory --logLevel error
 ```
 Expected: build succeeds. Confirm the page renders with the Conductor image and the button links to `docs.diagrid.io/dapr-open-source/conductor`, and that `/developing-applications/integrations/diagrid/diagrid-conductor/` redirects. Stop the server.
 
@@ -287,7 +290,7 @@ Available as Catalyst Cloud, a fully managed serverless platform, or Catalyst En
 - [ ] **Step 2: Build and verify**
 
 ```bash
-cd daprdocs && hugo server
+hugo --environment development --renderToMemory --logLevel error
 ```
 Expected: build succeeds. Confirm the page renders at `/integrations/diagrid/diagrid-catalyst/` with both buttons working. Stop the server.
 
@@ -346,7 +349,7 @@ Architecture reviews and tailored training sessions from the engineers who build
 - [ ] **Step 2: Build and verify**
 
 ```bash
-cd daprdocs && hugo server
+hugo --environment development --renderToMemory --logLevel error
 ```
 Expected: build succeeds. Confirm the page renders at `/integrations/diagrid/diagrid-dapr-support/` and the Learn-more button works. Stop the server.
 
@@ -395,7 +398,7 @@ For a high-level overview of commercial support and managed services across the 
 - [ ] **Step 2: Build and verify**
 
 ```bash
-cd daprdocs && hugo server
+hugo --environment development --renderToMemory --logLevel error
 ```
 Expected: build succeeds with **no** `REF_NOT_FOUND` — all five `{{< ref >}}` links resolve. Confirm the Diagrid subsection lists all four child pages in order: Dev Dashboard, Conductor, Catalyst, Dapr enterprise support. Stop the server.
 
@@ -442,7 +445,7 @@ Leave the **D3E** section unchanged (no Integrations page for D3E — it lives o
 - [ ] **Step 2: Build and verify**
 
 ```bash
-cd daprdocs && hugo server
+hugo --environment development --renderToMemory --logLevel error
 ```
 Expected: build succeeds, no `REF_NOT_FOUND`. Confirm the three cross-links render and navigate to the correct Integrations/Diagrid pages. Stop the server.
 
@@ -459,7 +462,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 
 ## Final verification
 
-- [ ] From `daprdocs/`, run `hugo server` one last time. Confirm:
+- [ ] From the repo root, run the headless dev build (`hugo --environment development --renderToMemory --logLevel error`) and separately `hugo server` for a visual pass. Confirm:
   - Build completes with no `REF_NOT_FOUND` or other errors.
   - **Integrations** is a top-level left-nav item.
   - The **Diagrid** subsection shows: Dev Dashboard, Conductor, Catalyst, Dapr enterprise support (in that order).
