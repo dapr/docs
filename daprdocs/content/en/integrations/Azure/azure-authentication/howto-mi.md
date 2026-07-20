@@ -5,6 +5,7 @@ linkTitle: "How to: Use managed identities"
 weight: 40000
 aliases:
   - "/developing-applications/integrations/azure/azure-authentication/howto-msi/"
+  - "/developing-applications/integrations/azure/azure-authentication/howto-mi/"
 description: "Learn how to use managed identities"
 ---
 

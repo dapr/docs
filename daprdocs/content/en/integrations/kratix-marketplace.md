@@ -4,6 +4,8 @@ title: "How to: Integrate with Kratix"
 linkTitle: "Kratix Marketplace"
 weight: 8000
 description: "Integrate with Kratix using a Dapr promise"
+aliases:
+  - /developing-applications/integrations/kratix-marketplace/
 ---
 
 As part of the [Kratix Marketplace](https://docs.kratix.io/marketplace), Dapr can be used to build custom platforms tailored to your needs. 

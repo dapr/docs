@@ -4,6 +4,8 @@ title: "Dapr extension for Azure Kubernetes Service (AKS)"
 linkTitle: "Dapr extension for Azure Kubernetes Service (AKS)"
 description: "Provision Dapr on your Azure Kubernetes Service (AKS) cluster with the Dapr extension"
 weight: 4000
+aliases:
+  - /developing-applications/integrations/azure/azure-kubernetes-service-extension/
 ---
 
 The recommended approach for installing Dapr on AKS is to use the AKS Dapr extension. The extension offers:

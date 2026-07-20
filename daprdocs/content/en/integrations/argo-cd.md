@@ -4,6 +4,8 @@ title: "How to: Integrate with Argo CD"
 linkTitle: "Argo CD"
 weight: 9000
 description: "Integrate Dapr into your GitOps pipeline"
+aliases:
+  - /developing-applications/integrations/argo-cd/
 ---
 
 [Argo CD](https://argo-cd.readthedocs.io/en/stable/) is a declarative, GitOps continuous delivery tool for Kubernetes. It enables you to manage your Kubernetes deployments by tracking the desired application state in Git repositories and automatically syncing it to your clusters.  
