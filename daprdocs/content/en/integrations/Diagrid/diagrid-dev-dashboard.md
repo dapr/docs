@@ -8,6 +8,8 @@ weight: 1000
 
 [Diagrid Dev Dashboard](https://docs.diagrid.io/develop/local-development/dev-dashboard) is a free companion for local Dapr development. It automatically discovers Dapr applications running on your machine and provides visualization and inspection tools to speed up your development workflow. It is distributed as a single binary for macOS, Linux, and Windows.
 
+<br /><img src="/images/integrations/diagrid/applications-light.png" alt="Diagrid Dev Dashboard showing Dapr applications discovered on the local machine" width="800">
+
 **Application monitoring**
 
 Track all running Dapr apps with details on health, ports, PIDs, and runtime information.

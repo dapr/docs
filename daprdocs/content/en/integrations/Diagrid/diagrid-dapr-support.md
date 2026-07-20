@@ -1,12 +1,12 @@
 ---
 type: docs
-title: "Dapr enterprise support"
-linkTitle: "Dapr enterprise support"
+title: "Dapr Enterprise Support"
+linkTitle: "Dapr Enterprise Support"
 description: "Commercial support for open source Dapr from the project's lead maintainers"
 weight: 4000
 ---
 
-[Dapr enterprise support](https://docs.diagrid.io/dapr-open-source/dapr-support) from Diagrid provides commercial support for open source Dapr, delivered by the project's lead maintainers. It is available across three tiers, with 24×7 coverage on the Premium tier, so you can match the level of support to your production needs.
+[Dapr Enterprise Support](https://docs.diagrid.io/dapr-open-source/dapr-support) from Diagrid provides commercial support for open source Dapr, delivered by the project's lead maintainers. It is available across three tiers, with 24×7 coverage on the Premium tier, so you can match the level of support to your production needs.
 
 **Guaranteed response times**
 
