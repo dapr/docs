@@ -32,9 +32,9 @@ across instances.
 
 ### Flock framework integration
 
-Flock can use Dapr as a durable blackboard backend. This allows you to keep the
-same Flock agent model while switching persistence from local storage to
-distributed Dapr state stores such as Redis or PostgreSQL.
+Flock can use Dapr as a durable blackboard backend. This lets you keep the same
+Flock agent model while switching persistence from local storage to distributed
+Dapr state stores such as Redis or PostgreSQL.
 
 The example below is intentionally minimal and conceptual. It shows only the
 Dapr store wiring; full production configuration options and backend capability
@@ -49,7 +49,7 @@ store = DaprStateBlackboardStore(
     config=DaprStateBlackboardConfig(store_name="flockstate")
 )
 
-flock = Flock(model="openai/gpt-5.6", store=store)
+flock = Flock(model="openai/gpt-4.1", store=store)
 ```
 
 Read more:
@@ -96,3 +96,13 @@ async for event in runner.run_async(user_message="...", session_id="..."):
 |[Pydantic AI](https://docs.diagrid.io/getting-started/quickstarts/ai-agents/?agentframework=pydantic-ai)|Every LLM call and tool execution|`pip install "diagrid[pydantic_ai]"`|
 |[Strands Agents](https://docs.diagrid.io/getting-started/quickstarts/ai-agents/?agentframework=strands)|Every tool call in a Strands agent loop|`pip install "diagrid[strands]"`|
 |[Microsoft Agent Framework](https://docs.diagrid.io/getting-started/quickstarts/ai-agents/?agentframework=microsoft-dotnet)|Every agent invocation run as a Dapr Workflow activity|`dotnet add package Diagrid.AI.Microsoft.AgentFramework`|
+
+## Next steps
+
+- Explore [Dapr Workflows]({{% ref workflow-overview %}}) for durable
+    orchestration patterns.
+- Review [Dapr State management overview]
+    ({{% ref "state-management-overview.md" %}})
+    for component capabilities and trade-offs.
+- Use [Flock Dapr examples (GitHub)](https://github.com/whiteducksoftware/flock/tree/main/examples/12-dapr)
+    for runnable backend setups.
