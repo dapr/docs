@@ -14,6 +14,8 @@ Diagrid provides 24/7 enterprise support for open source Dapr, with a guaranteed
 
 {{< button text="Learn more about Dapr open source support" link="https://docs.diagrid.io/dapr-open-source/dapr-support" >}}
 
+See the [Dapr enterprise support]({{< ref diagrid-dapr-support.md >}}) integration page for a summary.
+
 ## Diagrid Dapr Distribution for Enterprise (D3E)
 
 D3E is a custom distribution of the open source Dapr project that enhances it with additional security and scalability capabilities, while maintaining full compatibility with the Dapr APIs and SDKs. Designed for large-scale production environments, it offers multi-tenancy support, reduced security permissions, enterprise support with guaranteed response times, and CVE backports to custom versions. It is aimed at organizations with stringent security requirements or substantial Dapr deployments.
@@ -28,9 +30,13 @@ D3E is a custom distribution of the open source Dapr project that enhances it wi
 
 {{< button text="Learn more about Diagrid Conductor" link="https://docs.diagrid.io/dapr-open-source/conductor" >}}
 
+See the [Diagrid Conductor]({{< ref diagrid-conductor.md >}}) integration page for a summary.
+
 ## Diagrid Catalyst
 
 Diagrid Catalyst is an AI orchestration platform that brings durable workflows, access control, and governance to AI agents and MCP servers. It delivers an AI-native workflow engine that integrates with existing agent frameworks, ensuring agents pick up where they left off in the event of any failure, from simple restarts to complete system outages. Catalyst also lets platform teams and developers issue cryptographic identities to agents, MCP servers, and tools, and apply policy-based access control across the organization.
 
 {{< button text="Learn more about Diagrid Catalyst" link="https://www.diagrid.io/catalyst" >}}
 {{< button text="Compare Dapr and Catalyst" link="https://docs.diagrid.io/dapr-open-source/dapr-vs-catalyst" color="secondary" >}}
+
+See the [Diagrid Catalyst]({{< ref diagrid-catalyst.md >}}) integration page for a summary.
