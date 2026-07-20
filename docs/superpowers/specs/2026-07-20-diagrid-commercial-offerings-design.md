@@ -56,10 +56,10 @@ Under `content/en/integrations/Diagrid/`:
 | File | Status | linkTitle | Learn-more target | Weight |
 |---|---|---|---|---|
 | `_index.md` | update | Diagrid | (landing intro listing offerings) | 1000 |
-| `diagrid-catalyst.md` | new | Diagrid Catalyst | https://www.diagrid.io/catalyst | 1000 |
+| `diagrid-dev-dashboard.md` | new | Diagrid Dev Dashboard | https://docs.diagrid.io/develop/local-development/dev-dashboard | 1000 |
 | `diagrid-conductor.md` | update | Diagrid Conductor | https://docs.diagrid.io/dapr-open-source/conductor | 2000 |
-| `diagrid-dapr-support.md` | new | Dapr enterprise support | https://docs.diagrid.io/dapr-open-source/dapr-support | 3000 |
-| `diagrid-dev-dashboard.md` | new | Diagrid Dev Dashboard | https://docs.diagrid.io/develop/local-development/dev-dashboard | 4000 |
+| `diagrid-catalyst.md` | new | Diagrid Catalyst | https://www.diagrid.io/catalyst | 3000 |
+| `diagrid-dapr-support.md` | new | Dapr enterprise support | https://docs.diagrid.io/dapr-open-source/dapr-support | 4000 |
 
 ### Page content sources (fetched 2026-07-20)
 
