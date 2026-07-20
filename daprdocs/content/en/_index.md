@@ -4,17 +4,17 @@ no_list: true
 ---
 # Dapr Docs
 
-## Dapr, the distributed application runtime
+## The durable execution engine for workflows and AI agents
 
-Dapr provides APIs for building mission-critical applications, workflows, and AI agents that survive failure and keep running. With durable execution, state management, communication, and workflow primitives built in, Dapr automatically recovers from crashes and outages without losing progress. Its infrastructure-agnostic APIs give you portability across clouds and environments while delivering the security, resiliency, observability, and identity capabilities required for production systems.
+Dapr provides durable, verifiable execution so your workflows and AI agents survive failure and keep running to completion. Its durable execution workflow engine guarantees every step runs to completion despite crashes, restarts, and network outages, recovering state from exactly where it left off. Each workflow's execution history is [cryptographically signed and verifiable]({{% ref workflow-history-signing.md %}}), making what ran tamper-evident and auditable. The same engine powers durable AI agents that reason, call tools, and recover from any point of failure without losing progress. As a CNCF distributed application runtime, Dapr's infrastructure-agnostic APIs give you portability across clouds and environments, with the security, resiliency, and observability required for production systems.
 
 {{< button text="Get started" page="getting-started.md" >}}
 
 ### Use Cases
 
 <div class="d-card-grid">
-  <a class="d-card c-blue" href="{{% ref workflow-overview %}}"><span class="d-card-head"><img class="d-card-icon" src="/images/homepage/workflow.svg" alt="" width="40" height="40"><span class="d-card-title">Workflow Orchestration</span></span><span class="d-card-desc">Orchestrate your microservices reliably with Dapr workflow.</span><span class="d-card-more">Learn more →</span></a>
-  <a class="d-card c-sky" href="{{% ref "../developing-ai" %}}"><span class="d-card-head"><img class="d-card-icon" src="/images/homepage/dapr-agents.svg" alt="" width="40" height="40"><span class="d-card-title">Agentic AI</span></span><span class="d-card-desc">Create durable agents with Dapr.</span><span class="d-card-more">Learn more →</span></a>
+  <a class="d-card c-blue" href="{{% ref workflow-overview %}}"><span class="d-card-head"><img class="d-card-icon" src="/images/homepage/workflow.svg" alt="" width="40" height="40"><span class="d-card-title">Durable Workflows</span></span><span class="d-card-desc">Orchestrate durable, verifiable workflows that always run to completion.</span><span class="d-card-more">Learn more →</span></a>
+  <a class="d-card c-sky" href="{{% ref "../developing-ai" %}}"><span class="d-card-head"><img class="d-card-icon" src="/images/homepage/dapr-agents.svg" alt="" width="40" height="40"><span class="d-card-title">Durable AI Agents</span></span><span class="d-card-desc">Build durable AI agents that recover from any failure.</span><span class="d-card-more">Learn more →</span></a>
   <a class="d-card c-blue" href="{{% ref service-invocation-overview %}}"><span class="d-card-head"><img class="d-card-icon" src="/images/homepage/service-invocation.svg" alt="" width="40" height="40"><span class="d-card-title">Microservices</span></span><span class="d-card-desc">Build resilient microservices using the Dapr service invocation API.</span><span class="d-card-more">Learn more →</span></a>
   <a class="d-card c-sky" href="{{% ref pubsub-overview %}}"><span class="d-card-head"><img class="d-card-icon" src="/images/homepage/pub-sub.svg" alt="" width="40" height="40"><span class="d-card-title">Event Driven Architecture</span></span><span class="d-card-desc">Create event-driven applications with the Dapr pub/sub API.</span><span class="d-card-more">Learn more →</span></a>
 </div>
