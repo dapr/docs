@@ -14,5 +14,3 @@ aliases:
 - [**Diagrid Conductor**]({{< ref diagrid-conductor.md >}}) — automated operations and observability for Dapr on Kubernetes.
 - [**Diagrid Catalyst**]({{< ref diagrid-catalyst.md >}}) — durable agentic execution for AI agents, built on Dapr.
 - [**Dapr Enterprise Support**]({{< ref diagrid-dapr-support.md >}}) — commercial support for open source Dapr.
-
-For a high-level overview of commercial support and managed services across the Dapr ecosystem, see the [Enterprise support & services]({{< ref "enterprise-support" >}}) section.
