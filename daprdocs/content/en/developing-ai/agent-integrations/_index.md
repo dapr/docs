@@ -8,7 +8,7 @@ description: "Durable Execution for Google ADK, Claude Agent SDK, CrewAI, LangCh
 
 ###  What are community agent integrations in Dapr?
 
-Agents fail. Pods get evicted, processes crash, laptops die mid-run — and without durable execution, that failure means lost context, repeated tool calls, burned tokens, and an agent that has to start over from zero. Community integrations, including integrations maintained by [Diagrid](https://www.diagrid.io/), solve this by wrapping agent execution in [Dapr Workflows]({{% ref workflow-overview %}}), turning LLM calls and tool executions into durable, checkpointed activities — with **automatic failure detection and recovery, at scale**, for about **three lines of code**:
+Agents fail. Pods get evicted, processes crash, laptops die mid-run — and without durable execution, that failure means lost context, repeated tool calls, burned tokens, and an agent that has to start over from zero. [Diagrid](https://www.diagrid.io/) maintains an open-source library that fixes this for good: it drops into your existing agent code and wraps it in [Dapr Workflows]({{% ref workflow-overview %}}), turning every LLM call and every tool execution into a durable, checkpointed activity — with **automatic failure detection and recovery, at scale**, for about **three lines of code**
 
 ```python
 # 1. Wrap your existing agent — no rewrite required
@@ -20,7 +20,7 @@ async for event in runner.run_async(user_message="...", session_id="..."):
     ...
 ```
 
-These integrations are community-built on top of Dapr Workflow and are not part of the core Dapr project. Diagrid-maintained integrations are open source under [diagridio/python-ai](https://github.com/diagridio/python-ai). Questions, bugs, and demos are always welcome in the [Diagrid Community Discord](https://diagrid.ws/diagrid-community).
+These extensions are community-built and maintained by Diagrid on top of Dapr Workflow — they are not part of the core Dapr project, but are open source under [diagridio/python-ai](https://github.com/diagridio/python-ai). Questions, bugs, and demos are always welcome in the [Diagrid Community Discord](https://diagrid.ws/diagrid-community).
 
 #### Supported frameworks
 
@@ -37,36 +37,3 @@ These integrations are community-built on top of Dapr Workflow and are not part 
 | [Strands Agents](https://docs.diagrid.io/getting-started/quickstarts/ai-agents/?agentframework=strands) | Every tool call in a Strands agent loop | `pip install "diagrid[strands]"` |
 | [Microsoft Agent Framework](https://docs.diagrid.io/getting-started/quickstarts/ai-agents/?agentframework=microsoft-dotnet) | Every agent invocation run as a Dapr Workflow activity | `dotnet add package Diagrid.AI.Microsoft.AgentFramework` |
 | [Flock](https://whiteducksoftware.github.io/flock/) | Blackboard state and artifact persistence through a Dapr state store, while keeping Flock agent definitions unchanged | `pip install "flock-core[dapr]"` |
-
-#### Flock + Dapr state store (conceptual)
-
-Flock includes an optional Dapr-backed blackboard store. This keeps existing Flock agent contracts intact while switching persistence to a Dapr state store component.
-
-```python
-from flock.storage import DaprStateBlackboardConfig, DaprStateBlackboardStore
-
-store = DaprStateBlackboardStore(
-    config=DaprStateBlackboardConfig(
-        store_name="flockstate",
-        supports_transactions=True,
-        supports_etag=True,
-    )
-)
-```
-
-```python
-from flock import Flock
-
-flock = Flock(
-    model="openai/gpt-5.6",
-    store=store,
-)
-```
-
-Learn more in the official Flock resources:
-
-- [Flock documentation](https://whiteducksoftware.github.io/flock/)
-- [Flock Dapr State Store integration guide](https://whiteducksoftware.github.io/flock/guides/dapr-state-store/)
-- [Flock Dapr examples (`examples/12-dapr`)](https://github.com/whiteducksoftware/flock/tree/main/examples/12-dapr)
-
-For production setup details, including backend capability flags and known limitations, use the official Flock integration guide and repository examples.
