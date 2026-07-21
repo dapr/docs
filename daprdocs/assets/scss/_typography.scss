@@ -36,5 +36,18 @@ body { font-family: var(--font-body); }
 // pinned at the top, so navbar height + breathing room is the correct offset.
 // 4.5rem = 56px navbar + breathing room.
 main h1, main h2, main h3, main h4, main h5, main h6 { scroll-margin-top: 4.5rem; }
+
+// Neutralize Docsy's legacy anchor-offset hack (docsy main.scss:
+// h2..h5[id]::before { content:" "; height:5rem; margin-top:-5rem; visibility:hidden }).
+// It's redundant now that anchors are offset via scroll-margin-top (above). Worse, our
+// position:relative on .td-content headings stops the -5rem margin from cancelling the
+// 5rem height, so the pseudo-element inflates each heading's box 5rem upward and — being
+// painted above the preceding paragraph — swallows clicks on any link just above a heading.
+.td-content h2[id]::before,
+.td-content h3[id]::before,
+.td-content h4[id]::before,
+.td-content h5[id]::before,
+.td-content h6[id]::before { content: none; }
+
 h1,h2,h3,h4,h5,h6,.td-content h1,.td-content h2,.td-content h3 { font-family: var(--font-head); letter-spacing:-0.015em; text-wrap:balance; }
 code,pre,kbd,samp { font-family: var(--font-mono); }
