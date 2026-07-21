@@ -1,0 +1,16 @@
+//
+// buttons
+//
+
+// Text CTA buttons only. Exclude Docsy's icon-only copy button
+// (button.td-click-to-copy is also `.btn`): applying --font-head here overrode
+// Font Awesome's font-family and rendered the copy glyph as tofu, and the CTA
+// padding/radius bloated it.
+.td-content a.btn:not(.td-click-to-copy), .td-content .btn:not(.td-click-to-copy) {
+  font-family: var(--font-head); font-weight: 600; font-size: .86rem;
+  border-radius: 8px; padding: 10px 16px; text-decoration: none; border: none;
+}
+.td-content a.btn-tertiary, .td-content .btn-tertiary { background: var(--d-orange); color: var(--d-on-accent); }
+.td-content a.btn-tertiary:hover { filter: brightness(1.06); color: var(--d-on-accent); }
+.td-content .btn-primary { background: var(--d-blue); color: var(--d-on-accent); }
+.td-content .btn-secondary { background: var(--d-sky); color: var(--d-on-sky); }

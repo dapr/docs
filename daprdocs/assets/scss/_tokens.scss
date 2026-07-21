@@ -1,0 +1,40 @@
+// Design tokens — single source of truth for both themes.
+:root {
+  --d-blue:   #0D2192;
+  --d-sky:    #3ea9f5;
+  --d-orange: #ff4e00;
+  --d-gold:   #efca08;
+  --d-ground: #ffffff;
+  --d-panel:  #f6f7f9;
+  --d-border: #e3e6eb;
+  --d-muted:  #5b6472;
+  --d-body:   #1c2330;
+  --d-heading:#0f1522;
+  --d-link:   var(--d-blue);
+  --d-active: var(--d-orange);
+  --d-code-bg:#f6f7f9;
+  --d-radius: 9px;
+  --d-on-accent: #ffffff;
+  --d-on-sky: #06263f;
+  --d-success: #2b9a66;
+  --d-danger: #d64545;
+}
+[data-bs-theme="dark"] {
+  --d-blue:   #6f9fe8;
+  --d-sky:    #3ea9f5;
+  --d-orange: #ff7a45;
+  --d-gold:   #f0d24a;
+  --d-ground: #0b0e14;
+  --d-panel:  #12161f;
+  --d-border: #212838;
+  --d-muted:  #8b95a7;
+  --d-body:   #dfe4ee;
+  --d-heading:#ffffff;
+  --d-link:   #6f9fe8;
+  --d-active: #ff7a45;
+  --d-code-bg:#0f131c;
+  --d-on-accent: #ffffff;
+  --d-on-sky: #06263f;
+  --d-success: #4cc38a;
+  --d-danger: #e06666;
+}

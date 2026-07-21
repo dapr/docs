@@ -73,6 +73,8 @@
     // Reveal siblings of the active item and its direct children (compact mode).
     var activeLi = document.getElementById(mid + "-li");
     if (activeLi) {
+      activeLi.classList.add("td-sidebar-active-li"); // styling hook for the active item's <li>
+
       var container = activeLi.parentElement;
       if (container) {
         Array.prototype.forEach.call(container.children, function (el) {
@@ -89,9 +91,37 @@
           }
         });
       }
-      if (typeof activeLi.scrollIntoView === "function") {
-        activeLi.scrollIntoView({ block: "center" });
-      }
+      centerInScroller(activeLi);
     }
+  }
+
+  // Vertically center an element within its OWN scrollable ancestor, without ever
+  // scrolling the window. activeLi.scrollIntoView({ block: "center" }) centers the
+  // item in every scrollport up the chain, including the viewport — on load that
+  // scrolls the whole document so the active nav item is centered, dragging the
+  // page content (and the page's H1) up behind the fixed navbar. We only want the
+  // sidebar's overflow:auto container to move.
+  function scrollableAncestor(el) {
+    var node = el.parentElement;
+    while (node && node !== document.body && node !== document.documentElement) {
+      var oy = window.getComputedStyle(node).overflowY;
+      if ((oy === "auto" || oy === "scroll") && node.scrollHeight > node.clientHeight) {
+        return node;
+      }
+      node = node.parentElement;
+    }
+    return null; // no dedicated scroll area (e.g. mobile) — leave the window alone
+  }
+
+  function centerInScroller(el) {
+    var scroller = scrollableAncestor(el);
+    if (!scroller) {
+      return;
+    }
+    var elRect = el.getBoundingClientRect();
+    var scRect = scroller.getBoundingClientRect();
+    var delta =
+      elRect.top - scRect.top - (scroller.clientHeight - elRect.height) / 2;
+    scroller.scrollTop += delta;
   }
 })();
