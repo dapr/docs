@@ -36,7 +36,7 @@ These integrations are community-built on top of Dapr Workflow and are not part 
 | [Pydantic AI](https://docs.diagrid.io/getting-started/quickstarts/ai-agents/?agentframework=pydantic-ai) | Every LLM call and tool execution | `pip install "diagrid[pydantic_ai]"` |
 | [Strands Agents](https://docs.diagrid.io/getting-started/quickstarts/ai-agents/?agentframework=strands) | Every tool call in a Strands agent loop | `pip install "diagrid[strands]"` |
 | [Microsoft Agent Framework](https://docs.diagrid.io/getting-started/quickstarts/ai-agents/?agentframework=microsoft-dotnet) | Every agent invocation run as a Dapr Workflow activity | `dotnet add package Diagrid.AI.Microsoft.AgentFramework` |
-| [Flock](https://whiteducksoftware.github.io/flock/) | Blackboard state and artifact persistence through a Dapr state store, while keeping Flock agent definitions unchanged | `uv add "flock-core[dapr]"` |
+| [Flock](https://whiteducksoftware.github.io/flock/) | Blackboard state and artifact persistence through a Dapr state store, while keeping Flock agent definitions unchanged | `pip install "flock-core[dapr]"` |
 
 #### Flock + Dapr state store (conceptual)
 
@@ -58,7 +58,7 @@ store = DaprStateBlackboardStore(
 from flock import Flock
 
 flock = Flock(
-    model="openai/gpt-4.1",
+    model="openai/gpt-5.6",
     store=store,
 )
 ```
