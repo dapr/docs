@@ -8,7 +8,7 @@ description: "Durable Execution for Google ADK, Claude Agent SDK, CrewAI, LangCh
 
 ###  What are community agent integrations in Dapr?
 
-Agents fail. Pods get evicted, processes crash, laptops die mid-run — and without durable execution, that failure means lost context, repeated tool calls, burned tokens, and an agent that has to start over from zero. [Diagrid](https://www.diagrid.io/) maintains an open-source library that fixes this for good: it drops into your existing agent code and wraps it in [Dapr Workflows]({{% ref workflow-overview %}}), turning every LLM call and every tool execution into a durable, checkpointed activity — with **automatic failure detection and recovery, at scale**, for about **three lines of code**
+Agents fail. Pods get evicted, processes crash, laptops die mid-run — and without durable execution, that failure means lost context, repeated tool calls, burned tokens, and an agent that has to start over from zero. [Diagrid](https://www.diagrid.io/) maintains an open-source library that fixes this for good: it drops into your existing agent code and wraps it in [Dapr Workflows]({{% ref workflow-overview %}}), turning every LLM call and every tool execution into a durable, checkpointed activity — with **automatic failure detection and recovery, at scale**, for about **three lines of code**:
 
 ```python
 # 1. Wrap your existing agent — no rewrite required
