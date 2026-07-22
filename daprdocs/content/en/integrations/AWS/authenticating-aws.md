@@ -6,6 +6,7 @@ weight: 10
 description: "Information about authentication and configuration options for AWS"
 aliases:
   - /developing-applications/integrations/authenticating/authenticating-aws/
+  - /developing-applications/integrations/aws/authenticating-aws/
 ---
 
 Dapr components leveraging AWS services (for example, DynamoDB, SQS, S3) utilize standardized configuration attributes via the AWS SDK. [Learn more about how the AWS SDK handles credentials](https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials).

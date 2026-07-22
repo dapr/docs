@@ -4,6 +4,8 @@ title: "How to: Generate a new Microsoft Entra ID application and Service Princi
 linkTitle: "How to: Generate Microsoft Entra ID and Service Principal"
 weight: 30000
 description: "Learn how to generate an Microsoft Entra ID and use it as a Service Principal"
+aliases:
+  - /developing-applications/integrations/azure/azure-authentication/howto-aad/
 ---
 
 ## Prerequisites
