@@ -26,4 +26,4 @@ D3E is a custom distribution of the open source Dapr project that enhances it wi
 
 ## Diagrid Catalyst
 
-[Diagrid Catalyst]({{< ref diagrid-catalyst.md >}}) is an agentic AI orchestration platform that brings durable agentic execution, zero-trust security, and governance to AI agents and workflows, built on Dapr.
+[Diagrid Catalyst]({{< ref diagrid-catalyst.md >}}) is an agentic durable execution platform that brings reliability, zero-trust security, and governance to AI agents and workflows, built on Dapr.
