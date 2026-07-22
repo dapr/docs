@@ -23,4 +23,10 @@
   .tab-content { background: transparent; border: none; max-width: 100%; }
   .tab-content .tab-pane { background: transparent; border: none; padding: .5rem 0 0; }
   .tab-content pre { overflow-x: auto; max-width: 100%; font-size: .82rem; line-height: 1.6; }
+  // Docsy pairs `.tab-body { padding: 1.5rem }` with
+  // `.tab-body > .highlight:only-child { margin: -1.5rem }` so a lone code block
+  // fills its padded panel. We removed that panel padding (.tab-pane above), so the
+  // negative margin overshoots — pulling the code block up over the tab bar and out
+  // past the content column. Neutralize it to match our zero-padding panel.
+  .tab-body > .highlight:only-child { margin: 0; max-width: 100%; }
 }
