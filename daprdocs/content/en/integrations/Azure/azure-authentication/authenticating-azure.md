@@ -6,6 +6,7 @@ description: "How to authenticate Azure components using Microsoft Entra ID and/
 aliases:
   - "/operations/components/setup-secret-store/supported-secret-stores/azure-keyvault-managed-identity/"
   - "/reference/components-reference/supported-secret-stores/azure-keyvault-managed-identity/"
+  - "/developing-applications/integrations/azure/azure-authentication/authenticating-azure/"
 weight: 10000
 ---
 

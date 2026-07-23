@@ -4,6 +4,8 @@ title: "Dapr extension for Azure Functions runtime"
 linkTitle: "Azure Functions extension"
 description: "Access Dapr capabilities from your Azure Functions runtime application"
 weight: 3000
+aliases:
+  - /developing-applications/integrations/azure/azure-functions/
 ---
 
 

@@ -4,6 +4,8 @@ title: "How to: Autoscale a Dapr app with KEDA"
 linkTitle: "KEDA"
 description: "How to configure your Dapr application to autoscale using KEDA"
 weight: 3000
+aliases:
+  - /developing-applications/integrations/autoscale-keda/
 ---
 
 Dapr, with its building-block API approach, along with the many [pub/sub components]({{% ref pubsub %}}), makes it easy to write message processing applications. Since Dapr can run in many environments (for example VMs, bare-metal, Cloud or Edge Kubernetes) the autoscaling of Dapr applications is managed by the hosting layer.
