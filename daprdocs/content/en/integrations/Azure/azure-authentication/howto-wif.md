@@ -4,6 +4,8 @@ title: "How to: Use workload identity federation"
 linkTitle: "How to: Use workload identity federation"
 weight: 20000
 description: "Learn how to configure Dapr to use workload identity federation on Azure."
+aliases:
+  - /developing-applications/integrations/azure/azure-authentication/howto-wif/
 ---
 
 This guide will help you configure your Kubernetes cluster to run Dapr with Azure workload identity federation.

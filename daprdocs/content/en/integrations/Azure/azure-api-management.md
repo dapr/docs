@@ -4,6 +4,8 @@ title: "Dapr integration policies for Azure API Management"
 linkTitle: "Azure API Management"
 description: "Publish APIs for Dapr services and components through Azure API Management policies"
 weight: 2000
+aliases:
+  - /developing-applications/integrations/azure/azure-api-management/
 ---
 
 [Azure API Management](https://learn.microsoft.com/azure/api-management/api-management-key-concepts) is a way to create consistent and modern API gateways for back-end services, including those built with Dapr. You can enable Dapr support in self-hosted API Management gateways to allow them to:
