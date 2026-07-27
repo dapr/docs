@@ -122,11 +122,11 @@ The following example shows you how to create a Kubernetes secret to hold the co
 
 ### Kubernetes secrets are hot reloaded
 
-When running in Kubernetes and referencing secrets from the built-in `kubernetes` secret store (that is, when `auth.secretStore` is set to `kubernetes` or left empty), Dapr automatically detects changes to the referenced Kubernetes secrets and reloads the affected components. No restart of the application pod or the Dapr sidecar is required.
+When running in Kubernetes and referencing secrets from the default `kubernetes` secret store (when `auth.secretStore` is set to `kubernetes` or left empty), Dapr automatically detects changes to the referenced Kubernetes secrets and reloads the affected components. No restart of the application pod or the Dapr sidecar is required.
 
 Dapr reconciles components every 60 seconds. When the value of a referenced Kubernetes secret changes, [hot reloading]({{% ref "component-updates.md#hot-reloading" %}}) closes the component and re-initializes it using the new secret value.
 
-For example, with the Redis state store from [Referencing secrets](#referencing-secrets) deployed to Kubernetes, updating the referenced secret:
+For example, if the Redis state store from [Referencing secrets](#referencing-secrets) was deployed to Kubernetes, then updating the referenced secret with the following command causes the state store component to be closed and re-initialized with the new password within 60 seconds. The same happens when the Kubernetes secret is updated by an external secret manager that keeps it in sync with an external source.
 
 ```bash
 kubectl patch secret redis-secret --type merge -p '{"stringData":{"redis-password":"my-new-password"}}'
@@ -139,12 +139,12 @@ Keep in mind the following when relying on this behavior:
 - Changes to secret values are picked up by the periodic reconciler, so it can take up to 60 seconds for the new value to be applied.
 - The component is unavailable for a short period of time while it is closed and re-initialized.
 - This requires [hot reloading]({{% ref "component-updates.md#hot-reloading" %}}) to be enabled, which is the default. If the `HotReload` feature is disabled, secret changes are only picked up when the Dapr sidecar is restarted.
-- Component types that are [excluded from hot reloading]({{% ref "component-updates.md#components-and-subscriptions" %}}) (Actor State Stores and Workflow Backends) do not pick up secret changes and require a restart.
+- Component types that are [excluded from hot reloading]({{% ref "component-updates.md#components-and-subscriptions" %}}) include Actor state stores and Workflow backends, do not pick up secret changes and require a Dapr sidecar restart.
 {{% /alert %}}
 
 ### Other secret stores
 
-Secrets referenced from any other secret store, for example HashiCorp Vault or Azure Key Vault configured through `auth.secretStore`, are resolved by the Dapr sidecar only once, when the component is initialized. Rotating a secret in these stores does not modify the Component definition, so the change is not detected by hot reloading and the component keeps using the value that was read at initialization time. To apply the new secret value, restart the Dapr sidecar, or trigger a hot reload by applying a change to the component manifest.
+Secrets referenced from any other secret store, for example HashiCorp Vault or Azure Key Vault configured through `auth.secretStore`, are resolved by the Dapr sidecar only once at start-up, when the component is initialized. Rotating a secret in these stores does not modify the Component definition, so the change is not detected by hot reloading and the component keeps using the value that was read at initialization time. To apply the new secret value, restart the Dapr sidecar, or trigger a hot reload by applying a change to the component manifest file.
 
 To automatically pick up rotated secrets from an external secret manager when running in Kubernetes, sync the secrets into native Kubernetes secrets and reference them through the built-in `kubernetes` secret store as described above.
 
