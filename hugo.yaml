@@ -144,7 +144,7 @@ params:
   privacy_policy: https://policies.google.com/privacy
 
   # First one is picked as the Twitter card image if not set on page.
-  # images: [images/project-illustration.png]
+  images: [images/dapr-og-default.png]
   
   # Versioning
   # Menu title if your navbar has a versions selector to access old versions of your site.
