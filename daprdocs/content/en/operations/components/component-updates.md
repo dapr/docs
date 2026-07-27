@@ -50,7 +50,7 @@ Any create, update, or deletion of these component types is ignored by the sidec
 #### Referenced Kubernetes secrets
 
 When running in Kubernetes, hot reloading also detects changes to Kubernetes secrets that a component references with `secretKeyRef` through the built-in `kubernetes` secret store.
-When a referenced secret is updated, for example because a credential was rotated, the component is closed and re-initialized with the new secret value within 60 seconds, without restarting the pod. This does not apply to secrets referenced from other secret stores, which are only resolved when the component initializes. Read [How-To: Reference secrets in components]({{% ref "component-secrets.md#updating-referenced-secrets" %}}) for more details.
+When a referenced secret is updated, for example because a credential was rotated, the component is closed and re-initialized with the new secret value within 60 seconds, without requiring a pod restart. This does not apply to secrets referenced from other secret stores, which are only resolved when the component initializes on start-up. Read [How-To: Reference secrets in components]({{% ref "component-secrets.md#updating-referenced-secrets" %}}) for more details.
 
 ### Configurations, Resiliency, WorkflowAccessPolicies, and HTTPEndpoints
 

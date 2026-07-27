@@ -132,7 +132,6 @@ For example, if the Redis state store from [Referencing secrets](#referencing-se
 kubectl patch secret redis-secret --type merge -p '{"stringData":{"redis-password":"my-new-password"}}'
 ```
 
-causes the state store component to be closed and re-initialized with the new password within 60 seconds. The same happens when the Kubernetes secret is updated by an external secret manager that keeps it in sync with an external source.
 
 {{% alert title="Note" color="primary" %}}
 Keep in mind the following when relying on this behavior:
