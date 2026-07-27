@@ -62,7 +62,7 @@ Entry                  | Description                                | Equivalent
 
 ##### Timezones
 
-By default, a `schedule` is evaluated in the local timezone of the Dapr scheduler
+By default, a `schedule` is evaluated in the local timezone of the Scheduler
 service. To pin a job to a specific timezone instead, prefix the schedule with
 `CRON_TZ=<timezone>` (or the equivalent `TZ=<timezone>`), where `<timezone>` is an
 [IANA Time Zone database](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
