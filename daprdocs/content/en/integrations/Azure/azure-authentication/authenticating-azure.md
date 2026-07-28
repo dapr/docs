@@ -81,7 +81,7 @@ Depending on how you've passed credentials to your Dapr services, you have multi
 - [Using Workload Identity on AKS](#authenticating-with-workload-identity-on-aks)
 - [Using Azure CLI credentials (development-only)](#authenticating-using-azure-cli-credentials-development-only)
 
-You can also [control which authentication methods Dapr attempts, and in what order](#specifying-which-authentication-methods-to-use), using the `azureAuthMethods` metadata field.
+You can also [control which authentication methods Dapr attempts, and in what order](#specify-which-authentication-methods-to-use), using the `azureAuthMethods` metadata field.
 
 #### Authenticating using client credentials
 
@@ -228,16 +228,16 @@ When Dapr is running on a host where there are credentials available for the Azu
 
 Using this authentication method does not require setting any metadata option.
 
-### Specifying which authentication methods to use
+### Specify which authentication methods to use
 
 By default, Dapr Azure components try each supported authentication method in a fixed order and use the first one that succeeds:
 
 1. Client credentials (client ID, client secret, and tenant ID)
 1. Client certificate
 1. Workload identity (AKS)
-1. SPIFFE workload identity ([Federated Identity Credential](#authenticating-with-a-federated-identity-credential))
+1. SPIFFE workload identity (Federated Identity Credential)
 1. Managed identity (MI)
-1. Azure CLI (skipped when running on an Azure service that provides a managed identity)
+1. Azure CLI
 
 Use the optional `azureAuthMethods` metadata field to override this behavior — for example, to restrict Dapr to a specific authentication method, or to change the order in which methods are attempted.
 
@@ -257,11 +257,7 @@ The supported values (case-insensitive) are:
 | `commandlineinterface` | `cli` | [Azure CLI (development only)](#authenticating-using-azure-cli-credentials-development-only) |
 | `none` | | Disables Microsoft Entra ID authentication entirely |
 
-{{% alert title="Note" color="primary" %}}
-The `azureAuthMethods` field also accepts the aliases `azureADAuthMethods`, `entraIDAuthMethods`, and `microsoftEntraIDAuthMethods`.
-{{% /alert %}}
-
-For example, to force a component to authenticate using only managed identity and skip all other methods:
+For example, to force a Service Bus component to authenticate using only managed identity and skip all other methods:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
