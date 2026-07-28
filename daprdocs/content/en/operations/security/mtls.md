@@ -26,7 +26,7 @@ When you supply your own root and issuer certificates, Sentry signs workload CSR
 
 On Kubernetes, Sentry embeds the requesting pod's container image references (the daprd sidecar image and all application container images, with best effort resolved digests) into every workload certificate as a non-critical X.509 extension under OID `1.3.6.1.4.1.57683.100.1`. The data comes from the pod object Sentry reads from the Kubernetes API server, not from the workload, so it cannot be forged by the certificate requestor.
 
-No configuration is needed: the extension is always present in certificates issued via the Kubernetes validator, and absent in self-hosted mode. Existing consumers are unaffected because the extension is non-critical.
+No configuration is needed: the extension is always present in certificates issued via the Kubernetes validator. Certificates issued in self-hosted mode (insecure validator) or via the JWKS validator omit the extension. Existing consumers are unaffected because the extension is non-critical.
 
 For the trust model, the exact wire format, and how to decode the extension, see [Container image references in workload certificates]({{% ref "security-concept.md#container-image-references-in-workload-certificates" %}}) in the security concepts page.
 
