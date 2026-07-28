@@ -47,6 +47,10 @@ Query Parameter | Description
 --------- | -----------
 `metadata.namespace`| The namespace of the secret. If not specified, the namespace of the pod is used.
 
+## Updating secrets referenced by components
+
+When running in Kubernetes, secrets from this secret store that are referenced in a component definition using `secretKeyRef` are automatically [hot reloaded]({{% ref "component-updates.md#hot-reloading" %}}) when the underlying Kubernetes secret changes: the component is re-initialized with the new secret value within 60 seconds, without restarting the application pod or the Dapr sidecar. This makes the built-in Kubernetes secret store a good target for secret rotation flows, including external secret managers that sync secrets into native Kubernetes secrets. Read [updating referenced secrets]({{% ref "component-secrets.md#updating-referenced-secrets" %}}) for more details.
+
 ## Related links
 - [Secrets building block]({{% ref secrets %}})
 - [How-To: Retrieve a secret]({{% ref "howto-secrets.md" %}})
