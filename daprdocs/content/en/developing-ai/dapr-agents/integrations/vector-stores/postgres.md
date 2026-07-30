@@ -34,7 +34,7 @@ uv add 'psycopg[binary,pool]' pgvector
 
 ```python
 from dapr_agents.storage.vectorstores import PostgresVectorStore
-from dapr_agents.document.embedder.openai import OpenAIEmbedder
+from dapr_agents.document.embedder.openai import OpenAIEmbedder  # Replace with your embedding model
 
 store = PostgresVectorStore(
     connection_string="postgresql://user:pass@localhost:5432/mydb",

@@ -38,7 +38,7 @@ uv add redisvl
 
 ```python
 from dapr_agents.storage.vectorstores import RedisVectorStore
-from dapr_agents.document.embedder.openai import OpenAIEmbedder
+from dapr_agents.document.embedder.openai import OpenAIEmbedder  # Replace with your embedding model
 
 store = RedisVectorStore(
     url="redis://localhost:6379",

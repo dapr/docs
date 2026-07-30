@@ -133,6 +133,14 @@ documents = reader.load(local_pdf_path)
 #### Step 3: Split the Document
 
 ```python
+import tiktoken
+from dapr_agents.document.splitter.text import TextSplitter
+
+enc = tiktoken.get_encoding("cl100k_base")
+
+def length_function(text: str) -> int:
+    return len(enc.encode(text))
+
 splitter = TextSplitter(
     chunk_size=1024,
     chunk_overlap=200,
