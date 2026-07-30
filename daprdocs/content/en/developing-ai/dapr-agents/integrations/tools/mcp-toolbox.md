@@ -12,15 +12,14 @@ To integrate the Toolbox, load the tools as follows:
 
 ```python
 from toolbox_core import ToolboxSyncClient
-client = ToolboxSyncClient("http://127.0.0.1:5000")
-agent_tools = AgentTool.from_toolbox_many(client.load_toolset("your-tools-name-here"))
-agent = DurableAgent(
-    ..
-    tools=agent_tools
-)
 
-..
-# Remember to close the tool
+client = ToolboxSyncClient("http://127.0.0.1:5000")
+try:
+    agent_tools = AgentTool.from_toolbox_many(client.load_toolset("your-tools-name-here"))
+    agent = DurableAgent(
+        # ...
+        tools=agent_tools,
+    )
 finally:
     client.close()
 ```
@@ -32,7 +31,7 @@ from toolbox_core import ToolboxSyncClient
 with ToolboxSyncClient("http://127.0.0.1:5000") as client:
     agent_tools = AgentTool.from_toolbox_many(client.load_toolset("your-tools-name-here"))
     agent = DurableAgent(
-        ..
-        tools=agent_tools
+        # ...
+        tools=agent_tools,
     )
 ```

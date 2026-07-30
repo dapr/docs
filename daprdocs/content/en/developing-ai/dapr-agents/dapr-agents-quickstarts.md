@@ -60,7 +60,7 @@ The [Dapr Agents examples](https://github.com/dapr/dapr-agents/tree/main/example
 | [Durable Agent Hot-Reload](https://github.com/dapr/dapr-agents/tree/main/examples/09-durable-agent-hot-reload) | Hot-reload agent persona and LLM settings at runtime without restarting |
 | [Echo Agent Executor](https://github.com/dapr/dapr-agents/tree/main/examples/10-agent-executor-echo) | Run an agent with a stateful agent runtime |
 | [Agent with Auto-Discovered MCPServer Tools](https://github.com/dapr/dapr-agents/tree/main/examples/10-mcpserver) | Automatically discover tools from loaded MCPServer resources |
-| [Expert Agent – Chainlit UI with RAG-via-hook (Tavily)](https://github.com/dapr/dapr-agents/tree/main/examples/11-expert-agent-travily) | Inject fresh web context into every LLM turn without explicit tool calls |
+| [Expert Agent – Chainlit UI with RAG-via-hook (Tavily)](https://github.com/dapr/dapr-agents/tree/main/examples/11-expert-agent-tavily) | Inject fresh web context into every LLM turn without explicit tool calls |
 | [OpenTelemetry Observability on Kubernetes](https://github.com/dapr/dapr-agents/tree/main/examples/demo-otel-k8s) | Configure OpenTelemetry observability for Dapr Agents running on Kubernetes |
 
 

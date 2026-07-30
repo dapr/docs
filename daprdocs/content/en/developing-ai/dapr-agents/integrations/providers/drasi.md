@@ -28,7 +28,7 @@ For many use cases, [Drasi](https://drasi.io/) is a viable alternative. Drasi is
 {{% tab header="pip" %}}
 
 ```bash
-pip install dapr-agents[drasi]
+pip install "dapr-agents[drasi]"
 ```
 
 {{% /tab %}}

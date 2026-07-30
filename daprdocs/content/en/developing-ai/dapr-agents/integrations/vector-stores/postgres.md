@@ -15,7 +15,7 @@ Uses [Postgres with pgvector](https://github.com/pgvector/pgvector) for producti
 {{% tab header="pip" %}}
 
 ```bash
-pip install 'psycopg[binary,pool]' pgvector
+pip install "psycopg[binary,pool]" pgvector
 ```
 
 {{% /tab %}}
