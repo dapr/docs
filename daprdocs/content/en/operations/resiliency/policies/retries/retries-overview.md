@@ -132,12 +132,10 @@ spec:
           gRPCStatusCodes: "4,8-11,13,14" # retry gRPC status codes in these ranges and separate single codes.
 ```
 
-{{% alert title="Note" color="primary" %}}
-Field values for status codes must follow the format specified above. An incorrectly formatted value produces an error log ("Could not read resiliency policy") and the `daprd` startup sequence will proceed.
-{{% /alert %}}
+Retry filtering on status codes only filters on the transport-level status code of the call to your application. It does not apply to [bulk subscribe]({{% ref pubsub-bulk.md %}}), since that status isn't carried as an HTTP or gRPC status code. For instance, a bulk subscribe handler returning `RETRY` for an entry is always retried according to the policy's settings, regardless of what codes are configured.
 
 {{% alert title="Note" color="primary" %}}
-`matching.httpStatusCodes` and `matching.gRPCStatusCodes` only filter on the transport-level status code of the call to your application. They don't apply to the `RETRY` status returned in a [bulk subscribe]({{% ref pubsub-bulk.md %}}) response body, since that status isn't carried as an HTTP or gRPC status code. A bulk subscribe handler returning `RETRY` for an entry is always retried according to the policy's `duration`/`maxRetries`/backoff settings, regardless of what codes are configured in `matching`.
+Field values for status codes must follow the format specified above. An incorrectly formatted value produces an error log ("Could not read resiliency policy") and the `daprd` startup sequence will proceed.
 {{% /alert %}}
 
 ## Demo 
