@@ -56,9 +56,6 @@
       acceptBtn.addEventListener("click", function () {
         writeConsent("accepted");
         hideBanner();
-        if (typeof window.daprInjectReo === "function") {
-          window.daprInjectReo();
-        }
       });
     }
 
