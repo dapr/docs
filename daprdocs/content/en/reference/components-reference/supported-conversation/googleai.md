@@ -35,6 +35,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|---------|---------|
 | `key`   | Y | API key for GoogleAI. | `mykey` |
 | `model` | N | The GoogleAI LLM to use. Defaults to `gemini-1.5-flash`.  | `gemini-2.0-flash` |
+| `maxTokens` | N | Default maximum number of tokens the model may generate per request. A request-level `maxTokens` value overrides this default. | `2048` |
 | `responseCacheTTL` | N | Time-to-live for the in-memory response cache. When set, identical requests are served from cache until they expire. | `10m` |
 
 ## Related links

@@ -23,6 +23,12 @@ spec:
 This component is only meant for local validation and testing of a Conversation component implementation. It does not actually send the data to any LLM but rather echos the input back directly.
 {{% /alert %}}
 
+## Spec metadata fields
+
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| `maxTokens` | N | Default maximum number of tokens (whitespace-delimited words) echoed back per request. A request-level `maxTokens` value overrides this default. When the cap truncates the output, the choice's `finishReason` is `length`. | `2048` |
+
 ## Related links
 
 - [Conversation API overview]({{% ref conversation-overview.md %}})
