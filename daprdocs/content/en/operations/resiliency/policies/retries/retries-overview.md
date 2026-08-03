@@ -136,6 +136,10 @@ spec:
 Field values for status codes must follow the format specified above. An incorrectly formatted value produces an error log ("Could not read resiliency policy") and the `daprd` startup sequence will proceed.
 {{% /alert %}}
 
+{{% alert title="Note" color="primary" %}}
+`matching.httpStatusCodes` and `matching.gRPCStatusCodes` only filter on the transport-level status code of the call to your application. They don't apply to the `RETRY` status returned in a [bulk subscribe]({{% ref pubsub-bulk.md %}}) response body, since that status isn't carried as an HTTP or gRPC status code. A bulk subscribe handler returning `RETRY` for an entry is always retried according to the policy's `duration`/`maxRetries`/backoff settings, regardless of what codes are configured in `matching`.
+{{% /alert %}}
+
 ## Demo 
 
 Watch a demo presented during [Diagrid's Dapr v1.15 celebration](https://www.diagrid.io/videos/dapr-1-15-deep-dive) to see how to set retry status code filters using Diagrid Conductor
