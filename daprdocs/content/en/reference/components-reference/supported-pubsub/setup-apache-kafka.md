@@ -135,6 +135,11 @@ spec:
 | consumerGroupRebalanceStrategy | N | The strategy to use for consumer group rebalancing. Supported values: `range`, `sticky`, `roundrobin`. Default is `range` | `"sticky"` |
 | escapeHeaders | N | Enables URL escaping of the message header values received by the consumer. Allows receiving content with special characters that are usually not allowed in HTTP headers. Default is `false`. | `true` |
 | excludeHeaderMetaRegex | N | A regular expression to exclude keys from being converted from headers to metadata when consuming messages and  from metadata to headers when publishing messages. This capability avoids unwanted downstream side effects for topic consumers. | '"^valueSchemaType$"`
+| producerTransactionsEnabled | N | When set to `"true"`, every publish (single or bulk) is wrapped in a [Kafka transaction](#kafka-transactions-and-exactly-once-processing) on an idempotent producer: an aborted publish is never visible to consumers reading with `read_committed`, and bulk publishes become atomic (all entries commit or none do). Requires `producerRequiredAcks: "all"`, `producerRetryMax` >= 1 and Kafka 0.11 or later. Transactions serialize publishes and add broker round trips, lowering publish throughput. Default is `"false"` | `"true"`, `"false"` |
+| consumerTransactionsEnabled | N | When set to `"true"`, every delivery is processed inside a Kafka transaction ([exactly-once consume-transform-produce](#exactly-once-consume-transform-produce)): publishes made by the handler that carry the delivery's transaction token join the transaction, and the consumer offset commits atomically with them on handler success. Forces `consumerIsolationLevel: "read_committed"`. Requires a `consumerGroup`, `producerRequiredAcks: "all"`, `producerRetryMax` >= 1 and Kafka 0.11 or later. Default is `"false"` | `"true"`, `"false"` |
+| transactionalIdPrefix | N | Prefix for the `transactional.id` values this component registers with the broker when transactions are enabled. For the publish producer it defaults to `clientID`, then `consumerGroup`, then `"dapr"`; for consumer transactions it defaults to `clientID`, then `"dapr"`, and must resolve to the same value on every replica — see [scaling and fencing](#scaling-zombie-fencing-and-the-transactionalidprefix). | `"my-app"` |
+| consumerIsolationLevel | N | Isolation level for consumers. `"read_uncommitted"` (default) delivers all records; `"read_committed"` hides records belonging to open or aborted Kafka transactions and requires Kafka 0.11 or later. When `consumerTransactionsEnabled` is `"true"` the level must be `"read_committed"`: leaving this field unset selects it automatically, while an explicit `"read_uncommitted"` fails validation. | `"read_committed"` |
+| transactionTimeout | N | Transaction timeout requested from the broker when transactions are enabled, as a Go duration. With `consumerTransactionsEnabled` the transaction stays open for the whole handler invocation, so this must exceed the slowest expected handler. Must not exceed the broker's `transaction.max.timeout.ms` (15 minutes by default): the broker rejects larger values at producer initialization, which fails every publish and delivery. Default is `"60s"` | `"90s"` |
 
 The `secretKeyRef` above is referencing  a [kubernetes secrets store]({{% ref kubernetes-secret-store.md %}}) to access the tls information. Visit [here]({{% ref setup-secret-store.md %}}) to learn more about how to configure a secret store component.
 
@@ -541,6 +546,133 @@ Apache Kafka supports the following bulk metadata options:
 | `maxAwaitDurationMs` | `10000` (10s) |
 | `maxMessagesCount` | `80` |
 
+## Kafka transactions and exactly-once processing
+
+The Kafka pubsub component supports [Kafka transactions](https://kafka.apache.org/documentation/#semantics) (Kafka 0.11 or later) through three capabilities. They are configured independently, mirroring how Kafka itself splits transaction configuration between producers (`transactional.id`, idempotence) and consumers (`isolation.level`):
+
+- **Transactional publishing** (`producerTransactionsEnabled`): each publish — including each bulk publish — commits or aborts as a unit.
+- **Committed-only consumption** (`consumerIsolationLevel: "read_committed"`): subscribers never see records from open or aborted transactions.
+- **Exactly-once consume-transform-produce** (`consumerTransactionsEnabled`): each delivery is processed inside a Kafka transaction; publishes the handler makes as part of processing join that transaction, and the consumer offset commits atomically with them.
+
+### Transactional publishing
+
+```yaml
+spec:
+  type: pubsub.kafka
+  version: v1
+  metadata:
+    - name: brokers
+      value: "mykafka:9092"
+    - name: authType
+      value: "none"
+    - name: producerTransactionsEnabled
+      value: "true"
+    - name: transactionalIdPrefix # Optional
+      value: "my-app"
+```
+
+With `producerTransactionsEnabled` set to `"true"`, publishes go through an idempotent producer and each publish is wrapped in its own Kafka transaction:
+
+- A failed or aborted publish is never visible to consumers reading with `read_committed`.
+- A [bulk publish]({{% ref pubsub-bulk.md %}}) is atomic: all entries commit or none do.
+
+This requires `producerRequiredAcks: "all"` and `producerRetryMax` of at least 1 (both are the component defaults). Transactions serialize publishes on the producer and add broker round trips, lowering publish throughput; enable this on a component whose publishes need the guarantee, and keep a second, non-transactional Kafka component for fire-and-forget traffic if you need both from the same app.
+
+The publish producer's `transactional.id` receives a random per-instance suffix, so scaled replicas never fence each other. The guarantee is atomicity per publish; there is no transaction recovery or fencing across component restarts.
+
+### Committed-only consumption
+
+```yaml
+spec:
+  type: pubsub.kafka
+  version: v1
+  metadata:
+    - name: brokers
+      value: "mykafka:9092"
+    - name: authType
+      value: "none"
+    - name: consumerGroup
+      value: "my-group"
+    - name: consumerIsolationLevel
+      value: "read_committed"
+```
+
+With `consumerIsolationLevel: "read_committed"`, subscriptions on this component only receive records from committed transactions; records belonging to open or aborted transactions are filtered out by the broker. Use this on any consumer downstream of a transactional producer.
+
+### Exactly-once consume-transform-produce
+
+For pipelines that consume from Kafka, process, and publish back to Kafka, `consumerTransactionsEnabled` provides exactly-once semantics between the input and output topics:
+
+```yaml
+spec:
+  type: pubsub.kafka
+  version: v1
+  metadata:
+    - name: brokers
+      value: "mykafka:9092"
+    - name: authType
+      value: "none"
+    - name: consumerGroup
+      value: "my-group"
+    - name: consumerTransactionsEnabled
+      value: "true"
+    - name: transactionalIdPrefix # Optional
+      value: "my-app"
+    - name: transactionTimeout # Optional; must exceed the slowest handler
+      value: "60s"
+```
+
+How it works:
+
+1. For every delivery, the component opens a Kafka transaction before invoking your handler and injects a transaction token into the message metadata, which your application receives as the `__txnToken` header (HTTP) or metadata entry (gRPC).
+1. Publishes your handler makes **that echo the token back** join the delivery's open transaction:
+   - HTTP: pass the token as a `metadata.__txnToken` query parameter on the publish call.
+   - gRPC: pass a `__txnToken` key in the publish request metadata.
+   - Bulk publish: pass the token in the request-level metadata (per-entry metadata is not supported for the token).
+1. When the handler succeeds, the component commits the transaction: the published records and the consumer offset commit atomically.
+1. When the handler fails, the component aborts the transaction: any records published during the attempt are never visible to `read_committed` consumers, and the message is redelivered while `consumeRetryEnabled` is `"true"` (the default). Redelivery is governed by this component's `backOff*` metadata — unbounded by default; set `backOffMaxRetries` to bound it. Dapr resiliency policies bound the individual handler call, not the redelivery loop.
+
+For example, an HTTP subscriber echoing the token:
+
+```
+# Delivery arrives with the token as a header:
+#   POST /orders
+#   __txnToken: <opaque token>
+
+# The handler publishes its result echoing the token, then returns success:
+curl -X POST "http://localhost:3500/v1.0/publish/kafka-pubsub/processed-orders?metadata.__txnToken=<opaque token>" \
+  -H "Content-Type: application/json" \
+  -d '{"orderId": "42", "status": "processed"}'
+```
+
+Consumer transactions imply `read_committed` isolation: leaving `consumerIsolationLevel` unset selects it automatically, and an explicit `"read_uncommitted"` fails validation. With [bulk subscribe]({{% ref pubsub-bulk.md %}}), the batch is all-or-nothing: any entry failure aborts and redelivers the whole batch.
+
+{{% alert title="Token-carrying publishes must use the same component" color="warning" %}}
+The transaction is tracked per component instance. Publishes carrying the token must go through the **same Kafka pubsub component** that delivered the message: a token-carrying publish through a *different* Kafka component fails loudly, and a stale token (for example, after the handler has returned) also fails loudly rather than silently publishing outside the transaction. A non-Kafka component would ignore the token entirely and publish outside any transaction.
+{{% /alert %}}
+
+{{% alert title="Publishes without the token stay outside the transaction" color="warning" %}}
+A publish that does **not** carry the token is an ordinary publish: it commits independently of the delivery's transaction, even when made from inside the handler. If the delivery is later retried, that publish repeats. Only token-carrying publishes are covered by the exactly-once guarantee.
+{{% /alert %}}
+
+#### Scope of the guarantee
+
+The exactly-once guarantee covers Kafka records and consumer offsets: the output publishes and the input offset commit or abort together. Your handler itself still runs at-least-once — non-Kafka side effects (database writes, external API calls) are not part of the transaction and should be idempotent.
+
+#### Transaction timeout
+
+With consumer transactions, a transaction stays open for the whole handler invocation, so `transactionTimeout` (default `60s`) must exceed your slowest expected handler; when the timeout elapses the broker aborts the transaction and the delivery is retried. The value must not exceed the broker's `transaction.max.timeout.ms` (15 minutes by default): the broker rejects larger values at producer initialization, which fails every publish and delivery. For handlers slower than the broker maximum, raise `transaction.max.timeout.ms` on the broker.
+
+#### Scaling, zombie fencing, and the transactionalIdPrefix
+
+With consumer transactions, each topic-partition is produced to with the stable `transactional.id` `"<prefix>-<consumerGroup>-<topic>-<partition>"`. Stability is what provides zombie fencing: when a partition moves to another replica after a rebalance or crash, the new replica's producer fences the old one, and any transaction the old instance left open is aborted before reprocessing begins.
+
+The prefix defaults to `clientID`, then `"dapr"`, and can be set explicitly with `transactionalIdPrefix`. It must resolve to the **same value on every replica** of the consuming app — do not use a per-replica templated `clientID` (such as `"{podName}"`) as the effective prefix, or replicas cannot fence each other.
+
+{{% alert title="Bindings" color="info" %}}
+Consumer transactions are only available on the Kafka **pubsub** component. The [Kafka binding]({{% ref kafka.md %}}) supports `producerTransactionsEnabled` for transactional output, but rejects `consumerTransactionsEnabled` at init: exactly-once consume-transform-produce requires the transaction token to be echoed through the same component instance, which the bindings model (separate input and output binding instances) cannot provide.
+{{% /alert %}}
+
 ## Per-call metadata fields
 
 ### Partition Key
@@ -581,9 +713,13 @@ curl -X POST http://localhost:3500/v1.0/publish/myKafka/myTopic?metadata.partiti
       }'
 ```
 
+### Transaction token
+
+When [consumer transactions](#exactly-once-consume-transform-produce) are enabled, a publish can carry a `__txnToken` metadata entry to join the open transaction of the delivery it was received with. The token is never written to the outgoing Kafka message headers.
+
 ### Message headers
 
-All other metadata key/value pairs (that are not `partitionKey`, `__key`, or `partitionNumber`) are set as headers in the Kafka message. Here is an example setting a `correlationId` for the message.
+All other metadata key/value pairs (that are not `partitionKey`, `__key`, `partitionNumber`, or `__txnToken`) are set as headers in the Kafka message. Here is an example setting a `correlationId` for the message.
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/publish/myKafka/myTopic?metadata.correlationId=myCorrelationID&metadata.partitionKey=key1 \
@@ -602,6 +738,7 @@ When consuming messages, special message metadata are being automatically passed
 - `__partition`: the partition number for the message
 - `__offset`: the offset of the message in the partition
 - `__timestamp`: the timestamp for the message
+- `__txnToken`: the delivery's transaction token, only when [consumer transactions](#exactly-once-consume-transform-produce) are enabled
 
 You can access them within the consumer endpoint as follows:
 {{< tabpane text=true >}}
