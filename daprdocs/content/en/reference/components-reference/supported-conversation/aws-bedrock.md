@@ -39,7 +39,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `secretKey` | N | AWS secret key for authentication. It is recommended to use a secret store for this value. | `"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"` |
 | `sessionToken` | N | AWS session token for temporary credentials. It is recommended to use a secret store for this value. | `"session-token-example"` |
 | `model` | N | The LLM to use. Defaults to Bedrock's default provider model from Amazon. | `amazon.titan-text-express-v1` |
-| `maxTokens` | N | Default maximum number of tokens the model may generate per request. A request-level `maxTokens` value overrides this default. | `2048` |
+| `maxTokens` | N | Default maximum number of tokens the model may generate per request. A request-level `maxTokens` value overrides this default. When unset, no cap is sent and the provider's own default applies. | `2048` |
 | `responseCacheTTL` | N | A time-to-live for the in-memory response cache. When set, identical requests are served from cache until they expire. | `10m` |
 | `assumeRoleArn` | N | ARN of the role to assume for authentication. | `arn:aws:iam::123456789012:role/MyRole` |
 | `trustAnchorArn` | N | ARN of the trust anchor for authentication. | `arn:aws:rolesanywhere:us-east-1:123456789012:trust-anchor/12345678-1234-1234-1234-123456789012` |
