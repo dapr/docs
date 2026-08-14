@@ -38,5 +38,15 @@ application source code to store these files.
 
 ## Development options
 
-Choose one of these links to learn about tools you can use in local development scenarios. It's suggested that 
+Choose one of these approaches to learn about tools you can use in local development scenarios. It's suggested that 
 you familiarize yourself with each of them to get a sense of the options provided by the .NET SDK.
+
+- [Developing with the Dapr CLI]({{< ref dotnet-development-dapr-cli.md >}}): run each service and its sidecar with `dapr run`, the lightest-weight approach for getting started.
+- [Developing with .NET Aspire]({{< ref dotnet-development-dapr-aspire.md >}}): integrate Dapr sidecars into an Aspire AppHost using the `CommunityToolkit.Aspire.Hosting.Dapr` package and `WithDaprSidecar()`.
+- [Developing with Docker Compose]({{< ref dotnet-development-docker-compose.md >}}): orchestrate services, sidecars, and dependencies together using `docker-compose`.
+
+## Next steps
+
+- [Developing with the Dapr CLI]({{< ref dotnet-development-dapr-cli.md >}})
+- [Developing with .NET Aspire]({{< ref dotnet-development-dapr-aspire.md >}})
+- [Developing with Docker Compose]({{< ref dotnet-development-docker-compose.md >}})
