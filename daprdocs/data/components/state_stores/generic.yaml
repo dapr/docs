@@ -20,6 +20,17 @@
     etag: false
     ttl: true
     workflow: false
+- component: ClickHouse
+  link: setup-clickhouse
+  state: Alpha
+  version: v1
+  since: "1.17"
+  features:
+    crud: true
+    transactions: false
+    etag: true
+    ttl: true
+    workflow: false
 - component: CockroachDB
   link: setup-cockroachdb
   state: Stable
