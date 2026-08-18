@@ -16,7 +16,7 @@
     bulkSubscribe: true
 - component: Azure Service Bus Queues
   link: setup-azure-servicebus-queues
-  state: Beta
+  state: Stable
   version: v1
   since: "1.10"
   features:
