@@ -48,7 +48,9 @@ To receive events from an input binding:
    - The gRPC proto library to get incoming events.
 
 {{% alert title="Note" color="primary" %}}
- On startup, Dapr sends [an OPTIONS request]({{% ref "bindings_api#invoking-service-code-through-input-bindings" %}}) for all defined input bindings to the application. If the application wants to subscribe to the binding, Dapr expects a status code of 2xx or 405.
+ On startup, Dapr performs [input binding subscription discovery]({{% ref "bindings_api#invoking-service-code-through-input-bindings" %}}) by probing the application (HTTP `OPTIONS` request or gRPC `ListInputBindings` call). For HTTP apps, if the application wants to subscribe to the binding, Dapr expects a status code of 2xx or 405. For gRPC apps, the application subscribes by including the binding name in its `ListInputBindings` response.
+
+ This discovery probe times out after `3s` by default. If your application is slow to respond on startup (for example, JVM/JIT workloads), increase the timeout with the `--app-binding-options-timeout` daprd flag or the `dapr.io/app-binding-options-timeout` annotation. See [arguments and annotations overview]({{% ref arguments-annotations-overview %}}).
 
 {{% /alert %}}
 
