@@ -130,6 +130,47 @@ kubectl edit pvc -n dapr-system dapr-scheduler-data-dir-dapr-scheduler-server-0 
 
 4. Recreate the Scheduler StatefulSet by [installing Dapr with the desired storage size](#setting-the-storage-size-on-installation).
 
+### Persistent Volume Write Access (fsGroup)
+
+The Scheduler process runs as a non-root user (UID/GID `65532`). For the mounted persistent volume to be writable by that process, the pod's `securityContext` can specify an `fsGroup`, which causes the kubelet to chown the volume on mount — though some storage drivers already set ownership and permissions correctly, so this may not always be necessary.
+
+As of Dapr v1.19, `dapr_scheduler.securityContext.fsGroup` is **opt-in** (no default value). Previously it was hardcoded to `65532`, which caused problems on OpenShift, where each project's Security Context Constraints (SCC) assigns its own `fsGroup` from an allowed range, making an explicit value invalid.
+
+The guidance is:
+
+- **Standard Kubernetes** (GKE, EKS, AKS, and most self-managed clusters): If your storage provisioner does not automatically grant write access to a mounted volume, set `fsGroup` explicitly so the kubelet chowns the volume on mount:
+
+  {{< tabpane text=true >}}
+  <!-- Dapr CLI -->
+  {{% tab "Dapr CLI" %}}
+
+  ```bash
+  dapr init -k --set dapr_scheduler.securityContext.fsGroup=65532
+  ```
+
+  {{% /tab %}}
+
+  <!-- Helm -->
+  {{% tab "Helm" %}}
+
+  ```bash
+  helm upgrade --install dapr dapr/dapr \
+  --version={{% dapr-latest-version short="true" %}} \
+  --namespace dapr-system \
+  --create-namespace \
+  --set dapr_scheduler.securityContext.fsGroup=65532 \
+  --wait
+  ```
+
+  {{% /tab %}}
+  {{< /tabpane >}}
+
+- **OpenShift**: Leave `fsGroup` unset (do not pass `--set dapr_scheduler.securityContext.fsGroup`). OpenShift assigns an `fsGroup` automatically from the project's allowed SCC range. Setting it explicitly overrides that assignment and can prevent the pod from starting.
+
+{{% alert title="Note" color="primary" %}}
+Many managed Kubernetes storage providers (such as AWS EBS CSI and GCE PD CSI) already set the correct ownership on the volume without requiring an explicit `fsGroup`. Check your storage class documentation to confirm whether write access is granted automatically.
+{{% /alert %}}
+
 ### Storage Class
 
 In case your Kubernetes deployment does not have a default storage class or you are configuring a production cluster, defining a storage class is required.
