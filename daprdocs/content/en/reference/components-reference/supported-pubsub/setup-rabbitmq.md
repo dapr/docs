@@ -271,8 +271,6 @@ For more information see [rabbitmq exchanges](https://www.rabbitmq.com/tutorials
 
 Setting `exchangeKind` to `"x-consistent-hash"` partitions a topic across consumers while preserving the order of messages that share a routing key. Every message for a given key is routed to the same queue, so that key is processed in order, while other keys are processed in parallel on other queues.
 
-This is an alternative to `concurrencyMode: single`, which preserves order using a single serial consumer and therefore cannot scale out.
-
 {{% alert title="Note" color="primary" %}}
 This exchange kind is provided by the [`rabbitmq_consistent_hash_exchange`](https://github.com/rabbitmq/rabbitmq-server/tree/main/deps/rabbitmq_consistent_hash_exchange) plugin, which must be enabled on the broker before it can be used.
 {{% /alert %}}
