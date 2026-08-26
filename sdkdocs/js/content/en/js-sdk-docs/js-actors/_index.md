@@ -85,7 +85,7 @@ const clientOptions = {
   actor: {
     actorIdleTimeout: "1h",
     actorScanInterval: "30s",
-    drainOngoingCallTimeout: "1m",
+    drainOngoingCallTimeout: "5s",
     drainRebalancedActors: true,
     reentrancy: {
       enabled: true,
