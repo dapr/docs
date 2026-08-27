@@ -22,6 +22,29 @@ For a full explanation of what changed, why, and the compatibility matrix (inclu
 When you supply your own root and issuer certificates, Sentry signs workload CSRs using the algorithm of the **issuer key you provide**, not Ed25519. If your CA key is RSA or ECDSA, workload certs will be signed with that algorithm. This is the recommended path for FIPS-compliant environments.
 {{% /alert %}}
 
+## Container image references in workload certificates (Kubernetes, Dapr 1.19+) {#container-image-references}
+
+On Kubernetes, Sentry embeds the requesting pod's container image references (the daprd sidecar image and all application container images, with best effort resolved digests) into every workload certificate as a non-critical X.509 extension under OID `1.3.6.1.4.1.57683.100.1`. The data comes from the pod object Sentry reads from the Kubernetes API server, not from the workload, so it cannot be forged by the certificate requestor.
+
+No configuration is needed: the extension is always present in certificates issued via the Kubernetes validator. Certificates issued in self-hosted mode (insecure validator) or via the JWKS validator omit the extension. Existing consumers are unaffected because the extension is non-critical.
+
+For the trust model, the exact wire format, and how to decode the extension, see [Container image references in workload certificates]({{% ref "security-concept.md#container-image-references-in-workload-certificates" %}}) in the security concepts page.
+
+To see the raw extension on an issued certificate, inspect the workload certificate with OpenSSL; the extension appears under its OID in the output:
+
+```bash
+openssl x509 -in workload-cert.pem -noout -text
+```
+
+```
+X509v3 extensions:
+    ...
+    1.3.6.1.4.1.57683.100.1:
+        .z[{"role":"daprd","containerName":"daprd","image":"ghcr.io/dapr/daprd:1.19.0","digest":"sha256:..."},...
+```
+
+The leading bytes before the JSON are the inner DER OCTET STRING header; decode as described in the concepts page for programmatic use.
+
 If custom certificates have not been provided, Dapr automatically creates and persist self-signed certs valid for one year.
 In Kubernetes, the certs are persisted to a secret that resides in the namespace of the Dapr system pods, accessible only to them.
 In self-hosted mode, the certs are persisted to disk.

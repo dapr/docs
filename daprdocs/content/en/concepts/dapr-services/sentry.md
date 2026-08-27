@@ -5,7 +5,9 @@ linkTitle: "Sentry"
 description: "Overview of the Dapr sentry service"
 ---
 
-The Dapr Sentry service manages mTLS between services and acts as a certificate authority. It generates mTLS certificates and distributes them to any running sidecars. This allows sidecars to communicate with encrypted, mTLS traffic. For more information read the [sidecar-to-sidecar communication overview]({{% ref "security-concept#sidecar-to-sidecar-communication" %}}). 
+The Dapr Sentry service manages mTLS between services and acts as a certificate authority. It generates mTLS certificates and distributes them to any running sidecars. This allows sidecars to communicate with encrypted, mTLS traffic. For more information read the [sidecar-to-sidecar communication overview]({{% ref "security-concept#sidecar-to-sidecar-communication" %}}).
+
+On Kubernetes, Sentry also stamps the requesting pod's [container image references into each issued workload certificate]({{% ref "security-concept#container-image-references-in-workload-certificates" %}}) as a custom X.509 extension, giving downstream systems verifiable supply-chain provenance of the software behind each workload identity.
 
 ## Self-hosted mode
 
