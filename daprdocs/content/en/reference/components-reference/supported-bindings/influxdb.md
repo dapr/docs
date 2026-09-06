@@ -51,6 +51,23 @@ This component supports **output binding** with the following operations:
 - `create`
 - `query`
 
+### Create
+
+In order to write a point to InfluxDB, use a `create` operation with `measurement`, `tags`, and `values` keys in the call's data. `tags` and `values` are [InfluxDB line protocol](https://docs.influxdata.com/influxdb/v2/reference/syntax/line-protocol/) tag and field sets, for example `host=serverA,region=us-west` and `temperature=25.3`:
+
+```shell
+curl -X POST http://localhost:3500/v1.0/bindings/myInfluxBinding \
+  -H "Content-Type: application/json" \
+  -d "{
+        \"data\": {
+          \"measurement\": \"temperature\",
+          \"tags\": \"host=serverA,region=us-west\",
+          \"values\": \"value=25.3\"
+        },
+        \"operation\": \"create\"
+      }"
+```
+
 ### Query
 
 In order to query InfluxDB, use a `query` operation along with a `raw` key in the call's metadata, with the query as the value:
