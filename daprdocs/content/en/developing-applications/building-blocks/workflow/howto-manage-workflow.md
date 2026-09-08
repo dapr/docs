@@ -569,7 +569,7 @@ curl -X POST "http://localhost:3500/v1.0/workflows/dapr/OrderProcessingWorkflow/
 Note that workflow instance IDs can only contain alphanumeric characters, underscores, and dashes.
 
 {{% alert title="Important" color="warning" %}}
-Dapr recommends giving every execution a new instance ID rather than reusing one; see [Do not reuse instance IDs]({{% ref "workflow-features-concepts.md#do-not-reuse-instance-ids" %}}). An instance ID can only be reused once the existing workflow with that ID, and every child workflow it created (checked recursively), has reached a terminal state (`COMPLETED`, `FAILED`, or `TERMINATED`); otherwise the request is rejected. To free up an instance ID unconditionally, first purge the existing workflow using the [purge API]({{% ref "workflow_api.md#purge-workflow-request" %}}) or configure a [retention policy]({{% ref workflow-history-retention-policy.md %}}).
+It is strongly recommended to give every execution a new instance ID rather than reusing an old one. See [Do not reuse instance IDs]({{% ref "workflow-features-concepts.md#do-not-reuse-instance-ids" %}}). An instance ID can only be reused once the existing workflow with that ID, and every child workflow it created (checked recursively), has reached a terminal state (`COMPLETED`, `FAILED`, or `TERMINATED`), otherwise the request is rejected. To free up an instance ID unconditionally, first purge the existing workflow using the [purge API]({{% ref "workflow_api.md#purge-workflow-request" %}}) or configure a [retention policy]({{% ref workflow-history-retention-policy.md %}}).
 {{% /alert %}}
 
 ### Terminate workflow

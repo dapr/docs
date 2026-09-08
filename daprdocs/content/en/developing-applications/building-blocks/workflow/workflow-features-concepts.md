@@ -87,24 +87,24 @@ Each workflow you define has a type name, and individual executions of a workflo
 
 Only one workflow instance with a given ID can exist at any given time. Attempting to create a new workflow instance with the same ID as an existing instance results in an error unless the existing instance, and every child workflow it created (checked recursively), has reached a terminal state: `COMPLETED`, `FAILED`, or `TERMINATED`. Once the entire workflow tree is terminal, creating a new instance with the same ID starts a fresh execution that replaces the previous one in the state store.
 
-#### Do not reuse instance IDs
+#### Implications of Instance ID Reuse
 
 {{% alert title="Recommendation" color="primary" %}}
-Give every workflow execution an instance ID that has never been used before. Starting a new execution under the ID of a finished one is permitted for compatibility, but Dapr recommends against it, and new applications should not depend on it.
+Give every workflow execution an instance ID that has never been used before. Starting a new execution under the ID of a finished one is permitted for backwards compatibility, but is not recommended, and new applications should not depend on it.
 {{% /alert %}}
 
-Reusing an instance ID for a new execution has costs that a fresh ID does not:
+Reusing an instance ID for a new workflow execution has costs that a fresh ID does not:
 
-- **The previous execution is replaced, not kept.** Its history, output, and failure details are overwritten in the state store the moment the new execution is created. You lose the audit trail and can no longer query what the earlier run did.
-- **Every reuse is a conflict check across the whole previous workflow tree.** Before accepting the create, the runtime must confirm that the previous instance and every child workflow it created, recursively and possibly in other applications, has reached a terminal state. A child that is still running rejects the create with a conflict; a child that cannot be reached during an outage rejects it as unavailable. A create with a fresh ID has no such dependency and succeeds in the same conditions.
-- **Work addressed to the old execution can arrive at the new one.** Events, activity results, and reminders are routed by instance ID and can outlive the execution that produced them. Dapr guards against them being applied to the wrong execution, but each guard is a code path that a fresh ID never exercises.
+- **The previous execution is replaced.** Its history, output, and failure details are overwritten in the state store the moment the new execution is created. The audit trail is lost and it can no longer be queried what the earlier run did.
+- **Every reuse is a conflict check across the whole previous workflow tree.** Before accepting the create, the runtime must confirm that the previous instance and every child workflow it created, recursively and possibly in other applications, has reached a terminal state. A child that is still running rejects the create with a conflict and a child that cannot be reached during an outage rejects the create as unavailable. A create with a fresh ID has no such dependency and succeeds in the same conditions.
+- **Work addressed to the old execution can arrive at the new one.** Events, activity results, and reminders are routed by instance ID and can outlive the execution that produced them. Dapr guards against them being applied to the wrong execution, but it is still riskier than no reuse.
 - **Recovery and troubleshooting are harder.** The engine's recovery paths key on the instance ID. When one ID has carried several executions, an operator looking at a stuck instance first has to work out which execution the stored state, reminders, and logs belong to.
 
 Recommended patterns instead of reuse:
 
 - **Let Dapr generate the ID**, or derive one from your business key plus a unique suffix, such as `order-1234-<uuid>` or `order-1234-attempt-3`. Keep the mapping from business entity to current instance ID in your own state store, or expose it through the workflow's custom status, so callers can find the active instance.
 - **Use a fixed ID only to deduplicate a single logical start.** If two callers may race to start the same logical workflow, a deterministic ID makes the second create fail with a conflict while the first is running, which is the intended signal. Do not use the same ID to run a sequence of executions.
-- **If a business identifier must be the instance ID and executions repeat**, purge the previous instance with the [purge API]({{% ref "workflow_api.md#purge-workflow-request" %}}) or a [retention policy]({{% ref workflow-history-retention-policy.md %}}) before starting the next one, and treat the purge and the create as one operation in your code.
+- **If a business identifier must be the instance ID and executions repeat**, purge the previous instance with the [purge API]({{% ref "workflow_api.md#purge-workflow-request" %}}) or a [retention policy]({{% ref workflow-history-retention-policy.md %}}) before starting the next one, and treat the purge and the create as as transaction in code.
 
 {{% alert title="Important" color="warning" %}}
 An instance ID cannot be reused while its workflow is running, or while any child workflow created by its previous execution is still running. This includes children abandoned by a parent that completed without awaiting them or that was terminated non-recursively; a still-running child from the old execution could otherwise deliver its results into the new one. The create request is rejected with a conflict error naming the child workflow that is not yet terminal.
