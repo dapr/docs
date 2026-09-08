@@ -26,7 +26,7 @@ POST http://localhost:<daprPort>/v1.0/workflows/<workflowComponentName>/<workflo
 Note that workflow instance IDs can only contain alphanumeric characters, underscores, and dashes.
 
 {{% alert title="Important" color="warning" %}}
-An instance ID can only be reused once the existing workflow with that ID, and every child workflow it created (checked recursively), has reached a terminal state (`COMPLETED`, `FAILED`, or `TERMINATED`). Otherwise the request is rejected with a `409` conflict naming the workflow that is not yet terminal. To free up an instance ID unconditionally, first purge the workflow using the [purge API]({{% ref "workflow_api.md#purge-workflow-request" %}}). See [workflow identity]({{% ref "workflow-features-concepts.md#workflow-identity" %}}) for more details.
+Dapr recommends a new instance ID for every execution rather than reusing one; see [Do not reuse instance IDs]({{% ref "workflow-features-concepts.md#do-not-reuse-instance-ids" %}}). An instance ID can only be reused once the existing workflow with that ID, and every child workflow it created (checked recursively), has reached a terminal state (`COMPLETED`, `FAILED`, or `TERMINATED`). Otherwise the request is rejected with a `409` conflict naming the workflow that is not yet terminal. To free up an instance ID unconditionally, first purge the workflow using the [purge API]({{% ref "workflow_api.md#purge-workflow-request" %}}). See [workflow identity]({{% ref "workflow-features-concepts.md#workflow-identity" %}}) for more details.
 {{% /alert %}}
 
 ### URL parameters
