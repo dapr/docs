@@ -96,7 +96,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | enableDeadLetter      | N        | Enable forwarding Messages that cannot be handled to a dead-letter topic. Defaults to `"false"`                                                                                                                                                                                                                                         | `"true"`, `"false"` |
 | maxLen      | N        | The maximum number of messages of a queue and its dead letter queue (if dead letter enabled). If both `maxLen` and `maxLenBytes` are set then both will apply; whichever limit is hit first will be enforced.  Defaults to no limit.                                                                                                    | `"1000"` |
 | maxLenBytes      | N        | Maximum length in bytes of a queue and its dead letter queue (if dead letter enabled). If both `maxLen` and `maxLenBytes` are set then both will apply; whichever limit is hit first will be enforced.  Defaults to no limit.                                                                                                           | `"1048576"` |
-| exchangeKind      | N        | Exchange kind of the rabbitmq exchange.  Defaults to `"fanout"`. `"x-consistent-hash"` requires the [`rabbitmq_consistent_hash_exchange`](https://github.com/rabbitmq/rabbitmq-server/tree/main/deps/rabbitmq_consistent_hash_exchange) plugin to be enabled on the broker.                                                          | `"fanout"`,`"topic"`,`"direct"`,`"headers"`,`"x-consistent-hash"` |
+| exchangeKind      | N        | Exchange kind of the rabbitmq exchange.  Defaults to `"fanout"`. `"x-consistent-hash"` requires the [`rabbitmq_consistent_hash_exchange`](https://github.com/rabbitmq/rabbitmq-server/tree/main/deps/rabbitmq_consistent_hash_exchange) plugin to be enabled on the broker. When `exchangeDeclareMode` is `"passive"`, any exchange kind the broker supports is accepted, since the component does not declare the exchange.                                                          | `"fanout"`,`"topic"`,`"direct"`,`"headers"`,`"x-consistent-hash"` |
 | exchangeDeclareMode | N      | How the component obtains the exchange for a topic. `"declare"` (the default) creates the exchange if it does not exist. `"passive"` only asserts that it already exists, and never creates or modifies it. See [Use an externally managed topology](#use-an-externally-managed-topology).                                              | `"declare"`, `"passive"` |
 | queueDeclareMode  | N        | How the component obtains the queue for a subscription. `"declare"` (the default) creates the queue and binds it to the exchange. `"passive"` only asserts that it already exists, and leaves its bindings to the external owner. See [Use an externally managed topology](#use-an-externally-managed-topology).                        | `"declare"`, `"passive"` |
 | saslExternal      | N        | With TLS, should the username be taken from an additional field (for example, CN). See [RabbitMQ Authentication Mechanisms](https://www.rabbitmq.com/access-control.html#mechanisms).  Defaults to `"false"`.                                                                                                                           | `"true"`, `"false"` |
@@ -278,7 +278,7 @@ This exchange kind is provided by the [`rabbitmq_consistent_hash_exchange`](http
 The `routingKey` metadata means something different on each side:
 
 - **When publishing**, it is the partition key. The exchange hashes it to choose a queue, so any messages that must stay in order relative to one another must share a key.
-- **When subscribing**, it is the queue's *bucket weight*: a positive integer, not a pattern. The weight is the number of buckets the queue occupies on the hash ring, so the key space is divided between the bound queues in proportion to their weights.
+- **When subscribing**, it is the queue's *bucket weight*: a single positive integer, not a pattern and not a list. The weight is the number of buckets the queue occupies on the hash ring, so the key space is divided between the bound queues in proportion to their weights. Unlike a topic exchange, a consistent hash exchange has one effective binding per queue, so only one value is accepted here.
 
 Each consumer binds its own queue, so give each one a distinct `queueName` (or a distinct `consumerID`), and set `concurrencyMode` to `single` so that each partition is processed in order:
 
@@ -352,8 +352,10 @@ spec:
     value: "passive"
 ```
 
-- `exchangeDeclareMode: passive` asserts that the topic exchange exists and never creates or modifies it. When `enableDeadLetter` is `"true"`, the dead letter exchange must exist up front as well.
-- `queueDeclareMode: passive` asserts that the consumer queue exists — and the dead letter queue, when dead lettering is enabled — and leaves `queue.bind` to the external owner, since a binding belongs to whoever owns the queue.
+- `exchangeDeclareMode: passive` asserts that the topic exchange exists and never creates or modifies it.
+- `queueDeclareMode: passive` asserts that the consumer queue exists, and leaves `queue.bind` to the external owner, since a binding belongs to whoever owns the queue.
+
+Dead lettering follows `queueDeclareMode`, not `exchangeDeclareMode`: the dead letter exchange and queue are named after the consumer at runtime, so no external owner could pre-create them. Under `queueDeclareMode: passive` they are left to whoever defines the queue, and `enableDeadLetter` has no effect.
 
 The two are independent. A common combination is an externally managed exchange with queues the component still declares, which is what a consistent hash setup needs when consumer queue names are only known at runtime:
 
@@ -365,7 +367,7 @@ The two are independent. A common combination is an externally managed exchange 
 ```
 
 {{% alert title="Note" color="primary" %}}
-Under `queueDeclareMode: passive` the component does not send queue arguments, so settings such as `maxLen`, `maxLenBytes`, `maxPriority` and `queueType` become the responsibility of whoever declares the queue.
+Under `queueDeclareMode: passive` the component does not send queue arguments, so settings such as `maxLen`, `maxLenBytes`, `maxPriority`, `queueType` and `enableDeadLetter` become the responsibility of whoever declares the queue.
 {{% /alert %}}
 
 If a passively declared exchange or queue does not exist, the component reports that it will not create it rather than creating it silently.
