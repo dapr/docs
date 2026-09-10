@@ -96,7 +96,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | enableDeadLetter      | N        | Enable forwarding Messages that cannot be handled to a dead-letter topic. Defaults to `"false"`                                                                                                                                                                                                                                         | `"true"`, `"false"` |
 | maxLen      | N        | The maximum number of messages of a queue and its dead letter queue (if dead letter enabled). If both `maxLen` and `maxLenBytes` are set then both will apply; whichever limit is hit first will be enforced.  Defaults to no limit.                                                                                                    | `"1000"` |
 | maxLenBytes      | N        | Maximum length in bytes of a queue and its dead letter queue (if dead letter enabled). If both `maxLen` and `maxLenBytes` are set then both will apply; whichever limit is hit first will be enforced.  Defaults to no limit.                                                                                                           | `"1048576"` |
-| exchangeKind      | N        | Exchange kind of the rabbitmq exchange.  Defaults to `"fanout"`.                                                                                                                                                                                                                                                                        | `"fanout"`,`"topic"` |
+| exchangeKind      | N        | Exchange kind of the rabbitmq exchange.  Defaults to `"fanout"`. `"x-consistent-hash"` requires the [`rabbitmq_consistent_hash_exchange`](https://github.com/rabbitmq/rabbitmq-server/tree/main/deps/rabbitmq_consistent_hash_exchange) plugin to be enabled on the broker. When `exchangeDeclareMode` is `"passive"`, any exchange kind the broker supports is accepted, since the component does not declare the exchange.                                                          | `"fanout"`,`"topic"`,`"direct"`,`"headers"`,`"x-consistent-hash"` |
+| exchangeDeclareMode | N      | How the component obtains the exchange for a topic. `"declare"` (the default) creates the exchange if it does not exist. `"passive"` only asserts that it already exists, and never creates or modifies it. See [Use an externally managed topology](#use-an-externally-managed-topology).                                              | `"declare"`, `"passive"` |
+| queueDeclareMode  | N        | How the component obtains the queue for a subscription. `"declare"` (the default) creates the queue and binds it to the exchange. `"passive"` only asserts that it already exists, and leaves its bindings to the external owner. See [Use an externally managed topology](#use-an-externally-managed-topology).                        | `"declare"`, `"passive"` |
 | saslExternal      | N        | With TLS, should the username be taken from an additional field (for example, CN). See [RabbitMQ Authentication Mechanisms](https://www.rabbitmq.com/access-control.html#mechanisms).  Defaults to `"false"`.                                                                                                                           | `"true"`, `"false"` |
 | ttlInSeconds      | N        | Set message TTL at the component level, which can be overwritten by message level TTL per request.                                                                                                                                                                                                                                      | `"60"` |
 | caCert | Required for using TLS | Certificate Authority (CA) certificate in PEM format for verifying server TLS certificates.                                                                                                                                                                                                                                             | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
@@ -264,6 +266,111 @@ spec:
 
 
 For more information see [rabbitmq exchanges](https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchanges).
+
+## Use a consistent hash exchange for partitioned ordering
+
+Setting `exchangeKind` to `"x-consistent-hash"` partitions a topic across consumers while preserving the order of messages that share a routing key. Every message for a given key is routed to the same queue, so that key is processed in order, while other keys are processed in parallel on other queues.
+
+{{% alert title="Note" color="primary" %}}
+This exchange kind is provided by the [`rabbitmq_consistent_hash_exchange`](https://github.com/rabbitmq/rabbitmq-server/tree/main/deps/rabbitmq_consistent_hash_exchange) plugin, which must be enabled on the broker before it can be used.
+{{% /alert %}}
+
+The `routingKey` metadata means something different on each side:
+
+- **When publishing**, it is the partition key. The exchange hashes it to choose a queue, so any messages that must stay in order relative to one another must share a key.
+- **When subscribing**, it is the queue's *bucket weight*: a single positive integer, not a pattern and not a list. The weight is the number of buckets the queue occupies on the hash ring, so the key space is divided between the bound queues in proportion to their weights. Unlike a topic exchange, a consistent hash exchange has one effective binding per queue, so only one value is accepted here.
+
+Each consumer binds its own queue, so give each one a distinct `queueName` (or a distinct `consumerID`), and set `concurrencyMode` to `single` so that each partition is processed in order:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: order-pub-sub
+spec:
+  type: pubsub.rabbitmq
+  version: v1
+  metadata:
+  - name: connectionString
+    value: "amqp://localhost:5672"
+  - name: exchangeKind
+    value: "x-consistent-hash"
+  - name: concurrencyMode
+    value: "single"
+```
+
+```yaml
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: orderspubsub
+spec:
+  topic: orders
+  routes:
+    default: /orders
+  pubsubname: order-pub-sub
+  metadata:
+    queueName: orders-partition-0
+    routingKey: "10"
+```
+
+Publish with the partition key in the `routingKey` metadata:
+
+```go
+// Both messages carry the same partition key, so both are routed to the same
+// queue and processed in the order they were published.
+client.PublishEvent(context.Background(), "order-pub-sub", "orders", []byte("created"), dapr.PublishEventWithMetadata(map[string]string{"routingKey": "tenant-42/serial-7"}))
+client.PublishEvent(context.Background(), "order-pub-sub", "orders", []byte("shipped"), dapr.PublishEventWithMetadata(map[string]string{"routingKey": "tenant-42/serial-7"}))
+```
+
+{{% alert title="Note" color="primary" %}}
+Bucket weights are relative, and small weights divide the key space coarsely. Binding two queues with a weight of `1` each can leave the split noticeably uneven; a weight in the tens spreads keys more evenly across the same number of queues.
+{{% /alert %}}
+
+## Use an externally managed topology
+
+By default the component declares the topology it needs: an exchange named after the topic, a queue for each subscription, and the binding between them. If your exchanges and queues are instead managed declaratively — by the [RabbitMQ Cluster Kubernetes Operator's Topology Operator](https://www.rabbitmq.com/kubernetes/operator/using-topology-operator#exchanges-bindings), by Terraform, or by any other provisioning step — that declaration collides with the external owner's.
+
+An AMQP declaration is idempotent only when *every* property matches. Where the two disagree, RabbitMQ returns `PRECONDITION_FAILED (406)` and the component cannot use that topic at all. Because the defaults on each side differ, this happens out of the box rather than only in unusual configurations.
+
+Set either mode to `"passive"` to make the external owner the single source of truth:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: order-pub-sub
+spec:
+  type: pubsub.rabbitmq
+  version: v1
+  metadata:
+  - name: connectionString
+    value: "amqp://localhost:5672"
+  - name: exchangeDeclareMode
+    value: "passive"
+  - name: queueDeclareMode
+    value: "passive"
+```
+
+- `exchangeDeclareMode: passive` asserts that the topic exchange exists and never creates or modifies it.
+- `queueDeclareMode: passive` asserts that the consumer queue exists, and leaves `queue.bind` to the external owner, since a binding belongs to whoever owns the queue.
+
+Dead lettering follows `queueDeclareMode`, not `exchangeDeclareMode`: the dead letter exchange and queue are named after the consumer at runtime, so no external owner could pre-create them. Under `queueDeclareMode: passive` they are left to whoever defines the queue, and `enableDeadLetter` has no effect.
+
+The two are independent. A common combination is an externally managed exchange with queues the component still declares, which is what a consistent hash setup needs when consumer queue names are only known at runtime:
+
+```yaml
+  - name: exchangeDeclareMode
+    value: "passive"
+  - name: exchangeKind
+    value: "x-consistent-hash"
+```
+
+{{% alert title="Note" color="primary" %}}
+Under `queueDeclareMode: passive` the component does not send queue arguments, so settings such as `maxLen`, `maxLenBytes`, `maxPriority`, `queueType` and `enableDeadLetter` become the responsibility of whoever declares the queue.
+{{% /alert %}}
+
+If a passively declared exchange or queue does not exist, the component reports that it will not create it rather than creating it silently.
 
 ## Use priority queues
 
