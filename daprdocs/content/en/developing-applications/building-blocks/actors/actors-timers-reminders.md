@@ -121,6 +121,26 @@ The following request body configures a timer with a `dueTime` of 10 seconds, a 
 }
 ```
 
+### Retrieve actor timer
+
+You can retrieve a single timer registered for an actor by calling
+
+```md
+GET http://localhost:3500/v1.0/actors/<actorType>/<actorId>/timers/<name>
+```
+
+### List actor timers
+
+You can list all the timers registered for an actor by calling
+
+```md
+GET http://localhost:3500/v1.0/actors/<actorType>/<actorId>/timers
+```
+
+Timers are kept in memory by the sidecar that hosts the actor and are not persisted. Both requests must therefore be sent to the sidecar that currently owns the actor: any other sidecar rejects them with a `403` and the `ERR_ACTOR_TIMER_NOT_OWNED` error code. Timers whose `ttl` had already elapsed at registration are never stored and are not returned. The gRPC equivalents are `GetActorTimer` and `ListActorTimers`.
+
+### Remove the actor timer
+
 You can remove the actor timer by calling
 
 ```md
@@ -148,6 +168,16 @@ You can retrieve the actor reminder by calling
 ```md
 GET http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
+
+### List actor reminders
+
+You can list all the reminders registered for an actor by calling
+
+```md
+GET http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders
+```
+
+The gRPC equivalent, `ListActorReminders`, also accepts a request without an actor ID to list the reminders of every actor of a given type.
 
 ### Remove the actor reminder
 
@@ -276,7 +306,7 @@ dapr scheduler import -f reminders-backup.bin
 #### Summary
 
 - Reminders are stored in the Dapr Scheduler, not in the app.
-- Create reminders via the Actors API
+- Create, get, list, and delete reminders via the Actors API.
 - Manage existing reminders (list, get, delete, backup/restore) using the `dapr scheduler` CLI.
 
 ## Next steps
