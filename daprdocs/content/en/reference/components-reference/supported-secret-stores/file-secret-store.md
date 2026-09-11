@@ -38,7 +38,7 @@ spec:
 
 | Field              | Required | Details                                                                 | Example                  |
 |--------------------|:--------:|-------------------------------------------------------------------------|--------------------------|
-| secretsFile        | Y        | The path to the file where secrets are stored   | `"path/to/file.json"` |
+| secretsFile        | Y        | The path to the file where secrets are stored. Relative paths are resolved from the directory where the application is run; in Multi-App Run, this is the app's `appDirPath`. | `"path/to/file.json"` |
 | nestedSeparator    | N        | Used by the store when flattening the JSON hierarchy to a map. Defaults to `":"` | `":"` 
 | multiValued        | N        | `"true"` sets the `multipleKeyValuesPerSecret` behavior. Allows one level of multi-valued key/value pairs before flattening JSON hierarchy. Defaults to `"false"` | `"true"` |
 
