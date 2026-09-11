@@ -236,6 +236,14 @@ The receiving workflow/activity reads its inherited history via the SDKs `GetPro
 
 For details, the scope comparison, and code examples, see [workflow history propagation]({{< ref workflow-history-propagation.md >}}).
 
+## Stateful workflow client
+
+A workflow is replayed from its history on every turn, and that history only grows. Rather than sending the whole thing each time, the workflow SDK keeps the history it has already replayed in memory and the sidecar sends only the events added since the previous turn. The per-turn payload therefore stops growing with the length of the workflow, which matters most for long-running, monitor-pattern, and large fan-out workflows.
+
+This is enabled by default, requires no configuration or code changes, and never affects correctness: if the worker's cached history does not match what the sidecar expects, the full history is fetched instead.
+
+Learn more about [the stateful workflow client]({{< ref workflow-stateful-client.md >}}).
+
 ## Purging
 
 Workflow state can be purged from a state store, purging all its history and removing all metadata related to a specific workflow instance. The purge capability is used for workflows that have run to a `COMPLETED`, `FAILED`, or `TERMINATED` state.
