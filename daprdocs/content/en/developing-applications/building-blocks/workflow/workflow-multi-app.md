@@ -244,6 +244,178 @@ public sealed class BusinessWorkflow : Workflow<string, string>
 
 {{< /tabpane >}}
 
+## Managing workflows across applications
+
+The examples above compose work across applications from *inside* a running workflow. [Client-level operations]({{% ref howto-manage-workflow.md %}}) can cross applications too: an application that holds nothing but a workflow client can start, inspect and control an instance owned by another application in the same namespace.
+
+This means the application that owns a workflow does not have to build and maintain its own API for other teams to drive it. An operations dashboard can list and terminate stuck orders, a support tool can raise an approval event, and a front-end service can start a workflow it does not host, all through the standard workflow API. The owning application stays in control: its [workflow access policy]({{% ref workflow-access-policy.md %}}) decides which callers may perform which operation on which workflow. See the [WorkflowAccessPolicy spec]({{% ref workflow-access-policy-schema.md %}}) for the resource format.
+
+### When to use it
+
+- **Client-level operations (this section)** — the caller is not inside a workflow. An HTTP handler, the [Dapr CLI]({{% ref howto-manage-workflow.md %}}), an operator dashboard, or a service that starts work it does not host.
+- **[Child workflows and activities](#multi-application-activity-example)** — the caller *is* a workflow, composing another application's work into its own execution and awaiting the result.
+
+### How it works
+
+Take an application `app-a` that terminates the workflow instance `order-1`, which is owned by `app-b`:
+
+{{< mermaid >}}
+flowchart LR
+    subgraph A["app-a"]
+        direction TB
+        AC["Your code<br/>terminate order-1<br/>appID: app-b"]
+        AS["Dapr sidecar"]
+        AC --> AS
+    end
+    subgraph B["app-b"]
+        direction TB
+        BS["Dapr sidecar"]
+        P{"WorkflowAccessPolicy<br/>may app-a terminate<br/>OrderWF?"}
+        W["order-1<br/>an OrderWF instance"]
+        BS --> P
+        P -->|allowed| W
+        P -->|denied| X["PermissionDenied"]
+    end
+    AS -->|"caller identity over mTLS"| BS
+{{< /mermaid >}}
+
+`app-a` hosts no workflow code at all. It names the owning application, and its sidecar does the rest: it stamps `app-a` as the caller, and `app-b`'s sidecar checks that identity against its own [access policy]({{% ref workflow-access-policy.md %}}) before the operation reaches the instance. Only `app-b` ever runs the workflow.
+
+Because the caller's identity is what the policy is evaluated against, [mTLS]({{% ref mtls.md %}}) must be enabled for cross-application enforcement. With a policy loaded and mTLS off, the target cannot verify who is calling and denies the request.
+
+Leaving the app ID unset, or setting it to the calling application's own ID, is the ordinary local operation. Against a runtime that predates this feature the app ID is ignored and the operation applies to the local application.
+
+### HTTP
+
+Add the `appID` query parameter to any call in the [workflow API reference]({{% ref workflow_api.md %}}):
+
+```bash
+# Start a workflow hosted by app2
+curl -X POST "http://localhost:3500/v1.0-beta1/workflows/dapr/OrderWF/start?appID=app2&instanceID=order-1"
+
+# Inspect it, raise an event, and terminate it on app2
+curl "http://localhost:3500/v1.0-beta1/workflows/dapr/order-1?appID=app2"
+curl -X POST "http://localhost:3500/v1.0-beta1/workflows/dapr/order-1/raiseEvent/approval?appID=app2" -d '"approved"'
+curl -X POST "http://localhost:3500/v1.0-beta1/workflows/dapr/order-1/terminate?appID=app2"
+```
+
+### gRPC
+
+Set the `app_id` field (JSON name `appID`) on the workflow request messages: `StartWorkflowRequest`, `GetWorkflowRequest`, `TerminateWorkflowRequest`, `RaiseEventWorkflowRequest`, `PauseWorkflowRequest`, `ResumeWorkflowRequest` and `PurgeWorkflowRequest`. Each corresponds to an operation in the [workflow API reference]({{% ref workflow_api.md %}}): [start]({{% ref "workflow_api.md#start-workflow-request" %}}), [get]({{% ref "workflow_api.md#get-workflow-request" %}}), [terminate]({{% ref "workflow_api.md#terminate-workflow-request" %}}), [raise event]({{% ref "workflow_api.md#raise-event-request" %}}), [pause]({{% ref "workflow_api.md#pause-workflow-request" %}}), [resume]({{% ref "workflow_api.md#resume-workflow-request" %}}) and [purge]({{% ref "workflow_api.md#purge-workflow-request" %}}).
+
+### SDKs
+
+{{< tabpane text=true >}}
+
+{{% tab "Python" %}}
+
+<!--python-->
+
+`app_id` is a keyword-only argument on every client operation.
+
+```python
+instance_id = client.schedule_new_workflow(workflow=order_wf, app_id='app2')
+
+state = client.get_workflow_state(instance_id, app_id='app2')
+client.raise_workflow_event(instance_id, 'approval', data='approved', app_id='app2')
+client.pause_workflow(instance_id, app_id='app2')
+client.resume_workflow(instance_id, app_id='app2')
+client.terminate_workflow(instance_id, app_id='app2')
+client.purge_workflow(instance_id, app_id='app2')
+```
+
+The async client in `dapr.ext.workflow.aio` takes the same argument. [See the Python workflow examples.](https://github.com/dapr/python-sdk/tree/master/examples/workflow)
+
+{{% /tab %}}
+
+{{% tab "JavaScript" %}}
+
+<!--javascript-->
+
+Each operation takes a trailing options object carrying `appId`.
+
+```typescript
+const instanceId = await client.scheduleNewWorkflow(orderWf, undefined, undefined, undefined, { appId: "app2" });
+
+const state = await client.getWorkflowState(instanceId, true, { appId: "app2" });
+await client.raiseEvent(instanceId, "approval", "approved", { appId: "app2" });
+await client.suspendWorkflow(instanceId, { appId: "app2" });
+await client.resumeWorkflow(instanceId, { appId: "app2" });
+await client.terminateWorkflow(instanceId, null, { appId: "app2" });
+await client.purgeWorkflow(instanceId, { appId: "app2" });
+```
+
+{{% /tab %}}
+
+{{% tab ".NET" %}}
+
+<!--dotnet-->
+
+Scheduling takes the target through `StartWorkflowOptions`; the other operations take a `targetAppId` argument.
+
+```csharp
+var options = new StartWorkflowOptionsBuilder().WithTargetAppId("app2").Build();
+var instanceId = await client.ScheduleNewWorkflowAsync("OrderWF", input: null, options: options);
+
+var state = await client.GetWorkflowStateAsync(instanceId, "app2");
+await client.RaiseEventAsync(instanceId, "approval", "approved", "app2");
+await client.SuspendWorkflowAsync(instanceId, null, "app2");
+await client.ResumeWorkflowAsync(instanceId, null, "app2");
+await client.TerminateWorkflowAsync(instanceId, null, "app2");
+await client.PurgeInstanceAsync(instanceId, "app2");
+```
+
+{{% /tab %}}
+
+{{% tab "Java" %}}
+
+<!--java-->
+
+Scheduling takes the target through `NewWorkflowOptions`; the other operations have an overload with a trailing `appId`.
+
+```java
+NewWorkflowOptions options = new NewWorkflowOptions().setAppId("app2");
+String instanceId = client.scheduleNewWorkflow(OrderWorkflow.class, options);
+
+WorkflowState state = client.getWorkflowState(instanceId, true, "app2");
+client.raiseEvent(instanceId, "approval", "approved", "app2");
+client.suspendWorkflow(instanceId, null, "app2");
+client.resumeWorkflow(instanceId, null, "app2");
+client.terminateWorkflow(instanceId, null, "app2");
+client.purgeWorkflow(instanceId, "app2");
+```
+
+{{% /tab %}}
+
+{{% tab "Go" %}}
+
+<!--go-->
+
+Each operation has its own app ID option.
+
+```go
+instanceID, err := client.ScheduleWorkflow(ctx, "OrderWF", workflow.WithAppID("app2"))
+
+meta, err := client.FetchWorkflowMetadata(ctx, instanceID, workflow.WithFetchAppID("app2"))
+err = client.RaiseEvent(ctx, instanceID, "approval", workflow.WithRaiseEventAppID("app2"))
+err = client.SuspendWorkflow(ctx, instanceID, "", workflow.WithSuspendAppID("app2"))
+err = client.ResumeWorkflow(ctx, instanceID, "", workflow.WithResumeAppID("app2"))
+err = client.TerminateWorkflow(ctx, instanceID, workflow.WithTerminateAppID("app2"))
+err = client.PurgeWorkflowState(ctx, instanceID, workflow.WithPurgeAppID("app2"))
+```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
+
+{{% alert title="Note" color="primary" %}}
+Client-level cross-application operations are supported by the Python, JavaScript, .NET, Java and Go SDKs. This is a different set from the in-workflow support listed above: the JavaScript SDK supports cross-application client operations but not cross-application child workflows or activities.
+
+`rerun` can also target another application, but only through the SDKs. It is not part of the Dapr workflow HTTP or gRPC API, so there is no `appID` parameter for it.
+{{% /alert %}}
+
+The target application's [workflow access policy]({{% ref workflow-access-policy.md %}}) governs whether each operation is permitted, per operation and per workflow name, using the rules defined in the [WorkflowAccessPolicy spec]({{% ref workflow-access-policy-schema.md %}}). Cross-namespace targeting is not supported.
+
 ## Security: Workflow access policies
 
 When using multi-application workflows, you may want to restrict which applications can schedule activities or child workflows on a target application. Dapr provides the `WorkflowAccessPolicy` resource for this purpose.
