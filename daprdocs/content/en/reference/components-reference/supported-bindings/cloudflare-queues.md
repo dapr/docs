@@ -10,7 +10,7 @@ aliases:
 
 ## Component format
 
-This output binding for Dapr allows interacting with [Cloudflare Queues](https://developers.cloudflare.com/queues/) to **publish** new messages. It is currently not possible to consume messages from a Queue using Dapr.
+This binding for Dapr allows interacting with [Cloudflare Queues](https://developers.cloudflare.com/queues/) to **publish** new messages, and to **consume** messages from a Queue with an [HTTP pull consumer](https://developers.cloudflare.com/queues/configuration/pull-consumers/).
 
 To setup a Cloudflare Queues binding, create a component of type `bindings.cloudflare.queues`. See [this guide]({{% ref "howto-bindings.md#1-create-a-binding" %}}) on how to create and apply a binding configuration.
 
@@ -46,6 +46,19 @@ spec:
     # URL of the Worker (required if the Worker has been pre-created outside of Dapr)
     - name: workerUrl
       value: ""
+    # ID of the Queue (optional, input binding only)
+    # When empty, Dapr looks the Queue up by name
+    - name: queueID
+      value: ""
+    # Maximum number of messages to receive with each pull (optional, input binding only)
+    - name: batchSize
+      value: "5"
+    # How long the received messages stay invisible to other consumers (optional, input binding only)
+    - name: visibilityTimeout
+      value: "30s"
+    # How long to wait before pulling again after the Queue came back empty (optional, input binding only)
+    - name: pollingInterval
+      value: "10s"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -56,21 +69,49 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|-------|--------|---------|
-| `queueName` | Y | Output | Name of the existing Cloudflare Queue | `"mydaprqueue"`
-| `key` | Y | Output | Ed25519 private key, PEM-encoded | *See example above*
-| `cfAccountID` | Y/N | Output | Cloudflare account ID. Required to have Dapr manage the worker. | `"456789abcdef8b5588f3d134f74ac"def`
-| `cfAPIToken` | Y/N | Output | API token for Cloudflare. Required to have Dapr manage the Worker. | `"secret-key"`
-| `workerUrl` | Y/N | Output | URL of the Worker. Required if the Worker has been pre-provisioned outside of Dapr. | `"https://mydaprqueue.mydomain.workers.dev"`
+| `queueName` | Y | Input/Output | Name of the existing Cloudflare Queue | `"mydaprqueue"`
+| `key` | Y | Input/Output | Ed25519 private key, PEM-encoded | *See example above*
+| `cfAccountID` | Y/N | Input/Output | Cloudflare account ID. Required to have Dapr manage the worker, and required for the input binding. | `"456789abcdef8b5588f3d134f74ac"def`
+| `cfAPIToken` | Y/N | Input/Output | API token for Cloudflare. Required to have Dapr manage the Worker, and required for the input binding. | `"secret-key"`
+| `workerUrl` | Y/N | Input/Output | URL of the Worker. Required if the Worker has been pre-provisioned outside of Dapr. | `"https://mydaprqueue.mydomain.workers.dev"`
+| `queueID` | N | Input | ID of the Cloudflare Queue to receive messages from. When empty, Dapr looks the ID up by name, which requires the API token to have the `queues#read` permission. | `"8ceb4b1b5b6f4f8fa54b8b0dd7c4a6d9"`
+| `batchSize` | N | Input | Maximum number of messages to receive with each pull, between `1` and `100`. Default: `5` | `10`
+| `visibilityTimeout` | N | Input | How long the received messages stay invisible to other consumers, between `1s` and `12h`. It must be longer than the time your application needs to process a full batch, otherwise the messages are delivered again. Default: `30s` | `"1m"`
+| `pollingInterval` | N | Input | How long Dapr waits before pulling again after the Queue came back empty. Default: `10s` | `"5s"`
 
 > When you configure Dapr to create your Worker for you, you may need to set a longer value for the `initTimeout` property of the component, to allow enough time for the Worker script to be deployed. For example: `initTimeout: "120s"`
 
 ## Binding support
+
+This component supports both **input and output** binding interfaces.
 
 This component supports **output binding** with the following operations:
 
 - `publish` (alias: `create`): Publish a message to the Queue.  
   The data passed to the binding is used as-is for the body of the message published to the Queue.  
   This operation does not accept any metadata property.
+
+### Input binding
+
+The input binding receives messages with a Cloudflare [HTTP pull consumer](https://developers.cloudflare.com/queues/configuration/pull-consumers/), which is served by the Cloudflare API rather than by the Worker. As a consequence:
+
+- The input binding requires `cfAccountID` and `cfAPIToken` to be set; the API token must have both the `queues#read` and `queues#write` permissions. A component configured with `workerUrl` only cannot be used as an input binding.
+- The Queue must have an HTTP pull consumer enabled, which you can add with the Wrangler CLI:
+
+  ```sh
+  npx wrangler queues consumer http add <NAME>
+  # For example: `npx wrangler queues consumer http add myqueue`
+  ```
+
+Dapr pulls up to `batchSize` messages at a time and invokes your application once per message. Messages your application acknowledges (by returning a success response) are deleted from the Queue, while messages it rejects are made available again immediately for another delivery attempt. Delivery is at-least-once: if Dapr stops before a message is acknowledged, the message becomes visible again once its `visibilityTimeout` expires, and your application receives it another time.
+
+The body of the message is passed to your application as-is. Each message also includes these metadata properties:
+
+| Metadata | Description |
+|----------|-------------|
+| `id` | ID of the message in the Queue |
+| `attempts` | Number of times the message has been delivered, starting from `1` |
+| `timestamp` | Time the message was published, as a Unix timestamp in milliseconds |
 
 ## Create a Cloudflare Queue
 
