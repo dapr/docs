@@ -13,3 +13,8 @@
   state: Alpha
   version: v1
   since: "1.18"
+- component: Git
+  link: git-configuration-store
+  state: Alpha
+  version: v1
+  since: "1.18"
