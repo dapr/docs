@@ -39,14 +39,12 @@ Workflow and activity names in policy rules are matched as either exact names or
 
 ### Operations
 
-Workflow and activity rules grant the listed callers permission to `schedule` the named workflow or activity. A parent workflow on one app can schedule a child workflow or activity on a target app; the target's policy decides whether the call is permitted.
+Workflow rules grant the listed callers permission to perform specific operations on the named workflow: `schedule`, `terminate`, `raise` (raise event), `pause`, `resume`, `purge`, `get` (read metadata or wait for status), and `rerun`. All of these operations can be invoked cross-app: a caller app targets a workflow hosted by another app either from inside a workflow (child workflows, activities, detached workflows) or through the client APIs (the `appID` field or query parameter on the Dapr workflow APIs, and the app ID options on the workflow SDK clients). The target's policy decides whether each call is permitted.
 
-- Workflow rules require an `operations` field. Set it to `[schedule]`.
+- Workflow rules require an `operations` field listing the granted operations.
 - Activity rules don't have an `operations` field. Activities only support scheduling.
 
-{{% alert title="Operations are scheduling-only today" color="warning" %}}
-`schedule` is the only operation that takes effect through the standard Dapr workflow APIs. The CRD enum accepts additional values (`terminate`, `raise`, `pause`, `resume`, `purge`, `get`, `rerun`) for forward compatibility with future cross-app workflow APIs, but those operations currently target the local sidecar, resolve to self-calls, and so always succeed regardless of policy. Use `[schedule]` in your rules until cross-app variants of the other APIs are available.
-{{% /alert %}}
+For non-schedule operations, the workflow `name` in the rule is matched against the name recorded in the target instance's state. An operation on an instance that does not exist resolves to an empty workflow name, so only a `name: "*"` rule can match it.
 
 ## CRD specification
 
@@ -87,7 +85,7 @@ Fields are listed in the order they appear in the YAML document.
 | `rules[].callers[].appID` | Y | string | The Dapr App ID of the calling application. The caller must be in the same namespace as the target; cross-namespace workflow calls are always denied and are not supported. |
 | `rules[].workflows` | N* | list | Workflow rules granted to the matched callers. |
 | `rules[].workflows[].name` | Y | string | Exact name or [glob pattern](https://pkg.go.dev/path#Match) of the workflow. |
-| `rules[].workflows[].operations` | Y | list | Set to `[schedule]`. The CRD also accepts `terminate`, `raise`, `pause`, `resume`, `purge`, `get`, `rerun` for forward compatibility; these have no effect today because the matching public workflow APIs do not route cross-app. |
+| `rules[].workflows[].operations` | Y | list | Set of granted operations: `schedule`, `terminate`, `raise`, `pause`, `resume`, `purge`, `get`, `rerun`. Each operation is enforced when a cross-app caller invokes it against the named workflow. |
 | `rules[].activities` | N* | list | Activity rules granted to the matched callers. |
 | `rules[].activities[].name` | Y | string | Exact name or [glob pattern](https://pkg.go.dev/path#Match) of the activity. Activities only support the `schedule` operation, so there is no `operations` field. |
 
@@ -96,7 +94,7 @@ Fields are listed in the order they appear in the YAML document.
 ## Policy semantics
 
 1. **No policies loaded:** All workflow and activity requests are allowed. This preserves backward compatibility when no policies exist.
-2. **One or more policies loaded:** The target defaults to deny. A cross-app schedule is permitted only if some rule matches the caller and the workflow or activity name.
+2. **One or more policies loaded:** The target defaults to deny. A cross-app operation is permitted only if some rule matches the caller, the workflow or activity name, and (for workflows) the operation.
 3. **Self-calls are always allowed:** If the caller App ID is the same as the target App ID, the request is permitted regardless of policy contents. This means a target app does not need to list itself in its own policy to schedule its own workflows or activities (including the internal reminder-based execution path).
 4. **Cross-namespace workflow calls are always denied.** Cross-namespace workflows are not supported. A policy is namespaced and applies to target apps in its own namespace via `scopes`. The caller must be in the same namespace as the target; calls from any other namespace are always rejected, regardless of whether policies are loaded and even if the caller App ID appears in a rule.
 5. **mTLS is required for cross-app enforcement:** if any policy is loaded and mTLS is not active, cross-app calls are denied because the caller's SPIFFE identity cannot be verified.
@@ -106,7 +104,7 @@ Fields are listed in the order they appear in the YAML document.
 
 Workflow access policies are enforced inside the orchestrator and activity actors, under the actor lock, after the workflow's internal state has been loaded. This eliminates any time-of-check-to-time-of-use race between resolving a workflow's name and dispatching the operation.
 
-The cross-app paths covered today are scheduling a child workflow or activity on another app: a parent workflow on the calling app reaches the target app's workflow/activity actor, which evaluates the policy before dispatching. The same enforcement point also blocks cross-app callers attempting non-subject actor methods or trying to inject reminders into a target actor.
+The cross-app paths covered are scheduling a child workflow or activity on another app from inside a workflow, and every client-level operation invoked with a target app ID (schedule, terminate, raise event, pause, resume, purge, get, rerun): the calling app's sidecar reaches the target app's workflow/activity actor, which evaluates the policy before dispatching. The same enforcement point also blocks cross-app callers attempting non-subject actor methods or trying to inject reminders into a target actor.
 
 ## Example policies
 

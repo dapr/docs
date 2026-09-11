@@ -17,10 +17,10 @@ This API is deprecated and will eventually be removed.
 
 ## Start workflow request
 
-Start a workflow instance with the given name and optionally, an instance ID.
+Start a workflow instance with the given name. Both query parameters are optional and independent of each other; see the table below.
 
 ```
-POST http://localhost:<daprPort>/v1.0/workflows/<workflowComponentName>/<workflowName>/start[?instanceID=<instanceID>]
+POST http://localhost:<daprPort>/v1.0/workflows/<workflowComponentName>/<workflowName>/start?instanceID=<instanceID>&appID=<appID>
 ```
 
 Note that workflow instance IDs can only contain alphanumeric characters, underscores, and dashes.
@@ -36,6 +36,7 @@ Parameter | Description
 `workflowComponentName` | Use `dapr` for Dapr Workflows
 `workflowName` | Identify the workflow type
 `instanceID` | (Optional) Unique value created for each run of a specific workflow
+`appID` | (Optional) App ID of the application that should host the workflow instance. Defaults to the local app. The target app must be in the same namespace and its [workflow access policy]({{% ref workflow-access-policy %}}) governs whether the call is permitted.
 
 ### Request content
 
@@ -81,6 +82,7 @@ Parameter | Description
 --------- | -----------
 `workflowComponentName` | Use `dapr` for Dapr Workflows
 `instanceId` | Unique value created for each run of a specific workflow
+`appID` | (Optional) App ID of the application hosting the workflow instance. Defaults to the local app. The target app must be in the same namespace and its [workflow access policy]({{% ref workflow-access-policy %}}) governs whether the call is permitted.
 
 ### HTTP response codes
 
@@ -113,6 +115,7 @@ Parameter | Description
 --------- | -----------
 `workflowComponentName` | Use `dapr` for Dapr Workflows
 `instanceId` | Unique value created for each run of a specific workflow
+`appID` | (Optional) App ID of the application hosting the workflow instance. Defaults to the local app. The target app must be in the same namespace and its [workflow access policy]({{% ref workflow-access-policy %}}) governs whether the call is permitted.
 `eventName` | The name of the event to raise
 
 ### HTTP response codes
@@ -141,6 +144,7 @@ Parameter | Description
 --------- | -----------
 `workflowComponentName` | Use `dapr` for Dapr Workflows
 `instanceId` | Unique value created for each run of a specific workflow
+`appID` | (Optional) App ID of the application hosting the workflow instance. Defaults to the local app. The target app must be in the same namespace and its [workflow access policy]({{% ref workflow-access-policy %}}) governs whether the call is permitted.
 
 ### HTTP response codes
 
@@ -168,6 +172,7 @@ Parameter | Description
 --------- | -----------
 `workflowComponentName` | Use `dapr` for Dapr Workflows
 `instanceId` | Unique value created for each run of a specific workflow
+`appID` | (Optional) App ID of the application hosting the workflow instance. Defaults to the local app. The target app must be in the same namespace and its [workflow access policy]({{% ref workflow-access-policy %}}) governs whether the call is permitted.
 
 ### HTTP response codes
 
@@ -199,6 +204,7 @@ Parameter | Description
 --------- | -----------
 `workflowComponentName` | Use `dapr` for Dapr Workflows
 `instanceId` | Unique value created for each run of a specific workflow
+`appID` | (Optional) App ID of the application hosting the workflow instance. Defaults to the local app. The target app must be in the same namespace and its [workflow access policy]({{% ref workflow-access-policy %}}) governs whether the call is permitted.
 
 ### HTTP response codes
 
@@ -226,6 +232,7 @@ Parameter | Description
 --------- | -----------
 `workflowComponentName` | Use `dapr` for Dapr Workflows
 `instanceId` | Unique value created for each run of a specific workflow
+`appID` | (Optional) App ID of the application hosting the workflow instance. Defaults to the local app. The target app must be in the same namespace and its [workflow access policy]({{% ref workflow-access-policy %}}) governs whether the call is permitted.
 
 ### HTTP response codes
 
