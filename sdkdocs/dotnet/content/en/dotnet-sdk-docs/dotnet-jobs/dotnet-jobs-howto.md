@@ -84,7 +84,7 @@ builder.Services.AddDaprJobsClient((_, daprJobsClientBuilder) =>
 var app = builder.Build();
 ```
 
-Still, it's possible that whatever values you wish to inject need to be retrieved from some other source, itself registered as a dependency. There's one more overload you can use to inject an `IServiceProvider` into the configuration action method. In the following example, we register a fictional singleton that can retrieve secrets from somewhere and pass it into the configuration method for `AddDaprJobClient` so
+Still, it's possible that whatever values you wish to inject need to be retrieved from some other source, itself registered as a dependency. There's one more overload you can use to inject an `IServiceProvider` into the configuration action method. In the following example, we register a fictional singleton that can retrieve secrets from somewhere and pass it into the configuration method for `AddDaprJobsClient` so
 we can retrieve our Dapr API token from somewhere else for registration here:
 
 ```cs
@@ -355,8 +355,7 @@ public class MyOperation(DaprJobsClient daprJobsClient)
         var oneMonthFromNow = now.AddMonths(1);
         var firstOfNextMonth = new DateTime(oneMonthFromNow.Year, oneMonthFromNow.Month, 1, 0, 0, 0);
 
-        await daprJobsClient.ScheduleJobAsync("myJobName", )
-        await daprJobsClient.ScheduleCronJobAsync("myJobName", schedule, dueTime: firstOfNextMonth, cancellationToken: cancellationToken);
+        await daprJobsClient.ScheduleJobAsync("myJobName", schedule, startingFrom: firstOfNextMonth, cancellationToken: cancellationToken);
     }
 }
 ```
@@ -381,8 +380,7 @@ public class MyOperation(DaprJobsClient daprJobsClient)
         var oneMonthFromNow = now.AddMonths(1);
         var firstOfNextMonth = new DateTime(oneMonthFromNow.Year, oneMonthFromNow.Month, 1, 0, 0, 0);
 
-        await daprJobsClient.ScheduleJobAsync("myJobName", )
-        await daprJobsClient.ScheduleCronJobAsync("myJobName", schedule, dueTime: firstOfNextMonth, cancellationToken: cancellationToken);
+        await daprJobsClient.ScheduleJobAsync("myJobName", schedule, startingFrom: firstOfNextMonth, cancellationToken: cancellationToken);
     }
 }
 ```
@@ -401,7 +399,7 @@ public class MyOperation(DaprJobsClient daprJobsClient)
 {
     public async Task<JobDetails> GetJobDetailsAsync(string jobName, CancellationToken cancellationToken)
     {
-        var jobDetails = await daprJobsClient.GetJobAsync(jobName, canecllationToken);
+        var jobDetails = await daprJobsClient.GetJobAsync(jobName, cancellationToken);
         return jobDetails;
     }
 }

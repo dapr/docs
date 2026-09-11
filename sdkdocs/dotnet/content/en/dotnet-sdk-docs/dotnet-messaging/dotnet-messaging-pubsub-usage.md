@@ -90,16 +90,16 @@ the default settings.
 ```cs
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.DaprPublishSubscribeClient(); //Registers the `DaprPublishSubscribeClient` to be injected as needed
+builder.Services.AddDaprPublishSubscribeClient(); //Registers the `DaprPublishSubscribeClient` to be injected as needed
 var app = builder.Build();
 ```
 
-Sometimes the developer will need to configure the created client using the various configuration options detailed above. This is done through an overload that passes in the `DaprJobsClientBuiler` and exposes methods for configuring the necessary options.
+Sometimes the developer will need to configure the created client using the various configuration options detailed above. This is done through an overload that passes in the `DaprPublishSubscribeClientBuilder` and exposes methods for configuring the necessary options.
 
 ```cs
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDaprJobsClient((_, daprPubSubClientBuilder) => {
+builder.Services.AddDaprPubSubClient((_, daprPubSubClientBuilder) => {
    //Set the API token
    daprPubSubClientBuilder.UseDaprApiToken("abc123");
    //Specify a non-standard HTTP endpoint
