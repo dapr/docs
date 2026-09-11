@@ -248,11 +248,11 @@ public sealed class BusinessWorkflow : Workflow<string, string>
 
 The examples above compose work across applications from *inside* a running workflow. [Client-level operations]({{% ref howto-manage-workflow.md %}}) can cross applications too: an application that holds nothing but a workflow client can start, inspect and control an instance owned by another application in the same namespace.
 
-This means the application that owns a workflow does not have to build and maintain its own API for other teams to drive it. An operations dashboard can list and terminate stuck orders, a support tool can raise an approval event, and a front-end service can start a workflow it does not host, all through the standard workflow API. The owning application stays in control: its [workflow access policy]({{% ref workflow-access-policy.md %}}) decides which callers may perform which operation on which workflow. See the [WorkflowAccessPolicy spec]({{% ref workflow-access-policy-schema.md %}}) for the resource format.
+This means the application that owns a workflow does not have to build and maintain its own API for other teams to drive it. An operations tool can terminate a stuck order by its instance ID, a support tool can raise an approval event on it, and a front-end service can start a workflow it does not host, all through the standard workflow API. The owning application stays in control: its [workflow access policy]({{% ref workflow-access-policy.md %}}) decides which callers may perform which operation on which workflow. See the [WorkflowAccessPolicy spec]({{% ref workflow-access-policy-schema.md %}}) for the resource format.
 
 ### When to use it
 
-- **Client-level operations (this section)** — the caller is not inside a workflow. An HTTP handler, the [Dapr CLI]({{% ref howto-manage-workflow.md %}}), an operator dashboard, or a service that starts work it does not host.
+- **Client-level operations (this section)** — the caller is not inside a workflow. An HTTP handler, an operations tool acting on a known instance ID, or a service that starts work it does not host.
 - **[Child workflows and activities](#multi-application-activity-example)** — the caller *is* a workflow, composing another application's work into its own execution and awaiting the result.
 
 ### How it works
@@ -408,10 +408,10 @@ err = client.PurgeWorkflowState(ctx, instanceID, workflow.WithPurgeAppID("app2")
 
 {{< /tabpane >}}
 
-{{% alert title="Note" color="primary" %}}
-Client-level cross-application operations are supported by the Python, JavaScript, .NET, Java and Go SDKs. This is a different set from the in-workflow support listed above: the JavaScript SDK supports cross-application client operations but not cross-application child workflows or activities.
+{{% alert title="SDK availability" color="warning" %}}
+Client-level cross-application operations require Dapr runtime v1.19 or later, and the SDK support shipping alongside it. The arguments and options shown above are not present in earlier SDK releases: check that your SDK version includes them before using these snippets.
 
-`rerun` can also target another application, but only through the SDKs. It is not part of the Dapr workflow HTTP or gRPC API, so there is no `appID` parameter for it.
+The set of SDKs differs from the in-workflow support listed earlier on this page. The JavaScript SDK supports cross-application client operations but not cross-application child workflows or activities.
 {{% /alert %}}
 
 The target application's [workflow access policy]({{% ref workflow-access-policy.md %}}) governs whether each operation is permitted, per operation and per workflow name, using the rules defined in the [WorkflowAccessPolicy spec]({{% ref workflow-access-policy-schema.md %}}). Cross-namespace targeting is not supported.

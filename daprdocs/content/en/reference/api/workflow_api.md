@@ -17,10 +17,10 @@ This API is deprecated and will eventually be removed.
 
 ## Start workflow request
 
-Start a workflow instance with the given name and optionally, an instance ID.
+Start a workflow instance with the given name. Both query parameters are optional and independent of each other; see the table below.
 
 ```
-POST http://localhost:<daprPort>/v1.0/workflows/<workflowComponentName>/<workflowName>/start[?instanceID=<instanceID>][&appID=<appID>]
+POST http://localhost:<daprPort>/v1.0/workflows/<workflowComponentName>/<workflowName>/start?instanceID=<instanceID>&appID=<appID>
 ```
 
 Note that workflow instance IDs can only contain alphanumeric characters, underscores, and dashes.
