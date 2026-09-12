@@ -30,12 +30,13 @@ is subject to change in the future as more analyzers are developed.
 {{% /alert %}}
 
 ## Install and configure analyzers
-The following packages will be available via NuGet following the v1.16 Dapr release:
+The following packages provide Roslyn analyzers:
 - Dapr.Actors.Analyzers
 - Dapr.Jobs.Analyzers
+- Dapr.Messaging.Analyzers (bundled automatically in `Dapr.Messaging`)
 - Dapr.Workflow.Analyzers
 
-Install each NuGet package on every project where you want the analyzers to run. The package will be installed as a
+Install each NuGet package on every project where you want the analyzers to run. For meta-packages like `Dapr.Messaging` or `Dapr.Actors.Next`, the analyzers and source generators are included automatically with the package. The package will be installed as a
 project dependency and analyzers will run as you write your code or as part of a CI/CD build. The analyzers will flag
 issues in your existing code and warn you about new issues as you build your project.
 
@@ -90,6 +91,10 @@ the `EnableNETAnalyzers` property to `false` in your csproj file.
 | DAPR1430      | Dapr.Actors.Next | Usage         | Warning  | 1.18          | Scheduled actor reminder/timer targets an actor type not found in this application                                                          | No                 |
 | DAPR1431      | Dapr.Actors.Next | Usage         | Error    | 1.18          | Scheduled actor reminder/timer callback method is not exposed through a generated actor client                                              | No                 |
 | DAPR1501      | Dapr.Jobs     | Usage            | Warning  | 1.16          | Job invocations require the MapDaprScheduledJobHandler to be set and configured for each anticipated job on IEndpointRouteBuilder            | No                 |
+| DAPR1610      | Dapr.Messaging | Usage           | Error    | 1.18          | Topic registered for both Streaming and Programmatic delivery modes                                                                          | No                 |
+| DAPR1611      | Dapr.Messaging | Usage           | Error    | 1.18          | [DaprTopic] applied to a class that does not implement ITopicHandler<T> or ITopicHandler<T, TResult>                                         | No                 |
+| DAPR1612      | Dapr.Messaging | Compatibility   | Warning  | 1.18          | Message type is not registered in a source-generated JsonSerializerContext for Native AOT compatibility                                      | No                 |
+| DAPR1613      | Dapr.Messaging | Usage           | Warning  | 1.18          | Programmatic topic subscriptions require app.MapDaprAppCallback() to be mapped on the endpoint routing builder                               | Yes                |
 
 ## Analyzer Categories
 The following are each of the eligible categories that an analyzer can be assigned to and are modeled after the
