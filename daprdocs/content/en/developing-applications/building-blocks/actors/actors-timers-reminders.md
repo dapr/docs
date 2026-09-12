@@ -137,7 +137,7 @@ You can list all the timers registered for an actor by calling
 GET http://localhost:3500/v1.0/actors/<actorType>/<actorId>/timers
 ```
 
-Timers are kept in memory by the sidecar that hosts the actor and are not persisted. Both requests must therefore be sent to the sidecar that currently owns the actor: any other sidecar rejects them with a `403` and the `ERR_ACTOR_TIMER_NOT_OWNED` error code. Timers whose `ttl` had already elapsed at registration are never stored and are not returned. The gRPC equivalents are `GetActorTimer` and `ListActorTimers`.
+Timers are kept in memory by the sidecar that hosts the actor and are not persisted. Both requests must therefore be sent to the sidecar that currently owns the actor. A sidecar that hosts the actor type but does not own this actor returns `403` with `ERR_ACTOR_TIMER_NOT_OWNED`; a sidecar that does not host the actor type returns `403` with `ERR_ACTOR_TIMER_NON_HOSTED`. Timers whose `ttl` had already elapsed at registration are never stored and are not returned. The gRPC equivalents are `GetActorTimer` and `ListActorTimers`.
 
 ### Remove the actor timer
 
