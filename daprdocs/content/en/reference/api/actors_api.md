@@ -553,7 +553,7 @@ curl http://localhost:3500/v1.0/actors/stormtrooper/50/timers/checkRebels \
 Gets a timer registered for an actor.
 
 {{% alert title="Note" color="primary" %}}
-Timers are not persisted: they live in memory on the sidecar that hosts the actor. Get and list requests must be sent to that sidecar. A sidecar that does not currently own the actor rejects the request with a `403` and the `ERR_ACTOR_TIMER_NOT_OWNED` error code. Timers whose `ttl` had already elapsed at registration are never stored and are not returned.
+Timers are not persisted: they live in memory on the sidecar that hosts the actor. Get and list requests must be sent to that sidecar. A sidecar that hosts the actor type but does not currently own the actor rejects the request with a `403` and the `ERR_ACTOR_TIMER_NOT_OWNED` error code; a sidecar that does not host the actor type returns `403` with `ERR_ACTOR_TIMER_NON_HOSTED`. Timers whose `ttl` had already elapsed at registration are never stored and are not returned.
 {{% /alert %}}
 
 #### HTTP Request
