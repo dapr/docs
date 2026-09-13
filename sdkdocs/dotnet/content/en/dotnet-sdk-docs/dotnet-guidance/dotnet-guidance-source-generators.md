@@ -94,7 +94,11 @@ the `EnableNETAnalyzers` property to `false` in your csproj file.
 | DAPR1610      | Dapr.Messaging | Usage           | Error    | 1.18          | Topic registered for both Streaming and Programmatic delivery modes                                                                          | No                 |
 | DAPR1611      | Dapr.Messaging | Usage           | Error    | 1.18          | [DaprTopic] applied to a class that does not implement ITopicHandler<T> or ITopicHandler<T, TResult>                                         | No                 |
 | DAPR1612      | Dapr.Messaging | Compatibility   | Warning  | 1.18          | Message type is not registered in a source-generated JsonSerializerContext for Native AOT compatibility                                      | No                 |
-| DAPR1613      | Dapr.Messaging | Usage           | Warning  | 1.18          | Programmatic topic subscriptions require app.MapDaprAppCallback() to be mapped on the endpoint routing builder                               | Yes                |
+| DAPR1613      | Dapr.Messaging | Usage           | Warning  | 1.18          | Programmatic topic subscriptions require `app.MapDaprAppCallback()` or the unified `app.MapDaprMessaging()` endpoint mapping                  | Yes                |
+| DAPR1614      | Dapr.Messaging | Usage           | Warning  | 1.18          | `DaprMessagingRegistration` is called directly instead of using generated `services.AddDaprMessaging()`                                        | No                 |
+| DAPR1615      | Dapr.Messaging | Usage           | Warning  | 1.18          | Subscriber registration or endpoint mapping is present without matching topic subscribers                                                     | No                 |
+| DAPR1616      | Dapr.Messaging | Usage           | Warning  | 1.18          | `[DaprTopic]` opts into a feature without populating required companion properties                                                           | No                 |
+| DAPR1617      | Dapr.Messaging | Usage           | Warning  | 1.18          | `[DaprTopic]` sets a property that is ignored for the selected feature or delivery mode                                                      | No                 |
 
 ## Analyzer Categories
 The following are each of the eligible categories that an analyzer can be assigned to and are modeled after the
