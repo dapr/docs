@@ -42,6 +42,7 @@ Put the Dapr .NET SDK to the test. Walk through the .NET quickstarts and tutoria
 | [Quickstarts]({{% ref quickstarts %}}) | Experience Dapr's API building blocks in just a few minutes using the .NET SDK. |
 | [SDK samples](https://github.com/dapr/dotnet-sdk/tree/master/examples) | Clone the SDK repo to try out some examples and get started. |
 | [Pub/sub tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/pub-sub) | See how Dapr .NET SDK works alongside other Dapr SDKs to enable pub/sub applications. |
+| [Dapr.Messaging tutorial]({{< ref "dotnet-messaging/tutorial/_index.md" >}}) | Walk through modern .NET messaging examples, including publishing, delivery modes, routing, and testing. |
 
 ## Available packages
 

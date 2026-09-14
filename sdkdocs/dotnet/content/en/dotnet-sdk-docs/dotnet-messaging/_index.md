@@ -59,12 +59,14 @@ The Dapr .NET SDK originally distributed messaging capabilities across multiple 
 
 ## Core concepts
 
+- **[Tutorial: Dapr.Messaging by example]({{< ref "tutorial/_index.md" >}})**: Seven runnable examples covering publishing, streaming, routing, bulk subscriptions, gRPC push, HTTP push, dynamic streaming, and their unit and integration testing patterns.
 - **[Publish events how-to]({{< ref dotnet-messaging-publish-howto.md >}})**: Step-by-step guide to publishing JSON events, CloudEvents, raw payloads, and bulk message batches using `IDaprPublishSubscribeClient`.
 - **[Subscribe to topics how-to]({{< ref dotnet-messaging-subscribe-howto.md >}})**: Step-by-step guide to authoring `ITopicHandler<TMessage>` subscribers, choosing delivery modes with `[DaprTopic]`, compile-time source generation, dynamic streaming subscriptions, and compiler diagnostics.
 - **[Configuration and usage guide]({{< ref dotnet-messaging-pubsub-usage.md >}})**: Lifetime management, DI options configuration, advanced features (bulk pub/sub, dead-letter topics, CEL routing), and Native AOT setup.
 
 ## Next steps
 
+- [Tutorial: Dapr.Messaging by example]({{< ref "tutorial/_index.md" >}})
 - [How-To: Publish events with IDaprPublishSubscribeClient]({{< ref dotnet-messaging-publish-howto.md >}})
 - [How-To: Author subscriptions and handle topic messages]({{< ref dotnet-messaging-subscribe-howto.md >}})
 - [Dapr Messaging configuration and usage reference]({{< ref dotnet-messaging-pubsub-usage.md >}})
