@@ -138,7 +138,7 @@ Keep in mind the following when relying on this behavior:
 - Changes to secret values are picked up by the periodic reconciler, so it can take up to 60 seconds for the new value to be applied.
 - The component is unavailable for a short period of time while it is closed and re-initialized.
 - This requires [hot reloading]({{% ref "component-updates.md#hot-reloading" %}}) to be enabled, which is the default. If the `HotReload` feature is disabled, secret changes are only picked up when the Dapr sidecar is restarted.
-- Component types that are [excluded from hot reloading]({{% ref "component-updates.md#components-and-subscriptions" %}}) include Actor state stores and Workflow backends, do not pick up secret changes and require a Dapr sidecar restart.
+- In Dapr 1.18.2 and earlier, the actor state store is [excluded from hot reloading]({{% ref "component-updates.md#components-and-subscriptions" %}}), does not pick up secret changes, and requires a Dapr sidecar restart. Since Dapr 1.18.3, the actor state store is reloaded like any other component, and a secret rotation swaps the store instance without interrupting actor hosting.
 {{% /alert %}}
 
 ### Other secret stores
