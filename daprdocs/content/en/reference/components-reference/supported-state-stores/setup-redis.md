@@ -30,6 +30,8 @@ spec:
     value: <PASSWORD>
   - name: useEntraID
     value: <bool> # Optional. Allowed: true, false.
+  - name: useOIDC
+    value: <bool> # Optional. Allowed: true, false.
   - name: enableTLS
     value: <bool> # Optional. Allowed: true, false.
   - name: insecureSkipTLSVerify
@@ -111,6 +113,16 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 | redisPassword      | N        | Password for Redis host. No Default. Can be `secretKeyRef` to use a secret reference  | `""`, `"KeFg23!"`
 | redisUsername      | N        | Username for Redis host. Defaults to empty. Make sure your redis server version is 6 or above, and have created acl rule correctly. | `""`, `"default"`
 | useEntraID | N | Implements EntraID support for Azure Cache for Redis. Before enabling this: <ul><li>The `redisHost` name must be specified in the form of `"server:port"`</li><li>TLS must be enabled</li></ul> Learn more about this setting under [Create a Redis instance > Azure Cache for Redis]({{% ref "#setup-redis" %}}) | `"true"`, `"false"` |
+| useOIDC | N | Authenticate using OpenID Connect with the `private_key_jwt` client authentication method (RFC 7523). An OAuth2 access token is obtained from the identity provider and used as the password for the Redis `AUTH` command, with automatic refresh before expiry. Must not be combined with `redisPassword` or `useEntraID`. Learn more under [OIDC private_key_jwt authentication](#oidc-private_key_jwt-authentication) | `"true"`, `"false"` |
+| oidcTokenEndpoint | N | URL of the OAuth2 identity provider access token endpoint. Required when `useOIDC` is `"true"` | `"https://identity.example.com/v1/token"` |
+| oidcClientID | N | The OAuth2 client ID that has been provisioned in the identity provider. Required when `useOIDC` is `"true"` | `"my-client-id"` |
+| oidcClientAssertionCert | N | PEM-encoded X.509 certificate paired with the client assertion signing key. Required when `useOIDC` is `"true"`. It is recommended to use a secret store as described [here]({{% ref component-secrets.md %}}) | `"-----BEGIN CERTIFICATE-----\nMIIC..."` |
+| oidcClientAssertionKey | N | PEM-encoded RSA private key used to sign the client assertion. Required when `useOIDC` is `"true"`. It is recommended to use a secret store as described [here]({{% ref component-secrets.md %}}) | `"-----BEGIN PRIVATE KEY-----\nMIIE..."` |
+| oidcResource | N | Optional OAuth2 resource parameter to include in the token request, when required by the identity provider | `"URI:RS-12345-API"` |
+| oidcAudience | N | Overrides the JWT client assertion audience (`aud`). Defaults to the token endpoint URL | `"https://identity.example.com/realms/local"` |
+| oidcScopes | N | Comma-delimited list of OAuth2/OIDC scopes to request with the access token. Although not required, this field is recommended. Defaults to `"openid"` | `"openid,redis-prod"` |
+| oidcKid | N | The JWT key ID (`kid`) header to use for the client assertion, when required by the identity provider. For example, the thumbprint of the client certificate | `"1234567890"` |
+| oidcCACert | N | PEM-encoded CA certificate used to verify the TLS connection to the token endpoint. This is distinct from the TLS configuration of the Redis connection itself | `"-----BEGIN CERTIFICATE-----\nMIIC..."` |
 | enableTLS          | N         | If the Redis instance supports TLS with public certificates, can be configured to be enabled or disabled. Defaults to `"false"` | `"true"`, `"false"`
 | insecureSkipTLSVerify | N      | Skip TLS certificate verification when `enableTLS` is `"true"`. Only use for testing. Defaults to `"false"` | `"true"`, `"false"`
 | clientCert         | N         | The content of the client certificate, used for Redis instances that require client-side certificates. Must be used with `clientKey` and `enableTLS` must be set to true. It is recommended to use a secret store as described [here]({{% ref component-secrets.md %}})   | `"----BEGIN CERTIFICATE-----\nMIIC..."` |
@@ -140,6 +152,57 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 | ttlInSeconds       | N         | Allows specifying a default Time-to-live (TTL) in seconds that will be applied to every state store request unless TTL is explicitly defined via the [request metadata]({{% ref "state-store-ttl.md" %}}). | `600`
 | queryIndexes       | N         | Indexing schemas for querying JSON objects | see [Querying JSON objects](#querying-json-objects)
 | actorStateStore    | N        | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
+
+## OIDC private_key_jwt authentication
+
+As an alternative to a static password, the Redis components can authenticate using OpenID Connect with the `private_key_jwt` client authentication method ([RFC 7523](https://datatracker.ietf.org/doc/html/rfc7523)):
+
+1. Dapr authenticates to the identity provider's token endpoint with a JWT client assertion signed with your private key (RS256).
+1. The returned OAuth2 access token is used as the password for the Redis `AUTH` command. The username defaults to `default` unless `redisUsername` is set.
+1. Dapr refreshes the token in the background 5 minutes before it expires and re-authenticates the existing connections.
+
+This works with Redis, Valkey, or any other RESP-compatible server that accepts a bearer token as the `AUTH` password, such as deployments fronted by a token-validating proxy.
+
+`useOIDC` must not be combined with `redisPassword` or `useEntraID`.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: statestore
+spec:
+  type: state.redis
+  version: v1
+  metadata:
+  - name: redisHost
+    value: my-valkey.example.com:6379
+  - name: enableTLS
+    value: "true"
+  - name: useOIDC
+    value: "true"
+  - name: oidcTokenEndpoint
+    value: "https://identity.example.com/adfs/oauth2/token"
+  - name: oidcClientID
+    value: "my-client-id"
+  - name: oidcClientAssertionCert
+    secretKeyRef:
+      name: oidc-client-cert
+      key: oidc-client-cert
+  - name: oidcClientAssertionKey
+    secretKeyRef:
+      name: oidc-client-key
+      key: oidc-client-key
+  - name: oidcResource # Optional
+    value: "URI:RS-12345-API"
+  - name: oidcScopes # Optional
+    value: "openid,redis-prod"
+  - name: oidcKid # Optional
+    value: "B2F4C1A..."
+auth:
+  secretStore: <SECRET_STORE_NAME>
+```
+
+The same metadata fields are supported by the Redis [pub/sub]({{% ref setup-redis-pubsub.md %}}), [lock]({{% ref redis-lock.md %}}), [binding]({{% ref redis.md %}}), and [configuration store]({{% ref redis-configuration-store.md %}}) components.
 
 ## Setup Redis
 
