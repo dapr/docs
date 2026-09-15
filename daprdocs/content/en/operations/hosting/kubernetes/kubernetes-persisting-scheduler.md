@@ -134,18 +134,20 @@ kubectl edit pvc -n dapr-system dapr-scheduler-data-dir-dapr-scheduler-server-0 
 
 The Scheduler process runs as a non-root user (UID/GID `65532`). For the mounted persistent volume to be writable by that process, the pod's `securityContext` can specify an `fsGroup`, which causes the kubelet to chown the volume on mount — though some storage drivers already set ownership and permissions correctly, so this may not always be necessary.
 
-As of Dapr v1.19, `dapr_scheduler.securityContext.fsGroup` is **opt-in** (no default value). Previously it was hardcoded to `65532`, which caused problems on OpenShift, where each project's Security Context Constraints (SCC) assigns its own `fsGroup` from an allowed range, making an explicit value invalid.
+`dapr_scheduler.securityContext.fsGroup` defaults to `65532`, and the chart renders it only when it holds a value. To run without an `fsGroup`, set it to `null`.
 
 The guidance is:
 
-- **Standard Kubernetes** (GKE, EKS, AKS, and most self-managed clusters): If your storage provisioner does not automatically grant write access to a mounted volume, set `fsGroup` explicitly so the kubelet chowns the volume on mount:
+- **Standard Kubernetes** (GKE, EKS, AKS, and most self-managed clusters): Keep the default. The kubelet chowns the volume on mount, which is what a block volume such as an AWS EBS disk through the CSI driver needs for a non-root process to write to it.
+
+- **OpenShift**: Set `fsGroup` to `null`. Each project's Security Context Constraints (SCC) assign an `fsGroup` from an allowed range, and an explicit value outside that range is rejected, so the pod does not start. Leaving the flag off is not enough, because the chart default still applies:
 
   {{< tabpane text=true >}}
   <!-- Dapr CLI -->
   {{% tab "Dapr CLI" %}}
 
   ```bash
-  dapr init -k --set dapr_scheduler.securityContext.fsGroup=65532
+  dapr init -k --set dapr_scheduler.securityContext.fsGroup=null
   ```
 
   {{% /tab %}}
@@ -158,14 +160,12 @@ The guidance is:
   --version={{% dapr-latest-version short="true" %}} \
   --namespace dapr-system \
   --create-namespace \
-  --set dapr_scheduler.securityContext.fsGroup=65532 \
+  --set dapr_scheduler.securityContext.fsGroup=null \
   --wait
   ```
 
   {{% /tab %}}
   {{< /tabpane >}}
-
-- **OpenShift**: Leave `fsGroup` unset (do not pass `--set dapr_scheduler.securityContext.fsGroup`). OpenShift assigns an `fsGroup` automatically from the project's allowed SCC range. Setting it explicitly overrides that assignment and can prevent the pod from starting.
 
 {{% alert title="Note" color="primary" %}}
 Many managed Kubernetes storage providers (such as AWS EBS CSI and GCE PD CSI) already set the correct ownership on the volume without requiring an explicit `fsGroup`. Check your storage class documentation to confirm whether write access is granted automatically.
