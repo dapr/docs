@@ -40,7 +40,9 @@ app.MapDaprMessaging();
 app.Run();
 ```
 
-`MapDaprMessaging()` exposes the generated AppCallback service and subscription discovery. Run the application with an app port and gRPC protocol, for example:
+`MapDaprMessaging()` exposes the generated AppCallback gRPC service used by the sidecar
+to list subscriptions and deliver events. Run the application with an app port and gRPC
+protocol, for example:
 
 ```powershell
 dapr run --app-id appcallback-example --app-port 5000 --app-protocol grpc `
@@ -59,4 +61,3 @@ dotnet test examples\Messaging\05-AppCallbackPush\AppCallback.Example05.Tests\Ap
 
 - [Part 6: HTTP push subscriptions]({{< ref dotnet-messaging-tutorial-http.md >}})
 - [Subscribe to topics how-to]({{< ref dotnet-messaging-subscribe-howto.md >}})
-

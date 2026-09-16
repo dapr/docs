@@ -270,11 +270,14 @@ When you build your project, the `Dapr.Messaging.Generators` Roslyn source gener
 
 | Generated Artifact | Purpose |
 | --- | --- |
-| **Typed Dispatchers** | Direct, strongly-typed invokers that deserialize message payloads using the configured serializer and invoke `HandleAsync` without reflection. |
+| **Typed Dispatchers** | Direct, strongly-typed invokers that deserialize message payloads with `System.Text.Json` and invoke `HandleAsync` without reflection-based handler discovery. |
 | **`IDaprMessagingSubscriberRegistry`** | A centralized registry containing `TopicSubscriptionDescriptor` definitions for all discovered topics. |
 | **`AddDaprMessaging()`** | An `IServiceCollection` extension method generated into your assembly that automatically registers options, the publishing client, handlers, dispatchers, subscriber registries, and required hosting services into your DI container. |
 
-Because dispatching is code-generated at compile time, execution is fully trim-safe and Native AOT compatible.
+Handler discovery and dispatch registration are generated at compile time. Message
+deserialization currently uses runtime `System.Text.Json` metadata, so Native AOT and
+trimming scenarios require additional validation and an application-owned
+`JsonSerializerContext`.
 
 ## Register at startup
 
@@ -304,19 +307,6 @@ app.Run();
 - **`DAPR1615` (Warning)**: Triggers if `app.MapDaprMessaging()` or subscriber registration endpoints are present when no corresponding HTTP or programmatic topic handlers exist.
 {{% /alert %}}
 
-### Explicit runtime topic registration
-
-If you need to register a topic handler dynamically at runtime without source generator attributes, use `AddTopic<THandler>`:
-
-```csharp
-builder.Services.AddDaprMessaging()
-    .AddTopic<OrderHandler>("pubsub", "orders", descriptor =>
-    {
-        descriptor.Delivery = DeliveryMode.Programmatic;
-        descriptor.DeadLetterTopic = "orders-dlq";
-    });
-```
-
 ## Dynamic streaming subscriptions
 
 In addition to declarative `[DaprTopic]` handlers, `DaprPublishSubscribeClient` allows creating imperative, dynamic streaming subscriptions at runtime:
@@ -340,7 +330,7 @@ var options = new DaprSubscriptionOptions(
 };
 
 // Start the dynamic subscription
-var subscription = await messagingClient.SubscribeAsync(
+await using var subscription = await messagingClient.SubscribeAsync(
     "pubsub", 
     "dynamic-orders", 
     options, 
@@ -351,17 +341,8 @@ var subscription = await messagingClient.SubscribeAsync(
         return TopicResponseAction.Success;
     });
 
-// The subscription runs in the background. To observe completion or background faults:
-_ = subscription.Completion.ContinueWith(t =>
-{
-    if (t.IsFaulted)
-    {
-        Console.WriteLine($"Subscription faulted: {t.Exception}");
-    }
-});
-
-// When finished, cancel and clean up resources:
-await subscription.DisposeAsync();
+// SubscribeAsync is typed as IAsyncDisposable; the runtime handle also exposes completion.
+await ((IDaprSubscription)subscription).Completion;
 ```
 
 ## Analyzers and diagnostics
@@ -387,7 +368,7 @@ For a complete reference of all Roslyn analyzers, diagnostic severities, and ava
 - **Prefer `DeliveryMode.Programmatic`** for high-throughput gRPC services where the Dapr sidecar pushes events directly into ASP.NET Core gRPC endpoints.
 - **Always handle transient vs permanent errors**: Return `TopicResponseAction.Retry` for transient errors (network timeouts, database locks) and `TopicResponseAction.Drop` for unrecoverable errors (poison messages, schema violations) to route them to a dead-letter topic.
 - **Inject scoped services**: `ITopicHandler<TMessage>` instances are resolved per message within an isolated `IServiceScope`, ensuring safe resolution of scoped dependencies like Entity Framework `DbContext`.
-- **Register `JsonSerializerContext` for AOT**: When compiling with Native AOT, annotate your `JsonSerializerContext` with `[JsonSerializable(typeof(TMessage))]` for every message type.
+- **Validate Native AOT explicitly**: Generated dispatchers currently use runtime `System.Text.Json` metadata; test Native AOT and trimming with your target SDK version and message types.
 
 ## Next steps
 

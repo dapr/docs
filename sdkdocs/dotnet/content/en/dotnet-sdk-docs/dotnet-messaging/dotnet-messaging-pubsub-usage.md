@@ -70,7 +70,7 @@ builder.Services.AddDaprMessaging(options =>
 | `DaprGrpcEndpoint` | `http://localhost:50001` | The gRPC endpoint URL of the Dapr sidecar. |
 | `DaprApiToken` | `null` | The API token forwarded in outbound Dapr requests for sidecar authentication. |
 | `StreamingReconnectDelay` | `5 seconds` | The delay interval applied before attempting to reconnect a dropped streaming subscription. |
-| `JsonSerializerOptions` | `JsonSerializerDefaults.Web` | Options used for JSON serialization and deserialization across publishers and subscribers. |
+| `JsonSerializerOptions` | `JsonSerializerDefaults.Web` | Options used by the messaging publishing client. Generated subscriber dispatchers currently use their generated default options. |
 
 ### Environment variable fallbacks
 
@@ -122,19 +122,23 @@ Configure bulk consumption by enabling `BulkSubscribe = true` on the `[DaprTopic
 
 ```csharp
 [DaprTopic("pubsub", "orders", BulkSubscribe = true, MaxMessagesCount = 50, MaxAwaitDurationMs = 500)]
-public sealed class BulkOrderHandler : ITopicHandler<IReadOnlyList<Order>>
+public sealed class BulkOrderHandler : ITopicHandler<Order>
 {
     public async Task<TopicResponseAction> HandleAsync(
-        IReadOnlyList<Order> messages, 
+        Order message,
         TopicContext context, 
         CancellationToken cancellationToken)
     {
-        logger.LogInformation("Processing batch of {Count} orders", messages.Count);
-        // Process batch
+        logger.LogInformation("Processing order {OrderId}", message.Id);
+        // Process one message from the runtime-delivered batch.
         return TopicResponseAction.Success;
     }
 }
 ```
+
+Bulk delivery batches messages at the Dapr protocol level, but the current SDK dispatches
+each entry to the handler separately. The handler therefore implements `ITopicHandler<Order>`,
+not `ITopicHandler<IReadOnlyList<Order>>`.
 
 ### Dead-letter topics
 
@@ -189,36 +193,19 @@ public Task<TopicResponseAction> HandleAsync(Order message, TopicContext context
 }
 ```
 
-## Native AOT and trimming support
+## Native AOT and trimming considerations
 
-`Dapr.Messaging` is designed from the ground up to support .NET Native AOT compilation:
-
-1. **Reflection-free dispatch**: The `Dapr.Messaging.Generators` source generator produces all dispatch logic and subscriber registries at build time.
-2. **Compile-time serialization**: To ensure trim-safety, register your message models in a `JsonSerializerContext`:
-
-```csharp
-[JsonSerializable(typeof(Order))]
-[JsonSerializable(typeof(List<Order>))]
-[JsonSerializable(typeof(CloudEvent<Order>))]
-internal partial class AppJsonSerializerContext : JsonSerializerContext
-{
-}
-```
-
-Configure `DaprMessagingOptions` to use your source-generated context:
-
-```csharp
-builder.Services.AddDaprMessaging(options =>
-{
-    options.JsonSerializerOptions = new JsonSerializerOptions
-    {
-        TypeInfoResolver = AppJsonSerializerContext.Default
-    };
-});
-```
+The `Dapr.Messaging.Generators` source generator produces dispatch logic and subscriber
+registries at build time, avoiding reflection for handler discovery and registration.
+Generated subscriber dispatchers currently deserialize messages with runtime
+`System.Text.Json` metadata. Native AOT and trimming scenarios therefore require
+explicit validation with the target SDK version; configuring `DaprMessagingOptions.JsonSerializerOptions`
+does not currently replace the generated subscriber deserializer.
 
 {{% alert title="AOT Analyzer warning DAPR1612" color="primary" %}}
-If a message type used with `ITopicHandler<TMessage>` is not included in any `[JsonSerializable]` attribute in your compilation, analyzer `DAPR1612` emits a build warning alerting you to add it before publishing with Native AOT.
+If a message type used with `ITopicHandler<TMessage>` is not included in a source-generated
+`JsonSerializerContext`, analyzer `DAPR1612` emits a build warning. The analyzer warning
+does not by itself make the generated subscriber deserialization trim-safe.
 {{% /alert %}}
 
 ## Resiliency and error handling

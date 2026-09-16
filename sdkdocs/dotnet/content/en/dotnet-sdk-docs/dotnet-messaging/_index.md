@@ -8,7 +8,7 @@ description: "Overview of the unified Dapr Messaging SDK for .NET (Dapr.Messagin
 
 `Dapr.Messaging` is the unified Dapr Publish/Subscribe messaging SDK for .NET. It brings all Dapr pub/sub functional modes—event publishing, streaming pull subscriptions, programmatic gRPC push subscriptions, and HTTP subscriptions—together into a single, modern package family.
 
-Rather than fragmenting pub/sub across `Dapr.Client` and `Dapr.AspNetCore`, `Dapr.Messaging` provides a clean, cohesive programming model built on top of modern .NET fundamentals: Roslyn source generators for reflection-free dispatch, compile-time Roslyn analyzers, the standard `Microsoft.Extensions.Options` pattern, fluent dependency injection builders, and full Native AOT and trimming compatibility.
+Rather than fragmenting pub/sub across `Dapr.Client` and `Dapr.AspNetCore`, `Dapr.Messaging` provides a clean, cohesive programming model built on top of modern .NET fundamentals: Roslyn source generators for reflection-free dispatch, compile-time Roslyn analyzers, and the standard `Microsoft.Extensions.Options` pattern.
 
 {{% alert title="Unified package architecture" color="primary" %}}
 `Dapr.Messaging` is a meta-package that brings the runtime client (`Dapr.Messaging.Runtime`), core abstractions (`Dapr.Messaging.Abstractions`), source generators (`Dapr.Messaging.Generators`), and Roslyn analyzers (`Dapr.Messaging.Analyzers`) in a single package reference:
@@ -29,7 +29,7 @@ The Dapr .NET SDK originally distributed messaging capabilities across multiple 
 1. **Unified publishing and subscribing**: Publish events with `IDaprPublishSubscribeClient` (including single events, raw byte streams, and bulk publishing) and author subscribers using a single `ITopicHandler<TMessage>` interface.
 2. **Three unified delivery modes**: Subscriptions support `DeliveryMode.Streaming` (application-initiated bidirectional gRPC stream with backpressure), `DeliveryMode.Programmatic` (sidecar-to-app gRPC `AppCallback` push), and `DeliveryMode.Http` (sidecar-to-app HTTP push via `/dapr/subscribe`), all configured through the same `[DaprTopic]` attribute.
 3. **Source generators eliminate reflection**: The `Dapr.Messaging.Generators` source generator inspects `[DaprTopic]` handlers at compile time and emits typed dispatchers, subscriber registries, and dependency injection wiring. No runtime reflection or runtime code generation is performed on the invocation path.
-4. **Native AOT and trimming ready**: Removing reflection and generating JSON serialization contexts makes the entire messaging path fully trim-safe and Native AOT compatible.
+4. **AOT and trimming considerations**: Handler discovery and dispatch registration are generated at compile time, but the current generated subscriber dispatchers use runtime `System.Text.Json` metadata. Native AOT and trimming scenarios require explicit validation with the target SDK version.
 5. **Roslyn analyzers and diagnostics**: The SDK includes compile-time analyzers (`DAPR1610`–`DAPR1617`) that catch misconfigurations directly in your IDE as you write code:
    - **`DAPR1610` (Error)**: Conflicting delivery modes on the same topic.
    - **`DAPR1611` (Error)**: `[DaprTopic]` class not implementing `ITopicHandler<TMessage>`.
@@ -52,7 +52,7 @@ The Dapr .NET SDK originally distributed messaging capabilities across multiple 
 | Delivery modes | Separate implementations for streaming gRPC vs HTTP | Configurable via `DeliveryMode` (`Streaming`, `Programmatic`, `Http`) |
 | Streaming pull subscriptions | Imperative client calls only | Both declarative `[DaprTopic(Delivery = DeliveryMode.Streaming)]` and imperative `SubscribeAsync` |
 | Dispatch mechanism | Runtime reflection / MVC action invokers | Source-generated typed dispatchers (`AddDaprMessaging`) |
-| Native AOT & Trimming | Not supported | Fully supported |
+| Native AOT & Trimming | Not supported | Requires explicit validation |
 | Compile-time analyzers | None | Built-in Roslyn analyzers and code fixes (`DAPR16xx`) |
 | Configuration | Custom builder methods | Standard `Microsoft.Extensions.Options` pattern (`DaprMessagingOptions`) |
 | CloudEvents support | Manual deserialization or controller bindings | Strongly-typed `CloudEvent`, `CloudEvent<TData>`, and `TopicContext.CloudEvent` |
@@ -62,7 +62,7 @@ The Dapr .NET SDK originally distributed messaging capabilities across multiple 
 - **[Tutorial: Dapr.Messaging by example]({{< ref "tutorial/_index.md" >}})**: Seven runnable examples covering publishing, streaming, routing, bulk subscriptions, gRPC push, HTTP push, dynamic streaming, and their unit and integration testing patterns.
 - **[Publish events how-to]({{< ref dotnet-messaging-publish-howto.md >}})**: Step-by-step guide to publishing JSON events, CloudEvents, raw payloads, and bulk message batches using `IDaprPublishSubscribeClient`.
 - **[Subscribe to topics how-to]({{< ref dotnet-messaging-subscribe-howto.md >}})**: Step-by-step guide to authoring `ITopicHandler<TMessage>` subscribers, choosing delivery modes with `[DaprTopic]`, compile-time source generation, dynamic streaming subscriptions, and compiler diagnostics.
-- **[Configuration and usage guide]({{< ref dotnet-messaging-pubsub-usage.md >}})**: Lifetime management, DI options configuration, advanced features (bulk pub/sub, dead-letter topics, CEL routing), and Native AOT setup.
+- **[Configuration and usage guide]({{< ref dotnet-messaging-pubsub-usage.md >}})**: Lifetime management, DI options configuration, advanced features (bulk pub/sub, dead-letter topics, CEL routing), and AOT/trimming considerations.
 
 ## Next steps
 
