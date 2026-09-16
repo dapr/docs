@@ -136,7 +136,7 @@ spec:
 | escapeHeaders | N | Enables URL escaping of the message header values received by the consumer. Allows receiving content with special characters that are usually not allowed in HTTP headers. Default is `false`. | `true` |
 | excludeHeaderMetaRegex | N | A regular expression to exclude keys from being converted from headers to metadata when consuming messages and  from metadata to headers when publishing messages. This capability avoids unwanted downstream side effects for topic consumers. | '"^valueSchemaType$"`
 | producerTransactionsEnabled | N | When set to `"true"`, every publish (single or bulk) is wrapped in a [Kafka transaction](#kafka-transactions-and-exactly-once-processing) on an idempotent producer: an aborted publish is never visible to consumers reading with `read_committed`, and bulk publishes become atomic (all entries commit or none do). Requires `producerRequiredAcks: "all"`, `producerRetryMax` >= 1 and Kafka 0.11 or later. Transactions serialize publishes and add broker round trips, lowering publish throughput. Default is `"false"` | `"true"`, `"false"` |
-| consumerTransactionsEnabled | N | When set to `"true"`, every delivery is processed inside a Kafka transaction ([exactly-once consume-transform-produce](#exactly-once-consume-transform-produce)): publishes made by the handler that carry the delivery's transaction token join the transaction, and the consumer offset commits atomically with them on handler success. Forces `consumerIsolationLevel: "read_committed"`. Requires a `consumerGroup`, `producerRequiredAcks: "all"`, `producerRetryMax` >= 1 and Kafka 0.11 or later. Default is `"false"` | `"true"`, `"false"` |
+| consumerTransactionsEnabled | N | When set to `"true"`, every delivery is processed inside a Kafka transaction ([exactly-once consume-transform-produce](#exactly-once-consume-transform-produce)): publishes made by the handler that carry the delivery's transaction token join the transaction, and the consumer offset commits atomically with them on handler success. Forces `consumerIsolationLevel: "read_committed"`. Requires a `consumerGroup`, `producerRequiredAcks: "all"`, `producerRetryMax` >= 1 and Kafka 2.5 or later (set `version` accordingly). Default is `"false"` | `"true"`, `"false"` |
 | transactionalIdPrefix | N | Prefix for the `transactional.id` values this component registers with the broker when transactions are enabled. For the publish producer it defaults to `clientID`, then `consumerGroup`, then `"dapr"`; for consumer transactions it defaults to `clientID`, then `"dapr"`, and must resolve to the same value on every replica — see [scaling and fencing](#scaling-zombie-fencing-and-the-transactionalidprefix). | `"my-app"` |
 | consumerIsolationLevel | N | Isolation level for consumers. `"read_uncommitted"` (default) delivers all records; `"read_committed"` hides records belonging to open or aborted Kafka transactions and requires Kafka 0.11 or later. When `consumerTransactionsEnabled` is `"true"` the level must be `"read_committed"`: leaving this field unset selects it automatically, while an explicit `"read_uncommitted"` fails validation. | `"read_committed"` |
 | transactionTimeout | N | Transaction timeout requested from the broker when transactions are enabled, as a Go duration. With `consumerTransactionsEnabled` the transaction stays open for the whole handler invocation, so this must exceed the slowest expected handler. Must not exceed the broker's `transaction.max.timeout.ms` (15 minutes by default): the broker rejects larger values at producer initialization, which fails every publish and delivery. Default is `"60s"` | `"90s"` |
@@ -548,7 +548,7 @@ Apache Kafka supports the following bulk metadata options:
 
 ## Kafka transactions and exactly-once processing
 
-The Kafka pubsub component supports [Kafka transactions](https://kafka.apache.org/documentation/#semantics) (Kafka 0.11 or later) through three capabilities. They are configured independently, mirroring how Kafka itself splits transaction configuration between producers (`transactional.id`, idempotence) and consumers (`isolation.level`):
+The Kafka pubsub component supports [Kafka transactions](https://kafka.apache.org/documentation/#semantics) (Kafka 0.11 or later, and 2.5 or later for consume-transform-produce) through three capabilities. They are configured independently, mirroring how Kafka itself splits transaction configuration between producers (`transactional.id`, idempotence) and consumers (`isolation.level`):
 
 - **Transactional publishing** (`producerTransactionsEnabled`): each publish — including each bulk publish — commits or aborts as a unit.
 - **Committed-only consumption** (`consumerIsolationLevel: "read_committed"`): subscribers never see records from open or aborted transactions.
@@ -601,7 +601,9 @@ With `consumerIsolationLevel: "read_committed"`, subscriptions on this component
 
 ### Exactly-once consume-transform-produce
 
-For pipelines that consume from Kafka, process, and publish back to Kafka, `consumerTransactionsEnabled` provides exactly-once semantics between the input and output topics:
+For pipelines that consume from Kafka, process, and publish back to Kafka, `consumerTransactionsEnabled` provides exactly-once semantics between the input and output topics.
+
+This capability needs **Kafka 2.5 or later**, a higher bar than the other two: the offset commit only carries the consumer group's member ID and generation from 2.5 on, and the broker needs them to fence a revoked group member that commits late. The component's default `version` is `2.0.0`, so set `version` explicitly or initialization fails.
 
 ```yaml
 spec:
@@ -614,6 +616,8 @@ spec:
       value: "none"
     - name: consumerGroup
       value: "my-group"
+    - name: version # Consumer transactions require 2.5 or later
+      value: "2.5.0"
     - name: consumerTransactionsEnabled
       value: "true"
     - name: transactionalIdPrefix # Optional
