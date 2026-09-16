@@ -1,24 +1,38 @@
 ---
 type: docs
-title: "How-To: Set up Elastic to search Dapr logs"
+title: "How-To: Set up Elastic for Dapr logging"
 linkTitle: "Elastic"
 weight: 4000
 description: "Collect Dapr's JSON logs into Elastic with the Elastic Distribution of OpenTelemetry Collector"
 ---
 
-Dapr writes [structured logs]({{% ref "logs.md" %}}) to stdout, so on Kubernetes they are ordinary container logs. The [Elastic Distribution of OpenTelemetry (EDOT) Collector](https://www.elastic.co/docs/reference/opentelemetry/edot-collector) collects them with its `filelog` receiver. EDOT is the Elastic Agent running in `otel` mode, reading a standard OpenTelemetry Collector configuration.
+The [Elastic Distribution of OpenTelemetry (EDOT) Collector](https://www.elastic.co/docs/reference/opentelemetry/edot-collector) collects Dapr's stdout container logs with its `filelog` receiver. EDOT is the Elastic Agent running in `otel` mode, reading a standard OpenTelemetry Collector configuration.
 
 ## Prerequisites
 
 - [Dapr installed on Kubernetes]({{% ref "kubernetes-deploy.md" %}})
-- An Elasticsearch endpoint and API key, from either Elastic Cloud or a self-managed deployment
-- [kubectl](https://kubernetes.io/docs/tasks/tools/)
+- An [Elastic](https://www.elastic.co/elasticsearch) endpoint and API key, from either [Elastic Cloud](https://www.elastic.co/cloud) or a self-managed deployment
+- [kubectl access to the cluster](https://kubernetes.io/docs/tasks/tools/)
 
-## Enable JSON-formatted logs
+## Installation
+
+### Create the credentials secret
+
+Copy the Elastic endpoint and API key from your Elastic instance and run the following commands in your cluster:
+
+```bash
+kubectl create namespace dapr-monitoring
+
+kubectl create secret generic elastic-secret -n dapr-monitoring \
+  --from-literal=elastic_endpoint="https://YOUR_DEPLOYMENT.es.YOUR_REGION.cloud.es.io:443" \
+  --from-literal=elastic_api_key="YOUR_API_KEY"
+```
+
+### Enable JSON-formatted logs
 
 Dapr logs in plain text by default. Turn on JSON output so the fields survive collection.
 
-For the control plane, set `global.logAsJson` when installing:
+For the control plane, set `global.logAsJson` when installing Dapr via [Helm]({{% ref "kubernetes-deploy.md" %}}):
 
 ```bash
 helm upgrade --install dapr dapr/dapr \
@@ -35,9 +49,9 @@ annotations:
   dapr.io/log-as-json: "true"
 ```
 
-## Deploy the collector
+### Deploy the Elastic Distribution of OpenTelemetry Collector
 
-The `filelog` receiver reads log files from the node, so the collector runs as a DaemonSet with the host log paths mounted. Save the following as `edot-logs.yaml`:
+The `filelog` receiver reads log files from the Kubernetes node, so the collector runs as a DaemonSet with the host log paths mounted. Save the following as `edot-logs.yaml`:
 
 ```yaml
 apiVersion: v1
@@ -92,6 +106,34 @@ data:
           processors: [k8s_attributes, batch]
           exporters: [elasticsearch/otel]
 ---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: edot-logs
+  namespace: dapr-monitoring
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: edot-logs
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "nodes", "namespaces"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: edot-logs
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edot-logs
+subjects:
+  - kind: ServiceAccount
+    name: edot-logs
+    namespace: dapr-monitoring
+---
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -145,19 +187,17 @@ spec:
             path: /var/log/pods
 ```
 
-This reuses the `elastic-secret` created in the [metrics how-to]({{% ref "elastic-metrics.md" %}}). Create it first if you have not already, and add a `ServiceAccount` named `edot-logs` with a `ClusterRole` granting `get`, `list` and `watch` on pods, nodes and namespaces so `k8s_attributes` can enrich the records.
+{{% alert title="Note" color="warning" %}}
+The `json_parser` operator is required, and must come after the container parser.
+{{% /alert %}}
 
-Apply it:
+Apply the `edot-logs.yaml` file to the cluster:
 
 ```bash
 kubectl apply -f edot-logs.yaml
 ```
 
-{{% alert title="Note" color="warning" %}}
-The `json_parser` operator is required, and must come after the container parser.
-{{% /alert %}}
-
-## Related links
+## Related links/References
 
 - [Logs]({{% ref "logs.md" %}})
 - [Dapr metrics with Elastic]({{% ref "elastic-metrics.md" %}})

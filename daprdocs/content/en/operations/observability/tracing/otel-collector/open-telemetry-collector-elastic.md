@@ -6,14 +6,19 @@ weight: 1100
 description: "How to push trace events to Elastic, using the Elastic Distribution of OpenTelemetry Collector"
 ---
 
-The [Elastic Distribution of OpenTelemetry (EDOT) Collector](https://www.elastic.co/docs/reference/opentelemetry/edot-collector) is the Elastic Agent running in `otel` mode, reading a standard OpenTelemetry Collector configuration. This guide walks through pushing Dapr traces to Elasticsearch through it.
+The [Elastic Distribution of OpenTelemetry (EDOT) Collector](https://www.elastic.co/docs/reference/opentelemetry/edot-collector) is the Elastic Agent running in `otel` mode, reading a standard OpenTelemetry Collector configuration. This guide walks through pushing Dapr traces to Elastic through it.
 
 ## Prerequisites
 
 - [Install Dapr on Kubernetes]({{% ref kubernetes %}})
-- An Elasticsearch endpoint and API key, from either Elastic Cloud or a self-managed deployment
+- An [Elastic](https://www.elastic.co/elasticsearch) endpoint and API key, from either [Elastic Cloud](https://www.elastic.co/cloud) or a self-managed deployment
+- [kubectl access to the cluster](https://kubernetes.io/docs/tasks/tools/)
 
-## Create the credentials secret
+## Installation
+
+### Create the credentials secret
+
+Copy the Elastic endpoint and API key from your Elastic instance and run the following commands in your cluster:
 
 ```bash
 kubectl create namespace dapr-monitoring
@@ -23,7 +28,7 @@ kubectl create secret generic elastic-secret -n dapr-monitoring \
   --from-literal=elastic_api_key="YOUR_API_KEY"
 ```
 
-## Deploy the collector
+### Deploy the Elastic Distribution of OpenTelemetry Collector
 
 Save the following as `edot-collector.yaml`:
 
@@ -120,15 +125,19 @@ spec:
       targetPort: 4318
 ```
 
-```bash
-kubectl apply -f edot-collector.yaml
-```
-
 {{% alert title="Note" color="primary" %}}
 `ELASTIC_AGENT_OTEL: "true"` puts the Elastic Agent into `otel` mode. Without it the container starts as a conventional Elastic Agent and does not open an OTLP port.
 {{% /alert %}}
 
-## Set up Dapr to send traces to the collector
+Apply the resources to your cluster:
+
+```bash
+kubectl apply -f edot-collector.yaml
+```
+
+### Set up Dapr to send traces to the collector
+
+Create a Configuration resource that points to your Elastic instance.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -141,16 +150,16 @@ spec:
     otel:
       endpointAddress: "edot-collector.dapr-monitoring.svc:4317"
       protocol: grpc
-      isSecure: false
+      isSecure: false   # in-cluster connection to the collector; the collector uses HTTPS to Elastic
 ```
+
+Apply this Configuration resource to your cluster with the following:
 
 ```bash
 kubectl apply -f appconfig.yaml
 ```
 
-`isSecure` refers to the in-cluster connection between the sidecar and the collector. The collector's own connection to Elasticsearch uses HTTPS and the API key.
-
-Reference the configuration from each deployment, then restart it so the sidecar picks up the change:
+Reference the configuration from each application deployment by adding an annotation to the pod specification, then restart it so the sidecar picks up the change:
 
 ```yaml
 annotations:
@@ -159,11 +168,11 @@ annotations:
   dapr.io/config: "appconfig"
 ```
 
-## View traces
+## Verify the installation
 
 Open your Elastic deployment and go to **Observability > APM > Traces**. Each Dapr application appears as a service named after its `dapr.io/app-id`.
 
-## Related links
+## Related links/References
 
 - [Dapr metrics with Elastic]({{% ref "elastic-metrics.md" %}})
 - [Dapr logs with Elastic]({{% ref "elastic-logs.md" %}})

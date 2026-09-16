@@ -3,18 +3,22 @@ type: docs
 title: "How-To: Set up Elastic to collect Dapr metrics"
 linkTitle: "Elastic"
 weight: 8000
-description: "Scrape Dapr's Prometheus metrics endpoint into Elastic with the Elastic Distribution of OpenTelemetry Collector"
+description: "Scrape Dapr metrics into Elastic with the Elastic Distribution of OpenTelemetry Collector"
 ---
 
-The [Elastic Distribution of OpenTelemetry (EDOT) Collector](https://www.elastic.co/docs/reference/opentelemetry/edot-collector) scrapes Dapr's [Prometheus metrics endpoint]({{% ref "metrics-overview.md" %}}) with its `prometheus` receiver and writes to Elasticsearch. EDOT is the Elastic Agent running in `otel` mode, reading a standard OpenTelemetry Collector configuration.
+The [Elastic Distribution of OpenTelemetry (EDOT) Collector](https://www.elastic.co/docs/reference/opentelemetry/edot-collector) scrapes Dapr's [Prometheus metrics endpoint]({{% ref "metrics-overview.md" %}}) with its `prometheus` receiver and writes to Elastic. EDOT is the Elastic Agent running in `otel` mode, reading a standard OpenTelemetry Collector configuration.
 
 ## Prerequisites
 
 - [Dapr installed on Kubernetes]({{% ref "kubernetes-deploy.md" %}})
-- An Elasticsearch endpoint and API key, from either Elastic Cloud or a self-managed deployment
-- [kubectl](https://kubernetes.io/docs/tasks/tools/)
+- An [Elastic](https://www.elastic.co/elasticsearch) endpoint and API key, from either [Elastic Cloud](https://www.elastic.co/cloud) or a self-managed deployment
+- [kubectl access to the cluster](https://kubernetes.io/docs/tasks/tools/)
 
-## Create the credentials secret
+## Installation
+
+### Create the credentials secret
+
+Copy the Elastic endpoint and API key from your Elastic instance and run the following commands in your cluster:
 
 ```bash
 kubectl create namespace dapr-monitoring
@@ -24,7 +28,7 @@ kubectl create secret generic elastic-secret -n dapr-monitoring \
   --from-literal=elastic_api_key="YOUR_API_KEY"
 ```
 
-## Annotate your applications
+### Annotate your applications
 
 The `dapr-sidecars` scrape job keeps pods carrying both of these annotations, so set them on each pod template:
 
@@ -34,7 +38,7 @@ annotations:
   dapr.io/enable-metrics: "true"
 ```
 
-## Deploy the collector
+### Deploy the Elastic Distribution of OpenTelemetry Collector
 
 Copy the `dapr-sidecars` and `dapr` scrape jobs from the `values.yaml` file in [How-To: Observe metrics with Prometheus]({{% ref "prometheus.md" %}}) into the `scrape_configs` block below, doubling `$` to `$$` so the collector's environment expansion leaves the relabel capture groups intact.
 
@@ -142,23 +146,25 @@ spec:
             name: edot-metrics-config
 ```
 
+{{% alert title="Note" color="warning" %}}
+`cumulativetodelta` is required: Dapr's histograms are cumulative, and the Elastic exporter accepts only delta temporality.
+{{% /alert %}}
+
+Apply the resources to your cluster:
+
 ```bash
 kubectl apply -f edot-metrics.yaml
 ```
 
-{{% alert title="Note" color="warning" %}}
-`cumulativetodelta` is required: Dapr's histograms are cumulative, and the Elasticsearch exporter accepts only delta temporality.
-{{% /alert %}}
+## Verify the installation
 
-## Verify
-
-Confirm the scrape job started:
+Confirm the scrape job started by checking the pod logs for the following:
 
 ```bash
 kubectl logs -n dapr-monitoring -l app=edot-metrics | grep "Scrape job added"
 ```
 
-Query Elasticsearch for a Dapr metric:
+Query Elastic for a specific Dapr metric:
 
 ```bash
 curl -H "Authorization: ApiKey YOUR_API_KEY" \
@@ -167,7 +173,7 @@ curl -H "Authorization: ApiKey YOUR_API_KEY" \
   -d '{"query":{"exists":{"field":"metrics.dapr_http_server_latency"}}}'
 ```
 
-## Related links
+## Related links/References
 
 - [Configure metrics]({{% ref "metrics-overview.md" %}})
 - [How-To: Observe metrics with Prometheus]({{% ref "prometheus.md" %}})
