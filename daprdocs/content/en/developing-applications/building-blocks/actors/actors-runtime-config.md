@@ -42,6 +42,10 @@ The clamping only protects daprd from resetting its own placement stream. A drai
 
 Most Dapr SDKs leave `drainOngoingCallTimeout` unset unless your application configures it, so the 2-second default applies. The .NET Actors.Next SDK is an exception: it sets a 30-second default, which sits exactly at the clamp boundary; configure a lower value explicitly.
 
+## Draining at pod termination
+
+`drainOngoingCallTimeout` and `drainRebalancedActors` only take effect while the sidecar can still reach your application. On Kubernetes both containers receive `SIGTERM` at the same time, so an application that exits promptly is gone before the sidecar drains, leaving these settings nothing to act on. Configure the application container to outlive the sidecar's shutdown: see [Graceful shutdown for actor hosts]({{% ref "kubernetes-production.md#graceful-shutdown-for-actor-hosts" %}}).
+
 ## Examples
 
 {{< tabpane text=true >}}

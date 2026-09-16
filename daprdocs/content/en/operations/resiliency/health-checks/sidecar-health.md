@@ -135,10 +135,10 @@ Dapr accepts a [`dapr.io/block-shutdown-duration` annotation or `--dapr-block-sh
 
 During this period, all subscriptions and input bindings are closed. This is useful for applications that need to use the Dapr APIs as part of their own shutdown procedure.
 
+For actor hosts on Kubernetes, the block only helps if the application outlives it — keep the app container alive with a `preStop` hook. See [Graceful shutdown for actor hosts]({{% ref "kubernetes-production.md#graceful-shutdown-for-actor-hosts" %}}).
+
 Applicable annotations or CLI flags include:
 
-- `--dapr-graceful-shutdown-seconds`/`dapr.io/graceful-shutdown-seconds`
-- `--dapr-block-shutdown-duration`/`dapr.io/block-shutdown-duration`
 - `--dapr-graceful-shutdown-seconds`/`dapr.io/graceful-shutdown-seconds`
 - `--dapr-block-shutdown-duration`/`dapr.io/block-shutdown-duration`
 
