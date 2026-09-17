@@ -1,3 +1,4 @@
+{{/* Project override of Docsy v0.12.0 layouts/_partials/footer.html — reason: custom link layout (user/developer icon columns + copyright/about center column), analytics/Scarf pixel scripts. Uses raw Bootstrap `bg-dark`/`text-white` utilities rather than Docsy's `.td-footer` structure; colors are re-tokenized in _footer.scss (Task 12). Reconcile against upstream on Docsy upgrade. */}}
 {{ $links := .Site.Params.links }}
 <footer class="bg-dark py-7 row d-print-none">
   <div class="container-fluid mx-sm-5" style="margin-top: 2rem;">

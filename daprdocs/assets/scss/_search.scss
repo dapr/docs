@@ -1,0 +1,65 @@
+//
+// search
+//
+// Covers the plain <input> rendered by search-input.html (gcs / offline-search
+// variants) and Algolia DocSearch, which mounts a `.DocSearch-Button` inside
+// `#docsearch` and portals its modal to <body> on open.
+//
+// DocSearch ships its own stylesheet (@docsearch/css) that sets --docsearch-*
+// defaults on :root; that stylesheet is linked in <head> after our compiled
+// bundle (see hooks/head-end.html + Docsy's algolia/head template), so a
+// plain `:root { --docsearch-*: ... }` rule here would lose an equal-
+// specificity, later-in-source battle to DocSearch's own defaults. `:root:root`
+// (repeating the pseudo-class) bumps our specificity just enough to always
+// win, regardless of stylesheet load order.
+
+.td-search-input, .td-search__input, #docsearch .DocSearch-Button {
+  background: var(--d-panel);
+  border: 1px solid var(--d-border);
+  border-radius: 7px;
+  color: var(--d-body);
+}
+
+.td-search-input::placeholder, .td-search__input::placeholder {
+  color: var(--d-muted);
+}
+
+#docsearch .DocSearch-Button:hover, #docsearch .DocSearch-Button:focus-visible {
+  border-color: color-mix(in srgb, var(--d-muted) 40%, var(--d-border));
+  box-shadow: none;
+  color: var(--d-body);
+}
+
+#docsearch .DocSearch-Button .DocSearch-Button-Key {
+  background: var(--d-ground);
+  color: var(--d-muted);
+  box-shadow: 0 0 0 1px var(--d-border);
+}
+
+#docsearch .DocSearch-Button .DocSearch-Search-Icon {
+  color: var(--d-muted);
+}
+
+// Brand accent + highlight color apply in both themes.
+:root:root {
+  --docsearch-primary-color: var(--d-blue);
+  --docsearch-highlight-color: var(--d-blue);
+}
+
+// The modal itself keeps DocSearch's default (light) look in light mode — it's
+// a familiar, well-tested UI. In dark mode we only override what's needed so
+// it doesn't render as a jarring white box against the rest of the dark page.
+[data-bs-theme="dark"] {
+  --docsearch-modal-background: var(--d-panel);
+  --docsearch-modal-shadow: 0 6px 24px rgba(0, 0, 0, .5);
+  --docsearch-text-color: var(--d-body);
+  --docsearch-muted-color: var(--d-muted);
+  --docsearch-container-background: rgba(0, 0, 0, .6);
+  --docsearch-searchbox-background: var(--d-ground);
+  --docsearch-searchbox-focus-background: var(--d-ground);
+  --docsearch-hit-color: var(--d-body);
+  --docsearch-hit-background: var(--d-ground);
+  --docsearch-hit-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+  --docsearch-footer-background: var(--d-panel);
+  --docsearch-key-gradient: linear-gradient(-225deg, var(--d-panel), var(--d-ground));
+}

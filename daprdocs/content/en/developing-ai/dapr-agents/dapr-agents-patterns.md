@@ -26,6 +26,8 @@ On one end, we have predictable workflows with well-defined decision paths and d
 
 The patterns in this documentation start with the Augmented LLM, then progress through workflow-based approaches that offer predictability and control, before moving toward more autonomous patterns. Each addresses specific use cases and offers different trade-offs between deterministic outcomes and autonomy.
 
+Most of the patterns below can be combined with the [hook system]({{< ref dapr-agents-hooks.md >}}) — a small set of callbacks on `DurableAgent` that let you log, rewrite, cache, or block individual tool calls and LLM calls without changing the agent body. Hooks are how Human-in-the-Loop is implemented (see the [HITL section](#human-in-the-loop) below) and they apply equally well to any of the other patterns.
+
 ## Augmented LLM
 
 The Augmented LLM pattern is the foundational building block for any kind of agentic system. It enhances a language model with external capabilities like memory and tools, providing a basic but powerful foundation for AI-driven applications.
@@ -339,6 +341,59 @@ The benefits of using Dapr for this pattern include:
 - **Iterative Improvement Loop** - Manages the feedback cycle between generation and evaluation
 - **Quality Criteria** - Enables clear definition of what constitutes acceptable output
 - **Maximum Iteration Control** - Prevents infinite loops by enforcing iteration limits
+
+## Human-in-the-Loop
+
+Some agent actions are too consequential to leave entirely to the model. The Human-in-the-Loop (HITL) pattern pauses the agent on specific tool calls (or other high-risk steps) and waits for a human to approve or deny before continuing. Because the wait happens inside a Dapr workflow, the pause can last seconds, hours, or days — the workflow rehydrates wherever it left off when the human responds.
+
+In Dapr Agents this pattern is implemented through the **hook system**: register a `before_tool_call` hook on a `DurableAgent` and return `RequireApproval(...)` for the steps that need human sign-off. The framework publishes an approval-request event to whichever delivery channel you've configured (HTTP, Dapr pub/sub, or a workflow event), suspends the workflow on `wait_for_external_event`, and resumes when an approve / deny response arrives — or auto-denies on timeout.
+
+**Use Cases:**
+- Approving destructive operations (deleting data, dropping tables, refunds above a threshold)
+- Compliance gates on policy-sensitive tool calls (PII access, schema changes)
+- Reviewing agent plans before execution in regulated environments
+- Long-running, multi-step processes where one step must be confirmed by a domain expert
+
+**Implementation with Dapr Agents:**
+
+```python
+from dapr_agents import DurableAgent, Hooks
+from dapr_agents.hooks import ToolHookContext, HookDecision, Proceed, RequireApproval
+from dapr_agents.agents.configs import AgentApprovalConfig, AgentExecutionConfig
+
+
+def gate_deletions(ctx: ToolHookContext) -> HookDecision:
+    if ctx.step_name.startswith("delete_"):
+        return RequireApproval(
+            timeout_seconds=3600,
+            instructions=f"Confirm deletion: {ctx.payload}",
+        )
+    return Proceed()
+
+
+approval = AgentApprovalConfig(
+    pubsub_name="messagepubsub",
+    topic="agent-approval-requests",
+    default_timeout_seconds=300,
+)
+
+agent = DurableAgent(
+    name="OpsAgent",
+    role="Operations Assistant",
+    llm=...,
+    tools=[delete_old_data, ...],
+    hooks=Hooks(before_tool_call=[gate_deletions]),
+    execution=AgentExecutionConfig(approval=approval),
+)
+```
+
+The benefits of using Dapr for this pattern include:
+- **Durable pause** - The workflow survives crashes and restarts while waiting; approvals are persisted in the state store
+- **Choice of delivery channel** - Approve over HTTP (`GET /hitl/approvals`, `POST /hitl/approvals/{id}/respond`), Dapr pub/sub, or direct workflow events
+- **Timeout safety** - Pending requests auto-deny if no human responds, so workflows never hang forever
+- **Composable with other patterns** - HITL is a hook decision, so it layers cleanly on top of any of the patterns above
+
+For the full hook API surface, including the other decisions (`Skip`, `Mutate`, `Deny`) and LLM-level hooks, see [Hooks and Human-in-the-Loop]({{< ref dapr-agents-hooks.md >}}).
 
 ## Durable Agent
 

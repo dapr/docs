@@ -2205,7 +2205,7 @@ failed to purge orchestration state: rpc error: code = FailedPrecondition desc =
 dapr workflow purge e4d3807c --app-id order-processor
 
 # Or purge all completed workflows
-dapr workflow purge --app-id order-processor
+dapr workflow purge --app-id order-processor --all
 ```
 
 ## Tell us what you think!

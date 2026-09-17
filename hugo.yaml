@@ -1,4 +1,4 @@
-baseURL: https://v1-18.docs.dapr.io
+baseURL: https://docs.dapr.io/
 title: Dapr Docs
 
 # Output directory for generated site
@@ -26,7 +26,9 @@ taxonomies:
 
 # Highlighting config
 pygmentsCodeFences: true
-pygmentsUseClasses: false
+# Class-based highlighting (not inline styles) so code can be themed for
+# light AND dark — see daprdocs/assets/scss/_chroma.scss.
+pygmentsUseClasses: true
 # Use the new Chroma Go highlighter in Hugo.
 pygmentsUseClassic: false
 # pygmentsOptions: "linenos=table"
@@ -73,7 +75,7 @@ menu:
       url: https://blog.dapr.io/posts
       weight: 60
     - name: Discord
-      url: https://bit.ly/dapr-discord
+      url: https://diagrid.ws/dapr-discord
       weight: 70
     - name: Community
       url: https://dapr.io/community
@@ -88,21 +90,47 @@ markup:
       unsafe: true
     renderHooks:
       link:
-        enableDefault: true
+        useEmbedded: fallback
     
   highlight:
     # See a complete list of available styles at https://xyproto.github.io/splash/docs/all.html
     style: tango
+    # Emit CSS classes instead of inline styles so both light and dark syntax
+    # palettes can be applied via _chroma.scss.
+    noClasses: false
     # Uncomment if you want your chosen highlight style used for code blocks without a specified language
     # guessSyntax: true
 
 # Everything below this are Site Params
 
+# Custom output format: renders the sidebar nav tree once per language to
+# /sidebar-nav.html (injected client-side by /js/sidebar-nav.js) so the tree
+# is not serialized into every page.
+outputFormats:
+  SidebarNav:
+    mediaType: text/html
+    baseName: sidebar-nav
+    isHTML: true
+    notAlternative: true
+
 # Comment out if you don't want the "print entire section" link enabled.
 outputs:
+  home: [HTML, RSS, SidebarNav]
   section: [HTML, print, RSS]
 
 params:
+  # Site-wide announcement banner (see _partials/announcement-banner.html).
+  # Items are filtered by their optional start/end date window at build time.
+  announcements:
+    enabled: true
+    rotate_interval: 6000   # ms between auto-advances; 0 disables auto-rotate
+    items:
+      - text: "Need enterprise support for Dapr?"
+        link: "https://www.diagrid.io/"
+        link_text: "Contact Diagrid"
+      - text: "Read how Dapr is used for workflow orchestration and AI agent development in 2026."
+        link: "https://www.diagrid.io/reports-and-ebooks/state-of-dapr-2026"
+        link_text: "Download the State of Dapr Report"
   taxonomy:
     # set taxonomyCloud = [] to hide taxonomy clouds
     taxonomyCloud: [tags, categories]
@@ -116,12 +144,12 @@ params:
   privacy_policy: https://policies.google.com/privacy
 
   # First one is picked as the Twitter card image if not set on page.
-  # images: [images/project-illustration.png]
+  images: [images/dapr-og-default.png]
   
   # Versioning
   # Menu title if your navbar has a versions selector to access old versions of your site.
   # This menu appears only if you have at least one [params.versions] set.
-  version_menu: v1.18 (preview)
+  version_menu: v1.18 (latest)
 
   # Flag used in the "version-banner" partial to decide whether to display a
   # banner on every page indicating that this is an archived version of the docs.
@@ -132,16 +160,6 @@ params:
   # Used in the "version-banner" partial to display a version number for the
   # current doc set.
   version: v1.18
-
-  # Flag used in the "version-banner" partial to decide whether to display a
-  # banner on every page indicating that this is an archived version of the docs.
-  # Set this flag to "true" if you want to display the banner.
-  archived_version: false
-
-  # Flag used in the "version-banner" partial to decide whether to display a
-  # banner on every page indicating that this is an archived version of the docs.
-  # Set this flag to "true" if you want to display the banner.
-  archived_version: false
 
   # A link to latest version of the docs. Used in the "version-banner" partial to
   # point people to the main doc site.
@@ -161,10 +179,12 @@ params:
   github_branch: v1.18
 
   versions:
-    - version: v1.18 (preview)
+    - version: v1.19 (preview)
+      url: "https://v1-19.docs.dapr.io"
+    - version: v1.18 (latest)
       url: "#"
-    - version: v1.17 (latest)
-      url: https://docs.dapr.io
+    - version: v1.17
+      url: https://v1-17.docs.dapr.io
     - version: v1.16
       url: https://v1-16.docs.dapr.io
     - version: v1.15
@@ -262,7 +282,7 @@ params:
         icon: fab fa-github
         desc: Help contribute to Dapr!
       - name: Discord
-        url: https://bit.ly/dapr-discord
+        url: https://diagrid.ws/dapr-discord
         icon: fab fa-discord
         desc: Join our Discord server and talk with other Dapr developers
 

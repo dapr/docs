@@ -100,7 +100,6 @@ As of version 1.0.0 onwards, existing certificate values will automatically be r
    kubectl get pods -n dapr-system -w
 
    NAME                                     READY   STATUS    RESTARTS   AGE
-   dapr-dashboard-69f5c5c867-mqhg4          1/1     Running   0          42s
    dapr-operator-5cdd6b7f9c-9sl7g           1/1     Running   0          41s
    dapr-placement-server-0                  1/1     Running   0          41s
    dapr-sentry-84565c747b-7bh8h             1/1     Running   0          35s

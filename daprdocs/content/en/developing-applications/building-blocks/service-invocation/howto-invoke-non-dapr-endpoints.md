@@ -67,6 +67,19 @@ There are two ways to invoke a non-Dapr endpoint when communicating either to Da
     curl http://localhost:3500/v1.0/invoke/https://darthsidious.starwars/method/order66
     ```
 
+{{% alert title="Note" color="primary" %}}
+`HTTPEndpoint` resources are "hot reloaded" by default, whereby updates trigger an automatic graceful restart of the Dapr sidecar without needing a manual restart. To opt out, disable the `HotReload` feature in the [Dapr application configuration]({{% ref "configuration-overview.md" %}}):
+
+```yaml
+spec:
+  features:
+    - name: HotReload
+      enabled: false
+```
+
+See [Updating resources]({{% ref "component-updates.md" %}}) for more information.
+{{% /alert %}}
+
 ### Using appId when calling Dapr enabled applications
 AppIDs are always used to call Dapr applications with the `appID` and `my-method`. Read the [How-To: Invoke services using HTTP]({{% ref howto-invoke-discover-services %}}) guide for more information. For example:
 

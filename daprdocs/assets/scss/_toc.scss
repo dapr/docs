@@ -1,0 +1,61 @@
+//
+// toc
+//
+// Docsy (v0.12.0) renders the "On this page" markup (.td-toc > nav#TableOfContents)
+// but implements no scrollspy — the .active class toggled here is applied by
+// static/js/toc-scrollspy.js (added in Task 11), loaded from body-end.html.
+//
+
+// Sticky offset tracks the fixed header's actual bottom (announcement-banner.js
+// publishes --dapr-header-bottom = banner + navbar). Without this the sticky
+// aside sits under a static 4rem and the pushed-down navbar overlaps the
+// page-meta while the banner is visible. Falls back to 4rem when no banner.
+.td-sidebar-toc {
+    top: var(--dapr-header-bottom, 4rem);
+}
+
+.td-toc {
+    font-size: .8rem;
+
+    // Only the active item shows a border (like the left nav). Non-active items
+    // keep a transparent border so text alignment doesn't shift.
+    #TableOfContents a, a {
+        display: block;
+        color: var(--d-muted);
+        border-left: 2px solid transparent;
+        padding: 4px 0 4px 11px;
+        text-decoration: none;
+    }
+
+    #TableOfContents a:hover, a:hover {
+        color: var(--d-body);
+    }
+
+    #TableOfContents a.active, a.active {
+        color: var(--d-heading);
+        font-weight: 500;
+        border-left-color: var(--d-orange);
+    }
+
+    .td-toc__title {
+        font-family: var(--font-head);
+        text-transform: uppercase;
+        letter-spacing: .1em;
+        font-size: .68rem;
+        color: var(--d-muted);
+    }
+}
+
+// .td-page-meta is a SIBLING of .td-toc inside .td-sidebar-toc (not nested), so
+// it's styled at top level. Match the TOC's font size in the right aside.
+.td-sidebar-toc .td-page-meta {
+    font-size: .8rem;
+
+    .td-page-meta__title {
+        font-family: var(--font-head);
+        text-transform: uppercase;
+        letter-spacing: .1em;
+        font-size: .68rem;
+        color: var(--d-muted);
+    }
+}

@@ -6,10 +6,6 @@ description: "Detailed documentation on the jobs API"
 weight: 900
 ---
 
-{{% alert title="Note" color="primary" %}}
-The jobs API is currently in alpha.
-{{% /alert %}}
-
 With the jobs API, you can schedule jobs and tasks in the future.
 
 > The HTTP APIs are intended for development and testing only. For production scenarios, the use of the SDKs is strongly
@@ -20,7 +16,7 @@ With the jobs API, you can schedule jobs and tasks in the future.
 Schedule a job with a name. Jobs are scheduled based on the clock of the server where the Scheduler service is running. The timestamp is not converted to UTC. You can provide the timezone with the timestamp in RFC3339 format to specify which timezone you'd like the job to adhere to. If no timezone is provided, the server's local time is used.
 
 ```
-POST http://localhost:<daprPort>/v1.0-alpha1/jobs/<name>
+POST http://localhost:<daprPort>/v1.0/jobs/<name>
 ```
 
 ### URL parameters
@@ -121,7 +117,7 @@ The following example curl command creates a job, naming the job `jobforjabba` a
 
 ```bash
 $ curl -X POST \
-  http://localhost:3500/v1.0-alpha1/jobs/jobforjabba \
+  http://localhost:3500/v1.0/jobs/jobforjabba \
   -H "Content-Type: application/json" \
   -d '{
         "data": "{\"value\":\"Running spice\"}",
@@ -135,7 +131,7 @@ $ curl -X POST \
 Get a job from its name.
 
 ```
-GET http://localhost:<daprPort>/v1.0-alpha1/jobs/<name>
+GET http://localhost:<daprPort>/v1.0/jobs/<name>
 ```
 
 ### URL parameters
@@ -157,7 +153,7 @@ Code | Description
 After running the following example curl command, the returned response is JSON containing the `name` of the job, the `dueTime`, and the `data`.
 
 ```bash
-$ curl -X GET http://localhost:3500/v1.0-alpha1/jobs/jobforjabba -H "Content-Type: application/json"
+$ curl -X GET http://localhost:3500/v1.0/jobs/jobforjabba -H "Content-Type: application/json"
 ```
 
 ```json
@@ -173,7 +169,7 @@ $ curl -X GET http://localhost:3500/v1.0-alpha1/jobs/jobforjabba -H "Content-Typ
 Delete a named job.
 
 ```
-DELETE http://localhost:<daprPort>/v1.0-alpha1/jobs/<name>
+DELETE http://localhost:<daprPort>/v1.0/jobs/<name>
 ```
 
 ### URL parameters
@@ -195,7 +191,7 @@ Code | Description
 In the following example curl command, the job named `test1` with app-id `sub` will be deleted
 
 ```bash
-$ curl -X DELETE http://localhost:3500/v1.0-alpha1/jobs/jobforjabba -H "Content-Type: application/json"
+$ curl -X DELETE http://localhost:3500/v1.0/jobs/jobforjabba -H "Content-Type: application/json"
 ```
 
 

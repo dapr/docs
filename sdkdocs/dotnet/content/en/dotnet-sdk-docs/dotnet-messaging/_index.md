@@ -2,7 +2,7 @@
 type: docs
 title: "Dapr Messaging .NET SDK"
 linkTitle: "Messaging"
-weight: 60000
+weight: 220000
 description: Get up and running with the Dapr Messaging .NET SDK
 ---
 

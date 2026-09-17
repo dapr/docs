@@ -33,6 +33,25 @@ You can find the various arguments that the CLI exposes to configure the sidecar
 
 On [Kubernetes]({{% ref kubernetes %}}), the Dapr control plane includes the [dapr-sidecar-injector service]({{% ref kubernetes-overview %}}), which watches for new pods with the `dapr.io/enabled` annotation and injects a container with the `daprd` process within the pod. In this case, sidecar arguments can be passed through annotations as outlined in the **Kubernetes annotations** column in [this table]({{% ref arguments-annotations-overview%}}).
 
+### Native sidecars (Kubernetes 1.28+)
+
+By default, `daprd` is injected as a regular container alongside your application. With [Kubernetes native sidecars](https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/) ([KEP-753](https://github.com/kubernetes/enhancements/issues/753)), `daprd` is instead injected as an init container with `restartPolicy: Always`. Refer to the [Kubernetes sidecar containers documentation](https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/) for details on behavior and lifecycle semantics.
+
+Enable native sidecars globally via Helm:
+
+```yaml
+dapr_sidecar_injector:
+  nativeSidecar: true
+```
+
+Or per-pod via annotation:
+
+```yaml
+annotations:
+  dapr.io/enabled: "true"
+  dapr.io/enable-native-sidecar: "true"
+```
+
 ## Running the sidecar directly
 
 In most cases you do not need to run `daprd` explicitly, as the sidecar is either launched by the [CLI]({{% ref cli-overview%}}) (self-hosted mode) or by the dapr-sidecar-injector service (Kubernetes). For advanced use cases (debugging, scripted deployments, etc.) the `daprd` process can be launched directly.
