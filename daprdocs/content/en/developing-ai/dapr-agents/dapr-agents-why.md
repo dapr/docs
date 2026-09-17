@@ -98,7 +98,7 @@ Decoupling infrastructure keeps agents focused on tasks while enabling seamless 
 
 ### Scalable Workflows as First-Class Citizens
 
-Dapr Agents uses a [durable-execution workflow engine]({{% ref workflow-overview.md %}}) that guarantees each agent task executes to completion despite network interruptions, node crashes, and other disruptive failures. Developers do not need to understand the underlying workflow engine concepts—simply write an agent that performs any number of tasks and these will be automatically distributed across the cluster. If any task fails, it will be retried and recover its state from where it left off.
+Dapr Agents uses a [durable execution workflow engine]({{% ref workflow-overview.md %}}) that guarantees each agent task executes to completion despite network interruptions, node crashes, and other disruptive failures. Developers do not need to understand the underlying workflow engine concepts—simply write an agent that performs any number of tasks and these will be automatically distributed across the cluster. If any task fails, it will be retried and recover its state from where it left off.
 
 ### Cost-Effective AI Adoption
 

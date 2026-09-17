@@ -20,20 +20,9 @@
   {{- end -}}
 {{- end -}}
 {{- if $m -}}
-<style>
-.dapr-perf-results details { border: 1px solid var(--bs-border-color, #dee2e6); border-radius: 6px; margin: 0.6rem 0; }
-.dapr-perf-results details[open] { padding-bottom: 0.5rem; }
-.dapr-perf-results summary { cursor: pointer; padding: 0.6rem 0.9rem; font-weight: 600; list-style-position: inside; }
-.dapr-perf-results details.perf-api > summary { font-size: 1.2rem; background: var(--bs-tertiary-bg, #f5f5f5); border-radius: 6px; }
-.dapr-perf-results details.perf-scenario { margin: 0.4rem 0; }
-.dapr-perf-results details.perf-scenario > summary { font-size: 1rem; font-family: var(--bs-font-monospace, monospace); }
-.dapr-perf-results .perf-count { font-weight: 400; opacity: 0.65; font-size: 0.85em; }
-.dapr-perf-results .perf-body { padding: 0.2rem 0.9rem; }
-.dapr-perf-results .perf-nav { margin: 0.5rem 0 1rem; line-height: 1.9; }
-.dapr-perf-results .perf-nav a { display: inline-block; margin-right: 0.6rem; }
-.dapr-perf-results img { max-width: 100%; height: auto; }
-.dapr-perf-results table { display: block; overflow-x: auto; }
-</style>
+{{- /* Styling for .dapr-perf-results lives in _page-extras.scss (Task 20) —
+       tokenized so it follows both themes instead of the raw Bootstrap
+       var()-with-hex-fallback rules this inline <style> block used to have. */ -}}
 <div class="dapr-perf-results">
     <p><strong>Test environment:</strong> {{ $m.infra }}. Results for Dapr <code>{{ $m.version }}</code>.</p>
     <nav class="perf-nav"><strong>Jump to:</strong>

@@ -73,13 +73,14 @@ Each concept has its own page:
 - [Serialization]({{< ref dotnet-actorsnext-serialization.md >}}): the pluggable serializer, and the per-actor cache.
 - [State migration]({{< ref dotnet-actorsnext-statemigration.md >}}): The state envelope and versioning state with upcasters.
 - [State machine actors]({{< ref dotnet-actorsnext-statemachine.md >}}): the `StateMachineActor` model, when to choose it over a workflow, and how to test it.
-- [Subscription streams]({{< ref dotnet-actorsnext-streams.md >}}): driving actors from pub/sub topics with `[Subscribe]`.
+- [Subscription streams]({{< ref dotnet-actorsnext-streams.md >}}): driving actors from pub/sub topics with `[Subscribe]` metadata and explicit stream registration.
 - [Dynamic invocation]({{< ref dotnet-actorsnext-dynamic.md >}}): calling actors by type, id, and method with no compile-time contract, for gateways, tooling, and cross-language callers.
 - [Testing]({{< ref dotnet-actorsnext-testing.md >}}): the in-memory test runtime, xUnit usage, and optional Coyote integration for deep concurrency testing.
+- Per-type runtime options are supported through `options.Actors.RegisterActor<TActor>(...)`, including idle timeout, reentrancy, draining, and state-migration overrides.
 
 ## Learn by example
 
-If you would rather see the improvements one at a time with runnable code, the [tutorial]({{< ref "tutorial/_index.md" >}}) walks through six worked examples, each paired with its test, with the code in the solution under `/examples/Actor.Next/`. It is the fastest way to understand what changed and why.
+If you would rather see the improvements one at a time with runnable code, the [tutorial]({{< ref "tutorial/_index.md" >}}) walks through six worked examples, each paired with its test. The solution also includes a seventh [per-type options example]({{< ref "dotnet-actorsnext-howto.md#per-type-runtime-options" >}}) under `/examples/Actor.Next/`. It is the fastest way to understand what changed and why.
 
 ## Next steps
 
