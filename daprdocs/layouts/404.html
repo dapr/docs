@@ -1,0 +1,21 @@
+{{/* Project override of Docsy v0.12.0 layouts/404.html — reason: brand heading + short message + a .d-card-grid of top-level sections in place of Docsy's bare "Not found" text, so lost visitors land on a useful, on-brand page. Reconcile against upstream on Docsy upgrade. */}}
+{{ define "main" -}}
+<div class="td-content">
+  <h1>Page not found</h1>
+  <p class="lead">Sorry, we couldn't find that page. It may have moved or been renamed. Try search, or jump into one of these sections:</p>
+  {{ $colors := slice "c-blue" "c-sky" "c-orange" "c-gold" }}
+  {{ $i := 0 }}
+  <div class="d-card-grid cols-3">
+    {{ range .Site.Sections.ByWeight }}
+      {{ $c := index $colors (mod $i (len $colors)) }}
+      <a class="d-card {{ $c }}" href="{{ .RelPermalink }}">
+        <span class="d-card-title">{{ or .LinkTitle .Title }}</span>
+        {{ with .Description }}<span class="d-card-desc">{{ . | markdownify }}</span>{{ end }}
+        <span class="d-card-more">Learn more &rarr;</span>
+      </a>
+      {{ $i = add $i 1 }}
+    {{ end }}
+  </div>
+  <p><a href="{{ "" | relLangURL }}">Go to the home page</a></p>
+</div>
+{{- end }}
