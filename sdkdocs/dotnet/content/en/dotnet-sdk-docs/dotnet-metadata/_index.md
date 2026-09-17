@@ -2,7 +2,7 @@
 type: docs
 title: "Dapr Metadata .NET SDK"
 linkTitle: "Metadata"
-weight: 54000
+weight: 200000
 description: Get up and running with the Dapr Metadata .NET SDK
 ---
 

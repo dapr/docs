@@ -85,6 +85,21 @@
     return mq ? mq.matches : true;
   }
 
+  // Publish the fixed header's actual bottom edge (banner + navbar, or just the
+  // navbar once the banner has scrolled away) so the sticky sidebars can offset
+  // beneath it instead of a static 4rem — otherwise the pushed-down navbar
+  // overlaps the top of the right aside (page-meta) while the banner is visible.
+  function setHeaderBottom() {
+    if (!navbar) {
+      return;
+    }
+    var bottom = navbar.getBoundingClientRect().bottom;
+    document.documentElement.style.setProperty(
+      "--dapr-header-bottom",
+      Math.max(0, bottom) + "px"
+    );
+  }
+
   // At >= md, push the fixed navbar down by the banner height so the banner sits
   // above it. At < md, clear any inline top so the navbar keeps its flow position.
   function applyOffset() {
@@ -96,6 +111,7 @@
     } else {
       navbar.style.top = "";
     }
+    setHeaderBottom();
   }
 
   // As the page scrolls, slide the fixed navbar up until it pins to the top, by
@@ -107,6 +123,7 @@
     var h = bannerHeight();
     var y = window.pageYOffset || document.documentElement.scrollTop || 0;
     navbar.style.top = Math.max(0, h - y) + "px";
+    setHeaderBottom();
   }
 
   function onResize() {
@@ -122,6 +139,7 @@
     if (navbar) {
       navbar.style.top = "";
     }
+    setHeaderBottom(); // navbar back at the top → sidebars re-offset to its bottom
     window.removeEventListener("scroll", onScroll);
     window.removeEventListener("resize", onResize);
   }
