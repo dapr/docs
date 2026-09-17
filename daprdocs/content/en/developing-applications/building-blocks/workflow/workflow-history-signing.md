@@ -47,6 +47,11 @@ Sentry and uses it both for mTLS and for signing workflow history.
   it to sign each history batch.
 - **Trust roots**: every SVID chains to a Sentry CA. Verifiers accept a
   signature only if its certificate chains to a CA in the trust bundle.
+- **Software provenance** (Kubernetes, Dapr 1.19+): Sentry stamps the
+  [container image references of the workload's pod]({{% ref "security-concept.md#container-image-references-in-workload-certificates" %}})
+  into every SVID as a custom X.509 extension. Because signing certificates
+  are persisted with the workflow history, this extends to
+  [provenance of the software that executed the workflow](#software-provenance-which-images-executed-the-workflow).
 
 For background on Sentry, mTLS, and trust domains, see [setup & configure
 mTLS]({{% ref "mtls.md" %}}) and [security concepts]({{% ref "security-concept.md" %}}).
@@ -471,6 +476,61 @@ Verified foreign certificates are absorbed into the same `ext-sigcert-NNNNNN`
 table used by completion attestations, so downstream attestation lookups can
 content-address them.
 
+## Software provenance: which images executed the workflow
+
+On Kubernetes, from Dapr **1.19**, every SVID that Sentry issues carries the
+[container image references of the requesting pod]({{% ref "security-concept.md#container-image-references-in-workload-certificates" %}})
+as a custom X.509 extension (OID `1.3.6.1.4.1.57683.100.1`): the daprd sidecar
+image, every application container image, and best effort resolved digests.
+Sentry reads this data from the Kubernetes API server's pod object during
+certificate issuance; the workload cannot influence it.
+
+Because workflow history signing persists the full certificate chain of every
+signer alongside the history, each signed workflow automatically accumulates a
+cryptographically bound record of **exactly which software executed it**:
+
+- The `sigcert-NNNNNN` table holds the certificates the workflow's own
+  executor signed with. Every signature references its certificate, and every
+  certificate names the daprd and app images of the pod that held the private
+  key. For any range of history events, you can determine the images of the
+  pod that produced them.
+- The `ext-sigcert-NNNNNN` table holds the verified certificates of foreign
+  identities: every attested child workflow and activity completion, and every
+  verified lineage chunk, references a certificate in this table. For each
+  cross-identity completion, you can determine the images of the app that
+  executed that child workflow or activity.
+- Certificate rotation preserves the timeline. Each rotation (restart, SVID
+  expiry, replica migration, or a deployment rollout to a new image) appends a
+  new certificate entry, so a long-running workflow carries a dated record of
+  every software version that touched it over its lifetime.
+
+This enables, without any application changes:
+
+- **CVE response**: scan the certificate tables of stored workflows for image
+  digests matching a vulnerability advisory, and identify precisely which
+  workflow instances, and which event ranges within them, were executed by the
+  affected software.
+- **Audit**: answer "what software processed this workflow, activity, or
+  child workflow" from the state store alone, for the full retention window of
+  the workflow state.
+- **Anomaly detection**: flag executors whose certificates name images that
+  were never part of an approved deployment.
+
+To inspect, decode any certificate from the `sigcert-NNNNNN` or
+`ext-sigcert-NNNNNN` entries (protobuf `SigningCertificate`, DER-encoded X.509
+chain) and read the extension from the leaf certificate as described in the
+[security concepts page]({{% ref "security-concept.md#container-image-references-in-workload-certificates" %}}).
+
+{{% alert title="Scope of the guarantee" color="primary" %}}
+The extension records the images Kubernetes scheduled for the pod, as observed
+by Sentry at certificate issuance. It is supply-chain provenance for lookup
+and flagging, not runtime integrity attestation or image signature
+verification.
+In self-hosted mode certificates carry no extension, and signing and
+verification behave exactly as before: the extension is informational and is
+not part of the verification checks.
+{{% /alert %}}
+
 ## What happens when verification fails
 
 When signature verification fails, Dapr's response depends on whether the
@@ -606,6 +666,7 @@ operation, ensuring atomicity.
 | **Lineage integrity** | Forwarded `PropagatedHistoryChunk`s are individually signed and verified against the producing app's SPIFFE identity |
 | **Immutable history** | Dapr never modifies the existing workflow history, signatures, or inbox; the only write on tamper detection is an unsigned terminal `ExecutionCompleted` event with error type `DAPR_WORKFLOW_HISTORY_TAMPERED` |
 | **One-way commitment** | Signing cannot be disabled for signed workflows or enabled for unsigned workflows |
+| **Software provenance** (Kubernetes, 1.19+) | Every persisted signing certificate names the container images of the pod that executed the signed events, stamped by Sentry from the Kubernetes pod object and unforgeable by the workload |
 
 ## Frequently asked questions
 
@@ -657,6 +718,16 @@ certificate is stored in the certificate table and the signature chain remains
 valid. All certificates are verified as belonging to the same app ID via SPIFFE
 identity binding.
 
+### Can I tell which software executed a workflow?
+
+**Yes, on Kubernetes with Dapr 1.19+.** Every signing certificate persisted
+with the workflow (both the workflow's own in `sigcert-NNNNNN` and foreign
+executors' in `ext-sigcert-NNNNNN`) carries the container image references of
+the pod that held the signing key, stamped by Sentry from the Kubernetes pod
+object. Decode the extension from the stored certificates to see which daprd
+and application images executed each part of the workflow. See
+[software provenance](#software-provenance-which-images-executed-the-workflow).
+
 ### What state store backends are supported?
 
 History signing works with any state store that supports the actor state
@@ -668,5 +739,6 @@ alongside the existing workflow state.
 - [Workflow overview]({{% ref workflow-overview.md %}})
 - [Workflow architecture]({{% ref workflow-architecture.md %}})
 - [Setup & configure mTLS]({{% ref mtls.md %}})
+- [Container image references in workload certificates]({{% ref "security-concept.md#container-image-references-in-workload-certificates" %}})
 - [Multi-app workflows]({{% ref workflow-multi-app.md %}})
 - [History retention policy]({{% ref workflow-history-retention-policy.md %}})
