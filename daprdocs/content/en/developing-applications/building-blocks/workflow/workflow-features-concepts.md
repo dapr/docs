@@ -252,6 +252,10 @@ Workflow code is long-running and must remain deterministic during updates. For 
 
 A single workflow or activity dispatch is bounded by the sidecar's `--max-body-size` setting (default 4 MiB). If a workflow's `PastEvents + NewEvents + PropagatedHistory` would exceed 95% of that limit, the workflow is stalled rather than tearing down the dispatch stream. Metrics expose how close each workflow and activity is to the limit so operators can act before a stall. See [Workflow payload size]({{% ref workflow-payload-size.md %}}) for details and remediation steps.
 
+### Fast path and concurrency limits
+
+The `WorkflowsFastPath` preview feature disables itself when Scheduler-enforced concurrency limits (`globalMaxConcurrentWorkflowInvocations`, `globalMaxConcurrentActivityInvocations`, or per-name `workflowConcurrencyLimits` and `activityConcurrencyLimits`) are configured, because those limits gate each Scheduler job delivery and the fast path drives work without Scheduler jobs. Per-sidecar limits are compatible. See [Workflow fast path]({{% ref workflow-fast-path.md %}}) and [Workflow concurrency limits]({{% ref workflow-concurrency.md %}}).
+
 ### Workflow determinism and code restraints
 
 To take advantage of the workflow replay technique, your workflow code needs to be deterministic. For your workflow code to be deterministic, you may need to work around some limitations.
@@ -579,6 +583,7 @@ patch and introduce new named workflow versions to incorporate changes to your w
 
 - [Try out Dapr Workflow using the quickstart]({{% ref workflow-quickstart.md %}})
 - [Workflow overview]({{% ref workflow-overview.md %}})
+- [Workflow fast path]({{% ref workflow-fast-path.md %}})
 - [How-To: Apply workflow access policies]({{% ref workflow-access-policy.md %}})
 - [Workflow API reference]({{% ref workflow_api.md %}})
 - Try out the following examples:

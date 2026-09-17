@@ -51,6 +51,16 @@ A collection of events that have occurred but have not yet been processed by the
 
 When the orchestrator next runs, it "drains" the inbox, moves those events into the history, and then replays the logic.
 
+With the `WorkflowsFastPath` preview feature enabled, activity completions that the activity actor delivers with retry-forever semantics may skip the inbox: the sidecar holds them in memory and persists them straight into the history inside the next turn's commit, acknowledging the activity actor only after that commit. External events, fired timers and child workflow completions always go through the inbox. See [Workflow fast path]({{% ref "workflow-fast-path.md" %}}).
+
+### 4. Parent notification and creation input
+Two further fixed keys are stored per instance:
+*   `parent-notify`: A marker written in the same transaction as a child workflow's terminal state, recording that the parent has not yet been notified. It is cleared once the parent acknowledges the completion; while present, purge and instance ID reuse are refused.
+*   `creation-input`: The input the instance was created with, kept outside the history so it survives `ContinueAsNew` and can be checked against the creating parent.
+
+### 5. Activity execution claim
+Under the `WorkflowsFastPath` preview feature, an activity actor whose execution is still running when actor placement moves it to another host writes an `execution-claim` record under its own state prefix, with a heartbeat that the previous owner refreshes until the result is published. The new owner reads it to decide whether to defer, acknowledge an already published result, or execute as a fresh owner. It is written only around placement changes and deleted after a short retention.
+
 ## Replay and State Reconstruction
 
 When a worker (SDK) receives a work item, Dapr provides the history events. The SDK reconstructs the internal state 
