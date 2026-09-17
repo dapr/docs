@@ -511,7 +511,7 @@ Parameter | Description
 `entities`  | The actor types this app supports.
 `actorIdleTimeout` | Specifies how long to wait before deactivating an idle actor.  An actor is idle if no actor method calls and no reminders have fired on it.
 `actorScanInterval` | A duration which specifies how often to scan for actors to deactivate idle actors.  Actors that have been idle longer than the actorIdleTimeout will be deactivated.
-`drainOngoingCallTimeout` | A duration used when in the process of draining rebalanced actors.  This specifies how long to wait for the current active actor method to finish.  If there is no current actor method call, this is ignored.
+`drainOngoingCallTimeout` | A duration used when in the process of draining rebalanced actors.  This specifies how long to wait for the current active actor method to finish.  If there is no current actor method call, this is ignored.  Default: 2 seconds.
 `drainRebalancedActors` | A bool.  If true, Dapr will wait for `drainOngoingCallTimeout` to allow a current actor call to complete before trying to deactivate an actor.  If false, do not wait.
 `reentrancy` | A configuration object that holds the options for actor reentrancy.
 `enabled` | A flag in the reentrancy configuration that is needed to enable reentrancy.
@@ -533,7 +533,7 @@ Actor settings in configuration for timeouts and intervals use [time.ParseDurati
   "entities":["actorType1", "actorType2"],
   "actorIdleTimeout": "1h",
   "actorScanInterval": "30s",
-  "drainOngoingCallTimeout": "30s",
+  "drainOngoingCallTimeout": "5s",
   "drainRebalancedActors": true,
   "reentrancy": {
     "enabled": true,
@@ -543,7 +543,7 @@ Actor settings in configuration for timeouts and intervals use [time.ParseDurati
       {
           "entities": ["actorType1"],
           "actorIdleTimeout": "1m",
-          "drainOngoingCallTimeout": "10s",
+          "drainOngoingCallTimeout": "5s",
           "reentrancy": {
               "enabled": false
           }
@@ -778,7 +778,7 @@ Messages sent **from the app to daprd**. The first message must be `initial_requ
 |-------|------|----------|-------------|
 | `entities` | `[]string` | Yes | Actor types hosted by this app. |
 | `actor_idle_timeout` | `Duration` | No | Idle timeout before deactivation. Unset = Dapr default (60 min). |
-| `drain_ongoing_call_timeout` | `Duration` | No | How long to wait for in-flight calls during rebalancing. Unset = Dapr default. |
+| `drain_ongoing_call_timeout` | `Duration` | No | How long to wait for in-flight calls during rebalancing. Unset = Dapr default (2 seconds). |
 | `drain_rebalanced_actors` | `bool` | No | Drain in-flight calls before deactivating rebalanced actors. Unset = Dapr default. |
 | `reentrancy` | `ActorReentrancyConfig` | No | Reentrancy configuration for all actor types on this stream. |
 | `entities_config` | `[]ActorEntityConfig` | No | Per-actor-type overrides. Each entry must reference a type listed in `entities`. |
