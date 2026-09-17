@@ -102,7 +102,7 @@ Each workflow actor saves its state using the following keys in the configured a
 | `customStatus` | Contains a user-defined workflow status value. There is exactly one `customStatus` key for each workflow actor instance. |
 | `metadata` | Contains meta information about the workflow as a JSON blob and includes details such as the length of the inbox, the length of the history, and a 64-bit integer representing the workflow generation. The length information is used to determine which keys need to be read or written to when loading or saving workflow state updates. |
 | `parent-notify` | A marker written in the same transaction as a child workflow's terminal state, recording that the parent workflow has not yet been notified of the completion. It is cleared once the parent acknowledges. While it is present, purging the child or reusing its instance ID is refused as "not completed". |
-| `creation-input` | The input the workflow instance was created with, kept separately from the history so it survives `continue as new` and can be verified against the parent that created the instance. |
+| `creation-input` | Written only for child workflows when [history signing]({{% ref "workflow-history-signing.md" %}}) is enabled: the input the parent created the child with, kept separately from the history so it survives `continue as new` and can be verified against the parent when the completion is attested. |
 
 {{% alert title="Warning" color="warning" %}}
 Workflow actor state remains in the state store even after a workflow has completed.
@@ -131,7 +131,7 @@ For example, if a workflow has an ID of `876bf371` and schedules its third activ
 The third component is kept for compatibility with earlier releases, which wrote the workflow generation there; it no longer carries information.
 Task IDs restart from 0 when a workflow uses `continue as new`, so a later generation reuses the same activity actor IDs; the engine tells the executions apart by the task execution ID carried on the scheduling and completion events.
 
-No state is stored by activity actors, and instead all resulting data is sent back to the parent workflow actor.
+Activity actors store no state of their own, and instead all resulting data is sent back to the parent workflow actor. The one exception is the [workflow fast path]({{% ref "workflow-fast-path.md#execution-claim-record" %}}), where an activity actor writes a short-lived `execution-claim` record while actor placement moves a running execution to another host.
 
 The following diagram illustrates the typical lifecycle of an activity actor.
 
@@ -156,7 +156,7 @@ If the application code executes without interruption, the reminder is triggered
 However, if the node or the sidecar hosting the associated workflow or activity crashes, the reminder will reactivate the corresponding actor and the execution will be retried, forever.
 Retries of a failed delivery are paced with a decorrelated jittered exponential backoff between 50 ms and 2 s, so that many instances failing at once do not retry in lockstep.
 
-With the [workflow fast path]({{% ref "workflow-fast-path.md" %}}) preview feature enabled, the per-event reminders are replaced by a single repeating "janitor" reminder per live workflow instance, which fires every 20 seconds, drives any turn or activity that lost its local driver, and deletes itself when the instance completes. Whenever a local drive fails, the actor escalates back to the one-shot reminders described above, so the recovery guarantees are the same on both paths.
+With the [workflow fast path]({{% ref "workflow-fast-path.md" %}}) preview feature enabled, the per-event reminders are replaced by a single repeating "janitor" reminder per live workflow instance, which fires every 20 seconds, drives any turn or activity that lost its local driver, and deletes itself when the instance completes. A wake whose local drive keeps failing is left to the janitor; a failed activity drive escalates back to the one-shot `run-activity` reminder described above. Either way the recovery guarantees are the same on both paths.
 
 An instance whose state was saved but whose start can never be processed (for example because its committed start event was lost) is failed with the error type `DAPR_WORKFLOW_UNSTARTABLE_STATE` instead of remaining `PENDING` forever, and a pending start whose reminder is overdue is re-driven when the instance's status is read.
 
@@ -203,7 +203,7 @@ This number may be larger or smaller depending on retries or concurrency.
 | Raise event | 3 records |
 | Start child workflow | 8 records |
 
-Every instance also carries a fixed set of keys that do not grow with the history: `metadata`, `customStatus`, `parent-notify` and `creation-input`.
+Every instance also carries the `metadata` and `customStatus` keys, which do not grow with the history. Child workflows additionally carry a transient `parent-notify` marker between their terminal commit and the parent's acknowledgement, and, when history signing is enabled, a `creation-input` row.
 
 #### Query Workflow History
 

@@ -33,7 +33,7 @@ The fast path replaces this with three legs, all gated together:
 - **Local activity drive**: the activity body runs on its host as soon as the dispatch arrives, without a `run-activity` reminder, when the dispatching workflow certifies that its recovery backstop is armed. [Learn more.](#leg-2-local-activity-drive)
 - **Completion folding**: an activity completion is held in memory and persisted inside the next turn's single commit. The activity actor is acked only after that commit. [Learn more.](#leg-3-completion-folding)
 
-Durability moves from "one Scheduler job per event" to one repeating *janitor* reminder per live workflow instance, plus automatic escalation back to the durable per-event reminders whenever a local drive fails. At-least-once execution and event ordering are unchanged.
+Durability moves from "one Scheduler job per event" to one repeating *janitor* reminder per live workflow instance. A wake whose local drive fails is recovered by that janitor, and a failed activity drive additionally escalates back to its durable `run-activity` reminder. At-least-once execution and event ordering are unchanged.
 
 ## Prerequisites
 
@@ -262,7 +262,7 @@ On the default path, the `run-activity` reminder is host-agnostic: whichever hos
 - An arrival on the new owner reads the record and takes one of three outcomes: **defer** while the heartbeat is still changing (the arrival returns a recoverable error and retries later), **completed** when the previous owner already published the result (the arrival acks without executing), or **proceed** as a fresh owner when the heartbeat has not changed for two janitor periods (40 seconds).
 - Staleness is judged by observing the heartbeat value unchanged on the reader's own clock. The reader never compares the writer's timestamp against its own time, so clock skew between hosts can never cause a live execution to be reclaimed.
 
-The result is a stronger guarantee than the default path offers: at most one live activity body across hosts during a placement handoff, with at-least-once execution preserved.
+When the record is written, the result is a stronger guarantee than the default path offers: at most one live activity body across hosts during a placement handoff, with at-least-once execution preserved. If the write fails, the sidecar logs a warning and that handoff falls back to ordinary at-least-once behaviour, where two executions can overlap.
 
 {{< mermaid >}}
 sequenceDiagram
@@ -347,7 +347,7 @@ The fast path changes *what* provides durability, not *whether* work is durable.
 | Sender dies and the folding drive is lost | The janitor drives a turn that commits the captive completions | One period | `local_wake_count{status="janitor_fold_recovered"}` |
 | Actor deactivates with held completions | Flush; senders retry against the new owner | Sender backoff | `fold_nacked` |
 
-At-least-once execution and the ordering of events within an instance are unchanged: every wake drains the whole durable inbox, the per-actor turn lock still serializes turns, and folded completions are appended after the inbox events inside the same work item. The execution claim record adds a guarantee the default path did not have: at most one live activity body across hosts during a placement handoff.
+At-least-once execution and the ordering of events within an instance are unchanged: every wake drains the whole durable inbox, the per-actor turn lock still serializes turns, and folded completions are appended after the inbox events inside the same work item. The execution claim record adds a guarantee the default path did not have, whenever the record is written: at most one live activity body across hosts during a placement handoff.
 
 ## Trade-offs
 
@@ -407,7 +407,7 @@ The `status` values on the wake and activity counters are:
 | `janitor_escalation_reaped` | activity | An escalated `run-activity` reminder was deleted because its task resolved |
 | `claim_evicted` | activity | A stale in-flight claim held by a dead execution was evicted so that the arrival re-executes |
 
-The recovery statuses (`janitor_recovered`, `janitor_fold_recovered`, `stale_turn_rejected`, `unstartable_failed`, `reminder_arm_detached*`, `pending_start_redriven`, `janitor_redispatched`, `janitor_redispatch_escalated`, `janitor_escalation_reaped`, `claim_evicted`) are registered at zero when the sidecar starts, so a series that is absent can always be told apart from a recovery path that never fired. In a healthy deployment they stay at zero. The latency histograms use the sidecar's shared `latencyDistributionBuckets`; see [Configure metrics]({{% ref "metrics-overview.md#customizing-workflow-latency-buckets" %}}).
+The recovery statuses (`janitor_recovered`, `janitor_fold_recovered`, `stale_turn_rejected`, `unstartable_failed`, `reminder_arm_detached`, `reminder_arm_detached_failed`, `pending_start_redriven`, `janitor_redispatched`, `janitor_redispatch_escalated`, `janitor_escalation_reaped`, `claim_evicted`) are registered at zero when the sidecar starts, so a series that is absent can always be told apart from a recovery path that never fired. In a healthy deployment they stay at zero. The latency histograms use the sidecar's shared `latencyDistributionBuckets`; see [Configure metrics]({{% ref "metrics-overview.md#customizing-workflow-latency-buckets" %}}).
 
 ### Suggested alerts
 
