@@ -185,6 +185,34 @@ builder.Services.AddDaprActors(options =>
 });
 ```
 
+### Per-type runtime options
+
+Use `options.Actors.RegisterActor<TActor>(...)` when one actor type needs a different runtime profile from the app-wide defaults. Only values set in the per-type delegate override the app-wide options; unset values inherit them.
+
+```csharp
+builder.Services.AddDaprActors(options =>
+{
+    options.ActorIdleTimeout = TimeSpan.FromMinutes(30);
+    options.DrainRebalancedActorsTimeout = TimeSpan.FromSeconds(10);
+
+    options.Actors.RegisterActor<CheckoutSessionActor>(typeOptions =>
+    {
+        typeOptions.IdleTimeout = TimeSpan.FromMinutes(5);
+        typeOptions.DisableStateMigration = true;
+    });
+
+    options.Actors.RegisterActor<InventoryActor>(typeOptions =>
+    {
+        typeOptions.IdleTimeout = TimeSpan.FromHours(2);
+        typeOptions.EnableReentrancy = true;
+        typeOptions.MaxReentrantDepth = 4;
+        typeOptions.DrainRebalancedActorsTimeout = TimeSpan.FromSeconds(5);
+    });
+});
+```
+
+The idle timeout, draining settings, and reentrancy settings are advertised to the Dapr sidecar for the registered actor type. `DisableStateMigration` is applied locally by the SDK when that actor's state is persisted and is not advertised to the sidecar. The complete runnable version is in `examples/Actor.Next/07-PerTypeOptions`.
+
 {{% alert title="There is no lifetime parameter" color="primary" %}}
 `AddDaprActors` does not accept a `ServiceLifetime`. An actor's lifetime is its activation, which the runtime owns: it is keyed by id, spans many turns, and ends on deactivation. That is not a DI lifetime, so it is not configurable. The actor instance is constructed per activation in a dedicated DI scope, cached across turns, and disposed together with its scope on deactivation. Your actor's dependencies keep whatever lifetimes you registered them with.
 {{% /alert %}}
