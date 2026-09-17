@@ -99,6 +99,46 @@ builder.Services.AddDaprConversationClient(); //Registers the `DaprConversationC
 var app = builder.Build();
 ```
 
+Sometimes the developer will need to configure the created client using the various configuration options detailed
+above. This is done through an overload that passes in the `DaprConversationClientBuilder` and exposes methods for configuring
+the necessary options.
+
+```cs
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDaprConversationClient((_, daprConversationClientBuilder) => {
+   //Set the API token
+   daprConversationClientBuilder.UseDaprApiToken("abc123");
+   //Specify a non-standard HTTP endpoint
+   daprConversationClientBuilder.UseHttpEndpoint("http://dapr.my-company.com");
+});
+
+var app = builder.Build();
+```
+
+Finally, it's possible that the developer may need to retrieve information from another service in order to populate
+these configuration values. That value may be provided from a `DaprClient` instance, a vendor-specific SDK or some
+local service, but as long as it's also registered in DI, it can be injected into this configuration operation via the
+last overload:
+
+```cs
+var builder = WebApplication.CreateBuilder(args);
+
+//Register a fictional service that retrieves secrets from somewhere
+builder.Services.AddSingleton<SecretService>();
+
+builder.Services.AddDaprConversationClient((serviceProvider, daprConversationClientBuilder) => {
+    //Retrieve an instance of the `SecretService` from the service provider
+    var secretService = serviceProvider.GetRequiredService<SecretService>();
+    var daprApiToken = secretService.GetSecret("DaprApiToken").Value;
+
+    //Configure the `DaprConversationClientBuilder`
+    daprConversationClientBuilder.UseDaprApiToken(daprApiToken);
+});
+
+var app = builder.Build();
+```
+
 ## Sending a conversation request
 
 Use `ConversationInput` and `ConversationOptions` to send prompts to your conversation component:
@@ -193,44 +233,4 @@ if (result.Usage is not null)
     var promptCachedTokens = result.Usage.PromptTokensDetails?.CachedTokens;
     var reasoningTokens = result.Usage.CompletionTokensDetails?.ReasoningTokens;
 }
-```
-
-Sometimes the developer will need to configure the created client using the various configuration options detailed
-above. This is done through an overload that passes in the `DaprConversationClientBuiler` and exposes methods for configuring
-the necessary options.
-
-```cs
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddDaprConversationClient((_, daprConversationClientBuilder) => {
-   //Set the API token
-   daprConversationClientBuilder.UseDaprApiToken("abc123");
-   //Specify a non-standard HTTP endpoint
-   daprConversationClientBuilder.UseHttpEndpoint("http://dapr.my-company.com");
-});
-
-var app = builder.Build();
-```
-
-Finally, it's possible that the developer may need to retrieve information from another service in order to populate
-these configuration values. That value may be provided from a `DaprClient` instance, a vendor-specific SDK or some
-local service, but as long as it's also registered in DI, it can be injected into this configuration operation via the
-last overload:
-
-```cs
-var builder = WebApplication.CreateBuilder(args);
-
-//Register a fictional service that retrieves secrets from somewhere
-builder.Services.AddSingleton<SecretService>();
-
-builder.Services.AddDaprConversationClient((serviceProvider, daprConversationClientBuilder) => {
-    //Retrieve an instance of the `SecretService` from the service provider
-    var secretService = serviceProvider.GetRequiredService<SecretService>();
-    var daprApiToken = secretService.GetSecret("DaprApiToken").Value;
-
-    //Configure the `DaprConversationClientBuilder`
-    daprConversationClientBuilder.UseDaprApiToken(daprApiToken);
-});
-
-var app = builder.Build();
 ```

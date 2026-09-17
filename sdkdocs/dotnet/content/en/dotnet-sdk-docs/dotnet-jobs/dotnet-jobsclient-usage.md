@@ -95,7 +95,7 @@ var app = builder.Build();
 ```
 
 Sometimes the developer will need to configure the created client using the various configuration options detailed 
-above. This is done through an overload that passes in the `DaprJobsClientBuiler` and exposes methods for configuring 
+above. This is done through an overload that passes in the `DaprJobsClientBuilder` and exposes methods for configuring 
 the necessary options.
 
 ```cs

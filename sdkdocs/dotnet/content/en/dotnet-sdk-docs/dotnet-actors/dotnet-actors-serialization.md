@@ -5,7 +5,6 @@ linkTitle: "Actor serialization"
 weight: 300000
 description: Necessary steps to serialize your types remoted and non-remoted Actors in .NET
 ---
-# Actor Serialization
 
 The Dapr actor package enables you to use Dapr virtual actors within a .NET application with either a weakly- or strongly-typed client. Each utilizes a different serialization approach. This document will review the differences and convey a few key ground rules to understand in either scenario.
 
@@ -152,7 +151,7 @@ there are scenarios where this could be useful. Again, assume that you're taskin
 enums. You're using the `JsonStringEnumConverter<TType>` detailed above so you're saving the name of the enum to value instead of a numeric value, but if you change
 the enum name, that will introduce a breaking change as the name will no longer match what's in state. 
 
-Do note that if you opt into using this approach, you should decorate all your enum members with the `[EnumMeber]` attribute so that the values are consistently applied for each enum value instead
+Do note that if you opt into using this approach, you should decorate all your enum members with the `[EnumMember]` attribute so that the values are consistently applied for each enum value instead
 of haphazardly. Nothing will validate this at build or runtime, but it is considered a best practice operation.
 
 How can you specify the precise value persisted while still changing the name of the enum member in this scenario? Use a custom `JsonConverter` with an extension method that can pull the value
@@ -543,7 +542,7 @@ There are additional types that aren't actually primitives but have similar buil
 - [Uri](https://learn.microsoft.com/dotnet/api/system.uri)
 - [XmlQualifiedName](https://learn.microsoft.com/dotnet/api/system.xml.xmlqualifiedname)
 
-Again, if you want to pass these types around via your actor methods, no additional consideration is necessary as they'll be serialized and deserialized without issue. Further, types that are themselves marked with the (SerializeableAttribute)[https://learn.microsoft.com/dotnet/api/system.serializableattribute] attribute will be serialized.
+Again, if you want to pass these types around via your actor methods, no additional consideration is necessary as they'll be serialized and deserialized without issue. Further, types that are themselves marked with the [SerializableAttribute](https://learn.microsoft.com/dotnet/api/system.serializableattribute) attribute will be serialized.
 
 #### Enumeration Types
 Enumerations, including flag enumerations are serializable if appropriately marked. The enum members you wish to be serialized must be marked with the [EnumMemberAttribute](https://learn.microsoft.com/dotnet/api/system.runtime.serialization.enummemberattribute) attribute in order to be serialized. Passing a custom value into the optional Value argument on this attribute will allow you to specify the value used for the member in the serialized document instead of having the serializer derive it from the name of the member.
@@ -575,7 +574,7 @@ But what if you're working with polymorphic types and one of your members is a b
 
 When you apply the [KnownTypeAttribute](https://learn.microsoft.com/dotnet/api/system.runtime.serialization.knowntypeattribute) attribute to a type, you are informing the data contract serializer about what subtypes it might encounter allowing it to properly handle the serialization and deserialization of these types, even when the actual type at runtime is different from the declared type.
 
-```chsarp
+```csharp
 [DataContract]
 [KnownType(typeof(DerivedClass))]
 public class BaseClass

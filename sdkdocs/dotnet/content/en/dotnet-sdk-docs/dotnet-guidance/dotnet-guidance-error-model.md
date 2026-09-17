@@ -23,7 +23,7 @@ try
 }
 catch (DaprException daprEx)
 {
-    if (daprEx.TryGetExtendedErrorInfo(out DaprExtendedErrorInfo errorInfo)
+    if (daprEx.TryGetExtendedErrorInfo(out DaprExtendedErrorInfo errorInfo))
     {
         Console.WriteLine(errorInfo.Code);
         Console.WriteLine(errorInfo.Message);
@@ -32,11 +32,15 @@ catch (DaprException daprEx)
         {
             Console.WriteLine(detail.ErrorType);
             switch (detail.ErrorType)
+            {
                 case ExtendedErrorType.ErrorInfo:
                     Console.WriteLine(detail.Reason);
                     Console.WriteLine(detail.Domain);
+                    break;
                 default:
                     Console.WriteLine(detail.TypeUrl);
+                    break;
+            }
         }
     }
 }

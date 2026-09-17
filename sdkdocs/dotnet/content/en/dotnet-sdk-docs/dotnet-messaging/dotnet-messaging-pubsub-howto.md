@@ -48,7 +48,7 @@ We'll run a command that starts both the Dapr sidecar and the .NET program at th
 ```sh
 dapr run --app-id pubsubapp --dapr-grpc-port 4001 --dapr-http-port 3500 -- dotnet run
 ```
-> Dapr listens for HTTP requests at `http://localhost:3500` and internal Jobs gRPC requests at `http://localhost:4001`.
+> Dapr listens for HTTP requests at `http://localhost:3500` and internal PubSub gRPC requests at `http://localhost:4001`.
 
 ## Register the Dapr PubSub client with dependency injection
 The Dapr Messaging SDK provides an extension method to simplify the registration of the Dapr PubSub client. Before 
@@ -79,7 +79,7 @@ builder.Services.AddDaprPubSubClient((_, daprPubSubClientBuilder) => {
 var app = builder.Build();
 ```
 
-Still, it's possible that whatever values you wish to inject need to be retrieved from some other source, itself registered as a dependency. There's one more overload you can use to inject an `IServiceProvider` into the configuration action method. In the following example, we register a fictional singleton that can retrieve secrets from somewhere and pass it into the configuration method for `AddDaprJobClient` so
+Still, it's possible that whatever values you wish to inject need to be retrieved from some other source, itself registered as a dependency. There's one more overload you can use to inject an `IServiceProvider` into the configuration action method. In the following example, we register a fictional singleton that can retrieve secrets from somewhere and pass it into the configuration method for `AddDaprPubSubClient` so
 we can retrieve our Dapr API token from somewhere else for registration here:
 
 ```csharp
