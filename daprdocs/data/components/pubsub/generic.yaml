@@ -62,8 +62,8 @@
   features:
     bulkPublish: false
     bulkSubscribe: false
-- component: Solace-AMQP
-  link: setup-solace-amqp
+- component: AMQP 1.0
+  link: setup-amqp
   state: Beta
   version: v1
   since: "1.10"
