@@ -11,7 +11,7 @@ aliases:
 
 <br /><img src="/images/integrations/diagrid/ops-dashboard-apps-graph.png" alt="Dapr Ops Dashboard diagram - App Graph" width="800">
 
-The [Dapr Ops Dashboard](https://docs.diagrid.io/dapr-open-source/dapr-ops-dashboard/) is a free SaaS platform that automates and manages Dapr deployments across your Kubernetes clusters, delivering operational excellence, security and reliability, and insights and collaboration from development through production.
+The [Dapr Ops Dashboard](https://docs.diagrid.io/dapr-open-source/dapr-ops-dashboard/) (previously known as Conductor) is a free SaaS platform that automates and manages Dapr deployments across your Kubernetes clusters, delivering operational excellence, security and reliability, and insights and collaboration from development through production.
 
 **Automated operations**
 
