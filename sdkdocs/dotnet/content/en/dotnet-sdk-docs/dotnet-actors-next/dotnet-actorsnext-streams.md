@@ -38,14 +38,24 @@ public sealed class CartActor(ActorActivationContext context) : Actor, ICartActo
 }
 ```
 
-The only thing you must supply is the routing key, which determines the actor id that gets the event. Everything else, including opening the subscription, deserializing the event, and forwarding the invocation, is generated, so the surface reads as though the actor subscribes directly. The routing key can be a property of the event, a CloudEvents attribute such as `subject`, or a content path.
+The routing key determines the actor id that gets the event. The streaming service opens the subscription, deserializes the event, and forwards the invocation; the application supplies the subscription metadata through the registry. The routing key can be a property of the event, a CloudEvents attribute such as `subject`, or a content path.
 
-Subscriptions are generated from your `[Subscribe]` methods, but the streaming host that opens them is a separate service you opt into. Register it alongside actors at startup:
+`[Subscribe]` documents the actor method's subscription target, but the current implementation does not discover that attribute automatically. The application must add the corresponding `ActorStreamSubscription` to the stream registry. The streaming host that opens the subscriptions is a separate service you opt into:
 
 ```csharp
 builder.Services.AddDaprActors();
-builder.Services.AddDaprActorStreams();   // Necessary to register the appropriate types
+builder.Services.AddDaprActorStreams();
+
+app.Services.GetRequiredService<ActorStreamSubscriptionRegistry>().Add(
+    new ActorStreamSubscription(
+        "orders-pubsub",
+        "inventory-restocked",
+        "CartActor",
+        nameof(ICartActor.OnRestock),
+        nameof(RestockEvent.CartId)));
 ```
+
+The registry entry supplies the pub/sub component, topic, actor type, dispatch method, and routing key. The attribute and registry entry should describe the same subscription; the registry is the configuration that the hosted subscriber uses.
 
 ## Delivery semantics
 
