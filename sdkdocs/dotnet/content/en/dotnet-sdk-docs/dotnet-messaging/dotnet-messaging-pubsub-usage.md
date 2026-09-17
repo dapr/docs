@@ -128,3 +128,37 @@ builder.Services.AddDaprPublishSubscribeClient((serviceProvider, daprPubSubClien
 
 var app = builder.Build();
 ```
+
+## Subscription lifecycle and error handling
+A streaming subscription is long-lived, but the underlying gRPC stream is not guaranteed to live forever. Sidecar
+restarts, network blips, or faults in the background processing tasks can all terminate the stream. The following
+best practices keep a subscription resilient.
+
+### Use a reconnection loop
+Wrap `SubscribeAsync` in a loop that re-establishes the subscription after `IDaprSubscription.Completion` terminates.
+The receiver resets its internal state on every termination, so re-calling `SubscribeAsync` always works — even after
+a fault. Add a short delay before reconnecting to avoid a tight loop if the sidecar is down. Cancel a single
+`CancellationTokenSource` to shut the whole loop down.
+
+### Observe faults through `IDaprSubscription.Completion`
+The `IAsyncDisposable` returned by `SubscribeAsync` also implements `IDaprSubscription`, whose `Completion` task
+completes when background processing finishes. Await it to block until termination, then handle the three ways it can
+finish: `OperationCanceledException` (caller cancelled), `DaprException` (a background task faulted and no
+`ErrorHandler` was configured), and `AggregateException` (an `ErrorHandler` was configured but itself threw).
+
+### Configure an `ErrorHandler`
+Set `DaprSubscriptionOptions.ErrorHandler` to receive background faults (such as the gRPC stream dropping). When
+configured, the handler is invoked once per fault and `Completion` completes normally, so your reconnection loop
+simply continues. If the handler itself throws, both the original fault and the handler failure surface as an
+`AggregateException` on `Completion`. Without an `ErrorHandler`, faults propagate to `Completion` as a
+`DaprException`. Note that the handler runs on a thread-pool thread, so implementations should be thread-safe.
+
+### Catch specific exceptions in the message handler
+Catch specific exception types and return a `TopicResponseAction` that matches the failure: `Drop` unparseable
+messages so Dapr does not redeliver them in a poison-message loop, and `Retry` only transient failures. A bare
+`catch` that always retries will redeliver a message that can never succeed.
+
+### Keep the client shared, the subscription scoped
+Keep a single long-lived `DaprPublishSubscribeClient` shared across your application, but scope each subscription to a
+single loop iteration with `await using` so it is disposed before the next `SubscribeAsync` call. Disposing a
+subscription that has already terminated simply releases its resources — it does not throw.
