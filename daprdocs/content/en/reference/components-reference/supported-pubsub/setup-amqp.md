@@ -33,8 +33,6 @@ spec:
       value: 'default'
     - name: password
       value: 'default'
-    - name: consumerID
-      value: 'channel1'
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -48,14 +46,16 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | url    | Y  | Address of the AMQP broker. Can be `secretKeyRef` to use a secret reference. <br> Use the **`amqp://`** URI scheme for non-TLS communication. <br> Use the **`amqps://`** URI scheme for TLS communication. | `"amqp://host.domain[:port]"`
 | username | Y | The username to connect to the broker. Only required if anonymous is not specified or set to `false` .| `default`
 | password | Y | The password to connect to the broker. Only required if anonymous is not specified or set to `false`. | `default`
-| consumerID        |    N     | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{% ref "component-schema.md#templated-metadata-values" %}})
 | anonymous | N | To connect to the broker without credential validation. Only works if enabled on the broker. A username and password would not be required if this is set to `true`. | `true`
-| caCert | Required for using TLS | Certificate Authority (CA) certificate in PEM format for verifying server TLS certificates. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
-| clientCert  | Required for using TLS | TLS client certificate in PEM format. Must be used with `clientKey`. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
-| clientKey | Required for using TLS | TLS client key in PEM format. Must be used with `clientCert`. Can be `secretKeyRef` to use a secret reference. | `"-----BEGIN RSA PRIVATE KEY-----\n<base64-encoded PKCS8>\n-----END RSA PRIVATE KEY-----"`
+| caCert | N | Certificate Authority (CA) certificate in PEM format for verifying server TLS certificates. Only needed when the broker certificate is not signed by a publicly trusted CA. Requires the `amqps://` scheme. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
+| clientCert  | N | TLS client certificate in PEM format, for mutual TLS. Must be used with `clientKey`, and requires the `amqps://` scheme. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
+| clientKey | N | TLS client key in PEM format, for mutual TLS. Must be used with `clientCert`, and requires the `amqps://` scheme. Can be `secretKeyRef` to use a secret reference. | `"-----BEGIN RSA PRIVATE KEY-----\n<base64-encoded PKCS8>\n-----END RSA PRIVATE KEY-----"`
 | topicAddressPrefix | N | Prefix prepended to the AMQP address of a topic, used for a bare topic name and for topics named `topic:<name>`. Defaults to no prefix, which addresses the topic by name. See [Addressing topics and queues](#addressing-topics-and-queues). | `multicast://`
 | queueAddressPrefix | N | Prefix prepended to the AMQP address of a queue, used for topics named `queue:<name>`. Defaults to no prefix, which addresses the queue by name. See [Addressing topics and queues](#addressing-topics-and-queues). | `anycast://`
-| backOffDuration | N | Delay between attempts to re-open a subscription after the broker connection drops. Defaults to `5s`. The component retries for as long as the subscription exists. | `1s`
+| backOffPolicy | N | Retry policy used between attempts to re-open a subscription after the broker connection drops. Either `constant` or `exponential`. Defaults to `constant`. | `"constant"`
+| backOffDuration | N | Delay between attempts to re-open a subscription, when `backOffPolicy` is `constant`. Defaults to `5s`. The component retries for as long as the subscription exists, so this sets the pace, not a limit. | `1s`
+| backOffInitialInterval | N | First delay between attempts, when `backOffPolicy` is `exponential`. Defaults to `500ms`. | `100ms`
+| backOffMaxInterval | N | Longest delay between attempts, when `backOffPolicy` is `exponential`. Defaults to `60s`. | `30s`
 
 ### Communication using TLS
 
@@ -97,9 +97,7 @@ auth:
 
 ## Addressing topics and queues
 
-By default, messages are published and subscribed over topics. To use a queue instead, prefix the topic with `queue:`.
-
-The component turns a Dapr topic name into an AMQP address. `topicAddressPrefix` and `queueAddressPrefix` control that translation. Both default to no prefix, so the address is the topic name:
+The component turns a Dapr topic name into an AMQP address. `topicAddressPrefix` and `queueAddressPrefix` control that translation, and both default to no prefix. So out of the box the AMQP address is the Dapr topic name, unchanged:
 
 | Dapr topic name | AMQP address, with the default prefixes |
 |-----------------|------------------------------------------|
@@ -107,10 +105,12 @@ The component turns a Dapr topic name into an AMQP address. `topicAddressPrefix`
 | `topic:orders` | `orders` |
 | `queue:orders` | `orders` |
 
-{{% alert title="Selecting a routing type" color="warning" %}}
-With no prefixes configured, `queue:orders` resolves to the same address as `orders`, so the `queue:` prefix does not select a queue. The routing type is whatever the broker resolves for that address.
+{{% alert title="`queue:` does nothing until the prefixes are configured" color="warning" %}}
+A Dapr topic name may carry a `queue:` or `topic:` scheme. The scheme selects which of the two prefixes is applied — it does not select a routing type by itself.
 
-If your broker distinguishes queue and topic semantics by address prefix, set both prefixes to the values the broker uses. See [Brokers that namespace destinations](#brokers-that-namespace-destinations).
+With no prefixes configured, `queue:orders` and `orders` resolve to the same address, so the scheme has no effect and the routing type is whatever the broker resolves for that address.
+
+To make `queue:` select a queue, set both prefixes to the values your broker uses. See [Brokers that namespace destinations](#brokers-that-namespace-destinations).
 {{% /alert %}}
 
 A topic name that already begins with one of the configured prefixes is used as the AMQP address unchanged.
@@ -162,6 +162,16 @@ Solace addresses topics as `topic://<name>` and queues as `queue://<name>`:
 {{% alert title="Interoperating with non-Dapr clients" color="primary" %}}
 A prefix namespaces the address. A Dapr publisher using `topic://orders` and a non-Dapr client subscribing to `orders` are on two different addresses and never exchange messages. Make sure every client on a destination agrees on the address.
 {{% /alert %}}
+
+## When a subscriber returns an error
+
+A message whose handler returns an error is returned to the broker as `modified`
+with `delivery-failed`. The broker redelivers it and counts the attempt, so the
+broker's own `redelivery-delay` and `max-delivery-attempts` settings apply and a
+message that always fails eventually reaches the dead-letter address.
+
+Redelivery pacing and the attempt limit are broker settings, not component
+settings. On ActiveMQ Artemis they live in `address-settings`.
 
 ## Migrating from `pubsub.solace.amqp`
 
