@@ -34,7 +34,7 @@ spec:
     - name: enableEntityManagement
       value: "false"
     - name: enableInOrderMessageDelivery
-      value: "false"
+      value: "true"
     # The following four properties are needed only if enableEntityManagement is set to true
     - name: resourceGroupName
       value: "test-rg"
@@ -68,7 +68,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `eventHubNamespace` | Y* | The Event Hub Namespace name.<br>* Mutually exclusive with `connectionString` field.<br>* Required when using [Microsoft Entra ID Authentication]({{% ref "authenticating-azure.md" %}})                                                                                                                                                | `"namespace"` 
 | `consumerID`       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{% ref "component-schema.md#templated-metadata-values" %}})
 | `enableEntityManagement` | N | Boolean value to allow management of the EventHub namespace and storage account. Default: `false`                                                                                                                                                                                                                                       | `"true", "false"`
-| `enableInOrderMessageDelivery` | N | Input/Output                                                                                                                                                                                                                                                                                                                            | Boolean value to allow messages to be delivered in the order in which they were posted. This assumes `partitionKey` is set when publishing or posting to ensure ordering across partitions. Default: `false` | `"true"`, `"false"`
+| `enableInOrderMessageDelivery` | N | Boolean value that enables sequential message delivery within each partition. This assumes `partitionKey` is set when publishing to preserve ordering for related messages. Default: `true`.<br><br>When `true`, a batch must finish successfully before its partition checkpoint advances. If no checkpoint exists, consumption starts from the earliest retained event. When `false`, the component retains the legacy concurrent processing behavior, checkpoint advancement does not wait for message processing to finish, and consumption starts from the latest event if no checkpoint exists. | `"true"`, `"false"`
 | `storageAccountName`  | Y  | Storage account name to use for the checkpoint store.                                                                                                                                                                                                                                                                                   |`"myeventhubstorage"`
 | `storageAccountKey`   | Y*  | Storage account key for the checkpoint store account.<br>* When using Microsoft Entra ID, it's possible to omit this if the service principal has access to the storage account too.                                                                                                                                                    | `"112233445566778899"`
 | `storageConnectionString`   | Y*  | Connection string for the checkpoint store, alternative to specifying `storageAccountKey`                                                                                                                                                                                                                                               | `"DefaultEndpointsProtocol=https;AccountName=myeventhubstorage;AccountKey=<account-key>"`
@@ -143,7 +143,7 @@ When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to
 
 ## Configuring checkpoint frequency
 
-When subscribing to a topic, you can configure the checkpointing frequency in a partition by [setting the metadata in the HTTP or gRPC subscribe request ]({{% ref "pubsub_api.md#http-request-2" %}}). This metadata enables checkpointing after the configured number of events within a partition event sequence. Disable checkpointing by setting the frequency to `0`.  
+When subscribing to a topic, you can configure the checkpointing frequency in a partition by [setting the metadata in the HTTP or gRPC subscribe request]({{% ref "pubsub_api.md#http-request-2" %}}). This metadata enables checkpointing after the configured number of events within a partition event sequence. The default frequency is `1`. Disable checkpointing by setting the frequency to `0`. With ordered delivery enabled, this leaves no checkpoint, so each restart consumes from the earliest retained event.
 
 [Learn more about checkpointing](https://learn.microsoft.com/azure/event-hubs/event-hubs-features#checkpointing).
 
@@ -171,7 +171,7 @@ scopes:
 ```
 
 {{% alert title="Note" color="primary" %}}
-When subscribing to a topic using `BulkSubscribe`, you configure the checkpointing to occur after the specified number of _batches,_ instead of events, where _batch_ means the collection of events received in a single request.
+When subscribing to a topic using `BulkSubscribe`, you configure checkpointing to occur after the specified number of _batches_ instead of events, where _batch_ means the collection of events received in a single request. With in-order delivery enabled, a failed bulk batch does not advance the partition checkpoint. The full batch is replayed, which provides at-least-once delivery and may deliver some entries more than once.
 {{% /alert %}}
 
 ## Create an Azure Event Hub
