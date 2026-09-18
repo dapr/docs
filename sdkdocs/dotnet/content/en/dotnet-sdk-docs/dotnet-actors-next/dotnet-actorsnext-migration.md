@@ -431,7 +431,7 @@ How this changed and what to watch for:
 builder.Services.AddActors(options =>
 {
     options.ActorIdleTimeout = TimeSpan.FromMinutes(30);
-    options.DrainOngoingCallTimeout = TimeSpan.FromSeconds(30);
+    options.DrainOngoingCallTimeout = TimeSpan.FromSeconds(5);
     options.DrainRebalancedActors = true;
     options.ReentrancyConfig = new ActorReentrancyConfig
     {
@@ -446,7 +446,7 @@ builder.Services.AddActors(options =>
 builder.Services.AddDaprActors(options =>
 {
     options.ActorIdleTimeout = TimeSpan.FromMinutes(30);
-    options.DrainRebalancedActorsTimeout = TimeSpan.FromSeconds(30);
+    options.DrainRebalancedActorsTimeout = TimeSpan.FromSeconds(5);
     options.DrainRebalancedActors = true;
     options.EnableReentrancy = true;      // was ReentrancyConfig.Enabled
     options.MaxReentrantDepth = 32;       // was ReentrancyConfig.MaxStackDepth
