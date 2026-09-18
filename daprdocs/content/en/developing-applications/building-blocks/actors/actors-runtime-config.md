@@ -29,6 +29,8 @@ Starting in Dapr v1.18, daprd clamps the effective drain timeout:
 
 The clamp is applied at both registration sites: the global `drainOngoingCallTimeout` and any per-actor-type `drainOngoingCallTimeout` set under `entitiesConfig`. The configuration values your app reports to daprd via the actor config endpoint are unchanged; only the effective in-process value used during drain is clamped. If you see the warning in daprd logs, lower the configured value so that it is comfortably below the placement dissemination timeout, or raise the placement dissemination timeout on the control plane.
 
+> **Note:** The daprd-side placement dissemination timeout discussed here (default 30 seconds) is distinct from the control plane's dissemination round timeouts: `dapr_placement.disseminateTimeout` on the Placement service, and `--placement-disseminate-timeout` on the Scheduler when it [serves placement]({{% ref "placement#serving-placement-from-the-scheduler-service" %}}). Both default to `8s`.
+
 ## Examples
 
 {{< tabpane text=true >}}

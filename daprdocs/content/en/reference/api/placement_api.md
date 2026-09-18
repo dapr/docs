@@ -6,6 +6,10 @@ description: "Detailed documentation on the Placement API"
 weight: 1100
 ---
 
+{{% alert title="Deprecation notice" color="warning" %}}
+The standalone Placement service is planned for deprecation in Dapr v1.21, when the [Scheduler service]({{% ref scheduler %}}) serves actor placement by default. Until then, scheduler placement is enabled by the opt-in flag `global.scheduler.placement.enabled=true` (`false` by default). This API is not served by the Scheduler.
+{{% /alert %}}
+
 Dapr has an HTTP API `/placement/state` for Placement service that exposes placement table information. The API is exposed on the sidecar on the same port as the healthz. This is an unauthenticated endpoint, and is disabled by default. 
 
 To enable the placement metadata in self-hosted mode you can either set`DAPR_PLACEMENT_METADATA_ENABLED` environment variable or `metadata-enabled` command line args on the Placement service to `true` to. See [how to run the Placement service in self-hosted mode]({{% ref "self-hosted-no-docker.md#enable-actors" %}}).
@@ -15,6 +19,8 @@ When running placement in [multi-tenant mode]({{% ref namespaced-actors.md %}}),
 {{% /alert %}}
 
 If you are using Helm for deployment of the Placement service on Kubernetes then to enable the placement metadata, set `dapr_placement.metadataEnabled` to `true`.
+
+> **Note:** This API is only available from the standalone Placement service. When actor placement is [served by the Scheduler service]({{% ref "placement#serving-placement-from-the-scheduler-service" %}}), the `/placement/state` endpoint is not available.
 
 ## Usecase
 

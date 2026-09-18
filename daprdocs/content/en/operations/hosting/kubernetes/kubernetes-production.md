@@ -122,6 +122,8 @@ To scale scheduler and placement to three instances independently of the `global
     --wait
    ```
 
+> **Note:** When actor placement is served by the Scheduler service (`global.scheduler.placement.enabled=true`), the Placement service is not deployed and `dapr_placement.ha` has no effect. The Scheduler replica count then determines placement availability.
+
 ### Spreading Placement and Scheduler replicas
 
 With HA enabled, the default Helm values add pod anti-affinity so Scheduler and Placement service replicas are attempted to be scheduled across different failure domains if cluster resourcing allows. This is configured using the following Helm chart [options](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md)
@@ -276,7 +278,7 @@ Update pods that are running Dapr to pick up the new version of the Dapr runtime
 
 Enabling HA mode for an existing Dapr deployment requires two steps:
 
-1. Delete the existing placement stateful set.
+1. Delete the existing placement stateful set. Skip this step if the placement StatefulSet is not deployed, for example when actor placement is served by the Scheduler service (`global.scheduler.placement.enabled=true`).
 
    ```bash
    kubectl delete statefulset.apps/dapr-placement-server -n dapr-system
@@ -323,6 +325,8 @@ When running in production, it's recommended to configure the Placement service 
    1. `dapr_placement.keepAliveTime` sets the interval at which the Placement service sends [keep alive](https://grpc.io/docs/guides/keepalive/) pings to Dapr sidecars on the gRPC stream to check if the connection is still alive. Lower values will lead to shorter actor rebalancing time in case of pod loss/restart, but higher network traffic during normal operation. Accepts values between `1s` and `10s`. Default is `2s`.
    2. `dapr_placement.keepAliveTimeout` sets the timeout period for Dapr sidecars to respond to the Placement service's [keep alive](https://grpc.io/docs/guides/keepalive/) pings before the Placement service closes the connection. Lower values will lead to shorter actor rebalancing time in case of pod loss/restart, but higher network traffic during normal operation. Accepts values between `1s` and `10s`. Default is `3s`.
    3. `dapr_placement.disseminateTimeout` sets the timeout period for dissemination to be delayed after actor membership change (usually related to pod restarts) to avoid excessive dissemination during multiple pod restarts. Higher values will reduce the frequency of dissemination, but delay the table dissemination. Accepts values between `1s` and `3s`. Default is `2s`.
+
+When actor placement is served by the Scheduler service (`global.scheduler.placement.enabled=true`), the `dapr_placement.*` values above do not apply because the Placement service is not deployed. Scheduler-served placement is tuned with the Scheduler flags `--placement-disseminate-timeout` (the time a dissemination round waits for every sidecar to acknowledge before evicting the slow ones, default `8s`, a different knob than `dapr_placement.disseminateTimeout`) and `--placement-disseminate-coalesce-window` (the window in which membership changes are folded into a single dissemination round, default `0` for immediate dissemination). [Learn more about serving placement from the Scheduler service.]({{% ref "placement#serving-placement-from-the-scheduler-service" %}})
 
 
 
