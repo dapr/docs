@@ -150,6 +150,14 @@
   features:
     input: false
     output: true
+- component: SQL Server
+  link: sqlserver
+  state: Alpha
+  version: v1
+  since: "1.19"
+  features:
+    input: false
+    output: true
 - component: Twilio SMS
   link: twilio
   state: Alpha
