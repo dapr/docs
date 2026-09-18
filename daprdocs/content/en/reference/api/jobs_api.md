@@ -28,7 +28,7 @@ At least one of `schedule` or `dueTime` must be provided, but they can also be p
 Parameter | Description
 --------- | -----------
 `name` | Name of the job you're scheduling
-`data` | A JSON serialized value or object.
+`data` | An optional JSON serialized value or object sent to the app when the job is triggered.
 `schedule` | An optional schedule at which the job is to be run. Details of the format are below.
 `dueTime` | An optional time at which the job should be active, or the "one shot" time, if other scheduling type fields are not provided. Accepts a "point in time" string in the format of RFC3339, Go duration string (calculated from creation time), or non-repeating ISO8601.
 `repeats` | An optional number of times in which the job should be triggered. If not set, the job runs indefinitely or until expiration.
@@ -59,6 +59,37 @@ Entry                  | Description                                | Equivalent
 @weekly                | Run once a week, midnight on Sunday        | 0 0 0 * * 0
 @daily (or @midnight)  | Run once a day, midnight                   | 0 0 0 * * *
 @hourly                | Run once an hour, beginning of hour        | 0 0 * * * *
+
+##### Timezones
+
+By default, a `schedule` is evaluated in the local timezone of the Scheduler
+service. To pin a job to a specific timezone instead, prefix the schedule with
+`CRON_TZ=<timezone>` (or the equivalent `TZ=<timezone>`), where `<timezone>` is an
+[IANA Time Zone database](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+name such as `Europe/Rome` or `Asia/Tokyo`.
+
+```json
+{
+  "schedule": "CRON_TZ=Europe/Rome 0 0 9 * * *"
+}
+```
+
+The timezone is applied to the wall clock, so jobs keep their local time across
+daylight saving transitions. The schedule above runs at 09:00 in Rome all year
+round: the underlying UTC instant shifts from 07:00Z to 08:00Z when Rome leaves
+daylight saving time, without the job needing to be rescheduled.
+
+The prefix also works with `@` period strings that map to a fixed time of day,
+such as `CRON_TZ=Europe/Rome @daily`.
+
+{{% alert title="Note" color="primary" %}}
+A timezone prefix cannot be combined with an `@every <duration>` schedule. These
+fire at a fixed interval rather than at a wall-clock time, so there is no wall
+clock for a timezone to apply to, and the job is rejected when it is scheduled.
+{{% /alert %}}
+
+An unrecognized timezone name also causes the job to be rejected when it is
+scheduled.
 
 #### failure_policy
 
