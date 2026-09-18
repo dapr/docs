@@ -38,6 +38,8 @@ spec:
       value: "false"
     - name: enableInOrderMessageDelivery
       value: "false"
+    - name: maxConcurrentHandlers
+      value: "100"
     # The following four properties are needed only if enableEntityManagement is set to true
     - name: resourceGroupName
       value: "test-rg"
@@ -76,7 +78,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `connectionString`    | Y*  | Input/Output | Connection string for the Event Hub or the Event Hub namespace.<br>* Mutually exclusive with `eventHubNamespace` field.<br>* Required when not using [Microsoft Entra ID Authentication]({{% ref "authenticating-azure.md" %}}) | `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}"` or `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key}"`
 | `eventHubNamespace` | Y* | Input/Output | The Event Hub Namespace name.<br>* Mutually exclusive with `connectionString` field.<br>* Required when using [Microsoft Entra ID Authentication]({{% ref "authenticating-azure.md" %}})                                        | `"namespace"`
 | `enableEntityManagement` | N | Input/Output | Boolean value to allow management of the EventHub namespace and storage account. Default: `false`                                                                                                                               | `"true"`, `"false"`
-| `enableInOrderMessageDelivery` | N | Input/Output | Boolean value to allow messages to be delivered in the order in which they were posted. This assumes `partitionKey` is set when publishing or posting to ensure ordering across partitions. Default: `false`                    | `"true"`, `"false"`
+| `enableInOrderMessageDelivery` | N | Input | Boolean value that controls whether messages are processed in order within each partition. This assumes `partitionKey` is set when publishing to preserve ordering for related messages. Default: `false` | `"true"`, `"false"`
+| `maxConcurrentHandlers` | N | Input | Maximum number of concurrent handlers per partition when `enableInOrderMessageDelivery` is `false`. This limit also bounds events that have been received but are not yet eligible for checkpointing. The component pauses receives for the partition while the limit is reached. Must be greater than `0`. Default: `100`. | `"100"`
 | `resourceGroupName` | N | Input/Output | Name of the resource group the Event Hub namespace is part of. Required when entity management is enabled                                                                                                                       | `"test-rg"`
 | `subscriptionID` | N | Input/Output | Azure subscription ID value. Required when entity management is enabled                                                                                                                                                         | `"azure subscription id"`
 | `partitionCount` | N | Input/Output | Number of partitions for the new Event Hub namespace. Used only when entity management is enabled. Default: `"1"`                                                                                                               | `"2"`
@@ -88,6 +91,12 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `storageContainerName` | Y | Input | Storage container name for the storage account name.                                                                                                                                                                            | `"myeventhubstoragecontainer"`
 | `getAllMessageProperties` | N | Input | When set to `true`, retrieves all user/app/custom properties from the Event Hub message and forwards them in the returned event metadata. Default setting is `"false"`.                                                         | `"true"`, `"false"`
 | `direction` | N | Input/Output | The direction of the binding.                                                                                                                                                                                                   | `"input"`, `"output"`, `"input, output"`
+
+### Input binding delivery behavior
+
+When `enableInOrderMessageDelivery` is `true`, the component processes one event at a time in partition order. When `false`, handlers run concurrently. Both modes retry handler failures indefinitely using the configured backoff timing until processing succeeds or the subscription is canceled.
+
+Checkpoints advance only through contiguous successfully handled events. In concurrent mode, a later success cannot checkpoint past an unresolved earlier event. An existing stored checkpoint remains the restart position. If no checkpoint exists, both ordered and concurrent modes start from the earliest retained event.
 
 ### Microsoft Entra ID authentication
 
