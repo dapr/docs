@@ -339,6 +339,117 @@ The above command returns the reminder:
 }
 ```
 
+### List actor reminders
+
+Lists all the reminders registered for an actor.
+
+#### HTTP Request
+
+```
+GET http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/reminders
+```
+
+#### HTTP Response Codes
+
+Code | Description
+---- | -----------
+200  | Request successful
+403  | Actor type not hosted by this app
+500  | Request failed
+
+#### URL Parameters
+
+Parameter | Description
+--------- | -----------
+`daprPort` | The Dapr port.
+`actorType` | The actor type.
+`actorId` | The actor ID.
+
+> Note, all URL parameters are case-sensitive.
+
+#### Response body
+
+A JSON object with a `reminders` array. Each entry has the following fields; optional fields are omitted when they are not set on the reminder.
+
+| Field | Description |
+|-------|-------------|
+| `name` | The name of the reminder. |
+| `actorType` | The actor type. |
+| `actorID` | The actor ID. |
+| `dueTime` | The `dueTime` the reminder was registered with. |
+| `period` | The period between invocations, in the form reported by the Scheduler, for example `@every 20s`. |
+| `ttl` | The time at which the reminder expires, as an RFC3339 timestamp. |
+| `data` | The `data` the reminder was registered with, returned as it was provided. |
+
+When the actor has no reminders, `reminders` is an empty array.
+
+#### Examples
+
+```shell
+curl http://localhost:3500/v1.0/actors/stormtrooper/50/reminders \
+  -H "Content-Type: application/json"
+```
+
+The above command returns the reminders registered for the actor:
+
+```json
+{
+  "reminders": [
+    {
+      "name": "checkRebels",
+      "actorType": "stormtrooper",
+      "actorID": "50",
+      "dueTime": "1m",
+      "period": "@every 20s",
+      "data": "someData"
+    },
+    {
+      "name": "patrol",
+      "actorType": "stormtrooper",
+      "actorID": "50",
+      "dueTime": "2h",
+      "ttl": "2026-12-31T23:59:59Z",
+      "data": {
+        "sector": 7
+      }
+    }
+  ]
+}
+```
+
+#### gRPC
+
+The gRPC equivalent is `dapr.proto.runtime.v1.Dapr/ListActorReminders`.
+
+```proto
+rpc ListActorReminders(ListActorRemindersRequest) returns (ListActorRemindersResponse) {}
+
+message ListActorRemindersRequest {
+  string actor_type = 1;
+  optional string actor_id = 2;
+}
+
+message ListActorRemindersResponse {
+  repeated NamedActorReminder reminders = 1;
+}
+
+message NamedActorReminder {
+  string name = 1;
+  ActorReminder reminder = 2;
+}
+
+message ActorReminder {
+  string actor_type = 1;
+  string actor_id = 2;
+  optional string due_time = 4;
+  optional string period = 5;
+  google.protobuf.Any data = 6;
+  optional string ttl = 7;
+}
+```
+
+Unlike the HTTP endpoint, `actor_id` is optional in the gRPC request: omit it to list the reminders of every actor of the given type. Over gRPC, `data` is a `google.protobuf.Any` wrapping a `google.protobuf.BytesValue` that contains the JSON-encoded payload the reminder was registered with.
+
 ### Delete actor reminder
 
 Deletes a reminder for an actor.
@@ -436,6 +547,198 @@ curl http://localhost:3500/v1.0/actors/stormtrooper/50/timers/checkRebels \
       "callback": "myEventHandler"
     }'
 ```
+
+### Get actor timer
+
+Gets a timer registered for an actor.
+
+{{% alert title="Note" color="primary" %}}
+Timers are not persisted: they live in memory on the sidecar that hosts the actor. Get and list requests must be sent to that sidecar. A sidecar that hosts the actor type but does not currently own the actor rejects the request with a `403` and the `ERR_ACTOR_TIMER_NOT_OWNED` error code; a sidecar that does not host the actor type returns `403` with `ERR_ACTOR_TIMER_NON_HOSTED`. Timers whose `ttl` had already elapsed at registration are never stored and are not returned.
+{{% /alert %}}
+
+#### HTTP Request
+
+```
+GET http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/timers/<name>
+```
+
+#### HTTP Response Codes
+
+Code | Description
+---- | -----------
+200  | Request successful
+403  | Actor type not hosted by this app, or actor not owned by this sidecar
+404  | Timer not found
+500  | Request failed
+
+#### URL Parameters
+
+Parameter | Description
+--------- | -----------
+`daprPort` | The Dapr port.
+`actorType` | The actor type.
+`actorId` | The actor ID.
+`name` | The name of the timer to get.
+
+> Note, all URL parameters are case-sensitive.
+
+#### Response body
+
+A JSON object with the following fields; optional fields are omitted when they are not set on the timer.
+
+| Field | Description |
+|-------|-------------|
+| `actorType` | The actor type. |
+| `actorID` | The actor ID. |
+| `dueTime` | The `dueTime` the timer was registered with. |
+| `period` | The period between invocations, in the same form used for reminders, for example `@every 20s`. |
+| `ttl` | The time at which the timer expires, as an RFC3339 timestamp. |
+| `callback` | The `callback` the timer was registered with. |
+| `data` | The `data` the timer was registered with, returned as it was provided. |
+
+#### Examples
+
+```shell
+curl http://localhost:3500/v1.0/actors/stormtrooper/50/timers/checkRebels \
+  -H "Content-Type: application/json"
+```
+
+The above command returns the timer:
+
+```json
+{
+  "actorType": "stormtrooper",
+  "actorID": "50",
+  "dueTime": "1m",
+  "period": "@every 20s",
+  "callback": "myEventHandler",
+  "data": "someData"
+}
+```
+
+#### gRPC
+
+The gRPC equivalent is `dapr.proto.runtime.v1.Dapr/GetActorTimer`.
+
+```proto
+rpc GetActorTimer(GetActorTimerRequest) returns (GetActorTimerResponse) {}
+
+message GetActorTimerRequest {
+  string actor_type = 1;
+  string actor_id = 2;
+  string name = 3;
+}
+
+message GetActorTimerResponse {
+  string actor_type = 1;
+  string actor_id = 2;
+  optional string due_time = 3;
+  optional string period = 4;
+  optional string ttl = 5;
+  optional string callback = 6;
+  google.protobuf.Any data = 7;
+}
+```
+
+A request for a timer that does not exist fails with `NOT_FOUND`. A request sent to a sidecar that does not host the actor type, or does not own the actor, fails with `PERMISSION_DENIED`. Over gRPC, `data` is a `google.protobuf.Any` wrapping a `google.protobuf.BytesValue` that contains the JSON-encoded payload the timer was registered with.
+
+### List actor timers
+
+Lists all the timers registered for an actor. The same ownership rules as [Get actor timer]({{% ref "#get-actor-timer" %}}) apply: the request must target the sidecar that currently hosts the actor.
+
+#### HTTP Request
+
+```
+GET http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/timers
+```
+
+#### HTTP Response Codes
+
+Code | Description
+---- | -----------
+200  | Request successful
+403  | Actor type not hosted by this app, or actor not owned by this sidecar
+500  | Request failed
+
+#### URL Parameters
+
+Parameter | Description
+--------- | -----------
+`daprPort` | The Dapr port.
+`actorType` | The actor type.
+`actorId` | The actor ID.
+
+> Note, all URL parameters are case-sensitive.
+
+#### Response body
+
+A JSON object with a `timers` array. Each entry has the same fields as the [Get actor timer]({{% ref "#get-actor-timer" %}}) response, plus a `name` field with the name of the timer. When the actor has no timers, `timers` is an empty array.
+
+#### Examples
+
+```shell
+curl http://localhost:3500/v1.0/actors/stormtrooper/50/timers \
+  -H "Content-Type: application/json"
+```
+
+The above command returns the timers registered for the actor:
+
+```json
+{
+  "timers": [
+    {
+      "name": "checkRebels",
+      "actorType": "stormtrooper",
+      "actorID": "50",
+      "dueTime": "1m",
+      "period": "@every 20s",
+      "callback": "myEventHandler",
+      "data": "someData"
+    },
+    {
+      "name": "recharge",
+      "actorType": "stormtrooper",
+      "actorID": "50",
+      "dueTime": "30s",
+      "ttl": "2026-12-31T23:59:59Z"
+    }
+  ]
+}
+```
+
+#### gRPC
+
+The gRPC equivalent is `dapr.proto.runtime.v1.Dapr/ListActorTimers`.
+
+```proto
+rpc ListActorTimers(ListActorTimersRequest) returns (ListActorTimersResponse) {}
+
+message ListActorTimersRequest {
+  string actor_type = 1;
+  string actor_id = 2;
+}
+
+message ListActorTimersResponse {
+  repeated NamedActorTimer timers = 1;
+}
+
+message NamedActorTimer {
+  string name = 1;
+  ActorTimer timer = 2;
+}
+
+message ActorTimer {
+  string actor_type = 1;
+  string actor_id = 2;
+  optional string due_time = 3;
+  optional string period = 4;
+  optional string ttl = 5;
+  optional string callback = 6;
+  google.protobuf.Any data = 7;
+}
+```
+
+A request sent to a sidecar that does not host the actor type, or does not own the actor, fails with `PERMISSION_DENIED`.
 
 ### Delete actor timer
 
