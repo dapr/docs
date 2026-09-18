@@ -15,7 +15,7 @@ The [Dapr Ops Dashboard](https://docs.diagrid.io/dapr-open-source/dapr-ops-dashb
 
 **Automated operations**
 
-One-click installation, upgrades, certificate rotation, and configuration synchronization keep Dapr up to date across all your clusters, with scheduled and canary updates for zero downtime.
+One-click installation, upgrades, mTLS certificate rotation, and configuration synchronization keep Dapr up to date across all your clusters, with scheduled and canary updates for zero downtime.
 
 **Advisor: discover and apply best practices**
 
