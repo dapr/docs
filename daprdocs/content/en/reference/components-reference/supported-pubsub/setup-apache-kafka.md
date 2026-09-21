@@ -679,6 +679,8 @@ With consumer transactions, each topic-partition is produced to with the stable 
 
 The prefix defaults to `clientID`, then `"dapr"`, and can be set explicitly with `transactionalIdPrefix`. It must resolve to the **same value on every replica** of the consuming app — do not use a per-replica templated `clientID` (such as `"{podName}"`) as the effective prefix, or replicas cannot fence each other.
 
+The four parts are joined with `-` and are not escaped, so the id must also be **unique across components** that share a prefix and a Kafka cluster. Consumer group `a-b` on topic `c` and consumer group `a` on topic `b-c` both produce `"<prefix>-a-b-c-<partition>"`. Two components that land on the same id fence each other's producers on every transaction and neither makes progress, with no error naming the cause. If two of your components could collide, give one of them its own `transactionalIdPrefix`.
+
 {{% alert title="Bindings" color="info" %}}
 Consumer transactions are only available on the Kafka **pubsub** component. The [Kafka binding]({{% ref kafka.md %}}) supports `producerTransactionsEnabled` for transactional output, but rejects `consumerTransactionsEnabled` at init: exactly-once consume-transform-produce requires the transaction token to be echoed through the same component instance, which the bindings model (separate input and output binding instances) cannot provide.
 {{% /alert %}}
