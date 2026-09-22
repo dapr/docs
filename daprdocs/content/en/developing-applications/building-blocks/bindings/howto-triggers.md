@@ -111,7 +111,7 @@ spec:
 
 Configure your application to receive incoming events. If you're using HTTP, you need to:
 - Listen on a `POST` endpoint with the name of the binding, as specified in `metadata.name` in the `binding.yaml` file. 
-- Verify your application allows Dapr to make an `OPTIONS` request for this endpoint. This request times out after `3s` by default; if your application is slow to respond on startup, increase the timeout with the `--app-binding-options-timeout` daprd flag or the `dapr.io/app-binding-options-timeout` annotation.
+- Verify your application allows Dapr to make an `OPTIONS` request for this endpoint. This request times out after `3s` by default. If your application is slow to respond on startup, increase the timeout with the `--app-binding-options-timeout` daprd flag or the `dapr.io/app-binding-options-timeout` Kubernetes annotation.
 
 Below are code examples that leverage Dapr SDKs to demonstrate an input binding.
 
