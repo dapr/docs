@@ -386,7 +386,7 @@ DAPR_UNSAFE_SKIP_CONTAINER_UID_GID_CHECK="true"
 
 When a pod is deleted, Kubernetes sends `SIGTERM` to the application container and the `daprd` sidecar at the same time. An idle application often exits within milliseconds — before the sidecar shuts down its actor runtime. The sidecar then fails to deactivate its hosted actors (connection refused; `OnDeactivateAsync` never runs), and until it exits and the placement table is re-disseminated, other sidecars keep routing calls to actors on the dying pod. Every ordinary rolling restart produces a multi-second window of failed actor invocations.
 
-The remedy is to keep the application serving while the sidecar drains and deactivates its actors. Use a `preStop` hook on the *application* container, hold the sidecar's shutdown open with `block-shutdown-duration`, and size the termination grace period to cover both. A working starting point — tune the durations to your workload:
+The remedy is to keep the application serving while the sidecar drains and deactivates its actors: a `preStop` hook on the *application* container, and a termination grace period sized to cover it. A working starting point — tune the durations to your workload:
 
 ```yaml
 apiVersion: apps/v1
@@ -394,19 +394,17 @@ kind: Deployment
 metadata:
   name: myactorapp
 spec:
+  selector:
+    matchLabels:
+      app: myactorapp
   template:
     metadata:
+      labels:
+        app: myactorapp
       annotations:
         dapr.io/enabled: "true"
         dapr.io/app-id: "myactorapp"
         dapr.io/app-port: "8080"
-        # Hold the sidecar's shutdown open so it can drain and deactivate actors.
-        dapr.io/block-shutdown-duration: "20s"
-        # Let the sidecar end the block early if the app really is gone.
-        dapr.io/enable-app-health-check: "true"
-        dapr.io/app-health-check-path: "/healthz/app"
-        dapr.io/app-health-probe-interval: "3"
-        dapr.io/app-health-threshold: "2"
     spec:
       # Must exceed the app's preStop sleep plus the app's own graceful shutdown.
       terminationGracePeriodSeconds: 60
@@ -415,28 +413,32 @@ spec:
           image: myregistry/myactorapp:latest
           lifecycle:
             preStop:
-              exec:
-                # Keep the app serving while the sidecar drains and deactivates actors.
-                command: ["/bin/sh", "-c", "sleep 30"]
+              # Keep the app serving while the sidecar drains and deactivates actors.
+              sleep:
+                seconds: 30
 ```
 
-In the application, set `drainRebalancedActors: true` and a `drainOngoingCallTimeout` at or above the p99 duration of your actor method handlers ([Actor runtime configuration parameters]({{% ref actors-runtime-config.md %}})).
+On Kubernetes older than 1.30, use `exec: command: ["/bin/sh", "-c", "sleep 30"]` instead of the native `sleep` handler — this requires a shell and `sleep` in the application image, so it silently does nothing on distroless or `scratch` images.
+
+In the application, set `drainRebalancedActors: true` and size `drainOngoingCallTimeout` to the p99 duration of your actor method handlers; if that exceeds a few seconds, raise the Placement service's `disseminateTimeout` to match, otherwise Placement resets streams that outlive it ([Drain timeout clamping]({{% ref "actors-runtime-config.md#drain-timeout-clamping" %}})).
 
 ### Sizing the durations
 
 ```
-preStop sleep                 >= block-shutdown-duration + drainOngoingCallTimeout + margin
+preStop sleep                 >= drainOngoingCallTimeout + 5s (actor deactivation) + margin
 terminationGracePeriodSeconds >  preStop sleep + app graceful shutdown
 ```
 
-If `terminationGracePeriodSeconds` expires first, Kubernetes sends `SIGKILL` and you are back to the original problem. Keep `drainOngoingCallTimeout` below the Placement service's `disseminateTimeout` ([Drain timeout clamping]({{% ref "actors-runtime-config.md#drain-timeout-clamping" %}})). The app health check lets the sidecar end the block early when the application genuinely dies, instead of always waiting out the full `block-shutdown-duration` ([Sidecar health]({{% ref "sidecar-health.md#delay-graceful-shutdown" %}})).
+Actor deactivation runs *after* the drain, under a fixed 5-second budget, so the `preStop` sleep must cover both. If `terminationGracePeriodSeconds` expires first, Kubernetes sends `SIGKILL` and you are back to the original problem.
+
+If you enable the [app health check]({{% ref "app-health.md" %}}) on an actor host, be aware it affects steady state, not just shutdown: an app reported unhealthy has all its actor types deregistered and rebalanced across the cluster, so the probe endpoint must be cheap, `dapr.io/app-health-probe-timeout` sized for it, and the threshold left at its default.
 
 {{% alert title="Important" color="warning" %}}
-Point the app health check, and any Kubernetes liveness probe on the application container, at an endpoint served by the application alone. A probe path that depends on the sidecar is circular: during shutdown the sidecar stops serving, the probe fails, and the container you are trying to keep alive gets killed.
+Point any probe of the application container — Kubernetes liveness or the Dapr app health check — at an endpoint served by the application alone. A probe path that depends on the sidecar is circular: during shutdown the sidecar stops serving, the probe fails, and the container you are trying to keep alive gets killed.
 {{% /alert %}}
 
-{{% alert title="Native sidecars" color="primary" %}}
-This guidance applies to the default sidecar injection. With [native sidecars]({{% ref "sidecar.md#native-sidecars-kubernetes-128" %}}), Kubernetes terminates the application container first by design: the `preStop` overlap above does not apply, and actor deactivation still happens after the application has exited.
+{{% alert title="Native sidecars" color="warning" %}}
+Clean actor deactivation is not currently achievable with [native sidecars]({{% ref "sidecar.md#native-sidecars-kubernetes-128" %}}): Kubernetes terminates the application container first and only then signals the sidecar, so deactivation always runs against an exited application and no `preStop` arrangement changes that ordering. Keep actor hosts on the default sidecar injection.
 {{% /alert %}}
 
 ## Best Practices
