@@ -69,7 +69,7 @@ kubectl rollout restart deploy/dapr-operator -n <DAPR_NAMESPACE>
 kubectl rollout restart statefulsets/dapr-placement-server -n <DAPR_NAMESPACE>
 ```
 
-> **Note:** When actor placement is served by the Scheduler service (`global.scheduler.placement.enabled=true`), the `dapr-placement-server` StatefulSet is not deployed: skip its restart command above.
+> **Note:** When actor placement is served by the Scheduler service (`global.scheduler.placement.enabled=true`), the `dapr-placement-server` StatefulSet is not deployed: skip its restart command above and run `kubectl rollout restart statefulsets/dapr-scheduler-server -n <DAPR_NAMESPACE>` instead.
 
 *Note: the control plane Sidecar Injector service does not need to be redeployed*
 
@@ -250,7 +250,9 @@ kubectl rollout restart -n <DAPR_NAMESPACE> deployment/dapr-sentry
 kubectl rollout restart deploy/dapr-operator -n <DAPR_NAMESPACE>
 kubectl rollout restart statefulsets/dapr-placement-server -n <DAPR_NAMESPACE>
 kubectl rollout restart deploy/dapr-sidecar-injector -n <DAPR_NAMESPACE>
-kubectl rollout restart statefulsets/dapr-scheduler-server -n <DAPR_NAMESPACE>
+if kubectl get statefulset.apps/dapr-scheduler-server -n <DAPR_NAMESPACE> >/dev/null 2>&1; then
+  kubectl rollout restart statefulsets/dapr-scheduler-server -n <DAPR_NAMESPACE>
+fi
 ```
 
 4. Restart your Dapr applications to pick up the latest trust bundle.
@@ -313,7 +315,9 @@ Once Sentry has been completely restarted run:
 ```bash
 kubectl rollout restart deploy/dapr-operator -n <DAPR_NAMESPACE>
 kubectl rollout restart statefulsets/dapr-placement-server -n <DAPR_NAMESPACE>
-kubectl rollout restart statefulsets/dapr-scheduler-server -n <DAPR_NAMESPACE>
+if kubectl get statefulset.apps/dapr-scheduler-server -n <DAPR_NAMESPACE> >/dev/null 2>&1; then
+  kubectl rollout restart statefulsets/dapr-scheduler-server -n <DAPR_NAMESPACE>
+fi
 ```
 
 Next, you must restart all Dapr-enabled pods.
