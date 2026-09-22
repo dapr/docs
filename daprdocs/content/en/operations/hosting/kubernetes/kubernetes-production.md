@@ -384,7 +384,7 @@ DAPR_UNSAFE_SKIP_CONTAINER_UID_GID_CHECK="true"
 
 ## Graceful shutdown for actor hosts
 
-When a pod is deleted, Kubernetes sends `SIGTERM` to the application container and the `daprd` sidecar at the same time. An idle application often exits within milliseconds — before the sidecar shuts down its actor runtime. The sidecar then fails to deactivate its hosted actors (connection refused; `OnDeactivateAsync` never runs), and until it exits and the placement table is re-disseminated, other sidecars keep routing calls to actors on the dying pod. Every ordinary rolling restart produces a multi-second window of failed actor invocations.
+When a pod is deleted, Kubernetes terminates its containers concurrently, with no ordering guarantee — without a delaying hook, the application container and the `daprd` sidecar receive their stop signals at about the same time. An idle application often exits within milliseconds — before the sidecar shuts down its actor runtime. The sidecar then fails to deactivate its hosted actors (connection refused; `OnDeactivateAsync` never runs), and until it exits and the placement table is re-disseminated, other sidecars keep routing calls to actors on the dying pod. An ordinary rolling restart typically produces a multi-second window of failed actor invocations.
 
 The remedy is to keep the application serving while the sidecar drains and deactivates its actors: a `preStop` hook on the *application* container, and a termination grace period sized to cover it. A working starting point — tune the durations to your workload:
 
@@ -418,9 +418,16 @@ spec:
                 seconds: 30
 ```
 
-On Kubernetes older than 1.30, use `exec: command: ["/bin/sh", "-c", "sleep 30"]` instead of the native `sleep` handler — this requires a shell and `sleep` in the application image, so it silently does nothing on distroless or `scratch` images.
+On Kubernetes older than 1.30, use the `exec` form instead of the native `sleep` handler — it requires a shell and `sleep` in the application image, so it silently does nothing on distroless or `scratch` images:
 
-In the application, set `drainRebalancedActors: true` and size `drainOngoingCallTimeout` to the p99 duration of your actor method handlers; if that exceeds a few seconds, raise the Placement service's `disseminateTimeout` to match, otherwise Placement resets streams that outlive it ([Drain timeout clamping]({{% ref "actors-runtime-config.md#drain-timeout-clamping" %}})).
+```yaml
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "sleep 30"]
+```
+
+In the application, set `drainRebalancedActors: true` and size `drainOngoingCallTimeout` to the p99 duration of your actor method handlers; if that exceeds a few seconds, raise the Placement service's `disseminateTimeout` above it with headroom for acknowledging the placement update, otherwise Placement resets streams that outlive it ([Drain timeout clamping]({{% ref "actors-runtime-config.md#drain-timeout-clamping" %}})).
 
 ### Sizing the durations
 
@@ -434,7 +441,7 @@ Actor deactivation runs *after* the drain, under a fixed 5-second budget, so the
 If you enable the [app health check]({{% ref "app-health.md" %}}) on an actor host, be aware it affects steady state, not just shutdown: an app reported unhealthy has all its actor types deregistered and rebalanced across the cluster, so the probe endpoint must be cheap, `dapr.io/app-health-probe-timeout` sized for it, and the threshold left at its default.
 
 {{% alert title="Important" color="warning" %}}
-Point any probe of the application container — Kubernetes liveness or the Dapr app health check — at an endpoint served by the application alone. A probe path that depends on the sidecar is circular: during shutdown the sidecar stops serving, the probe fails, and the container you are trying to keep alive gets killed.
+Point any probe of the application container — Kubernetes liveness or the Dapr app health check — at an endpoint served by the application alone. A probe path that depends on the sidecar is circular: a Kubernetes liveness probe restarts the container you are trying to keep alive whenever the sidecar is unavailable, and a Dapr app health check marks the app unhealthy and rebalances its actors.
 {{% /alert %}}
 
 {{% alert title="Native sidecars" color="warning" %}}
