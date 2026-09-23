@@ -415,7 +415,7 @@ spec:
             preStop:
               # Keep the app serving while the sidecar drains and deactivates actors.
               sleep:
-                seconds: 30
+                seconds: 15
 ```
 
 On Kubernetes older than 1.30, use the `exec` form instead of the native `sleep` handler — it requires a shell and `sleep` in the application image, so it silently does nothing on distroless or `scratch` images:
@@ -424,19 +424,19 @@ On Kubernetes older than 1.30, use the `exec` form instead of the native `sleep`
           lifecycle:
             preStop:
               exec:
-                command: ["/bin/sh", "-c", "sleep 30"]
+                command: ["/bin/sh", "-c", "sleep 15"]
 ```
 
-In the application, set `drainRebalancedActors: true` and size `drainOngoingCallTimeout` to the p99 duration of your actor method handlers; if that exceeds a few seconds, raise the Placement service's `disseminateTimeout` above it with headroom for acknowledging the placement update, otherwise Placement resets streams that outlive it ([Drain timeout clamping]({{% ref "actors-runtime-config.md#drain-timeout-clamping" %}})).
+In the application, set `drainRebalancedActors: true` and size `drainOngoingCallTimeout` to the p99 duration of your actor method handlers; if that exceeds a few seconds, raise the Placement service's `disseminateTimeout` above it with headroom for acknowledging the placement update, otherwise Placement resets streams that outlive it; above 30s you must also raise `dapr.io/actors-disseminate-timeout`, or daprd clamps the drain to 80% of it ([Drain timeout clamping]({{% ref "actors-runtime-config.md#drain-timeout-clamping" %}})).
 
 ### Sizing the durations
 
 ```
-preStop sleep                 >= drainOngoingCallTimeout + 5s (actor deactivation) + margin
+preStop sleep                 >= [block-shutdown-duration +] drainOngoingCallTimeout + 5s (actor deactivation) + margin
 terminationGracePeriodSeconds >  preStop sleep + app graceful shutdown
 ```
 
-Actor deactivation runs *after* the drain, under a fixed 5-second budget, so the `preStop` sleep must cover both. If `terminationGracePeriodSeconds` expires first, Kubernetes sends `SIGKILL` and you are back to the original problem.
+Include the `block-shutdown-duration` term only if you configure it — needed when the application calls Dapr APIs during its own shutdown. Actor deactivation runs *after* the drain, under a single fixed 5-second budget shared by every actor the host owns — it is not configurable, so hosts with very large actor populations or slow deactivation handlers may not finish within it. If `terminationGracePeriodSeconds` expires first, Kubernetes sends `SIGKILL` and you are back to the original problem.
 
 If you enable the [app health check]({{% ref "app-health.md" %}}) on an actor host, be aware it affects steady state, not just shutdown: an app reported unhealthy has all its actor types deregistered and rebalanced across the cluster, so the probe endpoint must be cheap, `dapr.io/app-health-probe-timeout` sized for it, and the threshold left at its default.
 
