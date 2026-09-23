@@ -107,6 +107,12 @@ spec:
 | `heartbeatInterval` | N | Input | The interval between heartbeats to the consumer coordinator. At most, the value should be set to a 1/3 of the `sessionTimeout` value. Defaults to `"3s"`. | `"5s"` |
 | `sessionTimeout` | N | Input | The timeout used to detect client failures when using Kafka’s group management facility. If the broker fails to receive any heartbeats from the consumer before the expiration of this session timeout, then the consumer is removed and initiates a rebalance. Defaults to `"10s"`. | `"20s"` |
 | `escapeHeaders` | N | Input | Enables URL escaping of the message header values received by the consumer. Allows receiving content with special characters that are usually not allowed in HTTP headers. Default is `false`. | `true` |
+| `dialTimeout` | N | Input/Output | The maximum duration to wait for the initial TCP connection to a broker. Bounds how long `Init()` can block on an unreachable cluster. Default is `"30s"`. | `"10s"` |
+| `readTimeout` | N | Input/Output | The maximum duration to wait for a response from a broker. Default is `"30s"`. | `"10s"` |
+| `writeTimeout` | N | Input/Output | The maximum duration to wait for a request to be transmitted to a broker. Default is `"30s"`. | `"10s"` |
+| `metadataTimeout` | N | Input/Output | The per-request timeout for metadata refresh operations. When `"0"` (default), Sarama computes the effective timeout from the Net timeouts and retry count. | `"5s"` |
+| `producerRequiredAcks` | N | Output | The number of broker acknowledgements required before a produce request is considered successful. Accepted values: `"all"` (all in-sync replicas, highest durability), `"local"` (partition leader only), `"none"` (no acknowledgement). Default is `"all"`. | `"local"` |
+| `producerRetryMax` | N | Output | The maximum number of times to retry sending a message before giving up. Default is `5`. | `3` |
 
 #### Note
 The metadata `version` must be set to `1.0.0` when using Azure EventHubs with Kafka.
