@@ -144,6 +144,8 @@ else
 {{% tab "Python" %}}
 
 ```python
+import json
+
 from dapr.clients import BulkPublishEntry, DaprClient
 
 with DaprClient() as client:
@@ -153,7 +155,7 @@ with DaprClient() as client:
         data=[
             'first text message',
             BulkPublishEntry(
-                event='{"message": "second JSON message"}',
+                event=json.dumps({'message': 'second JSON message'}),
                 content_type='application/json',
                 metadata={'partitionKey': 'tenant-a'},
             ),
@@ -166,7 +168,11 @@ with DaprClient() as client:
         print(f'failed entry {entry.entry_id}: {entry.error}')
 ```
 
-Each event can be a `str`, `bytes`, or a `BulkPublishEntry`. Use `BulkPublishEntry` to set metadata, a content type, or an entry ID on one event. `publish_metadata` applies to every event, and entry metadata overrides it. `BulkPublishEntry` requires Python SDK 1.19 or later.
+Each event can be a `str`, `bytes`, or a `BulkPublishEntry`. Use `BulkPublishEntry` to set metadata, a content type, or an entry ID on one event. `publish_metadata` applies to every event, and entry metadata overrides it. The content type follows the entry's own `content_type`, then `data_content_type`, then a default based on the event type: `text/plain` for `str` and `application/octet-stream` for `bytes`.
+
+{{% alert title="Note" color="primary" %}}
+`BulkPublishEntry` requires Python SDK v1.19.0 or later.
+{{% /alert %}}
 
 {{% /tab %}}
 
