@@ -144,30 +144,29 @@ else
 {{% tab "Python" %}}
 
 ```python
-import requests
-import json
+from dapr.clients import BulkPublishEntry, DaprClient
 
-base_url = "http://localhost:3500/v1.0/publish/bulk/{}/{}"
-pubsub_name = "my-pubsub-name"
-topic_name = "topic-a"
-payload = [
-  {
-    "entryId": "ae6bf7c6-4af2-11ed-b878-0242ac120002",
-    "event": "first text message",
-    "contentType": "text/plain"
-  },
-  {
-    "entryId": "b1f40bd6-4af2-11ed-b878-0242ac120002",
-    "event": {
-      "message": "second JSON message"
-    },
-    "contentType": "application/json"
-  }
-]
+with DaprClient() as client:
+    response = client.publish_events(
+        pubsub_name='my-pubsub-name',
+        topic_name='topic-a',
+        data=[
+            'first text message',
+            BulkPublishEntry(
+                event='{"message": "second JSON message"}',
+                content_type='application/json',
+                metadata={'partitionKey': 'tenant-a'},
+            ),
+        ],
+        data_content_type='text/plain',
+        publish_metadata={'ttlInSeconds': '60'},
+    )
 
-response = requests.post(base_url.format(pubsub_name, topic_name), json=payload)
-print(response.status_code)
+    for entry in response.failed_entries:
+        print(f'failed entry {entry.entry_id}: {entry.error}')
 ```
+
+Each event can be a `str`, `bytes`, or a `BulkPublishEntry`. Use `BulkPublishEntry` to set metadata, a content type, or an entry ID on one event. `publish_metadata` applies to every event, and entry metadata overrides it. `BulkPublishEntry` requires Python SDK 1.19 or later.
 
 {{% /tab %}}
 
