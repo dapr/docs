@@ -86,6 +86,18 @@ try (DaprClient client = new DaprClientBuilder().build()) {
 
 `DaprBodyPublishers.json(...)` serializes the payload using the SDK's default Jackson serializer, matching the JSON encoding the deprecated `invokeMethod` APIs applied internally. For raw payloads use any `HttpRequest.BodyPublisher` (for example `HttpRequest.BodyPublishers.ofString(...)`).
 
+`newRequestBuilder(relativePath)` resolves the path as-is without encoding it for you. If a path segment may contain characters that are illegal in a URI (for example spaces), encode it first with `io.dapr.utils.UriUtils.encodePath(...)` method. Without this encoding, passing such characters directly throws an `IllegalArgumentException`. The `encodePath` method percent-encodes each forward-slash delimited segment (`/`), preserving the separators and any leading slashes, and appends the query string unchanged. This behavior mirrors the per-segment encoding that the deprecated `invokeMethod` APIs applied automatically:
+
+```java
+import io.dapr.utils.UriUtils;
+
+// "Name With Spaces" -> "Name%20With%20Spaces"
+HttpRequest request = invoker.newRequestBuilder(
+        UriUtils.encodePath("orders/Name With Spaces"))
+    .GET()
+    .build();
+```
+
 The table below summarizes which concerns `DaprInvokeHttpClient` handles for you (when configured with `DaprClientBuilder`) and which belong to the user:
 
 | Concern | Handled by the SDK | User's responsibility |
@@ -94,6 +106,7 @@ The table below summarizes which concerns `DaprInvokeHttpClient` handles for you
 | `dapr-api-token` header | ✓ — attached only when configured via the `dapr.api.token` system property or `DAPR_API_TOKEN` environment variable | |
 | HTTP read timeout | ✓ — defaults to **60 seconds**; override via the `dapr.http.client.readTimeoutSeconds` system property or `DAPR_HTTP_CLIENT_READ_TIMEOUT_SECONDS` environment variable | |
 | `User-Agent: dapr-sdk-java/<version>` header | ✓ — value tracks the SDK version automatically | |
+| URL path encoding | | Encode path segments that may contain characters illegal in a URI (e.g. spaces) with `UriUtils.encodePath(...)`. The `newRequestBuilder` method resolves the path unchanged and throws `IllegalArgumentException` on illegal characters. |
 | `Content-Type` header | | Set via `.header("Content-Type", "...")` |
 | Request body serialization | | Use `DaprBodyPublishers.json(...)` for default JSON, or any `HttpRequest.BodyPublisher` |
 | Response body deserialization | | Pick an `HttpResponse.BodyHandler` (`ofString`, `ofByteArray`, custom) |
