@@ -142,10 +142,10 @@ spec:
 | producerRequiredAcks | N | The number of broker acknowledgements required before a produce request is considered successful. Accepted values: `"all"` (all in-sync replicas, highest durability), `"local"` (partition leader only), `"none"` (no acknowledgement). Default is `"all"`. | `"local"` |
 | producerRetryMax | N | The maximum number of times to retry sending a message before giving up. Default is `5`. | `3` |
 | producerTransactionsEnabled | N | When set to `"true"`, every publish (single or bulk) is wrapped in a [Kafka transaction](#kafka-transactions-and-exactly-once-processing) on an idempotent producer: an aborted publish is never visible to consumers reading with `read_committed`, and bulk publishes become atomic (all entries commit or none do). Requires `producerRequiredAcks: "all"`, `producerRetryMax` >= 1 and Kafka 0.11 or later. Transactions serialize publishes and add broker round trips, lowering publish throughput. Default is `"false"` | `"true"`, `"false"` |
-| consumerTransactionsEnabled | N | When set to `"true"`, every delivery is processed inside a Kafka transaction ([exactly-once consume-transform-produce](#exactly-once-consume-transform-produce)): publishes made by the handler that carry the delivery's transaction token join the transaction, and the consumer offset commits atomically with them on handler success. Forces `consumerIsolationLevel: "read_committed"`. Requires a `consumerGroup`, `producerRequiredAcks: "all"`, `producerRetryMax` >= 1 and Kafka 2.5 or later (set `version` accordingly). Default is `"false"` | `"true"`, `"false"` |
+| consumerTransactionsEnabled | N | When set to `"true"`, every delivery is processed inside a Kafka transaction ([exactly-once consume-transform-produce](#exactly-once-consume-transform-produce)): publishes made by the handler that carry the delivery's transaction token join the transaction, and the consumer offset commits atomically with them on handler success. Forces `consumerIsolationLevel: "read_committed"`. Requires a consumer group (`consumerGroup`, or the `consumerID` Dapr sets for you), `producerRequiredAcks: "all"`, `producerRetryMax` >= 1 and Kafka 2.5 or later (set `version` accordingly). Default is `"false"` | `"true"`, `"false"` |
 | transactionalIdPrefix | N | Prefix for the `transactional.id` values this component registers with the broker when transactions are enabled. For the publish producer it defaults to `clientID`, then `consumerGroup`, then `"dapr"`; for consumer transactions it defaults to `clientID`, then `"dapr"`, and must resolve to the same value on every replica — see [scaling and fencing](#scaling-zombie-fencing-and-the-transactionalidprefix). | `"my-app"` |
 | consumerIsolationLevel | N | Isolation level for consumers. `"read_uncommitted"` (default) delivers all records; `"read_committed"` hides records belonging to open or aborted Kafka transactions and requires Kafka 0.11 or later. When `consumerTransactionsEnabled` is `"true"` the level must be `"read_committed"`: leaving this field unset selects it automatically, while an explicit `"read_uncommitted"` fails validation. | `"read_committed"` |
-| transactionTimeout | N | Transaction timeout requested from the broker when transactions are enabled, as a Go duration. With `consumerTransactionsEnabled` the transaction stays open for the whole handler invocation, so this must exceed the slowest expected handler. Must not exceed the broker's `transaction.max.timeout.ms` (15 minutes by default): the broker rejects larger values at producer initialization, which fails every publish and delivery. Default is `"60s"` | `"90s"` |
+| transactionTimeout | N | Transaction timeout requested from the broker when transactions are enabled, as a Go duration. With `consumerTransactionsEnabled` the transaction stays open for the whole handler invocation, so this must exceed the slowest expected handler. Must not exceed the broker's `transaction.max.timeout.ms` (15 minutes by default): the broker rejects larger values when the producer initializes. With `producerTransactionsEnabled` that producer is built during component initialization, so the component fails to start; with only `consumerTransactionsEnabled` the per-partition producers are built on first use, so every delivery fails while publishes that carry no transaction token keep working. Default is `"60s"` | `"90s"` |
 
 The `secretKeyRef` above is referencing  a [kubernetes secrets store]({{% ref kubernetes-secret-store.md %}}) to access the tls information. Visit [here]({{% ref setup-secret-store.md %}}) to learn more about how to configure a secret store component.
 
@@ -603,7 +603,7 @@ spec:
       value: "read_committed"
 ```
 
-With `consumerIsolationLevel: "read_committed"`, subscriptions on this component only receive records from committed transactions; records belonging to open or aborted transactions are filtered out by the broker. Use this on any consumer downstream of a transactional producer.
+With `consumerIsolationLevel: "read_committed"`, subscriptions on this component only receive records from committed transactions; records belonging to open transactions are withheld by the broker, and records from aborted ones are discarded by the client before they reach your handler. Use this on any consumer downstream of a transactional producer.
 
 ### Exactly-once consume-transform-produce
 
@@ -640,7 +640,7 @@ How it works:
    - gRPC: pass a `__txnToken` key in the publish request metadata.
    - Bulk publish: pass the token in the request-level metadata (per-entry metadata is not supported for the token).
 1. When the handler succeeds, the component commits the transaction: the published records and the consumer offset commit atomically.
-1. When the handler fails, the component aborts the transaction: any records published during the attempt are never visible to `read_committed` consumers, and the message is redelivered while `consumeRetryEnabled` is `"true"` (the default). Redelivery is governed by this component's `backOff*` metadata — unbounded by default; set `backOffMaxRetries` to bound it. Dapr resiliency policies bound the individual handler call, not the redelivery loop.
+1. When the handler fails, the component aborts the transaction: the records the handler published into it — those carrying the transaction token — are never visible to `read_committed` consumers, and the message is redelivered while `consumeRetryEnabled` is `"true"` (the default). Redelivery is governed by this component's `backOff*` metadata — unbounded by default; set `backOffMaxRetries` to bound it. Dapr resiliency policies bound the individual handler call, not the redelivery loop.
 
 For example, an HTTP subscriber echoing the token:
 
@@ -671,7 +671,7 @@ The exactly-once guarantee covers Kafka records and consumer offsets: the output
 
 #### Transaction timeout
 
-With consumer transactions, a transaction stays open for the whole handler invocation, so `transactionTimeout` (default `60s`) must exceed your slowest expected handler; when the timeout elapses the broker aborts the transaction and the delivery is retried. The value must not exceed the broker's `transaction.max.timeout.ms` (15 minutes by default): the broker rejects larger values at producer initialization, which fails every publish and delivery. For handlers slower than the broker maximum, raise `transaction.max.timeout.ms` on the broker.
+With consumer transactions, a transaction stays open for the whole handler invocation, so `transactionTimeout` (default `60s`) must exceed your slowest expected handler; when the timeout elapses the broker aborts the transaction and the delivery is retried. The value must not exceed the broker's `transaction.max.timeout.ms` (15 minutes by default): the broker rejects larger values when the producer initializes, which fails every delivery (and, if `producerTransactionsEnabled` is also set, prevents the component from starting at all). For handlers slower than the broker maximum, raise `transaction.max.timeout.ms` on the broker.
 
 #### Scaling, zombie fencing, and the transactionalIdPrefix
 
@@ -684,6 +684,7 @@ The group and topic are digested rather than written into the id because `-` is 
 To map a `transactional.id` you see at the broker back to a consumer group and topic, recompute the digest for the candidates:
 
 ```bash
+# sha256sum is coreutils; on macOS use: shasum -a 256
 printf '%s\0%s' "<consumerGroup>" "<topic>" | sha256sum | cut -c1-16
 ```
 
