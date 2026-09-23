@@ -61,7 +61,8 @@ If you wish to use MySQL as an actor store, append the following to the yaml.
 | `timeoutInSeconds`   | N        | Timeout for all database operations. Defaults to `20` | `30` |
 | `pemPath`            | N        | Full path to the PEM file to use for [enforced SSL Connection](#enforced-ssl-connection) required if pemContents is not provided. Cannot be used in K8s environment | `"/path/to/file.pem"`, `"C:\path\to\file.pem"` |
 | `pemContents`        | N        | Contents of PEM file to use for [enforced SSL Connection](#enforced-ssl-connection) required if pemPath is not provided. Can be used in K8s environment | `"pem value"` |
-| `cleanupIntervalInSeconds` | N | Interval, in seconds, to clean up rows with an expired TTL. Default: `3600` (that is 1 hour). Setting this to values <=0 disables the periodic cleanup. | `1800`, `-1`
+| `metadataTableName`  | N        | Name of the table Dapr uses to store internal metadata, including the timestamp of the last TTL cleanup. Will be created if it does not exist. Defaults to `"dapr_metadata"` | `"custom_metadata"` |
+| `cleanupInterval`    | N        | Interval, as a Go duration string, to clean up rows with an expired TTL. Defaults to `"1h"`. Setting this to a value <=0 disables the periodic cleanup. | `"20m"`, `"-1"`
 | `actorStateStore`    | N        | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 
 ## Setup MySQL
