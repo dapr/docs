@@ -134,7 +134,7 @@ def get_weather(city: str) -> str:
 
 
 executor = ClaudeAgentExecutor(
-    ClaudeAgentExecutorConfig(model="claude-sonnet-4-5", cwd="/app/claude")
+    ClaudeAgentExecutorConfig(model="claude-sonnet-4-5")
 )
 
 agent = DurableAgent(
@@ -194,7 +194,7 @@ All settings are in the frozen dataclass `ClaudeAgentExecutorConfig`. Each field
 | `before_tool_call` | `()` | Dapr Agents `before_tool_call` hooks, applied to every tool call (see [Human approval](#human-approval-of-tool-calls)) |
 | `hooks` | `{}` | Raw SDK hooks, such as `{"PreToolUse": [HookMatcher(...)]}`, added alongside the executor's own hooks |
 | `session_store` | `None` | An SDK `SessionStore` that keeps a copy of each session transcript, such as `DaprSessionStore` (see [Durable sessions](#durable-sessions)) |
-| `cwd` | Process working directory | Working directory of the CLI. The session store key is derived from it |
+| `cwd` | Per-agent temp directory inside a `DurableAgent`, else the process working directory | Working directory of the CLI |
 | `env` | `{}` | Extra environment variables for the CLI, such as credentials |
 | `include_partial_messages` | `True` | Emit `text_delta` events for streamed text |
 | `setting_sources` | `()` | Claude settings files to load (`"user"`, `"project"`, `"local"`). The default loads none, so settings on the host do not change agent runs |
@@ -246,13 +246,12 @@ from dapr_agents.storage.daprstores.stateservice import StateStoreService
 
 session_store = DaprSessionStore(
     StateStoreService(store_name="agentstatestore"),
-    config=DaprSessionStoreConfig(ttl_in_seconds=7 * 24 * 3600),
+    config=DaprSessionStoreConfig(ttl_in_seconds=7 * 24 * 3600, project_key="assistant"),
 )
 
 executor = ClaudeAgentExecutor(
     ClaudeAgentExecutorConfig(
         model="claude-sonnet-4-5",
-        cwd="/app/claude",
         session_store=session_store,
     )
 )
@@ -264,21 +263,22 @@ How `DaprSessionStore` stores a session:
 
 - Each session has one small manifest document and a list of chunk documents. A chunk holds up to `max_chunk_bytes` (256 KiB by default). Keep this below the value size limit of your state store. While the last chunk is less than half full, the next append rewrites it together with the new entries, so the number of chunks grows with the size of the transcript, not with the number of appends.
 - Appends are committed with ETag (first-write) concurrency, so readers never see half of an append. If a commit reports an error but actually reached the store (for example, the reply was lost), the store notices and keeps the append. Entries sent twice are skipped, based on their `uuid`.
-- Every append rewrites the manifest. It holds up to `dedupe_window` entry uuids (about 40 bytes each, so about 80 KB at the default) plus one id per chunk. Lower `dedupe_window` if manifest writes are too large for your state store.
-- Transcripts are loaded in the order they were written.
-- The store needs a state store that supports ETags. `ttl_in_seconds` also needs TTL support.
+- Every append rewrites the manifest. It holds up to `dedupe_window` entry uuids (about 40 bytes each, so about 10 KB at the default) plus one id per chunk.
+- Transcripts are loaded in the order they were written. A read that races an append retries instead of failing.
+- The store needs a state store with ETag support where a first-write save without an ETag fails if the key already exists. This was verified with Redis (`state.redis`) and PostgreSQL (`state.postgresql` v2); check other stores before relying on them. `ttl_in_seconds` also needs TTL support.
 - `continue_conversation` (resume the most recent session without naming it) is not supported, because the store keeps no per-project index.
 
 | `DaprSessionStoreConfig` field | Default | Description |
 |---|---|---|
 | `key_prefix` | `"claude-session:"` | Prefix for every key the store writes |
 | `max_chunk_bytes` | `262144` | Largest serialized size of one chunk document |
-| `dedupe_window` | `2048` | How many recent entry uuids are remembered per session to skip repeats |
+| `dedupe_window` | `256` | How many recent entry uuids are remembered per session to skip repeats |
 | `max_commit_attempts` | `10` | Attempts to commit the manifest when writers conflict |
 | `ttl_in_seconds` | `None` | Sliding TTL: a session expires this many seconds after its last append. Chunks get twice this TTL and are rewritten when they are older than it, so they never expire before the manifest that lists them |
+| `project_key` | `None` | Scope for every key, replacing the SDK's project key (derived from the CLI `cwd`). `DurableAgent` sets it to the agent name, so a session is found no matter which working directory a host uses |
 
-{{% alert title="Keep cwd the same on every host" color="primary" %}}
-The session store key includes a project key derived from `cwd`. Set `cwd` to a fixed path, such as `/app/claude`, so every pod that may resume a session uses the same key. If `cwd` differs, the resume does not find the transcript.
+{{% alert title="Sessions and cwd" color="primary" %}}
+The store `DurableAgent` attaches is scoped by agent name, so `cwd` doesn't affect which session is found. If you pass your own `session_store` without a fixed `project_key`, the key is derived from `cwd`, and every host that may resume a session must then use the same `cwd`.
 {{% /alert %}}
 
 #### Session ids
@@ -302,11 +302,12 @@ When the store already has the session, the executor resumes it. Otherwise it st
 |---|---|
 | `Proceed()` or `None` | Dapr Agents tools run. Tools from `mcp_servers` and built-in Claude Code tools still go through the CLI's own permission rules, so they run only if they are in `allowed_tools` or allowed by `permission_mode` |
 | `Mutate(payload=...)` | The call runs with the new arguments |
-| `Deny(reason=...)` or `Skip(...)` | The call is blocked and Claude is told why |
+| `Deny(reason=...)` | The call is blocked and Claude is told why |
+| `Skip(result=...)` | For Dapr Agents tools, the tool doesn't run and `result` is returned to Claude as the tool result, as for LLM-driven agents. Other tools can only be blocked, so Claude is told the call was skipped |
 | `RequireApproval(...)` | The call is deferred and the run pauses until a person decides |
 | The hook raises | The call is blocked |
 
-The hook gets a `ToolHookContext`. For Dapr Agents tools, `step_name` is the plain tool name (`transfer_money`) and `source` is `"local"`. For tools from `mcp_servers`, `step_name` is the full Claude name (`mcp__github__create_issue`) and `source` is `"mcp"`. Built-in Claude Code tools have `source` `"claude"`. `payload` holds the tool arguments and `tool_call_id` the id of the call.
+The hook gets a `ToolHookContext`. For Dapr Agents tools, `step_name` is the plain tool name (`transfer_money`) and `source` is the tool's own `source`, the same value hooks see for LLM-driven agents: `"local"` for plain tools, `"mcp"` for Dapr `MCPServer` tools. For tools from `mcp_servers`, `step_name` is the full Claude name (`mcp__github__create_issue`) and `source` is `"mcp"`. Built-in Claude Code tools have `source` `"claude"`. `payload` holds the tool arguments and `tool_call_id` the id of the call.
 
 ```python
 from dapr_agents import (
@@ -344,7 +345,7 @@ agent = DurableAgent(
     name="Payments",
     role="Payments assistant",
     instructions=["Call at most one tool at a time."],
-    executor=ClaudeAgentExecutor(ClaudeAgentExecutorConfig(cwd="/app/claude")),
+    executor=ClaudeAgentExecutor(),
     tools=[transfer_money],
     hooks=Hooks(before_tool_call=[approve_transfers]),
     execution=AgentExecutionConfig(approval=AgentApprovalConfig()),
@@ -355,10 +356,10 @@ How an approval works:
 
 1. Claude calls `transfer_money`. The hook returns `RequireApproval`, so the executor defers the call. The tool does not run. The run ends with a `paused` event that holds the `tool_call_id`, the tool name, the arguments, the approval details and the tool's `source`.
 2. The workflow saves its state and asks for approval through the channel set in `AgentApprovalConfig`: an `ApprovalRequiredEvent` over pub/sub, or the `/hitl/approvals` endpoints under `runner.serve()`. This is the same flow as for LLM-driven agents. The workflow then waits durably for the response or the timeout. No process has to stay up while it waits.
-3. When the decision arrives, the workflow calls `run_executor` again with the same `session_id` and the decision under `context["tool_decisions"]`. The executor resumes the Claude session from the session store, possibly on another pod. The same tool call goes through the hook again and is allowed or denied based on the decision, and Claude continues the original task. If the call is rejected, Claude is told it was blocked, with the `reason` from the approver's `ApprovalResponseEvent`, or "approval was not granted or timed out" when there is no reason or the approval timed out.
-4. A resumed run can pause again, for example when Claude makes another call that needs approval. The workflow repeats steps 2 and 3 until the run completes or fails, for at most `max_iterations` approval rounds. After that, the next paused call is rejected without asking anyone, and Claude is told the approval limit was reached, so the session is not left with an unanswered tool call. If Claude still asks for another approval, the workflow ends with a message saying the approval limit was reached.
+3. When the decision arrives, the workflow calls `run_executor` again with the same `session_id` and the decision under `context["tool_decisions"]`. The decision records a hash of the arguments the approver saw, and the call is rejected if the arguments it would run with differ. The executor resumes the Claude session from the session store, possibly on another pod. The same tool call goes through the hook again and is allowed or denied based on the decision, and Claude continues the original task. If the call is rejected, Claude is told it was blocked, with the `reason` from the approver's `ApprovalResponseEvent`, or "approval was not granted or timed out" when there is no reason or the approval timed out.
+4. A resumed run can pause again, for example when Claude makes another call that needs approval. The workflow repeats steps 2 and 3 until the run completes or fails, for at most `max_approval_rounds` approval rounds (`AgentExecutionConfig`, defaults to `max_iterations`). After that, the next paused call is rejected without asking anyone, and Claude is told the approval limit was reached. If Claude still asks for another approval, the workflow ends with a message saying the approval limit was reached. A call left paused that way, or by a workflow that was terminated while it waited, is rejected at the start of the next run on the same session, before the new task is sent.
 
-The `ApprovalRequiredEvent` carries the tool's `source` as the executor reported it: `"local"` for Dapr Agents tools, `"mcp"` for tools from `mcp_servers` and `"claude"` for built-in tools.
+The `ApprovalRequiredEvent` carries the tool's `source` as the executor reported it: the tool's own `source` for Dapr Agents tools, `"mcp"` for tools from `mcp_servers` and `"claude"` for built-in tools.
 
 A decision applies only to the `tool_call_id` it was made for. When Claude makes several calls that need approval in parallel, only one is reported per pause. Claude issues the others again with new ids, and each of those pauses for its own approval. For fewer approval rounds, ask Claude in the system prompt to call approval-gated tools one at a time.
 
@@ -419,10 +420,10 @@ The executor reports failures as `error` events, never as exceptions. The error 
 ## Limitations
 
 - **Tools run in one activity.** The executor, its tools and its MCP calls all run inside one `run_executor` activity. Dapr Workflow does not checkpoint each tool call, and the activity retry policy applies to the whole run, not to each tool.
-- **At-least-once execution.** Like any workflow activity, `run_executor` can run more than once, for example when a pod fails during a run. Tools may then run again. A retried attempt resumes the session the failed attempt saved and sends the task again, so Claude sees it twice. Make tools with side effects [idempotent]({{% ref "workflow-features-concepts.md#workflow-activities" %}}), or put them behind approval. A run that is retried after a resume has already finished does not start the task again: the executor returns the final answer from the stored transcript. If the earlier attempt stopped before Claude wrote a final answer, the retry fails instead.
+- **At-least-once execution.** Like any workflow activity, `run_executor` can run more than once, for example when a pod fails during a run. Tools may then run again. A retried attempt resumes the session the failed attempt saved and sends the task again, so Claude sees it twice. Make tools with side effects [idempotent]({{% ref "workflow-features-concepts.md#workflow-activities" %}}), or put them behind approval. A run that is retried after a resume has already finished does not start the task again: the executor returns the final answer from the stored transcript. If the earlier attempt stopped after the approved tool ran but before Claude answered, the retry continues the session from the tool result. Failures that would repeat on every attempt, such as reaching `max_turns` or `max_budget_usd`, a prompt that is too long, or an authentication error, fail the workflow right away instead of being retried.
 - **Long runs hold an activity open.** A Claude run can take minutes. Set the activity retry and timeout policies with that in mind. Waiting for approval does not hold an activity open.
 - **Package size and platforms.** The SDK wheel includes the Claude Code CLI (about 100 MB), and there is no wheel for musl Linux. See [Install](#install).
-- **Same options on every resume.** A resumed session must use the same `cwd`, tools, MCP servers, hooks and permission mode. If the tool that was deferred is gone when the session resumes, the run fails.
+- **Same options on every resume.** A resumed session must use the same tools, MCP servers, hooks and permission mode. If the tool that was deferred is gone when the session resumes, the run fails.
 
 ## Example
 
