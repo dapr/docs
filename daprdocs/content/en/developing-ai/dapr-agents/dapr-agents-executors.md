@@ -198,10 +198,11 @@ All settings are in the frozen dataclass `ClaudeAgentExecutorConfig`. Each field
 | `env` | `{}` | Extra environment variables for the CLI, such as credentials |
 | `include_partial_messages` | `True` | Emit `text_delta` events for streamed text |
 | `setting_sources` | `()` | Claude settings files to load (`"user"`, `"project"`, `"local"`). The default loads none, so settings on the host do not change agent runs |
+| `isolate_host_config` | `True` | Keeps the host user's Claude Code context out of agent runs: only the MCP servers configured here are used, and claude.ai connectors, auto memory and `CLAUDE.md` files (unless `setting_sources` is set) are skipped. Without it, a CLI logged in with a claude.ai account can load that account's connectors and the memory of the git repository `cwd` is in. Values in `env` override it |
 | `cli_path` | Bundled CLI | Path to a `claude` binary to use instead of the bundled one |
 | `extra_options` | `{}` | Other `ClaudeAgentOptions` arguments, such as `thinking`, `effort`, `agents` or `sandbox` |
 
-The executor sets some options itself, so `extra_options` must not include `resume`, `session_id`, `hooks`, `stderr`, `continue_conversation` or `fork_session`. It must also not include options that have their own field in the table above: `model`, `system_prompt`, `max_turns`, `max_budget_usd`, `permission_mode`, `tools` (use `builtin_tools`), `allowed_tools`, `disallowed_tools`, `mcp_servers`, `cwd`, `env`, `include_partial_messages`, `session_store`, `setting_sources` and `cli_path`. The config raises a `ValueError` if it does.
+The executor sets some options itself, so `extra_options` must not include `resume`, `session_id`, `hooks`, `stderr`, `continue_conversation` or `fork_session`. It must also not include options that have their own field in the table above: `model`, `system_prompt`, `max_turns`, `max_budget_usd`, `permission_mode`, `tools` (use `builtin_tools`), `allowed_tools`, `disallowed_tools`, `mcp_servers`, `cwd`, `env`, `include_partial_messages`, `session_store`, `setting_sources`, `strict_mcp_config` (use `isolate_host_config`) and `cli_path`. The config raises a `ValueError` if it does.
 
 By default the agent has no built-in Claude Code tools (no file access, no shell) and loads no settings files. Claude can only use the tools and MCP servers you configure.
 
