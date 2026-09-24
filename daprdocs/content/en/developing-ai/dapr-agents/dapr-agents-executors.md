@@ -134,19 +134,16 @@ def get_weather(city: str) -> str:
 
 
 executor = ClaudeAgentExecutor(
-    ClaudeAgentExecutorConfig(
-        model="claude-sonnet-4-5",
-        system_prompt="You are a concise weather assistant.",
-        max_turns=5,
-        tools=(get_weather,),
-    )
+    ClaudeAgentExecutorConfig(model="claude-sonnet-4-5", cwd="/app/claude")
 )
 
 agent = DurableAgent(
     name="WeatherClaude",
     role="Weather Assistant",
     goal="Answer weather questions",
+    instructions=["Be concise."],
     executor=executor,
+    tools=[get_weather],
 )
 
 
@@ -160,6 +157,22 @@ async def main() -> None:
 ```
 
 Host the agent the same way as any other `DurableAgent`: `runner.run(...)`, `runner.subscribe(...)` or `runner.serve(...)`.
+
+#### What the agent passes to the executor
+
+Before every run, `DurableAgent` binds the executor to the agent's own configuration, so you configure tools, prompts and hooks on the agent as usual:
+
+| Agent setting | Claude setting |
+|---|---|
+| Rendered system prompt (`role`, `goal`, `instructions`, or `system_prompt`) | `system_prompt` |
+| `AgentExecutionConfig.max_iterations` | `max_turns` |
+| `tools`, including agents-as-tools and Dapr `MCPServer` tools | Tools on the in-process MCP server (see [Tools and MCP servers](#tools-and-mcp-servers)) |
+| `hooks.before_tool_call` | `before_tool_call` (see [Human approval](#human-approval-of-tool-calls)) |
+| `state` (`AgentStateConfig.store`) | A `DaprSessionStore` as `session_store` (see [Durable sessions](#durable-sessions)) |
+
+A value set explicitly in `ClaudeAgentExecutorConfig` wins over the agent's value. Tools and hooks set on the config are used as well as the agent's; a tool is skipped when the config already has one with the same name. The agent's tools are bound again on every run, so tools loaded later are included.
+
+Agents-as-tools and Dapr `MCPServer` tools normally schedule a child workflow from the workflow body. For an executor they run inside the `run_executor` activity, which starts the same child workflow through a workflow client and waits for it. A retried activity attaches to the child workflow the earlier attempt started. Agents in another Dapr app (`target_app_id`) and `ask_user` are not offered to the executor.
 
 ### Configuration
 
@@ -196,7 +209,7 @@ By default the agent has no built-in Claude Code tools (no file access, no shell
 
 Tools reach Claude in two ways:
 
-- **Dapr Agents tools** in `tools` (functions decorated with `@tool`, or any `AgentTool`) are served to Claude through an in-process MCP server. Claude sees them as `mcp__<tool_server_name>__<tool name>`, for example `mcp__dapr__get_weather`. Events and tool history use the plain tool name, `get_weather`.
+- **Dapr Agents tools** (the agent's `tools`, plus any in the config's `tools`; functions decorated with `@tool`, or any `AgentTool`) are served to Claude through an in-process MCP server. Claude sees them as `mcp__<tool_server_name>__<tool name>`, for example `mcp__dapr__get_weather`. Events and tool history use the plain tool name, `get_weather`.
 - **MCP servers** in `mcp_servers` are passed to the SDK, which connects to them. Add their tool names, or the whole server as `mcp__<server>`, to `allowed_tools` so Claude can call them without asking:
 
 ```python
@@ -281,7 +294,7 @@ When the store already has the session, the executor resumes it. Otherwise it st
 
 ### Human approval of tool calls
 
-`ClaudeAgentExecutor` supports the same `before_tool_call` [hooks]({{< ref dapr-agents-hooks.md >}}) as an LLM-driven `DurableAgent`, including `RequireApproval`. Pass the hooks in `before_tool_call` on the executor config. They run in a Claude `PreToolUse` hook for every tool call, including calls to tools from `mcp_servers`:
+`ClaudeAgentExecutor` supports the same `before_tool_call` [hooks]({{< ref dapr-agents-hooks.md >}}) as an LLM-driven `DurableAgent`, including `RequireApproval`. Set them on the agent with `hooks=Hooks(before_tool_call=[...])` (or in `before_tool_call` on the executor config). They run in a Claude `PreToolUse` hook for every tool call, including calls to tools from `mcp_servers`:
 
 | Hook decision | What happens to the Claude tool call |
 |---|---|
@@ -301,7 +314,13 @@ from dapr_agents import (
     tool,
 )
 from dapr_agents.agents.configs import AgentApprovalConfig, AgentExecutionConfig
-from dapr_agents.hooks import HookDecision, Proceed, RequireApproval, ToolHookContext
+from dapr_agents.hooks import (
+    HookDecision,
+    Hooks,
+    Proceed,
+    RequireApproval,
+    ToolHookContext,
+)
 
 
 @tool
@@ -319,17 +338,13 @@ def approve_transfers(ctx: ToolHookContext) -> HookDecision:
     return Proceed()
 
 
-executor = ClaudeAgentExecutor(
-    ClaudeAgentExecutorConfig(
-        tools=(transfer_money,),
-        before_tool_call=(approve_transfers,),
-    )
-)
-
 agent = DurableAgent(
     name="Payments",
     role="Payments assistant",
-    executor=executor,
+    instructions=["Call at most one tool at a time."],
+    executor=ClaudeAgentExecutor(ClaudeAgentExecutorConfig(cwd="/app/claude")),
+    tools=[transfer_money],
+    hooks=Hooks(before_tool_call=[approve_transfers]),
     execution=AgentExecutionConfig(approval=AgentApprovalConfig()),
 )
 ```
@@ -339,7 +354,7 @@ How an approval works:
 1. Claude calls `transfer_money`. The hook returns `RequireApproval`, so the executor defers the call. The tool does not run. The run ends with a `paused` event that holds the `tool_call_id`, the tool name, the arguments and the approval details.
 2. The workflow saves its state and asks for approval through the channel set in `AgentApprovalConfig`: an `ApprovalRequiredEvent` over pub/sub, or the `/hitl/approvals` endpoints under `runner.serve()`. This is the same flow as for LLM-driven agents. The workflow then waits durably for the response or the timeout. No process has to stay up while it waits.
 3. When the decision arrives, the workflow calls `run_executor` again with the same `session_id` and the decision under `context["tool_decisions"]`. The executor resumes the Claude session from the session store, possibly on another pod. The same tool call goes through the hook again and is allowed or denied based on the decision, and Claude continues the original task. If the call is rejected, Claude is told it was blocked and why.
-4. A resumed run can pause again, for example when Claude makes another call that needs approval. The workflow repeats steps 2 and 3 until the run completes or fails.
+4. A resumed run can pause again, for example when Claude makes another call that needs approval. The workflow repeats steps 2 and 3 until the run completes or fails, for at most `max_iterations` approval rounds. A denied or timed-out approval is sent to Claude as a rejection.
 
 A decision applies only to the `tool_call_id` it was made for. When Claude makes several calls that need approval in parallel, only one is reported per pause. Claude issues the others again with new ids, and each of those pauses for its own approval. For fewer approval rounds, ask Claude in the system prompt to call approval-gated tools one at a time.
 
@@ -376,7 +391,9 @@ With `include_partial_messages=True` (the default), the executor emits `text_del
 
 ### Observability
 
-Executor runs are traced with the Dapr Agents OpenTelemetry instrumentation, like LLM-driven agents. The `run_executor` activity gets a span with the agent name, the session id, and the tool calls and results of the run. Errors set `error.type` on the span.
+Executor runs are traced with the Dapr Agents OpenTelemetry instrumentation, like LLM-driven agents. Each `run_executor` activity gets an `invoke_agent {agent}` span, with one `execute_tool {tool}` child span per tool call the executor reports. Spans carry OpenInference and GenAI attributes: the agent name, `session.id`, token usage, the model, and `executor.cost_usd`, `executor.session_total_cost_usd`, `executor.num_turns` and `executor.stop_reason`. Errors set `error.type`. A tool call that is waiting for approval ends its span with `tool.completed=false`.
+
+`DurableAgent` also saves the usage of each run in the workflow state, in the `executor_usage` list of the workflow entry (one record per run that completed or paused).
 
 The final `complete` or `paused` event also reports what the run cost, in its `metadata`:
 
@@ -398,7 +415,7 @@ The executor reports failures as `error` events, never as exceptions. The error 
 ## Limitations
 
 - **Tools run in one activity.** The executor, its tools and its MCP calls all run inside one `run_executor` activity. Dapr Workflow does not checkpoint each tool call, and the activity retry policy applies to the whole run, not to each tool.
-- **At-least-once execution.** Like any workflow activity, `run_executor` can run more than once, for example when a pod fails during a run. Tools may then run again. Make tools with side effects [idempotent]({{% ref "workflow-features-concepts.md#workflow-activities" %}}), or put them behind approval. A run that is retried after a resume has already finished does not start the task again: the executor returns the final answer from the stored transcript.
+- **At-least-once execution.** Like any workflow activity, `run_executor` can run more than once, for example when a pod fails during a run. Tools may then run again. A retried attempt resumes the session the failed attempt saved and sends the task again, so Claude sees it twice. Make tools with side effects [idempotent]({{% ref "workflow-features-concepts.md#workflow-activities" %}}), or put them behind approval. A run that is retried after a resume has already finished does not start the task again: the executor returns the final answer from the stored transcript. If the earlier attempt stopped before Claude wrote a final answer, the retry fails instead.
 - **Long runs hold an activity open.** A Claude run can take minutes. Set the activity retry and timeout policies with that in mind. Waiting for approval does not hold an activity open.
 - **Package size and platforms.** The SDK wheel includes the Claude Code CLI (about 100 MB), and there is no wheel for musl Linux. See [Install](#install).
 - **Same options on every resume.** A resumed session must use the same `cwd`, tools, MCP servers, hooks and permission mode. If the tool that was deferred is gone when the session resumes, the run fails.
