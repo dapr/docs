@@ -188,6 +188,8 @@ When `pubsub_name` is `None` and the agent is exposed via `AgentRunner.serve()`,
 
 The approval state is persisted to the Dapr state store under `{agent_name}:pending_approvals` so the request survives a pod restart.
 
+The same approval flow works for agents driven by `ClaudeAgentExecutor`: pass the hooks to the executor config and the Claude run pauses on the gated tool call until a decision arrives. See [Human approval of tool calls]({{< ref "dapr-agents-executors.md#human-approval-of-tool-calls" >}}).
+
 ### Working examples
 
 The `dapr-agents` repo ships three example patterns under `examples/02-durable-agent-tool-call/`:
@@ -324,5 +326,6 @@ The reason `RequireApproval` is not available on LLM hooks: approval requires th
 ## Further reading
 
 - [Agentic patterns]({{< ref dapr-agents-patterns.md >}}) — where to layer hooks in larger systems
+- [Agent Executors]({{< ref dapr-agents-executors.md >}}) — `before_tool_call` hooks and `RequireApproval` on a `DurableAgent` driven by `ClaudeAgentExecutor`
 - [Quickstarts]({{< ref dapr-agents-quickstarts.md >}}) — the `examples/02-durable-agent-tool-call/` and `examples/11-expert-agent-tavily/` examples cover the surface end-to-end
 - Source: [`dapr_agents/hooks.py`](https://github.com/dapr/dapr-agents/blob/main/dapr_agents/hooks.py) — the dataclasses and decisions
