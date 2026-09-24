@@ -172,7 +172,7 @@ Before every run, `DurableAgent` binds the executor to the agent's own configura
 
 A value set explicitly in `ClaudeAgentExecutorConfig` wins over the agent's value. Tools and hooks set on the config are used as well as the agent's; a tool is skipped when the config already has one with the same name. The agent's tools are bound again on every run, so tools loaded later are included.
 
-Agents-as-tools and Dapr `MCPServer` tools normally schedule a child workflow from the workflow body. For an executor they run inside the `run_executor` activity, which starts the same child workflow through a workflow client and waits for it. A retried activity attaches to the child workflow the earlier attempt started. Agents in another Dapr app (`target_app_id`) and `ask_user` are not offered to the executor.
+Agents-as-tools and Dapr `MCPServer` tools normally schedule a child workflow from the workflow body. For an executor they run inside the `run_executor` activity, which starts the same child workflow through a workflow client and waits for it. A retried activity attaches to the child workflow the earlier attempt started. Agents in another Dapr app (`target_app_id`) and `ask_user` are not offered to the executor. Other tools that start their child workflow in another app, such as a tool from `make_mcp_gateway_via_child_workflow_tool`, return an error to Claude when called, because the workflow client can only start workflows in the agent's own app.
 
 ### Configuration
 
@@ -201,7 +201,7 @@ All settings are in the frozen dataclass `ClaudeAgentExecutorConfig`. Each field
 | `cli_path` | Bundled CLI | Path to a `claude` binary to use instead of the bundled one |
 | `extra_options` | `{}` | Other `ClaudeAgentOptions` arguments, such as `thinking`, `effort`, `agents` or `sandbox` |
 
-The executor sets some options itself, so `extra_options` must not include `resume`, `session_id`, `session_store`, `hooks`, `stderr`, `continue_conversation`, `fork_session` or `include_partial_messages`. The config raises a `ValueError` if it does.
+The executor sets some options itself, so `extra_options` must not include `resume`, `session_id`, `hooks`, `stderr`, `continue_conversation` or `fork_session`. It must also not include options that have their own field in the table above: `model`, `system_prompt`, `max_turns`, `max_budget_usd`, `permission_mode`, `tools` (use `builtin_tools`), `allowed_tools`, `disallowed_tools`, `mcp_servers`, `cwd`, `env`, `include_partial_messages`, `session_store`, `setting_sources` and `cli_path`. The config raises a `ValueError` if it does.
 
 By default the agent has no built-in Claude Code tools (no file access, no shell) and loads no settings files. Claude can only use the tools and MCP servers you configure.
 
@@ -261,8 +261,9 @@ If you don't set `session_store`, `DurableAgent` attaches a `DaprSessionStore` o
 
 How `DaprSessionStore` stores a session:
 
-- Each session has one small manifest document and a list of chunk documents. A chunk holds up to `max_chunk_bytes` (256 KiB by default). Keep this below the value size limit of your state store.
-- Appends are committed with ETag (first-write) concurrency, so readers never see half of an append. Entries sent twice are skipped, based on their `uuid`.
+- Each session has one small manifest document and a list of chunk documents. A chunk holds up to `max_chunk_bytes` (256 KiB by default). Keep this below the value size limit of your state store. While the last chunk is less than half full, the next append rewrites it together with the new entries, so the number of chunks grows with the size of the transcript, not with the number of appends.
+- Appends are committed with ETag (first-write) concurrency, so readers never see half of an append. If a commit reports an error but actually reached the store (for example, the reply was lost), the store notices and keeps the append. Entries sent twice are skipped, based on their `uuid`.
+- Every append rewrites the manifest. It holds up to `dedupe_window` entry uuids (about 40 bytes each, so about 80 KB at the default) plus one id per chunk. Lower `dedupe_window` if manifest writes are too large for your state store.
 - Transcripts are loaded in the order they were written.
 - The store needs a state store that supports ETags. `ttl_in_seconds` also needs TTL support.
 - `continue_conversation` (resume the most recent session without naming it) is not supported, because the store keeps no per-project index.
@@ -273,7 +274,7 @@ How `DaprSessionStore` stores a session:
 | `max_chunk_bytes` | `262144` | Largest serialized size of one chunk document |
 | `dedupe_window` | `2048` | How many recent entry uuids are remembered per session to skip repeats |
 | `max_commit_attempts` | `10` | Attempts to commit the manifest when writers conflict |
-| `ttl_in_seconds` | `None` | TTL for every document written |
+| `ttl_in_seconds` | `None` | Sliding TTL: a session expires this many seconds after its last append. Chunks get twice this TTL and are rewritten when they are older than it, so they never expire before the manifest that lists them |
 
 {{% alert title="Keep cwd the same on every host" color="primary" %}}
 The session store key includes a project key derived from `cwd`. Set `cwd` to a fixed path, such as `/app/claude`, so every pod that may resume a session uses the same key. If `cwd` differs, the resume does not find the transcript.
@@ -298,7 +299,7 @@ When the store already has the session, the executor resumes it. Otherwise it st
 
 | Hook decision | What happens to the Claude tool call |
 |---|---|
-| `Proceed()` or `None` | The call runs |
+| `Proceed()` or `None` | Dapr Agents tools run. Tools from `mcp_servers` and built-in Claude Code tools still go through the CLI's own permission rules, so they run only if they are in `allowed_tools` or allowed by `permission_mode` |
 | `Mutate(payload=...)` | The call runs with the new arguments |
 | `Deny(reason=...)` or `Skip(...)` | The call is blocked and Claude is told why |
 | `RequireApproval(...)` | The call is deferred and the run pauses until a person decides |
@@ -351,10 +352,12 @@ agent = DurableAgent(
 
 How an approval works:
 
-1. Claude calls `transfer_money`. The hook returns `RequireApproval`, so the executor defers the call. The tool does not run. The run ends with a `paused` event that holds the `tool_call_id`, the tool name, the arguments and the approval details.
+1. Claude calls `transfer_money`. The hook returns `RequireApproval`, so the executor defers the call. The tool does not run. The run ends with a `paused` event that holds the `tool_call_id`, the tool name, the arguments, the approval details and the tool's `source`.
 2. The workflow saves its state and asks for approval through the channel set in `AgentApprovalConfig`: an `ApprovalRequiredEvent` over pub/sub, or the `/hitl/approvals` endpoints under `runner.serve()`. This is the same flow as for LLM-driven agents. The workflow then waits durably for the response or the timeout. No process has to stay up while it waits.
-3. When the decision arrives, the workflow calls `run_executor` again with the same `session_id` and the decision under `context["tool_decisions"]`. The executor resumes the Claude session from the session store, possibly on another pod. The same tool call goes through the hook again and is allowed or denied based on the decision, and Claude continues the original task. If the call is rejected, Claude is told it was blocked and why.
-4. A resumed run can pause again, for example when Claude makes another call that needs approval. The workflow repeats steps 2 and 3 until the run completes or fails, for at most `max_iterations` approval rounds. A denied or timed-out approval is sent to Claude as a rejection.
+3. When the decision arrives, the workflow calls `run_executor` again with the same `session_id` and the decision under `context["tool_decisions"]`. The executor resumes the Claude session from the session store, possibly on another pod. The same tool call goes through the hook again and is allowed or denied based on the decision, and Claude continues the original task. If the call is rejected, Claude is told it was blocked, with the `reason` from the approver's `ApprovalResponseEvent`, or "approval was not granted or timed out" when there is no reason or the approval timed out.
+4. A resumed run can pause again, for example when Claude makes another call that needs approval. The workflow repeats steps 2 and 3 until the run completes or fails, for at most `max_iterations` approval rounds. After that, the next paused call is rejected without asking anyone, and Claude is told the approval limit was reached, so the session is not left with an unanswered tool call. If Claude still asks for another approval, the workflow ends with a message saying the approval limit was reached.
+
+The `ApprovalRequiredEvent` carries the tool's `source` as the executor reported it: `"local"` for Dapr Agents tools, `"mcp"` for tools from `mcp_servers` and `"claude"` for built-in tools.
 
 A decision applies only to the `tool_call_id` it was made for. When Claude makes several calls that need approval in parallel, only one is reported per pause. Claude issues the others again with new ids, and each of those pauses for its own approval. For fewer approval rounds, ask Claude in the system prompt to call approval-gated tools one at a time.
 
@@ -399,7 +402,7 @@ The final `complete` or `paused` event also reports what the run cost, in its `m
 
 | Key | Description |
 |---|---|
-| `cost_usd` | Cost of this run: the session total now, minus the total at the start of the run |
+| `cost_usd` | Cost of this run: the session total now, minus the total at the start of the run. The starting total is read from the session store, so this is the cost of just this run only when a `session_store` is set (always the case under a `DurableAgent` with a state store). Without one, a resumed run reports the session total here |
 | `session_total_cost_usd` | Total cost of the session, across all runs and resumes |
 | `usage` | Token usage reported by the SDK for this run |
 | `model_usage` | Usage per model |

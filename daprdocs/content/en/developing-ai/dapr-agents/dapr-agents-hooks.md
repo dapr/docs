@@ -188,7 +188,7 @@ When `pubsub_name` is `None` and the agent is exposed via `AgentRunner.serve()`,
 
 The approval state is persisted to the Dapr state store under `{agent_name}:pending_approvals` so the request survives a pod restart.
 
-The same approval flow works for agents driven by `ClaudeAgentExecutor`: pass the hooks to the executor config and the Claude run pauses on the gated tool call until a decision arrives. See [Human approval of tool calls]({{< ref "dapr-agents-executors.md#human-approval-of-tool-calls" >}}).
+The same approval flow works for agents driven by `ClaudeAgentExecutor`. The agent's `before_tool_call` hooks (`hooks=Hooks(before_tool_call=[...])`) apply to its Claude runs as they are, and the run pauses on the gated tool call until a decision arrives. Setting hooks on the executor config as well is optional. See [Human approval of tool calls]({{< ref "dapr-agents-executors.md#human-approval-of-tool-calls" >}}).
 
 ### Working examples
 
