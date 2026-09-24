@@ -58,3 +58,5 @@ The [Dapr Agents examples](https://github.com/dapr/dapr-agents/tree/main/example
 | [Agents as Activities with Observability](https://github.com/dapr/dapr-agents/tree/main/examples/07-agents-as-activities-observability) | Trace agent activities end-to-end with OpenTelemetry and Zipkin |
 | [Agents as Tools](https://github.com/dapr/dapr-agents/tree/main/examples/08-agents-as-tools) | Invoke other `DurableAgent` instances—and agents from other frameworks—as child workflow tools |
 | [Durable Agent Hot-Reload](https://github.com/dapr/dapr-agents/tree/main/examples/09-durable-agent-hot-reload) | Hot-reload agent persona and LLM settings at runtime without restarting |
+| [Echo Agent Executor](https://github.com/dapr/dapr-agents/tree/main/examples/10-agent-executor-echo) | Run a `DurableAgent` with an [agent executor]({{< ref dapr-agents-executors.md >}}) instead of an LLM client, with no API key needed |
+| [Claude Agent Executor](https://github.com/dapr/dapr-agents/tree/main/examples/13-agent-executor-claude) | Run the Claude Agent SDK inside a `DurableAgent` with Dapr Agents tools, a Dapr-backed session store and human approval of tool calls |

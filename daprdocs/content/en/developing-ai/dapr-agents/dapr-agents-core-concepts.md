@@ -153,6 +153,10 @@ Dapr Agents provides a unified interface to connect with LLM inference APIs. Thi
 - `NVIDIAChatClient`: For NVIDIA AI Foundation models supporting local inference and chat
 - `ElevenLabs`: Support for speech and voice capabilities
 
+### Agent Executors
+
+Instead of an LLM client, a `DurableAgent` can use an **agent executor**: an external agent runtime that runs the whole reasoning and tool loop itself, such as the Claude Agent SDK through `ClaudeAgentExecutor`. Pass `executor=...` instead of `llm=...`; the two are mutually exclusive. Dapr Agents still runs the agent as a durable workflow and provides triggers, state, human approval, streaming and tracing. See [Agent Executors]({{< ref dapr-agents-executors.md >}}).
+
 ### Prompt Flexibility
 
 Dapr Agents supports flexible prompt templates to shape agent behavior and reasoning. Users can define placeholders within prompts, enabling dynamic input of context for inference calls. By leveraging prompt formatting with [Jinja templates](https://jinja.palletsprojects.com/en/stable/templates/) and Python f-string formatting, users can include loops, conditions, and variables, providing precise control over the structure and content of prompts. This flexibility ensures that LLM responses are tailored to the task at hand, offering modularity and adaptability for diverse use cases.
