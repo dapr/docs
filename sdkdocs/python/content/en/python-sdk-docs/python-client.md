@@ -277,6 +277,32 @@ with DaprClient() as d:
 ```
 
 
+Publish several messages in one call with `publish_events`. Each item in `data` can be a `str`, `bytes`, or a `BulkPublishEntry`. Use `BulkPublishEntry` to set metadata, a content type, or an entry ID on one message. The `publish_metadata` applies to every message, and individual entry metadata overrides it:
+```python
+from dapr.clients import BulkPublishEntry, DaprClient
+import json
+
+with DaprClient() as d:
+    resp = d.publish_events(
+        pubsub_name='pubsub',
+        topic_name='TOPIC_A',
+        data=[
+            json.dumps({'id': 1, 'message': 'hello world'}),
+            BulkPublishEntry(
+                event=json.dumps({'id': 2, 'message': 'hello tenant-a'}),
+                metadata={'partitionKey': 'tenant-a'},
+            ),
+        ],
+        data_content_type='application/json',
+        publish_metadata={'ttlInSeconds': '60'},
+    )
+
+    for entry in resp.failed_entries:
+        print(f'failed entry {entry.entry_id}: {entry.error}')
+```
+
+For more details, see the [bulk publish guide]({{% ref pubsub-bulk.md %}}).
+
 #### Subscribe to messages
 
 ```python

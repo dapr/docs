@@ -158,6 +158,7 @@ with DaprClient() as client:
                 event=json.dumps({'message': 'second JSON message'}),
                 content_type='application/json',
                 metadata={'partitionKey': 'tenant-a'},
+                entry_id='b1f40bd6-4af2-11ed-b878-0242ac120002',
             ),
         ],
         data_content_type='text/plain',
@@ -168,7 +169,9 @@ with DaprClient() as client:
         print(f'failed entry {entry.entry_id}: {entry.error}')
 ```
 
-Each event can be a `str`, `bytes`, or a `BulkPublishEntry`. Use `BulkPublishEntry` to set metadata, a content type, or an entry ID on one event. `publish_metadata` applies to every event, and entry metadata overrides it. The content type follows the entry's own `content_type`, then `data_content_type`, then a default based on the event type: `text/plain` for `str` and `application/octet-stream` for `bytes`.
+Each event can be a `str`, `bytes`, or a `BulkPublishEntry`. Use `BulkPublishEntry` to set metadata, a content type, or an entry ID on one event. The `publish_metadata` applies to every event, and individual entry metadata overrides it. The content type is set with each event's own `content_type`, then `data_content_type`, followed by the default based on the event type (`text/plain` for `str` and `application/octet-stream` for `bytes`).
+
+The SDK generates an `entry_id` for each event when you do not set one. Set your own `entry_id` when you need to match the entries in `failed_entries` back to the events you sent.
 
 {{% alert title="Note" color="primary" %}}
 `BulkPublishEntry` requires Python SDK v1.19.0 or later.
