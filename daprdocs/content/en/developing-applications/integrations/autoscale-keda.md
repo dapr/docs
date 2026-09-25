@@ -17,6 +17,11 @@ In this guide, you configure a scalable Dapr application, along with the back pr
 
 {{% /alert %}}
 
+{{% alert title="Scaling workflow workers" color="primary" %}}
+ To scale a Dapr Workflow application on the number of activities waiting to run, see [How to: Autoscale workflow activities with KEDA]({{% ref autoscale-keda-workflow.md %}}).
+
+{{% /alert %}}
+
 ## Install KEDA
 
 To install KEDA, follow the [Deploying KEDA](https://keda.sh/docs/latest/deploy/) instructions on the KEDA website.
