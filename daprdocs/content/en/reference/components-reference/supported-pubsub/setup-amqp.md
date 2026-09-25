@@ -175,8 +175,8 @@ settings. On ActiveMQ Artemis they live in `address-settings`.
 
 ## Migrating from `pubsub.solace.amqp`
 
-{{% alert title="Deprecated" color="warning" %}}
-`pubsub.solace.amqp` is deprecated and replaced by `pubsub.amqp`. Existing components of type `pubsub.solace.amqp` keep working, and keep their `topic://` and `queue://` defaults. New components must use `pubsub.amqp`.
+{{% alert title="Compatibility name" color="primary" %}}
+`pubsub.solace.amqp` is the earlier name of this component. It stays registered, and existing components of that type keep working with their `topic://` and `queue://` defaults. Use `pubsub.amqp` for new components.
 {{% /alert %}}
 
 `pubsub.amqp` applies no address prefix by default, where `pubsub.solace.amqp` applies the Solace convention. To migrate a Solace component without changing the addresses it uses, change the type and set both prefixes explicitly:
