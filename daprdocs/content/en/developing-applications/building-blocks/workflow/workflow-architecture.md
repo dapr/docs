@@ -36,6 +36,8 @@ The workflow app executes the appropriate workflow code and then sends a gRPC re
 All interactions happen over a single gRPC channel and are initiated by the application, which means the application doesn't need to open any inbound ports.
 The details of these interactions are internally handled by the language-specific Dapr Workflow authoring SDK.
 
+The history the sidecar sends over this stream is incremental: once a worker is warm for an instance, it is sent only the events added since its previous turn rather than the whole history. See [the stateful workflow client]({{% ref "workflow-stateful-client.md" %}}).
+
 ### Differences between workflow and application actor interactions
 
 If you're familiar with Dapr actors, you may notice a few differences in terms of how sidecar interactions works for workflows compared to application defined actors.
@@ -293,6 +295,7 @@ Dapr creates a third actor type to handle this scenario: `dapr.internal.{namespa
 ## Related links
 
 - [Workflow overview]({{% ref workflow-overview.md %}})
+- [Stateful workflow client]({{% ref workflow-stateful-client.md %}})
 - [Workflow API reference]({{% ref workflow_api.md %}})
 - [Try out the Workflow quickstart]({{% ref workflow-quickstart.md %}})
 - Try out the following examples: 
