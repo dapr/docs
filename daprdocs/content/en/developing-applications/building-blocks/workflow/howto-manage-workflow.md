@@ -8,6 +8,8 @@ description: Manage and run workflows
 
 Now that you've [authored the workflow and its activities in your application]({{% ref howto-author-workflow.md %}}), you can start, terminate, rerun, and get information about the workflow using the CLI or API calls.
 
+The SDK clients and the HTTP API can also target a workflow owned by *another* application in the same namespace, by sending that application's ID with the request. (The CLI's `--app-id` flag is different: it selects which sidecar to talk to, so those calls stay local to that application.) The target application's [workflow access policy]({{% ref workflow-access-policy.md %}}) decides whether the call is permitted. See [Multi Application Workflows]({{% ref workflow-multi-app.md %}}) for the full picture.
+
 {{< tabpane text=true >}}
 
 <!--CLI-->
@@ -301,6 +303,14 @@ wf_client.purge_workflow(instance_id=instance_id)
 wf_client.wait_for_workflow_completion(instance_id, timeout_in_seconds=30)
 ```
 
+#### Target another application
+
+Pass `app_id` to any of these operations to act on a workflow owned by another application. The target's [workflow access policy]({{% ref workflow-access-policy.md %}}) decides whether the call is allowed:
+
+```python
+wf_client.terminate_workflow(instance_id=instance_id, app_id='app2')
+```
+
 {{% /tab %}}
 
 <!--JavaScript-->
@@ -372,6 +382,14 @@ start().catch((e) => {
 });
 ```
 
+#### Target another application
+
+Pass an options object with `appId` to act on a workflow owned by another application. The target's [workflow access policy]({{% ref workflow-access-policy.md %}}) decides whether the call is allowed:
+
+```typescript
+await client.terminateWorkflow(instanceId, null, { appId: "app2" });
+```
+
 {{% /tab %}}
 
 <!--NET-->
@@ -404,6 +422,14 @@ await daprWorkflowClient.ResumeWorkflowAsync(orderId);
 
 // Purge the workflow, removing all inbox and history information from associated instance
 await daprWorkflowClient.PurgeInstanceAsync(orderId);
+```
+
+#### Target another application
+
+Pass `targetAppId` to act on a workflow owned by another application. The target's [workflow access policy]({{% ref workflow-access-policy.md %}}) decides whether the call is allowed:
+
+```csharp
+await client.TerminateWorkflowAsync(instanceId, null, "app2");
 ```
 
 {{% /tab %}}
@@ -469,6 +495,14 @@ public class DemoWorkflowClient {
     System.exit(0);
   }
 }
+```
+
+#### Target another application
+
+Pass the target application's ID to act on a workflow it owns. The target's [workflow access policy]({{% ref workflow-access-policy.md %}}) decides whether the call is allowed:
+
+```java
+client.terminateWorkflow(instanceId, null, "app2");
 ```
 
 {{% /tab %}}
@@ -550,6 +584,14 @@ type RaiseEventWorkflowRequest struct {
 }
 ```
 
+#### Target another application
+
+Pass the matching app ID option to act on a workflow owned by another application. The target's [workflow access policy]({{% ref workflow-access-policy.md %}}) decides whether the call is allowed:
+
+```go
+err = client.TerminateWorkflow(ctx, instanceID, workflow.WithTerminateAppID("app2"))
+```
+
 {{% /tab %}}
 
 <!--HTTP-->
@@ -620,6 +662,14 @@ To fetch workflow information (outputs and inputs) with an ID `12345678`, run:
 ```shell
 curl -X GET "http://localhost:3500/v1.0/workflows/dapr/12345678"
 ```
+### Target another application
+
+Add the `appID` query parameter to any of the calls above to act on a workflow owned by another application. Every operation in the [workflow API reference]({{% ref workflow_api.md %}}) accepts it, and the target's [workflow access policy]({{% ref workflow-access-policy.md %}}) decides whether the call is allowed:
+
+```shell
+curl -X POST "http://localhost:3500/v1.0/workflows/dapr/12345678/terminate?appID=app2"
+```
+
 {{% /tab %}}
 
 {{< /tabpane >}}
