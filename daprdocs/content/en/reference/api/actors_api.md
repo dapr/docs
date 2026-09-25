@@ -623,6 +623,12 @@ Parameter | Description
 
 > Note, all URL parameters are case-sensitive.
 
+#### Request Headers
+
+Header | Description
+------ | -----------
+`Dapr-Reentrancy-Id` | Sent when [reentrancy]({{% ref actor-reentrancy %}}) is enabled for the actor type. Pass it verbatim on any actor call your handler makes, so that call re-enters the current chain instead of waiting on the actor's lock.
+
 #### Examples
 
 The following example calls the `performAction` method on the actor type `stormtrooper` that has `actorId` of 50.
@@ -661,6 +667,12 @@ Parameter | Description
 
 > Note, all URL parameters are case-sensitive.
 
+#### Request Headers
+
+Header | Description
+------ | -----------
+`Dapr-Reentrancy-Id` | Sent when [reentrancy]({{% ref actor-reentrancy %}}) is enabled for the actor type. Pass it verbatim on any actor call your handler makes, so that call re-enters the current chain instead of waiting on the actor's lock.
+
 #### Examples
 
 The following example calls the `checkRebels` reminder method on the actor type `stormtrooper` that has `actorId` of 50.
@@ -698,6 +710,12 @@ Parameter | Description
 `timerName` | The name of the timer to invoke.
 
 > Note, all URL parameters are case-sensitive.
+
+#### Request Headers
+
+Header | Description
+------ | -----------
+`Dapr-Reentrancy-Id` | Sent when [reentrancy]({{% ref actor-reentrancy %}}) is enabled for the actor type. Pass it verbatim on any actor call your handler makes, so that call re-enters the current chain instead of waiting on the actor's lock.
 
 #### Examples
 

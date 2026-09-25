@@ -171,6 +171,19 @@ func reentrantCallHandler(w http.ResponseWriter, r *http.Request) {
 
 {{< /tabpane >}}
 
+## Reentrancy in reminder and timer callbacks
+
+Reminder and timer callbacks are actor requests like any other. They take the actor's lock, and when reentrancy is enabled for the actor type, Dapr generates a `Dapr-Reentrancy-Id` for the callback and sends it to your app:
+
+- Over HTTP, as the `Dapr-Reentrancy-Id` request header on `PUT /actors/<actorType>/<actorId>/method/remind/<reminderName>`, and on the equivalent timer route.
+- Over a gRPC actor event stream, in the `metadata` map of the reminder or timer callback message.
+
+Propagate it from a callback exactly as you would from a method invocation. A call that omits it starts a new call chain, so a callback calling back into its own actor waits for a lock the callback itself is holding, until the call times out.
+
+{{% alert title="Note" color="primary" %}}
+Reminder and timer callbacks carry `Dapr-Reentrancy-Id` from Dapr 1.19. Earlier versions did not send it consistently on these callbacks, so a reentrant call made from inside a reminder or timer callback could block until it timed out. Actor method invocations are unaffected and have always carried the header.
+{{% /alert %}}
+
 ## Demo
 
 Watch this [video](https://www.youtube.com/watch?v=QADHQ5v-gww&list=PLcip_LgkYwzuF-OV6zKRADoiBvUvGhkao&t=674s) on how to use actor reentrancy.
