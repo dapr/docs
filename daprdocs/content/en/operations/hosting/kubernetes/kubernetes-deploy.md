@@ -248,6 +248,8 @@ dapr-sidecar-injector-8555576b6f-29cqm   1/1       Running   0          40s
 dapr-sentry-9435776c7f-8f7yd             1/1       Running   0          40s
 ```
 
+> **Note:** The `dapr-placement` pod is not present when actor placement is served by the Scheduler service (`global.scheduler.placement.enabled=true`).
+
 ### Uninstall Dapr on Kubernetes
 
 ```bash

@@ -10,6 +10,8 @@ The Dapr Scheduler service is used to schedule different types of jobs, running 
 - Actor reminder jobs (used by the actor reminders)
 - Actor reminder jobs created by the Workflow API (which uses actor reminders)
 
+The Scheduler service can also serve actor placement in place of the standalone [Placement service]({{% ref placement %}}). See [Serving actor placement](#serving-actor-placement).
+
 There is no concept of a leader Scheduler instance.
 All Scheduler service replicas are considered peers.
 All receive jobs to be scheduled for execution and the jobs are allocated between the available Scheduler service replicas for load balancing of the trigger events.
@@ -199,9 +201,36 @@ curl -s http://localhost:2379/metrics
 
 Fine tune the embedded etcd to your needs by [reviewing and configuring the Scheduler's etcd flags as needed](https://github.com/dapr/dapr/blob/master/charts/dapr/README#dapr-scheduler-options).
 
+## Serving actor placement
+
+The Scheduler can serve actor placement itself, so the standalone Placement service does not run.
+
+In Kubernetes mode, set the Helm value:
+
+```
+global.scheduler.placement.enabled=true
+```
+
+In self-hosted mode, initialize Dapr with the `--scheduler-placement` flag, which skips the Placement container and starts the Scheduler with `--placement-enabled=true`:
+
+```bash
+dapr init --scheduler-placement
+```
+
+Sidecars take actor placement from whichever service the control plane advertises, so applications need no configuration of their own and the cluster always has exactly one placement authority. Toggling the setting in either direction requires no sidecar restarts. [Learn more about serving placement from the Scheduler service.]({{% ref "placement#serving-placement-from-the-scheduler-service" %}})
+
+The dissemination behavior of scheduler-served placement can be tuned with the following Scheduler flags:
+
+```
+--placement-enabled                       bool      When enabled, this scheduler serves actor placement to daprd sidecars, replacing the standalone placement service. All scheduler replicas in the cluster must set the same value. (default false)
+--placement-disseminate-timeout           duration  The timeout for a placement dissemination round to daprd sidecars. Sidecars which fail to acknowledge within the timeout have their placement stream closed. (default 8s)
+--placement-disseminate-coalesce-window   duration  The window in which placement membership changes are coalesced into a single dissemination round. 0 disseminates immediately. (default 0)
+```
+
 ## Disabling the Scheduler service
 
 If you are not using any features that require the Scheduler service (Jobs API, Actor Reminders, or Workflows), you can disable it by setting `global.scheduler.enabled=false`.
+The Scheduler service cannot be disabled while it serves actor placement (`global.scheduler.placement.enabled=true`).
 For more information on running Dapr on Kubernetes, visit the [Kubernetes hosting page]({{% ref kubernetes %}}).
 
 ## Flag tuning
@@ -286,4 +315,4 @@ dapr_scheduler.etcdMaxTxnOps=10000
 ## Related links
 
 - [Learn more about the Jobs API.]({{% ref jobs_api %}})
-- [Learn more about Actor Reminders.]{{% ref "actors-features-concepts#reminders" %}})
+- [Learn more about Actor Reminders.]({{% ref "actors-features-concepts#reminders" %}})
