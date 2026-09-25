@@ -50,8 +50,13 @@ Fields are listed in the order they appear in the YAML document.
 | `rules[].workflows` | N* | list | Workflow rules granted to the matched callers. | See below |
 | `rules[].workflows[].name` | Y | string | Exact name or [glob pattern](https://pkg.go.dev/path#Match) of the workflow. Supports `*`, `?`, and `[abc]` character classes. | `OrderWF`, `Report*` |
 | `rules[].workflows[].operations` | Y | list | Set to `[schedule]`. The CRD also accepts `terminate`, `raise`, `pause`, `resume`, `purge`, `get`, `rerun` for forward compatibility; these have no effect today because the matching public workflow APIs do not route cross-app. | `[schedule]` |
+| `rules[].workflows[].requires` | N | list | Optional ordered list of history events (max 20) that must all be present, in order, in the caller's [propagated history]({{% ref workflow-history-propagation.md %}}) for the rule to apply. Only valid when the rule's single operation is `schedule`. Requires [history signing]({{% ref workflow-history-signing.md %}}); with signing disabled a `requires` rule always denies. | See below |
 | `rules[].activities` | N* | list | Activity rules granted to the matched callers. Activities only support scheduling, so there is no `operations` field. | See below |
 | `rules[].activities[].name` | Y | string | Exact name or [glob pattern](https://pkg.go.dev/path#Match) of the activity. | `ChargePayment`, `Refund*` |
+| `rules[].activities[].requires` | N | list | Optional ordered list of history events (max 20) that must all be present, in order, in the caller's propagated history for the rule to apply. Same entry shape as `rules[].workflows[].requires`. | See below |
+| `rules[].workflows[].requires[].eventType` | Y | string | The history event to match: one of `activity.started`, `activity.completed`, `workflow.started`, `workflow.completed`, `event.raised`. `workflow.started` matches a child workflow the caller scheduled, not its own execution. Activity `requires` entries use the same fields. | `activity.completed` |
+| `rules[].workflows[].requires[].name` | Y | string | The activity name (`activity.*`), child-workflow name (`workflow.*`), or external event name (`event.raised`). | `fraud-check` |
+| `rules[].workflows[].requires[].appID` | Y | string | The App ID that must have produced the event; the event only matches when it came from this app's propagated history. | `checkout` |
 
 \* At least one of `workflows` or `activities` must be present in each rule.
 
@@ -88,8 +93,37 @@ spec:
         - name: "*"
 ```
 
+## Example with `requires`
+
+This policy allows `checkout` to schedule the `ChargeCard` activity on `payments-service` only when `checkout`'s [propagated history]({{% ref workflow-history-propagation.md %}}) shows a completed `fraud-check` followed by a completed `human-approval`, both produced by `checkout`. `requires` needs [history signing]({{% ref workflow-history-signing.md %}}) enabled.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: WorkflowAccessPolicy
+metadata:
+  name: payments-requires
+  namespace: production
+scopes:
+  - payments-service
+spec:
+  rules:
+    - callers:
+        - appID: checkout
+      activities:
+        - name: ChargeCard
+          requires:
+            - eventType: activity.completed
+              name: fraud-check
+              appID: checkout
+            - eventType: activity.completed
+              name: human-approval
+              appID: checkout
+```
+
 ## Related links
 
 - [Learn more about how to configure workflow access policies]({{% ref workflow-access-policy.md %}})
 - [Security concepts]({{% ref security-concept.md %}})
 - [Multi-application workflows]({{% ref workflow-multi-app.md %}})
+- [Workflow history propagation]({{% ref workflow-history-propagation.md %}})
+- [Workflow history signing]({{% ref workflow-history-signing.md %}})
