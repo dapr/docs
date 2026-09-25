@@ -32,9 +32,11 @@ spec:
     value : "[skip_tls_verification]"
   - name: tlsServerName # Optional.
     value : "[tls_config_server_name]"
-  - name: vaultTokenMountPath # Required if vaultToken not provided. Path to token file.
+  - name: vaultAuthMethod # Optional. Default: "token"
+    value: "token"
+  - name: vaultTokenMountPath # Required if vaultAuthMethod is "token" and vaultToken not provided. Path to token file.
     value : "[path_to_file_containing_token]"
-  - name: vaultToken # Required if vaultTokenMountPath not provided. Token value.
+  - name: vaultToken # Required if vaultAuthMethod is "token" and vaultTokenMountPath not provided. Token value.
     value : "[path_to_file_containing_token]"
   - name: vaultKVPrefix # Optional. Default: "dapr"
     value : "[vault_prefix]"
@@ -49,6 +51,66 @@ spec:
 The above example uses secrets as plain strings. It is recommended to use a local secret store such as [Kubernetes secret store]({{% ref kubernetes-secret-store.md %}}) or a [local file]({{% ref file-secret-store.md %}}) to bootstrap secure key storage.
 {{% /alert %}}
 
+## Kubernetes authentication
+
+When running on Kubernetes, you can set `vaultAuthMethod` to `kubernetes` instead of `token`. In this mode, the component authenticates itself directly against Vault's [Kubernetes Auth Method](https://developer.hashicorp.com/vault/docs/auth/kubernetes) using the pod's own service account token, and keeps the resulting session renewed in the background for as long as the component is running. This means you don't need to run a [Vault Agent Injector](https://developer.hashicorp.com/vault/docs/deploy/kubernetes/injector) sidecar, or manage and rotate a static token yourself.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: vault
+spec:
+  type: secretstores.hashicorp.vault
+  version: v1
+  metadata:
+  - name: vaultAddr
+    value: [vault_address]
+  - name: vaultAuthMethod
+    value: "kubernetes"
+  - name: vaultKubernetesRole # Required when vaultAuthMethod is "kubernetes".
+    value: "[vault_role_name]"
+  - name: vaultKubernetesMountPath # Optional. Default: "kubernetes"
+    value: "kubernetes"
+  - name: vaultServiceAccountTokenPath # Optional. Default: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+    value: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+```
+
+`vaultToken` and `vaultTokenMountPath` must not be set when using `vaultAuthMethod: kubernetes`.
+
+Before this works, Vault itself needs to know about your cluster and about the role your Dapr app's pod is allowed to use. This is a one-time setup on the Vault side, done with the [Vault CLI](https://developer.hashicorp.com/vault/docs/install), for example:
+
+```shell
+# Enable the Kubernetes auth method (skip if already enabled).
+vault auth enable kubernetes
+
+# Point it at your cluster's API server. Run from within a pod that already
+# has a Kubernetes service account token and CA cert mounted (for example,
+# the Vault server pod itself) and Vault will pick up the reviewer JWT and
+# CA cert from its own environment.
+vault write auth/kubernetes/config \
+  kubernetes_host="https://kubernetes.default.svc:443"
+
+# A policy granting access to the secrets your app needs.
+vault policy write dapr-app - <<EOF
+path "secret/data/dapr/*" {
+  capabilities = ["read"]
+}
+path "secret/metadata/dapr/*" {
+  capabilities = ["list"]
+}
+EOF
+
+# A role binding that policy to your app's ServiceAccount and namespace.
+vault write auth/kubernetes/role/dapr-app \
+  bound_service_account_names=dapr-app \
+  bound_service_account_namespaces=default \
+  policies=dapr-app \
+  ttl=1h
+```
+
+`vaultKubernetesRole` in the component metadata must match the role name you created (`dapr-app` above), and your Dapr app's pod must run under the `bound_service_account_names`/`bound_service_account_namespaces` you configured.
+
 ## Spec metadata fields
 
 | Field              | Required | Details                        | Example             |
@@ -59,8 +121,12 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 | caCert | N | The path to the CA certificate to use, in PEM format. | `""path/to/cacert.pem"` |
 | skipVerify | N | Skip TLS verification. Defaults to `"false"` | `"true"`, `"false"` |
 | tlsServerName | N | The name of the server requested during TLS handshake in order to support virtual hosting. This value is also used to verify the TLS certificate presented by Vault server. | `"tls-server"` |
-| vaultTokenMountPath | Y | Path to file containing token | `"path/to/file"` |
-| vaultToken | Y | [Token](https://learn.hashicorp.com/tutorials/vault/tokens) for authentication within Vault.  | `"tokenValue"` |
+| vaultAuthMethod | N | The authentication method to use against Vault. `token` uses a static token or a token mounted to a file. `kubernetes` authenticates natively using the Kubernetes Auth Method and the pod's service account token, without requiring a Vault Agent Injector sidecar, and automatically renews/re-authenticates in the background. Defaults to `"token"` | `"token"`, `"kubernetes"` |
+| vaultTokenMountPath | N | Path to file containing token. Required when `vaultAuthMethod` is `token` and `vaultToken` is not set. | `"path/to/file"` |
+| vaultToken | N | [Token](https://learn.hashicorp.com/tutorials/vault/tokens) for authentication within Vault. Required when `vaultAuthMethod` is `token` and `vaultTokenMountPath` is not set. | `"tokenValue"` |
+| vaultKubernetesRole | N | The Vault role to authenticate as when `vaultAuthMethod` is `kubernetes`. Required in that case. | `"my-app-role"` |
+| vaultKubernetesMountPath | N | The mount path of the Kubernetes auth method in Vault, if not mounted at the default `kubernetes` path. Defaults to `"kubernetes"` | `"kubernetes"` |
+| vaultServiceAccountTokenPath | N | Path to the Kubernetes service account token used to authenticate, overriding the default projected service account token path. Defaults to `"/var/run/secrets/kubernetes.io/serviceaccount/token"` | `"/var/run/secrets/kubernetes.io/serviceaccount/token"` |
 | vaultKVPrefix | N | The prefix in vault. Defaults to `"dapr"` | `"dapr"`, `"myprefix"` |
 | vaultKVUsePrefix | N | If false, vaultKVPrefix is forced to be empty. If the value is not given or set to true, vaultKVPrefix is used when accessing the vault. Setting it to false is needed to be able to use the BulkGetSecret method of the store.  | `"true"`, `"false"` |
 | enginePath | N | The [engine](https://www.vaultproject.io/api-docs/secret/kv/kv-v2) path in vault. Defaults to `"secret"` | `"kv"`, `"any"` |
