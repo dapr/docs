@@ -584,7 +584,7 @@ Use each one for a different job:
 | `@message_router` / `PubSubRouteSpec` | A message is the start of new work, such as a new request that needs its own workflow. |
 | `WorkflowEventRouteSpec` | A message is the answer to something a running workflow waits for, such as a job-finished notification, a callback from an external system, or an approval. |
 
-Workflow event routes reuse the message router's subscriber: CloudEvent parsing, schema validation, `payload_filter` / `model_filter`, deduplication, and the dead-letter topic all work the same way.
+Workflow event routes reuse the message router's subscriber: CloudEvent parsing, schema validation, deduplication, and the dead-letter topic all work the same way. `payload_filter` and `model_filter` work too, with two differences: on an event route they run with a deadline and must return a real `True` (see [Authorization](#authorization)).
 
 ```python
 from pydantic import BaseModel
@@ -662,16 +662,18 @@ The instance id and event name must resolve to a non-empty string (an integer is
 
 A message that can't be resolved, such as one with a missing field, a resolver that raises, an empty instance id, or data that isn't JSON-serializable, is never retried: retrying the same message gives the same result. It is dropped with a WARNING and, when the route has a `dead_letter_topic`, sent there.
 
+Resolvers and the default payload serialization run on the subscription's thread without a deadline, so keep them cheap: no network calls or other slow work.
+
 #### Limits and reserved event names
 
 Messages come from whoever can publish to the topic, so the route bounds what it accepts. Anything over a limit is dropped like an unresolvable message:
 
 | Limit | Default | Setting |
 |-------|---------|---------|
-| Length of the resolved instance id and event name | 512 characters | Fixed |
+| Length of the resolved instance id and event name | 512 characters (counted as characters, not bytes) | Fixed |
 | Size of the serialized JSON event data | 1 MiB | `max_data_bytes` |
 
-Dapr Agents waits on some event names itself: `approval_response_<id>` for tool approvals and `user_input_response:<id>` for `ask_user`. A route could otherwise answer those waits, so names with these prefixes (compared case-insensitively) are reserved. A static `event_name` with a reserved prefix is rejected when the route is registered, and a name resolved by `event_name_from` is dropped with a WARNING. Set `allow_reserved_event_names=True` on the route to allow them, for example for a route that deliberately delivers approvals.
+Dapr Agents waits on some event names itself: `approval_response_<id>` for tool approvals and `user_input_response:<id>` for `ask_user`. A route could otherwise answer those waits, so names with these prefixes are reserved. They are compared with Unicode case folding, the same way the workflow runtime matches event names, so look-alike spellings such as a long s (`ſ`) are caught too. A static `event_name` with a reserved prefix is rejected when the route is registered, and a name resolved by `event_name_from` is dropped with a WARNING. Set `allow_reserved_event_names=True` on the route to allow them, for example for a route that deliberately delivers approvals.
 
 #### Delivery outcomes
 
@@ -683,7 +685,9 @@ Before raising the event, the route checks the state of the target workflow inst
 | Workflow is completed, failed, or terminated | Never retried. The message is dropped. When the route has a `dead_letter_topic`, Dapr sends it there; otherwise it is logged at WARNING with the instance id, event name, and workflow status. |
 | Workflow does not exist (yet) | Retried within the `not_found_retry` budget, then handled like a finished workflow. |
 | Transient error from the workflow runtime | Retried. |
-| A call to the sidecar takes longer than `call_timeout_seconds` (default 30) | Retried with a WARNING. The timed-out call may still complete in the background, so the event can still be raised; deduplication makes the redelivery safe. |
+| Permanent error from the sidecar: gRPC `INVALID_ARGUMENT`, `PERMISSION_DENIED`, `UNAUTHENTICATED`, `UNIMPLEMENTED`, `OUT_OF_RANGE`, or `FAILED_PRECONDITION` | Never retried, because a redelivery gets the same answer. Handled like a finished workflow: sent to the `dead_letter_topic` if there is one, otherwise dropped with a WARNING that names the route, instance id, event name, and gRPC code. |
+| A call to the sidecar takes longer than `call_timeout_seconds` (default 30) | Retried with a WARNING. The timed-out call may still complete in the background. While deduplication is on, a timed-out raise is remembered, and a redelivery of the same message to the same process doesn't raise the event again: it is acknowledged once the first raise has succeeded, retried while that raise is still running, and handled by the rules in this table if the raise failed. See the note below for the cases that can still raise twice. |
+| `authorize` returns anything other than `True`, raises, or takes longer than `hook_timeout_seconds` | Dropped with a WARNING (see [Authorization](#authorization)). |
 | The message can't be resolved or exceeds a limit | Dropped with a WARNING (see [Resolvers](#resolvers) and [Limits and reserved event names](#limits-and-reserved-event-names)). |
 
 The "not found yet" case covers a message that arrives before the workflow it targets has started. `NotFoundRetryPolicy` bounds these retries: by default up to 10 deliveries (`max_attempts`, at most 100) or 300 seconds from the first "not found" delivery (`window_seconds`, at most 3600), whichever comes first. How quickly redeliveries arrive depends on the broker's redelivery settings. Attempts are counted in memory, per process and per route, for up to 4096 messages at a time; with several replicas the total number of deliveries can be up to replicas × `max_attempts`.
@@ -694,6 +698,10 @@ When a subscription has a dead-letter topic, the Dapr runtime sends a message th
 
 If a workflow finishes between the state check and the raise, the runtime discards the event while the message is still acknowledged.
 
+{{% alert title="When an event can still be raised twice" color="warning" %}}
+Timed-out raises are remembered in process memory, by the message's deduplication key. A process restart clears that memory, and a route with `dedupe=False` has no key to remember them by, so in both cases a redelivery can raise the event a second time. Deduplication itself is in memory by default and best-effort: a crash after the raise but before the message is acknowledged, or a redelivery to another replica when the route has no shared `deduper`, can also raise the event twice. Unique event names per wait (see below) limit the damage when that happens.
+{{% /alert %}}
+
 Workflow event routes are always handled synchronously on the subscription's thread, so the message is only acknowledged once the outcome is known. `delivery_mode="async"`, `await_result`, and the related options apply only to routes that start workflows.
 
 Each route owns its topic: a topic with a workflow event route carries no other routes, neither a second event route nor a message router. Use one topic per event route.
@@ -703,7 +711,7 @@ Each route owns its topic: a topic with a workflow event route carries no other 
 Dapr buffers an event raised while nothing waits for it and hands it to the next `wait_for_external_event` call with the same name. A redelivered message could therefore satisfy a **later** wait for a different step. To guard against this:
 
 - **Use a unique event name per wait.** If a workflow waits for the same kind of event more than once, put an id in the name. For example, set `event_name_from=lambda msg, ctx: f"payment_received:{msg.payment_id}"` on the route, and have the workflow wait on `f"payment_received:{payment_id}"`.
-- **Keep deduplication on.** Workflow event routes deduplicate by CloudEvent id by default (`dedupe=True`), even when the rest of the subscriber doesn't. The backend is the route's own `deduper` if set, otherwise an in-memory backend for that topic. A `deduper` passed to the runner or `register_message_routes` applies only to routes that start workflows, never to event routes. To share deduplication across replicas for an event route, set `deduper` on the route.
+- **Keep deduplication on.** Workflow event routes deduplicate by CloudEvent id by default (`dedupe=True`), even when the rest of the subscriber doesn't; a message without an id is keyed by a SHA-256 of its payload, which is the same in every process. The backend is the route's own `deduper` if set, otherwise an in-memory backend for that topic. A `deduper` passed to the runner or `register_message_routes` applies only to routes that start workflows, never to event routes. To share deduplication across replicas for an event route, set `deduper` on the route.
 - **Size the in-memory default.** It keeps ids for at least 15 minutes (longer when `window_seconds` is longer) and holds up to `dedupe_max_entries` ids (default 65,536). When a topic receives more messages than that within the TTL, the oldest ids are evicted early and only the most recent messages are deduplicated. Raise `dedupe_max_entries` for busy topics, at the cost of memory. Deduplication is best-effort either way.
 
 #### Throughput and scaling
@@ -712,9 +720,32 @@ Each event-route topic handles one message at a time. There is no async fan-out,
 
 Messages that target instances that never exist are the expensive case: each one is redelivered up to `max_attempts` times, per replica, before it is dropped. To keep that in check, restrict publishers with topic scoping, lower `not_found_retry` for topics that should never see unknown ids, and spread high-volume events across several topics so one busy or noisy topic doesn't hold up the others.
 
+#### Authorization
+
 {{% alert title="Security" color="warning" %}}
-Anyone who can publish to the route's topic can signal any workflow instance whose id they can guess or learn. Restrict which apps can publish and subscribe to the topic with [pub/sub topic scoping]({{< ref pubsub-scopes.md >}}), and prefer instance ids that are hard to guess.
+Anyone who can publish to the route's topic can signal any workflow instance whose id they can guess or learn. Restrict which apps can publish and subscribe to the topic with [pub/sub topic scoping]({{< ref pubsub-scopes.md >}}), prefer instance ids that are hard to guess, and use `authorize` to check each message.
 {{% /alert %}}
+
+`authorize` is the place to decide whether a message may signal a workflow. It is a synchronous function that takes `(message, MessageContext)`, where `message` is the validated model and `MessageContext.event` carries the CloudEvent (id, source, type, and so on). It runs after schema validation and the filters, and before any call to the sidecar:
+
+```python
+def from_jobs_service(msg: JobFinished, ctx: MessageContext) -> bool:
+    return ctx.event.source == "/jobs-service"
+
+job_finished_route = WorkflowEventRouteSpec(
+    pubsub_name="messagepubsub",
+    topic="jobs.finished",
+    event_name="job_finished",
+    instance_id_from="job.workflow_id",
+    message_model=JobFinished,
+    authorize=from_jobs_service,
+    hook_timeout_seconds=2.0,  # default 5.0
+)
+```
+
+The message is let through only when `authorize` returns exactly `True`. Anything else denies it: `False`, a truthy value such as `"False"` or `1`, an exception, or taking longer than `hook_timeout_seconds`. A denied message is dropped with a WARNING that names the route, the instance id, and the message id, never the payload; when the route has a `dead_letter_topic`, Dapr sends it there.
+
+On an event route, `payload_filter` and `model_filter` follow the same rules: they run with the `hook_timeout_seconds` deadline and must return a real `bool`. `True` accepts the message; anything else, a timeout, or an exception rejects it. Routes that start workflows keep their existing filter behavior.
 
 ### Workflows vs. Durable Agents
 
