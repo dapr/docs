@@ -197,7 +197,7 @@ Port forward the Scheduler instance and view etcd's metrics with the following:
 curl -s http://localhost:2379/metrics
 ```
 
-Fine tune the embedded etcd to your needs by [reviewing and configuring the Scheduler's etcd flags as needed](https://github.com/dapr/dapr/blob/master/charts/dapr/README#dapr-scheduler-options).
+Fine tune the embedded etcd to your needs by [reviewing and configuring the Scheduler's etcd flags as needed](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md#dapr-scheduler-options).
 
 ## Disabling the Scheduler service
 
@@ -207,7 +207,7 @@ For more information on running Dapr on Kubernetes, visit the [Kubernetes hostin
 ## Flag tuning
 
 A number of Etcd flags are exposed on Scheduler which can be used to tune for your deployment use case.
-
+  
 ### External Etcd database
 
 Scheduler can be configured to use an external Etcd database instead of the embedded one inside the Scheduler service replicas.
@@ -260,28 +260,30 @@ Changing these settings should always been done first in a testing environment, 
 {{% /alert %}}
 
 ```
---etcd-backend-batch-interval string                            Maximum time before committing the backend transaction. (default "50ms")
---etcd-backend-batch-limit int                                  Maximum operations before committing the backend transaction. (default 5000)
---etcd-compaction-mode string                                   Compaction mode for etcd. Can be 'periodic' or 'revision' (default "periodic")
---etcd-compaction-retention string                              Compaction retention for etcd. Can express time  or number of revisions, depending on the value of 'etcd-compaction-mode' (default "10m")
+--etcd-backend-batch-interval string                            Maximum time before committing the backend transaction. (default "100ms")
+--etcd-backend-batch-limit int                                  Maximum operations before committing the backend transaction. (default 10000)
+--etcd-compaction-mode string                                   Compaction mode for etcd. Can be 'periodic' or 'revision' (default "revision")
+--etcd-compaction-retention string                              Compaction retention for etcd. Can express time or number of revisions, depending on the value of 'etcd-compaction-mode' (default "1000000")
 --etcd-experimental-bootstrap-defrag-threshold-megabytes uint   Minimum number of megabytes needed to be freed for etcd to consider running defrag during bootstrap. Needs to be set to non-zero value to take effect. (default 100)
 --etcd-max-snapshots uint                                       Maximum number of snapshot files to retain (0 is unlimited). (default 10)
+--etcd-max-txn-ops uint                                         Maximum number of operations permitted in a single etcd transaction. (default 10000)
 --etcd-max-wals uint                                            Maximum number of write-ahead logs to retain (0 is unlimited). (default 10)
---etcd-snapshot-count uint                                      Number of committed transactions to trigger a snapshot to disk. (default 10000)
+--etcd-snapshot-count uint                                      Number of committed transactions to trigger a snapshot to disk. (default 100000)
 ```
 
 Helm:
 
 ```yaml
-dapr_scheduler.etcdBackendBatchInterval="50ms"
-dapr_scheduler.etcdBackendBatchLimit=5000
-dapr_scheduler.etcdCompactionMode="periodic"
-dapr_scheduler.etcdCompactionRetention="10m"
+dapr_scheduler.etcdBackendBatchInterval="100ms"
+dapr_scheduler.etcdBackendBatchLimit=10000
+dapr_scheduler.etcdCompactionMode="revision"
+dapr_scheduler.etcdCompactionRetention="1000000"
 dapr_scheduler.etcdDefragThresholdMB=100
 dapr_scheduler.etcdMaxSnapshots=10
+dapr_scheduler.etcdMaxTxnOps=10000
 ```
 
 ## Related links
 
 - [Learn more about the Jobs API.]({{% ref jobs_api %}})
-- [Learn more about Actor Reminders.]{{% ref "actors-features-concepts#reminders" %}})
+- [Learn more about Actor Reminders.]({{% ref "actors-features-concepts#reminders" %}})

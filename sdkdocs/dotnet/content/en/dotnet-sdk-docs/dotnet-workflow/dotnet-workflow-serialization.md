@@ -23,12 +23,9 @@ This feature requires Dapr .NET SDK v1.17.0 or later.
 ## Compatibility and breaking changes
 
 {{% alert title="Warning" color="warning" %}}
-Changing serialization can be a breaking change for existing workflows. There is no supported migration path between
-serialization implementations.
+Changing serialization can be a breaking change for existing workflows. There is no supported migration path between serialization implementations.
 
-All Dapr SDKs use a standard JSON convention by default. If you change the serialization settings or switch to a custom
-serializer in your .NET workflows and activities, cross-SDK workflows may fail because other SDKs might not support
-your custom serialization format.
+All Dapr SDKs use a standard JSON convention by default. If you change the serialization settings or switch to a custom serializer in your .NET workflows and activities, cross-SDK workflows may fail because other SDKs might not support your custom serialization format.
 {{% /alert %}}
 
 ## Default JSON serialization
@@ -45,21 +42,20 @@ This default convention is designed to be compatible with other Dapr language SD
 
 ## Override `System.Text.Json` defaults
 
-To override the default JSON settings, register the workflow client using the workflow builder so you can provide
-custom `JsonSerializerOptions`:
+To override the default JSON settings, register the workflow client using the workflow builder so you can provide custom `JsonSerializerOptions`:
 
 ```csharp
 builder.Services
     .AddDaprWorkflowBuilder(options =>
     {
+        // Explicit registration is operation - the source generator discovers types automatically
         options.RegisterWorkflow<MyWorkflow>();
         options.RegisterActivity<MyActivity>();
     })
     .WithJsonSerializer(new JsonSerializerOptions { PropertyNamingPolicy = null });
 ```
 
-All `DaprWorkflowClient` instances resolved from DI will use the provided `JsonSerializerOptions` for workflow and
-activity payloads.
+All `DaprWorkflowClient` instances resolved from DI will use the provided `JsonSerializerOptions` for workflow and activity payloads.
 
 ## Custom serialization providers
 
@@ -137,6 +133,7 @@ Register the serializer with the workflow builder:
 builder.Services
     .AddDaprWorkflowBuilder(options =>
     {
+        // Explicit registration is operation - the source generator discovers types automatically
         options.RegisterWorkflow<MyWorkflow>();
         options.RegisterActivity<MyActivity>();
     })
@@ -149,6 +146,7 @@ If you need DI-provided configuration, use the overload that receives an `IServi
 builder.Services
     .AddDaprWorkflowBuilder(options =>
     {
+        // Explicit registration is operation - the source generator discovers types automatically
         options.RegisterWorkflow<MyWorkflow>();
         options.RegisterActivity<MyActivity>();
     })

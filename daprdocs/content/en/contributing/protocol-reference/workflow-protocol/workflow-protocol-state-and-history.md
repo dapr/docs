@@ -39,7 +39,9 @@ A sequence of `HistoryEvent` objects that record everything that has happened in
 To optimize for large histories, Dapr often stores history events in chunks or as separate keys in the state store:
 *   **Key Format**: `wf-history-<instance_id>-<index>`
 *   **Event Content**: Serialized protobuf message containing event type, timestamp, and type-specific data (e.g., 
-    `TaskScheduled`, `TaskCompleted`).
+    `TaskScheduled`, `TaskCompleted`). Some event types carry additional type-specific fields — for example,
+    `TimerCreated` events record an `origin` that identifies why the timer was scheduled (see
+    [Execution API]({{% ref "workflow-protocol-execution-api.md" %}})).
 
 ### 3. Inbox (Pending Events)
 A collection of events that have occurred but have not yet been processed by the orchestrator (replayed). This includes:

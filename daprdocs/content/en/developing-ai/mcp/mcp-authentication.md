@@ -1,8 +1,8 @@
 ---
 type: docs
 title: "Authenticating an MCP server"
-linkTitle: "Getting Started"
-weight: 20
+linkTitle: "Authenticating an MCP server"
+weight: 10
 description: "How to enable MCP client-side and server-side authentication"
 ---
 
@@ -202,3 +202,45 @@ dapr run --app-id mcpclient --resources-path ./components --dapr-http-port 3500 
 ```
 
 Dapr will start an OAuth2 pipeline when a request for the MCP server arrives.
+
+### Alternative: inbound JWT validation with bearer middleware
+
+To require that every inbound request to the MCP server carries a valid OAuth 2.0 token — without driving an OAuth2 flow on the server side — attach [`middleware.http.bearer`]({{% ref middleware-bearer.md %}}) to the MCP server's `appHttpPipeline`. The middleware validates the token's signature, issuer, and audience against a JWKS endpoint and rejects requests with missing or invalid tokens (`401 Unauthorized`) before reaching server code.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: bearer-validator
+spec:
+  type: middleware.http.bearer
+  version: v1
+  metadata:
+  - name: jwksURL
+    value: "https://auth.example.com/.well-known/jwks.json"
+  - name: audience
+    value: "mcp-server"
+  - name: issuer
+    value: "https://auth.example.com"
+```
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: bearer-server
+spec:
+  appHttpPipeline:
+    handlers:
+    - name: bearer-validator
+      type: middleware.http.bearer
+```
+
+Combine bearer validation with [App-ID-keyed access control]({{% ref mcp-access-control.md %}}) for defense in depth: `accessControl` decides *which callers* may reach the server; bearer validation insists they present a live, signed token.
+
+## See also
+
+- [MCP access control]({{% ref mcp-access-control.md %}}) — App-ID-keyed authorization at the service-invocation boundary.
+- [MCP security posture]({{% ref mcp-security.md %}}) — threat model and defense-in-depth narrative.
+- [Bearer middleware reference]({{% ref middleware-bearer.md %}}).
+- [OAuth2 middleware reference]({{% ref middleware-oauth2.md %}}).

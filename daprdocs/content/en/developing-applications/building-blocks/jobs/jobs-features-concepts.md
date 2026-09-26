@@ -87,7 +87,7 @@ callback function:
 ```go
 import rtv1 "github.com/dapr/dapr/pkg/proto/runtime/v1"
 ...
-func (s *JobService) OnJobEventAlpha1(ctx context.Context, in *rtv1.JobEventRequest) (*rtv1.JobEventResponse, error) {
+func (s *JobService) OnJobEvent(ctx context.Context, in *rtv1.JobEventRequest) (*rtv1.JobEventResponse, error) {
     // Handle the triggered job
 }
 ```
@@ -98,7 +98,7 @@ you register the callback server, which invokes this function when a job is trig
 ```go
 ...
 js := &JobService{}
-rtv1.RegisterAppCallbackAlphaServer(server, js)
+rtv1.RegisterAppCallbackServer(server, js)
 ```
 
 In this setup, you have full control over how triggered jobs are received and processed, as they are routed directly

@@ -8,14 +8,12 @@ description: Learn how to use patch-based and name-based workflow versioning in 
 
 ## Overview
 
-Dapr Workflow versioning lets you evolve workflows without breaking deterministic execution for in-flight instances.
-The .NET SDK supports two approaches:
+Dapr Workflow versioning lets you evolve workflows without breaking deterministic execution for in-flight instances. The .NET SDK supports two approaches:
 
 - **Patch-based versioning**: introduce conditional branches guarded by `context.IsPatched("patch-name")`.
 - **Name-based versioning**: create a new workflow type name and let a versioning strategy select the newest version.
 
-Use patch-based versioning for small, in-place changes. Use name-based versioning for larger refactors where you want
-a clean new workflow type.
+Use patch-based versioning for small, in-place changes. Use name-based versioning for larger refactors where you want a clean new workflow type.
 
 {{% alert title="Note" color="primary" %}}
 Workflow versioning requires Dapr .NET SDK v1.17.0 or later and Dapr runtime v1.17.0 or later.
@@ -62,36 +60,28 @@ public override async Task RunAsync(WorkflowContext context, OrderPayload input)
 - `IsPatched` is available on `WorkflowContext`; no additional setup is required.
 
 {{% alert title="Tip" color="primary" %}}
-Keep patch names simple and monotonic (for example, `"v2"`, `"v3"`) so it is clear which deployment introduced each
-change.
+Keep patch names simple and monotonic (for example, `"v2"`, `"v3"`) so it is clear which deployment introduced each change.
 {{% /alert %}}
 
 ## Name-based versioning
 
-Name-based versioning lets you create a new workflow version by changing the workflow type name. The recommended
-pattern is to copy the existing workflow to a new file, rename the class, refactor as needed, and then start patching
-again if necessary.
+Name-based versioning lets you create a new workflow version by changing the workflow type name. The recommended pattern is to copy the existing workflow to a new file, rename the class, refactor as needed, and then start patching again if necessary.
 
-For example, if you had `OrderWorkflow`, create `OrderWorkflowV2` and refactor it. Older versions can remain for
-in-flight instances while new instances use the latest version.
+For example, if you had `OrderWorkflow`, create `OrderWorkflowV2` and refactor it. Older versions can remain for in-flight instances while new instances use the latest version.
 
 ### Default naming behavior
 
-By default, name-based versioning uses the built-in **NumericVersionStrategy** with a numeric suffix. The following
-are all valid examples:
+By default, name-based versioning uses the built-in **NumericVersionStrategy** with a numeric suffix. The following are all valid examples:
 
 - `MyWorkflow` (treated as version `0`)
 - `MyWorkflow2`
 - `MyWorkflowV2`
 
-The default strategy assumes higher numeric values are newer (for example, `MyWorkflowV10` is newer than
-`MyWorkflowV2`). The .NET SDK also includes other built-in strategies (Date, SemVer, and Numeric) plus support for
-custom strategies.
+The default strategy assumes higher numeric values are newer (for example, `MyWorkflowV10` is newer than `MyWorkflowV2`). The .NET SDK also includes other built-in strategies (Date, SemVer, and Numeric) plus support for custom strategies.
 
 ### Built-in strategies and options
 
-The .NET SDK ships with several built-in name-based strategies. Each strategy supports options that let you tune how
-the suffix is parsed and what to do when no suffix is present.
+The .NET SDK ships with several built-in name-based strategies. Each strategy supports options that let you tune how the suffix is parsed and what to do when no suffix is present.
 
 - **DateVersionStrategy**: Derives a date-based version from a trailing suffix (for example, `MyWorkflow20220611`).
   Options include:
@@ -114,7 +104,7 @@ the suffix is parsed and what to do when no suffix is present.
 
 ### 1. Install the versioning package
 
-Add the `Dapr.Workflow.Versioning` package to your project.
+If you haven't already added it, you need to add the `Dapr.Workflow` package to your project. No additional packages are required.
 
 ### 2. Register workflow versioning
 
@@ -149,13 +139,17 @@ builder.Services.ConfigureStrategyOptions<NumericVersionStrategyOptions>("workfl
 The option key strings must match exactly or the options will not be applied.
 {{% /alert %}}
 
-### 5. Register activities
+### 5. Register workflows and activities
+With the source generator included in `Dapr.Workflow`, both workflows and activities are discovered and registered automatically at build time. You do not need to opt into named workflow versioning to benefit from this automatic registration.
 
-Activities are registered as usual. Workflows do not need to be registered when using name-based versioning because a 
-source generator discovers them at build time.
-
+The `AddDaprWorkflow()` call is still required to wire up Dapr workflow services, but the options delegate is now optional:
 ```csharp
-builder.Services.AddDaprWorkflow(w =>
+builder.Services.AddDaprWorkflow();
+```
+
+Explicit registrations remain supported if you prefer them:
+```csharp
+builder.Services.AddDaprWorkflow(w => 
 {
     w.RegisterActivity<SendEmailActivity>();
 });
@@ -164,13 +158,9 @@ builder.Services.AddDaprWorkflow(w =>
 Once configured, named workflow versioning is applied automatically at runtime.
 
 ## Cross-assembly workflow discovery
+By default, the workflow versioning source generator only scans the executing assembly. If you keep workflows in a separate referenced assembly, those implementations are not discovered unless you opt in to reference scanning.
 
-By default, the workflow versioning source generator only scans the executing assembly. If you keep workflows in a
-separate referenced assembly, those implementations are not discovered unless you opt in to reference scanning.
-
-Reference scanning is disabled by default because it can increase build times (the generator must inspect all
-referenced assemblies for `Workflow<,>` implementations). To enable it, add the following to the executing
-application's `.csproj` file:
+Reference scanning is disabled by default because it can increase build times (the generator must inspect all referenced assemblies for workflow and activity implementations). To enable it, add the following to the executing application's `.csproj` file:
 
 ```xml
 <ItemGroup>
@@ -178,8 +168,7 @@ application's `.csproj` file:
 </ItemGroup>
 ```
 
-When enabled, the source generator adds any discovered workflow implementations from referenced assemblies to the
-internal registry used for version tracking.
+When enabled, the source generator adds any discovered workflow and activity types from all referenced assemblies and registers them automatically. This applies regardless of whether you used named workflow versioning - it is a general-purpose discovery mechanism.
 
 ## Override name and version
 

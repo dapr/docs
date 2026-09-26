@@ -2,7 +2,7 @@
 type: docs
 title: "Dapr State Management .NET SDK"
 linkTitle: "State Management"
-weight: 53000
+weight: 180000
 description: Get up and running with Dapr State Management .NET SDK
 ---
 

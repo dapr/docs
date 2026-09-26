@@ -89,7 +89,6 @@ To debug the target Dapr service (Dapr operator in this case), its pre-configure
 $ kubectl get pods -n dapr-system -o wide
 
 NAME                                     READY   STATUS    RESTARTS   AGE   IP            NODE       NOMINATED NODE   READINESS GATES
-dapr-dashboard-64b46f98b6-dl2n9          1/1     Running   0          61s   172.17.0.9    minikube   <none>           <none>
 dapr-operator-7878f94fcd-6bfx9           1/1     Running   1          61s   172.17.0.7    minikube   <none>           <none>
 dapr-placement-server-0                  1/1     Running   1          61s   172.17.0.8    minikube   <none>           <none>
 dapr-sentry-68c7d4c7df-sc47x             1/1     Running   0          61s   172.17.0.6    minikube   <none>           <none>

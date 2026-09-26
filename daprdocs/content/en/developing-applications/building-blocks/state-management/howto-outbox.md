@@ -79,6 +79,8 @@ This is the sequence of interactions:
 
    This way each outbox topic is uniquely identified per application and external topic, preventing routing conflicts in multi-tenant environments.
 
+   You can override the auto-generated name by setting the `outboxInternalTopic` metadata field. When set, this value is used as the complete internal topic name with no namespace, appID, or suffix appended.
+
    {{% alert title="Note" color="primary" %}}
    Ensure that the topic is created in advance, or Dapr has sufficient permissions to create the topic at startup time.
    {{% /alert %}}
@@ -104,6 +106,8 @@ spec:
     value: "newOrder"
   - name: outboxPubsub # Optional
     value: "myOutboxPubsub"
+  - name: outboxInternalTopic # Optional
+    value: "myapp-neworder-outbox"
   - name: outboxDiscardWhenMissingState #Optional. Defaults to false
     value: false
 ```
@@ -115,6 +119,7 @@ spec:
 | outboxPublishPubsub | Yes         | N/A           | Sets the name of the pub/sub component to deliver the notifications when publishing state changes
 | outboxPublishTopic  | Yes         | N/A           | Sets the topic that receives the state changes on the pub/sub configured with `outboxPublishPubsub`. The message body will be a state transaction item for an `insert` or `update` operation
 | outboxPubsub        | No          | `outboxPublishPubsub`           | Sets the pub/sub component used by Dapr to coordinate the state and pub/sub transactions. If not set, the pub/sub component configured with `outboxPublishPubsub` is used. This is useful if you want to separate the pub/sub component used to send the notification state changes from the one used to coordinate the transaction
+| outboxInternalTopic | No          | Auto-generated | Sets the internal outbox topic name. When set, this value is used as the complete topic name with no namespace, appID, or suffix appended. When empty, the default naming convention `{namespace}{appID}{topic}outbox` is used
 | outboxDiscardWhenMissingState  | No         | `false`           | By setting `outboxDiscardWhenMissingState` to `true`, Dapr discards the transaction if it cannot find the state in the database and does not retry. This setting can be useful if the state store data has been deleted for any reason before Dapr was able to deliver the message and you would like Dapr to drop the items from the pub/sub and stop retrying to fetch the state
 
 ## Additional configurations

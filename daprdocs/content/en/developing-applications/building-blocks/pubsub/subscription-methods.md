@@ -21,9 +21,14 @@ The examples below demonstrate pub/sub messaging between a `checkout` app and an
 ### Declarative subscriptions
 
 {{% alert title="Note" color="primary" %}}
-This feature is currently in preview.
-Dapr can be made to "hot reload" declarative subscriptions, whereby updates are picked up automatically without needing a restart.
-This is enabled by via the [`HotReload` feature gate]({{% ref "support-preview-features" %}}).
+Declarative subscriptions are "hot reloaded" by default, whereby updates are picked up automatically without needing a restart. To opt out, disable the `HotReload` feature in the Dapr application configuration:
+
+```yaml
+spec:
+  features:
+    - name: HotReload
+      enabled: false
+```
 To prevent reprocessing or loss of unprocessed messages, in-flight messages between Dapr and your application are unaffected during hot reload events.
 {{% /alert %}}
 
@@ -207,18 +212,20 @@ The example below shows the different ways to stream subscribe to a topic.
 
 You can use the `SubscribeAsync` method on the `DaprPublishSubscribeClient` to configure the message handler to use to pull messages from the stream.
 
-```c#
+```csharp
 using System.Text;
+using Dapr.Messaging;
 using Dapr.Messaging.PublishSubscribe;
-using Dapr.Messaging.PublishSubscribe.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDaprPubSubClient();
+builder.Services.AddDaprMessaging()
+    .AddDaprPubSub();
+
 var app = builder.Build();
 
 var messagingClient = app.Services.GetRequiredService<DaprPublishSubscribeClient>();
 
-//Create a dynamic streaming subscription and subscribe with a timeout of 30 seconds and 10 seconds for message handling
+// Create a dynamic streaming subscription and subscribe with a timeout of 30 seconds and 10 seconds for message handling
 var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(30));
 var subscription = await messagingClient.SubscribeAsync("pubsub", "myTopic",
     new DaprSubscriptionOptions(new MessageHandlingPolicy(TimeSpan.FromSeconds(10), TopicResponseAction.Retry)),
@@ -226,16 +233,16 @@ var subscription = await messagingClient.SubscribeAsync("pubsub", "myTopic",
 
 await Task.Delay(TimeSpan.FromMinutes(1));
 
-//When you're done with the subscription, simply dispose of it
+// When you're done with the subscription, dispose of it to cleanly stop receiving events
 await subscription.DisposeAsync();
 return;
 
-//Process each message returned from the subscription
+// Process each message returned from the subscription
 Task<TopicResponseAction> HandleMessageAsync(TopicMessage message, CancellationToken cancellationToken = default)
 {
     try
     {
-        //Do something with the message
+        // Do something with the message
         Console.WriteLine(Encoding.UTF8.GetString(message.Data.Span));
         return Task.FromResult(TopicResponseAction.Success);
     }
@@ -246,7 +253,7 @@ Task<TopicResponseAction> HandleMessageAsync(TopicMessage message, CancellationT
 }
 ```
 
-[Learn more about streaming subscriptions using the .NET SDK client.]({{% ref "dotnet-messaging-pubsub-howto" %}})
+[Learn more about pub/sub subscriptions using the .NET SDK.]({{% ref "dotnet-messaging-subscribe-howto" %}})
 
 {{% /tab %}}
 

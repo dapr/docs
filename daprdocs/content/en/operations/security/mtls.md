@@ -275,22 +275,47 @@ helm upgrade \
   dapr/dapr
 ```
 
-Alternatively, you can update the Kubernetes secret that holds them:
+Alternatively, you can update the Kubernetes objects that hold them. The trust bundle is stored in two objects in the Dapr system namespace: the `dapr-trust-bundle` **Secret** holds the root certificate, issuer certificate, and issuer key, while the `dapr-trust-bundle` **ConfigMap** distributes the public root certificate to the rest of the system. Sentry validates them as a pair: if the root certificate in the ConfigMap does not match the one in the Secret, Sentry discards the bundle and generates a new self-signed 1-year CA in its place, overwriting the certificates you just applied. Helm and the Dapr CLI keep both objects in sync automatically; when updating with `kubectl` you must update both yourself.
 
-```bash
-kubectl edit secret dapr-trust-bundle -n <DAPR_NAMESPACE>
-```
+1. Update the Secret:
 
-Replace the `ca.crt`, `issuer.crt` and `issuer.key` keys in the Kubernetes secret with their corresponding values from the new certificates.
-*__Note: The values must be base64 encoded__*
+    ```bash
+    kubectl edit secret dapr-trust-bundle -n <DAPR_NAMESPACE>
+    ```
+
+    Replace the `ca.crt`, `issuer.crt` and `issuer.key` keys in the Kubernetes secret with their corresponding values from the new certificates.
+    *__Note: The values must be base64 encoded__*
+
+2. If you replaced the root certificate (`ca.crt`), update the ConfigMap with the identical root certificate. Note the ConfigMap value is plain PEM, not base64:
+
+    ```bash
+    kubectl create configmap dapr-trust-bundle --from-file=ca.crt=root.pem \
+      --dry-run=client -o yaml | kubectl apply -n <DAPR_NAMESPACE> -f -
+    ```
+
+    The ConfigMap only contains the root certificate, so if `ca.crt` did not change — for example, you only renewed the issuer certificate and key — skip this step.
 
 If you signed the new cert root with the **same private key** the Dapr Sentry service will pick up the new certificates automatically. You can restart your application deployments using `kubectl rollout restart` with zero downtime. It is not necessary to restart all deployments at once, as long as deployments are restarted before original certificate expiration.
 
 If you signed the new cert root with a **different private key**, you must restart the Dapr Sentry service, followed by the remainder of the Dapr control plane service.
 
+{{% alert title="Workflow history signing: protect long-running workflows during CA rotation" color="warning" %}}
+If you rotate to a completely new root CA (different private key), any running workflows with [signed history]({{% ref "workflow-history-signing.md" %}}) will fail signature verification because their signing certificates were issued by the old CA. Those workflows will be reported as FAILED with error type `SignatureVerificationFailed`.
+
+For long-running workflows (anything that may outlive your CA's validity period, typically one year for the Dapr-generated self-signed root), plan ahead:
+
+- **Preferred:** Sign your renewed issuer cert with the **same root private key** you used previously. Existing signed workflows continue to verify against the same root, so you can rotate the leaf/issuer without downtime. The CLI command `dapr mtls renew-certificate -k --private-key <existing-root-key> --valid-until <days>` does this.
+- **Bring your own CA:** Generate your own root key, store it securely (HSM or secret store), and reuse it across all issuer renewals. Self-signed Dapr-generated roots cannot be reused this way.
+- **Last resort:** If you must rotate to a new root key, complete or [purge]({{% ref "howto-manage-workflow.md" %}}) all signed in-flight workflows first. Signing is a one-way commitment, so there is no re-sign path under the new root.
+
+See [long-running workflows and root CA expiry]({{% ref "workflow-history-signing.md#long-running-workflows-and-root-ca-expiry" %}}) for the full guidance.
+{{% /alert %}}
+
 ```bash
 kubectl rollout restart deploy/dapr-sentry -n <DAPR_NAMESPACE>
 ```
+
+After Sentry reloads or restarts, check its logs to confirm your certificates were accepted. If you see `Root and issuer certs not found: generating self signed CA`, the root certificate in the ConfigMap does not match the Secret, and Sentry has replaced your certificates with a new self-signed CA.
 
 Once Sentry has been completely restarted run:
 
@@ -350,7 +375,6 @@ dapr status -k
   NAME                   NAMESPACE    HEALTHY  STATUS   REPLICAS  VERSION   AGE  CREATED
   dapr-operator          dapr-system  True     Running  1         1.15.1    4m   2025-02-19 17:36.26
   dapr-placement-server  dapr-system  True     Running  1         1.15.1    4m   2025-02-19 17:36.27
-  dapr-dashboard         dapr-system  True     Running  1         0.15.0    4m   2025-02-19 17:36.27
   dapr-sentry            dapr-system  True     Running  1         1.15.1    4m   2025-02-19 17:36.26
   dapr-scheduler-server  dapr-system  True     Running  3         1.15.1    4m   2025-02-19 17:36.27
   dapr-sidecar-injector  dapr-system  True     Running  1         1.15.1    4m   2025-02-19 17:36.26
@@ -502,6 +526,10 @@ By default, system services will look for the credentials in `/var/run/dapr/cred
 
 *Note: If you signed the cert root with a different private key, restart the Dapr instances.*
 
+{{% alert title="Workflow history signing: protect long-running workflows during CA rotation" color="warning" %}}
+If you rotate to a completely new root CA (different private key), any running workflows with [signed history]({{% ref "workflow-history-signing.md" %}}) will fail signature verification. To avoid this in self-hosted mode, renew the issuer with the **same root private key** (reuse `ca.key`), or complete and purge signed in-flight workflows before rotating to a new root key. See [long-running workflows and root CA expiry]({{% ref "workflow-history-signing.md#long-running-workflows-and-root-ca-expiry" %}}) for the full guidance.
+{{% /alert %}}
+
 ## Community call video on certificate rotation
 Watch this [video](https://www.youtube.com/watch?v=Hkcx9kBDrAc&feature=youtu.be&t=1400) on how to perform certificate rotation if your certificates are expiring.
 
@@ -570,3 +598,8 @@ spec:
           source: |
             {"keys":[ "12345.." ]}
 ```
+
+## Related links
+
+- [Security concepts]({{% ref security-concept.md %}})
+- [How-To: Apply workflow access policies]({{% ref workflow-access-policy.md %}}): mTLS is required for cross-app workflow access enforcement, because the caller's identity is taken from the SPIFFE ID in the mTLS certificate.

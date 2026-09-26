@@ -12,6 +12,10 @@ Using access control, you can configure policies that restrict what the operatio
 
 An access control policy is specified in Configuration and applied to the Dapr sidecar for the _called_ application. Access to the called app is based on the matched policy action. 
 
+{{% alert title="Workflow access control" color="primary" %}}
+To restrict which applications can schedule workflows and activities cross-app, use a [`WorkflowAccessPolicy`]({{% ref workflow-access-policy.md %}}) instead. Service invocation access control does not cover cross-app workflow scheduling.
+{{% /alert %}}
+
 You can provide a default global action for all calling applications. If no access control policy is specified, the default behavior is to allow all calling applications to access to the called app.
 
 [See examples of access policies.](#example-scenarios)

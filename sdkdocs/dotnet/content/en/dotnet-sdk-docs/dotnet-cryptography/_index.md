@@ -2,7 +2,7 @@
 type: docs
 title: "Dapr Cryptography .NET SDK"
 linkTitle: "Cryptography"
-weight: 51000
+weight: 140000
 description: Get up and running with the Dapr Cryptography .NET SDK
 ---
 

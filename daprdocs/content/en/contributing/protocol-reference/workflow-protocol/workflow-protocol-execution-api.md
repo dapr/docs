@@ -8,7 +8,7 @@ description: "Low-level description of the Workflow building block internals."
 
 # Workflow Execution API (Task Hub Protocol)
 
-The Workflow Execution API is a low-level gRPC protocol used by Dapr Workflow SDKs to act as "Workers". The SDK 
+The Workflow Execution API is a low-level gRPC protocol used by Dapr Workflow SDKs to act as "Workers". The SDK
 connects to the Dapr sidecar via this protocol to poll for work and report completion.
 
 The service is named `TaskHubSidecarService`.
@@ -81,7 +81,7 @@ Reports the result of an activity execution.
 
 ### HistoryEvent
 
-Workflows in Dapr are event-sourced. The state of an orchestration is rebuilt by replaying a sequence of 
+Workflows in Dapr are event-sourced. The state of an orchestration is rebuilt by replaying a sequence of
 `HistoryEvent` messages.
 
 Common event types:
@@ -92,6 +92,15 @@ Common event types:
 *   `TimerCreated`: A timer was scheduled.
 *   `TimerFired`: A timer expired.
 *   `OrchestrationCompleted`: The workflow finished.
+
+#### Timer origin
+
+`TimerCreated` events record an `origin` that identifies why the timer was scheduled. This is internal engine bookkeeping (also surfaced by the `dapr workflow history` command); it does not change how developers author workflows or how timers behave. The possible origins are:
+
+*   `createTimer`: An explicit durable timer created by the workflow (for example, `ctx.create_timer(...)`).
+*   `externalEvent`: A timer backing a "wait for external event" call that has a timeout. Carries the event name.
+*   `activityRetry`: A timer backing the delay between activity retry attempts. Carries the failing task's execution ID.
+*   `childWorkflowRetry`: A timer backing the delay between child-workflow retry attempts. Carries the child instance ID.
 
 ### FailureDetails
 
@@ -104,7 +113,7 @@ Used to report errors from activities or orchestrations.
 ## Protocol Nuances
 
 *   **Streaming**: `GetWorkItems` is a server-to-client stream. Dapr pushes work to the SDK as it becomes available.
-*   **Sticky Sessions**: Dapr attempts to send work items for the same instance to the same worker if possible, but 
+*   **Sticky Sessions**: Dapr attempts to send work items for the same instance to the same worker if possible, but
 the SDK must not rely on this for correctness.
-*   **Determinism**: The SDK **must** ensure that the orchestration logic is deterministic. During replay, the SDK 
+*   **Determinism**: The SDK **must** ensure that the orchestration logic is deterministic. During replay, the SDK
 uses the history provided in the `OrchestratorWorkItem` to avoid re-executing actions that have already been recorded.

@@ -148,6 +148,12 @@ spec:
           -----END CERTIFICATE-----
 ```
 
+## Secret rotation
+
+Secrets retrieved through the [secrets API]({{% ref secrets_api.md %}}) are read from Vault on every request, so applications calling the API always receive the current version of a secret.
+
+However, secrets referenced in a component definition with `secretKeyRef` and `auth.secretStore` pointing to a Vault secret store are only resolved when the component is initialized. Rotating the secret in Vault does not trigger a reload of the component, which keeps using the old value until the Dapr sidecar is restarted or the component manifest is changed. Read [updating referenced secrets]({{% ref "component-secrets.md#updating-referenced-secrets" %}}) for more details.
+
 ## Related links
 - [Secrets building block]({{% ref secrets %}})
 - [How-To: Retrieve a secret]({{% ref "howto-secrets.md" %}})

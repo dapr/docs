@@ -1,0 +1,48 @@
+{{/*
+  Site-wide announcement banner.
+  Rendered from the navbar.html override (prepended before <nav>).
+  Config lives in hugo.yaml under params.announcements.
+  Items are filtered by their optional start/end date window at build time.
+  Emits NOTHING when disabled or when no items are active.
+*/}}
+{{ with .Site.Params.announcements }}
+  {{ if .enabled }}
+    {{ $now := now }}
+    {{ $active := slice }}
+    {{ range .items }}
+      {{ $show := true }}
+      {{ with .start }}{{ if $now.Before (time.AsTime .) }}{{ $show = false }}{{ end }}{{ end }}
+      {{/* end is exclusive at midnight of the given day */}}
+      {{ with .end }}{{ if $now.After (time.AsTime .) }}{{ $show = false }}{{ end }}{{ end }}
+      {{ if $show }}{{ $active = $active | append . }}{{ end }}
+    {{ end }}
+    {{ if gt (len $active) 0 }}
+      {{ $multi := gt (len $active) 1 }}
+      <div id="announcement-banner" class="announcement-banner" role="region" aria-label="Site announcements" data-rotate-interval="{{ .rotate_interval | default 6000 }}">
+        <div class="announcement-banner__inner">
+          {{ if $multi }}<button type="button" class="announcement-banner__nav announcement-banner__prev" aria-label="Previous announcement">&lsaquo;</button>{{ end }}
+          <div class="announcement-banner__viewport">
+            {{ range $i, $item := $active }}
+              <div class="announcement-banner__slide{{ if eq $i 0 }} is-active{{ end }}" data-index="{{ $i }}"{{ if ne $i 0 }} hidden{{ end }}>
+                <span class="announcement-banner__text">{{ $item.text }}</span>
+                {{ with $item.link }}
+                  {{ $external := or (hasPrefix . "http://") (hasPrefix . "https://") }}
+                  <a class="announcement-banner__link" href="{{ if $external }}{{ . | safeURL }}{{ else }}{{ . | relLangURL }}{{ end }}"{{ if $external }} rel="noopener noreferrer"{{ end }}>{{ $item.link_text | default "Learn more" }}</a>
+                {{ end }}
+              </div>
+            {{ end }}
+          </div>
+          {{ if $multi }}<button type="button" class="announcement-banner__nav announcement-banner__next" aria-label="Next announcement">&rsaquo;</button>{{ end }}
+          {{ if $multi }}
+          <div class="announcement-banner__dots" aria-label="Choose announcement">
+            {{ range $i, $item := $active }}
+              <button type="button" class="announcement-banner__dot{{ if eq $i 0 }} is-active{{ end }}" data-index="{{ $i }}" aria-label="Show announcement {{ add $i 1 }}" aria-current="{{ if eq $i 0 }}true{{ else }}false{{ end }}"></button>
+            {{ end }}
+          </div>
+          {{ end }}
+          <button type="button" class="announcement-banner__close" aria-label="Dismiss announcements">&times;</button>
+        </div>
+      </div>
+    {{ end }}
+  {{ end }}
+{{ end }}

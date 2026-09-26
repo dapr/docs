@@ -164,11 +164,18 @@ You can delete a record in Redis using the `delete` operation. Returns success w
 An HTTP 204 (No Content) and empty body is returned if successful.
 
 
+## Supported servers and versions
+
+Dapr's Redis binding component is tested against the following Redis and Valkey versions:
+
+| Server | Versions |
+|--------|----------|
+| Redis | 6.x, 7.x |
+| [Valkey](https://valkey.io) | 8.x, 9.x |
+
 ## Create a Redis instance
 
-Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service, provided the version of Redis is 5.0.0 or later.
-
-*Note: Dapr does not support Redis >= 7. It is recommended to use Redis 6*
+Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service.
 
 {{< tabpane text=true >}}
 

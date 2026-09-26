@@ -1,0 +1,118 @@
+/* Restyled with the project's --d-* design tokens (see daprdocs/assets/scss/_tokens.scss)
+   so this always-loaded static stylesheet follows both themes instead of
+   being hardcoded to a light-only look. */
+.cookie-banner {
+  box-sizing: border-box;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: var(--d-ground);
+  border-top: 1px solid var(--d-border);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+  font-family: inherit;
+  color: var(--d-body);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+[data-bs-theme="dark"] .cookie-banner {
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.cookie-banner[hidden] {
+  display: none;
+}
+
+.cookie-banner__inner {
+  box-sizing: border-box;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.cookie-banner__text {
+  flex: 1 1 320px;
+  min-width: 0;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.cookie-banner__actions {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.cookie-banner__btn {
+  width: auto;
+  min-width: 88px;
+  height: auto;
+  padding: 8px 18px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+#cookie-banner-reject.cookie-banner__btn {
+  background-color: var(--d-ground);
+  border-color: var(--d-border);
+  color: var(--d-body);
+}
+
+#cookie-banner-reject.cookie-banner__btn:hover {
+  background-color: var(--d-panel);
+  border-color: var(--d-muted);
+  color: var(--d-body);
+}
+
+.cookie-banner__btn:focus-visible {
+  outline: 2px solid var(--d-blue);
+  outline-offset: 2px;
+}
+
+/* .cookie-banner__accept relies on Bootstrap's plain .btn-primary (this
+   banner lives outside .td-content, so _buttons.scss's tokenized
+   `.td-content .btn-primary` rule doesn't reach it) — tokenize it directly,
+   scoped narrowly so it doesn't affect other .btn-primary usages. */
+#cookie-banner-accept.cookie-banner__btn {
+  background-color: var(--d-blue);
+  border-color: var(--d-blue);
+  color: var(--d-on-accent);
+}
+
+/* In dark mode --d-blue is a light pastel; white text on it fails contrast.
+   Use the sky brand color with dark text for a legible, prominent CTA. */
+[data-bs-theme="dark"] #cookie-banner-accept.cookie-banner__btn {
+  background-color: var(--d-sky);
+  border-color: var(--d-sky);
+  color: var(--d-on-sky);
+}
+
+#cookie-banner-accept.cookie-banner__btn:hover {
+  filter: brightness(1.06);
+}
+
+@media (max-width: 640px) {
+  .cookie-banner__inner {
+    padding: 20px 14px;
+  }
+
+  .cookie-banner__text {
+    flex-basis: 100%;
+    text-align: center;
+  }
+
+  .cookie-banner__actions {
+    flex-basis: 100%;
+  }
+}

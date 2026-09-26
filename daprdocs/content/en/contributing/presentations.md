@@ -14,7 +14,7 @@ We encourage community members to give presentations on Dapr. To get you started
 
 There is a downloadable zip file that contains all slide decks.
 
-{{< button text="Download the Dapr Presentation Decks" link="/presentations/dapr-slidedecks.zip" >}}
+{{< button text="Download the Dapr Presentation Decks" link="https://diagrid.ws/dapr-slidedecks" >}}
 
 {{% alert color="primary" %}}
 If you're using the PowerPoint template with MacOS, please install the Space Grotesk font to ensure the text is rendered properly:
@@ -25,7 +25,7 @@ brew install --cask font-space-grotesk
 
 ## Giving a Dapr presentation
 
-- Begin by downloading the [Dapr Presentation Decks](/presentations/dapr-slidedecks.zip). These contain slides, diagrams, and graphical assets.
+- Begin by downloading the [Dapr Presentation Decks](https://diagrid.ws/dapr-slidedecks). These contain slides, diagrams, and graphical assets.
 - Next, review the docs to make sure you understand the [concepts]({{% ref concepts %}}).
 - Use the Dapr [quickstarts](https://github.com/dapr/quickstarts) repo to show demos of how to use Dapr.
 - Once you've done a Dapr presentation, claim the *Dapr Presenter* badge by adding your presentation to [this table](https://github.com/dapr/community/tree/master/presentations) in the Dapr Community repository.
