@@ -1176,6 +1176,6 @@ We're continuously working to improve our Quickstart examples and value your fee
 Join the discussion in our [discord channel](https://discord.com/channels/778680217417809931/953427615916638238).
 
 ## Next steps
-Visit [this](https://docs.dapr.io/operations/resiliency/resiliency-overview//) link for more information about Dapr resiliency.
+Visit [this](https://docs.dapr.io/operations/resiliency/resiliency-overview/) link for more information about Dapr resiliency.
 
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}
