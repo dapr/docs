@@ -824,6 +824,186 @@ fmt.Println("Published data: ", order)
 
 {{% /tab %}}
 
+ <!-- PHP -->
+{{% tab "PHP" %}}
+
+### Step 1: Pre-requisites
+
+For this example, you will need:
+
+- [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
+- [PHP 8.4+ installed](https://www.php.net/downloads.php).
+- [Composer](https://getcomposer.org/download/).
+<!-- IGNORE_LINKS -->
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+<!-- END_IGNORE -->
+
+### Step 2: Set up the environment
+
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub/php/sdk).
+
+```bash
+git clone https://github.com/dapr/quickstarts.git
+```
+
+From the root of the Quickstarts directory, navigate into the pub/sub directory:
+
+```bash
+cd pub_sub/php/sdk
+```
+
+Install the dependencies for the `order-processor` and `checkout` apps:
+
+```bash
+composer install
+```
+
+### Step 3: Run the publisher and subscriber
+
+With the following command, simultaneously run the following services alongside their own Dapr sidecars:
+- The `order-processor` subscriber
+- The `checkout` publisher
+
+```bash
+dapr run -f .
+```
+
+**Expected output**
+
+```
+== APP - order-processor-sdk == Order processor listening on port 6002
+== APP - order-processor-sdk == Dapr pub/sub is subscribed to: [{"pubsubname":"orderpubsub","topic":"orders","route":"orders"}]
+== APP - checkout-sdk == Published data: {"orderId":1}
+== APP - order-processor-sdk == Subscriber received : 1
+== APP - checkout-sdk == Published data: {"orderId":2}
+== APP - order-processor-sdk == Subscriber received : 2
+== APP - checkout-sdk == Published data: {"orderId":3}
+== APP - order-processor-sdk == Subscriber received : 3
+== APP - checkout-sdk == Published data: {"orderId":4}
+== APP - order-processor-sdk == Subscriber received : 4
+== APP - checkout-sdk == Published data: {"orderId":5}
+== APP - order-processor-sdk == Subscriber received : 5
+== APP - checkout-sdk == Published data: {"orderId":6}
+== APP - order-processor-sdk == Subscriber received : 6
+== APP - checkout-sdk == Published data: {"orderId":7}
+== APP - order-processor-sdk == Subscriber received : 7
+== APP - checkout-sdk == Published data: {"orderId":8}
+== APP - order-processor-sdk == Subscriber received : 8
+== APP - checkout-sdk == Published data: {"orderId":9}
+== APP - order-processor-sdk == Subscriber received : 9
+Exited App successfully
+```
+
+### What happened?
+
+When you ran `dapr init` during Dapr install, the following YAML files were generated in the `.dapr/components` directory:
+- [`dapr.yaml` Multi-App Run template file]({{% ref "#dapryaml-multi-app-run-template-file" %}})
+- [`pubsub.yaml` component file]({{% ref "#pubsubyaml-component-file" %}})
+
+Running `dapr run -f .` in this Quickstart started both the [subscriber]({{% ref "#order-processor-subscriber" %}}) and [publisher]({{% ref "#checkout-publisher" %}}) applications.
+
+##### `dapr.yaml` Multi-App Run template file
+
+Running the [Multi-App Run template file]({{% ref multi-app-dapr-run %}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
+
+```yml
+version: 1
+common:
+  resourcesPath: ../../components/
+apps:
+  - appID: order-processor-sdk
+    appDirPath: ./order-processor/
+    appPort: 6002
+    command: ["php", "app.php"]
+  - appID: checkout-sdk
+    appDirPath: ./checkout/
+    command: ["php", "app.php"]
+```
+
+The `order-processor` subscriber runs as a long-lived PHP CLI process. Because Dapr delivers pub/sub messages over HTTP, the subscriber starts an embedded [ReactPHP](https://reactphp.org/) HTTP server on its `appPort` to receive them. The `checkout` publisher is a short-lived PHP CLI process that publishes its messages and exits.
+
+##### `pubsub.yaml` component file
+
+With the `pubsub.yaml` component, you can easily swap out underlying components without application code changes.
+
+The Redis `pubsub.yaml` file included for this Quickstart contains the following:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: orderpubsub
+spec:
+  type: pubsub.redis
+  version: v1
+  metadata:
+  - name: redisHost
+    value: localhost:6379
+  - name: redisPassword
+    value: ""
+```
+
+In the component YAML file:
+
+- `metadata/name` is how your application talks to the component.
+- `spec/metadata` defines the connection to the instance of the component.
+- `scopes` specify which application can use the component.
+
+##### `order-processor` subscriber
+
+In the `order-processor` subscriber, you subscribe to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
+
+```php
+// Register Dapr pub/sub subscriptions
+$subscriptions = [
+    new Subscription(pubsubname: 'orderpubsub', topic: 'orders', route: 'orders'),
+];
+
+$http = new HttpServer(function (ServerRequestInterface $request) use ($subscriptions) {
+    $path = $request->getUri()->getPath();
+
+    // Dapr calls this endpoint at startup to discover subscriptions
+    if ($request->getMethod() === 'GET' && $path === '/dapr/subscribe') {
+        return new Response(200, ['Content-Type' => 'application/json'], json_encode($subscriptions));
+    }
+
+    // Dapr delivers messages for the "orders" subscription to this route
+    if ($request->getMethod() === 'POST' && $path === '/orders') {
+        $event = CloudEvent::parse((string) $request->getBody());
+        echo 'Subscriber received : ' . $event->data['orderId'] . PHP_EOL;
+        return new Response(200, ['Content-Type' => 'application/json'], '{"success":true}');
+    }
+
+    return new Response(404);
+});
+
+$http->listen(new SocketServer('0.0.0.0:' . $appPort));
+```
+
+##### `checkout` publisher
+
+In the `checkout` publisher, you publish the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
+
+```php
+$client = DaprClient::clientBuilder()->build();
+
+for ($i = 1; $i < 10; $i++) {
+    $order = ['orderId' => $i];
+
+    // Publish an event/message using the Dapr PHP SDK
+    $client->publishEvent(
+        pubsubName: 'orderpubsub',
+        topicName: 'orders',
+        data: $order,
+    );
+
+    echo 'Published data: ' . json_encode($order) . PHP_EOL;
+    sleep(1);
+}
+```
+
+{{% /tab %}}
+
 {{< /tabpane >}}
 
 ## Run one application at a time
@@ -1639,6 +1819,184 @@ In the YAML file:
 
 {{% /tab %}}
 
+ <!-- PHP -->
+{{% tab "PHP" %}}
+
+### Step 1: Pre-requisites
+
+For this example, you will need:
+
+- [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
+- [PHP 8.4+ installed](https://www.php.net/downloads.php).
+- [Composer](https://getcomposer.org/download/).
+<!-- IGNORE_LINKS -->
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+<!-- END_IGNORE -->
+
+### Step 2: Set up the environment
+
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub/php/sdk).
+
+```bash
+git clone https://github.com/dapr/quickstarts.git
+```
+
+### Step 3: Subscribe to topics
+
+In a terminal window, from the root of the Quickstarts clone directory
+navigate to the `order-processor` directory.
+
+```bash
+cd pub_sub/php/sdk/order-processor
+```
+
+Install the dependencies:
+
+```bash
+composer install
+```
+
+Run the `order-processor` subscriber service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-id order-processor-sdk --resources-path ../../../components/ --app-port 6002 -- php app.php
+```
+
+In the `order-processor` subscriber, we're subscribing to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar. The subscriber runs as a long-lived PHP CLI process that serves Dapr's HTTP callbacks with an embedded [ReactPHP](https://reactphp.org/) server.
+
+```php
+// Register Dapr pub/sub subscriptions
+$subscriptions = [
+    new Subscription(pubsubname: 'orderpubsub', topic: 'orders', route: 'orders'),
+];
+
+$http = new HttpServer(function (ServerRequestInterface $request) use ($subscriptions) {
+    $path = $request->getUri()->getPath();
+
+    // Dapr calls this endpoint at startup to discover subscriptions
+    if ($request->getMethod() === 'GET' && $path === '/dapr/subscribe') {
+        return new Response(200, ['Content-Type' => 'application/json'], json_encode($subscriptions));
+    }
+
+    // Dapr delivers messages for the "orders" subscription to this route
+    if ($request->getMethod() === 'POST' && $path === '/orders') {
+        $event = CloudEvent::parse((string) $request->getBody());
+        echo 'Subscriber received : ' . $event->data['orderId'] . PHP_EOL;
+        return new Response(200, ['Content-Type' => 'application/json'], '{"success":true}');
+    }
+
+    return new Response(404);
+});
+
+$http->listen(new SocketServer('0.0.0.0:' . $appPort));
+```
+
+### Step 4: Publish a topic
+
+In a new terminal window, navigate to the `checkout` directory.
+
+```bash
+cd pub_sub/php/sdk/checkout
+```
+
+Install the dependencies:
+
+```bash
+composer install
+```
+
+Run the `checkout` publisher service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-id checkout-sdk --resources-path ../../../components/ -- php app.php
+```
+
+In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
+
+```php
+$client = DaprClient::clientBuilder()->build();
+
+for ($i = 1; $i < 10; $i++) {
+    $order = ['orderId' => $i];
+
+    // Publish an event/message using the Dapr PHP SDK
+    $client->publishEvent(
+        pubsubName: 'orderpubsub',
+        topicName: 'orders',
+        data: $order,
+    );
+
+    echo 'Published data: ' . json_encode($order) . PHP_EOL;
+    sleep(1);
+}
+```
+
+### Step 5: View the Pub/sub outputs
+
+The publisher sends orders to the Dapr sidecar while the subscriber receives them.
+
+Publisher output:
+
+```
+== APP == Published data: {"orderId":1}
+== APP == Published data: {"orderId":2}
+== APP == Published data: {"orderId":3}
+== APP == Published data: {"orderId":4}
+== APP == Published data: {"orderId":5}
+== APP == Published data: {"orderId":6}
+== APP == Published data: {"orderId":7}
+== APP == Published data: {"orderId":8}
+== APP == Published data: {"orderId":9}
+```
+
+Subscriber output:
+
+```
+== APP == Subscriber received : 1
+== APP == Subscriber received : 2
+== APP == Subscriber received : 3
+== APP == Subscriber received : 4
+== APP == Subscriber received : 5
+== APP == Subscriber received : 6
+== APP == Subscriber received : 7
+== APP == Subscriber received : 8
+== APP == Subscriber received : 9
+```
+
+##### `pubsub.yaml` component file
+
+When you run `dapr init`, Dapr creates a default Redis `pubsub.yaml` and runs a Redis container on your local machine, located:
+
+- On Windows, under `%UserProfile%\.dapr\components\pubsub.yaml`
+- On Linux/MacOS, under `~/.dapr/components/pubsub.yaml`
+
+With the `pubsub.yaml` component, you can easily swap out underlying components without application code changes.
+
+The Redis `pubsub.yaml` file included for this Quickstart contains the following:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: orderpubsub
+spec:
+  type: pubsub.redis
+  version: v1
+  metadata:
+  - name: redisHost
+    value: localhost:6379
+  - name: redisPassword
+    value: ""
+```
+
+In the YAML file:
+
+- `metadata/name` is how your application talks to the component.
+- `spec/metadata` defines the connection to the instance of the component.
+- `scopes` specify which application can use the component.
+
+{{% /tab %}}
+
 {{< /tabpane >}}
 
 ## Tell us what you think!
@@ -1654,6 +2012,7 @@ Join the discussion in our [discord channel](https://discord.com/channels/778680
   - [.NET](https://github.com/dapr/quickstarts/tree/master/pub_sub/csharp/http)
   - [Java](https://github.com/dapr/quickstarts/tree/master/pub_sub/java/http)
   - [Go](https://github.com/dapr/quickstarts/tree/master/pub_sub/go/http)
+  - [PHP](https://github.com/dapr/quickstarts/tree/master/pub_sub/php/http)
 - Learn more about [Pub/sub as a Dapr building block]({{% ref pubsub-overview %}})
 
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}
