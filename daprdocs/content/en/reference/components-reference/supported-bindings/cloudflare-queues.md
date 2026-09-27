@@ -105,7 +105,7 @@ The input binding receives messages with a Cloudflare [HTTP pull consumer](https
 
 Dapr pulls up to `batchSize` messages at a time and invokes your application once per message. Messages your application acknowledges (by returning a success response) are deleted from the Queue, while messages it rejects are made available again immediately for another delivery attempt. Delivery is at-least-once: if Dapr stops before a message is acknowledged, the message becomes visible again once its `visibilityTimeout` expires, and your application receives it another time.
 
-The body of the message is passed to your application as-is. Each message also includes these metadata properties:
+The body of the message is passed to your application as it was published: the pull API returns bodies published with the `json` (default) or `bytes` content types base64-encoded, and Dapr decodes them for you. A `json` message that contains a string, such as the ones sent by the output binding, is delivered as the string itself, while other JSON values are delivered as JSON. Messages published with the `v8` content type can't be read by pull consumers; Dapr retries them, so configure a dead-letter queue to collect them. Each message also includes these metadata properties:
 
 | Metadata | Description |
 |----------|-------------|
