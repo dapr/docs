@@ -73,7 +73,7 @@ A hook returns one of the following decisions:
 
 `Mutate` semantics vary by slot: it **replaces** for `before_tool_call` and `after_llm_call` (tool args and assistant messages are self-contained), and **shallow-merges** for `before_llm_call` so a hook returning just `Mutate(payload={"messages": ...})` doesn't drop `tools` / `response_format` / `tool_choice` from the original generate kwargs.
 
-Hooks run in registration order. The **first non-`Proceed` decision wins** — subsequent hooks in the same slot are skipped.
+Hooks run in registration order. The **first non-`Proceed` decision wins** — subsequent hooks in the same slot are skipped. On `after_llm_call` only `Mutate` counts: the other decisions are no-ops there and don't stop later hooks.
 
 ### Registering hooks
 
@@ -350,7 +350,7 @@ agent = DurableAgent(
 )
 ```
 
-Because the hook returns `Proceed()`, the assistant message is persisted unchanged. The first non-`Proceed` decision wins within a slot, so register accounting hooks like this one ahead of hooks that return `Mutate` on `after_llm_call`.
+Because the hook returns `Proceed()`, the assistant message is persisted unchanged. On `after_llm_call`, the first hook that returns `Mutate` stops the hooks after it, so register accounting hooks like this one ahead of any hook that returns `Mutate`.
 
 ## When to use which slot
 
