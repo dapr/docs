@@ -238,7 +238,7 @@ for tool_call in response.get_message().tool_calls or []:
     print(tool_call.function.name, tool_call.function.arguments)
 ```
 
-`tool_choice` accepts either a string such as `"auto"`, `"any"`, or `"none"`, or an Anthropic tool choice object such as `{"type": "tool", "name": "get_weather"}`. Tools passed as dicts must already use Anthropic's tool format. OpenAI-style `{"type": "function", "function": {...}}` dicts aren't converted: `generate()` raises a `ValueError` for them.
+`tool_choice` accepts either a string such as `"auto"`, `"any"`, or `"none"`, or an Anthropic tool choice object such as `{"type": "tool", "name": "get_weather"}`. Tools passed as dicts must already use Anthropic's tool format. OpenAI-style `{"type": "function", "function": {...}}` dicts aren't converted: `generate()` raises a `ValueError` for them. A dict must include `name`, `description`, and `input_schema`; other keys, such as `cache_control`, are dropped.
 
 ### Structured output
 
