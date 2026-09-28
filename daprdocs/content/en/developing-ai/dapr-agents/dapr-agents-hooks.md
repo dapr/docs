@@ -73,7 +73,7 @@ A hook returns one of the following decisions:
 
 `Mutate` semantics vary by slot: it **replaces** for `before_tool_call` and `after_llm_call` (tool args and assistant messages are self-contained), and **shallow-merges** for `before_llm_call` so a hook returning just `Mutate(payload={"messages": ...})` doesn't drop `tools` / `response_format` / `tool_choice` from the original generate kwargs.
 
-Hooks run in registration order. The **first non-`Proceed` decision wins** — subsequent hooks in the same slot are skipped. On `after_llm_call` only `Mutate` counts: the other decisions are no-ops there and don't stop later hooks.
+Hooks run in registration order. The **first non-`Proceed` decision wins** — subsequent hooks in the same slot are skipped. On `after_llm_call` only `Mutate(payload=...)` counts: the other decisions are no-ops there and don't stop later hooks.
 
 ### Registering hooks
 
@@ -211,7 +211,7 @@ LLM hooks fire **inside the `call_llm` activity**, which is the durability bound
 
 `after_llm_call` honors `Mutate(payload=<new assistant_message dict>)` to rewrite the final assistant message before it's persisted. `Skip` / `Deny` / `RequireApproval` are no-ops on the after-path because the LLM has already produced output.
 
-An `after_llm_call` hook receives two arguments: the `LLMHookContext` and a copy of the assistant message dict. `ctx.payload` holds the same `generate` kwargs the LLM was called with and, when available, a `response_metadata` key with the provider's response metadata (see [Reading response metadata](#reading-response-metadata)).
+An `after_llm_call` hook receives two arguments: the `LLMHookContext` and a copy of the assistant message dict. `ctx.payload` holds the `generate` kwargs for this call (after any `before_llm_call` `Mutate`) and, when available, a `response_metadata` key with the provider's response metadata (see [Reading response metadata](#reading-response-metadata)).
 
 ### Pattern: RAG via hook
 
@@ -305,16 +305,16 @@ agent = DurableAgent(
 
 | Key | Description |
 |-----|-------------|
-| `provider` | The client that produced the response, for example `"openai"`, `"dapr"`, `"huggingface"`, or `"anthropic"` |
+| `provider` | The provider family that parsed the response, for example `"openai"` (also reported by the Azure OpenAI, NVIDIA, LiteLLM, and iFlytek clients), `"dapr"`, `"huggingface"`, or `"anthropic"` |
 | `id` | The provider's response ID |
 | `model` | The model that served the request |
-| `usage` | Token usage as reported by the provider. The field names follow the provider: OpenAI-style clients (including `DaprChatClient`) report `prompt_tokens`, `completion_tokens`, and `total_tokens`; `AnthropicChatClient` reports `input_tokens` and `output_tokens`, plus prompt-cache counters when present. `usage` can be `None` or missing when the provider doesn't report it. |
+| `usage` | Token usage as reported by the provider. The field names follow the provider: OpenAI-style clients (including `DaprChatClient`) report `prompt_tokens`, `completion_tokens`, and `total_tokens`; `AnthropicChatClient` reports `input_tokens` and `output_tokens`, plus prompt-cache counters when present. `usage` can be `None` or an empty dict when the provider doesn't report it. |
 | Provider-specific fields | For example, `object` and `created` from OpenAI-style clients, or `stop_reason`, `stop_sequence`, and `raw_content` from `AnthropicChatClient` |
 
 The `response_metadata` key is **absent** from the payload when there is no `LLMChatResponse` to read metadata from:
 
 - The call used structured output (`response_format`), so the client returned a validated Pydantic model.
-- The call was streamed. Streaming metadata travels with the stream chunks instead.
+- The response was streamed (a chunk iterator). Streaming metadata travels with the stream chunks instead. A streaming request that falls back to a regular response, as the Dapr client can, still carries `response_metadata`.
 - A `before_llm_call` hook returned `Skip` or `Deny`, so the LLM was never called.
 - The client returned a response with empty metadata.
 
@@ -350,7 +350,7 @@ agent = DurableAgent(
 )
 ```
 
-Because the hook returns `Proceed()`, the assistant message is persisted unchanged. On `after_llm_call`, the first hook that returns `Mutate` stops the hooks after it, so register accounting hooks like this one ahead of any hook that returns `Mutate`.
+Because the hook returns `Proceed()`, the assistant message is persisted unchanged. On `after_llm_call`, the first hook that returns `Mutate(payload=...)` stops the hooks after it, so register accounting hooks like this one ahead of any hook that returns `Mutate`.
 
 ## When to use which slot
 
