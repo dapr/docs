@@ -47,7 +47,7 @@ Every hook receives a `HookContext`:
 | `step_name` | The tool function name (e.g. `"DeleteOldData"`) or the literal `"llm"` for LLM calls |
 | `step_kind` | `"tool"` or `"llm"` |
 | `source`    | Origin indicator: `"local"`, `"mcp"`, `"openapi"`, or `"agent"` for the agent's own LLM call |
-| `payload`   | For tools: the arguments dict the LLM produced. For LLM calls: the kwargs dict passed to `llm.generate(...)` — most usefully `messages` |
+| `payload`   | For tools: the arguments dict the LLM produced. For LLM calls: the kwargs dict passed to `llm.generate(...)` — most usefully `messages`. For `after_llm_call`, it can also carry `response_metadata` (see [Reading response metadata](#reading-response-metadata)) |
 | `tool_call_id` | LLM-assigned id for this specific tool call (empty for LLM-level hooks) |
 
 Two typed subclasses are exported for convenience and type-checker support:
@@ -211,6 +211,8 @@ LLM hooks fire **inside the `call_llm` activity**, which is the durability bound
 
 `after_llm_call` honors `Mutate(payload=<new assistant_message dict>)` to rewrite the final assistant message before it's persisted. `Skip` / `Deny` / `RequireApproval` are no-ops on the after-path because the LLM has already produced output.
 
+An `after_llm_call` hook receives two arguments: the `LLMHookContext` and a copy of the assistant message dict. `ctx.payload` holds the same `generate` kwargs the LLM was called with and, when available, a `response_metadata` key with the provider's response metadata (see [Reading response metadata](#reading-response-metadata)).
+
 ### Pattern: RAG via hook
 
 Inject fresh context into every LLM call without the model needing to choose a `web_search` tool. The full runnable example lives at `examples/11-expert-agent-tavily/`.
@@ -297,6 +299,59 @@ agent = DurableAgent(
 )
 ```
 
+### Reading response metadata
+
+`ctx.payload["response_metadata"]` exposes the metadata the LLM client attached to its response, so an `after_llm_call` hook can do per-call accounting, such as tracking token usage, without wrapping the LLM client. It is a copy of the `LLMChatResponse.metadata` dict. The keys depend on the client:
+
+| Key | Description |
+|-----|-------------|
+| `provider` | The client that produced the response, for example `"openai"`, `"dapr"`, `"huggingface"`, or `"anthropic"` |
+| `id` | The provider's response ID |
+| `model` | The model that served the request |
+| `usage` | Token usage as reported by the provider. The field names follow the provider: OpenAI-style clients (including `DaprChatClient`) report `prompt_tokens`, `completion_tokens`, and `total_tokens`; `AnthropicChatClient` reports `input_tokens` and `output_tokens`, plus prompt-cache counters when present. `usage` can be `None` or missing when the provider doesn't report it. |
+| Provider-specific fields | For example, `object` and `created` from OpenAI-style clients, or `stop_reason`, `stop_sequence`, and `raw_content` from `AnthropicChatClient` |
+
+The `response_metadata` key is **absent** from the payload when there is no `LLMChatResponse` to read metadata from:
+
+- The call used structured output (`response_format`), so the client returned a validated Pydantic model.
+- The call was streamed. Streaming metadata travels with the stream chunks instead.
+- A `before_llm_call` hook returned `Skip` or `Deny`, so the LLM was never called.
+- The client returned a response with empty metadata.
+
+Always read it with `.get(...)` so the hook doesn't fail in those cases. The persisted assistant message and the chat history sent back to the model are not affected by this key.
+
+The following hook logs token usage for every LLM call:
+
+```python
+import logging
+
+from dapr_agents import DurableAgent, Hooks
+from dapr_agents.hooks import LLMHookContext, HookDecision, Proceed
+
+logger = logging.getLogger(__name__)
+
+
+def log_token_usage(ctx: LLMHookContext, message: dict) -> HookDecision:
+    metadata = ctx.payload.get("response_metadata") or {}
+    usage = metadata.get("usage") or {}
+    if usage:
+        logger.info(
+            "LLM call to %s (%s) used %s",
+            metadata.get("model"),
+            metadata.get("provider"),
+            usage,
+        )
+    return Proceed()
+
+
+agent = DurableAgent(
+    ...,
+    hooks=Hooks(after_llm_call=[log_token_usage]),
+)
+```
+
+Because the hook returns `Proceed()`, the assistant message is persisted unchanged. The first non-`Proceed` decision wins within a slot, so register accounting hooks like this one ahead of hooks that return `Mutate` on `after_llm_call`.
+
 ## When to use which slot
 
 | I want to … | Slot | Decision |
@@ -308,6 +363,7 @@ agent = DurableAgent(
 | Short-circuit the LLM with a canned reply | `before_llm_call` | `Skip(result=...)` |
 | Refuse certain LLM calls outright | `before_llm_call` | `Deny(reason=...)` |
 | Redact or rewrite LLM output | `after_llm_call` | `Mutate(payload=...)` |
+| Track per-call token usage | `after_llm_call` | Read `ctx.payload["response_metadata"]`, return `Proceed()` |
 | Log every call | any slot | return `None` / `Proceed()` |
 
 ## Determinism cheat sheet
