@@ -199,6 +199,12 @@ dapr workflow list -k
    dapr workflow list --app-id orderprocessing --output json > workflows.json
    ```
 
+### Managing Workflows with the Dapr Dev Dashboard
+
+For local development, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) as a visual alternative to the `dapr workflow list` and `dapr workflow history` commands. The dashboard lists the workflow instances of your running apps with their status, and shows the full event history of each instance, including activity inputs and outputs, timers, and external events. The Dev Dashboard is intended for local development and does not run inside Kubernetes.
+
+<img src="/images/workflow-overview/workflow-diagrid-dashboard.png" width=800 alt="Diagrid Dev Dashboard showing local workflow executions"/><br/>
+
 ## Managing Workflow Reminders with the Dapr CLI
 
 Workflow reminders are stored in the Scheduler and can be managed using the dapr scheduler CLI.

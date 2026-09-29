@@ -423,7 +423,7 @@ In summary, the Dapr Workflow engine preserves the execution state of the agent 
 
 ## Inspect workflow executions with Diagrid Dev Dashboard
 
-After starting the durable agent with Dapr, you can use the local [Diagrid Dev Dashboard](https://diagrid.ws/diagrid-dashboard-docs) to visualize and inspect your workflow state, including detailed execution history for each run.
+After starting the durable agent with Dapr, you can use the local [Diagrid Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to visualize and inspect your workflow state, including detailed execution history for each run.
 
 <img src="/images/workflow-overview/workflow-diagrid-dashboard.png" width=800 alt="Diagrid Dev Dashboard showing local workflow executions"/><br/>
 
