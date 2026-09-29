@@ -54,6 +54,8 @@ Each of these building block APIs is independent, meaning that you can use any n
 | [**Cryptography**]({{% ref "cryptography-overview" %}}) | The cryptography API provides an abstraction layer on top of security infrastructure such as key vaults. It contains APIs that allow you to perform cryptographic operations, such as encrypting and decrypting messages, without exposing keys to your applications.
 | [**Jobs**]({{% ref "jobs-overview" %}}) | The jobs API enables you to schedule jobs at specific times or intervals.
 | [**Conversation**]({{% ref "conversation-overview" %}}) | The conversation API enables you to abstract the complexities of interacting with large language models (LLMs) and includes features such as prompt caching, response formatting, usage metrics, and personally identifiable information (PII) obfuscation. Using [conversation components]({{% ref supported-conversation %}}), you can supply prompts to converse with different LLMs. 
+| [**Search**]({{% ref "search-overview" %}}) | The search API enables you to index, retrieve, and query documents in full-text search engines through one portable API. Using [search components]({{% ref supported-search %}}), you can swap search engines without changing your application code.
+| [**Vector**]({{% ref "vector-overview" %}}) | The vector API enables you to store embeddings and run similarity queries against vector databases through one portable API. Using [vector components]({{% ref supported-vector %}}), you can swap vector databases without changing your application code.
 
 ### Cross-cutting APIs
 
