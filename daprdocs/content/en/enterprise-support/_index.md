@@ -10,21 +10,25 @@ For organizations running Dapr in production that need enterprise-grade support,
 
 ## Dapr open source support
 
-Diagrid provides 24/7 [enterprise support]({{< ref diagrid-dapr-support.md >}}) for open source Dapr, with a guaranteed one-hour response time for critical production issues. Support is offered across three tiers (Standard, Select, and Premium) with varying response times, security patching commitments, architecture reviews, and training sessions tailored to your organization's needs, across all cloud platforms.
+Diagrid provides 24/7 [enterprise support]({{< ref dapr-support.md >}}) for open source Dapr, with a guaranteed one-hour response time for critical production issues. Support is offered across three tiers (Standard, Select, and Premium) with varying response times, security patching commitments, architecture reviews, and training sessions tailored to your organization's needs, across all cloud platforms.
 
-{{< button text="Learn more about Dapr open source support" link="https://docs.diagrid.io/dapr-open-source/dapr-support" >}}
+{{< button text="Learn more about Dapr Enterprise Support" page="dapr-support.md" >}}
 
 ## Diagrid Catalyst
 
-[Diagrid Catalyst]({{< ref diagrid-catalyst.md >}}) is an agentic durable execution platform that brings reliability, zero-trust security, and governance to AI agents and workflows, built on Dapr.
+[Diagrid Catalyst]({{< ref catalyst.md >}}) is an agentic durable execution platform that brings reliability, zero-trust security, and governance to AI agents and workflows, built on Dapr.
+
+{{< button text="Learn more about Diagrid Catalyst" page="catalyst.md" >}}
 
 ## Diagrid Dapr Distribution for Enterprise (D3E)
 
-D3E is a custom distribution of the open source Dapr project that enhances it with additional security and scalability capabilities, while maintaining full compatibility with the Dapr APIs and SDKs. Designed for large-scale production environments, it offers multi-tenancy support, reduced security permissions, enterprise support with guaranteed response times, and CVE backports to custom versions. It is aimed at organizations with stringent security requirements or substantial Dapr deployments.
+[D3E]({{< ref d3e.md >}}) is a custom distribution of the open source Dapr project that enhances it with additional security and scalability capabilities, while maintaining full compatibility with the Dapr APIs and SDKs. Designed for large-scale production environments, it offers multi-tenancy support, reduced security permissions, enterprise support with guaranteed response times, and CVE backports to custom versions. It is aimed at organizations with stringent security requirements or substantial Dapr deployments.
 
-{{< button text="Learn more about D3E" link="https://docs.diagrid.io/dapr-open-source/d3e" >}}
+{{< button text="Learn more about D3E" page="d3e.md" >}}
 
-## Diagrid Conductor
+## Diagrid Dapr Ops Dashboard
 
-[Diagrid Conductor]({{< ref diagrid-conductor.md >}}) automates operations and observability for Dapr on Kubernetes, with one-click installation and upgrades, automated best-practice checks, and an application graph across all your clusters.
+The free [Dapr Ops Dashboard]({{< ref dapr-ops-dashboard.md >}}) automates operations and observability for Dapr on Kubernetes, with one-click installation and upgrades, automated best-practice checks, and an application graph across all your clusters.
+
+{{< button text="Learn more about the Dapr Ops Dashboard" page="dapr-ops-dashboard.md" >}}
 

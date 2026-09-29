@@ -178,11 +178,11 @@ To install the CLI without any default configuration files or Docker containers,
 dapr init --slim
 ```
 
-### Other tooling (optional)
+### Other recommended tooling
 
-#### Diagrid Dev Dashboard
+#### Dapr Dev Dashboard
 
-The free [Diagrid Dev Dashboard](https://diagrid.ws/diagrid-dashboard-docs) is a companion for local Dapr development. It provides insights for applications, sidecars, components, actors, workflows, and logs. It can also be used to create Dapr component files and resiliency policies, without hand-editing yaml.
+The free [Diagrid Dapr Dev Dashboard](https://diagrid.ws/diagrid-dashboard-docs) is a companion for local Dapr development. It provides insights for applications, sidecars, components, state stores, subscriptions, actors, workflows, and logs. It can also be used to create Dapr component files and resiliency policies, without hand-editing yaml.
 
 <img src="/images/install-dapr-selfhost/diagrid-dashboard-applications.png" width=800 alt="Diagrid Dev Dashboard showing local Dapr applications"/><br/>
 
@@ -208,7 +208,7 @@ iwr -useb https://raw.githubusercontent.com/diagridio/dev-dashboard/main/scripts
 
 {{< /tabpane >}}
 
-Start the Diagrid Dev Dashboard with:
+Start the Dapr Dev Dashboard with:
 
 ```bash
 diagrid-dev-dashboard
