@@ -131,6 +131,20 @@ Dapr provides developers a way to abstract interactions with large language mode
 - [List of supported conversation components]({{% ref supported-conversation %}})
 - [Conversation implementations](https://github.com/dapr/components-contrib/tree/main/conversation)
 
+### Search
+
+[Search]({{% ref search-overview %}}) components are used to index, retrieve, and query documents in full-text search engines.
+
+- [List of supported search components]({{% ref supported-search %}})
+- [Search implementations](https://github.com/dapr/components-contrib/tree/main/search)
+
+### Vector
+
+[Vector]({{% ref vector-overview %}}) components are used to store pre-embedded vectors and run similarity queries against vector databases.
+
+- [List of supported vector components]({{% ref supported-vector %}})
+- [Vector implementations](https://github.com/dapr/components-contrib/tree/main/vector)
+
 ### Middleware
 
 Dapr allows custom [middleware]({{% ref "middleware" %}}) to be plugged into the HTTP request processing pipeline. Middleware can perform additional actions on an HTTP request (such as authentication, encryption, and message transformation) before the request is routed to the user code, or the response is returned to the client. The middleware components are used with the [service invocation]({{% ref "service-invocation-overview" %}}) building block.
