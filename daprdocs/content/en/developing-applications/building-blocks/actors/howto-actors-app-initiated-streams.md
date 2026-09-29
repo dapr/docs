@@ -298,7 +298,7 @@ The initial registration message can include the following optional fields to ov
 |-------|------|-------------|
 | `entities` | `[]string` | **Required.** Actor types this app hosts. |
 | `actor_idle_timeout` | `Duration` | Deactivate an actor after this idle period. Unset = Dapr default (60 minutes). |
-| `drain_ongoing_call_timeout` | `Duration` | How long to wait for in-flight calls during rebalancing. Unset = Dapr default. |
+| `drain_ongoing_call_timeout` | `Duration` | How long to wait for in-flight calls during rebalancing. Unset = Dapr default (2 seconds). |
 | `drain_rebalanced_actors` | `bool` | If true, wait for drain before deactivating rebalanced actors. Unset = Dapr default. |
 | `reentrancy` | `ActorReentrancyConfig` | Enable actor reentrancy and set max stack depth. Default: disabled. |
 | `entities_config` | `[]ActorEntityConfig` | Per-actor-type overrides for any of the fields above. |

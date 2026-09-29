@@ -81,6 +81,8 @@ Depending on how you've passed credentials to your Dapr services, you have multi
 - [Using Workload Identity on AKS](#authenticating-with-workload-identity-on-aks)
 - [Using Azure CLI credentials (development-only)](#authenticating-using-azure-cli-credentials-development-only)
 
+You can also [control which authentication methods Dapr attempts, and in what order](#specify-which-authentication-methods-to-use), using the `azureAuthMethods` metadata field.
+
 #### Authenticating using client credentials
 
 | Field               | Required | Details                              | Example                                      |
@@ -225,6 +227,56 @@ This authentication method can be useful while developing on a local machine. Yo
 When Dapr is running on a host where there are credentials available for the Azure CLI, components can use those to authenticate automatically if no other authentication method is configuration.
 
 Using this authentication method does not require setting any metadata option.
+
+### Specify which authentication methods to use
+
+By default, Dapr Azure components try each supported authentication method in a fixed order and use the first one that succeeds:
+
+1. Client credentials (client ID, client secret, and tenant ID)
+1. Client certificate
+1. Workload identity (AKS)
+1. SPIFFE workload identity (Federated Identity Credential)
+1. Managed identity (MI)
+1. Azure CLI
+
+Use the optional `azureAuthMethods` metadata field to override this behavior — for example, to restrict Dapr to a specific authentication method, or to change the order in which methods are attempted.
+
+| Field | Required | Details | Example |
+|-------|----------|---------|---------|
+| `azureAuthMethods` | N | A comma-separated, ordered list of the authentication methods Dapr should attempt. When set, **only** the listed methods are tried, in the order given. | `"managedidentity"`, `"workloadidentity,managedidentity"` |
+
+The supported values (case-insensitive) are:
+
+| Value | Alias | Authentication method |
+|-------|-------|-----------------------|
+| `clientcredentials` | `creds` | [Client credentials](#authenticating-using-client-credentials) |
+| `clientcertificate` | `cert` | [Client certificate](#authenticating-using-a-certificate) |
+| `workloadidentity` | `wi` | [Workload identity on AKS](#authenticating-with-workload-identity-on-aks) |
+| `spiffeworkloadidentity` | `spiffe` | [SPIFFE workload identity (Federated Identity Credential)](#authenticating-with-a-federated-identity-credential) |
+| `managedidentity` | `mi` | [Managed identity (MI)](#authenticating-with-managed-identities-mi) |
+| `commandlineinterface` | `cli` | [Azure CLI (development only)](#authenticating-using-azure-cli-credentials-development-only) |
+| `none` | | Disables Microsoft Entra ID authentication entirely |
+
+For example, to force a Service Bus component to authenticate using only managed identity and skip all other methods:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: servicebus-pubsub
+spec:
+  type: pubsub.azure.servicebus.topics
+  version: v1
+  metadata:
+  - name: namespaceName
+    value: "[your_servicebus_namespace].servicebus.windows.net"
+  - name: azureClientId
+    value: "[your_client_id]"
+  - name: azureTenantId
+    value: "[your_tenant_id]"
+  - name: azureAuthMethods
+    value: "managedidentity"
+```
 
 ### Example usage in a Dapr component
 

@@ -199,6 +199,12 @@ dapr workflow list -k
    dapr workflow list --app-id orderprocessing --output json > workflows.json
    ```
 
+### Managing Workflows with the Dapr Dev Dashboard
+
+For local development, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) as a visual alternative to the `dapr workflow list` and `dapr workflow history` commands. The dashboard lists the workflow instances of your running apps with their status, and shows the full event history of each instance, including activity inputs and outputs, timers, and external events. The Dev Dashboard is intended for local development and does not run inside Kubernetes.
+
+<img src="/images/workflow-overview/workflow-diagrid-dashboard.png" width=800 alt="Diagrid Dev Dashboard showing local workflow executions"/><br/>
+
 ## Managing Workflow Reminders with the Dapr CLI
 
 Workflow reminders are stored in the Scheduler and can be managed using the dapr scheduler CLI.
@@ -569,7 +575,7 @@ curl -X POST "http://localhost:3500/v1.0/workflows/dapr/OrderProcessingWorkflow/
 Note that workflow instance IDs can only contain alphanumeric characters, underscores, and dashes.
 
 {{% alert title="Important" color="warning" %}}
-An instance ID can only be reused once the existing workflow with that ID, and every child workflow it created (checked recursively), has reached a terminal state (`COMPLETED`, `FAILED`, or `TERMINATED`); otherwise the request is rejected. To free up an instance ID unconditionally, first purge the existing workflow using the [purge API]({{% ref "workflow_api.md#purge-workflow-request" %}}) or configure a [retention policy]({{% ref workflow-history-retention-policy.md %}}).
+It is strongly recommended to give every execution a new instance ID rather than reusing an old one. See [Implications of instance ID reuse]({{% ref "workflow-features-concepts.md#implications-of-instance-id-reuse" %}}). An instance ID can only be reused once the existing workflow with that ID, and every child workflow it created (checked recursively), has reached a terminal state (`COMPLETED`, `FAILED`, or `TERMINATED`), otherwise the request is rejected. To free up an instance ID unconditionally, first purge the existing workflow using the [purge API]({{% ref "workflow_api.md#purge-workflow-request" %}}) or configure a [retention policy]({{% ref workflow-history-retention-policy.md %}}).
 {{% /alert %}}
 
 ### Terminate workflow
