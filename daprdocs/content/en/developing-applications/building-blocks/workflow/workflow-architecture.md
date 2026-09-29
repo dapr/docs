@@ -247,7 +247,10 @@ All workflows and activities within an app must be scaled together.
 
 Workflows don't control the specifics of how load is distributed across the cluster.
 For example, if a workflow schedules 10 activity tasks to run in parallel, all 10 tasks may run on as many as 10 different compute nodes or as few as a single compute node.
-The actual scale behavior is determined by the actor placement service, which manages the distribution of the actors that represent each of the workflow's tasks.
+By default, the actual scale behavior is determined by the actor placement service, which manages the distribution of the actors that represent each of the workflow's tasks.
+
+For applications with a small number of long-running activities, that hash-based placement can leave some replicas idle while others run several activities, and it pins pending activities to the replicas that existed when they were scheduled.
+The opt-in [pull activity dispatch mode]({{% ref "workflow-concurrency.md#activity-dispatch-modes" %}}) instead lets the scheduler deliver each activity to a replica with a free slot, and exposes the waiting work as a metric that [KEDA can scale the application on]({{% ref autoscale-keda-workflow.md %}}).
 
 <img src="/images/workflow-overview/workflow-actor-scale-out.png" width=800 alt="Diagram of workflow and activity actors scaled out across multiple Dapr instances"/>
 

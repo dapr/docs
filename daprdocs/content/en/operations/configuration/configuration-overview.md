@@ -284,7 +284,8 @@ The `workflow` section contains properties for configuring [Workflows]({{% ref "
 | `globalMaxConcurrentWorkflowInvocations` | int32 | Maximum concurrent workflow executions across all replicas, enforced by the scheduler. Default is unlimited. |
 | `globalMaxConcurrentActivityInvocations` | int32 | Maximum concurrent activity executions across all replicas, enforced by the scheduler. Default is unlimited. |
 | `workflowConcurrencyLimits` | array | Per-workflow-name concurrency limits across all replicas. Each entry has `name` (string) and `maxConcurrent` (int32). |
-| `activityConcurrencyLimits` | array | Per-activity-name concurrency limits across all replicas. Each entry has `name` (string) and `maxConcurrent` (int32). |
+| `activityConcurrencyLimits` | array | Per-activity-name settings. Each entry has `name` (string), an optional `maxConcurrent` (int32) limit across all replicas, and an optional `dispatchMode` (`hashed` or `pull`) that overrides `activityDispatchMode` for that name. |
+| `activityDispatchMode` | string | How activities are dispatched to replicas: `hashed` (default) runs each activity on the replica its ID hashes to; `pull` lets the scheduler deliver each activity to any replica with a free slot, where a replica offers `maxConcurrentActivityInvocations` slots. Any use of `pull` requires `maxConcurrentActivityInvocations`. Changing it requires a sidecar restart. See [Activity dispatch modes]({{% ref "workflow-concurrency.md#activity-dispatch-modes" %}}). |
 
 #### Scope secret store access
 
