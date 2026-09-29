@@ -8,7 +8,7 @@ description: "Overview of the Dapr scheduler service"
 The Dapr Scheduler service is used to schedule different types of jobs, running in [self-hosted mode]({{% ref self-hosted %}}) or on [Kubernetes]({{% ref kubernetes %}}).
 - Jobs created through the Jobs API
 - Actor reminder jobs (used by the actor reminders)
-- Actor reminder jobs created by the Workflow API (which uses actor reminders)
+- Actor reminder jobs created by the Workflow API (which uses actor reminders): workflow start and wake-up reminders, timers, activity reminders, and, with the [`WorkflowsFastPath` preview feature]({{% ref "workflow-fast-path.md" %}}), one repeating janitor reminder per live workflow instance
 
 There is no concept of a leader Scheduler instance.
 All Scheduler service replicas are considered peers.
@@ -106,7 +106,7 @@ There are several different types of jobs which Scheduler manages:
 
 - `app/{app-id}/{job-name}`: Jobs created via the [Jobs API]({{% ref jobs_api %}})
 - `actor/{actor-type}/{actor-id}/{reminder-name}`: Actor reminder jobs created via the [Actor Reminders API]({{% ref "actors-timers-reminders#actor-reminders" %}})
-- `activity/{app-id}/{instance-id}::{generation-name}::{activity-index}`: Used internally for [Workflow Activity reminders]({{% ref "workflow-features-concepts.md#workflow-activities" %}})
+- `activity/{app-id}/{instance-id}::{task-id}::0`: Used internally for [Workflow Activity reminders]({{% ref "workflow-features-concepts.md#workflow-activities" %}})
 - `workflow/{app-id}/{instance-id}/{random-name}`: Used internally for [Workflows]({{% ref "workflow-overview.md" %}}).
 
 Please see [here for how to manage specifically reminders]({{% ref "actors-timers-reminders#managing-reminders-with-the-cli" %}}) with the CLI.

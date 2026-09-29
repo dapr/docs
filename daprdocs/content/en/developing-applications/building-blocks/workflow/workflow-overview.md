@@ -69,6 +69,12 @@ Signing is a one-way commitment: once enabled for a workflow, it cannot be disab
 
 [Learn more about workflow history signing.]({{% ref "workflow-history-signing.md" %}})
 
+### Fast path
+
+The `WorkflowsFastPath` preview feature drives workflow turns and activity bodies on the host that already holds the work, and folds activity completions into the next turn's single state store commit, instead of creating a Scheduler reminder for every event. This removes the per-event Scheduler round trips and most state store commits from the workflow hot path. At-least-once execution is unchanged: a per-instance janitor reminder and automatic escalation back to durable reminders provide recovery.
+
+[Learn more about the workflow fast path.]({{% ref "workflow-fast-path.md" %}})
+
 ### Timers and reminders
 
 Same as Dapr actors, you can schedule reminder-like durable delays for any time range.
