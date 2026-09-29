@@ -44,11 +44,21 @@ To run the Dapr application, you need to start the .NET program and a Dapr sidec
 cd JobsSample
 ```
 
-We'll run a command that starts both the Dapr sidecar and the .NET program at the same time.
+We'll run a command that starts both the Dapr sidecar and the .NET program at the same time. The `--app-port` flag tells the sidecar where your application is listening so it can deliver job trigger callbacks.
+
+By default, the sidecar delivers job triggers to your application over HTTP. Start the application with HTTP callbacks:
 
 ```sh
-dapr run --app-id jobsapp --dapr-grpc-port 4001 --dapr-http-port 3500 -- dotnet run
+dapr run --app-id jobsapp --app-port 5000 --dapr-grpc-port 4001 --dapr-http-port 3500 -- dotnet run
 ```
+
+To have the sidecar deliver job triggers over gRPC instead, add `--app-protocol grpc`:
+
+```sh
+dapr run --app-id jobsapp --app-port 5000 --app-protocol grpc --dapr-grpc-port 4001 --dapr-http-port 3500 -- dotnet run
+```
+
+No application code changes are needed to switch between HTTP and gRPC callbacks — only the `dapr run` command changes.
 
 > Dapr listens for HTTP requests at `http://localhost:3500` and internal Jobs gRPC requests at `http://localhost:4001`.
 
@@ -64,6 +74,8 @@ builder.Services.AddDaprJobsClient();
 
 var app = builder.Build();
 ```
+
+> `AddDaprJobsClient()` registers both the HTTP callback endpoint (`POST /job/{jobName}`) and the gRPC `AppCallbackAlpha.OnJobEventAlpha1` service, and configures Kestrel for HTTP/1 + HTTP/2 so the sidecar can deliver job triggers over whichever protocol it is configured for. No additional setup is needed to switch between HTTP and gRPC callbacks.
 
 > Note that in today's implementation of the Jobs API, the app that schedules the job will also be the app that receives the trigger notification. In other words, you cannot schedule a trigger to run in another application. As a result, while you don't explicitly need the Dapr Jobs client to be registered in your application to schedule a trigger invocation endpoint, your endpoint will never be invoked without the same app also scheduling the job somehow (whether via this Dapr Jobs .NET SDK or an HTTP call to the sidecar).
 
@@ -194,15 +206,17 @@ public class MySampleClass
 }
 ```
 
-## Set up a endpoint to be invoked when the job is triggered
+## Set up an endpoint to be invoked when the job is triggered
 
 It's easy to set up a jobs endpoint if you're at all familiar with [minimal APIs in ASP.NET Core](https://learn.microsoft.com/aspnet/core/fundamentals/minimal-apis/overview) as the syntax is the same between the two.
 
 Once dependency injection registration has been completed, configure the application the same way you would to handle mapping an HTTP request via the minimal API functionality in ASP.NET Core. Implemented as an extension method,
-pass the name of the job it should be responsive to and a delegate. Services can be injected into the delegate's arguments as you wish and the job payload can be accessed from the `ReadOnlyMemory<byte>` originally provided to the 
+`MapDaprScheduledJobHandler` accepts a delegate that handles any inbound job trigger invocations. The handler is not specific to a single job name — every triggered job is routed through the same delegate, which receives the job name as an argument so you can dispatch on it as needed. The job payload can be accessed from the `ReadOnlyMemory<byte>` originally provided to the 
 job registration.
 
-There are two delegates you can use here. One provides an `IServiceProvider` in case you need to inject other services into the handler:
+> Both the HTTP POST endpoint (`/job/{jobName}`) and the gRPC `AppCallbackAlpha.OnJobEventAlpha1` callback service are registered simultaneously by `MapDaprScheduledJobHandler`. The Dapr sidecar invokes whichever protocol it is configured for (via its `--app-protocol` flag); the other handler remains idle. This allows switching the sidecar between HTTP and gRPC callbacks without any application code changes.
+
+The delegate's first two parameters must be a `string` for the job name and a `ReadOnlyMemory<byte>` for the payload. A minimal handler needs only those two parameters:
 
 ```cs
 //We have this from the example above
@@ -212,18 +226,16 @@ builder.Services.AddDaprJobsClient();
 
 var app = builder.Build();
 
-//Add our endpoint registration
-app.MapDaprScheduledJob("myJob", (IServiceProvider serviceProvider, string jobName, ReadOnlyMemory<byte> jobPayload) => {
-    var logger = serviceProvider.GetService<ILogger>();
-    logger?.LogInformation("Received trigger invocation for '{jobName}'", "myJob");
-
+//Add our handler registration
+app.MapDaprScheduledJobHandler((string jobName, ReadOnlyMemory<byte> jobPayload) =>
+{
     //Do something...
 });
 
 app.Run();
 ```
 
-The other overload of the delegate doesn't require an `IServiceProvider` if not necessary:
+Any additional parameters are resolved by type from the application's service provider, so you can inject services like an `ILogger` or a `CancellationToken` directly into the handler:
 
 ```cs
 //We have this from the example above
@@ -233,8 +245,12 @@ builder.Services.AddDaprJobsClient();
 
 var app = builder.Build();
 
-//Add our endpoint registration
-app.MapDaprScheduledJob("myJob", (string jobName, ReadOnlyMemory<byte> jobPayload) => {
+//Add our handler registration
+app.MapDaprScheduledJobHandler(async (string jobName, ReadOnlyMemory<byte> jobPayload,
+    ILogger? logger, CancellationToken cancellationToken) =>
+{
+    logger?.LogInformation("Received trigger invocation for job '{jobName}'", jobName);
+
     //Do something...
 });
 
@@ -254,8 +270,10 @@ builder.Services.AddDaprJobsClient();
 
 var app = builder.Build();
 
-//Add our endpoint registration
-app.MapDaprScheduledJob("myJob", (string jobName, ReadOnlyMemory<byte> jobPayload) => {
+//Add our handler registration
+app.MapDaprScheduledJobHandler(async (string jobName, ReadOnlyMemory<byte> jobPayload,
+    CancellationToken cancellationToken) =>
+{
     //Do something...
 }, TimeSpan.FromSeconds(15)); //Assigns a maximum timeout of 15 seconds for handling the invocation request
 
