@@ -8,7 +8,7 @@ aliases:
   - /integrations/diagrid/diagrid-dev-dashboard/
 ---
 
-The [Dapr Dev Dashboard](https://docs.diagrid.io/develop/local-development/dev-dashboard) is a free companion for local Dapr development. It automatically discovers Dapr applications running on your machine and provides visualization and inspection tools to speed up your development workflow. It is distributed as a single binary for macOS, Linux, and Windows.
+The [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) is a free companion for local Dapr development. It automatically discovers Dapr applications running on your machine and provides visualization and inspection tools to speed up your development workflow. It is distributed as a single binary for macOS, Linux, and Windows.
 
 <br /><img src="/images/integrations/diagrid/applications-light.png" alt="Diagrid Dev Dashboard showing Dapr applications discovered on the local machine" width="800">
 
@@ -30,4 +30,4 @@ Stream real-time sidecar and application logs with filtering and highlighting.
 
 The Dev Dashboard works with applications started through `dapr run`, Docker Compose, TestContainers, or Aspire.
 
-{{< button text="Learn more about the Diagrid Dev Dashboard" link="https://docs.diagrid.io/develop/local-development/dev-dashboard" >}}
+{{< button text="Learn more about the Diagrid Dev Dashboard" page="dapr-dev-dashboard.md" >}}
