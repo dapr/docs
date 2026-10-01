@@ -98,7 +98,7 @@ Decoupling infrastructure keeps agents focused on tasks while enabling seamless 
 
 ### Scalable Workflows as First-Class Citizens
 
-Dapr Agents uses a [durable-execution workflow engine]({{% ref workflow-overview.md %}}) that guarantees each agent task executes to completion despite network interruptions, node crashes, and other disruptive failures. Developers do not need to understand the underlying workflow engine concepts—simply write an agent that performs any number of tasks and these will be automatically distributed across the cluster. If any task fails, it will be retried and recover its state from where it left off.
+Dapr Agents uses a [durable execution workflow engine]({{% ref workflow-overview.md %}}) that guarantees each agent task executes to completion despite network interruptions, node crashes, and other disruptive failures. Developers do not need to understand the underlying workflow engine concepts—simply write an agent that performs any number of tasks and these will be automatically distributed across the cluster. If any task fails, it will be retried and recover its state from where it left off.
 
 ### Cost-Effective AI Adoption
 
@@ -106,7 +106,7 @@ Dapr Agents builds on Dapr's Workflow API, which represents each agent as an act
 
 ### Data-centric AI agents
 
-With built-in connectivity to over 50 enterprise data sources, Dapr Agents efficiently handles structured and unstructured data. From basic [PDF extraction]({{% ref "/developing-ai/dapr-agents/dapr-agents-integrations.md" %}}) to large-scale database interactions, it enables data-driven AI workflows with minimal code changes. Dapr's [bindings]({{% ref bindings-overview.md %}}) and [state stores]({{% ref supported-state-stores.md %}}), along with MCP support, provide access to numerous data sources for agent data ingestion.
+With built-in connectivity to over 50 enterprise data sources, Dapr Agents efficiently handles structured and unstructured data. From [basic PDF extraction to large-scale database interactions]({{% ref integrations %}}), it enables data-driven AI workflows with minimal code changes. Dapr's [bindings]({{% ref bindings-overview.md %}}) and [state stores]({{% ref supported-state-stores.md %}}), along with MCP support, provide access to numerous data sources for agent data ingestion.
 
 ### Accelerated development
 

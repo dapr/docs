@@ -197,7 +197,7 @@ Port forward the Scheduler instance and view etcd's metrics with the following:
 curl -s http://localhost:2379/metrics
 ```
 
-Fine tune the embedded etcd to your needs by [reviewing and configuring the Scheduler's etcd flags as needed](https://github.com/dapr/dapr/blob/master/charts/dapr/README#dapr-scheduler-options).
+Fine tune the embedded etcd to your needs by [reviewing and configuring the Scheduler's etcd flags as needed](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md#dapr-scheduler-options).
 
 ## Disabling the Scheduler service
 
@@ -207,7 +207,7 @@ For more information on running Dapr on Kubernetes, visit the [Kubernetes hostin
 ## Flag tuning
 
 A number of Etcd flags are exposed on Scheduler which can be used to tune for your deployment use case.
-
+  
 ### External Etcd database
 
 Scheduler can be configured to use an external Etcd database instead of the embedded one inside the Scheduler service replicas.
@@ -286,4 +286,4 @@ dapr_scheduler.etcdMaxTxnOps=10000
 ## Related links
 
 - [Learn more about the Jobs API.]({{% ref jobs_api %}})
-- [Learn more about Actor Reminders.]{{% ref "actors-features-concepts#reminders" %}})
+- [Learn more about Actor Reminders.]({{% ref "actors-features-concepts#reminders" %}})

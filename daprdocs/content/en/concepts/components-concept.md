@@ -34,6 +34,10 @@ These YAML files adhere to the generic [Dapr component schema]({{% ref "componen
 
 It is important to understand that the component spec values, particularly the spec `metadata`, can change between components of the same component type, for example between different state stores, and that some design-time spec values can be overridden at runtime when making requests to a component's API. As a result, it is strongly recommended to review a [component's specs]({{% ref "components-reference" %}}), paying particular attention to the sample payloads for requests to set the metadata used to interact with the component.
 
+{{% alert title="Tip" color="primary" %}}
+For local development, the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) has a component builder that guides you through creating a component YAML file for any component type, so you don't have to write the spec by hand. The dashboard also shows which components each running app has loaded, which helps to confirm that Dapr picked up your component files.
+{{% /alert %}}
+
 The diagram below shows some examples of the components for each component type
 <img src="/images/concepts-components.png" width=1200>
 
