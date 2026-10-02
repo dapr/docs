@@ -52,9 +52,9 @@ The following example schedules a detached `AuditWorkflow` from within `ParentWo
 // ParentWorkflow schedules a detached workflow and continues immediately,
 // without waiting for it to finish.
 func ParentWorkflow(ctx *workflow.WorkflowContext) (any, error) {
-	// ScheduleNewWorkflow starts a detached, fire-and-forget workflow and
-	// returns its instance ID synchronously. There is no task to await.
-	instanceID, err := ctx.ScheduleNewWorkflow(AuditWorkflow,
+	// ScheduleNewDetachedWorkflow starts a detached, fire-and-forget workflow
+	// and returns its instance ID synchronously. There is no task to await.
+	instanceID, err := ctx.ScheduleNewDetachedWorkflow(AuditWorkflow,
 		workflow.WithDetachedWorkflowInput("order-1234"),
 	)
 	if err != nil {

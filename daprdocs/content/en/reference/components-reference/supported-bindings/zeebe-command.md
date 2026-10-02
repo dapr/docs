@@ -87,6 +87,10 @@ This component supports **output binding** with the following operations:
 
 Zeebe uses gRPC under the hood for the Zeebe client we use in this binding. Please consult the [gRPC API reference](https://docs.camunda.io/docs/apis-clients/grpc/) for more information.
 
+{{% alert title="Duration format" color="primary" %}}
+All duration fields in Zeebe command binding operations must be specified as Go duration strings (e.g. `"30s"`, `"5m"`, `"1h30m"`). ISO-8601 durations (e.g. `"PT1M"`) are **not** supported and will result in a duration parsing error.
+{{% /alert %}}
+
 #### topology
 
 The `topology` operation obtains the current topology of the cluster the gateway is part of.
@@ -349,8 +353,7 @@ The data parameters are:
   "b" respectively, with their associated values. [{ "a": 1, "b": 2 }] would not be a
   valid argument, as the root of the JSON document is an array and not an object
 - `withResult` - (optional, default: false) if set to true, the process will be instantiated and executed synchronously
-- `requestTimeout` - (optional, only used if withResult=true) timeout the request will be closed if the process is not completed before the 
-  requestTimeout.	If requestTimeout = 0, uses the generic requestTimeout configured in the gateway.
+- `requestTimeout` - (optional, only used if `withResult` is `true`) timeout after which the request will be closed if the process is not completed; must be a Go duration string (e.g. `"30s"`, `"5m"`, `"1h30m"`). If `requestTimeout` is `"0"`, uses the generic `requestTimeout` configured in the gateway.
 - `fetchVariables` - (optional, only used if withResult=true) list of names of variables to be included in `variables` property of the response.
 	If empty, all visible variables in the root scope will be returned.
 
@@ -496,7 +499,7 @@ The data parameters are:
 
 - `messageName` - the name of the message
 - `correlationKey` - (optional) the correlation key of the message
-- `timeToLive` - (optional)  how long the message should be buffered on the broker
+- `timeToLive` - (optional) how long the message should be buffered on the broker; must be a Go duration string (e.g. `"30s"`, `"5m"`, `"1h30m"`)
 - `messageId` - (optional) the unique ID of the message; can be omitted. only useful to ensure only one message with the given ID will ever
   be published (during its lifetime)
 - `variables` - (optional) the message variables as a JSON document; to be valid, the root of the document must be an object, e.g. { "a": "foo" }.
@@ -545,12 +548,11 @@ The data parameters are:
 
 - `jobType` - the job type, as defined in the BPMN process (e.g. `<zeebe:taskDefinition type="fetch-products" />`)
 - `maxJobsToActivate` - the maximum jobs to activate by this request
-- `timeout` - (optional, default: 5 minutes) a job returned after this call will not be activated by another call until the timeout has been reached
+- `timeout` - (optional, default: 5 minutes) a job returned after this call will not be activated by another call until the timeout has been reached; must be a Go duration string (e.g. `"5m"`, `"30s"`, `"1h30m"`)
 - `workerName` - (optional, default: `default`) the name of the worker activating the jobs, mostly used for logging purposes
 - `fetchVariables` - (optional) a list of variables to fetch as the job variables; if empty, all visible variables at the time of activation for the
   scope of the job will be returned
-- `requestTimeout` - (optional) the request will be completed when at least one job is activated or after the requestTimeout. If the requestTimeout = 0,
-  a default timeout is used. If the requestTimeout < 0, long polling is disabled and the request is completed immediately, even when no job is activated.
+- `requestTimeout` - (optional) the request will be completed when at least one job is activated or after the `requestTimeout`; must be a Go duration string (e.g. `"30s"`, `"5m"`, `"1h30m"`). If `requestTimeout` is `"0"`, a default timeout is used. If `requestTimeout` is a negative duration (e.g. `"-1s"`), long polling is disabled and the request is completed immediately, even when no job is activated.
 
 ##### Response
 
@@ -650,9 +652,9 @@ The data parameters are:
 
 - `jobKey` - the unique job identifier, as obtained when activating the job
 - `retries` - the amount of retries the job should have left
-- `errorMessage ` - (optional) a message describing why the job failed this is particularly useful if a job runs out of retries and an
-  incident is raised, as it this message can help explain why an incident was raised
-- `retryBackOff` - (optional) the back-off timeout for the next retry
+- `errorMessage` - (optional) a message describing why the job failed. This is particularly useful if a job runs out of retries and an
+  incident is raised, as this message can help explain why an incident was raised
+- `retryBackOff` - (optional) the back-off duration before the next retry attempt; must be a Go duration string (e.g. `"30s"`, `"5m"`, `"1h30m"`)
 - `variables` - (optional) JSON document that will instantiate the variables at the local scope of the
 	job's associated task; it must be a JSON object, as variables will be mapped in a
 	key-value fashion. e.g. { "a": 1, "b": 2 } will create two variables, named "a" and

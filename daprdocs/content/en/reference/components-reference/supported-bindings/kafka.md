@@ -107,9 +107,23 @@ spec:
 | `heartbeatInterval` | N | Input | The interval between heartbeats to the consumer coordinator. At most, the value should be set to a 1/3 of the `sessionTimeout` value. Defaults to `"3s"`. | `"5s"` |
 | `sessionTimeout` | N | Input | The timeout used to detect client failures when using Kafka’s group management facility. If the broker fails to receive any heartbeats from the consumer before the expiration of this session timeout, then the consumer is removed and initiates a rebalance. Defaults to `"10s"`. | `"20s"` |
 | `escapeHeaders` | N | Input | Enables URL escaping of the message header values received by the consumer. Allows receiving content with special characters that are usually not allowed in HTTP headers. Default is `false`. | `true` |
+| `dialTimeout` | N | Input/Output | The maximum duration to wait for the initial TCP connection to a broker. Bounds how long `Init()` can block on an unreachable cluster. Default is `"30s"`. | `"10s"` |
+| `readTimeout` | N | Input/Output | The maximum duration to wait for a response from a broker. Default is `"30s"`. | `"10s"` |
+| `writeTimeout` | N | Input/Output | The maximum duration to wait for a request to be transmitted to a broker. Default is `"30s"`. | `"10s"` |
+| `metadataTimeout` | N | Input/Output | The per-request timeout for metadata refresh operations. When `"0"` (default), Sarama computes the effective timeout from the Net timeouts and retry count. | `"5s"` |
+| `producerRequiredAcks` | N | Output | The number of broker acknowledgements required before a produce request is considered successful. Accepted values: `"all"` (all in-sync replicas, highest durability), `"local"` (partition leader only), `"none"` (no acknowledgement). Default is `"all"`. | `"local"` |
+| `producerRetryMax` | N | Output | The maximum number of times to retry sending a message before giving up. Default is `5`. | `3` |
+| `producerTransactionsEnabled` | N | Output | When set to `"true"`, every publish is wrapped in a Kafka transaction on an idempotent producer: an aborted publish is never visible to consumers reading with `read_committed`. Requires `producerRequiredAcks: "all"`, `producerRetryMax` >= 1 and Kafka 0.11 or later. Transactions serialize publishes and add broker round trips, lowering publish throughput. Default is `"false"` | `"true"`, `"false"` |
+| `transactionalIdPrefix` | N | Output | Prefix for the producer `transactional.id` when `producerTransactionsEnabled` is `"true"`. A random per-instance suffix is appended so scaled replicas never fence each other's transactions. Defaults to `clientID`, then `consumerGroup`, then `"dapr"`. | `"my-app"` |
+| `transactionTimeout` | N | Output | Transaction timeout requested from the broker when `producerTransactionsEnabled` is `"true"`, as a Go duration. Must not exceed the broker's `transaction.max.timeout.ms` (15 minutes by default): the broker rejects larger values when the producer initializes, and that producer is built during component initialization, so the component fails to start. Default is `"60s"` | `"90s"` |
+| `consumerIsolationLevel` | N | Input | Isolation level for consumers. `"read_uncommitted"` (default) delivers all records; `"read_committed"` hides records belonging to open or aborted Kafka transactions and requires Kafka 0.11 or later. | `"read_committed"` |
 
 #### Note
 The metadata `version` must be set to `1.0.0` when using Azure EventHubs with Kafka.
+
+{{% alert title="Consumer transactions are pubsub-only" color="info" %}}
+`consumerTransactionsEnabled` is not supported for the Kafka binding, and setting it to `"true"` fails at init. Exactly-once consume-transform-produce requires the delivery's transaction token to be echoed back through the same component instance, which the bindings model (separate input and output binding instances) cannot provide. Use the [Kafka pubsub component]({{% ref setup-apache-kafka.md %}}) instead.
+{{% /alert %}}
 
 ## Binding support
 

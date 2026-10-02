@@ -71,6 +71,8 @@ dapr run node myapp.js
 == DAPR == time="2019-09-05T12:26:43-07:00" level=info msg="actors: established connection to placement service at localhost:50005"
 ```
 
+When you run several apps locally, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to stream the application and sidecar logs per app, with filtering and highlighting, instead of switching between terminal sessions.
+
 ## Logs in Kubernetes mode
 
 > [Learn how to debug `daprd` on Kubernetes.]({{% ref "debug-daprd.md" %}}) 

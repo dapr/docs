@@ -178,6 +178,10 @@ dapr workflow purge --app-id myapp --all-older-than 720h
 
 See [How-To: Manage workflows]({{< ref howto-manage-workflow.md >}}) for detailed instructions.
 
+**Inspect Workflows Visually**
+
+During local development, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to browse workflow instances, check their status, and drill down into the event history of each execution.
+
 ## Limitations
 
 - **State stores:** You can only use state stores which support workflows, as [described here]({{% ref supported-state-stores %}}).
