@@ -203,7 +203,7 @@ Fine tune the embedded etcd to your needs by [reviewing and configuring the Sche
 
 ## Serving actor placement
 
-The Scheduler can serve actor placement itself, so the standalone Placement service does not run.
+The Scheduler can serve actor placement itself, so the standalone Placement service is not required to run.
 
 In Kubernetes mode, set the Helm value:
 

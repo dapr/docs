@@ -25,7 +25,7 @@ For more information on running Dapr on Kubernetes, visit the [Kubernetes hostin
 
 ## Serving placement from the Scheduler service
 
-The Scheduler service can serve actor placement itself, so the standalone Placement service does not run.
+The Scheduler service can serve actor placement itself, so the standalone Placement service is not required to run.
 
 In Kubernetes mode, set the Helm value:
 
