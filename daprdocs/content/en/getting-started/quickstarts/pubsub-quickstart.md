@@ -1641,10 +1641,14 @@ In the YAML file:
 
 {{< /tabpane >}}
 
+## Inspect subscriptions with the Dapr Dev Dashboard
+
+While the quickstart is running, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to see the `checkout` and `order-processor` apps, the `orderpubsub` component, and the `orders` topic subscription of the `order-processor` app. You can also publish test messages to the subscription from the dashboard, which is useful for testing your subscriber without running the publisher.
+
 ## Tell us what you think!
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this Quickstart helpful? Do you have suggestions for improvement?
 
-Join the discussion in our [discord channel](https://discord.com/channels/778680217417809931/953427615916638238).
+Join our [Discord Server](https://diagrid.ws/dapr-discord) and share your thoughts.
 
 ## Next steps
 

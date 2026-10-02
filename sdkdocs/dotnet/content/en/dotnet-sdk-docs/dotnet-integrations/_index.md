@@ -2,7 +2,7 @@
 type: docs
 title: "Developing applications with the Dapr .NET SDK"
 linkTitle: "Deployment Integrations"
-weight: 90000
+weight: 300000
 description: Deployment integrations with the Dapr .NET SDK
 ---
 

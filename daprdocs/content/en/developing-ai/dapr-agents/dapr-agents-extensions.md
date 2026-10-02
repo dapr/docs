@@ -124,4 +124,4 @@ ext/
 ## See also
 
 - [Dapr Agents core concepts]({{< ref dapr-agents-core-concepts.md >}})
-- [Integrations]({{< ref dapr-agents-integrations.md >}})
+- [Integrations]({{< ref integrations >}})
