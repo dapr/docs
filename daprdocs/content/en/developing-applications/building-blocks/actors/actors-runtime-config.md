@@ -13,21 +13,34 @@ You can modify the default Dapr actor runtime behavior using the following confi
 | `entities` | The actor types supported by this host. | N/A |
 | `actorIdleTimeout` | The timeout before deactivating an idle actor. Checks for timeouts occur every `actorScanInterval` interval. | 60 minutes |
 | `actorScanInterval` | The duration which specifies how often to scan for actors to deactivate idle actors. Actors that have been idle longer than actor_idle_timeout will be deactivated. | 30 seconds |
-| `drainOngoingCallTimeout` | The duration when in the process of draining rebalanced actors. This specifies the timeout for the current active actor method to finish. If there is no current actor method call, this is ignored. The effective value is clamped against the placement dissemination budget (see [Drain timeout clamping](#drain-timeout-clamping)). | 60 seconds |
+| `drainOngoingCallTimeout` | The timeout duration when in the process of draining rebalanced actors. This specifies the timeout for the current active actor method call to finish. If there is no current actor method call, this is ignored. The effective value is clamped against the placement dissemination budget (see [Drain timeout clamping](#drain-timeout-clamping)). | 2 seconds |
 | `drainRebalancedActors` | If true, Dapr will wait for `drainOngoingCallTimeout` duration to allow a current actor call to complete before trying to deactivate an actor. | true |
 | `reentrancy` (`ActorReentrancyConfig`) | Configure the reentrancy behavior for an actor. If not provided, reentrancy is disabled. | disabled, false |
 | `entitiesConfig` | Configure each actor type individually with an array of configurations. Any entity specified in the individual entity configurations must also be specified in the top level `entities` field. Per-entity `drainOngoingCallTimeout` values are honored and subject to the same clamping rule as the top-level value. | N/A |
 
 ## Drain timeout clamping
 
-When a daprd host is being drained (for example during a rolling upgrade), the LOCK -> UPDATE -> UNLOCK round on placement holds the host out of the dissemination loop for the configured `drainOngoingCallTimeout`. If that timeout meets or exceeds the daprd-side placement dissemination timeout (default 30 seconds), placement gives up on the host and resets the stream, which produces noisy reconnects and reschedules. A common case is an SDK that hard-codes a 60-second drain default against the 30-second dissemination default.
+During a placement dissemination round where actors get rebalanced to a new host (for example a rolling upgrade), the Dapr sidecar (daprd) drains all in-flight requests for the rebalanced actor types for up to the configured `drainOngoingCallTimeout` before force-cancelling the remaining actor requests. While draining, daprd delays its acknowledgement of the placement table update, so a long drain timeout can hold up the whole dissemination round.
 
-Starting in Dapr v1.18, daprd clamps the effective drain timeout:
+This drain window is bound by two distinct dissemination timeouts:
 
-- If the configured `drainOngoingCallTimeout` is less than the placement dissemination timeout, the configured value is used verbatim.
-- If it is greater than or equal to the dissemination timeout, daprd logs a warning and reduces the effective value to **80%** of the dissemination timeout, with a floor of the runtime's `DefaultOngoingCallTimeout`. The 80% ratio is applied so the proportion stays stable across small and large dissemination timeouts.
+- The daprd dissemination timeout, set with the `--actors-disseminate-timeout` argument (`dapr.io/actors-disseminate-timeout` annotation) which is by default 30 seconds. If a round exceeds it, daprd resets its own placement gRPC stream and halts its hosted actors.
+- The placement service dissemination timeout, set with the placement `--disseminate-timeout` argument (`dapr_placement.disseminateTimeout` Helm value) which is by default 8 seconds. Dapr sidecars that have not acknowledged the update within this deadline are considered non-responsive and their gRPC stream is reset by Placement.
 
-The clamp is applied at both registration sites: the global `drainOngoingCallTimeout` and any per-actor-type `drainOngoingCallTimeout` set under `entitiesConfig`. The configuration values your app reports to daprd via the actor config endpoint are unchanged; only the effective in-process value used during drain is clamped. If you see the warning in daprd logs, lower the configured value so that it is comfortably below the placement dissemination timeout, or raise the placement dissemination timeout on the control plane.
+{{% alert title="Note" color="primary" %}}
+With default settings the placement service's 8 second deadline always binds first, since it is far lower than daprd's 30 seconds. The daprd-side timeout acts as a failsafe: it lets daprd detect that a dissemination round has wedged (for example when the placement service becomes unresponsive mid-round) and recover on its own by resetting the stream and halting its hosted actors.
+{{% /alert %}}
+
+Starting in Dapr v1.17.7, the Dapr sidecar clamps the *effective* drain timeout against its own dissemination timeout:
+
+- If `drainOngoingCallTimeout` is less than `actors-disseminate-timeout`, the configured value is used verbatim.
+- If `drainOngoingCallTimeout` is greater than or equal to `actors-disseminate-timeout`, daprd logs a warning and reduces the effective value to **80%** of that dissemination timeout, with a floor of 2 seconds. With the default 30-second dissemination timeout, the clamp ceiling is 24 seconds. The default 2-second drain timeout is never clamped, it only applies to explicitly configured values.
+
+The clamp is applied at both registration sites: the global `drainOngoingCallTimeout` and any per-actor-type `drainOngoingCallTimeout` set under `entitiesConfig` via the SDK. The configuration values your app reports to daprd via the actor config endpoint are unchanged and only the effective value used during drain is clamped.
+
+The clamping only protects daprd from resetting its own placement stream. A drain timeout that doesn't get clamped can still exceed the placement service's dissemination timeout (8 seconds by default), in which case placement kicks the sidecar from the round and resets its gRPC stream, producing noisy reconnects and reschedules. It is recommended to keep `drainOngoingCallTimeout` comfortably below the Placement `disseminateTimeout` (for example, 5 seconds or lower), or raise `dapr_placement.disseminateTimeout` to accommodate a longer drain period.
+
+Most Dapr SDKs leave `drainOngoingCallTimeout` unset unless your application configures it, so the 2-second default applies. The .NET Actors.Next SDK is an exception: it sets a 30-second default, which sits exactly at the clamp boundary; configure a lower value explicitly.
 
 ## Examples
 
@@ -47,7 +60,7 @@ public void ConfigureServices(IServiceCollection services)
         // Configure default settings
         options.ActorIdleTimeout = TimeSpan.FromMinutes(60);
         options.ActorScanInterval = TimeSpan.FromSeconds(30);
-        options.DrainOngoingCallTimeout = TimeSpan.FromSeconds(60);
+        options.DrainOngoingCallTimeout = TimeSpan.FromSeconds(5);
         options.DrainRebalancedActors = true;
         options.ReentrancyConfig = new() { Enabled = false };
 
@@ -84,7 +97,7 @@ const clientOptions = {
   actor: {
     actorIdleTimeout: "1h",
     actorScanInterval: "30s",
-    drainOngoingCallTimeout: "1m",
+    drainOngoingCallTimeout: "5s",
     drainRebalancedActors: true,
     reentrancy: {
       enabled: true,
@@ -117,7 +130,7 @@ ActorRuntime.set_actor_config(
     ActorRuntimeConfig(
         actor_idle_timeout=timedelta(hours=1),
         actor_scan_interval=timedelta(seconds=30),
-        drain_ongoing_call_timeout=timedelta(minutes=1),
+        drain_ongoing_call_timeout=timedelta(seconds=5),
         drain_rebalanced_actors=True,
         reentrancy=ActorReentrancyConfig(enabled=False),
     )
@@ -138,7 +151,7 @@ ActorRuntime.set_actor_config(
 
 ActorRuntime.getInstance().getConfig().setActorIdleTimeout(Duration.ofMinutes(60));
 ActorRuntime.getInstance().getConfig().setActorScanInterval(Duration.ofSeconds(30));
-ActorRuntime.getInstance().getConfig().setDrainOngoingCallTimeout(Duration.ofSeconds(60));
+ActorRuntime.getInstance().getConfig().setDrainOngoingCallTimeout(Duration.ofSeconds(5));
 ActorRuntime.getInstance().getConfig().setDrainBalancedActors(true);
 ActorRuntime.getInstance().getConfig().setActorReentrancyConfig(false, null);
 ```
