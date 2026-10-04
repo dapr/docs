@@ -20,7 +20,7 @@ spec:
   - name: key
     value: "mykey"
   - name: model
-    value: claude-3-5-sonnet-20240620
+    value: claude-sonnet-4-6
   - name: responseCacheTTL
     value: 10m
 ```
@@ -34,7 +34,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | `key`   | Y | API key for Anthropic. | `"mykey"` |
-| `model` | N | The Anthropic LLM to use. Defaults to `claude-3-5-sonnet-20240620`  | `claude-3-5-sonnet-20240620` |
+| `model` | N | The Anthropic LLM to use. Defaults to `claude-sonnet-4-6`. If the `ANTHROPIC_MODEL` environment variable is set on the Dapr sidecar, its value overrides this field. | `claude-sonnet-4-6` |
 | `maxTokens` | N | Default maximum number of tokens the model may generate per request. A request-level `maxTokens` value overrides this default. When unset, no cap is sent and the provider's own default applies. | `2048` |
 | `responseCacheTTL` | N | Time-to-live for the in-memory response cache. When set, identical requests are served from cache until they expire. | `10m` |
 
