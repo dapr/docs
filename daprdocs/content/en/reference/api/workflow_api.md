@@ -255,3 +255,11 @@ The API call will provide a JSON response similar to this:
 Parameter | Description
 --------- | -----------
 `runtimeStatus` | The status of the workflow instance. Values include: `"RUNNING"`, `"COMPLETED"`, `"CONTINUED_AS_NEW"`, `"FAILED"`, `"CANCELED"`, `"TERMINATED"`, `"PENDING"`, `"SUSPENDED"`  
+
+The `properties` map does not include `dapr.workflow.output` when `runtimeStatus` is `"FAILED"`. A failed workflow has no successful output. Instead, the `properties` map carries the failure in these keys:
+
+Parameter | Description
+--------- | -----------
+`dapr.workflow.failure.error_type` | The error type for a workflow with `runtimeStatus` `"FAILED"`.
+`dapr.workflow.failure.error_message` | The error message for a workflow with `runtimeStatus` `"FAILED"`.
+`dapr.workflow.failure.stack_trace` | The stack trace for a workflow with `runtimeStatus` `"FAILED"`, when available.
