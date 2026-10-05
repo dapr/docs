@@ -94,77 +94,190 @@ Workflows and their activities can be authored and managed using the Dapr Go SDK
 
 ```go
 import (
-...
-"github.com/dapr/go-sdk/workflow"
-...
+	"context"
+	"fmt"
+	"log"
+
+	"github.com/dapr/durabletask-go/workflow"
+	dapr "github.com/dapr/go-sdk/client"
 )
 
 func ExampleWorkflow(ctx *workflow.WorkflowContext) (any, error) {
-    var output string
-    input := "world"
+	var output string
+	input := "world"
 
-    if err := ctx.CallActivity(ExampleActivity, workflow.ActivityInput(input)).Await(&output); err != nil {
-        return nil, err
-    }
+	if err := ctx.CallActivity(ExampleActivity, workflow.WithActivityInput(input)).Await(&output); err != nil {
+		return nil, err
+	}
 
-    // Print output - "hello world"
-    fmt.Println(output)
+	// Print output - "hello world"
+	fmt.Println(output)
 
-    return nil, nil
+	return nil, nil
 }
 
 func ExampleActivity(ctx workflow.ActivityContext) (any, error) {
-    var input int
-    if err := ctx.GetInput(&input); err != nil {
-        return "", err
-    }
+	var input int
+	if err := ctx.GetInput(&input); err != nil {
+		return "", err
+	}
 
-    return fmt.Sprintf("hello %s", input), nil
+	return fmt.Sprintf("hello %s", input), nil
 }
 
 func main() {
-    // Create a workflow worker
-    w, err := workflow.NewWorker()
-    if err != nil {
-        log.Fatalf("error creating worker: %v", err)
-    }
+	r := workflow.NewRegistry()
 
-    // Register the workflow
-    w.RegisterWorkflow(ExampleWorkflow)
+	// Register the workflow
+	r.AddWorkflow(ExampleWorkflow)
 
-    // Register the activity
-    w.RegisterActivity(ExampleActivity)
+	// Register the activity
+	r.AddActivity(ExampleActivity)
 
-    // Start workflow runner
-    if err := w.Start(); err != nil {
-        log.Fatal(err)
-    }
+	client, err := dapr.NewWorkflowClient()
+	if err != nil {
+		log.Fatal(err)
+	}
 
-    // Create a workflow client
-    wfClient, err := workflow.NewClient()
-    if err != nil {
-        log.Fatal(err)
-    }
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	if err := client.StartWorker(ctx, r); err != nil {
+		log.Fatal(err)
+	}
 
-    // Start a new workflow
-    id, err := wfClient.ScheduleNewWorkflow(context.Background(), "ExampleWorkflow")
-    if err != nil {
-        log.Fatal(err)
-    }
+	// Start a new workflow
+	id, err := client.ScheduleWorkflow(ctx, "ExampleWorkflow")
+	if err != nil {
+		log.Fatal(err)
+	}
 
-    // Wait for the workflow to complete
-    metadata, err := wfClient.WaitForWorkflowCompletion(ctx, id)
-    if err != nil {
-        log.Fatal(err)
-    }
+	// Wait for the workflow to complete
+	metadata, err := client.WaitForWorkflowCompletion(ctx, id)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-    // Print workflow status post-completion
-    fmt.Println(metadata.RuntimeStatus)
-
-    // Shutdown Worker
-    w.Shutdown()
+	// Print workflow status post-completion
+	fmt.Println(metadata.String())
 }
 ```
+
+#### Managing workflows
+
+The workflow client returned by `dapr.NewWorkflowClient()` also exposes the
+management operations: `SuspendWorkflow`, `ResumeWorkflow`, `TerminateWorkflow`,
+`PurgeWorkflowState`, `RaiseEvent` and `FetchWorkflowMetadata`, plus the advanced
+operations below.
+
+##### Listing workflow instances
+
+`ListInstanceIDs` returns the workflow instance IDs belonging to the app. Results
+are paginated: the page size is an upper bound on how many IDs a page carries, and
+you keep calling with the continuation token from the previous response until it
+comes back `nil`.
+
+```go
+var token string
+for {
+	opts := []workflow.ListInstanceIDsOptions{
+		workflow.WithListInstanceIDsPageSize(100),
+	}
+	if token != "" {
+		opts = append(opts, workflow.WithListInstanceIDsContinuationToken(token))
+	}
+
+	resp, err := client.ListInstanceIDs(ctx, opts...)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, id := range resp.InstanceIds {
+		fmt.Println(id)
+	}
+
+	if resp.ContinuationToken == nil {
+		break
+	}
+	token = *resp.ContinuationToken
+}
+```
+
+This requires a state store with actor support that can list keys.
+
+##### Reading a workflow's history
+
+`GetInstanceHistory` returns the full execution history of an instance, which is
+useful for auditing a run or for finding an event to rerun from.
+
+```go
+hist, err := client.GetInstanceHistory(ctx, id)
+if err != nil {
+	log.Fatal(err)
+}
+
+var rerunFrom uint32
+for _, event := range hist.Events {
+	if ts := event.GetTaskScheduled(); ts != nil {
+		fmt.Printf("event %d scheduled activity %s\n", event.GetEventId(), ts.GetName())
+
+		// History event IDs are int32 and some event types carry -1, while
+		// RerunWorkflowFromEvent takes a uint32, so narrow before reusing it.
+		if id := event.GetEventId(); id >= 0 {
+			rerunFrom = uint32(id)
+		}
+	}
+}
+```
+
+The call returns `NotFound` if the instance does not exist or its state has been
+purged.
+
+##### Rerunning a workflow from an event
+
+`RerunWorkflowFromEvent` reruns ("rewinds") a completed workflow from one of its
+history events into a **new** instance. The source instance is left untouched.
+
+Work that had already completed and been recorded before the target event is
+replayed from history rather than executed again. Everything else from before the
+target event is **re-executed** in the new instance: activities that were still
+in flight, timers that had not fired, and child workflows that had not finished.
+Note that in a parallel workflow this includes an activity that succeeded but
+whose completion was recorded *after* the target event — so a fan-out reruns more
+than you might expect. Plan for re-execution if your activities are not
+idempotent.
+
+```go
+newID, err := client.RerunWorkflowFromEvent(ctx, id, eventID,
+	workflow.WithRerunNewInstanceID("my-rerun"),
+	workflow.WithRerunInput(newInput),
+)
+if err != nil {
+	log.Fatal(err)
+}
+
+metadata, err := client.WaitForWorkflowCompletion(ctx, newID)
+if err != nil {
+	log.Fatal(err)
+}
+fmt.Println(metadata.String())
+```
+
+Things to know:
+
+- The source instance must be in a terminal state. Rerunning a running instance
+  fails with `InvalidArgument`.
+- The source cannot itself be a child workflow — that also fails with
+  `InvalidArgument`.
+- Only three event types can be rerun: `TaskScheduled` (a scheduled activity),
+  `TimerCreated` and `ChildWorkflowInstanceCreated`. Any other event is rejected
+  with `NotFound`.
+- `eventID` is the event's own ID, not its index in the history slice.
+- `WithRerunInput` replaces the input of the target event only. It is invalid on
+  a timer event.
+- `WithRerunNewChildInstanceID` is only valid on a child-workflow event.
+- If `WithRerunNewInstanceID` is omitted, the runtime generates a new instance ID.
+  If it is given, it must differ from the source ID and must not already have
+  state, otherwise the call fails with `InvalidArgument` or `AlreadyExists`.
 
 - For a more comprehensive guide on workflows visit these How-To guides:
   - [How-To: Author a workflow]({{% ref howto-author-workflow.md %}}).
