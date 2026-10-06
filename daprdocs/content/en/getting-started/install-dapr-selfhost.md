@@ -182,7 +182,7 @@ dapr init --slim
 
 #### Dapr Dev Dashboard
 
-The free [Diagrid Dapr Dev Dashboard](https://diagrid.ws/diagrid-dashboard-docs) is a companion for local Dapr development. It provides insights for applications, sidecars, components, state stores, subscriptions, actors, workflows, and logs. It can also be used to create Dapr component files and resiliency policies, without hand-editing yaml.
+The free [Diagrid Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) is a companion for local Dapr development. It provides insights for applications, sidecars, components, state stores, subscriptions, actors, workflows, and logs. It can also be used to create Dapr component files and resiliency policies, without hand-editing yaml.
 
 <img src="/images/install-dapr-selfhost/diagrid-dashboard-applications.png" width=800 alt="Diagrid Dev Dashboard showing local Dapr applications"/><br/>
 

@@ -260,7 +260,7 @@ params:
     # End user relevant links. These will show up on left side of footer and in the community page if you have one.
     user:
       - name: YouTube
-        url: https://www.youtube.com/@darpdev
+        url: https://www.youtube.com/@daprdev
         icon: fab fa-youtube
         desc: Subscribe to our YouTube channel
       - name: LinkedIn

@@ -128,6 +128,10 @@ Exit the Redis CLI with:
 exit
 ```
 
+{{% alert title="Tip" color="primary" %}}
+Instead of using the Redis CLI, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to browse the state store. It lists the `myapp||name` key, shows its value, and lets you add or delete state records from a UI.
+{{% /alert %}}
+
 ### Step 5: Delete state
 
 In the same terminal window, delete the`name` state object from the state store.
