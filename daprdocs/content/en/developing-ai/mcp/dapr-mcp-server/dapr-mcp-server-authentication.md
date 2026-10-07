@@ -107,15 +107,9 @@ export DAPR_SENTRY_AUDIENCE=mcp://dapr-mcp-server
 
 The server tries the enabled methods in the order OIDC, SPIFFE, Dapr Sentry, and accepts the request as soon as one of them validates the token. The `*_ENABLED` variables are ignored in single-method modes.
 
-## Skip paths
+## Unauthenticated paths
 
-`AUTH_SKIP_PATHS` is a comma-separated list of request paths that don't need a token. The default is `/livez,/readyz,/startupz`. An entry ending in `*` matches every path with that prefix, so `/public/*` matches `/public/status`. Entries must start with `/`, and the catch-all entries `*` and `/*` are rejected at startup. A request path that isn't in clean form, such as `//livez` or `/a/../livez`, never matches a skip path.
-
-The health endpoints are always served without authentication, whatever this list contains, so most deployments never need to set it.
-
-{{% alert title="Warning" color="warning" %}}
-MCP requests are served on every path other than the health endpoints. A skip path that matches the path your clients use, such as `/` or `/mcp`, turns authentication off for those MCP requests.
-{{% /alert %}}
+The health endpoints `/livez`, `/readyz`, and `/startupz` are always served without authentication, as is `/dapr/subscribe`, which only tells the sidecar the server has no subscriptions. Every other path is MCP and needs a token. There is no setting to exempt more paths, and setting the old `AUTH_SKIP_PATHS` variable makes the server fail at startup.
 
 ## Related links
 

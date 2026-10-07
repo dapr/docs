@@ -46,7 +46,6 @@ Authentication applies to the HTTP transport. See [Authentication]({{% ref dapr-
 | Variable | Default | Description |
 |---|---|---|
 | `AUTH_MODE` | Not set (disabled) | `oidc`, `spiffe`, `dapr-sentry`, or `hybrid` turns authentication on. Not set, or `disabled`, turns it off. |
-| `AUTH_SKIP_PATHS` | `/livez,/readyz,/startupz` | Comma-separated paths that skip authentication. A trailing `*` matches by prefix. `*` and `/*` are rejected. |
 | `OIDC_ENABLED` | `false` | In `hybrid` mode, accept OIDC tokens. Ignored in other modes. |
 | `OIDC_ISSUER_URL` | Not set | OIDC issuer URL. Required when OIDC is on. |
 | `OIDC_CLIENT_ID` | Not set | Expected `aud` claim. Required when OIDC is on. |
@@ -65,7 +64,7 @@ Authentication applies to the HTTP transport. See [Authentication]({{% ref dapr-
 | `DAPR_SENTRY_TOKEN_HEADER` | `Authorization` | Header to read the token from. A custom header carries the raw token, without a `Bearer` prefix. |
 | `DAPR_SENTRY_JWKS_REFRESH_INTERVAL` | `5m` | How often to refresh the JWKS, as a Go duration. Minimum `30s`. |
 
-`AUTH_ENABLED` is no longer supported. If it is set at all, the server refuses to start and asks you to use `AUTH_MODE` instead.
+`AUTH_ENABLED` and `AUTH_SKIP_PATHS` are no longer supported. If either is set at all, the server refuses to start. Use `AUTH_MODE` to turn authentication on; the health endpoints never need a token.
 
 ## Telemetry
 

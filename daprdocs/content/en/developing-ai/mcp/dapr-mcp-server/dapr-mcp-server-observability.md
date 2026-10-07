@@ -47,7 +47,7 @@ Metrics are exported every 10 seconds by default (`OTEL_METRIC_EXPORT_INTERVAL`)
 | `dapr-mcp-server.http.request_duration` | Histogram | `ms` | MCP HTTP request duration. Server-sent event streams are counted but not timed, because their duration is the client's session length. |
 | `dapr-mcp-server.http.requests_in_flight` | Up-down counter | `{request}` | MCP HTTP requests being handled now. |
 
-Tool metrics carry `tool.name` and `tool.package`. The invocation, error, and duration metrics also carry `dapr.component.type`, which holds the target the call named (a component name, app ID, or actor type), and the invocation and duration metrics carry `outcome` (`success` or `error`). HTTP metrics carry `http.request.method`, `http.response.status_code`, and `http.route`. The HTTP metrics cover MCP requests only, not the health endpoints.
+Tool metrics carry only bounded attributes: `tool.name` and `tool.package`, plus `outcome` (`success` or `error`) on the invocation and duration metrics and `error.type` on the error counter. Values the agent supplies, such as component names, app IDs, and actor types, are kept off metrics and recorded on the tool's span instead. HTTP metrics carry `http.request.method`, `http.response.status_code`, and `http.route`. The HTTP metrics cover MCP requests only, not the health endpoints.
 
 ## Logs
 
