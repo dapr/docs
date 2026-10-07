@@ -55,7 +55,7 @@ The server writes structured JSON logs to stderr, never stdout, so logs can't co
 
 When an OTLP endpoint is set, the same records are also exported as OpenTelemetry logs, correlated with the active trace. Set `DAPR_MCP_SERVER_LOGS_OTEL_ENABLED=false` to keep logs on stderr only.
 
-At `debug` level the server logs incoming request headers, with `Authorization`, `Cookie`, `X-Api-Key`, and the configured token header redacted. Each tool call is logged at `info` with its outcome and target, such as the store name and key, but not with payloads or secret values.
+At `debug` level the server logs incoming request headers, with `Authorization`, `Cookie`, `X-Api-Key`, and the configured token header redacted. Each successful tool call is logged at `info`, and each failure at `warn`, with its target, such as the store name and key, but never with payloads or secret values.
 
 ## Health endpoints
 
