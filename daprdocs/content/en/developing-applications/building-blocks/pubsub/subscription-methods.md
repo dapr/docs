@@ -669,6 +669,10 @@ func main() {
 
 {{< /tabpane >}}
 
+## Inspect subscriptions locally
+
+Regardless of which subscription type you choose, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) during local development to see which subscriptions each app has registered, including the pub/sub component, topic, and routes. This is a quick way to confirm that a declarative subscription file was loaded, or that your app returned the expected programmatic subscriptions. You can also send test messages to a subscription from the dashboard.
+
 ## Next Steps
 
 * Try out the [pub/sub Quickstart]({{% ref pubsub-quickstart %}})
