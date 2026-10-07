@@ -37,7 +37,7 @@ spec:
   - name: vaultTokenMountPath # Required if vaultAuthMethod is "token" and vaultToken not provided. Path to token file.
     value : "[path_to_file_containing_token]"
   - name: vaultToken # Required if vaultAuthMethod is "token" and vaultTokenMountPath not provided. Token value.
-    value : "[path_to_file_containing_token]"
+    value : "[token]"
   - name: vaultKVPrefix # Optional. Default: "dapr"
     value : "[vault_prefix]"
   - name: vaultKVUsePrefix # Optional. default: "true"
@@ -78,16 +78,18 @@ spec:
 
 `vaultToken` and `vaultTokenMountPath` must not be set when using `vaultAuthMethod: kubernetes`.
 
+The token file is read again on every login, so a projected service account token rotated by the kubelet is picked up automatically. The pod must have a service account token mounted; if `automountServiceAccountToken` is disabled, mount a projected token yourself and point `vaultServiceAccountTokenPath` at it.
+
 Before this works, Vault itself needs to know about your cluster and about the role your Dapr app's pod is allowed to use. This is a one-time setup on the Vault side, done with the [Vault CLI](https://developer.hashicorp.com/vault/docs/install), for example:
 
 ```shell
 # Enable the Kubernetes auth method (skip if already enabled).
 vault auth enable kubernetes
 
-# Point it at your cluster's API server. Run from within a pod that already
-# has a Kubernetes service account token and CA cert mounted (for example,
-# the Vault server pod itself) and Vault will pick up the reviewer JWT and
-# CA cert from its own environment.
+# Point it at your cluster's API server. When the Vault server runs in the
+# same cluster, it uses its own pod's service account token and CA cert to
+# review login tokens. When Vault runs outside the cluster, also set
+# token_reviewer_jwt and kubernetes_ca_cert.
 vault write auth/kubernetes/config \
   kubernetes_host="https://kubernetes.default.svc:443"
 
@@ -117,13 +119,13 @@ vault write auth/kubernetes/role/dapr-app \
 |--------------------|:--------:|--------------------------------|---------------------|
 | vaultAddr      | N | The address of the Vault server. Defaults to `"https://127.0.0.1:8200"` | `"https://127.0.0.1:8200"` |
 | caPem | N | The inlined contents of the CA certificate to use, in PEM format. If defined, takes precedence over `caPath` and `caCert`.  | See below |
-| caPath | N | The path to a folder holding the CA certificate file to use, in PEM format. If the folder contains multiple files, only the first file found will be used. If defined, takes precedence over `caCert`.  |  `"path/to/cacert/holding/folder"` |
+| caPath | N | The path to a folder holding the CA certificate file to use, in PEM format. If the folder contains multiple files, certificates from all of them are used. If defined, takes precedence over `caCert`.  |  `"path/to/cacert/holding/folder"` |
 | caCert | N | The path to the CA certificate to use, in PEM format. | `""path/to/cacert.pem"` |
 | skipVerify | N | Skip TLS verification. Defaults to `"false"` | `"true"`, `"false"` |
 | tlsServerName | N | The name of the server requested during TLS handshake in order to support virtual hosting. This value is also used to verify the TLS certificate presented by Vault server. | `"tls-server"` |
 | vaultAuthMethod | N | The authentication method to use against Vault. `token` uses a static token or a token mounted to a file. `kubernetes` authenticates natively using the Kubernetes Auth Method and the pod's service account token, without requiring a Vault Agent Injector sidecar, and automatically renews/re-authenticates in the background. Defaults to `"token"` | `"token"`, `"kubernetes"` |
 | vaultTokenMountPath | N | Path to file containing token. Required when `vaultAuthMethod` is `token` and `vaultToken` is not set. | `"path/to/file"` |
-| vaultToken | N | [Token](https://learn.hashicorp.com/tutorials/vault/tokens) for authentication within Vault. Required when `vaultAuthMethod` is `token` and `vaultTokenMountPath` is not set. | `"tokenValue"` |
+| vaultToken | N | [Token](https://learn.hashicorp.com/tutorials/vault/tokens) for authentication within Vault. Required when `vaultAuthMethod` is `token` and `vaultTokenMountPath` is not set. Must not be set together with `vaultTokenMountPath`. | `"tokenValue"` |
 | vaultKubernetesRole | N | The Vault role to authenticate as when `vaultAuthMethod` is `kubernetes`. Required in that case. | `"my-app-role"` |
 | vaultKubernetesMountPath | N | The mount path of the Kubernetes auth method in Vault, if not mounted at the default `kubernetes` path. Defaults to `"kubernetes"` | `"kubernetes"` |
 | vaultServiceAccountTokenPath | N | Path to the Kubernetes service account token used to authenticate, overriding the default projected service account token path. Defaults to `"/var/run/secrets/kubernetes.io/serviceaccount/token"` | `"/var/run/secrets/kubernetes.io/serviceaccount/token"` |
