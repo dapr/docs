@@ -37,7 +37,7 @@ These settings apply only when the server runs with `--http`.
 |---|---|---|
 | `DAPR_MCP_CORS_ORIGIN` | Not set | Origin allowed to call the server from a browser, for example `https://app.example.com`. When set, the server adds CORS headers to every response and answers `OPTIONS` preflight requests. When not set, no CORS headers are sent and browsers on other origins are refused. Set it only for a browser-based MCP client on another origin. |
 
-The server always serves `/livez`, `/readyz`, and `/startupz` without authentication; see [Health endpoints]({{% ref "dapr-mcp-server-observability.md#health-endpoints" %}}). MCP requests are served on every other path, so `http://<host>:<port>/` is the MCP endpoint.
+The server always serves `/livez`, `/readyz`, and `/startupz` without authentication; see [Health endpoints]({{% ref "dapr-mcp-server-observability.md#health-endpoints" %}}). MCP requests are served on every other path, so `http://<host>:<port>/` is the MCP endpoint. The one exception is `/dapr/subscribe`, which returns an empty subscription list for the Dapr sidecar and also needs no authentication.
 
 ## Authentication
 

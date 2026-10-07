@@ -18,7 +18,7 @@ The Dapr MCP server can require a valid token on every MCP request it serves ove
 
 Authentication only applies to the HTTP transport. Over stdio, the MCP client starts the server as a local process, and there is no network listener to protect.
 
-The server checks the settings for the selected mode at startup. If a required variable is missing or a value can't be parsed, it exits with an error that names the variable. `AUTH_ENABLED`, used by earlier builds, is no longer supported: if it is set at all, the server refuses to start and points you to `AUTH_MODE`.
+The server checks the settings for the selected mode at startup. If a required variable is missing or a value can't be parsed, it exits with an error that names the variable. An unrecognized `AUTH_MODE` value is also rejected at startup. `AUTH_ENABLED`, used by earlier builds, is no longer supported: if it is set at all, the server refuses to start and points you to `AUTH_MODE`.
 
 ## Sending a token
 
@@ -65,7 +65,7 @@ export SPIFFE_ALLOWED_CLIENTS=spiffe://example.org/ns/agents/sa/planner
 
 ## Dapr Sentry
 
-Use `dapr-sentry` when the callers are Dapr apps. Dapr Sentry can issue each app a JWT whose subject is the app's SPIFFE ID, and publish the signing keys as a JWKS. To turn this on in Sentry, enable JWT issuing and the OIDC server, as described in [Authenticating with a Federated Identity Credential]({{% ref "authenticating-azure.md#authenticating-with-a-federated-identity-credential" %}}). The JWKS is then served at `/jwks.json` on the Sentry OIDC port.
+Use `dapr-sentry` when the callers are Dapr apps. Dapr Sentry can issue each app a JWT whose subject is the app's SPIFFE ID, and publish the signing keys as a JWKS. To turn this on in Sentry, enable JWT issuing and the OIDC server, using the Sentry Helm values shown in [Authenticating with a Federated Identity Credential]({{% ref "authenticating-azure.md#authenticating-with-a-federated-identity-credential" %}}). The Microsoft Entra ID steps on that page don't apply. The JWKS is served at `/jwks.json` on the Sentry OIDC port. Each calling app requests a token for the audience you set in `DAPR_SENTRY_AUDIENCE` with the `dapr.io/sentry-request-jwt-audiences` annotation, or the `--sentry-request-jwt-audiences` flag in self-hosted mode.
 
 An [`MCPServer` resource]({{% ref "mcp-server-resource.md#spiffe-workload-identity" %}}) with `auth.spiffe.jwt` sends such a token on every call, so this mode pairs naturally with declaring the Dapr MCP server as an `MCPServer`.
 
