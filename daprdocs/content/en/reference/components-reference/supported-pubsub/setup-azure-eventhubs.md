@@ -35,6 +35,8 @@ spec:
       value: "false"
     - name: enableInOrderMessageDelivery
       value: "false"
+    - name: maxConcurrentHandlers
+      value: "100"
     # The following four properties are needed only if enableEntityManagement is set to true
     - name: resourceGroupName
       value: "test-rg"
@@ -68,7 +70,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `eventHubNamespace` | Y* | The Event Hub Namespace name.<br>* Mutually exclusive with `connectionString` field.<br>* Required when using [Microsoft Entra ID Authentication]({{% ref "authenticating-azure.md" %}})                                                                                                                                                | `"namespace"` 
 | `consumerID`       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{% ref "component-schema.md#templated-metadata-values" %}})
 | `enableEntityManagement` | N | Boolean value to allow management of the EventHub namespace and storage account. Default: `false`                                                                                                                                                                                                                                       | `"true", "false"`
-| `enableInOrderMessageDelivery` | N | Input/Output                                                                                                                                                                                                                                                                                                                            | Boolean value to allow messages to be delivered in the order in which they were posted. This assumes `partitionKey` is set when publishing or posting to ensure ordering across partitions. Default: `false` | `"true"`, `"false"`
+| `enableInOrderMessageDelivery` | N | Boolean value that controls whether messages are processed in order within each partition. This assumes `partitionKey` is set when publishing to preserve ordering for related messages. Default: `false`.<br><br>When `true`, the component processes one batch at a time in partition order. When `false`, handlers run concurrently. Both modes provide at-least-once delivery and checkpoint only contiguous successfully processed messages. | `"true"`, `"false"`
+| `maxConcurrentHandlers` | N | Applies only when `enableInOrderMessageDelivery` is `false`. Maximum number of outstanding handler invocations per partition. An invocation is outstanding while it runs before succeeding, and after it succeeds if an earlier invocation on the partition has not succeeded yet. The slot is freed once the invocation and every earlier one have succeeded, whether or not the checkpoint has been written. At the limit, the component stops receiving from the partition until a slot frees up. See [Message delivery behavior](#message-delivery-behavior). Must be greater than `0`. Default: `100`. | `"100"`
 | `storageAccountName`  | Y  | Storage account name to use for the checkpoint store.                                                                                                                                                                                                                                                                                   |`"myeventhubstorage"`
 | `storageAccountKey`   | Y*  | Storage account key for the checkpoint store account.<br>* When using Microsoft Entra ID, it's possible to omit this if the service principal has access to the storage account too.                                                                                                                                                    | `"112233445566778899"`
 | `storageConnectionString`   | Y*  | Connection string for the checkpoint store, alternative to specifying `storageAccountKey`                                                                                                                                                                                                                                               | `"DefaultEndpointsProtocol=https;AccountName=myeventhubstorage;AccountKey=<account-key>"`
@@ -141,9 +144,19 @@ When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to
 | `maxMessagesCount` | `100` |
 | `maxAwaitDurationMs` | `10000` |
 
+## Message delivery behavior
+
+When `enableInOrderMessageDelivery` is `true`, the component processes one message at a time in partition order, or one batch at a time for bulk subscriptions. When `false`, handlers run concurrently. Both modes provide at-least-once delivery. The component retries a failed handler invocation indefinitely using the configured backoff timing, until processing succeeds or the subscription is canceled.
+
+In concurrent mode, `maxConcurrentHandlers` limits the number of outstanding handler invocations per partition. Each invocation handles one message, or one batch for bulk subscriptions. An invocation holds its slot while it runs or retries, and after it succeeds if an earlier invocation on the partition has not succeeded yet. The component frees the slot once the invocation and every earlier one have succeeded. When all slots are in use, the component stops receiving from the partition until a slot frees up. A message that keeps failing holds its slot, and so does every later invocation, so the partition stops receiving once the limit is reached.
+
+Checkpoints advance only through contiguous successfully processed messages. For example, if messages 1, 2, and 4 succeed while message 3 is still running or retrying, the checkpoint cannot advance past message 2. After message 3 succeeds, the next eligible checkpoint can advance through message 4. For how often the component writes checkpoints, see [Configuring checkpoint frequency](#configuring-checkpoint-frequency).
+
 ## Configuring checkpoint frequency
 
-When subscribing to a topic, you can configure the checkpointing frequency in a partition by [setting the metadata in the HTTP or gRPC subscribe request ]({{% ref "pubsub_api.md#http-request-2" %}}). This metadata enables checkpointing after the configured number of events within a partition event sequence. Disable checkpointing by setting the frequency to `0`.  
+When subscribing to a topic, you can configure the checkpointing frequency in a partition by [setting the metadata in the HTTP or gRPC subscribe request]({{% ref "pubsub_api.md#http-request-2" %}}). The default frequency is `1`. The frequency counts contiguous successfully processed events, or batches for bulk subscriptions. With a frequency above `1`, a restart can redeliver messages that succeeded after the last stored checkpoint.
+
+Setting the frequency to `0` stops new checkpoint writes but does not delete an existing stored checkpoint. An existing checkpoint remains the restart position. If no checkpoint exists, both ordered and concurrent delivery start from the earliest retained event.
 
 [Learn more about checkpointing](https://learn.microsoft.com/azure/event-hubs/event-hubs-features#checkpointing).
 
@@ -171,7 +184,7 @@ scopes:
 ```
 
 {{% alert title="Note" color="primary" %}}
-When subscribing to a topic using `BulkSubscribe`, you configure the checkpointing to occur after the specified number of _batches,_ instead of events, where _batch_ means the collection of events received in a single request.
+When subscribing to a topic using `BulkSubscribe`, you configure checkpointing to occur after the specified number of _batches_ instead of events, where _batch_ means the collection of events received in a single request. A failed bulk batch retries in full, which provides at-least-once delivery and may deliver successful entries more than once.
 {{% /alert %}}
 
 ## Create an Azure Event Hub
