@@ -203,8 +203,6 @@ params:
       url: https://v1-9.docs.dapr.io
     - version: v1.8
       url: https://v1-8.docs.dapr.io
-    - version: v1.7
-      url: https://v1-7.docs.dapr.io
 
   # Google Custom Search Engine ID. Remove or comment out to disable search.
   # gcs_engine_id: d72aa9b2712488cc3
