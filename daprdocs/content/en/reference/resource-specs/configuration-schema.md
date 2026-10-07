@@ -48,6 +48,11 @@ spec:
     latencyDistributionBuckets:
       - <BUCKET-VALUE-MS-0>
       - <BUCKET-VALUE-MS-1>
+    workflow:
+      latencyDistributionBuckets:
+        - <BUCKET-VALUE-0>
+        - <BUCKET-VALUE-1>
+      latencyDistributionUnits: <DURATION>
     http:
       increasedCardinality: <TRUE-OR-FALSE>
       pathMatching: 

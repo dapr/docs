@@ -33,6 +33,11 @@
   state: Alpha
   version: v1
   since: "1.16"
+- component: OpenRouter
+  link: openrouter
+  state: Alpha
+  version: v1
+  since: "1.18"
 - component: Local echo
   link: local-echo
   state: Stable
