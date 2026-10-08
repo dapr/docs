@@ -111,6 +111,13 @@ SDK extensions mainly work as utilities for receiving pub/sub events, programati
       <a href="{{% ref python-workflow %}}" class="stretched-link"></a>
     </div>
   </div>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title"><b>Databricks</b></h5>
+      <p class="card-text">Turn Databricks Lakeflow streaming records into durable Dapr Workflow executions.</p>
+      <a href="{{% ref python-databricks-ext %}}" class="stretched-link"></a>
+    </div>
+  </div>
 </div>
 
 Learn more about [the Dapr Python SDK extensions](https://github.com/dapr/python-sdk/tree/master/ext).
