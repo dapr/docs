@@ -74,7 +74,7 @@ Include code snippets where possible.
 
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this quickstart helpful? Do you have suggestions for improvement?
 
-Join the discussion in our [discord channel](https://discord.gg/22ZtJrNe).
+Join our [Discord Server](https://diagrid.ws/dapr-discord) and share your thoughts.
 
 <!-- Since Dapr is an open community of contributors, make sure to provide a link to the discord discussion to welcome feedback.
 -->

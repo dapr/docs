@@ -144,30 +144,38 @@ else
 {{% tab "Python" %}}
 
 ```python
-import requests
 import json
 
-base_url = "http://localhost:3500/v1.0/publish/bulk/{}/{}"
-pubsub_name = "my-pubsub-name"
-topic_name = "topic-a"
-payload = [
-  {
-    "entryId": "ae6bf7c6-4af2-11ed-b878-0242ac120002",
-    "event": "first text message",
-    "contentType": "text/plain"
-  },
-  {
-    "entryId": "b1f40bd6-4af2-11ed-b878-0242ac120002",
-    "event": {
-      "message": "second JSON message"
-    },
-    "contentType": "application/json"
-  }
-]
+from dapr.clients import BulkPublishEntry, DaprClient
 
-response = requests.post(base_url.format(pubsub_name, topic_name), json=payload)
-print(response.status_code)
+with DaprClient() as client:
+    response = client.publish_events(
+        pubsub_name='my-pubsub-name',
+        topic_name='topic-a',
+        data=[
+            'first text message',
+            BulkPublishEntry(
+                event=json.dumps({'message': 'second JSON message'}),
+                content_type='application/json',
+                metadata={'partitionKey': 'tenant-a'},
+                entry_id='b1f40bd6-4af2-11ed-b878-0242ac120002',
+            ),
+        ],
+        data_content_type='text/plain',
+        publish_metadata={'ttlInSeconds': '60'},
+    )
+
+    for entry in response.failed_entries:
+        print(f'failed entry {entry.entry_id}: {entry.error}')
 ```
+
+Each event can be a `str`, `bytes`, or a `BulkPublishEntry`. Use `BulkPublishEntry` to set metadata, a content type, or an entry ID on one event. The `publish_metadata` applies to every event, and individual entry metadata overrides it. The content type is set with each event's own `content_type`, then `data_content_type`, followed by the default based on the event type (`text/plain` for `str` and `application/octet-stream` for `bytes`).
+
+The SDK generates an `entry_id` for each event when you do not set one. Set your own `entry_id` when you need to match the entries in `failed_entries` back to the events you sent.
+
+{{% alert title="Note" color="primary" %}}
+`BulkPublishEntry` requires Python SDK v1.19.0 or later.
+{{% /alert %}}
 
 {{% /tab %}}
 

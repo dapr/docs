@@ -62,6 +62,10 @@ See [how to setup different state stores on Kubernetes]({{% ref "setup-state-sto
 Set an `app-id`, as the state keys are prefixed with this value. If you don't set an `app-id`, one is generated for you at runtime. The next time you run the command, a new `app-id` is generated and you will no longer have access to the previously saved state.
 {{% /alert %}}
 
+{{% alert title="Tip" color="primary" %}}
+When running locally, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to verify the results of the examples on this page. The dashboard lets you browse the records in your state store (including the `app-id` key prefixes), decode base64-encoded values, and add or delete records without writing any code.
+{{% /alert %}}
+
 ## Save and retrieve a single state
 
 The following example shows how to save and retrieve a single key/value pair using the Dapr state management API.

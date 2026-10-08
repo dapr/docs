@@ -1,0 +1,26 @@
+//
+// callouts
+//
+
+.td-content .alert {
+  border: 1px solid var(--d-border); border-left: 3px solid var(--d-sky);
+  background: color-mix(in srgb, var(--d-sky) 7%, var(--d-ground));
+  color: var(--d-body); border-radius: 0 var(--d-radius) var(--d-radius) 0; padding: 13px 15px;
+}
+.td-content .alert-warning { border-left-color: var(--d-orange); background: color-mix(in srgb, var(--d-orange) 7%, var(--d-ground)); }
+.td-content .alert-primary { border-left-color: var(--d-blue);  background: color-mix(in srgb, var(--d-blue) 8%, var(--d-ground)); }
+.td-content .alert-success { border-left-color: var(--d-success); }
+.td-content .alert-danger  { border-left-color: var(--d-danger); }
+.td-content .alert a { color: var(--d-link); }
+
+// Docsy sets fixed light-theme colors on `.alert-* .alert-heading` (e.g.
+// `.alert-primary .alert-heading { color:#0D2192 }`) that are illegible on the
+// dark callout background. Re-map to tokens that flip per theme — the light
+// values match Docsy's, the dark values stay legible.
+.td-content .alert .alert-heading { color: var(--d-heading); }
+.td-content .alert-primary .alert-heading { color: var(--d-blue); }
+.td-content .alert-secondary .alert-heading,
+.td-content .alert-info .alert-heading { color: var(--d-sky); }
+.td-content .alert-warning .alert-heading { color: var(--d-orange); }
+.td-content .alert-success .alert-heading { color: var(--d-success); }
+.td-content .alert-danger .alert-heading { color: var(--d-danger); }
