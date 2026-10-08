@@ -94,6 +94,8 @@ builder.Services.AddDaprJobsClient(); //Registers the `DaprJobsClient` to be inj
 var app = builder.Build();
 ```
 
+> `AddDaprJobsClient()` also registers the gRPC `AppCallbackAlpha` callback service and configures Kestrel for HTTP/1 + HTTP/2, enabling the sidecar to deliver job triggers over either HTTP or gRPC without any additional setup.
+
 Sometimes the developer will need to configure the created client using the various configuration options detailed 
 above. This is done through an overload that passes in the `DaprJobsClientBuiler` and exposes methods for configuring 
 the necessary options.
