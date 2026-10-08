@@ -482,6 +482,16 @@ spec:
 To enable [message properties](https://www.rabbitmq.com/docs/publishers#message-properties) being published in the metadata, set the `publishMessagePropertiesToMetadata` field to `"true"` in the component spec.
 This will include properties such as message ID, timestamp, and headers in the metadata of the published message.
 
+## Graceful shutdown behavior
+
+When the Dapr runtime receives a shutdown signal, in-flight RabbitMQ messages whose handler context is cancelled (for example, because `block-shutdown-duration` has expired) are left **unacknowledged**. The component does not send a NACK in this case.
+
+Leaving messages unacknowledged means that when the AMQP connection closes as part of shutdown, RabbitMQ automatically redelivers those messages to another available consumer. This prevents messages from being incorrectly routed to the dead-letter queue (DLQ) solely because the sidecar shut down while processing them.
+
+{{% alert title="Note" color="primary" %}}
+This behavior only applies when the message handler returns an error due to context cancellation. If the handler returns a real application error with a live context, the message is still NACKed as usual (and routed to the DLQ if `enableDeadLetter: true` and `requeueInFailure: false`).
+{{% /alert %}}
+
 ## Related links
 
 - [Basic schema for a Dapr component]({{% ref component-schema %}}) in the Related links section
