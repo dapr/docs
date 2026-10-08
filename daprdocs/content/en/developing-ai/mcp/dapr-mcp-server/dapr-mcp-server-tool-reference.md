@@ -49,7 +49,7 @@ Every tool except `get_components` also sets `openWorldHint`, because it reaches
 | [`acquire_lock`](#acquire_lock) | A `lock.*` component | Side effect, idempotent |
 | [`release_lock`](#release_lock) | A `lock.*` component | Side effect, not idempotent |
 
-Tools are registered once, when the server starts. Restart it after adding the first component of a new type.
+Tools follow the components loaded in the sidecar. When [component hot reloading]({{% ref "component-updates.md#hot-reloading" %}}) adds the first component of a type, the server registers that type's tools and notifies connected clients that the tool list changed. When the last one is removed, its tools are removed too.
 
 A tool that fails, because an input is missing or the sidecar returns an error, returns a result marked as an error with a message the model can read, rather than failing the MCP request.
 
