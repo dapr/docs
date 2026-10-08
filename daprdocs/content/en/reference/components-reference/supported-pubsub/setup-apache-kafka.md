@@ -43,6 +43,10 @@ spec:
     value: "SHA-512"
   - name: maxMessageBytes # Optional.
     value: 1024
+  - name: numPartitions # Optional.
+    value: 3
+  - name: replicationFactor # Optional.
+    value: 3
   - name: consumeRetryInterval # Optional.
     value: 200ms
   - name: heartbeatInterval # Optional.
@@ -95,6 +99,8 @@ spec:
 | saslMechanism      | N | The SASL Authentication Mechanism you wish to use. Only required if `authType` is set to `"password"`. Defaults to `PLAINTEXT` | `"SHA-512", "SHA-256", "PLAINTEXT"`
 | initialOffset       | N | The initial offset to use if no offset was previously committed. Should be "newest" or "oldest". Defaults to "newest". | `"oldest"`
 | maxMessageBytes     | N | The maximum size in bytes allowed for a single Kafka message. Defaults to 1024. | `2048`
+| numPartitions | N | If set to a value greater than 0, Dapr creates the topic with this many partitions if it doesn't already exist. Defaults to `0`, meaning Dapr does not create topics and leaves this to the broker's auto-create behavior or external provisioning. Not supported when `authType` is `awsiam`. | `3` |
+| replicationFactor | N | The replication factor used when Dapr creates the topic. Only applies when `numPartitions` is set. Defaults to `1`. | `3` |
 | consumeRetryInterval | N | The interval between retries when attempting to consume topics. Treats numbers without suffix as milliseconds. Defaults to 100ms. | `200ms` |
 | consumeRetryEnabled | N | Disable consume retry by setting `"false"` | `"true"`, `"false"` |
 | version               | N | Kafka cluster version. Defaults to 2.0.0. Note that this must be set to `1.0.0` if you are using Azure EventHubs with Kafka. | `0.10.2.0` |
