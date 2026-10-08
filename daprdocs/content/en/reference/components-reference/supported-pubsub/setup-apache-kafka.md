@@ -796,7 +796,7 @@ metadata:
     value: "dapr-kafka.myapp.svc.cluster.local:9092"
   - name: authType # Required.
     value: "none"
-  - name: excludeMetaHeaderRegex
+  - name: excludeHeaderMetaRegex
     value: "^valueSchemaType$" # Optional. Excludes `valueSchemaType` header from being published to headers and converted to metadata
 ```
 
