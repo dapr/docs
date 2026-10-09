@@ -44,8 +44,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | url    | Y  | Address of the AMQP broker. Can be `secretKeyRef` to use a secret reference. <br> Use the **`amqp://`** URI scheme for non-TLS communication. <br> Use the **`amqps://`** URI scheme for TLS communication. | `"amqp://host.domain[:port]"`
-| username | Y | The username to connect to the broker. Only required if anonymous is not specified or set to `false` .| `default`
-| password | Y | The password to connect to the broker. Only required if anonymous is not specified or set to `false`. | `default`
+| username | N | The username to connect to the broker. Required unless `anonymous` is `true`. | `default`
+| password | N | The password to connect to the broker. Required unless `anonymous` is `true`. | `default`
 | anonymous | N | To connect to the broker without credential validation. Only works if enabled on the broker. A username and password would not be required if this is set to `true`. | `true`
 | caCert | N | Certificate Authority (CA) certificate in PEM format for verifying server TLS certificates. Only needed when the broker certificate is not signed by a publicly trusted CA. Requires the `amqps://` scheme. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
 | clientCert  | N | TLS client certificate in PEM format, for mutual TLS. Must be used with `clientKey`, and requires the `amqps://` scheme. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
