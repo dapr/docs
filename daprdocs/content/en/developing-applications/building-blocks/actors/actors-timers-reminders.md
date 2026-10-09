@@ -141,6 +141,10 @@ POST/PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name
 
 Unlike timers, reminders support an `overwrite` option that allows you to replace an existing reminder with the same name, as well as a `failurePolicy` option that defines the behavior when a reminder invocation fails.
 
+{{% alert title="Note" color="primary" %}}
+From Dapr 1.19, reminder names and actor IDs can contain the pipe character (`|`) and `@`. A name or actor ID is still rejected if it contains a character that is unsafe in an HTTP path segment (such as `/`, `\`, `#`, `?`, a newline, or a NUL byte), is `.` or `..`, or exceeds the maximum length.
+{{% /alert %}}
+
 ### Retrieve actor reminder
 
 You can retrieve the actor reminder by calling
