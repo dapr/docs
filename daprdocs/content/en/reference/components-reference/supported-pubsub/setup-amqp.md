@@ -150,7 +150,7 @@ Some brokers select the routing type from a prefix on the address. Set `topicAdd
 
 ### Apache ActiveMQ Artemis
 
-An Artemis acceptor takes `anycastPrefix` and `multicastPrefix` settings. If the acceptor is configured with `anycastPrefix=anycast://;multicastPrefix=multicast://`, configure the component to match:
+An Artemis acceptor takes `anycastPrefix` and `multicastPrefix` settings. If the acceptor is configured with `anycastPrefix=anycast://;multicastPrefix=multicast://`, configure the component to match. Use whatever prefixes your acceptor defines; `queue://` and `topic://` are also common:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
