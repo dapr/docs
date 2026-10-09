@@ -116,6 +116,7 @@ You can use the following SDKs to author a workflow.
 | .NET | [Dapr.Workflow](https://www.nuget.org/profiles/dapr.io) |
 | Java | [io.dapr.workflows](https://dapr.github.io/java-sdk/io/dapr/workflows/package-summary.html) |
 | Go | [workflow](https://github.com/dapr/go-sdk/tree/main/client/workflow.go) |
+| Rust | [dapr::workflow](https://docs.rs/dapr/latest/dapr/workflow/index.html) |
 
 ## Try out workflows
 

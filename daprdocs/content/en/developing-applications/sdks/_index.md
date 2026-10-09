@@ -29,7 +29,7 @@ Select your [preferred language below]({{% ref "#sdk-languages" %}}) to learn mo
 | [PHP]({{% ref php %}}) | Stable | ✔ | ✔ | ✔ | |
 | [JavaScript]({{% ref js %}}) | Stable| ✔ | | ✔ | ✔  |
 | [C++](https://github.com/dapr/cpp-sdk) | In development | ✔ | | |
-| [Rust]({{% ref rust %}}) | In development | ✔ | | ✔ | |
+| [Rust]({{% ref rust %}}) | In development | ✔ | | ✔ | ✔ |
 
 
 ## Frameworks
