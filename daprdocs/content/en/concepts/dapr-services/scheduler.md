@@ -260,25 +260,27 @@ Changing these settings should always been done first in a testing environment, 
 {{% /alert %}}
 
 ```
---etcd-backend-batch-interval string                            Maximum time before committing the backend transaction. (default "50ms")
---etcd-backend-batch-limit int                                  Maximum operations before committing the backend transaction. (default 5000)
---etcd-compaction-mode string                                   Compaction mode for etcd. Can be 'periodic' or 'revision' (default "periodic")
---etcd-compaction-retention string                              Compaction retention for etcd. Can express time  or number of revisions, depending on the value of 'etcd-compaction-mode' (default "10m")
+--etcd-backend-batch-interval string                            Maximum time before committing the backend transaction. (default "100ms")
+--etcd-backend-batch-limit int                                  Maximum operations before committing the backend transaction. (default 10000)
+--etcd-compaction-mode string                                   Compaction mode for etcd. Can be 'periodic' or 'revision' (default "revision")
+--etcd-compaction-retention string                              Compaction retention for etcd. Can express time or number of revisions, depending on the value of 'etcd-compaction-mode' (default "1000000")
 --etcd-experimental-bootstrap-defrag-threshold-megabytes uint   Minimum number of megabytes needed to be freed for etcd to consider running defrag during bootstrap. Needs to be set to non-zero value to take effect. (default 100)
 --etcd-max-snapshots uint                                       Maximum number of snapshot files to retain (0 is unlimited). (default 10)
+--etcd-max-txn-ops uint                                         Maximum number of operations permitted in a single etcd transaction. (default 10000)
 --etcd-max-wals uint                                            Maximum number of write-ahead logs to retain (0 is unlimited). (default 10)
---etcd-snapshot-count uint                                      Number of committed transactions to trigger a snapshot to disk. (default 10000)
+--etcd-snapshot-count uint                                      Number of committed transactions to trigger a snapshot to disk. (default 100000)
 ```
 
 Helm:
 
 ```yaml
-dapr_scheduler.etcdBackendBatchInterval="50ms"
-dapr_scheduler.etcdBackendBatchLimit=5000
-dapr_scheduler.etcdCompactionMode="periodic"
-dapr_scheduler.etcdCompactionRetention="10m"
+dapr_scheduler.etcdBackendBatchInterval="100ms"
+dapr_scheduler.etcdBackendBatchLimit=10000
+dapr_scheduler.etcdCompactionMode="revision"
+dapr_scheduler.etcdCompactionRetention="1000000"
 dapr_scheduler.etcdDefragThresholdMB=100
 dapr_scheduler.etcdMaxSnapshots=10
+dapr_scheduler.etcdMaxTxnOps=10000
 ```
 
 ## Related links
