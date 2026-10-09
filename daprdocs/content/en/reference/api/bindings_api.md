@@ -265,6 +265,10 @@ curl -X POST http://localhost:3500/v1.0/bindings/myKafka \
       }'
 ```
 
+### gRPC request metadata
+
+When you invoke an output binding over gRPC, Dapr forwards the incoming gRPC request metadata into the binding's metadata map, in addition to any metadata you set explicitly. From Dapr 1.19, binary gRPC metadata (keys ending in `-bin`, which carry values that are not valid UTF-8) is not forwarded, since it cannot be represented as string component metadata.
+
 ### Common metadata values
 
 There are common metadata properties which are support across multiple binding components. The list below illustrates them:
