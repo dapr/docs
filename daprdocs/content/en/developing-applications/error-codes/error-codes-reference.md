@@ -24,6 +24,11 @@ An effort is underway to enrich all gRPC error responses according to the [Riche
 | `ERR_ACTOR_REMINDER_GET`           |           | Error getting actor reminder                                            |
 | `ERR_ACTOR_REMINDER_NON_HOSTED`    |           | Reminder operation on non-hosted actor type                             |
 | `ERR_ACTOR_TIMER_CREATE`           |           | Error creating actor timer                                              |
+| `ERR_ACTOR_TIMER_GET`              |           | Error getting actor timer                                               |
+| `ERR_ACTOR_TIMER_LIST`             |           | Error listing actor timers                                              |
+| `ERR_ACTOR_TIMER_NOT_FOUND`        |           | Actor timer not found                                                   |
+| `ERR_ACTOR_TIMER_NON_HOSTED`       |           | Timer operation on non-hosted actor type                                |
+| `ERR_ACTOR_TIMER_NOT_OWNED`        |           | Timer operation on an actor not owned by this host                      |
 | `ERR_ACTOR_NO_APP_CHANNEL`         |           | App channel not initialized                                             |
 | `ERR_ACTOR_STACK_DEPTH`            |           | Maximum actor call stack depth exceeded                                 |
 | `ERR_ACTOR_NO_PLACEMENT`           |           | Placement service not configured                                        |
