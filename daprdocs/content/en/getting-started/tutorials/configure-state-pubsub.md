@@ -26,7 +26,7 @@ Dapr can use any Redis instance, either:
 - Containerized on your local dev machine, or
 - A managed cloud service.
 
-If you already have a Redis store, move on to the [configuration](#configure-dapr-components) section.
+If you already have a Redis store, move on to the [configuration](#step-2-configure-dapr-components) section.
 
 {{< tabpane text=true >}}
 

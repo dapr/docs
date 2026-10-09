@@ -58,7 +58,7 @@ If you wish to use Cosmos DB as an actor store, append the following to the yam
 
 The Azure Cosmos DB state store component supports authentication using all Microsoft Entra ID mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of Microsoft Entra ID authentication mechanism, see the [docs for authenticating to Azure]({{% ref authenticating-azure.md %}}).
 
-You can read additional information for setting up Cosmos DB with Azure AD authentication in the [section below](#setting-up-cosmos-db-for-authenticating-with-azure-ad).
+You can read additional information for setting up Cosmos DB with Azure AD authentication in the [section below](#setting-up-cosmos-db-for-authenticating-with-microsoft-entra-id).
 
 ## Setup Azure Cosmos DB
 

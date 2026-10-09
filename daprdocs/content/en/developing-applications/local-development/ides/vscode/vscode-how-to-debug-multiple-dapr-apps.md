@@ -105,7 +105,7 @@ For more information on VSCode debugging parameters see [VS Code launch attribut
 
 For each [task](https://code.visualstudio.com/docs/editor/tasks) defined in `.vscode/launch.json` , a corresponding task definition must exist in `.vscode/tasks.json`.
 
-For the quickstart, each service needs a task to launch a Dapr sidecar with the `daprd` type, and a task to stop the sidecar with `daprd-down`. The parameters `appId`, `httpPort`, `metricsPort`, `label` and `type` are required. Additional optional parameters are available, see the [reference table here](#daprd-parameter-table").
+For the quickstart, each service needs a task to launch a Dapr sidecar with the `daprd` type, and a task to stop the sidecar with `daprd-down`. The parameters `appId`, `httpPort`, `metricsPort`, `label` and `type` are required. Additional optional parameters are available, see the [reference table here](#daprd-parameter-table).
 
 ```json
 {
