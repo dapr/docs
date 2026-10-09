@@ -171,7 +171,7 @@ broker's own `redelivery-delay` and `max-delivery-attempts` settings apply and a
 message that always fails eventually reaches the dead-letter address.
 
 Redelivery pacing and the attempt limit are broker settings, not component
-settings. On ActiveMQ Artemis they live in `address-settings`.
+settings. On ActiveMQ Artemis they live in `address-settings`; make sure a dead-letter address and `max-delivery-attempts` are configured there.
 
 ## Migrating from `pubsub.solace.amqp`
 
