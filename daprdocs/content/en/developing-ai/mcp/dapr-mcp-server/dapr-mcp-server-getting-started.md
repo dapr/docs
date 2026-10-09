@@ -27,9 +27,8 @@ Pick one of the following.
 Each [GitHub release](https://github.com/dapr/dapr-mcp-server/releases) publishes a binary per platform, named `dapr-mcp-server-<os>-<arch>`, with a `checksums.txt` file. Builds are available for `linux-amd64`, `linux-arm64`, `darwin-amd64`, `darwin-arm64`, and `windows-amd64` (with an `.exe` suffix).
 
 ```bash
-VERSION=v0.0.1
-curl -LO https://github.com/dapr/dapr-mcp-server/releases/download/${VERSION}/dapr-mcp-server-darwin-arm64
-curl -LO https://github.com/dapr/dapr-mcp-server/releases/download/${VERSION}/checksums.txt
+curl -LO https://github.com/dapr/dapr-mcp-server/releases/latest/download/dapr-mcp-server-darwin-arm64
+curl -LO https://github.com/dapr/dapr-mcp-server/releases/latest/download/checksums.txt
 shasum -a 256 --ignore-missing -c checksums.txt
 chmod +x dapr-mcp-server-darwin-arm64
 sudo mv dapr-mcp-server-darwin-arm64 /usr/local/bin/dapr-mcp-server
@@ -42,7 +41,7 @@ sudo mv dapr-mcp-server-darwin-arm64 /usr/local/bin/dapr-mcp-server
 Requires Go 1.26.6 or later.
 
 ```bash
-go install github.com/dapr/dapr-mcp-server/cmd/dapr-mcp-server@v0.0.1
+go install github.com/dapr/dapr-mcp-server/cmd/dapr-mcp-server@latest
 ```
 
 A binary built this way reports its version as `dev`, because the version is stamped in only by the release build.
@@ -54,7 +53,7 @@ A binary built this way reports its version as `dev`, because the version is sta
 Multi-arch images (`linux/amd64`, `linux/arm64`) are published to the GitHub Container Registry, tagged with the release version. Stable releases also update `latest`.
 
 ```bash
-docker pull ghcr.io/dapr/dapr-mcp-server:v0.0.1
+docker pull ghcr.io/dapr/dapr-mcp-server:latest
 ```
 
 The image runs as a non-root user, listens on port 8080 with `--http 0.0.0.0:8080` by default, and includes a `HEALTHCHECK`. See [Run on Kubernetes](#run-on-kubernetes) for how to pair it with a sidecar.
@@ -265,7 +264,7 @@ spec:
     spec:
       containers:
         - name: dapr-mcp-server
-          image: ghcr.io/dapr/dapr-mcp-server:v0.0.1
+          image: ghcr.io/dapr/dapr-mcp-server:latest
           ports:
             - containerPort: 8080
           startupProbe:
