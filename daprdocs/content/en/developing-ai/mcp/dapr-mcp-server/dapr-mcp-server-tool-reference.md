@@ -8,7 +8,7 @@ aliases:
   - /developing-ai/mcp/mcp-server-tool-reference/
 ---
 
-The Dapr MCP server exposes 17 tools. Three are always registered. The rest are registered at startup only when the sidecar has at least one component of the matching type, so an agent never sees tools it can't use.
+The Dapr MCP server exposes 17 tools. Three are always registered. The rest are registered only while the sidecar has at least one component of the matching type, so an agent never sees tools it can't use.
 
 The schema the server sends when a client connects is the authoritative definition of each tool. This page is a readable summary of it.
 
@@ -49,7 +49,7 @@ Every tool except `get_components` also sets `openWorldHint`, because it reaches
 | [`acquire_lock`](#acquire_lock) | A `lock.*` component | Side effect, idempotent |
 | [`release_lock`](#release_lock) | A `lock.*` component | Side effect, not idempotent |
 
-Tools follow the components loaded in the sidecar. When [component hot reloading]({{% ref "component-updates.md#hot-reloading" %}}) adds the first component of a type, the server registers that type's tools and notifies connected clients that the tool list changed. When the last one is removed, its tools are removed too.
+Tools follow the components loaded in the sidecar. When [component hot reloading]({{% ref "component-updates.md#hot-reloading" %}}) adds the first component of a type, the server registers that type's tools the next time a client lists tools or calls `get_components`, and notifies connected clients that the tool list changed. When the last one is removed, its tools are removed too. Clients that read the tool list only once need to reconnect to see the change.
 
 A tool that fails, because an input is missing or the sidecar returns an error, returns a result marked as an error with a message the model can read, rather than failing the MCP request.
 
