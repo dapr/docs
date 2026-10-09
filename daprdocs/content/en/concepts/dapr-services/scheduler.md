@@ -312,6 +312,14 @@ dapr_scheduler.etcdMaxSnapshots=10
 dapr_scheduler.etcdMaxTxnOps=10000
 ```
 
+### Healthz listen address
+
+```
+--healthz-listen-address   string   Address the healthz server listens on. Empty (the default) listens on all interfaces.
+```
+
+Set this flag to bind the Scheduler's healthz endpoint to a specific interface, for example to keep it off a public network. It has no dedicated Helm value as of Dapr 1.19. In self-hosted mode, pass it directly to the Scheduler binary, for example in a Docker Compose or systemd configuration.
+
 ## Related links
 
 - [Learn more about the Jobs API.]({{% ref jobs_api %}})

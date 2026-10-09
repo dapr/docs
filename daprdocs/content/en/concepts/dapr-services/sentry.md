@@ -32,7 +32,10 @@ Use the `dapr_sentry.extraArgs` Helm value to pass extra command-line arguments 
 dapr_sentry:
   extraArgs:
     - "--jwt-ttl=48h"
+    - "--healthz-listen-address=127.0.0.1"
 ```
+
+`--healthz-listen-address` (available from Dapr 1.19) sets the address the sentry healthz server listens on. It defaults to all interfaces.
 
 ## Further reading
 
