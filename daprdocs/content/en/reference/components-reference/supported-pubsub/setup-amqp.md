@@ -61,7 +61,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 To configure communication using TLS:
 
-1. Ensure that the broker is configured to support certificates.
+1. Ensure that the broker is configured to support certificates. For mutual TLS on ActiveMQ Artemis, set `sslEnabled=true;needClientAuth=true` on the acceptor so clients without a trusted certificate are rejected.
 1. Provide the `caCert`, `clientCert`, and `clientKey` metadata in the component configuration.
 
 For example:
