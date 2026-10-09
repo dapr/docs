@@ -116,7 +116,7 @@ Front-matter should be completed with all fields including type, title, linkTitl
 - `linkTitle` should be 1-3 words, with the exception of How-to at the front.
 - `description` should be 1-2 sentences on what the reader will learn, accomplish, or do in this doc.
 
-As per the [styling conventions](#styling-conventions), titles should only capitalize the first word and proper nouns, with the exception of "How-To:"
+As per the [styling conventions](#style-and-tone), titles should only capitalize the first word and proper nouns, with the exception of "How-To:"
 
 - "Getting started with Dapr service invocation"
 - "How-To: Setup a local Redis instance"
