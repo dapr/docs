@@ -40,6 +40,10 @@ Off-the-shelf MCP clients work unchanged — there is no Dapr-specific MCP SDK t
 
 For the threat-model framing, default postures, and what stays your responsibility, see [MCP security posture]({{% ref mcp-security.md %}}).
 
+## Give agents Dapr tools: the Dapr MCP server
+
+The paths on this page connect agents to MCP servers you already run. The [Dapr MCP server]({{% ref dapr-mcp-server %}}) is a separate, standalone MCP server that runs next to a Dapr sidecar and exposes Dapr's building blocks (state, pub/sub, bindings, secrets, service invocation, actors, lock, cryptography, and conversation) as MCP tools. Use it when you want an agent to call Dapr APIs directly from any MCP client.
+
 ## Alternative: the `MCPServer` resource (workflow-centric path)
 
 There is a second way to use MCP with Dapr — the [`MCPServer` resource]({{% ref mcp-server-resource.md %}}). This path turns MCP integration into a deploy-time concern: you declare each MCP server as a YAML resource, and Dapr discovers tools, manages connections, and registers a built-in durable workflow per tool. Calling a tool becomes "start a workflow."
