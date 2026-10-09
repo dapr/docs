@@ -1277,17 +1277,26 @@ func PurchaseOrderWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 		return "Auto-approved", nil
 	}
 	// Orders of $1000 or more require manager approval
-	if err := ctx.CallActivity(SendApprovalRequest, workflow.ActivityInput(order)).Await(nil); err != nil {
+	if err := ctx.CallActivity(SendApprovalRequest, workflow.WithActivityInput(order)).Await(nil); err != nil {
 		return "", err
 	}
 	// Approvals must be received within 24 hours or they will be cancelled
+	approvalEvent := ctx.WaitForExternalEvent("approval_received", time.Hour*24)
+	timeoutEvent := ctx.CreateTimer(time.Hour * 24)
+	winner, err := ctx.Select(approvalEvent, timeoutEvent)
+	if err != nil {
+		return "", err
+	}
+	if winner == 1 {
+		// The timer won the race: no approval arrived in time
+		return "Cancelled", nil
+	}
 	var approval Approval
-	if err := ctx.WaitForExternalEvent("approval_received", time.Hour*24).Await(&approval); err != nil {
-		// Assuming that a timeout has taken place - in any case; an error.
-		return "error/cancelled", err
+	if err := approvalEvent.Await(&approval); err != nil {
+		return "", err
 	}
 	// The order was approved
-	if err := ctx.CallActivity(PlaceOrder, workflow.ActivityInput(order)).Await(nil); err != nil {
+	if err := ctx.CallActivity(PlaceOrder, workflow.WithActivityInput(order)).Await(nil); err != nil {
 		return "", err
 	}
 	return fmt.Sprintf("Approved by %s", approval.Approver), nil
