@@ -37,6 +37,8 @@ The Dapr's sidecar image is published to both [GitHub Container Registry](https:
 
 On Kubernetes, the sidecar image can be overwritten for the application Deployment resource with the `dapr.io/sidecar-image` annotation. See more about [Dapr's arguments and annotations]({{% ref "arguments-annotations-overview.md" %}}). The default 'daprio/daprd:latest' image is used if not specified.
 
+The `latest` tag always points at the highest `MAJOR.MINOR.PATCH` version released so far, not simply the most recently published one. A patch release on an older, still-supported minor version (for example 1.17.x after 1.19.0 has shipped) does not move the `latest` tag.
+
 Learn more about [Dapr components' certification lifecycle]({{% ref "certification-lifecycle.md" %}}).
 
 ## Supported versions
