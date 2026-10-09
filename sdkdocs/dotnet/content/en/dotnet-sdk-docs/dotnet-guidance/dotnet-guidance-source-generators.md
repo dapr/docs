@@ -30,12 +30,13 @@ is subject to change in the future as more analyzers are developed.
 {{% /alert %}}
 
 ## Install and configure analyzers
-The following packages will be available via NuGet following the v1.16 Dapr release:
+The following packages provide Roslyn analyzers:
 - Dapr.Actors.Analyzers
 - Dapr.Jobs.Analyzers
+- Dapr.Messaging.Analyzers (bundled automatically in `Dapr.Messaging`)
 - Dapr.Workflow.Analyzers
 
-Install each NuGet package on every project where you want the analyzers to run. The package will be installed as a
+Install each NuGet package on every project where you want the analyzers to run. For meta-packages like `Dapr.Messaging` or `Dapr.Actors.Next`, the analyzers and source generators are included automatically with the package. The package will be installed as a
 project dependency and analyzers will run as you write your code or as part of a CI/CD build. The analyzers will flag
 issues in your existing code and warn you about new issues as you build your project.
 
@@ -68,7 +69,36 @@ the `EnableNETAnalyzers` property to `false` in your csproj file.
 | DAPR1402      | Dapr.Actors   | Usage            | Warning  | 1.16          | The actor type is not registered with dependency injection                                                                                   | Yes                |
 | DAPR1403      | Dapr.Actors   | Interoperability | Info     | 1.16          | Set options.UseJsonSerialization to true to support interoperability with non-.NET actors                                                    | Yes                |
 | DAPR1404      | Dapr.Actors   | Usage            | Warning  | 1.16          | Call app.MapActorsHandlers to map endpoints for Dapr actors                                                                                  | Yes                |
+| DAPR1410      | Dapr.Actors.Next | Compatibility | Warning  | 1.18          | Actor state shape change breaks shipped serialization                                                                                        | Yes                |
+| DAPR1411      | Dapr.Actors.Next | Concurrency   | Warning  | 1.18          | Actor turn must not escape the scheduler                                                                                                     | Yes                |
+| DAPR1412      | Dapr.Actors.Next | Concurrency   | Warning  | 1.18          | Actor turn must not block                                                                                                                    | Yes                |
+| DAPR1413      | Dapr.Actors.Next | Determinism   | Warning  | 1.18          | Actor turn must use TimeProvider                                                                                                             | Yes                |
+| DAPR1414      | Dapr.Actors.Next | Determinism   | Warning  | 1.18          | Actor turn must use a scheduler-aware seeded source                                                                                          | Yes                |
+| DAPR1415      | Dapr.Actors.Next | Compatibility | Warning  | 1.18          | Actor state migration target is unreachable                                                                                                  | Yes                |
+| DAPR1416      | Dapr.Actors.Next | Design        | Info     | 1.18          | Actor turn filter should stay cross-cutting                                                                                                  | Yes                |
+| DAPR1417      | Dapr.Actors.Next | Usage         | Warning  | 1.18          | Actor interface method must return an asynchronous type                                                                                      | No                 |
+| DAPR1418      | Dapr.Actors.Next | Compatibility | Warning  | 1.18          | Actor interface change breaks shipped wire contract                                                                                          | Yes                |
+| DAPR1419      | Dapr.Actors.Next | Concurrency   | Warning  | 1.18          | Actor field should not hold mutable shared state                                                                                             | No                 |
+| DAPR1420      | Dapr.Actors.Next | Usage         | Warning  | 1.18          | Actor type name must disambiguate shared actor contracts                                                                                     | No                 |
+| DAPR1421      | Dapr.Actors.Next | Usage         | Warning  | 1.18          | Actor implementation must expose a generated client contract                                                                                 | Yes                |
+| DAPR1423      | Dapr.Actors.Next | Compatibility | Warning  | 1.18          | Actor state type is not connected to its migration family                                                                                    | Yes                |
+| DAPR1424      | Dapr.Actors.Next | Compatibility | Warning  | 1.18          | Actor state migration chain has a gap                                                                                                        | No                 |
+| DAPR1425      | Dapr.Actors.Next | Compatibility | Warning  | 1.18          | Actor state migration step requires an upcaster                                                                                              | Yes                |
+| DAPR1426      | Dapr.Actors.Next | Compatibility | Warning  | 1.18          | Actor state migration fold path is ambiguous                                                                                                 | No                 |
+| DAPR1427      | Dapr.Actors.Next | Usage         | Warning  | 1.18          | Actor state name maps to multiple migration families                                                                                         | No                 |
+| DAPR1428      | Dapr.Actors.Next | Usage         | Info     | 1.18          | Actor state usage should target the latest state version                                                                                     | No                 |
+| DAPR1429      | Dapr.Actors.Next | Usage         | Error    | 1.18          | Scheduled actor reminder/timer callback does not match a dispatchable actor method                                                          | Yes                |
+| DAPR1430      | Dapr.Actors.Next | Usage         | Warning  | 1.18          | Scheduled actor reminder/timer targets an actor type not found in this application                                                          | No                 |
+| DAPR1431      | Dapr.Actors.Next | Usage         | Error    | 1.18          | Scheduled actor reminder/timer callback method is not exposed through a generated actor client                                              | No                 |
 | DAPR1501      | Dapr.Jobs     | Usage            | Warning  | 1.16          | Job invocations require the MapDaprScheduledJobHandler to be set and configured for each anticipated job on IEndpointRouteBuilder            | No                 |
+| DAPR1610      | Dapr.Messaging | Usage           | Error    | 1.18          | Topic registered for both Streaming and Programmatic delivery modes                                                                          | No                 |
+| DAPR1611      | Dapr.Messaging | Usage           | Error    | 1.18          | [DaprTopic] applied to a class that does not implement ITopicHandler<T> or ITopicHandler<T, TResult>                                         | No                 |
+| DAPR1612      | Dapr.Messaging | Compatibility   | Warning  | 1.18          | Message type is not registered in a source-generated JsonSerializerContext for Native AOT compatibility                                      | No                 |
+| DAPR1613      | Dapr.Messaging | Usage           | Warning  | 1.18          | Programmatic topic subscriptions require `app.MapDaprAppCallback()` or the unified `app.MapDaprMessaging()` endpoint mapping                  | Yes                |
+| DAPR1614      | Dapr.Messaging | Usage           | Warning  | 1.18          | `DaprMessagingRegistration` is called directly instead of using generated `services.AddDaprMessaging()`                                        | No                 |
+| DAPR1615      | Dapr.Messaging | Usage           | Warning  | 1.18          | Subscriber registration or endpoint mapping is present without matching topic subscribers                                                     | No                 |
+| DAPR1616      | Dapr.Messaging | Usage           | Warning  | 1.18          | `[DaprTopic]` opts into a feature without populating required companion properties                                                           | No                 |
+| DAPR1617      | Dapr.Messaging | Usage           | Warning  | 1.18          | `[DaprTopic]` sets a property that is ignored for the selected feature or delivery mode                                                      | No                 |
 
 ## Analyzer Categories
 The following are each of the eligible categories that an analyzer can be assigned to and are modeled after the

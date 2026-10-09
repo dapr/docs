@@ -24,6 +24,16 @@ The sentry service is deployed as part of `dapr init -k`, or via the Dapr Helm c
 
 <img src="/images/security-mTLS-sentry-kubernetes.png" width=1000>
 
+## Additional sentry container arguments
+
+Use the `dapr_sentry.extraArgs` Helm value to pass extra command-line arguments to the sentry container. Use this value for sentry flags that have no dedicated Helm value. The value is a list of strings. It defaults to `[]`. Dapr appends each argument after the built-in sentry container arguments.
+
+```yaml
+dapr_sentry:
+  extraArgs:
+    - "--jwt-ttl=48h"
+```
+
 ## Further reading
 
 - [Security overview]({{% ref security-concept %}})

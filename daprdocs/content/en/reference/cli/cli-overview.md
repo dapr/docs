@@ -22,6 +22,7 @@ The Dapr CLI allows you to setup Dapr on your local dev machine or on a Kubernet
 Distributed Application Runtime
 
 Usage:
+  dapr [flags]
   dapr [command]
 
 Available Commands:
@@ -35,19 +36,23 @@ Available Commands:
   invoke         Invoke a method on a given Dapr application. Supported platforms: Self-hosted
   list           List all Dapr instances. Supported platforms: Kubernetes and self-hosted
   logs           Get Dapr sidecar logs for an application. Supported platforms: Kubernetes
+  mcpservers     List all Dapr MCPServer resources. Supported platforms: Kubernetes and self-hosted
   mtls           Check if mTLS is enabled. Supported platforms: Kubernetes
   publish        Publish a pub-sub event. Supported platforms: Self-hosted
   run            Run Dapr and (optionally) your application side by side. Supported platforms: Self-hosted
+  scheduler      Scheduler management commands. Use -k to target a Kubernetes Dapr cluster.
   status         Show the health status of Dapr services. Supported platforms: Kubernetes
   stop           Stop Dapr instances and their associated apps. Supported platforms: Self-hosted
   uninstall      Uninstall Dapr runtime. Supported platforms: Kubernetes and self-hosted
-  upgrade        Upgrades a Dapr control plane installation in a cluster. Supported platforms: Kubernetes
+  upgrade        Upgrades or downgrades a Dapr control plane installation in a cluster. Supported platforms: Kubernetes
   version        Print the Dapr runtime and CLI version
+  workflow       Workflow management commands. Use -k to target a Kubernetes Dapr cluster.
 
 Flags:
-  -h, --help          help for dapr
-      --log-as-json   Log output in JSON format
-  -v, --version       version for dapr
+  -h, --help                  help for dapr
+      --log-as-json           Log output in JSON format
+      --runtime-path string   The path to the dapr runtime installation directory
+  -v, --version               version for dapr
 
 Use "dapr [command] --help" for more information about a command.
 ```
@@ -66,14 +71,17 @@ You can learn more about each Dapr command from the links below.
  - [`dapr invoke`]({{% ref dapr-invoke.md %}})
  - [`dapr list`]({{% ref dapr-list.md %}})
  - [`dapr logs`]({{% ref dapr-logs.md %}})
+ - [`dapr mcpservers`]({{% ref dapr-mcpservers.md %}})
  - [`dapr mtls`]({{% ref dapr-mtls %}})
  - [`dapr publish`]({{% ref dapr-publish.md %}})
  - [`dapr run`]({{% ref dapr-run.md %}})
+ - [`dapr scheduler`]({{% ref dapr-scheduler.md %}})
  - [`dapr status`]({{% ref dapr-status.md %}})
  - [`dapr stop`]({{% ref dapr-stop.md %}})
  - [`dapr uninstall`]({{% ref dapr-uninstall.md %}})
  - [`dapr upgrade`]({{% ref dapr-upgrade.md %}})
  - [`dapr version`]({{% ref dapr-version.md %}})
+ - [`dapr workflow`]({{% ref dapr-workflow.md %}})
 
 ### Environment Variables
 
