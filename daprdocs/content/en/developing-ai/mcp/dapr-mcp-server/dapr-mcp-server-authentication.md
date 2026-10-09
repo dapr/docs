@@ -109,7 +109,7 @@ The server tries the enabled methods in the order OIDC, SPIFFE, Dapr Sentry, and
 
 ## Unauthenticated paths
 
-The health endpoints `/livez`, `/readyz`, and `/startupz` are always served without authentication, as is `/dapr/subscribe`, which only tells the sidecar the server has no subscriptions. Every other path is MCP and needs a token. There is no setting to exempt more paths, and setting the old `AUTH_SKIP_PATHS` variable makes the server fail at startup.
+The health endpoints `/livez`, `/readyz`, and `/startupz` are always served without authentication, as is `/dapr/subscribe`, which only tells the sidecar the server has no subscriptions. Every other path is MCP and needs a token. There is no setting to exempt more paths.
 
 ## Related links
 
