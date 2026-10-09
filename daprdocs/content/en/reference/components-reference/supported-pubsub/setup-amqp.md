@@ -95,6 +95,35 @@ auth:
 
 > While the `caCert` and `clientCert` values may not be secrets, they can be referenced from a Dapr secret store as well for convenience.
 
+To authenticate with the client certificate only (mutual TLS), set `anonymous` to `true` and omit `username` and `password`:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: amqp-pubsub
+spec:
+  type: pubsub.amqp
+  version: v1
+  metadata:
+  - name: url
+    value: "amqps://host.domain[:port]"
+  - name: anonymous
+    value: "true"
+  - name: caCert
+    value: ${{ myLoadedCACert }}
+  - name: clientCert
+    value: ${{ myLoadedClientCert }}
+  - name: clientKey
+    secretKeyRef:
+      name: myAmqpClientKey
+      key: myAmqpClientKey
+auth:
+  secretStore: <SECRET_STORE_NAME>
+```
+
+Before Dapr 1.19, `anonymous` was ignored over `amqps://` and SASL PLAIN was always used.
+
 ## Addressing topics and queues
 
 The component turns a Dapr topic name into an AMQP address. `topicAddressPrefix` and `queueAddressPrefix` control that translation, and both default to no prefix. So out of the box the AMQP address is the Dapr topic name, unchanged:
