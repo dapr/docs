@@ -64,8 +64,6 @@ Authentication applies to the HTTP transport. See [Authentication]({{% ref dapr-
 | `DAPR_SENTRY_TOKEN_HEADER` | `Authorization` | Header to read the token from. A custom header carries the raw token, without a `Bearer` prefix. |
 | `DAPR_SENTRY_JWKS_REFRESH_INTERVAL` | `5m` | How often to refresh the JWKS, as a Go duration. Minimum `30s`. |
 
-`AUTH_ENABLED` and `AUTH_SKIP_PATHS` are no longer supported. If either is set at all, the server refuses to start. Use `AUTH_MODE` to turn authentication on; the health endpoints never need a token.
-
 ## Telemetry
 
 Telemetry is off until an OTLP endpoint is set. See [Observability]({{% ref dapr-mcp-server-observability.md %}}) for what the server emits.

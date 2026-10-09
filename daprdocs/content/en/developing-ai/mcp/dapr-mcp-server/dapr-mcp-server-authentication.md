@@ -18,7 +18,7 @@ The Dapr MCP server can require a valid token on every MCP request it serves ove
 
 Authentication only applies to the HTTP transport. Over stdio, the MCP client starts the server as a local process, and there is no network listener to protect.
 
-The server checks the settings for the selected mode at startup. If a required variable is missing or a value can't be parsed, it exits with an error that names the variable. An unrecognized `AUTH_MODE` value is also rejected at startup. `AUTH_ENABLED`, used by earlier builds, is no longer supported: if it is set at all, the server refuses to start and points you to `AUTH_MODE`.
+The server checks the settings for the selected mode at startup. If a required variable is missing or a value can't be parsed, it exits with an error that names the variable. An unrecognized `AUTH_MODE` value is also rejected at startup.
 
 ## Sending a token
 

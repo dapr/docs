@@ -9,7 +9,7 @@ aliases:
 ---
 
 {{% alert title="Alpha" color="warning" %}}
-The Dapr MCP server is in **alpha**, starting at v0.0.1. Tool names, inputs, and configuration may change in a future release.
+The Dapr MCP server is in **alpha**. Tool names, inputs, and configuration may change in a future release.
 {{% /alert %}}
 
 The Dapr MCP server ([`dapr/dapr-mcp-server`](https://github.com/dapr/dapr-mcp-server)) is a standalone [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server, written in Go, that runs next to a Dapr sidecar. It turns the sidecar's building blocks (state, pub/sub, bindings, secrets, service invocation, actors, distributed lock, cryptography, and conversation) into MCP tools that any MCP client can call: Claude Desktop, Cursor, Claude Code, VS Code, [Dapr Agents]({{% ref "/developing-ai/dapr-agents" %}}), or your own agent.
