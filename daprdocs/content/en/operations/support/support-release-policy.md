@@ -45,7 +45,9 @@ The table below shows the versions of Dapr releases that have been tested togeth
 
 | Release date | Runtime     | CLI  | SDKs  | Dashboard  | Status | Release notes |
 |--------------------|:--------:|:--------|---------|---------|---------|------------|
-| May 15th 2026 | 1.18.0</br> | 1.18.0 | Java 1.18.0 </br>Go 1.15.0 </br>PHP 1.2.0 </br>Python 1.18.0 </br>.NET 1.18.1 </br>JS 3.18.0 </br>Rust 0.17.0 | - | Supported (current) | [v1.18.0 release notes](https://github.com/dapr/dapr/releases/tag/v1.18.0)   |
+<!-- TODO (GA day): fill in the real release date, CLI version, and per-SDK versions actually tagged for 1.19.0 before merging this PR — several SDKs (Go, JS, PHP, Rust) had not started their 1.19 work as of 2026-10-09, and the CLI has no 1.19 branch or tag yet. Do not merge this row as-is. -->
+| TBD | 1.19.0</br> | TBD | TBD | - | Supported (current) | [v1.19.0 release notes](https://github.com/dapr/dapr/releases/tag/v1.19.0)   |
+| May 15th 2026 | 1.18.0</br> | 1.18.0 | Java 1.18.0 </br>Go 1.15.0 </br>PHP 1.2.0 </br>Python 1.18.0 </br>.NET 1.18.1 </br>JS 3.18.0 </br>Rust 0.17.0 | - | Supported | [v1.18.0 release notes](https://github.com/dapr/dapr/releases/tag/v1.18.0)   |
 | May 15th 2026 | 1.17.7</br> | 1.17.1 | Java 1.17.2 </br>Go 1.14.2 </br>PHP 1.2.0 </br>Python 1.17.4 </br>.NET 1.17.8 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.17.7 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.7)   |
 | Apr 28th 2026 | 1.17.6</br> | 1.17.1 | Java 1.17.2 </br>Go 1.14.2 </br>PHP 1.2.0 </br>Python 1.17.4 </br>.NET 1.17.8 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.17.6 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.6)   |
 | Apr 16th 2026 | 1.17.5</br> | 1.17.1 | Java 1.17.2 </br>Go 1.14.2 </br>PHP 1.2.0 </br>Python 1.17.4 </br>.NET 1.17.8 </br>JS 3.6.0 </br>Rust 0.17.0 | 0.15.0 | Supported | [v1.17.5 release notes](https://github.com/dapr/dapr/releases/tag/v1.17.5)   |
