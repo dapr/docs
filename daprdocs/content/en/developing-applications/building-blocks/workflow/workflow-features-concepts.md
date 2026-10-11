@@ -577,7 +577,7 @@ ctx.createTimer(Duration.ofSeconds(5)).await();
 
 {{% tab "JavaScript" %}}
 
-Declare a JavaScript workflow as an async generator function (`async function*`), as in the examples on this page. Use `yield`, not `await`, to wait for a workflow task such as `ctx.callActivity`, `ctx.createTimer`, or `ctx.whenAny`.
+Declare a JavaScript workflow as an async generator function (`async function*`), as in the JavaScript examples of [Workflow patterns]({{% ref workflow-patterns.md %}}). Use `yield`, not `await`, to wait for a workflow task such as `ctx.callActivity`, `ctx.createTimer`, or `ctx.whenAny`.
 
 {{% /tab %}}
 
