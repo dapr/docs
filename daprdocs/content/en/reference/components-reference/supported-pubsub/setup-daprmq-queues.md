@@ -82,7 +82,7 @@ DaprMQ Queues supports the bulk publish API. All entries in a bulk publish reque
 
 ## Retries and dead-letter queues
 
-When your application fails to process a message, the component returns it to its original position in the queue and DaprMQ increments its delivery count. Once the count exceeds the server's maximum delivery count (`DAPRMQ_MAX_DELIVERY_COUNT`, default `10`), DaprMQ moves the message to the queue `{topic}-deadletter` instead. A message that can't be decoded is moved to the dead-letter queue straight away.
+When your application fails to process a message, the component returns it to its original position in the queue and DaprMQ increments its delivery count. Once the count exceeds the server's maximum delivery count (`DAPRMQ_MAX_DELIVERY_COUNT`, default `10`), DaprMQ moves the message to the topic's dead-letter queue instead: for the topic `orders`, that is the queue `orders-deadletter`. A message that can't be decoded is moved to the dead-letter queue straight away.
 
 You can also use Dapr's own [dead-letter topics]({{% ref pubsub-deadletter %}}) with a resiliency policy that controls how to retry.
 
