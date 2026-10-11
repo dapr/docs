@@ -61,9 +61,30 @@ spec:
 | `maxConcurrentHandlers` | N | The most messages handled at once when `concurrencyMode` is `"parallel"`. `0` is unlimited, which in stream mode means up to `maxActiveMessages`. Default: `0` | `20` |
 | `maxRetriableErrorsPerSec` | N | The most failed messages returned for redelivery per second, so a message that keeps failing can't be redelivered in a tight loop. `0` is unlimited. Default: `10` | `5` |
 
+## Subscription metadata
+
+Every field except `httpEndpoint`, `grpcEndpoint` and `consumerID` sets a default for all subscriptions on the component. To change it for one subscription, set it in that subscription's metadata; fields it doesn't set keep the component's values. For example, this subscription receives `orders` strictly in order while other topics on the same component keep consuming concurrently:
+
+```yaml
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: orders
+spec:
+  pubsubname: daprmq-pubsub
+  topic: orders
+  routes:
+    default: /orders
+  metadata:
+    allowCompetingConsumers: "false"
+    concurrencyMode: "single"
+```
+
+The same keys work in the metadata of a programmatic or streaming subscription.
+
 ## Ordering
 
-Each subscriber queue is FIFO. To receive messages strictly in the order they were published, set `allowCompetingConsumers` to `"false"`, which lets one instance per consumer ID at a time hold locks on its queue, and `concurrencyMode` to `"single"`.
+Each subscriber queue is FIFO. To receive messages strictly in the order they were published, set `allowCompetingConsumers` to `"false"`, which lets one instance per consumer ID at a time hold locks on its queue, and `concurrencyMode` to `"single"`, either on the component or in the metadata of the subscriptions that need it.
 
 ## Message metadata
 
