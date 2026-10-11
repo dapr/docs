@@ -17,7 +17,7 @@ A workflow app needs these parts:
 | [Placement service]({{% ref placement %}}) | Required | Optional. The Scheduler service can [serve actor placement]({{% ref "placement#serving-placement-from-the-scheduler-service" %}}). |
 | A state store with `actorStateStore` set to `"true"` | Required | Required |
 
-The commands in this guide are for Linux and macOS. On Windows, the binaries are in `%USERPROFILE%\.dapr\bin` and have the `.exe` extension.
+The commands have a Linux/macOS tab and a Windows tab. The Windows commands are for the Command Prompt (`cmd.exe`).
 
 ## Install the Dapr binaries
 
@@ -28,7 +28,7 @@ The commands in this guide are for Linux and macOS. On Windows, the binaries are
    dapr init --slim
    ```
 
-`dapr init --slim` installs `daprd`, `placement`, and `scheduler` in `$HOME/.dapr/bin`. It does not start them, and it does not create component files. You start each process in the steps below.
+`dapr init --slim` installs `daprd`, `placement`, and `scheduler` in `$HOME/.dapr/bin` (Linux and macOS) or `%USERPROFILE%\.dapr\bin` (Windows, with the `.exe` extension). It does not start them, and it does not create component files. You start each process in the steps below.
 
 ## Configure SQLite as the actor state store
 
@@ -55,9 +55,25 @@ SQLite creates the file `workflows.db` in the folder where you start `dapr run`.
 
 Open a terminal in your project folder and start the Scheduler service:
 
+{{< tabpane text=true >}}
+
+{{% tab "Linux/macOS" %}}
+
 ```bash
 $HOME/.dapr/bin/scheduler --etcd-data-dir ./scheduler-data
 ```
+
+{{% /tab %}}
+
+{{% tab "Windows" %}}
+
+```cmd
+%USERPROFILE%\.dapr\bin\scheduler.exe --etcd-data-dir .\scheduler-data
+```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
 
 The Scheduler service listens on port 50006. It keeps its data in an embedded etcd database in the `./scheduler-data` folder. The embedded etcd uses ports 2379 and 2380. To change these ports, set `--etcd-client-port` and `--etcd-initial-cluster`.
 
@@ -67,9 +83,25 @@ Dapr 1.18 and earlier need the Placement service. On Dapr 1.19 and later, you ca
 
 Open a second terminal and start the Placement service:
 
+{{< tabpane text=true >}}
+
+{{% tab "Linux/macOS" %}}
+
 ```bash
 $HOME/.dapr/bin/placement --healthz-port 8081 --metrics-port 9091
 ```
+
+{{% /tab %}}
+
+{{% tab "Windows" %}}
+
+```cmd
+%USERPROFILE%\.dapr\bin\placement.exe --healthz-port 8081 --metrics-port 9091
+```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
 
 The Placement service listens on port 50005.
 
@@ -95,6 +127,12 @@ On Dapr 1.19 and later, the Scheduler service can serve actor placement. Then yo
    $HOME/.dapr/bin/scheduler --etcd-data-dir ./scheduler-data --placement-enabled=true
    ```
 
+   On Windows:
+
+   ```cmd
+   %USERPROFILE%\.dapr\bin\scheduler.exe --etcd-data-dir .\scheduler-data --placement-enabled=true
+   ```
+
 1. Do not start the Placement service.
 1. In the next step, set `--placement-host-address ""` in the `dapr run` command. The sidecar then gets actor placement from the Scheduler service.
 
@@ -102,13 +140,29 @@ On Dapr 1.19 and later, the Scheduler service can serve actor placement. Then yo
 
 Open a terminal in your project folder. Start your app and its sidecar:
 
+{{< tabpane text=true >}}
+
+{{% tab "Linux/macOS" %}}
+
 ```bash
 dapr run --app-id order-app --dapr-http-port 3500 --resources-path ./components \
   --placement-host-address localhost:50005 --scheduler-host-address localhost:50006 \
   -- python3 app.py
 ```
 
-- Replace `python3 app.py` with the command that starts your workflow app.
+{{% /tab %}}
+
+{{% tab "Windows" %}}
+
+```cmd
+dapr run --app-id order-app --dapr-http-port 3500 --resources-path .\components --placement-host-address localhost:50005 --scheduler-host-address localhost:50006 -- python app.py
+```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
+
+- Replace `python3 app.py` (`python app.py` on Windows) with the command that starts your workflow app.
 - `--placement-host-address` and `--scheduler-host-address` give the addresses of the services that you started. If you start a service on a different port with `--port`, change the address to match.
 - If the Scheduler service serves actor placement (Dapr 1.19 and later), use `--placement-host-address ""`.
 
@@ -118,10 +172,26 @@ When the sidecar is ready, `GET http://localhost:3500/v1.0/healthz` returns HTTP
 
 Start a workflow with the [workflow API]({{% ref workflow_api %}}). Replace `<workflow-name>` with the name of a workflow that your app registers, and `"<input>"` with its input:
 
+{{< tabpane text=true >}}
+
+{{% tab "Linux/macOS" %}}
+
 ```bash
 curl -i -X POST "http://localhost:3500/v1.0/workflows/dapr/<workflow-name>/start?instanceID=test-1" \
   -H "Content-Type: application/json" -d '"<input>"'
 ```
+
+{{% /tab %}}
+
+{{% tab "Windows" %}}
+
+```cmd
+curl -i -X POST "http://localhost:3500/v1.0/workflows/dapr/<workflow-name>/start?instanceID=test-1" -H "Content-Type: application/json" -d "\"<input>\""
+```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
 
 Get the status of the workflow instance:
 
