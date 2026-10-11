@@ -111,6 +111,10 @@ Enable it as a actor state store by making the metadata piece similar to the [sa
     value: "true"
 ```
 
+## Enable workflows
+
+Workflows run on actors. They need actor placement, the Scheduler service, and an actor state store. On Dapr 1.19 and later, the Scheduler service can serve actor placement when you start it with `--placement-enabled=true`. For the full steps with a SQLite state store, see [How to: Run workflows locally without Docker]({{% ref howto-run-workflow-without-docker.md %}}).
+
 ## Clean up
 
 When finished, remove the binaries by following [Uninstall Dapr in a self-hosted environment]({{% ref self-hosted-uninstall %}}) to remove the binaries.
