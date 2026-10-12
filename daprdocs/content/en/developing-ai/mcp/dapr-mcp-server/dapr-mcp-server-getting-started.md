@@ -26,6 +26,26 @@ Pick one of the following.
 
 Each [GitHub release](https://github.com/dapr/dapr-mcp-server/releases) publishes a binary per platform, named `dapr-mcp-server-<os>-<arch>`, with a `checksums.txt` file. Builds are available for `linux-amd64`, `linux-arm64`, `darwin-amd64`, `darwin-arm64`, and `windows-amd64` (with an `.exe` suffix).
 
+{{< tabpane text=true >}}
+
+{{% tab "Linux" %}}
+
+Download the binary, check it against `checksums.txt`, and move it onto your `PATH`. On Arm, use `linux-arm64`.
+
+```bash
+curl -LO https://github.com/dapr/dapr-mcp-server/releases/latest/download/dapr-mcp-server-linux-amd64
+curl -LO https://github.com/dapr/dapr-mcp-server/releases/latest/download/checksums.txt
+sha256sum --ignore-missing -c checksums.txt
+chmod +x dapr-mcp-server-linux-amd64
+sudo mv dapr-mcp-server-linux-amd64 /usr/local/bin/dapr-mcp-server
+```
+
+{{% /tab %}}
+
+{{% tab "macOS" %}}
+
+Download the binary, check it against `checksums.txt`, and move it onto your `PATH`. On an Intel Mac, use `darwin-amd64`.
+
 ```bash
 curl -LO https://github.com/dapr/dapr-mcp-server/releases/latest/download/dapr-mcp-server-darwin-arm64
 curl -LO https://github.com/dapr/dapr-mcp-server/releases/latest/download/checksums.txt
@@ -33,6 +53,31 @@ shasum -a 256 --ignore-missing -c checksums.txt
 chmod +x dapr-mcp-server-darwin-arm64
 sudo mv dapr-mcp-server-darwin-arm64 /usr/local/bin/dapr-mcp-server
 ```
+
+{{% /tab %}}
+
+{{% tab "Windows" %}}
+
+In PowerShell, download the binary to `%LOCALAPPDATA%\dapr-mcp-server`, check it against `checksums.txt`, and add the folder to your user `PATH`:
+
+```powershell
+$base = "https://github.com/dapr/dapr-mcp-server/releases/latest/download"
+$dir = "$Env:LOCALAPPDATA\dapr-mcp-server"
+New-Item -ItemType Directory -Force -Path $dir | Out-Null
+Invoke-WebRequest "$base/dapr-mcp-server-windows-amd64.exe" -OutFile "$dir\dapr-mcp-server.exe"
+Invoke-WebRequest "$base/checksums.txt" -OutFile "$dir\checksums.txt"
+$expected = ((Select-String -Path "$dir\checksums.txt" -Pattern "dapr-mcp-server-windows-amd64.exe").Line -split "\s+")[0]
+$actual = (Get-FileHash "$dir\dapr-mcp-server.exe" -Algorithm SHA256).Hash.ToLower()
+if ($actual -ne $expected) { throw "Checksum mismatch for dapr-mcp-server.exe" }
+$userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+[Environment]::SetEnvironmentVariable("Path", "$userPath;$dir", "User")
+```
+
+Open a new terminal so the updated `PATH` takes effect.
+
+{{% /tab %}}
+
+{{< /tabpane >}}
 
 {{% /tab %}}
 
@@ -112,7 +157,7 @@ With stdio, the MCP client starts the server process itself. Run the sidecar on 
 dapr run --app-id dapr-mcp-server --dapr-grpc-port 50001 --resources-path ./components
 ```
 
-Leave it running, then point your client at the binary. Use the absolute path, because clients don't always inherit your shell's `PATH`.
+Leave it running, then point your client at the binary. Use the absolute path, because clients don't always inherit your shell's `PATH`. On Windows, that's the full path to `dapr-mcp-server.exe`, with each backslash doubled in JSON (for example, `C:\\Users\\<you>\\AppData\\Local\\dapr-mcp-server\\dapr-mcp-server.exe`).
 
 {{< tabpane text=true >}}
 
@@ -178,11 +223,27 @@ dapr run --app-id dapr-mcp-server --resources-path ./components -- dapr-mcp-serv
 
 The MCP endpoint is `http://localhost:8080/`. Check that the server is up and can reach its sidecar:
 
+{{< tabpane text=true >}}
+
+{{% tab "Linux/macOS" %}}
+
 ```bash
 curl http://localhost:8080/readyz
 ```
 
-A `200` response with `"status":"healthy"` means it's ready. A `503` means the sidecar isn't reachable.
+{{% /tab %}}
+
+{{% tab "Windows" %}}
+
+```powershell
+Invoke-RestMethod http://localhost:8080/readyz
+```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
+
+A `200` response with `"status":"healthy"` means it's ready. A `503` means the sidecar isn't reachable; PowerShell reports it as an error.
 
 Connect a client that supports streamable HTTP:
 
