@@ -42,7 +42,7 @@ For the threat-model framing, default postures, and what stays your responsibili
 
 ## Give agents Dapr tools: the Dapr MCP server
 
-The paths on this page connect agents to MCP servers you already run. The [Dapr MCP server]({{% ref dapr-mcp-server %}}) is a separate, standalone MCP server that runs next to a Dapr sidecar and exposes Dapr's building blocks (state, pub/sub, bindings, secrets, service invocation, actors, lock, cryptography, and conversation) as MCP tools. Use it when you want an agent to call Dapr APIs directly from any MCP client.
+The paths on this page connect agents to MCP servers you already run. The [Dapr MCP server]({{% ref dapr-mcp-server %}}) is a separate, standalone MCP server that runs next to a Dapr sidecar and exposes Dapr's building blocks (state, pub/sub, bindings, secrets, service invocation, actors, lock, cryptography, and conversation) as MCP tools. Use it when you want an agent to call Dapr APIs directly from any MCP client. The [Dapr MCP server quickstarts](https://github.com/dapr/quickstarts/tree/master/dapr-mcp-server) show it with LangGraph, Dapr Agents, and the OpenAI Agents SDK.
 
 ## Alternative: the `MCPServer` resource (workflow-centric path)
 

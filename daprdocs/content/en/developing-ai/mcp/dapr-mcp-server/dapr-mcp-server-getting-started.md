@@ -363,6 +363,7 @@ Streamable HTTP sessions are held in the server's memory. If you run more than o
 
 ## Next steps
 
+- Try the [Dapr MCP server quickstarts](https://github.com/dapr/quickstarts/tree/master/dapr-mcp-server), which run the same agent in LangGraph, Dapr Agents, and the OpenAI Agents SDK, each through an MCP client and through the [`MCPServer` resource]({{% ref mcp-server-resource.md %}}).
 - Explore the [tool reference]({{% ref dapr-mcp-server-tool-reference.md %}}) to see what each tool does and which component type enables it.
 - Secure the HTTP transport with [authentication]({{% ref dapr-mcp-server-authentication.md %}}).
 - Send traces, metrics, and logs to your backend with [observability]({{% ref dapr-mcp-server-observability.md %}}).

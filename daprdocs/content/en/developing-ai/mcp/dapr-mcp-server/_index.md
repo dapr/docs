@@ -56,3 +56,4 @@ The server can do anything its Dapr sidecar can do, and it returns tool results,
 - [Authentication]({{% ref dapr-mcp-server-authentication.md %}}): OIDC, SPIFFE, Dapr Sentry, and hybrid modes
 - [Tool reference]({{% ref dapr-mcp-server-tool-reference.md %}}): every tool, its inputs, and its safety properties
 - [Observability]({{% ref dapr-mcp-server-observability.md %}}): traces, metrics, logs, and health endpoints
+- [Quickstarts](https://github.com/dapr/quickstarts/tree/master/dapr-mcp-server): LangGraph, Dapr Agents, and OpenAI Agents SDK agents that use the Dapr MCP server, through an MCP client or the [`MCPServer` resource]({{% ref mcp-server-resource.md %}})
