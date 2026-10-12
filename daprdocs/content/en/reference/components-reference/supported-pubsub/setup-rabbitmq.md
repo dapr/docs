@@ -355,7 +355,7 @@ spec:
 - `exchangeDeclareMode: passive` asserts that the topic exchange exists and never creates or modifies it.
 - `queueDeclareMode: passive` asserts that the consumer queue exists, and leaves `queue.bind` to the external owner, since a binding belongs to whoever owns the queue.
 
-Dead lettering follows `queueDeclareMode`, not `exchangeDeclareMode`: the dead letter exchange and queue are named after the consumer at runtime, so no external owner could pre-create them. Under `queueDeclareMode: passive` they are left to whoever defines the queue, and `enableDeadLetter` has no effect.
+Dead lettering follows `queueDeclareMode`, not `exchangeDeclareMode`. The dead letter exchange and queue are named after the consumer at runtime, so no external owner could pre-create them. Under `queueDeclareMode: passive` they are left to whoever defines the queue, and `enableDeadLetter` has no effect.
 
 The two are independent. A common combination is an externally managed exchange with queues the component still declares, which is what a consistent hash setup needs when consumer queue names are only known at runtime:
 
