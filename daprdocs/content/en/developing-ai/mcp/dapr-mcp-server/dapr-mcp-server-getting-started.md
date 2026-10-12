@@ -58,7 +58,7 @@ sudo mv dapr-mcp-server-darwin-arm64 /usr/local/bin/dapr-mcp-server
 
 {{% tab "Windows" %}}
 
-In PowerShell, download the binary to `%LOCALAPPDATA%\dapr-mcp-server`, check it against `checksums.txt`, and add the folder to your user `PATH`:
+In PowerShell, download the binary to `$Env:LOCALAPPDATA\dapr-mcp-server`, check it against `checksums.txt`, and add the folder to your user `PATH`:
 
 ```powershell
 $base = "https://github.com/dapr/dapr-mcp-server/releases/latest/download"
@@ -70,7 +70,9 @@ $expected = ((Select-String -Path "$dir\checksums.txt" -Pattern "dapr-mcp-server
 $actual = (Get-FileHash "$dir\dapr-mcp-server.exe" -Algorithm SHA256).Hash.ToLower()
 if ($actual -ne $expected) { throw "Checksum mismatch for dapr-mcp-server.exe" }
 $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
-[Environment]::SetEnvironmentVariable("Path", "$userPath;$dir", "User")
+if (($userPath -split ";") -notcontains $dir) {
+    [Environment]::SetEnvironmentVariable("Path", (($userPath, $dir) | Where-Object { $_ }) -join ";", "User")
+}
 ```
 
 Open a new terminal so the updated `PATH` takes effect.
