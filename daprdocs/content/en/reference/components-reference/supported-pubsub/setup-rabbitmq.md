@@ -314,14 +314,55 @@ spec:
     routingKey: "10"
 ```
 
-Publish with the partition key in the `routingKey` metadata:
+Publish with the partition key in the `routingKey` metadata. In each example both messages carry the same partition key, so both are routed to the same queue and processed in the order they were published.
+
+{{< tabpane text=true >}}
+
+{{% tab "Python" %}}
+
+```python
+with DaprClient() as client:
+    client.publish_event(
+        pubsub_name='order-pub-sub',
+        topic_name='orders',
+        data='created',
+        publish_metadata={'routingKey': 'tenant-42/serial-7'},
+    )
+    client.publish_event(
+        pubsub_name='order-pub-sub',
+        topic_name='orders',
+        data='shipped',
+        publish_metadata={'routingKey': 'tenant-42/serial-7'},
+    )
+```
+
+{{% /tab %}}
+
+{{% tab "JavaScript" %}}
+
+```javascript
+const client = new DaprClient();
+
+await client.pubsub.publish("order-pub-sub", "orders", "created", {
+  metadata: { routingKey: "tenant-42/serial-7" },
+});
+await client.pubsub.publish("order-pub-sub", "orders", "shipped", {
+  metadata: { routingKey: "tenant-42/serial-7" },
+});
+```
+
+{{% /tab %}}
+
+{{% tab "Go" %}}
 
 ```go
-// Both messages carry the same partition key, so both are routed to the same
-// queue and processed in the order they were published.
 client.PublishEvent(context.Background(), "order-pub-sub", "orders", []byte("created"), dapr.PublishEventWithMetadata(map[string]string{"routingKey": "tenant-42/serial-7"}))
 client.PublishEvent(context.Background(), "order-pub-sub", "orders", []byte("shipped"), dapr.PublishEventWithMetadata(map[string]string{"routingKey": "tenant-42/serial-7"}))
 ```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
 
 {{% alert title="Note" color="primary" %}}
 Bucket weights are relative, and small weights divide the key space coarsely. Binding two queues with a weight of `1` each can leave the split noticeably uneven whereas a weight in the tens spreads keys more evenly across the same number of queues.
@@ -333,7 +374,10 @@ By default the component declares the topology it needs: an exchange named after
 
 An AMQP declaration is idempotent only when *every* property matches. Where the two disagree, RabbitMQ returns `PRECONDITION_FAILED (406)` and the component cannot use that topic at all. Because the defaults on each side differ, this happens out of the box rather than only in unusual configurations.
 
-Set either mode to `"passive"` to make the external owner the single source of truth:
+To avoid this collision, set either mode to `"passive"` to make the external owner the single source of truth:
+
+- `exchangeDeclareMode: passive` asserts that the topic exchange exists and never creates or modifies it.
+- `queueDeclareMode: passive` asserts that the consumer queue exists, and leaves `queue.bind` to the external owner, since a binding belongs to whoever owns the queue.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -352,12 +396,9 @@ spec:
     value: "passive"
 ```
 
-- `exchangeDeclareMode: passive` asserts that the topic exchange exists and never creates or modifies it.
-- `queueDeclareMode: passive` asserts that the consumer queue exists, and leaves `queue.bind` to the external owner, since a binding belongs to whoever owns the queue.
-
 Dead lettering follows `queueDeclareMode`, not `exchangeDeclareMode`. The dead letter exchange and queue are named after the consumer at runtime, so no external owner could pre-create them. Under `queueDeclareMode: passive` they are left to whoever defines the queue, and `enableDeadLetter` has no effect.
 
-The two are independent. A common combination is an externally managed exchange with queues the component still declares, which is what a consistent hash setup needs when consumer queue names are only known at runtime:
+`exchangeDeclareMode` and `queueDeclareMode` are independent, so set whichever matches what the external owner actually manages. A common combination is an externally managed exchange with queues the component still declares, which is what a consistent hash setup needs when consumer queue names are only known at runtime:
 
 ```yaml
   - name: exchangeDeclareMode
@@ -367,10 +408,8 @@ The two are independent. A common combination is an externally managed exchange 
 ```
 
 {{% alert title="Note" color="primary" %}}
-Under `queueDeclareMode: passive` the component does not send queue arguments, so settings such as `maxLen`, `maxLenBytes`, `maxPriority`, `queueType` and `enableDeadLetter` become the responsibility of whoever declares the queue.
+Under `queueDeclareMode: passive` the component does not send queue arguments, so settings such as `maxLen`, `maxLenBytes`, `maxPriority`, `queueType` and `enableDeadLetter` become the responsibility of whoever declares the queue. If a passively declared exchange or queue does not exist, the component reports that it will not create it rather than creating it silently.
 {{% /alert %}}
-
-If a passively declared exchange or queue does not exist, the component reports that it will not create it rather than creating it silently.
 
 ## Use priority queues
 
