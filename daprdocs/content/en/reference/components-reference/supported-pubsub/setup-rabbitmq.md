@@ -324,7 +324,7 @@ client.PublishEvent(context.Background(), "order-pub-sub", "orders", []byte("shi
 ```
 
 {{% alert title="Note" color="primary" %}}
-Bucket weights are relative, and small weights divide the key space coarsely. Binding two queues with a weight of `1` each can leave the split noticeably uneven; a weight in the tens spreads keys more evenly across the same number of queues.
+Bucket weights are relative, and small weights divide the key space coarsely. Binding two queues with a weight of `1` each can leave the split noticeably uneven whereas a weight in the tens spreads keys more evenly across the same number of queues.
 {{% /alert %}}
 
 ## Use an externally managed topology
