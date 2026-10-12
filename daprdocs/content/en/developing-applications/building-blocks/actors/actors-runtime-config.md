@@ -42,6 +42,8 @@ The clamping only protects daprd from resetting its own placement stream. A drai
 
 Most Dapr SDKs leave `drainOngoingCallTimeout` unset unless your application configures it, so the 2-second default applies. The .NET Actors.Next SDK is an exception: it sets a 30-second default, which sits exactly at the clamp boundary; configure a lower value explicitly.
 
+> **Note:** The daprd-side placement dissemination timeout discussed here (default 30 seconds) is distinct from the control plane's dissemination round timeouts: `dapr_placement.disseminateTimeout` on the Placement service, and `--placement-disseminate-timeout` on the Scheduler when it [serves placement]({{% ref "placement#serving-placement-from-the-scheduler-service" %}}). Both default to `8s`.
+
 ## Examples
 
 {{< tabpane text=true >}}
