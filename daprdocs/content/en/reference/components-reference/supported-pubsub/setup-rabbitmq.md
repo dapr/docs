@@ -329,7 +329,7 @@ Bucket weights are relative, and small weights divide the key space coarsely. Bi
 
 ## Use an externally managed topology
 
-By default the component declares the topology it needs: an exchange named after the topic, a queue for each subscription, and the binding between them. If your exchanges and queues are instead managed declaratively — by the [RabbitMQ Cluster Kubernetes Operator's Topology Operator](https://www.rabbitmq.com/kubernetes/operator/using-topology-operator#exchanges-bindings), by Terraform, or by any other provisioning step — that declaration collides with the external owner's.
+By default the component declares the topology it needs: an exchange named after the topic, a queue for each subscription, and the binding between them. If your exchanges and queues are instead managed declaratively, for instance by the [RabbitMQ Cluster Kubernetes Operator's Topology Operator](https://www.rabbitmq.com/kubernetes/operator/using-topology-operator#exchanges-bindings), by Terraform, or by any other provisioning step, that declaration will collide.
 
 An AMQP declaration is idempotent only when *every* property matches. Where the two disagree, RabbitMQ returns `PRECONDITION_FAILED (406)` and the component cannot use that topic at all. Because the defaults on each side differ, this happens out of the box rather than only in unusual configurations.
 
