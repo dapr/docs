@@ -275,7 +275,7 @@ Setting `exchangeKind` to `"x-consistent-hash"` partitions a topic across consum
 This exchange kind is provided by the [`rabbitmq_consistent_hash_exchange`](https://github.com/rabbitmq/rabbitmq-server/tree/main/deps/rabbitmq_consistent_hash_exchange) plugin, which must be enabled on the broker before it can be used.
 {{% /alert %}}
 
-The `routingKey` metadata means something different on each side:
+The `routingKey` metadata means something different on each side of publishing/subscribing:
 
 - **When publishing**, it is the partition key. The exchange hashes it to choose a queue, so any messages that must stay in order relative to one another must share a key.
 - **When subscribing**, it is the queue's *bucket weight*: a single positive integer, not a pattern and not a list. The weight is the number of buckets the queue occupies on the hash ring, so the key space is divided between the bound queues in proportion to their weights. Unlike a topic exchange, a consistent hash exchange has one effective binding per queue, so only one value is accepted here.
