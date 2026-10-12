@@ -357,6 +357,10 @@ spec:
       targetPort: 8080
 ```
 
+{{% alert title="Turn on authentication before deploying" color="warning" %}}
+The Service makes the server reachable from any pod in the cluster, and without `AUTH_MODE` any caller can use every tool. Turn on [authentication]({{% ref dapr-mcp-server-authentication.md %}}), or limit which pods can reach the server with a Kubernetes `NetworkPolicy`.
+{{% /alert %}}
+
 Add authentication and telemetry settings as `env` entries on the container; see the [configuration reference]({{% ref dapr-mcp-server-configuration.md %}}).
 
 Streamable HTTP sessions are held in the server's memory. If you run more than one replica, configure session affinity on whatever routes traffic to them, so that each client keeps reaching the same replica.
