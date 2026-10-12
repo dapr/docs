@@ -108,7 +108,6 @@ The Placement service is not deployed with this setting in Kubernetes mode. This
 
 For more information on running Dapr on Kubernetes, visit the [Kubernetes hosting page](https://docs.dapr.io/operations/hosting/kubernetes/).
 
-
 ## Related links
 
 [Learn more about the Placement API.]({{% ref placement_api %}})
