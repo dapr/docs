@@ -75,7 +75,7 @@ An [`MCPServer` resource]({{% ref "mcp-server-resource.md#spiffe-workload-identi
 | `DAPR_SENTRY_TRUST_DOMAIN` | Yes | Trust domain of the caller's SPIFFE ID, for example `public`. The `sub` claim must be a SPIFFE ID in this trust domain with a workload path. |
 | `DAPR_SENTRY_AUDIENCE` | Yes | Value the token's `aud` claim must contain. Use the audience your callers request their tokens for. |
 | `DAPR_SENTRY_ISSUER` | No | Expected `iss` claim. When not set, the issuer isn't checked. |
-| `DAPR_SENTRY_TOKEN_HEADER` | No | Header that carries the raw token. Default `Authorization`. |
+| `DAPR_SENTRY_TOKEN_HEADER` | No | Header that carries the raw token. Default `Authorization`. Applies in every mode; see [Sending a token](#sending-a-token). |
 | `DAPR_SENTRY_JWKS_REFRESH_INTERVAL` | No | How often to refresh the JWKS. Default `5m`, minimum `30s`. |
 
 ```bash

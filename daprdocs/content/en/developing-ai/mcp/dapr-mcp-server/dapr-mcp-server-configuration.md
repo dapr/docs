@@ -61,7 +61,7 @@ Authentication applies to the HTTP transport. See [Authentication]({{% ref dapr-
 | `DAPR_SENTRY_TRUST_DOMAIN` | Not set | Trust domain of the SPIFFE ID in the token's `sub` claim. Required when Dapr Sentry is on. |
 | `DAPR_SENTRY_AUDIENCE` | Not set | Expected `aud` claim. Required when Dapr Sentry is on. |
 | `DAPR_SENTRY_ISSUER` | Not set | Expected `iss` claim. Checked only when set. |
-| `DAPR_SENTRY_TOKEN_HEADER` | `Authorization` | Header to read the token from. A custom header carries the raw token, without a `Bearer` prefix. |
+| `DAPR_SENTRY_TOKEN_HEADER` | `Authorization` | Header to read the token from. Despite its name, it applies in every auth mode, not only Dapr Sentry. A custom header carries the raw token, without a `Bearer` prefix. |
 | `DAPR_SENTRY_JWKS_REFRESH_INTERVAL` | `5m` | How often to refresh the JWKS, as a Go duration. Minimum `30s`. |
 
 ## Telemetry
