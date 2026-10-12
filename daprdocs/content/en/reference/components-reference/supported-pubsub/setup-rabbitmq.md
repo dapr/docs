@@ -278,7 +278,7 @@ This exchange kind is provided by the [`rabbitmq_consistent_hash_exchange`](http
 The `routingKey` metadata means something different on each side of publishing/subscribing:
 
 - **When publishing**, it is the partition key. The exchange hashes it to choose a queue, so any messages that must stay in order relative to one another must share a key.
-- **When subscribing**, it is the queue's *bucket weight*: a single positive integer, not a pattern and not a list. The weight is the number of buckets the queue occupies on the hash ring, so the key space is divided between the bound queues in proportion to their weights. Unlike a topic exchange, a consistent hash exchange has one effective binding per queue, so only one value is accepted here.
+- **When subscribing**, it is the queue's *bucket weight*. A single positive integer that represents the number of buckets the queue occupies on the hash ring, so the key space is divided between the bound queues in proportion to their weights. Unlike a topic exchange, a consistent hash exchange has one effective binding per queue, so only one value is accepted here.
 
 Each consumer binds its own queue, so give each one a distinct `queueName` on the Subscription (or a distinct `consumerID` on the Component), and set `concurrencyMode` to `single` so that each partition is processed in order:
 
