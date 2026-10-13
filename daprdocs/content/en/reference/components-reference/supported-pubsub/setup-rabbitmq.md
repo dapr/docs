@@ -396,7 +396,7 @@ spec:
     value: "passive"
 ```
 
-Dead lettering follows `queueDeclareMode`, not `exchangeDeclareMode`. The dead letter exchange and queue are named after the consumer at runtime, so no external owner could pre-create them. Under `queueDeclareMode: passive` they are left to whoever defines the queue, and `enableDeadLetter` has no effect.
+Dead lettering follows `queueDeclareMode`, not `exchangeDeclareMode`, because the dead letter exchange and queue are named after the consumer at runtime: they belong to the queue rather than to the topology an external owner defines up front. With `queueDeclareMode: declare` the component creates them as before. With `queueDeclareMode: passive` it creates nothing and `enableDeadLetter` has no effect, so dead lettering becomes part of the queue definition, set up by whoever owns the queue and under whatever names they choose.
 
 `exchangeDeclareMode` and `queueDeclareMode` are independent, so set whichever matches what the external owner actually manages. A common combination is an externally managed exchange with queues the component still declares, which is what a consistent hash setup needs when consumer queue names are only known at runtime:
 
@@ -408,7 +408,7 @@ Dead lettering follows `queueDeclareMode`, not `exchangeDeclareMode`. The dead l
 ```
 
 {{% alert title="Note" color="primary" %}}
-Under `queueDeclareMode: passive` the component does not send queue arguments, so settings such as `maxLen`, `maxLenBytes`, `maxPriority`, `queueType` and `enableDeadLetter` become the responsibility of whoever declares the queue. If a passively declared exchange or queue does not exist, the component reports that it will not create it rather than creating it silently.
+Under `queueDeclareMode: passive` the component does not send queue arguments, so settings such as `maxLen`, `maxLenBytes`, `maxPriority`, `queueType` and `enableDeadLetter` become the responsibility of whoever declares the queue. If an exchange or queue that the component expects to already exist is missing, it fails with an error naming the missing object and the mode that stopped it being created.
 {{% /alert %}}
 
 ## Use priority queues
