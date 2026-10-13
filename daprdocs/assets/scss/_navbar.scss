@@ -1,0 +1,183 @@
+//
+// Main navbar
+//
+
+.td-navbar {
+    background: var(--d-ground);
+    border-bottom: 1px solid var(--d-border);
+    min-height: 56px;
+    margin: 0;
+    z-index: 32;
+    box-shadow: none;
+
+    @include media-breakpoint-up(md) {
+        position: fixed;
+        top: 0;
+        width: 100%;
+    }
+
+    .navbar-brand {
+        display: inline-flex;
+        align-items: center;   // vertically center logo + wordmark
+        gap: 8px;
+        text-transform: none !important;
+        font-family: var(--font-head);   // Geist for the "Dapr Docs" wordmark
+
+        .nav-link {
+            display: inline-block;
+            margin-right: -30px;
+        }
+
+        .navbar-logo {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        svg {
+            display: block;
+            margin: 0;
+            height: 40px;
+            width: 40px;
+        }
+    }
+
+    .navbar-brand, .nav-link {
+        color: var(--d-heading);
+    }
+
+    .nav-link {
+        text-transform: none !important;
+        font-family: var(--font-head);
+        font-weight: 500;
+        font-size: .85rem;
+    }
+
+    .nav-link:hover {
+        color: var(--d-blue);
+    }
+
+    .nav-link.active {
+        color: var(--d-heading);
+        position: relative;
+    }
+
+    .nav-link.active::after {
+        content: "";
+        position: absolute;
+        left: .6rem;
+        right: .6rem;
+        bottom: 6px;
+        height: 2px;
+        background: var(--d-orange);
+        border-radius: 2px;
+    }
+
+    .td-search-input, .td-search__input {
+        background: var(--d-panel);
+        border: 1px solid var(--d-border);
+        border-radius: 7px;
+        color: var(--d-body);
+
+        @include placeholder {
+            color: var(--d-muted);
+        }
+    }
+
+    .dropdown {
+        min-width: 100px;
+    }
+
+    @include media-breakpoint-down(md) {
+        padding-right: .5rem;
+        padding-left: .75rem;
+
+        .td-navbar-nav-scroll {
+            max-width: 100%;
+            height: 2.5rem;
+            margin-top: .25rem;
+            overflow: hidden;
+            font-size: .875rem;
+
+            .nav-link {
+                padding-right: .25rem;
+                padding-left: 0;
+            }
+
+            .navbar-nav {
+                padding-bottom: 2rem;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+
+            }
+        }
+    }
+}
+
+// Explicit per-theme hook: background is already token-driven above, this
+// just keeps dark-mode navbar overrides discoverable in one place.
+[data-bs-theme="dark"] .td-navbar {
+    background: var(--d-ground);
+}
+
+.navbar-expand {
+    justify-content: space-around;
+}
+
+// Dark/light theme toggle button.
+.dapr-theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin-left: .5rem;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--d-body);
+    cursor: pointer;
+    transition: background-color .15s ease-in-out, color .15s ease-in-out;
+
+    &:hover {
+        background: var(--d-panel);
+        color: var(--d-heading);
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--d-active);
+        outline-offset: 2px;
+    }
+
+    &__icon {
+        display: none;
+    }
+}
+
+// Icon shown = theme you switch TO: sun in dark mode, moon in light mode.
+[data-bs-theme="dark"] .dapr-theme-toggle__icon--sun {
+    display: block;
+}
+
+[data-bs-theme="light"] .dapr-theme-toggle__icon--moon {
+    display: block;
+}
+
+// Theme-aware brand logo: the dark-blue mark (logo-blue.svg) shows on the light
+// navbar; the white mark (logo.svg) shows on the dark navbar. Both are inlined
+// in navbar.html; only one is displayed per theme.
+.navbar-logo--light,
+.navbar-logo--dark {
+    display: inline-flex;
+    align-items: center;
+}
+.navbar-logo--dark {
+    display: none;
+}
+[data-bs-theme="dark"] .navbar-logo--light {
+    display: none;
+}
+[data-bs-theme="dark"] .navbar-logo--dark {
+    display: inline-flex;
+}

@@ -2,7 +2,7 @@
 type: docs
 title: "Best Practices for the Dapr .NET SDK"
 linkTitle: "Best Practices"
-weight: 85000
+weight: 400000
 description: Using Dapr .NET SDK effectively
 ---
 

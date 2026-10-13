@@ -40,7 +40,7 @@ Before you begin, set up a Kubernetes cluster with Windows nodes. Many Kubernete
 
 ## Install the Dapr control plane
 
-If you are installing using the Dapr CLI or via a Helm chart, simply follow the normal deployment procedures: [Installing Dapr on a Kubernetes cluster]({{% ref "install-dapr-selfhost.md#installing-Dapr-on-a-kubernetes-cluster" %}})
+If you are installing using the Dapr CLI or via a Helm chart, simply follow the normal deployment procedures: [Installing Dapr on a Kubernetes cluster]({{% ref kubernetes-deploy %}})
 
 Affinity will be automatically set for `kubernetes.io/os=linux`. This will be sufficient for most users, as Kubernetes requires at least one Linux node pool.
 
