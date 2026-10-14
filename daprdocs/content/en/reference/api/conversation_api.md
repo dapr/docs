@@ -34,10 +34,10 @@ POST http://localhost:<daprPort>/v1.0-alpha2/conversation/<llm-name>/converse
 | --------- | ----------- |
 | `contextId` | The ID of an existing chat (like in ChatGPT). Optional |
 | `inputs` | Inputs for the conversation. Multiple inputs at one time are supported. Required |
-| `parameters` | Typed per-request overrides for provider-specific fields (for example `model`, `max_tokens`). Values are wrapped in `google.protobuf.Any`. Optional |
 | `metadata` | Up to 16 key-value pairs to attach to the conversation for structured tagging (for example `user_id`, `session_id`). Not a mechanism for overriding component configuration. Optional |
 | `scrubPii` | A boolean value to enable obfuscation of sensitive information returning from the LLM. Optional |
 | `temperature` | A float value to control the temperature of the model. Used to optimize for consistency (0) or creativity (1). Optional |
+| `maxTokens` | Maximum number of tokens the model may generate for the completion; must be greater than 0. Mapped to each provider's native parameter (for example, OpenAI's `max_completion_tokens` or Anthropic's `max_tokens`) and overrides the component-level `maxTokens` metadata default. When the cap is reached, the choice's `finishReason` is `length`. Available from Dapr 1.19. Optional |
 | `tools` | Tools register the tools available to be used by the LLM during the conversation. Optional |
 | `toolChoice` | Controls which (if any) tool is called by the model. Values: `auto`, `required`, or specific tool name. Defaults to `auto` if tools are present. Optional |
 | `responseFormat` | Structured output described using a JSON Schema object. Use this when you want typed structured output. Supported by Deepseek, Google AI, Hugging Face, OpenAI, and Anthropic components. Optional |
@@ -143,7 +143,6 @@ curl -X POST http://localhost:3500/v1.0-alpha2/conversation/openai/converse \
             ]
           }
         ],
-        "parameters": {},
         "metadata": {}
       }'
 ```
@@ -170,22 +169,13 @@ curl -X POST http://localhost:3500/v1.0-alpha2/conversation/openai/converse \
             "scrubPii": false
           }
         ],
-        "parameters": {
-          "max_tokens": {
-            "@type": "type.googleapis.com/google.protobuf.Int64Value",
-            "value": "100"
-          },
-          "model": {
-            "@type": "type.googleapis.com/google.protobuf.StringValue",
-            "value": "claude-3-5-sonnet-20240620"
-          }
-        },
         "metadata": {
           "user_id": "user-1234",
           "session_id": "session-abcd"
         },
         "scrubPii": false,
         "temperature": 0.7,
+        "maxTokens": 100,
         "tools": [
           {
             "function": {
