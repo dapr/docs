@@ -138,7 +138,7 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 | idleCheckFrequency        | N        | Frequency of idle checks made by idle connections reaper. Default is `"1m"`. `"-1"` disables idle connections reaper. | `"-1"`
 | idleTimeout        | N        | Amount of time after which the client closes idle connections. Should be less than server's timeout. Default is `"5m"`. `"-1"` disables idle timeout check. | `"10m"`
 | ttlInSeconds       | N         | Allows specifying a default Time-to-live (TTL) in seconds that will be applied to every state store request unless TTL is explicitly defined via the [request metadata]({{% ref "state-store-ttl.md" %}}). | `600`
-| queryIndexes       | N         | Indexing schemas for querying JSON objects | see [Querying JSON objects](#querying-json-objects)
+| queryIndexes       | N         | Indexing schemas for querying JSON objects | see [Querying JSON objects](#querying-json-objects-optional)
 | actorStateStore    | N        | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 
 ## Supported servers and versions
@@ -174,7 +174,7 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
     ```
 
 2. Run `kubectl get pods` to see the Redis containers now running in your cluster.
-3. Add `redis-master:6379` as the `redisHost` in your [redis.yaml](#configuration) file. For example:
+3. Add `redis-master:6379` as the `redisHost` in your [redis.yaml](#component-format) file. For example:
     ```yaml
         metadata:
         - name: redisHost
@@ -185,7 +185,7 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 
     - **Linux/MacOS**: Run `kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}" | base64 --decode` and copy the outputted password.
 
-    Add this password as the `redisPassword` value in your [redis.yaml](#configuration) file. For example:
+    Add this password as the `redisPassword` value in your [redis.yaml](#component-format) file. For example:
     ```yaml
         metadata:
         - name: redisPassword

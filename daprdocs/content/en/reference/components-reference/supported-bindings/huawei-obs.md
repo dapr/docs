@@ -52,9 +52,9 @@ This component supports **output binding** with the following operations:
 
 - `create` : [Create file](#create-file)
 - `upload` : [Upload file](#upload-file)
-- `get` : [Get file](#get-file)
-- `delete` : [Delete file](#delete-file)
-- `list`: [List file](#list-files)
+- `get` : [Get file](#get-object)
+- `delete` : [Delete file](#delete-object)
+- `list`: [List file](#list-objects)
 
 ### Create file
 
