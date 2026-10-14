@@ -36,6 +36,10 @@ Parameter | Description
 `overwrite` | A boolean value to specify if the job can overwrite an existing one with the same name. Default value is `false`
 `failure_policy` | An optional failure policy for the job. Details of the format are below. If not set, the job is retried up to 3 times with a delay of 1 second between retries.
 
+{{% alert title="Note" color="primary" %}}
+From Dapr 1.19, job names can contain the pipe character (`|`) and `@`. A job name is still rejected if it contains a character that is unsafe in an HTTP path segment (such as `/`, `\`, `#`, `?`, a newline, or a NUL byte), is `.` or `..`, or exceeds the maximum length.
+{{% /alert %}}
+
 #### schedule
 `schedule` accepts both systemd timer-style cron expressions, as well as human readable '@' prefixed period strings, as defined below.
 
