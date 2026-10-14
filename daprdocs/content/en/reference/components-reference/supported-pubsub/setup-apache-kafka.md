@@ -97,6 +97,10 @@ spec:
 | maxMessageBytes     | N | The maximum size in bytes allowed for a single Kafka message. Defaults to 1024. | `2048`
 | consumeRetryInterval | N | The interval between retries when attempting to consume topics. Treats numbers without suffix as milliseconds. Defaults to 100ms. | `200ms` |
 | consumeRetryEnabled | N | Disable consume retry by setting `"false"` | `"true"`, `"false"` |
+
+{{% alert title="Note" color="primary" %}}
+From Dapr 1.19, when a message's retry policy is exhausted (the subscriber returns a retriable error until a bounding [resiliency policy]({{% ref "resiliency-overview.md" %}}) gives up on it), the component commits the message's offset and moves on, logging a warning. Before 1.19, the offset was left uncommitted, so the same message was redelivered indefinitely and the partition could not make progress past it.
+{{% /alert %}}
 | version               | N | Kafka cluster version. Defaults to 2.0.0. Note that this must be set to `1.0.0` if you are using Azure EventHubs with Kafka. | `0.10.2.0` |
 | caCert | N | Certificate authority certificate, required for using TLS. Can be `secretKeyRef` to use a secret reference | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
 | clientCert | N | Client certificate, required for `authType` `mtls`. Can be `secretKeyRef` to use a secret reference | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
@@ -640,7 +644,7 @@ How it works:
    - gRPC: pass a `__txnToken` key in the publish request metadata.
    - Bulk publish: pass the token in the request-level metadata (per-entry metadata is not supported for the token).
 1. When the handler succeeds, the component commits the transaction: the published records and the consumer offset commit atomically.
-1. When the handler fails, the component aborts the transaction: the records the handler published into it — those carrying the transaction token — are never visible to `read_committed` consumers, and the message is redelivered while `consumeRetryEnabled` is `"true"` (the default). Redelivery is governed by this component's `backOff*` metadata — unbounded by default; set `backOffMaxRetries` to bound it. Dapr resiliency policies bound the individual handler call, not the redelivery loop.
+1. When the handler fails, the component aborts the transaction: the records the handler published into it — those carrying the transaction token — are never visible to `read_committed` consumers, and the message is redelivered while `consumeRetryEnabled` is `"true"` (the default). Redelivery is governed by this component's `backOff*` metadata — unbounded by default; set `backOffMaxRetries` to bound it. Dapr resiliency policies bound the individual handler call, not the redelivery loop. From Dapr 1.19, once the handler's retry policy is exhausted, the component commits the offset on its own (outside the aborted transaction) instead of redelivering the message forever.
 
 For example, an HTTP subscriber echoing the token:
 
