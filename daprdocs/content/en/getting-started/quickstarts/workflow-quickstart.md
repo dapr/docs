@@ -2208,11 +2208,17 @@ dapr workflow purge e4d3807c --app-id order-processor
 dapr workflow purge --app-id order-processor --all
 ```
 
+### Use the Dapr Dev Dashboard
+
+As an alternative to the CLI, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to browse the `OrderProcessingWorkflow` instances, check their status, and drill down into the event history of each execution, including the input and output of every activity.
+
+<img src="/images/workflow-overview/workflow-diagrid-dashboard.png" width=800 alt="Diagrid Dev Dashboard showing local workflow executions"/><br/>
+
 ## Tell us what you think!
 
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this Quickstart helpful? Do you have suggestions for improvement?
 
-Join the discussion in our [discord channel](https://discord.com/channels/778680217417809931/953427615916638238).
+Join our [Discord Server](https://diagrid.ws/dapr-discord) and share your thoughts.
 
 ## Next steps
 
