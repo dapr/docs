@@ -355,7 +355,6 @@ public class MyOperation(DaprJobsClient daprJobsClient)
         var oneMonthFromNow = now.AddMonths(1);
         var firstOfNextMonth = new DateTime(oneMonthFromNow.Year, oneMonthFromNow.Month, 1, 0, 0, 0);
 
-        await daprJobsClient.ScheduleJobAsync("myJobName", )
         await daprJobsClient.ScheduleCronJobAsync("myJobName", schedule, dueTime: firstOfNextMonth, cancellationToken: cancellationToken);
     }
 }
@@ -381,7 +380,6 @@ public class MyOperation(DaprJobsClient daprJobsClient)
         var oneMonthFromNow = now.AddMonths(1);
         var firstOfNextMonth = new DateTime(oneMonthFromNow.Year, oneMonthFromNow.Month, 1, 0, 0, 0);
 
-        await daprJobsClient.ScheduleJobAsync("myJobName", )
         await daprJobsClient.ScheduleCronJobAsync("myJobName", schedule, dueTime: firstOfNextMonth, cancellationToken: cancellationToken);
     }
 }
@@ -389,8 +387,9 @@ public class MyOperation(DaprJobsClient daprJobsClient)
 
 ## Get details of already-scheduled job
 If you know the name of an already-scheduled job, you can retrieve its metadata without waiting for it to
-be triggered. The returned `JobDetails` exposes a few helpful properties for consuming the information from the Dapr Jobs API:
+be triggered. The returned `DaprJobDetails` exposes a few helpful properties for consuming the information from the Dapr Jobs API:
 
+- The `Name` property holds the unique name of the job, when available from the runtime. It is populated by `GetJobAsync` and `ListJobsAsync`, but may be `null` for instances constructed manually or returned by older runtime paths.
 - If the `Schedule` property contains a Cron expression, the `IsCronExpression` property will be true and the expression will also be available in the `CronExpression` property.
 - If the `Schedule` property contains a duration value, the `IsIntervalExpression` property will instead be true and the value will be converted to a `TimeSpan` value accessible from the `Interval` property.
 
@@ -399,10 +398,32 @@ This can be done by using the following:
 ```cs
 public class MyOperation(DaprJobsClient daprJobsClient)
 {
-    public async Task<JobDetails> GetJobDetailsAsync(string jobName, CancellationToken cancellationToken)
+    public async Task<DaprJobDetails> GetJobDetailsAsync(string jobName, CancellationToken cancellationToken)
     {
-        var jobDetails = await daprJobsClient.GetJobAsync(jobName, canecllationToken);
+        var jobDetails = await daprJobsClient.GetJobAsync(jobName, cancellationToken);
         return jobDetails;
+    }
+}
+```
+
+## List all registered jobs
+To retrieve every job registered for the current application ID, call `ListJobsAsync`. It returns an
+`IReadOnlyList<DaprJobDetails>` where each entry exposes the same metadata as `GetJobAsync`, including the
+`Name`, `Schedule`, `DueTime`, `Ttl`, `RepeatCount`, `Payload`, and `FailurePolicy` properties. The list is
+empty when no jobs are registered for the app ID, and a `DaprException` is thrown if the Dapr endpoint
+indicates a failure (see the inner exception for details).
+
+```cs
+public class MyOperation(DaprJobsClient daprJobsClient)
+{
+    public async Task ListRegisteredJobsAsync(CancellationToken cancellationToken)
+    {
+        var registeredJobs = await daprJobsClient.ListJobsAsync(cancellationToken);
+        foreach (var job in registeredJobs)
+        {
+            Console.WriteLine("Job '{0}' scheduled with expression '{1}'",
+                job.Name, job.Schedule.ExpressionValue);
+        }
     }
 }
 ```
@@ -416,6 +437,40 @@ public class MyOperation(DaprJobsClient daprJobsClient)
     public async Task DeleteJobAsync(string jobName, CancellationToken cancellationToken)
     {
         await daprJobsClient.DeleteJobAsync(jobName, cancellationToken);
+    }
+}
+```
+
+## Delete multiple jobs by name prefix
+To delete several jobs at once, call `DeleteJobsByPrefixAsync` with a name prefix. Every job whose name
+begins with the supplied `namePrefix` is deleted by the Dapr runtime. The match is case-sensitive.
+
+When `namePrefix` is `null` or whitespace, the Dapr runtime interprets the request as "delete all jobs for
+this application ID" (purge-all semantics). A `DaprException` is thrown if the endpoint indicates a failure
+(see the inner exception for details).
+
+```cs
+public class MyOperation(DaprJobsClient daprJobsClient)
+{
+    public async Task DeleteJobsByPrefixAsync(CancellationToken cancellationToken)
+    {
+        //Delete every job whose name begins with "backup-"
+        await daprJobsClient.DeleteJobsByPrefixAsync("backup-", cancellationToken);
+    }
+}
+```
+
+## Purge all jobs
+`PurgeAllJobsAsync` is a convenience wrapper around `DeleteJobsByPrefixAsync` that passes a `null` prefix,
+which the Dapr runtime interprets as "delete all jobs for this app ID". Use it when you want to clear every
+registered job for the application in a single call.
+
+```cs
+public class MyOperation(DaprJobsClient daprJobsClient)
+{
+    public async Task PurgeAllJobsAsync(CancellationToken cancellationToken)
+    {
+        await daprJobsClient.PurgeAllJobsAsync(cancellationToken);
     }
 }
 ```
