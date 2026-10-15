@@ -444,3 +444,4 @@ When `ignoreErrors` is `true` and load fails, the MCPServer's workflows are not 
 - [MCP access control]({{% ref mcp-access-control.md %}}) — App-ID-keyed `Configuration` `accessControl` for the service-invocation path
 - [Python SDK MCP example](https://github.com/dapr/python-sdk/tree/main/examples/mcp) — `DaprMCPClient`, a framework-agnostic client for invoking MCPServer tools from any agent framework
 - [dapr-agents MCPServer example](https://github.com/dapr/dapr-agents/tree/main/examples/10-mcpserver) — zero-config MCPServer tool discovery; `DurableAgent` automatically picks up MCPServer tools from sidecar metadata
+- [Dapr MCP server quickstarts](https://github.com/dapr/quickstarts/tree/master/dapr-mcp-server) — LangGraph, Dapr Agents, and OpenAI Agents SDK agents that call the [Dapr MCP server]({{% ref dapr-mcp-server %}}) through an `MCPServer` resource
