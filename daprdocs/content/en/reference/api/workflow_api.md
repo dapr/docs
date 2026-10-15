@@ -26,7 +26,7 @@ POST http://localhost:<daprPort>/v1.0/workflows/<workflowComponentName>/<workflo
 Note that workflow instance IDs can only contain alphanumeric characters, underscores, and dashes.
 
 {{% alert title="Important" color="warning" %}}
-Workflow instance IDs cannot be reused. If a workflow with the given instance ID already exists (in any state), the request will be rejected. To reuse an instance ID, first purge the workflow using the [purge API]({{% ref "workflow_api.md#purge-workflow-request" %}}). See [workflow identity]({{% ref "workflow-features-concepts.md#workflow-identity" %}}) for more details.
+It is strongly recommended to give every execution a new instance ID rather than reusing an old one. See [Implications of instance ID reuse]({{% ref "workflow-features-concepts.md#implications-of-instance-id-reuse" %}}). An instance ID can only be reused once the existing workflow with that ID, and every child workflow it created (checked recursively), has reached a terminal state (`COMPLETED`, `FAILED`, or `TERMINATED`). Otherwise the request is rejected with a `409` conflict naming the workflow that is not yet terminal. To free up an instance ID unconditionally, first purge the workflow using the [purge API]({{% ref "workflow_api.md#purge-workflow-request" %}}). See [workflow identity]({{% ref "workflow-features-concepts.md#workflow-identity" %}}) for more details.
 {{% /alert %}}
 
 ### URL parameters
@@ -47,7 +47,7 @@ Code | Description
 ---- | -----------
 `202`  | Accepted
 `400`  | Request was malformed
-`409`  | A workflow with the given instance ID already exists
+`409`  | A workflow with the given instance ID already exists and is not yet reusable (it, or one of its child workflows, is not in a terminal state)
 `500`  | Request formatted correctly, error in dapr code
 
 ### Response content
@@ -255,3 +255,11 @@ The API call will provide a JSON response similar to this:
 Parameter | Description
 --------- | -----------
 `runtimeStatus` | The status of the workflow instance. Values include: `"RUNNING"`, `"COMPLETED"`, `"CONTINUED_AS_NEW"`, `"FAILED"`, `"CANCELED"`, `"TERMINATED"`, `"PENDING"`, `"SUSPENDED"`  
+
+The `properties` map does not include `dapr.workflow.output` when `runtimeStatus` is `"FAILED"`. A failed workflow has no successful output. Instead, the `properties` map carries the failure in these keys:
+
+Parameter | Description
+--------- | -----------
+`dapr.workflow.failure.error_type` | The error type for a workflow with `runtimeStatus` `"FAILED"`.
+`dapr.workflow.failure.error_message` | The error message for a workflow with `runtimeStatus` `"FAILED"`.
+`dapr.workflow.failure.stack_trace` | The stack trace for a workflow with `runtimeStatus` `"FAILED"`, when available.

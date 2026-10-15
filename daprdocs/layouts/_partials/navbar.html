@@ -1,8 +1,9 @@
+{{/* Project override of Docsy v0.12.0 layouts/_partials/navbar.html — reason: inline logo SVG, announcement-banner include, theme toggle. Reconcile against upstream on Docsy upgrade. */}}
 {{ $cover := .HasShortcode "blocks/cover" }}
 {{ partial "announcement-banner.html" . }}
 <nav class="js-navbar-scroll navbar navbar-expand navbar-dark {{ if $cover}} td-navbar-cover {{ end }}flex-column flex-md-row td-navbar">
         <a class="navbar-brand" href="{{ .Site.Home.RelPermalink }}">
-		<span class="navbar-logo">{{ if .Site.Params.ui.navbar_logo }}{{ with resources.Get "icons/logo.svg" }}{{ ( . | minify).Content | safeHTML }}{{ end }}{{ end }}</span><span class="font-weight-bold">{{ .Site.Title }}</span>
+		<span class="navbar-logo">{{ if .Site.Params.ui.navbar_logo }}<span class="navbar-logo--light">{{ with resources.Get "icons/logo-blue.svg" }}{{ ( . | minify).Content | safeHTML }}{{ end }}</span><span class="navbar-logo--dark">{{ with resources.Get "icons/logo.svg" }}{{ ( . | minify).Content | safeHTML }}{{ end }}</span>{{ end }}</span><span class="font-weight-bold">{{ .Site.Title }}</span>
 	</a>
 	<div class="td-navbar-nav-scroll ml-md-auto" id="main_navbar">
 		<ul class="navbar-nav mt-2 mt-lg-0">
@@ -31,4 +32,13 @@
 		</ul>
 	</div>
 	<div class="navbar-nav d-none d-lg-block">{{ partial "search-input.html" . }}</div>
+	<button id="dapr-theme-toggle" class="dapr-theme-toggle" type="button" aria-label="Toggle light and dark theme">
+		<svg class="dapr-theme-toggle__icon dapr-theme-toggle__icon--sun" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			<circle cx="12" cy="12" r="4"></circle>
+			<path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+		</svg>
+		<svg class="dapr-theme-toggle__icon dapr-theme-toggle__icon--moon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+			<path d="M20.742 13.045a8.088 8.088 0 0 1-2.077.273c-4.395 0-7.956-3.56-7.956-7.955 0-1.398.362-2.712.997-3.848a.75.75 0 0 0-.877-1.077A10.02 10.02 0 0 0 2 10.955C2 16.502 6.498 21 12.045 21a10.02 10.02 0 0 0 9.567-6.99.75.75 0 0 0-.87-.965Z"></path>
+		</svg>
+	</button>
 </nav>

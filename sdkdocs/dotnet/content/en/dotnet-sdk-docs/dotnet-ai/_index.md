@@ -2,7 +2,7 @@
 type: docs
 title: "Dapr AI .NET SDK"
 linkTitle: "AI"
-weight: 50000
+weight: 100000
 description: Get up and running with the Dapr AI .NET SDK
 ---
 
