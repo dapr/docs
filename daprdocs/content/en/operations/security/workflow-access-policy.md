@@ -88,8 +88,10 @@ Fields are listed in the order they appear in the YAML document.
 | `rules[].workflows` | N* | list | Workflow rules granted to the matched callers. |
 | `rules[].workflows[].name` | Y | string | Exact name or [glob pattern](https://pkg.go.dev/path#Match) of the workflow. |
 | `rules[].workflows[].operations` | Y | list | Set to `[schedule]`. The CRD also accepts `terminate`, `raise`, `pause`, `resume`, `purge`, `get`, `rerun` for forward compatibility; these have no effect today because the matching public workflow APIs do not route cross-app. |
+| `rules[].workflows[].requires` | N | list | Optional ordered list of history events that must all be present in the caller's propagated history for the rule to apply. Only valid when the rule's single operation is `schedule`. See [Gate scheduling on caller history](#gate-scheduling-on-caller-history-with-requires). |
 | `rules[].activities` | N* | list | Activity rules granted to the matched callers. |
 | `rules[].activities[].name` | Y | string | Exact name or [glob pattern](https://pkg.go.dev/path#Match) of the activity. Activities only support the `schedule` operation, so there is no `operations` field. |
+| `rules[].activities[].requires` | N | list | Optional ordered list of history events that must all be present in the caller's propagated history for the rule to apply. See [Gate scheduling on caller history](#gate-scheduling-on-caller-history-with-requires). |
 
 \* At least one of `workflows` or `activities` must be present in each rule.
 
@@ -101,6 +103,77 @@ Fields are listed in the order they appear in the YAML document.
 4. **Cross-namespace workflow calls are always denied.** Cross-namespace workflows are not supported. A policy is namespaced and applies to target apps in its own namespace via `scopes`. The caller must be in the same namespace as the target; calls from any other namespace are always rejected, regardless of whether policies are loaded and even if the caller App ID appears in a rule.
 5. **mTLS is required for cross-app enforcement:** if any policy is loaded and mTLS is not active, cross-app calls are denied because the caller's SPIFFE identity cannot be verified.
 6. **Glob matching:** `*`, `?`, and character classes work on both workflow and activity names.
+
+## Gate scheduling on caller history with `requires`
+
+By default a rule grants access based only on *who* the caller is and *what* they're scheduling. With the optional `requires` field, you can additionally gate scheduling on *what the caller has already done* — the events in the caller's [propagated workflow history]({{% ref workflow-history-propagation.md %}}). The `schedule` is allowed only when the caller's propagated history contains every listed event, in the order listed.
+
+This lets a target enforce a prerequisite sequence before a sensitive operation — for example, "only allow scheduling `ChargeCard` if this caller has already completed a `fraud-check` activity."
+
+`requires` can be attached to:
+
+- A **workflow rule**, but only when the rule's single operation is `schedule` (`operations: [schedule]`).
+- An **activity rule**.
+
+{{% alert title="requires needs history signing and propagation" color="warning" %}}
+`requires` gates on the caller's propagated history, which is only trustworthy when it can be cryptographically verified, so [workflow history signing]({{% ref workflow-history-signing.md %}}) must be enabled. If signing is disabled, any rule with a `requires` block can never grant access — it fails closed and the call is denied. The caller must also [propagate its history]({{% ref workflow-history-propagation.md %}}) on the call; a request that carries no history never satisfies a `requires` block.
+{{% /alert %}}
+
+### Required event entries
+
+Each entry in a `requires` list describes one history event that must be present:
+
+| Field | Required | Type | Description |
+|-------|:--------:|------|-------------|
+| `eventType` | Y | string | The kind of history event to match. One of `activity.started`, `activity.completed`, `workflow.started`, `workflow.completed`, `event.raised`. |
+| `name` | Y | string | The activity name (`activity.*`), the child-workflow name (`workflow.*`), or the external event name (`event.raised`). |
+| `appID` | Y | string | The App ID that must have produced the event. The event only matches when it came from this app's propagated history. |
+
+`eventType` maps to workflow lifecycle events:
+
+| `eventType` | Matches |
+|-------------|---------|
+| `activity.started` | The caller scheduled the named activity |
+| `activity.completed` | The named activity completed in the caller's history |
+| `workflow.started` | The caller scheduled a child workflow with the given name |
+| `workflow.completed` | The named child workflow completed |
+| `event.raised` | An external event with the given name was raised |
+
+{{% alert title="workflow.started matches child workflows" color="primary" %}}
+`workflow.started` matches a *child* workflow the caller scheduled, not the caller's own workflow execution. Gating on the caller's own workflow name would always be satisfied, so it has no effect.
+{{% /alert %}}
+
+### Ordering and combining requirements
+
+- **All entries must match (AND).** Every listed event must be present in the caller's propagated history.
+- **Entries are ordered.** Each entry must match an event at or after the event that satisfied the previous entry. Listing `[fraud-check, human-approval]` requires `fraud-check` to have occurred before `human-approval`.
+- **Express alternatives (OR) with multiple rules.** To allow a call when *either* of two prerequisite sequences is satisfied, add multiple workflow rules with the same `name`, each with its own `requires`. Access is granted if any matching rule is satisfied.
+
+A `requires` list can hold at most 20 entries.
+
+### Example: gate an activity on a completed prerequisite
+
+Allow `checkout` to schedule the `ChargeCard` activity on `payments-service` only when its propagated history shows a completed `fraud-check` activity that `checkout` itself produced.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: WorkflowAccessPolicy
+metadata:
+  name: payments-requires
+  namespace: production
+scopes:
+  - payments-service
+spec:
+  rules:
+    - callers:
+        - appID: checkout
+      activities:
+        - name: ChargeCard
+          requires:
+            - eventType: activity.completed
+              name: fraud-check
+              appID: checkout
+```
 
 ## Enforcement paths
 
@@ -267,6 +340,8 @@ Workflow access policies are hot-reloaded in both Kubernetes and self-hosted mod
 
 - [Security concepts]({{% ref security-concept.md %}})
 - [Multi-application workflows]({{% ref workflow-multi-app.md %}})
+- [Workflow history propagation]({{% ref workflow-history-propagation.md %}})
+- [Workflow history signing]({{% ref workflow-history-signing.md %}})
 - [Workflow overview]({{% ref workflow-overview.md %}})
 - [Service invocation access control]({{% ref invoke-allowlist.md %}})
 - [Setup & configure mTLS certificates]({{% ref mtls %}})

@@ -142,7 +142,7 @@ public void ConfigureServices(IServiceCollection services)
         // Configure default settings
         options.ActorIdleTimeout = TimeSpan.FromMinutes(10);
         options.ActorScanInterval = TimeSpan.FromSeconds(35);
-        options.DrainOngoingCallTimeout = TimeSpan.FromSeconds(35);
+        options.DrainOngoingCallTimeout = TimeSpan.FromSeconds(5);
         options.DrainRebalancedActors = true;
     });
 

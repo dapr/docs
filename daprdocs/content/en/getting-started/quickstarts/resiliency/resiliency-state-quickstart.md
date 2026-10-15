@@ -867,10 +867,14 @@ INFO[0036] Recovered processing operation component[statestore] output.
 
 {{< /tabpane >}}
 
+## Build your own resiliency policies with the Dapr Dev Dashboard
+
+The [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) has a built-in resiliency builder. Instead of writing a `resiliency.yaml` file by hand, you can use the UI wizard to define timeouts, retries, and circuit breakers, and apply them to your apps, components, and actors. Try recreating the `myresiliency` policy from this quickstart, or experiment with different retry and circuit breaker settings and rerun the fault scenario.
+
 ## Tell us what you think!
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this quickstart helpful? Do you have suggestions for improvement?
 
-Join the discussion in our [discord channel](https://discord.com/channels/778680217417809931/953427615916638238).
+Join our [Discord Server](https://diagrid.ws/dapr-discord) and share your thoughts.
 
 ## Next steps
 

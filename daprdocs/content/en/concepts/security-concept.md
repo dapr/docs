@@ -100,6 +100,71 @@ Ed25519 (Curve25519) may not satisfy FIPS 140 requirements; consult your complia
 Sentry writes the Ed25519-keyed CA bundle to the `dapr-trust-bundle` Kubernetes secret. Sentry versions **before 1.17.7** cannot parse this bundle and crash on startup. Do not roll back from 1.18 to a version earlier than 1.17.7 without first rotating the CA. See the [1.18 release notes](https://github.com/dapr/dapr/releases/tag/v1.18.0) for the safe rollback path.
 {{% /alert %}}
 
+### Container image references in workload certificates
+
+Starting with Dapr **1.19**, when running on Kubernetes, Sentry stamps the container image references of the requesting pod into every workload certificate it issues, as a custom X.509 extension. Each certificate then carries a verifiable record of exactly which software (the application container images and the daprd sidecar image) was scheduled in the pod that holds the certificate.
+
+This gives security and platform operators supply-chain provenance at the identity layer:
+
+- Any system that receives a Dapr workload certificate (an mTLS peer, an audit log that stores certificate chains, an attestation record) can determine which container images the workload was running, without any cooperation from the workload itself.
+- Certificates, and records derived from them, can be cross-referenced against CVE advisories to flag workloads that ran a known-vulnerable image.
+- [Workflow history signing]({{% ref "workflow-history-signing.md#software-provenance-which-images-executed-the-workflow" %}}) persists signing certificates with each workflow's history, so signed workflows automatically carry a cryptographically bound record of which software executed every workflow, activity, and child workflow.
+
+#### Trust model
+
+The image data is sourced from the Kubernetes pod object which Sentry fetches from the Kubernetes API server while validating the certificate signing request. The workload never self-reports its images: the certificate request carries no image fields, and the pod is bound to the requestor by Sentry's existing checks (Kubernetes TokenReview of the pod's projected service account token, service account match, and app-id match against the pod's annotations). A workload cannot forge the image list in its own certificate; it records what Kubernetes actually scheduled.
+
+#### What is included
+
+| Containers | Included |
+|---|---|
+| Regular containers (`spec.containers`) | Always, including the `daprd` sidecar |
+| Native sidecar init containers (`spec.initContainers` with `restartPolicy: Always`) | Always, this captures daprd when [native sidecar mode]({{% ref "arguments-annotations-overview" %}}) is enabled |
+| One-shot init containers | Never |
+
+Each entry records the container's role (`daprd` for the Dapr sidecar container, `app` for everything else), its name, its image reference exactly as deployed (the tag reference from the pod spec), and best effort, the resolved image digest from the pod's container statuses. The digest can be empty when the container has not yet started at issuance time (daprd requests its certificate early in the pod lifecycle); since workload certificates are short-lived and rotated continuously, subsequent certificates are re-stamped with the digest populated.
+
+#### Wire format
+
+The extension is identified by OID `1.3.6.1.4.1.57683.100.1`, a Dapr sub-arc under the [Cloud Native Computing Foundation Private Enterprise Number](https://www.iana.org/assignments/enterprise-numbers/?q=57683) (57683). The extension is **non-critical**, so every existing X.509 and SPIFFE consumer which does not understand it ignores it.
+
+The extension value is a DER OCTET STRING whose contents are a JSON array of objects with the following fields:
+
+| Field | Type | Description |
+|---|---|---|
+| `role` | string | `daprd` for the Dapr sidecar container, `app` for all other containers |
+| `containerName` | string | The container's name in the pod spec |
+| `image` | string | The image reference as deployed, for example `ghcr.io/dapr/daprd:1.19.0` |
+| `digest` | string, optional | The resolved image digest, for example `sha256:1f8d...`; omitted when unknown at issuance time |
+
+To decode: locate the extension by OID, unwrap the inner DER OCTET STRING, and parse the resulting bytes as JSON. In Go:
+
+```go
+oid := asn1.ObjectIdentifier{1, 3, 6, 1, 4, 1, 57683, 100, 1}
+for _, ext := range cert.Extensions {
+    if !ext.Id.Equal(oid) {
+        continue
+    }
+    var jsonBytes []byte
+    if _, err := asn1.Unmarshal(ext.Value, &jsonBytes); err != nil {
+        return err
+    }
+    var images []struct {
+        Role          string `json:"role"`
+        ContainerName string `json:"containerName"`
+        Image         string `json:"image"`
+        Digest        string `json:"digest,omitempty"`
+    }
+    if err := json.Unmarshal(jsonBytes, &images); err != nil {
+        return err
+    }
+}
+```
+
+#### Availability
+
+The extension is added on the Kubernetes token validator only. Certificates issued through the insecure validator (self-hosted mode) or the JWKS validator omit the extension, as there is no pod to query for image data.
+
 ### Configuring mTLS
 
 mTLS can be turned on/off by editing the default configuration deployed with Dapr via the `spec.mtls.enabled` field.

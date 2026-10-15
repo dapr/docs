@@ -23,9 +23,23 @@ The `grafana-sidecar-dashboard.json` template shows Dapr sidecar status, includi
 {{% /tab %}}
 
 {{% tab "Actors" %}}
-The `grafana-actor-dashboard.json` template shows Dapr Sidecar status, actor invocation throughput/latency, timer/reminder triggers, and turn-based concurrnecy:
+The `grafana-actor-dashboard.json` template shows Dapr Sidecar status, actor invocation throughput/latency, timer/reminder triggers, and turn-based concurrency:
 
 <img src="/images/grafana-actor-dashboard.png" alt="Screenshot of the actor dashboard" width=1200>
+{{% /tab %}}
+
+{{% tab "Workflow" %}}
+The `grafana-workflow-dashboard.json` template shows workflow and activity execution rates, latencies and failures, client operations, and payload sizes against the configured maximum:
+
+<img src="/images/grafana-workflow-dashboard.png" alt="Screenshot of the workflow dashboard" width=1200>
+{{% /tab %}}
+
+{{% tab "Scheduler" %}}
+The `grafana-scheduler-dashboard.json` template shows Scheduler health, job lifecycle and trigger latency, connected sidecars, trigger concurrency, and the embedded etcd:
+
+<img src="/images/grafana-scheduler-dashboard.png" alt="Screenshot of the scheduler dashboard" width=1200>
+
+Some etcd panels require the Scheduler to be started with `--etcd-metrics=extensive`. The default `basic` level does not expose the underlying histograms.
 {{% /tab %}}
 
 {{< /tabpane >}}
