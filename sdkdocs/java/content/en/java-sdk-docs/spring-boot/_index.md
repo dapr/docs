@@ -292,6 +292,24 @@ public static void setup(){
 
 You can check and run the [full example source code here](https://github.com/salaboy/dapr-spring-boot-docs-examples).
 
+## Additional Testcontainers configuration
+
+From Dapr 1.19, the `testcontainers-dapr` module's `Configuration` class accepts additional settings objects, so you can build a Dapr [Configuration resource]({{% ref configuration-overview.md %}}) in Java instead of YAML and attach it to the container with `daprContainer.withConfiguration(configuration)`:
+
+- `MtlsConfigurationSettings` — the `mtls` block.
+- `LoggingConfigurationSettings` — the `logging` block.
+- `MetricsConfigurationSettings` — the `metrics` block.
+- `NameResolutionConfigurationSettings` — the `nameResolution` block.
+- `ComponentsConfigurationSettings` — the `components` block (for example, denying component types).
+- `SecretsConfigurationSettings` — the `secrets` block (secret store access scoping).
+
+Each settings class mirrors the matching field on the Configuration resource; see [Configuration overview]({{% ref configuration-overview.md %}}) for what each field does.
+
+Separately, `Subscription` now accepts a `scopes` list (the app IDs allowed to use the subscription), matching the `scopes` field on a declarative subscription.
+
+{{% alert title="Note" color="primary" %}}
+These are new in Dapr 1.19 — check the [Testcontainers Dapr module Javadoc](https://javadoc.io/doc/io.dapr/testcontainers-dapr/latest/index.html) for the full constructor signatures of each settings class.
+{{% /alert %}}
 
 ## Next steps
 
