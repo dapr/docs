@@ -114,5 +114,78 @@ app.run(50051)
 
 A full sample can be found [here](https://github.com/dapr/python-sdk/tree/v1.0.0rc2/examples/invoke-binding).
 
+## Asyncio
+
+`dapr.ext.grpc.aio` provides the same `App` backed by a `grpc.aio` server, so handlers can be `async def` and are awaited on the event loop. It exposes the same names as `dapr.ext.grpc` and the decorators take the same arguments; the import changes, and `run()` and `stop()` become coroutines.
+
+{{% alert title="Note" color="primary" %}}
+`dapr.ext.grpc.aio` is available from Dapr Python SDK 1.19, in the bundled package: `pip install "dapr[grpc]"`. It is not part of the legacy `dapr-ext-grpc` distribution.
+{{% /alert %}}
+
+### Listen for service invocation requests
+
+```python
+import asyncio
+
+from dapr.ext.grpc.aio import App, InvokeMethodRequest, InvokeMethodResponse
+
+app = App()
+
+@app.method(name='my-method')
+async def mymethod(request: InvokeMethodRequest) -> InvokeMethodResponse:
+    print(request.text(), flush=True)
+    return InvokeMethodResponse(b'INVOKE_RECEIVED', 'text/plain; charset=UTF-8')
+
+asyncio.run(app.run(50051))
+```
+
+A full sample can be found [here](https://github.com/dapr/python-sdk/tree/main/examples/invoke-simple-async).
+
+### Subscribe to a topic
+
+Annotate the event parameter with `SubscriptionMessage` to receive that type. Handlers return a `TopicEventResponse` exactly as they do on the synchronous app.
+
+```python
+import asyncio
+
+from dapr.ext.grpc.aio import App, SubscriptionMessage, TopicEventResponse
+
+app = App()
+
+@app.subscribe(pubsub_name='pubsub', topic='TOPIC_A')
+async def mytopic(event: SubscriptionMessage) -> TopicEventResponse:
+    print(event.data(), flush=True)
+    return TopicEventResponse('success')
+
+asyncio.run(app.run(50051))
+```
+
+A full sample can be found [here](https://github.com/dapr/python-sdk/tree/main/examples/pubsub-simple-async).
+
+### Setup input binding trigger
+
+```python
+import asyncio
+
+from dapr.ext.grpc.aio import App, BindingRequest
+
+app = App()
+
+@app.binding('kafkaBinding')
+async def binding(request: BindingRequest) -> None:
+    print(request.text(), flush=True)
+
+asyncio.run(app.run(50051))
+```
+
+### Differences from the synchronous app
+
+- `run()` and `stop()` are coroutines. `stop(grace=None)` takes a grace period in seconds for in-flight requests.
+- `start()` starts the server and returns once it is accepting requests, so the app can share an event loop with other work, for example an ASGI lifespan handler.
+- The gRPC server is created on the first `run()` or `start()`, because `grpc.aio` binds to the event loop that is running at that moment. Call `add_external_service()` before starting the app.
+- An app belongs to the event loop that started it. Stop it from that loop before the loop closes.
+- Plain (non-async) handlers are accepted but run inline on the event loop, so a blocking handler stalls every other request. The app emits a one-time `UserWarning` when one is registered with `method`, `subscribe`, `binding` or `job_event`.
+- The decorators return the decorated function, so the name stays bound.
+
 ## Related links
 - [PyPi](https://pypi.org/project/dapr-ext-grpc/)
