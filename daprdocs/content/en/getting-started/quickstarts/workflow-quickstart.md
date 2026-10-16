@@ -734,7 +734,7 @@ export const orderProcessingWorkflow: TWorkflow = async function* (ctx: Workflow
     tasks.push(approvalEvent);
     const timeOutEvent = ctx.createTimer(30);
     tasks.push(timeOutEvent);
-    const winner = yield ctx.whenAny(tasks);
+    const winner = ctx.whenAny(tasks);
 
     if (winner == timeOutEvent) {
       const orderNotification: OrderNotification = {

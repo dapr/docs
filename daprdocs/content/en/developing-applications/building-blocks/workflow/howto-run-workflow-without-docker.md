@@ -30,6 +30,8 @@ The commands have a Linux/macOS tab and a Windows tab. The Windows commands are 
 
 `dapr init --slim` installs `daprd`, `placement`, and `scheduler` in `$HOME/.dapr/bin` (Linux and macOS) or `%USERPROFILE%\.dapr\bin` (Windows, with the `.exe` extension). It does not start them, and it does not create component files. You start each process in the steps below.
 
+`dapr init --slim` prints "Success" when the binaries are installed. At that point no Dapr process runs. The flag `--scheduler-placement` of `dapr init` cannot be combined with `--slim`. To serve actor placement from the Scheduler service in a slim installation, use the Scheduler flag `--placement-enabled`, as shown [below](#dapr-119-and-later-run-without-the-placement-service).
+
 ## Configure SQLite as the actor state store
 
 Dapr Workflow keeps the workflow history in the actor state store. In your project folder, create the file `components/statestore.yaml`:
@@ -134,7 +136,7 @@ On Dapr 1.19 and later, the Scheduler service can serve actor placement. Then yo
    ```
 
 1. Do not start the Placement service.
-1. In the next step, set `--placement-host-address ""` in the `dapr run` command. The sidecar then gets actor placement from the Scheduler service.
+1. In the next step, remove `--placement-host-address` from the `dapr run` command. The sidecar asks the Scheduler service whether it serves actor placement, and it gets actor placement from the Scheduler service.
 
 ## Run your workflow app
 
@@ -164,7 +166,7 @@ dapr run --app-id order-app --dapr-http-port 3500 --resources-path .\components 
 
 - Replace `python3 app.py` (`python app.py` on Windows) with the command that starts your workflow app.
 - `--placement-host-address` and `--scheduler-host-address` give the addresses of the services that you started. If you start a service on a different port with `--port`, change the address to match.
-- If the Scheduler service serves actor placement (Dapr 1.19 and later), use `--placement-host-address ""`.
+- If the Scheduler service serves actor placement (Dapr 1.19 and later), do not set `--placement-host-address`.
 
 ## Check that a workflow runs
 
