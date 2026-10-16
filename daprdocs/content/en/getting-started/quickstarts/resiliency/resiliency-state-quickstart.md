@@ -25,7 +25,8 @@ Select your preferred language-specific Dapr SDK before proceeding with the Quic
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [Python 3.7+ installed](https://www.python.org/downloads/).
+- [Python 3.11 or later installed](https://www.python.org/downloads/).
+- [uv](https://docs.astral.sh/uv/getting-started/installation/), the Python package manager that the sample uses.
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
@@ -35,7 +36,7 @@ For this example, you will need:
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management/python/sdk).
 
 ```bash
-git clone https://github.com/dapr/quickstarts.git
+git clone --depth 1 https://github.com/dapr/quickstarts.git
 ```
 
 In a terminal window, navigate to the `order-processor` directory.
@@ -47,7 +48,7 @@ cd ../state_management/python/sdk/order-processor
 Install dependencies
 
 ```bash
-pip3 install -r requirements.txt 
+uv sync
 ```
 
 ### Step 2: Run the application
@@ -87,7 +88,7 @@ Run the `order-processor` service alongside a Dapr sidecar. The Dapr sidecar the
 
 
 ```bash
-dapr run --app-id order-processor --resources-path ../../../resources/ -- python3
+dapr run --app-id order-processor --resources-path ../../../resources/ -- uv run python app.py
 ```
 
 Once the application has started, the `order-processor`service writes and reads `orderId` key/value pairs to the `statestore` Redis instance [defined in the `statestore.yaml` component]({{% ref "statemanagement-quickstart#statestoreyaml-component-file" %}}).
