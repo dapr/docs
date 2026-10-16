@@ -33,7 +33,7 @@ The Dapr runtime includes an `in-memory` binary store component for local develo
 
 ## Binary Store API
 
-The HTTP API exposes `POST`, `PUT`, `GET`, and `DELETE` operations at `/v1.0-alpha1/binarystore/{storeName}/{fileName}`. The request and response bodies contain raw file bytes. A `POST` creates a file only if it does not already exist; a `PUT` replaces an existing file. A successful upload or delete returns `204 No Content`, while a successful download streams the file with the `application/octet-stream` content type.
+The HTTP API exposes `POST`, `PUT`, `GET`, and `DELETE` operations at `/v1.0-alpha1/binarystore/{storeName}/{fileName}`. The request and response bodies contain raw file bytes. A `POST` creates a file only if it does not already exist; a `PUT` creates the file or replaces an existing one. A successful upload or delete returns `204 No Content`, while a successful download streams the file with the `application/octet-stream` content type.
 
 For endpoint parameters, response codes, and gRPC method details, see the [Binary Store API reference]({{% ref binary_store_api.md %}}).
 
