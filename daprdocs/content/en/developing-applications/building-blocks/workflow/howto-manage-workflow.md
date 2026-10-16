@@ -29,9 +29,10 @@ dapr workflow run OrderProcessingWorkflow \
   --input '{"orderId": "12345", "amount": 100.50}'
 
 # Start with a new workflow with a specific instance ID
-# Note: instance IDs cannot be reused. If a workflow with this ID
-# already exists (in any state), the request will be rejected.
-# Purge a completed workflow first to free up its instance ID.
+# Note: an instance ID is only reusable once the existing workflow
+# and all of its child workflows have reached a terminal state;
+# otherwise the request is rejected. Purge a workflow to free up
+# its instance ID unconditionally.
 dapr workflow run OrderProcessingWorkflow \
   --app-id orderprocessing \
   --instance-id order-12345 \
@@ -197,6 +198,12 @@ dapr workflow list -k
    ```bash
    dapr workflow list --app-id orderprocessing --output json > workflows.json
    ```
+
+### Managing Workflows with the Dapr Dev Dashboard
+
+For local development, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) as a visual alternative to the `dapr workflow list` and `dapr workflow history` commands. The dashboard lists the workflow instances of your running apps with their status, and shows the full event history of each instance, including activity inputs and outputs, timers, and external events. The Dev Dashboard is intended for local development and does not run inside Kubernetes.
+
+<img src="/images/workflow-overview/workflow-diagrid-dashboard.png" width=800 alt="Diagrid Dev Dashboard showing local workflow executions"/><br/>
 
 ## Managing Workflow Reminders with the Dapr CLI
 
@@ -568,7 +575,7 @@ curl -X POST "http://localhost:3500/v1.0/workflows/dapr/OrderProcessingWorkflow/
 Note that workflow instance IDs can only contain alphanumeric characters, underscores, and dashes.
 
 {{% alert title="Important" color="warning" %}}
-Workflow instance IDs cannot be reused. If a workflow with the given instance ID already exists (whether running, completed, failed, or terminated), the request will be rejected. To reuse an instance ID, first purge the existing workflow using the [purge API]({{% ref "workflow_api.md#purge-workflow-request" %}}). This ensures that workflow histories remain immutable and are only removed through explicit purge operations or a configured [retention policy]({{% ref workflow-history-retention-policy.md %}}).
+It is strongly recommended to give every execution a new instance ID rather than reusing an old one. See [Implications of instance ID reuse]({{% ref "workflow-features-concepts.md#implications-of-instance-id-reuse" %}}). An instance ID can only be reused once the existing workflow with that ID, and every child workflow it created (checked recursively), has reached a terminal state (`COMPLETED`, `FAILED`, or `TERMINATED`), otherwise the request is rejected. To free up an instance ID unconditionally, first purge the existing workflow using the [purge API]({{% ref "workflow_api.md#purge-workflow-request" %}}) or configure a [retention policy]({{% ref workflow-history-retention-policy.md %}}).
 {{% /alert %}}
 
 ### Terminate workflow

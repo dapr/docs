@@ -1,0 +1,40 @@
+//
+// footer
+//
+// The forked layouts/_partials/footer.html renders <footer class="bg-dark">
+// with `text-white` on its copyright line and social-icon links, rather than
+// Docsy's own `.td-footer` class. Both `.bg-dark` and `.text-white` compile
+// to `!important` in Bootstrap (see _utilities.scss), so token colors need
+// matching `!important` + specificity to actually win — otherwise the
+// footer keeps rendering as a solid dark bar with forced-white text
+// regardless of theme. `.td-footer` is kept alongside `footer.bg-dark` as a
+// defensive match per the brief, in case the markup is ever restructured
+// back to Docsy's own class.
+//
+
+footer.td-footer, .td-footer, footer.bg-dark {
+    background: var(--d-ground) !important;
+    border-top: 1px solid var(--d-border);
+    color: var(--d-muted);
+    box-shadow: none;
+
+    a, a:visited {
+        color: var(--d-link);
+    }
+
+    // Beat Bootstrap's `!important` .text-white utility (copyright line +
+    // the user/developer social-link icons).
+    .text-white {
+        color: var(--d-muted) !important;
+    }
+
+    a.text-white, a.text-white:visited {
+        color: var(--d-link) !important;
+        text-decoration: none;
+    }
+
+    a.text-white:hover {
+        color: var(--d-heading) !important;
+        text-decoration: underline;
+    }
+}

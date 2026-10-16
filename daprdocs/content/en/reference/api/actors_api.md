@@ -339,6 +339,117 @@ The above command returns the reminder:
 }
 ```
 
+### List actor reminders
+
+Lists all the reminders registered for an actor.
+
+#### HTTP Request
+
+```
+GET http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/reminders
+```
+
+#### HTTP Response Codes
+
+Code | Description
+---- | -----------
+200  | Request successful
+403  | Actor type not hosted by this app
+500  | Request failed
+
+#### URL Parameters
+
+Parameter | Description
+--------- | -----------
+`daprPort` | The Dapr port.
+`actorType` | The actor type.
+`actorId` | The actor ID.
+
+> Note, all URL parameters are case-sensitive.
+
+#### Response body
+
+A JSON object with a `reminders` array. Each entry has the following fields; optional fields are omitted when they are not set on the reminder.
+
+| Field | Description |
+|-------|-------------|
+| `name` | The name of the reminder. |
+| `actorType` | The actor type. |
+| `actorID` | The actor ID. |
+| `dueTime` | The `dueTime` the reminder was registered with. |
+| `period` | The period between invocations, in the form reported by the Scheduler, for example `@every 20s`. |
+| `ttl` | The time at which the reminder expires, as an RFC3339 timestamp. |
+| `data` | The `data` the reminder was registered with, returned as it was provided. |
+
+When the actor has no reminders, `reminders` is an empty array.
+
+#### Examples
+
+```shell
+curl http://localhost:3500/v1.0/actors/stormtrooper/50/reminders \
+  -H "Content-Type: application/json"
+```
+
+The above command returns the reminders registered for the actor:
+
+```json
+{
+  "reminders": [
+    {
+      "name": "checkRebels",
+      "actorType": "stormtrooper",
+      "actorID": "50",
+      "dueTime": "1m",
+      "period": "@every 20s",
+      "data": "someData"
+    },
+    {
+      "name": "patrol",
+      "actorType": "stormtrooper",
+      "actorID": "50",
+      "dueTime": "2h",
+      "ttl": "2026-12-31T23:59:59Z",
+      "data": {
+        "sector": 7
+      }
+    }
+  ]
+}
+```
+
+#### gRPC
+
+The gRPC equivalent is `dapr.proto.runtime.v1.Dapr/ListActorReminders`.
+
+```proto
+rpc ListActorReminders(ListActorRemindersRequest) returns (ListActorRemindersResponse) {}
+
+message ListActorRemindersRequest {
+  string actor_type = 1;
+  optional string actor_id = 2;
+}
+
+message ListActorRemindersResponse {
+  repeated NamedActorReminder reminders = 1;
+}
+
+message NamedActorReminder {
+  string name = 1;
+  ActorReminder reminder = 2;
+}
+
+message ActorReminder {
+  string actor_type = 1;
+  string actor_id = 2;
+  optional string due_time = 4;
+  optional string period = 5;
+  google.protobuf.Any data = 6;
+  optional string ttl = 7;
+}
+```
+
+Unlike the HTTP endpoint, `actor_id` is optional in the gRPC request: omit it to list the reminders of every actor of the given type. Over gRPC, `data` is a `google.protobuf.Any` wrapping a `google.protobuf.BytesValue` that contains the JSON-encoded payload the reminder was registered with.
+
 ### Delete actor reminder
 
 Deletes a reminder for an actor.
@@ -437,6 +548,198 @@ curl http://localhost:3500/v1.0/actors/stormtrooper/50/timers/checkRebels \
     }'
 ```
 
+### Get actor timer
+
+Gets a timer registered for an actor.
+
+{{% alert title="Note" color="primary" %}}
+Timers are not persisted: they live in memory on the sidecar that hosts the actor. Get and list requests must be sent to that sidecar. A sidecar that hosts the actor type but does not currently own the actor rejects the request with a `403` and the `ERR_ACTOR_TIMER_NOT_OWNED` error code; a sidecar that does not host the actor type returns `403` with `ERR_ACTOR_TIMER_NON_HOSTED`. Timers whose `ttl` had already elapsed at registration are never stored and are not returned.
+{{% /alert %}}
+
+#### HTTP Request
+
+```
+GET http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/timers/<name>
+```
+
+#### HTTP Response Codes
+
+Code | Description
+---- | -----------
+200  | Request successful
+403  | Actor type not hosted by this app, or actor not owned by this sidecar
+404  | Timer not found
+500  | Request failed
+
+#### URL Parameters
+
+Parameter | Description
+--------- | -----------
+`daprPort` | The Dapr port.
+`actorType` | The actor type.
+`actorId` | The actor ID.
+`name` | The name of the timer to get.
+
+> Note, all URL parameters are case-sensitive.
+
+#### Response body
+
+A JSON object with the following fields; optional fields are omitted when they are not set on the timer.
+
+| Field | Description |
+|-------|-------------|
+| `actorType` | The actor type. |
+| `actorID` | The actor ID. |
+| `dueTime` | The `dueTime` the timer was registered with. |
+| `period` | The period between invocations, in the same form used for reminders, for example `@every 20s`. |
+| `ttl` | The time at which the timer expires, as an RFC3339 timestamp. |
+| `callback` | The `callback` the timer was registered with. |
+| `data` | The `data` the timer was registered with, returned as it was provided. |
+
+#### Examples
+
+```shell
+curl http://localhost:3500/v1.0/actors/stormtrooper/50/timers/checkRebels \
+  -H "Content-Type: application/json"
+```
+
+The above command returns the timer:
+
+```json
+{
+  "actorType": "stormtrooper",
+  "actorID": "50",
+  "dueTime": "1m",
+  "period": "@every 20s",
+  "callback": "myEventHandler",
+  "data": "someData"
+}
+```
+
+#### gRPC
+
+The gRPC equivalent is `dapr.proto.runtime.v1.Dapr/GetActorTimer`.
+
+```proto
+rpc GetActorTimer(GetActorTimerRequest) returns (GetActorTimerResponse) {}
+
+message GetActorTimerRequest {
+  string actor_type = 1;
+  string actor_id = 2;
+  string name = 3;
+}
+
+message GetActorTimerResponse {
+  string actor_type = 1;
+  string actor_id = 2;
+  optional string due_time = 3;
+  optional string period = 4;
+  optional string ttl = 5;
+  optional string callback = 6;
+  google.protobuf.Any data = 7;
+}
+```
+
+A request for a timer that does not exist fails with `NOT_FOUND`. A request sent to a sidecar that does not host the actor type, or does not own the actor, fails with `PERMISSION_DENIED`. Over gRPC, `data` is a `google.protobuf.Any` wrapping a `google.protobuf.BytesValue` that contains the JSON-encoded payload the timer was registered with.
+
+### List actor timers
+
+Lists all the timers registered for an actor. The same ownership rules as [Get actor timer]({{% ref "#get-actor-timer" %}}) apply: the request must target the sidecar that currently hosts the actor.
+
+#### HTTP Request
+
+```
+GET http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/timers
+```
+
+#### HTTP Response Codes
+
+Code | Description
+---- | -----------
+200  | Request successful
+403  | Actor type not hosted by this app, or actor not owned by this sidecar
+500  | Request failed
+
+#### URL Parameters
+
+Parameter | Description
+--------- | -----------
+`daprPort` | The Dapr port.
+`actorType` | The actor type.
+`actorId` | The actor ID.
+
+> Note, all URL parameters are case-sensitive.
+
+#### Response body
+
+A JSON object with a `timers` array. Each entry has the same fields as the [Get actor timer]({{% ref "#get-actor-timer" %}}) response, plus a `name` field with the name of the timer. When the actor has no timers, `timers` is an empty array.
+
+#### Examples
+
+```shell
+curl http://localhost:3500/v1.0/actors/stormtrooper/50/timers \
+  -H "Content-Type: application/json"
+```
+
+The above command returns the timers registered for the actor:
+
+```json
+{
+  "timers": [
+    {
+      "name": "checkRebels",
+      "actorType": "stormtrooper",
+      "actorID": "50",
+      "dueTime": "1m",
+      "period": "@every 20s",
+      "callback": "myEventHandler",
+      "data": "someData"
+    },
+    {
+      "name": "recharge",
+      "actorType": "stormtrooper",
+      "actorID": "50",
+      "dueTime": "30s",
+      "ttl": "2026-12-31T23:59:59Z"
+    }
+  ]
+}
+```
+
+#### gRPC
+
+The gRPC equivalent is `dapr.proto.runtime.v1.Dapr/ListActorTimers`.
+
+```proto
+rpc ListActorTimers(ListActorTimersRequest) returns (ListActorTimersResponse) {}
+
+message ListActorTimersRequest {
+  string actor_type = 1;
+  string actor_id = 2;
+}
+
+message ListActorTimersResponse {
+  repeated NamedActorTimer timers = 1;
+}
+
+message NamedActorTimer {
+  string name = 1;
+  ActorTimer timer = 2;
+}
+
+message ActorTimer {
+  string actor_type = 1;
+  string actor_id = 2;
+  optional string due_time = 3;
+  optional string period = 4;
+  optional string ttl = 5;
+  optional string callback = 6;
+  google.protobuf.Any data = 7;
+}
+```
+
+A request sent to a sidecar that does not host the actor type, or does not own the actor, fails with `PERMISSION_DENIED`.
+
 ### Delete actor timer
 
 Deletes a timer for an actor.
@@ -511,7 +814,7 @@ Parameter | Description
 `entities`  | The actor types this app supports.
 `actorIdleTimeout` | Specifies how long to wait before deactivating an idle actor.  An actor is idle if no actor method calls and no reminders have fired on it.
 `actorScanInterval` | A duration which specifies how often to scan for actors to deactivate idle actors.  Actors that have been idle longer than the actorIdleTimeout will be deactivated.
-`drainOngoingCallTimeout` | A duration used when in the process of draining rebalanced actors.  This specifies how long to wait for the current active actor method to finish.  If there is no current actor method call, this is ignored.
+`drainOngoingCallTimeout` | A duration used when in the process of draining rebalanced actors.  This specifies how long to wait for the current active actor method to finish.  If there is no current actor method call, this is ignored.  Default: 2 seconds.
 `drainRebalancedActors` | A bool.  If true, Dapr will wait for `drainOngoingCallTimeout` to allow a current actor call to complete before trying to deactivate an actor.  If false, do not wait.
 `reentrancy` | A configuration object that holds the options for actor reentrancy.
 `enabled` | A flag in the reentrancy configuration that is needed to enable reentrancy.
@@ -533,7 +836,7 @@ Actor settings in configuration for timeouts and intervals use [time.ParseDurati
   "entities":["actorType1", "actorType2"],
   "actorIdleTimeout": "1h",
   "actorScanInterval": "30s",
-  "drainOngoingCallTimeout": "30s",
+  "drainOngoingCallTimeout": "5s",
   "drainRebalancedActors": true,
   "reentrancy": {
     "enabled": true,
@@ -543,7 +846,7 @@ Actor settings in configuration for timeouts and intervals use [time.ParseDurati
       {
           "entities": ["actorType1"],
           "actorIdleTimeout": "1m",
-          "drainOngoingCallTimeout": "10s",
+          "drainOngoingCallTimeout": "5s",
           "reentrancy": {
               "enabled": false
           }
@@ -623,6 +926,12 @@ Parameter | Description
 
 > Note, all URL parameters are case-sensitive.
 
+#### Request Headers
+
+Header | Description
+------ | -----------
+`Dapr-Reentrancy-Id` | Sent when [reentrancy]({{% ref actor-reentrancy %}}) is enabled for the actor type. Pass it verbatim on any actor call your handler makes, so that call re-enters the current chain instead of waiting on the actor's lock.
+
 #### Examples
 
 The following example calls the `performAction` method on the actor type `stormtrooper` that has `actorId` of 50.
@@ -661,6 +970,12 @@ Parameter | Description
 
 > Note, all URL parameters are case-sensitive.
 
+#### Request Headers
+
+Header | Description
+------ | -----------
+`Dapr-Reentrancy-Id` | Sent when [reentrancy]({{% ref actor-reentrancy %}}) is enabled for the actor type. Pass it verbatim on any actor call your handler makes, so that call re-enters the current chain instead of waiting on the actor's lock.
+
 #### Examples
 
 The following example calls the `checkRebels` reminder method on the actor type `stormtrooper` that has `actorId` of 50.
@@ -698,6 +1013,12 @@ Parameter | Description
 `timerName` | The name of the timer to invoke.
 
 > Note, all URL parameters are case-sensitive.
+
+#### Request Headers
+
+Header | Description
+------ | -----------
+`Dapr-Reentrancy-Id` | Sent when [reentrancy]({{% ref actor-reentrancy %}}) is enabled for the actor type. Pass it verbatim on any actor call your handler makes, so that call re-enters the current chain instead of waiting on the actor's lock.
 
 #### Examples
 
@@ -740,6 +1061,136 @@ Example of getting a health check response from the app:
 ```shell
 curl -X GET http://localhost:3000/healthz \
 ```
+
+## SubscribeActorEventsAlpha1 (gRPC)
+
+{{% alert title="Alpha" color="warning" %}}
+`SubscribeActorEventsAlpha1` is in **alpha**. The API shape may change in future releases.
+{{% /alert %}}
+
+`SubscribeActorEventsAlpha1` is a bidirectional gRPC streaming RPC on the **Dapr service** (`dapr.proto.runtime.v1.Dapr`). The application is the gRPC _client_: it dials daprd, opens the stream, and receives all actor callbacks — method invocations, reminders, timers, and deactivations — over that single connection. Apps using this RPC do not need to expose an HTTP or gRPC server port.
+
+See the [actor app-initiated streams concept doc]({{% ref "actors-app-initiated-streams" %}}) and [how-to guide]({{% ref "howto-actors-app-initiated-streams" %}}) for usage guidance and code examples.
+
+### gRPC service definition
+
+```protobuf
+// On the Dapr service (app dials daprd):
+rpc SubscribeActorEventsAlpha1(stream SubscribeActorEventsRequestAlpha1)
+    returns (stream SubscribeActorEventsResponseAlpha1) {}
+```
+
+### App → Dapr: SubscribeActorEventsRequestAlpha1
+
+Messages sent **from the app to daprd**. The first message must be `initial_request`; all subsequent messages must be responses correlated by `id`.
+
+| Field (oneof `request_type`) | When to send |
+|---|---|
+| `initial_request` (`SubscribeActorEventsRequestInitialAlpha1`) | **First message only.** Registers actor types and runtime config. |
+| `invoke_response` (`SubscribeActorEventsRequestInvokeResponseAlpha1`) | Response to an `invoke_request` callback. |
+| `reminder_response` (`SubscribeActorEventsRequestReminderResponseAlpha1`) | Response to a `reminder_request` callback. |
+| `timer_response` (`SubscribeActorEventsRequestReminderResponseAlpha1`) | Response to a `timer_request` callback. |
+| `deactivate_response` (`SubscribeActorEventsRequestDeactivateResponseAlpha1`) | Response to a `deactivate_request` callback. |
+| `request_failed` (`SubscribeActorEventsRequestFailedAlpha1`) | Sent instead of any typed response when the app cannot handle the callback. |
+
+#### SubscribeActorEventsRequestInitialAlpha1
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `entities` | `[]string` | Yes | Actor types hosted by this app. |
+| `actor_idle_timeout` | `Duration` | No | Idle timeout before deactivation. Unset = Dapr default (60 min). |
+| `drain_ongoing_call_timeout` | `Duration` | No | How long to wait for in-flight calls during rebalancing. Unset = Dapr default (2 seconds). |
+| `drain_rebalanced_actors` | `bool` | No | Drain in-flight calls before deactivating rebalanced actors. Unset = Dapr default. |
+| `reentrancy` | `ActorReentrancyConfig` | No | Reentrancy configuration for all actor types on this stream. |
+| `entities_config` | `[]ActorEntityConfig` | No | Per-actor-type overrides. Each entry must reference a type listed in `entities`. |
+
+#### SubscribeActorEventsRequestInvokeResponseAlpha1
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `string` | Correlation ID from the originating `invoke_request`. |
+| `data` | `bytes` | Response payload. |
+| `metadata` | `map<string,string>` | Response-level headers, including `content-type`. |
+| `error` | `bool` | When `true`, `data` is an application-defined error payload passed verbatim to the caller. |
+
+#### SubscribeActorEventsRequestReminderResponseAlpha1
+
+Used for both `reminder_response` and `timer_response`.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `string` | Correlation ID from the originating reminder or timer request. |
+| `cancel` | `bool` | When `true`, instructs Dapr to cancel the reminder or timer after this firing. |
+
+#### SubscribeActorEventsRequestDeactivateResponseAlpha1
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `string` | Correlation ID from the originating `deactivate_request`. |
+
+#### SubscribeActorEventsRequestFailedAlpha1
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `string` | Correlation ID from the originating request. |
+| `code` | `uint32` | gRPC status code. `codes.NotFound` (5) signals a permanent, non-retryable failure. |
+| `message` | `string` | Human-readable error description. |
+
+### Dapr → App: SubscribeActorEventsResponseAlpha1
+
+Messages sent **from daprd to the app**. The first message is `initial_response`; all subsequent messages are callback requests.
+
+| Field (oneof `response_type`) | Description |
+|---|---|
+| `initial_response` (`SubscribeActorEventsResponseInitialAlpha1`) | Empty ack confirming successful registration. Errors surface as a gRPC stream error. |
+| `invoke_request` (`SubscribeActorEventsResponseInvokeRequestAlpha1`) | Actor method invocation. |
+| `reminder_request` (`SubscribeActorEventsResponseReminderRequestAlpha1`) | Actor reminder fired. |
+| `timer_request` (`SubscribeActorEventsResponseTimerRequestAlpha1`) | Actor timer fired. |
+| `deactivate_request` (`SubscribeActorEventsResponseDeactivateRequestAlpha1`) | Actor instance being deactivated. |
+
+#### SubscribeActorEventsResponseInvokeRequestAlpha1
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `string` | Unique correlation ID. Echo on `invoke_response`. |
+| `actor_type` | `string` | Actor type. |
+| `actor_id` | `string` | Actor ID. |
+| `method` | `string` | Method name to invoke. |
+| `data` | `bytes` | Request payload. |
+| `metadata` | `map<string,string>` | Request-level headers including `content-type` and `Dapr-Reentrancy-Id` (when reentrancy is enabled). |
+
+#### SubscribeActorEventsResponseReminderRequestAlpha1
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `string` | Unique correlation ID. Echo on `reminder_response`. |
+| `actor_type` | `string` | Actor type. |
+| `actor_id` | `string` | Actor ID. |
+| `name` | `string` | Reminder name. |
+| `due_time` | `string` | Reminder due time (time.ParseDuration format). |
+| `period` | `string` | Reminder period (time.ParseDuration format). |
+| `data` | `google.protobuf.Any` | Reminder data payload. |
+
+#### SubscribeActorEventsResponseTimerRequestAlpha1
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `string` | Unique correlation ID. Echo on `timer_response`. |
+| `actor_type` | `string` | Actor type. |
+| `actor_id` | `string` | Actor ID. |
+| `name` | `string` | Timer name. |
+| `due_time` | `string` | Timer due time. |
+| `period` | `string` | Timer period. |
+| `callback` | `string` | Callback method name registered with the timer. |
+| `data` | `google.protobuf.Any` | Timer data payload. |
+
+#### SubscribeActorEventsResponseDeactivateRequestAlpha1
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `string` | Unique correlation ID. Echo on `deactivate_response`. |
+| `actor_type` | `string` | Actor type. |
+| `actor_id` | `string` | Actor ID. |
 
 ## Activating an Actor
 

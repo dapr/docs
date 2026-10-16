@@ -58,3 +58,16 @@ The [Dapr Agents examples](https://github.com/dapr/dapr-agents/tree/main/example
 | [Agents as Activities with Observability](https://github.com/dapr/dapr-agents/tree/main/examples/07-agents-as-activities-observability) | Trace agent activities end-to-end with OpenTelemetry and Zipkin |
 | [Agents as Tools](https://github.com/dapr/dapr-agents/tree/main/examples/08-agents-as-tools) | Invoke other `DurableAgent` instances—and agents from other frameworks—as child workflow tools |
 | [Durable Agent Hot-Reload](https://github.com/dapr/dapr-agents/tree/main/examples/09-durable-agent-hot-reload) | Hot-reload agent persona and LLM settings at runtime without restarting |
+| [Echo Agent Executor](https://github.com/dapr/dapr-agents/tree/main/examples/10-agent-executor-echo) | Run an agent with a stateful agent runtime |
+| [Agent with Auto-Discovered MCPServer Tools](https://github.com/dapr/dapr-agents/tree/main/examples/10-mcpserver) | Automatically discover tools from loaded MCPServer resources |
+| [Expert Agent – Chainlit UI with RAG-via-hook (Tavily)](https://github.com/dapr/dapr-agents/tree/main/examples/11-expert-agent-tavily) | Inject fresh web context into every LLM turn without explicit tool calls |
+| [OpenTelemetry Observability on Kubernetes](https://github.com/dapr/dapr-agents/tree/main/examples/demo-otel-k8s) | Configure OpenTelemetry observability for Dapr Agents running on Kubernetes |
+
+
+## Extension Examples
+
+The following [Dapr Agents examples](https://github.com/dapr/dapr-agents/tree/main/examples) demonstrate provider-specific integrations:
+
+| Example | What You'll Learn |
+|---|---|
+| [Drasi Change-Driven Agents on Kubernetes](https://github.com/dapr/dapr-agents/tree/main/examples/ext-drasi-change-driven-agents-k8s) | React to real-time data changes detected by Drasi over Dapr pub/sub |
