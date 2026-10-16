@@ -24,6 +24,10 @@ spec:
   metadata:
   - name: prefix
     value: "uploads"
+  - name: maxSize
+    value: "8Mi"
+  - name: maxTotalSize
+    value: "1Gi"
 ```
 
 For example, an application request for `report.pdf` is stored under the component's `uploads` prefix. The prefix is optional.
@@ -33,6 +37,10 @@ For example, an application request for `report.pdf` is stored under the compone
 | Field | Required | Details | Example |
 |-------|:--------:|---------|---------|
 | `prefix` | N | Optional prefix prepended to each file name in the store. If configured, it must not start with `/`. | `"uploads"` |
+| `maxSize` | N | Maximum size of a single file, specified as a byte count or byte-size string. Defaults to `4Mi`; uploads larger than the limit are rejected. Must be greater than zero. | `"8Mi"` |
+| `maxTotalSize` | N | Maximum combined size of stored files and in-flight uploads, specified as a byte count or byte-size string. Defaults to `512Mi`; uploads that exceed the limit are rejected. Replacing a file temporarily requires capacity for both the old and new content. Must be greater than zero. | `"1Gi"` |
+
+Size values can be provided as a string containing the number of bytes (for example, `"16777216"`) or as a size with a unit such as `"16Mi"`.
 
 ## Related links
 

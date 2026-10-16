@@ -50,9 +50,12 @@ The component supports three authentication methods:
 | `containerName` | Y | Name of the Blob Storage container to use. | `"binary-files"` |
 | `publicAccessLevel` | N | Access level for data in the container: `none`, `blob`, or `container`. Defaults to `none`. | `"none"` |
 | `prefix` | N | Prefix prepended to each file name. If configured, it must not start with `/`. | `"uploads"` |
+| `partSize` | N | Upload block size, specified as a byte count or byte-size string. Defaults to `16Mi`; must be between 1 byte and 4000 MiB. Block blobs are limited to 50,000 blocks; larger blocks increase the maximum upload size but use more memory per in-flight upload. | `"64Mi"` |
 | `endpoint` | N | Custom endpoint URL, for example an Azurite emulator or a custom storage domain. | `"http://127.0.0.1:10000"` |
 | `retryCount` | N | Maximum number of HTTP retries for transient failures. Defaults to `3`. | `"5"` |
 | `disableEntityManagement` | N | Defaults to `false`. When `true`, the component does not try to create the container during initialization; pre-create it and grant the identity read/write access. | `"true"` |
+
+Size values can be provided as a string containing the number of bytes (for example, `"16777216"`) or as a size with a unit such as `"16Mi"`.
 
 Keep `publicAccessLevel` set to its default unless public access is specifically required.
 

@@ -34,6 +34,9 @@ Configure credentials for the sidecar using Google Cloud's [Application Default 
 |-------|:--------:|---------|---------|
 | `bucket` | Y | Name of the Google Cloud Storage bucket to use. | `"binary-files"` |
 | `prefix` | N | Prefix prepended to each file name. If configured, it must not start with `/`. | `"uploads"` |
+| `partSize` | N | Resumable upload chunk size, specified as a byte count or byte-size string. Defaults to `16Mi` and must be a positive multiple of 256 KiB. Larger chunks reduce request overhead but use more memory per in-flight upload. The maximum object size remains 5 TiB. | `"64Mi"` |
+
+Size values can be provided as a string containing the number of bytes (for example, `"16777216"`) or as a size with a unit such as `"16Mi"`.
 
 ## Related links
 

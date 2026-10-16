@@ -44,7 +44,7 @@ The component supports three authentication methods:
 
 - **API key**: provide `region`, `userOCID`, `fingerPrint`, `privateKey`, and `tenancyOCID`.
 - **Instance principal**: set `instancePrincipalAuthentication` to `"true"` and grant the compute instance's dynamic group the required Object Storage permissions.
-- **Configuration file**: set `configFileAuthentication` to `"true"` and provide `configFilePath`. Optionally select a profile with `configFileProfile`; it defaults to `DEFAULT`.
+- **Configuration file**: set `configFileAuthentication` to `"true"` and provide `configFilePath`. Optionally select a profile with `configFileProfile`.
 
 Only configure one authentication method for a component. For details, see the OCI documentation for [instance principals](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/callingservicesfrominstances.htm) and [SDK configuration files](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdkconfig.htm).
 
@@ -56,15 +56,18 @@ Only configure one authentication method for a component. For details, see the O
 | `compartmentOCID` | Y | OCID of the compartment containing the bucket. | `"ocid1.compartment.oc1..example"` |
 | `namespace` | N | OCI Object Storage namespace. If omitted, the component resolves it from the tenancy. | `"my-namespace"` |
 | `prefix` | N | Prefix prepended to each file name. If configured, it must not start with `/`. | `"uploads"` |
+| `partSize` | N | Multipart upload part size, specified as a byte count or byte-size string. Defaults to `16Mi`; must be between 10 MiB and 50 GiB. OCI limits uploads to 10,000 parts; larger parts can increase the maximum upload size (up to 10 TiB) but use more memory per in-flight upload. | `"64Mi"` |
 | `region` | Y for API key authentication | OCI region where the bucket is located. | `"us-ashburn-1"` |
 | `userOCID` | Y for API key authentication | OCID of the OCI user. | `"ocid1.user.oc1..example"` |
 | `fingerPrint` | Y for API key authentication | Fingerprint of the API key. | `"xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx"` |
 | `privateKey` | Y for API key authentication | Private key for API authentication. Treat this value as a secret. | `"<PRIVATE_KEY>"` |
 | `tenancyOCID` | Y for API key authentication | OCID of the tenancy. | `"ocid1.tenancy.oc1..example"` |
-| `instancePrincipalAuthentication` | Y when using instance principal | Set to `"true"` to use instance principal authentication. | `"true"` |
-| `configFileAuthentication` | Y when using a configuration file | Set to `"true"` to use configuration file authentication. | `"true"` |
+| `instancePrincipalAuthentication` | Y when using instance principal | Set to `"true"` to use instance principal authentication. Defaults to `"false"`. | `"true"` |
+| `configFileAuthentication` | Y when using a configuration file | Set to `"true"` to use configuration file authentication. Defaults to `"false"`. | `"true"` |
 | `configFilePath` | Y when using a configuration file | Absolute path to the OCI configuration file. | `"/home/app/.oci/config"` |
-| `configFileProfile` | N | Profile name in the configuration file. Defaults to `DEFAULT`. | `"DEFAULT"` |
+| `configFileProfile` | N | Optional profile name in the configuration file. The metadata default is empty; use `"DEFAULT"` to select that profile explicitly. | `"DEFAULT"` |
+
+Size values can be provided as a string containing the number of bytes (for example, `"16777216"`) or as a size with a unit such as `"16Mi"`.
 
 ## Related links
 
