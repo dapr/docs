@@ -257,6 +257,14 @@ The receiving workflow/activity reads its inherited history via the SDKs `GetPro
 
 For details, the scope comparison, and code examples, see [workflow history propagation]({{< ref workflow-history-propagation.md >}}).
 
+## Stateful workflow client
+
+A workflow is replayed from its history on every turn, and that history only grows. Rather than sending the whole thing each time, the workflow SDK keeps the history it has already replayed in memory and the sidecar sends only the events added since the previous turn. The per-turn payload therefore stops growing with the length of the workflow, which matters most for long-running, monitor-pattern, and large fan-out workflows.
+
+This is enabled by default, requires no configuration or code changes, and never affects correctness: if the worker's cached history does not match what the sidecar expects, the full history is fetched instead.
+
+Learn more about [the stateful workflow client]({{< ref workflow-stateful-client.md >}}).
+
 ## Purging
 
 Workflow state can be purged from a state store, purging all its history and removing all metadata related to a specific workflow instance. The purge capability is used for workflows that have run to a `COMPLETED`, `FAILED`, or `TERMINATED` state.
@@ -272,6 +280,10 @@ Workflow code is long-running and must remain deterministic during updates. For 
 ### Payload size
 
 A single workflow or activity dispatch is bounded by the sidecar's `--max-body-size` setting (default 4 MiB). If a workflow's `PastEvents + NewEvents + PropagatedHistory` would exceed 95% of that limit, the workflow is stalled rather than tearing down the dispatch stream. Metrics expose how close each workflow and activity is to the limit so operators can act before a stall. See [Workflow payload size]({{% ref workflow-payload-size.md %}}) for details and remediation steps.
+
+### Fast path and concurrency limits
+
+The `WorkflowsFastPath` preview feature disables itself when Scheduler-enforced concurrency limits (`globalMaxConcurrentWorkflowInvocations`, `globalMaxConcurrentActivityInvocations`, or per-name `workflowConcurrencyLimits` and `activityConcurrencyLimits`) are configured, because those limits gate each Scheduler job delivery and the fast path drives work without Scheduler jobs. Per-sidecar limits are compatible. See [Workflow fast path]({{% ref workflow-fast-path.md %}}) and [Workflow concurrency limits]({{% ref workflow-concurrency.md %}}).
 
 ### Workflow determinism and code restraints
 
@@ -600,6 +612,7 @@ patch and introduce new named workflow versions to incorporate changes to your w
 
 - [Try out Dapr Workflow using the quickstart]({{% ref workflow-quickstart.md %}})
 - [Workflow overview]({{% ref workflow-overview.md %}})
+- [Workflow fast path]({{% ref workflow-fast-path.md %}})
 - [How-To: Apply workflow access policies]({{% ref workflow-access-policy.md %}})
 - [Workflow API reference]({{% ref workflow_api.md %}})
 - Try out the following examples:

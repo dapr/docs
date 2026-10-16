@@ -139,6 +139,7 @@ Keep in mind the following when relying on this behavior:
 - The component is unavailable for a short period of time while it is closed and re-initialized.
 - This requires [hot reloading]({{% ref "component-updates.md#hot-reloading" %}}) to be enabled, which is the default. If the `HotReload` feature is disabled, secret changes are only picked up when the Dapr sidecar is restarted.
 - Workflow backends are [excluded from hot reloading]({{% ref "component-updates.md#components-and-subscriptions" %}}), do not pick up secret changes, and require a Dapr sidecar restart. In Dapr 1.18.2 and earlier, the actor state store was also excluded; since Dapr 1.18.3, the actor state store is reloaded like any other component, and a secret rotation swaps the store instance without interrupting actor hosting.
+
 {{% /alert %}}
 
 ### Other secret stores

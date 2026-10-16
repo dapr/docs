@@ -8,7 +8,7 @@ description: "Overview of the Dapr scheduler service"
 The Dapr Scheduler service is used to schedule different types of jobs, running in [self-hosted mode]({{% ref self-hosted %}}) or on [Kubernetes]({{% ref kubernetes %}}).
 - Jobs created through the Jobs API
 - Actor reminder jobs (used by the actor reminders)
-- Actor reminder jobs created by the Workflow API (which uses actor reminders)
+- Actor reminder jobs created by the Workflow API (which uses actor reminders): workflow start and wake-up reminders, timers, activity reminders, and, with the [`WorkflowsFastPath` preview feature]({{% ref "workflow-fast-path.md" %}}), one repeating janitor reminder per live workflow instance
 
 The Scheduler service can also serve actor placement in place of the standalone [Placement service]({{% ref placement %}}). See [Serving actor placement](#serving-actor-placement).
 
@@ -108,7 +108,7 @@ There are several different types of jobs which Scheduler manages:
 
 - `app/{app-id}/{job-name}`: Jobs created via the [Jobs API]({{% ref jobs_api %}})
 - `actor/{actor-type}/{actor-id}/{reminder-name}`: Actor reminder jobs created via the [Actor Reminders API]({{% ref "actors-timers-reminders#actor-reminders" %}})
-- `activity/{app-id}/{instance-id}::{generation-name}::{activity-index}`: Used internally for [Workflow Activity reminders]({{% ref "workflow-features-concepts.md#workflow-activities" %}})
+- `activity/{app-id}/{instance-id}::{task-id}::0`: Used internally for [Workflow Activity reminders]({{% ref "workflow-features-concepts.md#workflow-activities" %}})
 - `workflow/{app-id}/{instance-id}/{random-name}`: Used internally for [Workflows]({{% ref "workflow-overview.md" %}}).
 
 Please see [here for how to manage specifically reminders]({{% ref "actors-timers-reminders#managing-reminders-with-the-cli" %}}) with the CLI.
@@ -311,6 +311,14 @@ dapr_scheduler.etcdDefragThresholdMB=100
 dapr_scheduler.etcdMaxSnapshots=10
 dapr_scheduler.etcdMaxTxnOps=10000
 ```
+
+### Healthz listen address
+
+```
+--healthz-listen-address   string   Address the healthz server listens on. Empty (the default) listens on all interfaces.
+```
+
+Set this flag to bind the Scheduler's healthz endpoint to a specific interface, for example to keep it off a public network. It has no dedicated Helm value as of Dapr 1.19. In self-hosted mode, pass it directly to the Scheduler binary, for example in a Docker Compose or systemd configuration.
 
 ## Related links
 
