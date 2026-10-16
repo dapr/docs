@@ -18,11 +18,14 @@ The Dapr CLI provides an option to initialize Dapr using slim init, without the 
 dapr init --slim
 ```
 
-Two different binaries are installed:
-- `daprd` 
+Three binaries are installed:
+- `daprd`
 - `placement`
+- `scheduler`
 
-The `placement` binary is needed to enable [actors]({{% ref "actors-overview.md" %}}) in a Dapr self-hosted installation.
+The `placement` binary is needed to enable [actors]({{% ref "actors-overview.md" %}}) in a Dapr self-hosted installation. The `scheduler` binary is needed for the [Jobs API]({{% ref "jobs-overview.md" %}}), actor reminders, and [workflows]({{% ref "workflow-overview.md" %}}).
+
+`dapr init --slim` does not start the `placement` and `scheduler` binaries. You start them yourself, as shown in the following sections.
 
 In slim init mode, no default components (such as Redis) are installed for state management or pub/sub. This means that, aside from [service invocation]({{% ref "service-invocation-overview.md" %}}), no other building block functionality is available "out-of-the-box" on install. Instead, you can set up your own environment and custom components. 
 
@@ -37,31 +40,31 @@ See documentation around [configuring Redis in self-hosted mode without Docker](
 
 ## Enable actors
 
-To enable actor placement:
-- Run the placement service locally. 
+To enable actors:
+- Run the Placement service and the Scheduler service locally.
 - Enable a [transactional state store that supports ETags]({{% ref "supported-state-stores.md" %}}) to use actors. For example, [Redis configured in self-hosted mode](https://redis.io/topics/quickstart).
 
-By default, the `placement` binary is installed in:
+By default, the `placement` and `scheduler` binaries are installed in:
 
 - For Linux/MacOS: `/$HOME/.dapr/bin`
 - For Windows: `%USERPROFILE%\.dapr\bin`
+
+The Placement service and the Scheduler service both use port 8080 for the health server and port 9090 for metrics by default. If both use the default ports, the second process stops with the error `bind: address already in use`. Start one of them with `--healthz-port` and `--metrics-port` set to free ports, as in the following commands.
 
 {{< tabpane text=true >}}
 
 {{% tab "Linux/MacOS" %}}
 
+Start the Scheduler service in one terminal:
+
 ```bash
-$ $HOME/.dapr/bin/placement
+$HOME/.dapr/bin/scheduler --etcd-data-dir ./scheduler-data
+```
 
-INFO[0000] starting Dapr Placement Service -- version 1.0.0-rc.1 -- commit 13ae49d  instance=Nicoletaz-L10.redmond.corp.microsoft.com scope=dapr.placement type=log ver=1.0.0-rc.1
-INFO[0000] log level set to: info                        instance=Nicoletaz-L10.redmond.corp.microsoft.com scope=dapr.placement type=log ver=1.0.0-rc.1
-INFO[0000] metrics server started on :9090/              instance=Nicoletaz-L10.redmond.corp.microsoft.com scope=dapr.metrics type=log ver=1.0.0-rc.1
-INFO[0000] Raft server is starting on 127.0.0.1:8201...  instance=Nicoletaz-L10.redmond.corp.microsoft.com scope=dapr.placement.raft type=log ver=1.0.0-rc.1
-INFO[0000] placement service started on port 50005       instance=Nicoletaz-L10.redmond.corp.microsoft.com scope=dapr.placement type=log ver=1.0.0-rc.1
-INFO[0000] Healthz server is listening on :8080          instance=Nicoletaz-L10.redmond.corp.microsoft.com scope=dapr.placement type=log ver=1.0.0-rc.1
-INFO[0001] cluster leadership acquired                   instance=Nicoletaz-L10.redmond.corp.microsoft.com scope=dapr.placement type=log ver=1.0.0-rc.1
-INFO[0001] leader is established.                        instance=Nicoletaz-L10.redmond.corp.microsoft.com scope=dapr.placement type=log ver=1.0.0-rc.1
+Start the Placement service in a second terminal:
 
+```bash
+$HOME/.dapr/bin/placement --healthz-port 8081 --metrics-port 9091
 ```
 
 {{% /tab %}}
@@ -84,6 +87,12 @@ time="2022-10-17T14:56:56.8232286-05:00" level=info msg="leader is established."
 
 ```
 
+Start the Scheduler service on port 6060. On Windows, `dapr run` uses this Scheduler port by default. The command also sets health and metrics ports that are different from the Placement service ports:
+
+```bash
+%USERPROFILE%/.dapr/bin/scheduler.exe --port 6060 --healthz-port 8081 --metrics-port 9091 --etcd-data-dir ./scheduler-data
+```
+
 {{% /tab %}}
 
 {{< /tabpane >}}
@@ -101,6 +110,10 @@ Enable it as a actor state store by making the metadata piece similar to the [sa
   - name: actorStateStore
     value: "true"
 ```
+
+## Enable workflows
+
+Workflows run on actors. They need actor placement, the Scheduler service, and an actor state store. On Dapr 1.19 and later, the Scheduler service can serve actor placement when you start it with `--placement-enabled=true`. For the full steps with a SQLite state store, see [How to: Run workflows locally without Docker]({{% ref howto-run-workflow-without-docker.md %}}).
 
 ## Clean up
 

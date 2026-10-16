@@ -531,7 +531,7 @@ ctx.createTimer(Duration.ofSeconds(5)).await();
 
 {{% tab "JavaScript" %}}
 
-Don't declare JavaScript workflow as `async`. The Node.js runtime doesn't guarantee that asynchronous functions are deterministic.
+Don't declare a JavaScript workflow as an `async` function or as a plain generator function (`function*`). The JavaScript SDK 3.18.0 completes these workflows at once and does not run their tasks.
 
 {{% /tab %}}
 
@@ -577,7 +577,7 @@ ctx.createTimer(Duration.ofSeconds(5)).await();
 
 {{% tab "JavaScript" %}}
 
-Since the Node.js runtime doesn't guarantee that asynchronous functions are deterministic, always declare JavaScript workflow as synchronous generator functions.
+Declare a JavaScript workflow as an async generator function (`async function*`), as in the JavaScript examples of [Workflow patterns]({{% ref workflow-patterns.md %}}). Use `yield`, not `await`, to wait for a workflow task such as `ctx.callActivity`, `ctx.createTimer`, or `ctx.whenAny`.
 
 {{% /tab %}}
 
