@@ -32,7 +32,8 @@ Select your preferred language-specific Dapr SDK before proceeding with the Quic
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [Python 3.8+ installed](https://www.python.org/downloads/).
+- [Python 3.11 or later installed](https://www.python.org/downloads/).
+- [uv](https://docs.astral.sh/uv/getting-started/installation/), the Python package manager that the sample uses.
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
@@ -42,7 +43,7 @@ For this example, you will need:
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub/python/sdk).
 
 ```bash
-git clone https://github.com/dapr/quickstarts.git
+git clone --depth 1 https://github.com/dapr/quickstarts.git
 ```
 
 From the root of the Quickstarts directory, navigate into the pub/sub directory:
@@ -54,15 +55,7 @@ cd pub_sub/python/sdk
 Install the dependencies for the `order-processor` and `checkout` apps:
 
 ```bash
-cd ./checkout
-pip3 install -r requirements.txt
-cd ..
-cd ./order-processor
-pip3 install -r requirements.txt
-cd ..
-cd ./order-processor-fastapi
-pip3 install -r requirements.txt
-cd ..
+uv sync --all-packages
 ```
 
 ### Step 3: Run the publisher and subscriber
@@ -72,9 +65,8 @@ With the following command, simultaneously run the following services alongside 
 - The `checkout` publisher 
 
 ```bash
-dapr run -f .
+uv run dapr run -f .
 ```
-> **Note**: Since Python3.exe is not defined in Windows, you may need to change  `python3` to `python` in the  [`dapr.yaml`]({{% ref "#dapryaml-multi-app-run-template-file" %}}) file before running `dapr run -f .`
 
 
 **Expected output**
@@ -122,11 +114,11 @@ common:
 apps:
   - appID: order-processor-sdk
     appDirPath: ./order-processor/
-    appPort: 6001
-    command: ["uvicorn", "app:app"]
+    appPort: 6002
+    command: ["uv", "run", "python", "app.py"]
   - appID: checkout-sdk
     appDirPath: ./checkout/
-    command: ["python3", "app.py"]
+    command: ["uv", "run", "python", "app.py"]
 ```
 
 ##### `pubsub.yaml` component file
@@ -839,7 +831,8 @@ Select your preferred language-specific Dapr SDK before proceeding with the Quic
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [Python 3.7+ installed](https://www.python.org/downloads/).
+- [Python 3.11 or later installed](https://www.python.org/downloads/).
+- [uv](https://docs.astral.sh/uv/getting-started/installation/), the Python package manager that the sample uses.
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
@@ -849,7 +842,7 @@ For this example, you will need:
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub/python/sdk).
 
 ```bash
-git clone https://github.com/dapr/quickstarts.git
+git clone --depth 1 https://github.com/dapr/quickstarts.git
 ```
 
 ### Step 3: Subscribe to topics
@@ -864,16 +857,15 @@ cd pub_sub/python/sdk/order-processor
 Install the dependencies:
 
 ```bash
-pip3 install -r requirements.txt
+uv sync --all-packages
 ```
 
 Run the `order-processor` subscriber service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --resources-path ../../../components/ --app-port 6002 -- python3 app.py
+dapr run --app-id order-processor --resources-path ../../../components/ --app-port 6002 -- uv run python app.py
 ```
 
-> **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
 
 In the `order-processor` subscriber, we're subscribing to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
 
@@ -913,16 +905,15 @@ cd pub_sub/python/sdk/checkout
 Install the dependencies:
 
 ```bash
-pip3 install -r requirements.txt
+uv sync --all-packages
 ```
 
 Run the `checkout` publisher service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id checkout --resources-path ../../../components/ -- python3 app.py
+dapr run --app-id checkout --resources-path ../../../components/ -- uv run python app.py
 ```
 
-> **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
 
 In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{% ref "#pubsubyaml-component-file" %}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
