@@ -36,7 +36,8 @@ Select your preferred language-specific Dapr SDK before proceeding with the Quic
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [Python 3.7+ installed](https://www.python.org/downloads/).
+- [Python 3.11 or later installed](https://www.python.org/downloads/).
+- [uv](https://docs.astral.sh/uv/getting-started/installation/), the Python package manager that the sample uses.
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
@@ -46,29 +47,28 @@ For this example, you will need:
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/conversation).
 
 ```bash
-git clone https://github.com/dapr/quickstarts.git
+git clone --depth 1 https://github.com/dapr/quickstarts.git
 ```
 
-From the root of the Quickstarts directory, navigate into the conversation directory:
+From the root of the Quickstarts directory, navigate into the `python/sdk` directory. The `dapr.yaml` file is in this directory:
 
 ```bash
-cd conversation/python/sdk/conversation
+cd conversation/python/sdk
 ```
 
 Install the dependencies:
 
 ```bash
-pip3 install -r requirements.txt
+uv sync
 ```
 
 ### Step 3: Launch the conversation service
 
 
 ```bash
-dapr run -f .
+uv run dapr run -f .
 ```
 
-> **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
 
 **Expected output**
 
@@ -92,7 +92,7 @@ common:
 apps:
   - appID: conversation
     appDirPath: ./conversation/
-    command: ["python3", "app.py"]
+    command: ["uv", "run", "python", "app.py"]
 ```
 
 #### Echo mock LLM component
@@ -962,7 +962,8 @@ func main() {
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [Python 3.7+ installed](https://www.python.org/downloads/).
+- [Python 3.11 or later installed](https://www.python.org/downloads/).
+- [uv](https://docs.astral.sh/uv/getting-started/installation/), the Python package manager that the sample uses.
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
@@ -972,7 +973,7 @@ For this example, you will need:
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/conversation).
 
 ```bash
-git clone https://github.com/dapr/quickstarts.git
+git clone --depth 1 https://github.com/dapr/quickstarts.git
 ```
 
 From the root of the Quickstarts directory, navigate into the conversation directory:
@@ -984,18 +985,17 @@ cd conversation/python/sdk/conversation
 Install the dependencies:
 
 ```bash
-pip3 install -r requirements.txt
+uv sync
 ```
 
 ### Step 3: Launch the conversation service
 
-Navigate back to the `sdk` directory and start the conversation service with the following command:
+From the `conversation` directory, start the conversation service with the following command:
 
 ```bash
-dapr run --app-id conversation --resources-path ../../../components -- python3 app.py
+dapr run --app-id conversation --resources-path ../../../components -- uv run python app.py
 ```
 
-> **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
 
 **Expected output**
 
