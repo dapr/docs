@@ -282,3 +282,25 @@ public class TaskExecutionKeyActivity implements WorkflowActivity {
   }
 }
 ```
+
+### Handling duplicate workflow instance IDs
+
+From Dapr 1.19, `DaprWorkflowClient.scheduleNewWorkflow` throws `WorkflowInstanceAlreadyExistsException` when the runtime rejects an instance ID because a workflow instance with that ID already exists.
+
+Which existing instances cause the rejection depends on `NewWorkflowOptions.setEnforceUniqueInstanceId(boolean)`:
+
+- By default (the option disabled), the runtime only rejects an instance ID that belongs to an **active** instance. Scheduling with the instance ID of a workflow that already reached a terminal state (completed, failed, or terminated) succeeds and re-runs the workflow with fresh state.
+- When the option is enabled, the runtime rejects the instance ID if an instance with that ID exists in **any** status, including terminal ones. The existing instance is left untouched.
+
+```java
+NewWorkflowOptions options = new NewWorkflowOptions()
+    .setInstanceId("order-123")
+    .setInput("input data")
+    .setEnforceUniqueInstanceId(true);
+
+try {
+  client.scheduleNewWorkflow(DemoWorkflow.class, options);
+} catch (WorkflowInstanceAlreadyExistsException e) {
+  System.out.printf("Workflow instance already exists: %s%n", e.getInstanceId());
+}
+```

@@ -35,6 +35,31 @@ Watch these recordings from the Dapr community calls showing presentations on ru
 - General overview and a demo of [Dapr and Linkerd](https://youtu.be/xxU68ewRmz8?t=142)
 - Demo of running [Dapr and Istio](https://youtu.be/ngIDOQApx8g?t=335)
 
+### Protocol declarations on Dapr Services in Kubernetes
+
+Every Kubernetes Service that Dapr creates sets the [`appProtocol`](https://kubernetes.io/docs/concepts/services-networking/service/#application-protocol) field on each of its ports. This covers the control plane Services that the Dapr Helm chart installs, and the `<app-id>-dapr` Service that the Dapr operator creates for each Dapr-enabled application. A service mesh such as Istio reads this field to select the protocol of a port, instead of detecting the protocol from the traffic or from the port name.
+
+Ports that carry gRPC inside Dapr mTLS declare `tls`, not `grpc`. Istio treats `appProtocol: grpc` as plaintext HTTP/2 (h2c). If these ports declared `grpc`, the mesh proxy would parse the TLS bytes as HTTP/2 and break the connection.
+
+| Service | Ports | `appProtocol` |
+|---------|-------|---------------|
+| `<app-id>-dapr` | `dapr-http`, `dapr-metrics` | `http` |
+| `<app-id>-dapr` | `dapr-grpc` | `grpc` |
+| `<app-id>-dapr` | `dapr-internal` | `tls` when mTLS is enabled in the `daprsystem` Configuration, otherwise `grpc` |
+| `dapr-api` | `grpc`, `legacy` | `tls` |
+| `dapr-webhook` | webhook port (443) | `https` |
+| `dapr-sentry` | `grpc` | `tls` |
+| `dapr-sentry` | `oidc` | `https` when `dapr_sentry.oidc.tls.enabled` is `true`, otherwise `http` |
+| `dapr-placement-server` | `api`, `raft-node` | `tls` |
+| `dapr-scheduler-server` | `api`, `etcd-peer` | `tls` |
+| `dapr-scheduler-server` | `etcd-client` | `tcp` |
+| `dapr-sidecar-injector` | `https` | `https` |
+| All control plane Services | `metrics` | `http` |
+
+{{% alert title="Note" color="primary" %}}
+Dapr sets `appProtocol` from version 1.19. On earlier versions the field is not set, and Istio falls back to protocol detection. Some Dapr control plane ports are named `grpc` but carry TLS, so name-based detection can classify them incorrectly on those versions.
+{{% /alert %}}
+
 ## When to use Dapr or a service mesh or both
 Should you be using Dapr, a service mesh, or both? The answer depends on your requirements. If, for example, you are looking to use Dapr for one or more building blocks such as state management or pub/sub, and you are considering using a service mesh just for network security or observability, you may find that Dapr is a good fit and that a service mesh is not required.
 

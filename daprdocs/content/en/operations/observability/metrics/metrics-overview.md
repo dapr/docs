@@ -72,7 +72,7 @@ spec:
 
 ## Configuring metrics for error codes
 
-You can enable additional metrics for [Dapr API error codes](https://docs.dapr.io/reference/api/error_codes/) by setting `spec.metrics.recordErrorCodes` to `true`. Dapr APIs which communicate back to their caller may return standardized error codes. [A new metric called `error_code_total` is recorded]({{% ref errors-overview.md %}}), which allows monitoring of error codes triggered by application, code, and category. See [the `errorcodes` package](https://github.com/dapr/dapr/blob/master/pkg/messages/errorcodes/errorcodes.go) for specific codes and categories.
+You can enable additional metrics for [Dapr API error codes](https://docs.dapr.io/developing-applications/error-codes/) by setting `spec.metrics.recordErrorCodes` to `true`. Dapr APIs which communicate back to their caller may return standardized error codes. [A new metric called `error_code_total` is recorded]({{% ref errors-overview.md %}}), which allows monitoring of error codes triggered by application, code, and category. See [the `errorcodes` package](https://github.com/dapr/dapr/blob/master/pkg/messages/errorcodes/errorcodes.go) for specific codes and categories.
 
 Example configuration:
 ```yaml
@@ -281,6 +281,29 @@ spec:
     metrics:
         enabled: true
         latencyDistributionBuckets: [10, 25, 40, 50, 70, 100, 150, 200, 500, 1000, 5000]
+```
+
+### Customizing workflow latency buckets
+
+Workflow and activity *execution* latencies (how long a workflow or activity takes to run to completion) often span a much wider range than service, gRPC, HTTP, or component request latencies. A workflow can complete in milliseconds or run for hours, so the default latency buckets, which top out at 100 seconds, may not give you useful granularity.
+
+Use the `spec.metrics.workflow.latencyDistributionBuckets` field to set buckets specifically for the workflow and activity execution latency histograms (`dapr_runtime_workflow_execution_latency` and `dapr_runtime_workflow_activity_execution_latency`). This field is an optional override: when it is not set, these histograms use the same buckets as `spec.metrics.latencyDistributionBuckets`. Only the execution latencies are affected; workflow and activity operation latencies and scheduling latency continue to use the shared buckets.
+
+Because these histograms are recorded in milliseconds but workflow durations are more naturally expressed in seconds or minutes, you can set `spec.metrics.workflow.latencyDistributionUnits` to the unit the buckets are expressed in, as a Go duration string (for example `1s`). It defaults to `1ms` (milliseconds). The buckets are scaled into milliseconds when the histograms are built.
+
+The following Configuration spec example buckets workflow and activity execution latencies in seconds, from 1 second up to 1 hour:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: custom-metrics
+spec:
+    metrics:
+        enabled: true
+        workflow:
+            latencyDistributionBuckets: [1, 5, 10, 30, 60, 120, 300, 600, 1800, 3600]
+            latencyDistributionUnits: 1s
 ```
 
 ## Transform metrics with regular expressions
