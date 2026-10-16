@@ -153,6 +153,19 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 | queryIndexes       | N         | Indexing schemas for querying JSON objects | see [Querying JSON objects](#querying-json-objects)
 | actorStateStore    | N        | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 
+## Supported servers and versions
+
+Dapr's Redis state store component is tested against the following Redis and Valkey versions:
+
+| Server | Versions | Notes |
+|--------|----------|-------|
+| Redis | 6.x, 7.x | The Query API requires the RediSearch **and** RedisJSON modules |
+| [Valkey](https://valkey.io) | 8.x, 9.x | The Query API is not available by default; it requires the RediSearch and RedisJSON modules to be installed |
+
+{{% alert title="Valkey and the Query API" color="warning" %}}
+Stock Valkey images (`valkey/valkey:8.x`, `valkey/valkey:9.x`) do not bundle the RediSearch or RedisJSON modules. The [Query API]({{% ref "state_api.md#query-state" %}}) and the `queryIndexes` metadata field require both RediSearch and RedisJSON and will not work against a plain Valkey instance. All other state-store operations (CRUD, TTL, transactions, actor state) work normally.
+{{% /alert %}}
+
 ## OIDC private_key_jwt authentication
 
 As an alternative to a static password, the Redis components can authenticate using OpenID Connect with the `private_key_jwt` client authentication method ([RFC 7523](https://datatracker.ietf.org/doc/html/rfc7523)):
@@ -202,7 +215,7 @@ auth:
   secretStore: <SECRET_STORE_NAME>
 ```
 
-The same metadata fields are supported by the Redis [pub/sub]({{% ref setup-redis-pubsub.md %}}), [lock]({{% ref redis-lock.md %}}), [binding]({{% ref redis.md %}}), and [configuration store]({{% ref redis-configuration-store.md %}}) components.
+The same metadata fields are supported by the Redis [pub/sub]({{% ref setup-redis-pubsub.md %}}), [lock]({{% ref redis-lock.md %}}), [binding]({{% ref "reference/components-reference/supported-bindings/redis.md" %}}), and [configuration store]({{% ref redis-configuration-store.md %}}) components.
 
 ## Setup Redis
 

@@ -52,7 +52,7 @@ This simplifies some choices, but also carries some consideration:
 - Because actors are randomly placed, it should be expected that actor operations always require network communication, including serialization and deserialization of method call data, incurring latency and overhead.
 
 {{% alert title="Note" color="primary" %}}
- Note: The Dapr actor Placement service is only used for actor placement and therefore is not needed if your services are not using Dapr actors. The Placement service can run in all [hosting environments]({{% ref hosting %}}), including self-hosted and Kubernetes.
+ Note: The Dapr actor Placement service is only used for actor placement and therefore is not needed if your services are not using Dapr actors. The Placement service can run in all [hosting environments]({{% ref hosting %}}), including self-hosted and Kubernetes. In both self-hosted and Kubernetes modes, actor placement can also be served by the [Scheduler service]({{% ref "placement#serving-placement-from-the-scheduler-service" %}}) instead of a standalone Placement service. This is transparent to applications and sidecars.
 {{% /alert %}}
 
 ## Actor communication

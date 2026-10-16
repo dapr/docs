@@ -22,9 +22,9 @@ Hit the ground running with our Dapr quickstarts, complete with code samples aim
 
 | Quickstarts | Description |
 | ----------- | ----------- |
+| [Workflow]({{% ref workflow-quickstart %}}) | Orchestrate business workflow activities in long running, fault-tolerant, stateful applications. |
 | [Service Invocation]({{% ref serviceinvocation-quickstart %}}) | Synchronous communication between two services using HTTP or gRPC. |
 | [Publish and Subscribe]({{% ref pubsub-quickstart %}}) |  Asynchronous communication between two services using messaging. |
-| [Workflow]({{% ref workflow-quickstart %}}) | Orchestrate business workflow activities in long running, fault-tolerant, stateful applications. |
 | [Agents]({{% ref dapr-agents-quickstarts.md %}}) | Build LLM-powered autonomous agentic applications. |
 | [State Management]({{% ref statemanagement-quickstart %}}) | Store a service's data as key/value pairs in supported state stores. |
 | [Bindings]({{% ref bindings-quickstart %}}) | Work with external systems using input bindings to respond to events and output bindings to call operations. |

@@ -206,3 +206,4 @@ The same workflow runs on the named app via service invocation. One shared polic
 - [MCPServer resource overview]({{% ref mcp-server-resource.md %}})
 - [MCPServer spec reference]({{% ref mcpserver-schema %}})
 - [Workflow API reference]({{% ref workflow_api %}})
+- [Dapr MCP server quickstarts](https://github.com/dapr/quickstarts/tree/master/dapr-mcp-server) — LangGraph, Dapr Agents, and OpenAI Agents SDK agents that call the [Dapr MCP server]({{% ref dapr-mcp-server %}}) through an `MCPServer` resource

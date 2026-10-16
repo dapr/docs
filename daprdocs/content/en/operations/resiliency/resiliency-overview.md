@@ -173,6 +173,10 @@ spec:
           circuitBreaker: pubsubCB
 ```
 
+## Build resiliency policies with the Dapr Dev Dashboard
+
+For local development, the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) includes a resiliency builder. The UI wizard lets you define timeout, retry, and circuit breaker policies and assign them to apps, components, and actors as targets, and then generates the resiliency YAML for you. This is a quick way to get started without having to memorize the resiliency spec structure.
+
 ## Hot Reloading
 
 Changes to Resiliency resources are automatically detected and trigger a graceful restart of the Dapr sidecar to apply the updated resiliency policies. To opt out, disable the `HotReload` feature in the [Dapr application configuration]({{% ref "configuration-overview.md" %}}).

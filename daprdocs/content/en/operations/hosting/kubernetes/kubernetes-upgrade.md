@@ -83,6 +83,8 @@ As of version 1.0.0 onwards, existing certificate values will automatically be r
    kubectl replace -f https://raw.githubusercontent.com/dapr/dapr/v{{% dapr-latest-version long="true" %}}/charts/dapr/crds/subscription.yaml
    kubectl apply -f https://raw.githubusercontent.com/dapr/dapr/v{{% dapr-latest-version long="true" %}}/charts/dapr/crds/resiliency.yaml
    kubectl apply -f https://raw.githubusercontent.com/dapr/dapr/v{{% dapr-latest-version long="true" %}}/charts/dapr/crds/httpendpoints.yaml
+   kubectl apply -f https://raw.githubusercontent.com/dapr/dapr/v{{% dapr-latest-version long="true" %}}/charts/dapr/crds/mcpservers.yaml
+   kubectl apply -f https://raw.githubusercontent.com/dapr/dapr/v{{% dapr-latest-version long="true" %}}/charts/dapr/crds/workflowaccesspolicy.yaml
    ```
 
    ```bash
@@ -120,6 +122,18 @@ As of version 1.0.0 onwards, existing certificate values will automatically be r
 ## Upgrade existing Dapr deployment to enable high availability mode
 
 [Enable high availability mode in an existing Dapr deployment with a few additional steps.]({{% ref "kubernetes-production.md#enabling-high-availability-in-an-existing-dapr-deployment" %}})
+
+## Enable scheduler placement in an existing Dapr deployment
+
+Actor placement can be served by the Scheduler service instead of the standalone Placement service by upgrading with `global.scheduler.placement.enabled=true`. The placement StatefulSet is removed by the same upgrade, and running sidecars adopt scheduler placement on their own: no sidecar restarts are needed, in either direction. The schedulers detect the placement pods leaving and take over within a few seconds; outside of this upgrade, a placement pod that crashes or restarts does not move the placement authority. [Learn more about serving placement from the Scheduler service.]({{% ref "placement#serving-placement-from-the-scheduler-service" %}})
+
+{{% alert title="Important" color="warning" %}}
+Complete your Dapr version rollout before enabling this setting. Sidecars running an older Dapr version can only use the Placement service: with it undeployed, their Actor and Workflow APIs stall until the pod is upgraded to a version that supports scheduler placement. No actor state is lost. While a Placement service is running, it remains the placement authority: the Scheduler does not serve placement while one is present, so the cluster keeps a single placement authority throughout the rollout. Once no Placement service remains, the Scheduler serves placement, and a connected older sidecar is logged as a warning, since nothing is left to serve it.
+{{% /alert %}}
+
+To roll back, upgrade with the setting `false`: the placement StatefulSet is redeployed and the schedulers hand placement back to it, again without sidecar restarts. In both directions, the change [reassigns actors once]({{% ref "placement#serving-placement-from-the-scheduler-service" %}}) because the two services place actors with different algorithms. Actor state is unaffected.
+
+Because `helm upgrade` resets values not passed on the command line, pass the setting on every subsequent upgrade (or keep it in your values file), otherwise the placement StatefulSet is redeployed and placement hands back to it.
 
 ## Related links
 
