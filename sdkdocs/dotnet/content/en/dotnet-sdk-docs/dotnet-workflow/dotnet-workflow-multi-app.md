@@ -25,6 +25,17 @@ Multi-application workflow calls require:
 - All participating app IDs must be in the same namespace.
 - All participating app IDs must use the same workflow (actor) state store.
 
+{{% alert title="Data-reference compatibility" color="warning" %}}
+[Workflow data references (alpha)]({{% ref dotnet-workflow-data-references.md %}}), including automatic binary-store
+offloading and explicit `PayloadReference<T>` values, can be used between .NET applications when all participating
+workers and SDK clients use a compatible SDK version and enable payload support. Each reader must be able to
+resolve the reference's store name and key to the same binary object through its own sidecar, with compatible
+serialization and payload contracts. Separate in-memory binary stores do not share objects.
+
+Other Dapr language SDKs do not presently support data references. Do not send these references to unsupported
+SDKs or payload-unaware .NET applications.
+{{% /alert %}}
+
 ## Call an activity in another application
 
 Set `TargetAppId` on `WorkflowTaskOptions` when calling an activity to execute it in another app:

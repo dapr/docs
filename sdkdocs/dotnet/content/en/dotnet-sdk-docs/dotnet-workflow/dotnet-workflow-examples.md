@@ -14,6 +14,11 @@ The Dapr Quickstarts repository on GitHub includes many workflow tutorials that 
 
 The Dapr .NET SDK repository on GitHub contains several examples demonstrating how to use Dapr Workflows with .NET. You can find these examples in the [examples/Workflow](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow) folder.
 
+For large payloads, see [Workflow data references (alpha)]({{% ref dotnet-workflow-data-references.md %}}) for
+automatic offloading, explicit references, a streaming example, and a benchmark comparison. The binary store and
+this SDK integration are alpha. Cross-app use requires compatible, payload-aware .NET applications with access to
+the same referenced objects; other Dapr language SDKs do not presently support data references.
+
 ## Next steps
 
 - [Try the Dapr University Workflow track](https://www.diagrid.io/dapr-university#dapr-workflow)
