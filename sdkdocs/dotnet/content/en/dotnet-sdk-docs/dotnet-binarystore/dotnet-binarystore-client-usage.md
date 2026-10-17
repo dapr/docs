@@ -11,6 +11,7 @@ description: Essential guidance for configuring and using DaprBinaryStoreClient
 `DaprBinaryStoreClient` uses network resources and implements `IDisposable`. Reuse a long-lived client rather than creating one for each operation. The dependency injection registration uses `ServiceLifetime.Singleton` by default; use the optional `lifetime` argument to select another lifetime when needed.
 
 ```csharp
+using Dapr.BinaryStore.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 builder.Services.AddDaprBinaryStoreClient(lifetime: ServiceLifetime.Singleton);
