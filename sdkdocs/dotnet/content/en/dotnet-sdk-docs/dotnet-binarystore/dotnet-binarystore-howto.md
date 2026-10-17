@@ -15,7 +15,8 @@ Use the `Dapr.BinaryStore` package to store and retrieve files using a Dapr bina
 
 ## Prerequisites
 
-- [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/)
+- [Dapr CLI]({{% ref install-dapr-cli.md %}})
+- An initialized [Dapr environment]({{% ref install-dapr-selfhost.md %}})
 - An initialized [Dapr environment](https://docs.dapr.io/getting-started/install-dapr-selfhost)
 - [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0), [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0), or [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0)
 - Dapr runtime 1.19 or later
