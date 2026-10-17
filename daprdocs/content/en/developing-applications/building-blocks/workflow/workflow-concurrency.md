@@ -17,9 +17,18 @@ Prefer global limits when you want to express a true concurrency limit. Because 
 
 ## Global limits
 
-Global limits enforce a maximum across **all replicas** of your application. The Dapr scheduler divides the limit among its instances and holds back triggers when the limit is reached, dispatching them as capacity becomes available.
+Global limits enforce a maximum across **all replicas** of your application. The Dapr scheduler divides the limit 
+among its instances and holds back triggers when the limit is reached, dispatching them as capacity becomes available.
 
-Because the total is fixed regardless of how many replicas are running, a global limit is the most accurate way to express a true concurrency limit. This is the recommended starting point for most workloads.
+Because the total is fixed regardless of how many replicas are running, a global limit is the most accurate way to
+express a true concurrency limit. This is the recommended starting point for most workloads.
+
+{{% alert title="Note" color="primary" %}}
+Global and per-name limits are enforced by the Scheduler when it delivers each job. When any of them is configured, 
+the [`WorkflowsFastPath` preview feature]({{% ref "workflow-fast-path.md#concurrency-limits" %}}) disables itself at
+sidecar startup (an Info log is emitted) so that the limits remain effective. Per-sidecar limits are compatible with
+the fast path.
+{{% /alert %}}
 
 ### All workflows or all activities
 
@@ -124,4 +133,5 @@ Dapr provides several ways to control concurrency and rate limiting:
 - [Control concurrency and rate limit applications]({{% ref control-concurrency.md %}})
 - [Rate limit middleware]({{% ref middleware-rate-limit.md %}})
 - [Workflow overview]({{% ref workflow-overview.md %}})
+- [Workflow fast path]({{% ref workflow-fast-path.md %}})
 - [Workflow API reference]({{% ref workflow_api.md %}})
