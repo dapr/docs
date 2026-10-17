@@ -17,11 +17,10 @@ Use the `Dapr.BinaryStore` package to store and retrieve files using a Dapr bina
 
 - [Dapr CLI]({{% ref install-dapr-cli.md %}})
 - An initialized [Dapr environment]({{% ref install-dapr-selfhost.md %}})
-- An initialized [Dapr environment](https://docs.dapr.io/getting-started/install-dapr-selfhost)
 - [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0), [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0), or [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0)
 - Dapr runtime 1.19 or later
 - The [Dapr.BinaryStore](https://www.nuget.org/packages/Dapr.BinaryStore) NuGet package
-- A binary store component configured in Dapr
+- A [binary store]({{% ref "developing-applications/building-blocks/binarystore/_index.md" %}}) component configured in Dapr
 
 Install the package in your project:
 
@@ -29,7 +28,28 @@ Install the package in your project:
 dotnet add package Dapr.BinaryStore
 ```
 
-Configure a binary store component in the Dapr component directory used by your application. The component's `metadata.name` is the store name supplied to the client methods or the `[BinaryStore]` attribute.
+## Configure an in-memory binary store
+
+For local development, create a `components` directory in your application directory and save the following component as `components\filestore.yaml`:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: filestore
+spec:
+  type: binarystore.in-memory
+  version: v1
+  metadata:
+    - name: maxSize
+      value: "4Mi"
+    - name: maxTotalSize
+      value: "512Mi"
+```
+
+This component stores files in the Dapr sidecar's memory without requiring an external storage service. It allows files up to 4 MiB and a combined total of 512 MiB. Data is lost when the sidecar stops and is not shared across sidecars, so use it for local development and testing rather than durable storage.
+
+The component's `metadata.name`, `filestore`, is the store name supplied to the client methods or the `[BinaryStore]` attribute in the examples below.
 
 ## Register the client
 
@@ -45,10 +65,10 @@ builder.Services.AddDaprBinaryStoreClient();
 var app = builder.Build();
 ```
 
-Start the application with its Dapr sidecar:
+Start the application from its project directory with its Dapr sidecar, loading the in-memory component from `components`:
 
 ```sh
-dapr run --app-id binary-store-example -- dotnet run
+dapr run --app-id binary-store-example --resources-path .\components -- dotnet run
 ```
 
 If you need to override the endpoint, configure the client builder:
@@ -62,7 +82,7 @@ builder.Services.AddDaprBinaryStoreClient((sp, clientBuilder) =>
 
 ## Upload and download a file
 
-Resolve the registered client and pass the binary store component name, a file name, and a stream. The example assumes `filestore` is the `metadata.name` of the configured component.
+Resolve the registered client and pass the binary store component name, a file name, and a stream. The example uses the `filestore` component configured above. Place a `report.pdf` file no larger than 4 MiB in your application's working directory before running the example. Add the following code after `var app = builder.Build();` in `Program.cs`, with the `using` directives at the top of the file.
 
 ```csharp
 using Dapr.BinaryStore;
@@ -82,6 +102,8 @@ await using (var destination = File.Create("downloaded-report.pdf"))
     await client.GetBinaryFileAsync(storeName, fileName, destination);
 }
 ```
+
+The example uploads `report.pdf` to the in-memory store as `uploads/report.pdf` and downloads it to `downloaded-report.pdf`. Run the remaining examples against the same sidecar to use the uploaded file before deleting it.
 
 The `Stream` overload of `SetBinaryFileAsync` reads the input stream from its current position and sends it to the runtime in chunks. The default upload chunk size is 32 KiB; pass `chunkSize` to choose another positive size. Set `overwrite: true` to replace an existing file. By default, an upload fails if the file already exists.
 

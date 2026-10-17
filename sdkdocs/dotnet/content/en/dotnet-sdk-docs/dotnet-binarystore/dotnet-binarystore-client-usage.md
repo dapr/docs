@@ -32,6 +32,7 @@ builder.Services.AddDaprBinaryStoreClient(lifetime: ServiceLifetime.Singleton);
 Values explicitly set on the builder take precedence over values from configuration:
 
 ```csharp
+using Dapr.BinaryStore.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
