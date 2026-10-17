@@ -306,6 +306,10 @@ spec:
             latencyDistributionUnits: 1s
 ```
 
+### Workflow fast path metrics
+
+When the [`WorkflowsFastPath` preview feature]({{% ref "workflow-fast-path.md" %}}) is enabled, the sidecar additionally exposes `dapr_runtime_workflow_local_wake_count`, `dapr_runtime_workflow_local_wake_drive_latency`, `dapr_runtime_workflow_local_activity_count`, `dapr_runtime_workflow_local_activity_drive_latency`, `dapr_runtime_workflow_completions_fold_count`, `dapr_runtime_workflow_completions_fold_wait_latency` and `dapr_runtime_workflow_lock_wait`. The drive and wait latency histograms use the shared `spec.metrics.latencyDistributionBuckets`, not the workflow execution buckets above. See the [fast path metrics table and suggested alerts]({{% ref "workflow-fast-path.md#metrics" %}}).
+
 ## Transform metrics with regular expressions
 
 You can set regular expressions for every metric exposed by the Dapr sidecar to "transform" their values. [See a list of all Dapr metrics](https://github.com/dapr/dapr/blob/master/docs/development/dapr-metrics.md).
