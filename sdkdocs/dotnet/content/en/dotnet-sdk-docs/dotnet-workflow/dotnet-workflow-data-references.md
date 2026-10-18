@@ -19,33 +19,46 @@ Use an SDK build that includes that implementation; do not assume an earlier pub
 {{% /alert %}}
 
 {{% alert title="Cross-app SDK compatibility" color="warning" %}}
-Cross-app activity and workflow call inputs are **inline by default**. Only opt into forwarding references to
-compatible, payload-aware .NET destinations with access to the stored data. Other Dapr language SDKs do not
-presently support this scheme. See [Cross-app input handling](#cross-app-input-handling) for requirements and limits.
+Cross-app activity and workflow call inputs are **inline by default**. When using cross-app workflows with other .NET
+applications, register `WithBinaryStorePayloads(...)` on every participating .NET application (with access to the
+same binary store) to preserve compatibility across return values, propagated history, and forwarded references—and
+**never unregister it** once enabled. Other Dapr language SDKs do not presently support this scheme. See
+[Cross-app input handling](#cross-app-input-handling) for requirements and limits.
 {{% /alert %}}
 
 Use this guide in the order that fits your application:
 
 - **Get started:** [choose an approach](#choose-how-to-handle-payloads), [set up payload support](#set-up-payload-support),
-  then [use automatic offloading or explicit references](#use-payloads).
-- **Understand behavior:** review [payload policies and limits](#understand-payload-policies),
-  [cross-app calls](#cross-app-input-handling), and [events](#event-payload-handling).
-- **Deploy and operate:** [adopt references in existing workflows](#adopt-data-references-in-existing-workflows),
+  and [use automatic offloading, explicit references, or streaming](#use-payloads).
+- **Configure policies:** review [options, write preferences, and inbound handling](#configuration-and-policy-reference).
+- **Handle app boundaries:** configure [cross-app calls](#cross-app-input-handling) and [events](#event-payload-handling).
+- **Migrate and operate:** [adopt references in existing workflows](#adopt-data-references-in-existing-workflows),
   [switch back to inline payloads](#switch-back-to-inline-payloads), and [manage stored payloads](#operate-workflows-with-stored-payloads).
 - **Evaluate the tradeoffs:** see the [benchmark comparison](#benchmark-comparison).
 
 ## Choose how to handle payloads
 
-| Approach | Application types | Behavior |
-| --- | --- | --- |
-| Inline (default) | `DocumentPayload` | Full serialized values stay in history. No binary-store registration or access. |
-| Automatic offloading (`PreferReference`) | `DocumentPayload` | Eligible large values are stored externally. The SDK downloads and deserializes them wherever an ordinary value is required, including each orchestration execution that receives the document. Cross-app inputs remain inline unless explicitly allowed. |
-| Explicit references | `PayloadReference<DocumentPayload>` | The workflow can forward a reference without downloading the document. An activity or client explicitly resolves it to an object or opens a stream. |
+| Approach | Application types | Behavior | Best for |
+| --- | --- | --- | --- |
+| Inline (default) | `DocumentPayload` | Full serialized values stay in history. No binary-store registration or access. | Small payloads that fit comfortably in workflow history. |
+| Automatic offloading (`PreferReference`) | `DocumentPayload` | Eligible large values are stored externally. The SDK downloads and deserializes them wherever an ordinary value is required, including each workflow execution that receives the document. Cross-app inputs remain inline unless explicitly allowed. | Stepping-stone migrations toward explicit references, or ensuring compatibility with other .NET apps that already use data references without immediately changing local signatures. |
+| Explicit references | `PayloadReference<DocumentPayload>` | The workflow can forward a reference without downloading the document. An activity or client explicitly resolves it to an object or opens a stream. | Workflows that coordinate steps without inspecting the payload themselves (deferring data access to the specific activities that need it), especially in single-app workflows or multi-app topologies where all participating applications use .NET and can be updated to support binary-store payloads. |
 
-Automatic offloading is useful when you need smaller history without changing workflow signatures. It does **not**
-eliminate repeated materialization (downloading and deserializing the payload). Explicit references are useful when
-the orchestrator only coordinates work and a later activity is the first consumer of the data. See the
-[benchmark comparison](#benchmark-comparison) for measured tradeoffs.
+### Performance and memory tradeoffs
+
+- **Both offloading modes shrink workflow history traffic:** in the [SDK benchmark](#benchmark-comparison) (a 2 MB
+  document across nine activities), both modes reduced workflow protobuf traffic by **~99.9%**.
+- **Automatic offloading does not eliminate repeated materialization:** because the workflow signature still takes
+  `DocumentPayload`, the SDK downloads and deserializes the payload on every replay, allocating more managed memory
+  than inline processing. Enable automatic offloading primarily when you are **migrating toward explicit data
+  references** or when you need **cross-app compatibility with another .NET application that already uses data
+  references**, even if this application only uses automatic offloading for now.
+- **Explicit references defer materialization:** passing `PayloadReference<T>` avoids downloading or deserializing the
+  payload until an activity explicitly resolves or streams it, reducing both execution time and managed allocations.
+  This is the best fit when you do not use multi-app workflows, or when all participating applications use .NET and
+  can be updated to support binary-store payloads.
+
+### How references work
 
 Offloading happens **after serialization**, based on the UTF-8 byte count of the serialized value. The reference
 envelope contains the store name, key, size, SHA-256 hash, and format version. Stored keys are content-addressed and
@@ -57,7 +70,7 @@ when a cross-app input requires inlining. `PreferInline` resolves outgoing refer
 ### Prerequisites
 
 - A build of `Dapr.Workflow` containing the PR revision described above. Payload support is included in
-  `Dapr.Workflow`; a separate `Dapr.Workflow.BinaryStore` package is not required.
+  `Dapr.Workflow`.
 - Dapr runtime 1.19.0-rc.3 or later with binary-store support.
 - A configured binary-store component, in addition to the workflow's usual actor state store, placement, and scheduler.
 - Payload support registered on every client and worker that writes or reads these workflows, with access to the
@@ -106,36 +119,30 @@ builder.Services.AddDaprWorkflow().WithBinaryStorePayloads(options =>
 });
 ```
 
-`StoreName` must match the component name. If you use a non-default sidecar gRPC endpoint, configure
-`DAPR_GRPC_ENDPOINT` consistently for the workflow and binary-store clients.
-
-`WithBinaryStorePayloads` extends the workflow builder, not `IServiceCollection`. For subsequent service
-registrations, use `builder.Services` or the returned workflow builder's `Services` property.
-
-Offloading is configured for the host, not separately for each workflow. Do not mix payload-aware and
-payload-unaware workers for the same app ID while offloaded workflows are running.
+- **`StoreName` and endpoints:** `StoreName` must match the component name. If you use a non-default sidecar gRPC
+  endpoint, configure `DAPR_GRPC_ENDPOINT` consistently for the workflow and binary-store clients.
+- **Builder chaining:** `WithBinaryStorePayloads` extends the workflow builder, not `IServiceCollection`. For
+  subsequent service registrations, use `builder.Services` or the returned workflow builder's `Services` property.
+- **Host-wide scope:** Offloading is configured for the host, not per workflow. Do not mix payload-aware and
+  payload-unaware workers for the same app ID while offloaded workflows are running.
 
 {{% alert title="Keep payload support registered indefinitely" color="warning" %}}
-Once you opt into `WithBinaryStorePayloads(...)`, **do not unregister it**. Keep this registration in place
-indefinitely, including after you stop creating references or switch back to inline payloads. Removing it risks
-breaking your application: retained workflow histories, results, and events can still contain references that
-require the registered services to resolve.
-
-To return to inline payloads, configure `WritePreference = PayloadWritePreference.PreferInline` instead of removing
-the registration. This changes future writes, not historical data, and leaves reference resolution available.
-First ensure receiving contracts accept inline values; see [Switch back to inline payloads](#switch-back-to-inline-payloads)
-for the migration path when older workflow versions still require `PayloadReference<T>`.
+Once you opt into `WithBinaryStorePayloads(...)` in any .NET application—including any application that participates
+in multi-app workflows with it—**never unregister it**, even if you later opt out of creating references. Retained
+workflow histories, results, and events can still contain data references that require the registered services to
+read. Instead, opt out of future offloading by setting `WritePreference = PayloadWritePreference.PreferInline` while
+keeping `WithBinaryStorePayloads(...)` registered; see [Switch back to inline payloads](#switch-back-to-inline-payloads).
 {{% /alert %}}
 
 ## Use payloads
 
-The examples below use the registration above, which selects `PreferReference`. For other write behavior, see
-[Choose a write preference](#choose-a-write-preference).
+The examples below use the registration above, which selects `PreferReference`. For other write behaviors and limits,
+see [Configuration and policy reference](#configuration-and-policy-reference).
 
 ### Use automatic offloading
 
-Keep ordinary input and output types. The SDK stores values that meet the threshold and resolves them before passing
-them to your application code. These types work with or without `WithBinaryStorePayloads`:
+Keep ordinary input and output types. The SDK stores values that meet `OffloadThreshold` and resolves them before
+passing them to your application code. These types work with or without `WithBinaryStorePayloads`:
 
 ```csharp
 using Dapr.Workflow;
@@ -166,20 +173,22 @@ var instanceId = await client.ScheduleNewWorkflowAsync(
 ```
 
 With the registration above, the document exceeds 64 KiB and is offloaded at the workflow and activity input
-boundaries. The small integer result stays inline. Without payload registration, or with the default `Preserve`
-preference and an ordinary input, the same document stays inline.
+boundaries, while the small integer result stays inline. Without payload registration—or with the default `Preserve`
+preference and an ordinary input—the same document stays inline. You can safely change `OffloadThreshold` between
+builds or deployments: it only affects whether newly written workflow history items are inlined or offloaded, and has
+no impact on automatic resolution for existing workflows. (By contrast, changing `MaxInMemoryRehydrationSize` is **not**
+safe without planning because it applies to all existing references; see
+[Size and change `MaxInMemoryRehydrationSize` safely](#size-and-change-maxinmemoryrehydrationsize-safely).)
 
-Automatic offloading reduces the data carried in history, but this workflow still needs a materialized
-`DocumentPayload` each time the orchestrator executes. Replaying a workflow does not imply that previously
-downloaded documents remain cached across executions.
+Because `DocumentWorkflow` accepts `DocumentPayload`, the SDK still downloads and deserializes the payload each time
+the workflow replays; previously downloaded documents are not cached across executions.
 
 ### Pass explicit references
 
-To avoid materializing the document in the orchestrator, change the workflow and activity inputs to
-`PayloadReference<DocumentPayload>`. Inject `IWorkflowPayloadResolver` into the activity that actually needs it.
-
-For an existing workflow, introduce these contract changes in a new workflow version rather than replacing the
-types used by retained histories. See [Adopt data references in existing workflows](#adopt-data-references-in-existing-workflows).
+To avoid materializing the document in the workflow itself, change the workflow and activity inputs to
+`PayloadReference<DocumentPayload>` and inject `IWorkflowPayloadResolver` into the activity that consumes it.
+(For existing workflows, introduce contract changes in a new version; see
+[Adopt data references in existing workflows](#adopt-data-references-in-existing-workflows).)
 
 ```csharp
 using Dapr.Workflow;
@@ -204,7 +213,7 @@ public sealed class MeasureReferenceActivity(IWorkflowPayloadResolver resolver)
 }
 ```
 
-In client code, store the document before scheduling. Use the same instance ID for storage and scheduling:
+In client code, store the document before scheduling using the same instance ID for both calls:
 
 ```csharp
 var client = services.GetRequiredService<DaprWorkflowClient>();
@@ -217,87 +226,40 @@ await client.ScheduleNewWorkflowAsync(
     nameof(ReferenceWorkflow), instanceId, reference);
 ```
 
-`StoreAsync` explicitly stores the value regardless of the write preference or automatic offload threshold.
-Use `Preserve` or `PreferReference` for the reference-typed workflow above; `PreferInline` would send document
-content instead of its required reference. Create references in
-client or activity code, not in replayed orchestrator code. The workflow above only forwards a reference; the
-activity downloads and deserializes the document. Activity retries can read it again, so this is not an exactly-once
-download guarantee.
+Key rules for explicit references:
 
-If the orchestrator itself needs the value, use `await context.ResolvePayloadAsync(reference)` rather than calling
-the binary-store client directly. The SDK's context extensions coordinate reads with workflow execution.
-`context.HasPayloadResolver()` reports whether support is registered. Resolved values are cached only for the
-current orchestration execution, up to `ResolutionCacheSize`; the cache does not span replays.
+- **Creating references:** Call `StoreAsync` in client or activity code, never in replayed workflow code.
+  `StoreAsync` writes the value regardless of `WritePreference` or `OffloadThreshold`.
+- **Write preference:** Use `Preserve` or `PreferReference` for reference-typed workflows; `PreferInline` would
+  convert the outgoing reference back into inline document content and fail the receiving contract.
+- **Retries:** Activity retries can download the payload again; explicit references do not guarantee an
+  exactly-once download.
+- **In-workflow resolution:** If the workflow itself must read the value, call
+  `await context.ResolvePayloadAsync(reference)` rather than calling the binary-store client directly.
+  `context.HasPayloadResolver()` reports whether support is registered. Resolved values are cached only for the
+  current workflow execution (up to `ResolutionCacheSize`), not across replays.
 
 ### Stream large payloads
 
 `ResolveAsync<T>` buffers the serialized payload before deserialization and is subject to
 `MaxInMemoryRehydrationSize`. A typed reference alone does not remove that limit. For larger data, use
-`IWorkflowPayloadResolver.OpenAsync(reference)` in an activity or client and consume the returned stream
-incrementally with asynchronous reads. Dispose it with `await using`.
+`IWorkflowPayloadResolver.OpenAsync(reference)` in an activity or client (or `context.OpenPayloadAsync(reference)` in
+a workflow, though activity processing is preferred to avoid replay overhead) and consume the stream
+incrementally with asynchronous reads and `await using`:
 
-The stream contains the serialized bytes, not just a document's content property. Streaming avoids buffering
-the whole payload on read, but `StoreAsync` still serializes the value in memory on write. The streaming path does
-**not** automatically verify the content hash: the consumer must check the bytes against `reference.ContentHash`
-and, where appropriate, `reference.Size`. The
-[streaming activity example](https://github.com/dapr/dotnet-sdk/blob/622c5374db5b06d0cdf538e94927853f0beede88/examples/Workflow/WorkflowDataReferences/Activities/MeasurePayloadActivity.cs)
-demonstrates bounded-buffer reads and SHA-256 verification.
+- **Serialized content:** The stream contains the full serialized bytes, not just a document's inner property.
+- **Write buffering:** Streaming avoids buffering the whole payload on read, but `StoreAsync` still serializes the
+  value in memory on write.
+- **Manual integrity check:** Streaming does **not** automatically verify the content hash. Consumers must check the
+  bytes against `reference.ContentHash` and, where appropriate, `reference.Size`. See the
+  [streaming activity example](https://github.com/dapr/dotnet-sdk/blob/622c5374db5b06d0cdf538e94927853f0beede88/examples/Workflow/WorkflowDataReferences/Activities/MeasurePayloadActivity.cs)
+  for bounded-buffer reads and SHA-256 verification.
 
-For orchestrator reads, `context.OpenPayloadAsync(reference)` is the corresponding SDK-managed API. Use
-asynchronous reads and disposal; prefer doing payload processing in an activity to avoid repeating it on replay.
-
-## Understand payload policies
-
-### Choose a write preference
-
-`BinaryStorePayloadOptions.WritePreference` controls conversion of future outgoing top-level payloads.
-It defaults to `PayloadWritePreference.Preserve`; registration alone does not enable automatic payload offloading.
-The [registration example](#register-payload-support) explicitly selects `PreferReference`.
-
-| Preference | Ordinary outgoing value | Outgoing reference |
-| --- | --- | --- |
-| `Preserve` (default) | Serialize inline; no automatic upload. | Keep the reference. |
-| `PreferReference` | Upload if the serialized value meets `OffloadThreshold` at an enabled `OffloadSites` boundary. Otherwise keep inline. | Keep the reference; do not upload it again. |
-| `PreferInline` | Serialize inline; no automatic upload. | Resolve to its original serialized content and write that content inline. Fail if resolution cannot complete safely. |
-
-The cross-app input rule can require inline data regardless of the host preference. Allowing references on a
-cross-app call restores the normal host preference; it does not force offloading or override `PreferInline`.
-`OffloadSites` and `OffloadThreshold` only govern automatic reference creation under `PreferReference`, not inlining
-or inbound reads. Explicit `IWorkflowPayloadResolver.StoreAsync` writes under every preference.
-
-These policies do not rewrite retained history, persist an instance-level setting, or infer policy from a
-workflow's input. They affect future writes from **both new and already-running workflows**. Changing host
-configuration does not automatically version workflows or activities.
-
-In particular, `Preserve` means no automatic outbound conversion, not preservation of object provenance. If
-the SDK reads a reference as an ordinary `T`, and application code subsequently returns a `T`, that output is
-a new inline value. Histories can legitimately contain both forms. Applications that already use automatic
-offloading must explicitly select `PreferReference` to continue that behavior.
-
-`PreferInline` requires receiving contracts that accept ordinary values. Do not apply it indiscriminately to
-applications whose workflows or activities still expect `PayloadReference<T>`. See
-[Switch back to inline payloads](#switch-back-to-inline-payloads).
-
-### Inbound handling preserves the recorded representation
-
-Inbound handling is independent of the write preference and works the same for local and cross-app inputs:
-
-| Received payload | Receiving contract | Behavior |
-| --- | --- | --- |
-| Inline data | Ordinary `T` | Deserialize normally. |
-| Reference envelope | Ordinary `T` | Resolve and deserialize using registered payload support. |
-| Reference envelope | `PayloadReference<T>` | Pass the reference through without automatically materializing it. |
-| Inline data | `PayloadReference<T>` | Report a contract mismatch; do not upload data to manufacture a reference. |
-
-Resolution for application code does not replace the received reference in workflow history or mutate retained
-wire metadata. Raw and propagated history continue to expose the originally recorded representation. Received
-data does not establish an outbound preference or prove the sender can consume reference-valued responses.
-
-Readers must understand the envelope version, use compatible serialization, and have access to the referenced
-objects. Unsupported versions, missing data, integrity failures, and buffering-limit violations surface as errors;
-they are not silently treated as ordinary application data.
+## Configuration and policy reference
 
 ### Configure offloading and read limits
+
+Configure `BinaryStorePayloadOptions` in `WithBinaryStorePayloads(...)`:
 
 | Option | Default | Purpose |
 | --- | --- | --- |
@@ -308,68 +270,140 @@ they are not silently treated as ordinary application data.
 | `OffloadSites` | `PayloadKind.All` | Select which boundaries can automatically create references under `PreferReference`. Does not restrict inlining or reads. |
 | `MaxInMemoryRehydrationSize` | `16 * 1024 * 1024` bytes | Maximum serialized payload size for buffered resolution, including `ResolveAsync<T>` and outbound inlining. This is not a transport limit or a limit on total process memory. |
 | `VerifyIntegrityOnRead` | `true` | Verify SHA-256 for buffered reads. Does not verify streams returned by `OpenAsync`. |
-| `ResolutionCacheSize` | `128` | Maximum resolved entries cached by the orchestrator's context resolver per execution. `0` disables this cache. |
+| `ResolutionCacheSize` | `128` | Maximum resolved entries cached by the workflow context resolver per execution. `0` disables this cache. |
 | `SkipWriteIfExists` | `true` | Treat an already-existing content-addressed object as a successful write. Does not guarantee that a duplicate upload attempt transfers no bytes. |
 
-`PayloadKind` includes workflow and activity inputs and outputs, external events, continue-as-new input,
-custom status, and child workflow inputs and outputs. Detached workflow inputs and rerun input overrides use
-`PayloadKind.WorkflowInput`; termination outputs use `PayloadKind.WorkflowOutput`. Combine flags to restrict
-automatic offloading, for example:
+`PayloadKind` flags cover workflow and activity inputs/outputs, external events, continue-as-new input, custom
+status, and child workflow inputs/outputs (detached workflow inputs and rerun overrides use `PayloadKind.WorkflowInput`;
+termination outputs use `PayloadKind.WorkflowOutput`). Combine flags to restrict automatic offloading:
 
 ```csharp
 options.OffloadSites = PayloadKind.WorkflowInput | PayloadKind.ActivityInput;
 ```
 
-To stop automatic reference creation while preserving reference reads and explicit forwarding, keep
-`WithBinaryStorePayloads` registered and set `WritePreference = PayloadWritePreference.Preserve`.
-`OffloadSites = PayloadKind.None` remains an alternative when using `PreferReference`.
-Explicit `StoreAsync` calls still write payloads. These settings stop automatic reference creation but do not
-convert outgoing references to inline data. To do that, use `PreferInline` with compatible contracts as described
-in [Switch back to inline payloads](#switch-back-to-inline-payloads). In every case, keep
-`WithBinaryStorePayloads(...)` registered indefinitely; never remove it as a way to disable offloading.
-
-Buffered reads fail with `PayloadRehydrationLimitException` when they exceed the configured size limit,
+Buffered reads throw `PayloadRehydrationLimitException` when exceeding `MaxInMemoryRehydrationSize`,
 `PayloadNotFoundException` when the object is missing, or `PayloadIntegrityException` when hash verification fails.
 Retain compatible payload readers and serialization settings for existing histories; changing the serializer does
 not migrate stored data.
 
-## Cross-app input handling
+### Size and change `MaxInMemoryRehydrationSize` safely
 
-### Compatibility requirements
+Unlike `OffloadThreshold` (which only affects future writes), **`MaxInMemoryRehydrationSize` is not safe to change
+casually**. It is enforced on every buffered read and inlining operation—including references already recorded in
+workflow history. Lowering it below an existing payload's declared or actual size can cause:
 
-Cross-app activity, child workflow, and detached workflow **inputs are sent inline by default**. The sending SDK
-does not automatically offload these inputs, and resolves a top-level reference to its stored serialized content
-before submitting the call. This overrides a host's `PreferReference` write preference.
+1. Ordinary `T` inputs and outputs to throw `PayloadRehydrationLimitException` during materialization.
+2. Cross-app boundary inlining to fail before the call is sent.
+3. `PreferInline` conversion of existing references to fail.
+4. Running workflows to fail when replay or a later turn encounters an older reference.
 
-Opt out per-call with `AllowPayloadReferences: true` only when the destination supports reference envelopes,
-registers payload support with `WithBinaryStorePayloads(...)` (if a .NET application), and can access the stored data. This is an explicit
-compatibility assertion, not capability negotiation. Payload contracts and serialization settings must also match.
+#### Sizing best practices
 
-Each reader resolves the reference's store name and key through its own configured Dapr sidecar. The named
-binary-store component must be available to each reader and address the same stored objects, with the required
-access permissions. Matching component names alone is not enough if they point to different storage locations.
-Separate in-memory stores do not share payloads across sidecars.
+- **Keep the 16 MiB default** unless measured requirements justify changing it.
+- **Allow modest headroom:** Set the limit above your expected serialized payload size with room for natural growth.
+- **Account for concurrent memory pressure:** Keep the limit below a size that would cause excessive memory usage when
+  multiplied by concurrent resolutions. For example, a 32 MiB limit with 20 concurrent materializations can require
+  roughly 640 MiB for payload buffers alone, plus additional allocations during UTF-8 conversion and deserialization.
+- **Prefer streaming for larger documents:** Use `PayloadReference<T>` and stream via `OpenAsync` rather than raising
+  the in-memory limit indefinitely.
+- **Align with transport limits:** If cross-app inlining is expected, ensure materialized payloads also fit the
+  configured Dapr runtime and gRPC transport limits, including message overhead. Raising `MaxInMemoryRehydrationSize`
+  does not raise transport limits.
+- **Test boundary behavior:** Exercise payloads near and just above the configured limit in load and integration tests.
 
-As of v1.19, only the .NET SDK presently supports this data-reference scheme. The versioned envelope is intended for a future
-cross-SDK proposal; support in other SDKs must not be assumed. Do not enable reference forwarding to other SDKs
-or to older or payload-unaware .NET applications. Upgrading the SDK without registering payload support is not enough.
+#### Changing `MaxInMemoryRehydrationSize` later
 
-The default protects top-level call inputs, not nested reference properties, return values, or propagated history.
+Treat `MaxInMemoryRehydrationSize` as a host compatibility and memory-safety boundary: keep it consistent across all
+workers that can process the same workflow versions, and change it only through a reviewed deployment rather than
+runtime mutation.
 
-### Use the inline default
+- **Increasing the limit** is generally backward-compatible, but requires reassessing memory concurrency and transport
+  limits.
+- **Lowering the limit** can break existing workflows whose histories contain references larger than the new value
+  (failing during replay, typed state reads, automatic deserialization, `PreferInline` conversion, or cross-app
+  inlining). Before lowering it:
+  1. Identify the largest referenced payloads used by active workflow instances.
+  2. Change large-payload consumers to accept `PayloadReference<T>` and stream content via `OpenAsync`.
+  3. Version workflow and activity contracts when changing ordinary `T` inputs to `PayloadReference<T>` inputs.
+  4. Keep old workflow versions and their previous limit available until existing instances complete or are retired.
+  5. Roll out the lower limit gradually and monitor for `PayloadRehydrationLimitException`.
 
-When an activity, child workflow, or detached workflow call specifies a `TargetAppId` different from the current
-app, the default is to require inline input.
-An explicit same-app target follows the normal host preference. The SDK handles the outgoing input after workflow
-execution has removed calls already recorded in history, before submitting the remaining actions to the runtime.
-Storage I/O does not run directly in the deterministic workflow body.
+### Choose a write preference
 
-Configure the source app ID correctly: if it is unavailable, a non-empty `TargetAppId` still requires inline input
-unless the call explicitly allows references. The SDK cannot infer that the target is the same app.
+`BinaryStorePayloadOptions.WritePreference` controls conversion of future outgoing top-level payloads.
+It defaults to `PayloadWritePreference.Preserve`; registration alone does not enable automatic payload offloading.
 
-An ordinary input is kept inline even under `PreferReference`. A top-level `PayloadReference<T>` is resolved on
-the sender, and the original serialized content is sent without another deserialize/serialize cycle or
-automatic re-offloading. The destination should accept `T`:
+| Preference | Ordinary outgoing value | Outgoing reference |
+| --- | --- | --- |
+| `Preserve` (default) | Serialize inline; no automatic upload. | Keep the reference. |
+| `PreferReference` | Upload if the serialized value meets `OffloadThreshold` at an enabled `OffloadSites` boundary. Otherwise keep inline. | Keep the reference; do not upload it again. |
+| `PreferInline` | Serialize inline; no automatic upload. | Resolve to its original serialized content and write that content inline. Fail if resolution cannot complete safely. |
+
+Important policy rules:
+
+- **Future writes only:** Write preferences affect future writes from both new and running workflows. They do not
+  rewrite retained history, persist an instance-level setting, infer policy from a workflow's input, or automatically
+  version workflows or activities.
+- **No object provenance under `Preserve`:** `Preserve` means no automatic outbound conversion. If the SDK resolves a
+  reference to an ordinary `T` and your code later returns that `T`, the output is serialized inline as a new value.
+  Histories can legitimately contain both inline values and references.
+- **Stopping automatic offloading:** Set `WritePreference = PayloadWritePreference.Preserve` (or
+  `OffloadSites = PayloadKind.None` under `PreferReference`) to stop automatic reference creation while keeping
+  reference reads and explicit `StoreAsync` writes active. To convert outgoing references back to inline data, see
+  [Switch back to inline payloads](#switch-back-to-inline-payloads).
+
+### Inbound handling preserves the recorded representation
+
+Inbound handling is independent of `WritePreference` and works the same for local, cross-app, and event inputs:
+
+| Received payload | Receiving contract | Behavior |
+| --- | --- | --- |
+| Inline data | Ordinary `T` | Deserialize normally. |
+| Reference envelope | Ordinary `T` | Resolve and deserialize using registered payload support. |
+| Reference envelope | `PayloadReference<T>` | Pass the reference through without automatically materializing it. |
+| Inline data | `PayloadReference<T>` | Report a contract mismatch; do not upload data to manufacture a reference. |
+
+Resolving a reference for application code does not rewrite workflow history or mutate retained wire metadata.
+Received data also does not establish an outbound preference or prove the sender can consume reference-valued
+responses. Unsupported envelope versions, missing data, integrity failures, and buffering-limit violations surface
+as errors rather than falling back to ordinary application data.
+
+## Cross-app and external boundaries
+
+### Cross-app input handling
+
+An automatic boundary switch makes binary-store payloads compatible with multi-app workflow calls by default for
+top-level inputs. When an activity, child workflow, or detached workflow targets another app (`TargetAppId` differs
+from the current app), the SDK marks the boundary as requiring inline data, overriding a host's `PreferReference`
+setting:
+
+- An ordinary input is kept inline.
+- Any top-level `PayloadReference<T>` is resolved by the source app (after replay filters out already-recorded calls,
+  so storage I/O does not run directly inside the deterministic workflow body) and its original serialized payload is
+  sent inline before Dapr routes the call, without another deserialize/serialize cycle.
+
+Key scope of the cross-app boundary switch:
+
+- **Top-level cross-app inputs only:** Nested references inside DTO properties, return values/outputs, and propagated
+  history are not automatically converted. Because those paths can still carry references, **every .NET application
+  participating in a multi-app workflow should register `WithBinaryStorePayloads(...)`** (and never unregister it once
+  enabled) to preserve compatibility.
+- **Source app read access required:** The source app must have payload support registered and access to the referenced
+  object in the binary store.
+- **Transport limits still apply:** Normal Dapr, gRPC, scheduler, and state-store message-size limits apply after the
+  payload is materialized inline.
+- **Per-call opt-out:** Set `AllowPayloadReferences: true` when both apps support references and share access to the
+  underlying binary store.
+
+Configure the source app ID correctly: if it is unavailable, any non-empty `TargetAppId` is treated as cross-app and
+inlined by default. Explicit same-app targets follow the normal host preference.
+
+#### Use the inline default
+
+For a top-level cross-app input, the sender resolves `reference` and sends ordinary `T` data inline (the sender still
+needs `WithBinaryStorePayloads(...)` and storage access to resolve `reference`; if the destination is another .NET
+application, register `WithBinaryStorePayloads(...)` there as well to preserve compatibility across return values and
+propagated history):
 
 ```csharp
 var length = await context.CallActivityAsync<int>(
@@ -378,41 +412,35 @@ var length = await context.CallActivityAsync<int>(
     new WorkflowTaskOptions(TargetAppId: "document-service"));
 ```
 
-This call sends document data, not a reference. It can work with a payload-unaware destination, provided its
-ordinary input contract and serialization are compatible. The sender still needs registered payload support
-and access to the referenced object.
+#### Explicitly allow references for a known destination
 
-### Explicitly allow references for a known destination
+Opt out per call with `AllowPayloadReferences: true` only when all of the following hold:
 
-If the destination deliberately expects `PayloadReference<DocumentPayload>`, opt out of cross-app inlining:
+1. The destination is a .NET application with compatible payload contracts and serialization settings (`v1.19` other
+   language SDKs do not support this scheme).
+2. The destination registers `WithBinaryStorePayloads(...)` (upgrading the SDK alone is not enough).
+3. Both apps can access the same underlying storage objects via the named binary-store component in their respective
+   sidecars (matching component names pointing to separate in-memory stores do not share data).
+4. The sending host uses `Preserve` or `PreferReference` (`PreferInline` still forces inline content).
 
 ```csharp
+// Activity call
 var length = await context.CallActivityAsync<int>(
     "MeasureReferenceActivity",
     reference,
     new WorkflowTaskOptions(
         TargetAppId: "document-service",
         AllowPayloadReferences: true));
-```
 
-The sending host must also use a compatible write preference (`Preserve` or `PreferReference`) to retain that
-explicit reference. Permission applies only to this call's input and is retained by SDK retries. It does not
-advertise capabilities to the destination or control the representation of the returned value.
-
-For a child workflow, use the equivalent `ChildWorkflowTaskOptions`:
-
-```csharp
-var length = await context.CallChildWorkflowAsync<int>(
+// Child workflow call
+var childLength = await context.CallChildWorkflowAsync<int>(
     "ReferenceWorkflow",
     reference,
     new ChildWorkflowTaskOptions(
         TargetAppId: "document-service",
         AllowPayloadReferences: true));
-```
 
-For a detached workflow, use the overload with explicit routing options:
-
-```csharp
+// Detached workflow call (uses inline default unless AllowPayloadReferences: true is set)
 var detachedId = await context.ScheduleNewDetachedWorkflowAsync(
     workflowName: "DocumentWorkflow",
     instanceId: null,
@@ -421,182 +449,123 @@ var detachedId = await context.ScheduleNewDetachedWorkflowAsync(
     options: new WorkflowTaskOptions(TargetAppId: "document-service"));
 ```
 
-This example uses the inline default. Set `AllowPayloadReferences: true` only for a reference-aware destination.
-Detached options support routing and payload permission, not retry policies or history propagation; unsupported
-options are rejected. Existing detached calls without options continue to schedule locally.
+`AllowPayloadReferences` applies only to that call's input and is retained across SDK retries. Detached workflow
+options support routing and payload permission only; retry policies and history propagation are rejected.
 
-### Limits and scope
+#### Limits and scope
 
-Cross-app inlining and `PreferInline` are **inline-or-error**, not best-effort fallback policies:
+Cross-app inlining and `PreferInline` are **inline-or-error**, not best-effort fallbacks:
 
-- Resolution checks `MaxInMemoryRehydrationSize` against both the declared reference size and the bytes actually
-  read. Buffered content is checked against its hash when `VerifyIntegrityOnRead` is enabled.
-- Missing or inaccessible storage, unsupported envelope versions or transformations, and integrity or buffering
-  failures prevent the outgoing call from being submitted. The SDK does not silently send the reference instead.
-- A buffering limit is not a transport limit. The SDK's configured gRPC message limits still apply, and remote
-  runtime, scheduler, state-store, and destination limits may be smaller. Message overhead and multiple actions
-  can make a request larger than one serialized payload. These remote limits are not negotiated by the SDK.
-  Transport/runtime errors must be handled normally; successful materialization does not guarantee delivery.
-- Only top-level inputs are converted. The SDK does not recursively replace reference-valued properties in
-  arbitrary DTOs, because that would change their schemas.
-- Return values and propagated history are not covered by the input override. Retained propagated history is
-  not rewritten. Plan compatible contracts, write preferences, and storage access independently for these paths.
+- **Strict validation:** Resolution checks `MaxInMemoryRehydrationSize` (against both declared size and bytes read)
+  and verifies the SHA-256 hash when `VerifyIntegrityOnRead` is enabled. Missing storage, unsupported envelopes, or
+  limit/integrity failures prevent the call from being submitted; the SDK never silently falls back to sending a
+  reference.
+- **No recursive or return-path rewriting:** Because only top-level call inputs are converted, plan compatible
+  contracts, write preferences, and storage access independently for nested `PayloadReference<T>` properties, return
+  values, and propagated history.
 
-## Event payload handling
+### Event payload handling
 
-Current event APIs do not expose `TargetAppId` or a per-event `AllowPayloadReferences` option. They use the normal
-write preference rather than the automatic cross-app input override described above:
+Event APIs do not expose `TargetAppId` or `AllowPayloadReferences` and instead follow the sender's `WritePreference`:
 
 | Event path | Outgoing policy |
 | --- | --- |
-| `context.SendEvent` | Uses the workflow host's `WritePreference`. The target instance is in the current app; local events are not forced inline. |
+| `context.SendEvent` | Uses the workflow host's `WritePreference`. The target instance is in the current app; local events are not forced inline. (Note: Dapr `1.19.0-rc.3` rejects workflow-originated `EventSent` messages regardless of payload representation.) |
 | Client `RaiseEventAsync` | Uses the publishing client's configured `WritePreference`. The destination is determined by the sidecar endpoint configured for that client. |
 
-`context.SendEvent` also requires runtime support for workflow-originated events. Dapr `1.19.0-rc.3`
-rejects the resulting `EventSent` message, regardless of payload representation. The policy described above
-is the SDK's serialization behavior, not a guarantee of event delivery on that runtime.
+Under `PreferReference`, automatic event offloading is controlled by `PayloadKind.ExternalEvent` in `OffloadSites`
+and `OffloadThreshold`. Inbound events follow the standard
+[inbound handling rules](#inbound-handling-preserves-the-recorded-representation).
 
-Under `PreferReference`, automatic event offloading is governed by `PayloadKind.ExternalEvent` in `OffloadSites`
-and the configured `OffloadThreshold`. `Preserve` keeps ordinary event values inline but still forwards explicit
-references. `PreferInline` also resolves outgoing top-level references to their original serialized content.
+Because an external application can point a client at a destination's sidecar and call `RaiseEventAsync`, same-app
+routing does not guarantee compatible SDK support. When publishing from an external client to an app with unknown
+reference support, configure `WritePreference = PayloadWritePreference.PreferInline` on that client (noting that
+this applies to all payload writes from that client and follows the same [inline-or-error limits](#limits-and-scope)).
 
-**Same-app routing does not guarantee same-app authorship or compatible SDK support.** An external application
-can configure a client against the destination's sidecar and raise an event. The SDK cannot infer the publisher's
-or receiver's reference capabilities merely from the instance ID or the fact that an event was received.
+## Migration, rollback, and lifecycle
 
-For an external publisher targeting an app whose reference support is unknown, configure
-`WritePreference = PayloadWritePreference.PreferInline`. The publisher needs payload support and storage access
-to resolve any references it supplies. The [inlining limits and failure behavior](#limits-and-scope) still apply:
-inlining errors are surfaced rather than falling back to sending a reference. This preference affects the
-client's other payload writes too; it is not a per-event override.
-
-Inbound events follow the same [representation-preserving read rules](#inbound-handling-preserves-the-recorded-representation)
-as other payloads. A consumer awaiting an ordinary `T` can receive inline data or a resolvable reference. A consumer
-awaiting `PayloadReference<T>` receives a reference without automatic materialization, but inline data is a contract
-mismatch. Reading an event does not rewrite its recorded history or establish a preference for later writes.
-
-No additional event policy is required for the currently supported APIs. If explicit cross-app event routing is
-introduced, it should use the same inline-by-default rule and per-call reference permission as other cross-app
-calls. Those event-routing options are not currently available.
-
-## Adopt data references in existing workflows
+### Adopt data references in existing workflows
 
 **Automatic offloading is a storage-format change; explicit references are an application-contract change.**
-In the current alpha implementation, you can safely enable automatic offloading for existing, in-flight workflows
-without changing their workflow version, provided the application logic and serialization contract stay unchanged
-and the documented storage requirements and read limits are met. To introduce explicit references, add new
-activities with reference-based contracts and a new workflow version that consumes those contracts, while
-preserving the old workflows and activities.
 
 | Approach | Compatibility with existing workflows |
 | --- | --- |
 | Inline | Unchanged by default. `AddDaprWorkflow(...)` alone does not enable payload offloading. |
-| Automatic offloading | Existing workflow and activity parameter and return types stay unchanged. The SDK accepts both historical inline values and reference envelopes, resolving references before deserialization. |
-| Explicit references | Changing `T` to `PayloadReference<T>` is not automatically compatible with histories containing inline `T`. Preserve the old contract and introduce the reference-based contract in a new version. |
+| Automatic offloading | Safe to enable for in-flight workflows without versioning. Existing `T` contracts stay unchanged; the SDK reads both historical inline values and new reference envelopes. |
+| Explicit references | Changing `T` to `PayloadReference<T>` is a breaking contract change for histories containing inline `T`. Preserve the old contract and introduce `PayloadReference<T>` in a new workflow version. |
 
-### Enable automatic offloading safely
+#### Enable automatic offloading safely
 
-Historical inline values are not rewritten. Only newly emitted payloads at enabled boundaries are candidates for
-offloading, so a workflow history can contain both inline values and references. The SDK passes ordinary serialized
-values through on read and applies outbound offloading after replay has consumed previously recorded actions.
+Enable `WritePreference = PayloadWritePreference.PreferReference` in `WithBinaryStorePayloads(...)`. Historical
+inline values remain untouched, and outbound offloading applies only to newly emitted payloads after replay has
+consumed recorded actions. Adjusting `OffloadThreshold` between builds is also safe—it only governs newly written
+history items and does not affect how existing inline or referenced payloads are resolved. By contrast, do not lower
+`MaxInMemoryRehydrationSize` below existing referenced payload sizes; see
+[Size and change `MaxInMemoryRehydrationSize` safely](#size-and-change-maxinmemoryrehydrationsize-safely).
 
-Select `WritePreference = PayloadWritePreference.PreferReference` and the desired offload boundaries through
-`WithBinaryStorePayloads(...)` during registration. The SDK manages
-storage and materialization at workflow and activity boundaries; application code continues to use its existing
-parameter and return types. You do not implement or independently coordinate readers and writers within the workflow
-for automatic offloading.
+#### Introduce explicit references with file-based versioning
 
-If you want activities to return `PayloadReference<T>` values instead of materialized `T` values, that is an
-explicit-reference contract change, not an automatic-offloading configuration change. Introduce new activities and
-a new workflow version as described below.
+Use [name-based workflow versioning]({{% ref dotnet-workflow-versioning.md %}}#name-based-versioning) by copying the
+workflow to a new file and giving the class a versioned name (such as `DocumentWorkflowV2`; renaming the file alone
+does not create a version):
 
-For rollback, stop explicit writes on the new ordinary-payload path and follow
-[Switch back to inline payloads](#switch-back-to-inline-payloads) to select a compatible write preference.
-Keep `WithBinaryStorePayloads(...)` registered indefinitely; rollback must not remove payload support.
+1. **Add new activities and the V2 workflow.** Create distinctly named activities for any changed `PayloadReference<T>`
+   input or output contracts while keeping the original activities registered.
+2. **Route new instances to V2.** Configure name-based versioning and keep both workflow versions registered (manual
+   registration is no longer needed for workflows as of SDK v1.17.0 or activities as of v1.18.0). V2 can keep the
+   original workflow input type `T` and obtain references from its new activities, unless V2 also changes its
+   entry-point input to `PayloadReference<T>` (in which case clients must call `StoreAsync` before scheduling V2).
 
-### Introduce explicit references with file-based versioning
+Note that automatic offloading remains host-wide: enabling `PreferReference` on a shared host affects eligible
+payloads emitted by both V1 and V2.
 
-Use [name-based workflow versioning]({{% ref dotnet-workflow-versioning.md %}}#name-based-versioning) for a safe
-file-based migration: copy the workflow to a new file and give its class a new versioned name, such as
-`DocumentWorkflowV2`. Renaming the file alone does not create a workflow version.
+#### When patch-based versioning is appropriate
 
-1. **Add new activities and the reference-based workflow version.** Introduce a distinctly named activity that
-   stores the payload and returns `PayloadReference<T>`. In V2, call that activity with the corresponding typed
-   result, such as `CallActivityAsync<PayloadReference<DocumentPayload>>(...)`, and pass the reference to activities
-   that consume it. Give those activities distinct names wherever their input or output contracts change, and keep
-   the original activities registered. A workflow version does not automatically version shared activities or
-   convert persisted payloads.
-2. **Automatic routing to V2.** Configure name-based versioning and keep both workflow versions registered (recall
-that as of v1.17.0 of the Dapr .NET SDK, you no longer need to manually register workflows and as of v1.18.0, you
-do not need to register activities either). With the
-   numeric naming strategy, new starts using the canonical workflow name select the latest version, while existing
-   instances retain their recorded version. V2 can keep the original workflow input type and obtain references from
-   its new activities, so clients do not need to create references just to start that workflow.
-
-Only if V2 also changes its entry-point input from `T` to `PayloadReference<T>` must clients store the input and
-supply a reference before starting V2. Selecting a workflow version does not convert an inline input into a
-reference; keep client requests compatible with the selected version's entry-point contract.
-
-Automatic offloading remains application-wide, not workflow-version-scoped. V1 and V2 can coexist with different
-application contracts, but enabling automatic offloading on their shared host makes newly emitted payloads from
-either version eligible for offloading.
-
-### When patch-based versioning is appropriate
-
-`context.IsPatched(...)` can protect an internal change while keeping the workflow's original input type. For
-example, a new branch can call a new activity that stores data and returns a reference, while the old branch keeps
-the original activity sequence.
-
-A patch check **cannot protect an incompatible change to the workflow's entry-point input type**: the worker
-deserializes the input before calling workflow code, so execution can fail before reaching `IsPatched`. Keep the
-original input type for a patch-based migration, and create references in clients or activities, never through
-storage writes in replayed orchestrator code.
+`context.IsPatched(...)` can guard a new branch that calls reference-producing activities while keeping the
+workflow's original entry-point input type `T`. It **cannot** guard a change to the workflow's entry-point input
+type because the worker deserializes the input before invoking the workflow body.
 
 ### Switch back to inline payloads
 
-**Keep `WithBinaryStorePayloads(...)` registered indefinitely.** For ordinary `T` contracts, switch the host's
-write preference to `PreferInline` rather than unregistering payload support:
+**Never unregister `WithBinaryStorePayloads(...)`**, either in the primary application or in any .NET application that
+participates with it in multi-app workflows. Instead, keep `WithBinaryStorePayloads(...)` and your binary-store
+configuration in place so historical workflows that used data references remain readable, and opt out of future
+offloading by preferring inline payloads:
 
-```csharp
-builder.Services.AddDaprWorkflow().WithBinaryStorePayloads(options =>
-{
-    options.StoreName = "workflow-payloads";
-    options.WritePreference = PayloadWritePreference.PreferInline;
-});
-```
+- **From automatic offloading (ordinary `T` contracts):** Set `WritePreference = PayloadWritePreference.PreferInline`:
+  ```csharp
+  builder.Services.AddDaprWorkflow().WithBinaryStorePayloads(options =>
+  {
+      options.StoreName = "workflow-payloads";
+      options.WritePreference = PayloadWritePreference.PreferInline;
+  });
+  ```
+  `PreferInline` keeps future ordinary values inline and resolves any outgoing references before writing, without
+  rewriting existing history or disabling reference reads.
+- **From explicit references (`PayloadReference<T>` contracts):** Introduce a new workflow version and separately
+  named activities that accept ordinary `T` contracts, and stop calling `StoreAsync` in the new path. While old and
+  new versions share a host, use `Preserve` (not `PreferInline`, which would inline references still expected by
+  the old version's `PayloadReference<T>` receivers) and keep `AllowPayloadReferences: true` on any old cross-app
+  calls that still expect references.
 
-Keep your existing store configuration so historical references remain resolvable. `PreferInline` keeps ordinary
-values inline and materializes explicit references encountered on future writes. It does not rewrite existing
-history, delete stored data, or disable reference reads. Referenced objects must remain available for as long as
-any history or consumer needs them.
+### Operate workflows with stored payloads
 
-If existing versions use explicit `PayloadReference<T>` contracts, introduce a new workflow version and separately
-named activities with ordinary `T` contracts. Stop calling `StoreAsync` in that new path and pass ordinary values
-when starting the new version. Keep old workflow and activity contracts registered for existing instances.
+#### Reading workflow metadata can download payloads
 
-When both versions share a host, use `Preserve` to retain old explicit references while new ordinary values stay
-inline. A host-wide `PreferInline` would also convert future references produced by the old version and could
-break its reference-typed receivers. A new workflow version alone does not isolate host-wide write preferences.
-Likewise, old reference-aware cross-app calls must explicitly allow references if they need to continue forwarding
-them. Retain storage and readers for as long as any old history or consumer needs them.
+Client methods that fetch inputs and outputs attempt to resolve references before returning, while `ReadInputAs<T>`,
+`ReadOutputAs<T>`, and `ReadCustomStatusAs<T>` remain synchronous:
 
-## Operate workflows with stored payloads
+- `state.ReadOutputAs<DocumentPayload>()` returns the deserialized document.
+- `state.ReadOutputAs<PayloadReference<DocumentPayload>>()` exposes the retained reference (if the recorded value was
+  offloaded), though requesting the reference after fetching metadata does not undo the download already performed by
+  the fetch.
+- If a payload exceeds `MaxInMemoryRehydrationSize` during metadata fetch, the state retains the reference so you
+  can still read `PayloadReference<T>` and stream it via `OpenAsync`, whereas calling `ReadOutputAs<T>()` throws
+  `PayloadRehydrationLimitException`. Other read errors (missing objects, integrity failures) fail the metadata fetch
+  immediately.
 
-### Reading workflow metadata can download payloads
-
-Client operations that fetch inputs and outputs also attempt to resolve their references before returning.
-`ReadInputAs<T>`, `ReadOutputAs<T>`, and `ReadCustomStatusAs<T>` remain synchronous; they do not initiate storage I/O.
-Reading an ordinary result with `state.ReadOutputAs<DocumentPayload>()` returns the deserialized document; for
-offloaded output, `state.ReadOutputAs<PayloadReference<DocumentPayload>>()` exposes the retained reference.
-Asking for the reference after fetching metadata does **not** undo downloads already performed by that fetch.
-
-If buffered resolution exceeds `MaxInMemoryRehydrationSize`, the state retains the reference and the read error.
-You can still obtain `PayloadReference<T>` and stream it with the resolver, but requesting the ordinary `T` throws
-`PayloadRehydrationLimitException`. This handling is specific to buffering-limit errors: missing objects, integrity
-failures, and other read errors still fail the metadata fetch. Asking for `PayloadReference<T>` when the recorded
-value is inline is a contract mismatch, not a request to upload it.
-
-When you only need completion status, avoid requesting inputs and outputs:
+When you only need completion status, avoid downloading inputs and outputs (and keep custom status small, as it is
+resolved unconditionally):
 
 ```csharp
 var state = await client.WaitForWorkflowCompletionAsync(
@@ -608,26 +577,18 @@ if (state.RuntimeStatus != WorkflowRuntimeStatus.Completed)
 }
 ```
 
-This also omits the workflow's output. It avoids the input/output inspection download that would otherwise occur
-even when the workflow uses explicit references. Keep custom status small as well: returned custom status can also
-contain a reference that the client resolves.
+#### Retain and clean up payloads
 
-### Retain and clean up payloads
+Workflow completion and history purging do **not** automatically delete binary objects, and deleting objects still
+referenced by any history, result, child workflow, or rerun will break replay or inspection:
 
-Payloads must be immutable and remain available while any workflow history, result, child workflow, or rerun
-references them. Workflow completion and history purging do **not** automatically delete binary objects.
-Conversely, deleting an object can break replay or result inspection even for a completed workflow.
-
-The default `IWorkflowPayloadManifest` records nothing, so the default `WorkflowPayloadCleaner` cannot discover
-payloads to delete. For explicit cleanup, implement a durable `IWorkflowPayloadManifest` and register it
-**after** `WithBinaryStorePayloads` using `builder.Services.WithPayloadManifest<YourDurableManifest>()`.
-The manifest must idempotently record references by instance ID, list them, and clear records after deletion.
-An in-memory manifest is not sufficient for cleanup across restarts.
-
-Only after the owning history has been purged and no other consumer needs its references, resolve
-`WorkflowPayloadCleaner` from dependency injection and call `PurgeAsync(instanceId)`. Forwarding a reference to
-another workflow does not transfer ownership or make cleanup reference-counted; your retention policy must account
-for shared references. Also account for payloads stored before a scheduling operation that subsequently fails.
+1. **Register a durable manifest:** The default `IWorkflowPayloadManifest` is a no-op. To track objects for cleanup
+   across restarts, implement a durable `IWorkflowPayloadManifest` and register it **after**
+   `WithBinaryStorePayloads` via `builder.Services.WithPayloadManifest<YourDurableManifest>()`.
+2. **Purge after history deletion:** Only after the owning workflow history is purged and no other workflow shares
+   its references (forwarding a reference does not transfer ownership or reference-count it), resolve
+   `WorkflowPayloadCleaner` and call `PurgeAsync(instanceId)`. Also account for orphaned payloads uploaded via
+   `StoreAsync` when a subsequent scheduling call fails.
 
 ## Benchmark comparison
 
@@ -638,7 +599,7 @@ and all three modes compute the same checksum.
 
 | Case | Workflow input | Storage and materialization |
 | --- | --- | --- |
-| `Inline` | `BenchmarkDocument` | No payload registration. Full document in workflow history; deserialize at each orchestration execution. |
+| `Inline` | `BenchmarkDocument` | No payload registration. Full document in workflow history; deserialize at each workflow execution. |
 | `Automatic` | `BenchmarkDocument` | Data in the binary store, references in history. Automatically retrieve and deserialize for each execution and the processing activity. |
 | `References` | `PayloadReference<BenchmarkDocument>` | Replay only the reference. Retrieve and deserialize once, in activity nine. |
 
