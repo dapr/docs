@@ -26,7 +26,8 @@ Select your preferred language-specific Dapr SDK before proceeding with the Quic
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [Python 3.7+ installed](https://www.python.org/downloads/).
+- [Python 3.11 or later installed](https://www.python.org/downloads/).
+- [uv](https://docs.astral.sh/uv/getting-started/installation/), the Python package manager that the sample uses.
 <!-- IGNORE_LINKS --> 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
@@ -36,7 +37,7 @@ For this example, you will need:
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/bindings/python/sdk).
 
 ```bash
-git clone https://github.com/dapr/quickstarts.git
+git clone --depth 1 https://github.com/dapr/quickstarts.git
 ```
 
 ### Step 2: Run PostgreSQL Docker container locally
@@ -79,16 +80,15 @@ cd bindings/python/sdk/batch
 Install the dependencies:
 
 ```bash
-pip3 install -r requirements.txt
+uv sync
 ```
 
 Run the `batch-sdk` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id batch-sdk --app-port 50051 --resources-path ../../../components -- python3 app.py
+dapr run --app-id batch-sdk --app-port 50051 --resources-path ../../../components -- uv run python app.py
 ```
 
-> **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
 
 The code inside the `process_batch` function is executed every 10 seconds (defined in [`binding-cron.yaml`]({{% ref "#componentsbinding-cronyaml-component-file" %}}) in the `components` directory). The binding trigger looks for a route called via HTTP POST in your application by the Dapr sidecar.
 

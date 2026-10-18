@@ -56,7 +56,8 @@ The `order-processor` console app starts and manages the `order_processing_workf
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [Python 3.7+ installed](https://www.python.org/downloads/).
+- [Python 3.11 or later installed](https://www.python.org/downloads/).
+- [uv](https://docs.astral.sh/uv/getting-started/installation/), the Python package manager that the sample uses.
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
@@ -66,34 +67,27 @@ For this example, you will need:
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/workflows/python/sdk).
 
 ```bash
-git clone https://github.com/dapr/quickstarts.git
+git clone --depth 1 https://github.com/dapr/quickstarts.git
 ```
 
-In a new terminal window, navigate to the `order-processor` directory:
+From the folder where you ran `git clone`, navigate to the `python/sdk` directory:
 
 ```bash
-cd workflows/python/sdk/order-processor
+cd quickstarts/workflows/python/sdk
 ```
 
-Install the Dapr Python SDK package:
+Install the sample dependencies, including the Dapr Python SDK, with `uv`:
 
 ```bash
-pip3 install -r requirements.txt
+uv sync
 ```
-
-Return to the `python/sdk` directory:
-
-```bash
-cd ..
-```
-
 
 ### Step 3: Run the order processor app
 
 In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{% ref multi-app-dapr-run %}}). From the `python/sdk` directory, run the following command:
 
 ```bash
-dapr run -f .
+uv run dapr run -f .
 ```
 
 This starts the `order-processor` app with unique workflow ID and runs the workflow activities.
@@ -437,16 +431,15 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-In a new terminal window, navigate to the `order-processor` directory:
+From the folder where you ran `git clone`, navigate to the `javascript/sdk` directory:
 
 ```bash
-cd workflows/javascript/sdk/order-processor
+cd quickstarts/workflows/javascript/sdk
 ```
 
 Install the dependencies:
 
 ```bash
-cd ./javascript/sdk
 npm install
 npm run build
 ```
@@ -734,7 +727,7 @@ export const orderProcessingWorkflow: TWorkflow = async function* (ctx: Workflow
     tasks.push(approvalEvent);
     const timeOutEvent = ctx.createTimer(30);
     tasks.push(timeOutEvent);
-    const winner = ctx.whenAny(tasks);
+    const winner = yield ctx.whenAny(tasks);
 
     if (winner == timeOutEvent) {
       const orderNotification: OrderNotification = {
@@ -817,10 +810,10 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-In a new terminal window, navigate to the `order-processor` directory:
+From the folder where you ran `git clone`, navigate to the `order-processor` directory:
 
 ```bash
-cd workflows/csharp/sdk/order-processor
+cd quickstarts/workflows/csharp/sdk/order-processor
 ```
 
 Install the dependencies:
@@ -1281,7 +1274,7 @@ git clone https://github.com/dapr/quickstarts.git
 Navigate to the `order-processor` directory:
 
 ```bash
-cd workflows/java/sdk/order-processor
+cd quickstarts/workflows/java/sdk/order-processor
 ```
 
 Install the dependencies:
@@ -1301,7 +1294,6 @@ cd ..
 In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{% ref multi-app-dapr-run %}}). From the `java/sdk` directory, run the following command:
 
 ```bash
-cd workflows/java/sdk
 dapr run -f .
 ```
 
@@ -1665,10 +1657,10 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-In a new terminal window, navigate to the `sdk` directory:
+From the folder where you ran `git clone`, navigate to the `sdk` directory:
 
 ```bash
-cd workflows/go/sdk
+cd quickstarts/workflows/go/sdk
 ```
 
 ### Step 3: Run the order processor app

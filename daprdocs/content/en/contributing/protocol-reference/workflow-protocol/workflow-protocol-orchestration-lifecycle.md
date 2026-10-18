@@ -20,7 +20,9 @@ worker process (stack, variables, etc.), Dapr saves a history of events that hav
 
 1.  **Work Item Arrival**: The Dapr engine sends an `OrchestratorWorkItem` to the SDK via the `GetWorkItems` stream. 
 This work item contains the full history of the workflow instance plus any new events (e.g., an activity completion 
-or an external event).
+or an external event). For workers that advertise the `WORKER_CAPABILITY_STATEFUL_HISTORY` capability, the sidecar 
+sends only the events added since the worker's previous turn once the worker's cache for that instance is warm, and 
+the worker supplies the rest from its own cache.
 2.  **Reconstruction**: The SDK starts executing the orchestration function from the very beginning.
 3.  **Deterministic Execution**: As the function executes, it encounters "tasks" (e.g., calling an activity, sleeping).
     *   For each task, the SDK checks the provided **History** to see if that task has already completed.
