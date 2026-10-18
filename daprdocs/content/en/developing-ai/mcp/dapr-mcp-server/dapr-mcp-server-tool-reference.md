@@ -8,7 +8,7 @@ aliases:
   - /developing-ai/mcp/mcp-server-tool-reference/
 ---
 
-The Dapr MCP server exposes 18 tools. Three are always registered. The rest are registered only while the sidecar has at least one component of the matching type, so an agent never sees tools it can't use.
+The Dapr MCP server exposes 28 tools. Thirteen are always registered: `get_components`, `invoke_service`, `invoke_actor_method`, and the ten workflow tools. The rest are registered only while the sidecar has at least one component of the matching type, so an agent never sees tools it can't use.
 
 The schema the server sends when a client connects is the authoritative definition of each tool. This page is a readable summary of it.
 
@@ -34,6 +34,16 @@ Every tool except `get_components` also sets `openWorldHint`, because it reaches
 | [`get_components`](#get_components) | Always | Read-only, idempotent |
 | [`invoke_service`](#invoke_service) | Always | Destructive, side effect, not idempotent |
 | [`invoke_actor_method`](#invoke_actor_method) | Always | Destructive, side effect, not idempotent |
+| [`list_workflows`](#list_workflows) | Always | Read-only, idempotent |
+| [`get_workflow_status`](#get_workflow_status) | Always | Read-only, idempotent |
+| [`get_workflow_history`](#get_workflow_history) | Always | Read-only, idempotent |
+| [`start_workflow`](#start_workflow) | Always | Side effect, not idempotent |
+| [`raise_workflow_event`](#raise_workflow_event) | Always | Side effect, not idempotent |
+| [`pause_workflow`](#pause_workflow) | Always | Side effect, idempotent |
+| [`resume_workflow`](#resume_workflow) | Always | Side effect, idempotent |
+| [`rerun_workflow`](#rerun_workflow) | Always | Side effect, not idempotent |
+| [`terminate_workflow`](#terminate_workflow) | Always | Destructive, idempotent |
+| [`purge_workflow`](#purge_workflow) | Always | Destructive, side effect, not idempotent |
 | [`save_state`](#save_state) | A `state.*` component | Side effect, idempotent |
 | [`get_state`](#get_state) | A `state.*` component | Read-only, idempotent |
 | [`get_bulk_state`](#get_bulk_state) | A `state.*` component | Read-only, idempotent |
@@ -89,6 +99,103 @@ Calls a method on a [virtual actor]({{% ref actors-overview.md %}}) and returns 
 | `actorID` | Yes | ID of the actor instance. |
 | `method` | Yes | Actor method to call. |
 | `data` | No | Payload to pass to the method. |
+
+## Workflows
+
+The workflow tools manage [Dapr Workflow]({{% ref workflow-overview.md %}}) instances of the app whose sidecar the server is connected to. Workflows are part of the Dapr runtime rather than a component, so these tools are always registered. They need Dapr 1.18.2 or later, and a sidecar that can run workflows, which means an [actor state store]({{% ref "state-management-overview.md#actor-state" %}}) is configured. On older runtimes, a history query against a sidecar without an actor state store makes `daprd` exit ([dapr/dapr#10217](https://github.com/dapr/dapr/issues/10217)).
+
+`terminate_workflow` and `purge_workflow` can't be undone. The server's instructions tell the model to confirm with the user before calling either one, unless the user explicitly asked for it.
+
+### list_workflows
+
+Lists the app's workflow instances with their workflow name, runtime status, and creation time, plus counts per workflow and per status. It does not fetch inputs, outputs, or custom status; use `get_workflow_status` for those. The tool does not filter: the model filters the returned list itself. When more instances exist, the result includes a `continuation_token` for the next page.
+
+| Input | Required | Description |
+|---|---|---|
+| `limit` | No | Maximum number of instances to return. Default `100`, maximum `500`. |
+| `continuationToken` | No | Continuation token from an earlier `list_workflows` call. |
+
+### get_workflow_status
+
+Returns the runtime status of one instance (`RUNNING`, `COMPLETED`, `FAILED`, `SUSPENDED`, `TERMINATED`, or `PENDING`), with its creation and last-update times, output, custom status, and failure details.
+
+| Input | Required | Description |
+|---|---|---|
+| `instanceID` | Yes | Workflow instance ID. |
+
+### get_workflow_history
+
+Returns the event history of one instance: scheduled and completed activities, timers, raised events, and failures. Only events that schedule work, such as `taskScheduled` and `timerCreated`, carry an `event_id`. An outcome event such as `taskCompleted` or `taskFailed` points back to the event that scheduled it, through `task_scheduled_id` (or `timer_id` for a timer), so a failure can be traced to the activity that failed.
+
+| Input | Required | Description |
+|---|---|---|
+| `instanceID` | Yes | Workflow instance ID. |
+
+### start_workflow
+
+Starts a new instance of a workflow, immediately or at a scheduled time. Not idempotent unless you pass an `instanceID`.
+
+| Input | Required | Description |
+|---|---|---|
+| `workflowName` | Yes | Name of the workflow, as registered by the workflow app. |
+| `instanceID` | No | ID for the new instance. Dapr generates one when omitted. |
+| `input` | No | Input for the workflow, usually a JSON string. It is passed on as given. |
+| `startTime` | No | Scheduled start time in RFC 3339 format, for example `2026-07-15T06:00:00Z`. The workflow starts immediately when omitted. |
+
+### raise_workflow_event
+
+Delivers an external event, such as an approval, to an instance that is waiting for it.
+
+| Input | Required | Description |
+|---|---|---|
+| `instanceID` | Yes | ID of the instance waiting for the event. |
+| `eventName` | Yes | Event name, matching the name used in the workflow code. |
+| `eventData` | No | Event payload, usually a JSON string. |
+
+### pause_workflow
+
+Requests that a running instance be suspended until `resume_workflow` is called. The tool sends the request and does not read the state back.
+
+| Input | Required | Description |
+|---|---|---|
+| `instanceID` | Yes | Workflow instance ID. |
+| `reason` | No | Short reason, recorded for operators. |
+
+### resume_workflow
+
+Requests that a suspended instance continue. The tool sends the request and does not read the state back.
+
+| Input | Required | Description |
+|---|---|---|
+| `instanceID` | Yes | Workflow instance ID. |
+| `reason` | No | Short reason, recorded for operators. |
+
+### rerun_workflow
+
+Reruns an instance from an event in its history as a new instance, reusing the results recorded before that event. Pass the `event_id` of a scheduling event, such as `taskScheduled`, from `get_workflow_history`. Not idempotent unless you pass a `newInstanceID`.
+
+| Input | Required | Description |
+|---|---|---|
+| `instanceID` | Yes | ID of the instance to rerun, typically a failed one. |
+| `eventID` | Yes | `event_id` of the scheduling event to rerun from. |
+| `newInstanceID` | No | ID for the new instance. Dapr generates one when omitted. |
+| `input` | No | Replacement input, usually a JSON string. The original input is reused when omitted. |
+
+### terminate_workflow
+
+Requests that a running instance stop without running its remaining steps. It also terminates the child workflows the instance started.
+
+| Input | Required | Description |
+|---|---|---|
+| `instanceID` | Yes | Workflow instance ID. |
+
+### purge_workflow
+
+Permanently deletes the state and history of a completed, failed, or terminated instance. The purge is not recursive: child workflows keep their state and must be purged separately.
+
+| Input | Required | Description |
+|---|---|---|
+| `instanceID` | Yes | Workflow instance ID. |
 
 ## State management
 

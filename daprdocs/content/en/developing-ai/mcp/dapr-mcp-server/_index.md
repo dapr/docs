@@ -12,7 +12,7 @@ aliases:
 The Dapr MCP server is in **alpha**. Tool names, inputs, and configuration may change in a future release.
 {{% /alert %}}
 
-The Dapr MCP server ([`dapr/dapr-mcp-server`](https://github.com/dapr/dapr-mcp-server)) is a standalone [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server, written in Go, that runs next to a Dapr sidecar. It turns the sidecar's building blocks (state, pub/sub, bindings, secrets, service invocation, actors, distributed lock, cryptography, and conversation) into MCP tools that any MCP client can call: Claude Desktop, Cursor, Claude Code, VS Code, [Dapr Agents]({{% ref "/developing-ai/dapr-agents" %}}), or your own agent.
+The Dapr MCP server ([`dapr/dapr-mcp-server`](https://github.com/dapr/dapr-mcp-server)) is a standalone [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server, written in Go, that runs next to a Dapr sidecar. It turns the sidecar's building blocks (state, pub/sub, bindings, secrets, service invocation, actors, workflows, distributed lock, cryptography, and conversation) into MCP tools that any MCP client can call: Claude Desktop, Cursor, Claude Code, VS Code, [Dapr Agents]({{% ref "/developing-ai/dapr-agents" %}}), or your own agent.
 
 ## How it differs from the rest of this section
 
@@ -34,7 +34,7 @@ You don't need it for plain computation, one-off text generation, or local file 
 ## How it works
 
 1. The server starts and connects to the Dapr sidecar over gRPC, using the standard Dapr SDK settings (`DAPR_GRPC_PORT`, `DAPR_GRPC_ENDPOINT`). It retries the connection up to five times, then exits.
-2. It reads the sidecar's metadata and registers tools for each building block that has at least one component loaded. Three tools are always registered: `get_components`, `invoke_service`, and `invoke_actor_method`.
+2. It reads the sidecar's metadata and registers tools for each building block that has at least one component loaded. The core tools are always registered: `get_components`, `invoke_service`, `invoke_actor_method`, and the workflow tools.
 3. It serves MCP over **stdio** (the default, for local clients that launch the server themselves) or over **streamable HTTP** (with `--http`, for remote and shared deployments). Authentication, health endpoints, and CORS apply to the HTTP transport only.
 
 Tools follow the components loaded in the sidecar, with no restart. When [component hot reloading]({{% ref "component-updates.md#hot-reloading" %}}) adds the first component of a type (for example the first pub/sub component), the server registers that type's tools the next time a client lists tools or calls `get_components`, and notifies connected clients that the tool list changed. Removing the last component of a type removes its tools. Clients that read the tool list only once, as many agent frameworks do, need to reconnect to see the change.
@@ -47,7 +47,7 @@ The server can do anything its Dapr sidecar can do, and it returns tool results,
 
 - Load only the components the agent needs, and use [component scopes]({{% ref component-scopes.md %}}) and [secret scopes]({{% ref secrets-scopes.md %}}) to narrow access further.
 - Turn on [authentication]({{% ref dapr-mcp-server-authentication.md %}}) whenever you serve over HTTP to anything other than localhost.
-- Treat tools marked destructive (`delete_state`, `execute_transaction`, `invoke_service`, `invoke_actor_method`, `invoke_output_binding`, `encrypt_data`) as needing human confirmation in your MCP client.
+- Treat tools marked destructive (`delete_state`, `execute_transaction`, `invoke_service`, `invoke_actor_method`, `invoke_output_binding`, `encrypt_data`, `terminate_workflow`, `purge_workflow`) as needing human confirmation in your MCP client.
 
 ## Next steps
 
