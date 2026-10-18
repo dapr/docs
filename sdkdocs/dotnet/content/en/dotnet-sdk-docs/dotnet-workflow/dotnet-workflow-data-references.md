@@ -15,7 +15,6 @@ the data only where it is needed.
 The **binary store is an alpha building block and is subject to change**. The .NET SDK's workflow data-reference
 implementation is **also alpha**; its APIs and behavior are subject to change.
 
-This guide describes the implementation proposed in [dapr/dotnet-sdk#1934](https://github.com/dapr/dotnet-sdk/pull/1934).
 Use an SDK build that includes that implementation; do not assume an earlier published package includes these APIs.
 {{% /alert %}}
 
@@ -57,7 +56,8 @@ when a cross-app input requires inlining. `PreferInline` resolves outgoing refer
 
 ### Prerequisites
 
-- A build of `Dapr.Workflow` containing the alpha implementation (`1.19-rc.3` or later).
+- A build of `Dapr.Workflow` containing the PR revision described above. Payload support is included in
+  `Dapr.Workflow`; a separate `Dapr.Workflow.BinaryStore` package is not required.
 - Dapr runtime 1.19.0-rc.3 or later with binary-store support.
 - A configured binary-store component, in addition to the workflow's usual actor state store, placement, and scheduler.
 - Payload support registered on every client and worker that writes or reads these workflows, with access to the
@@ -108,6 +108,9 @@ builder.Services.AddDaprWorkflow().WithBinaryStorePayloads(options =>
 
 `StoreName` must match the component name. If you use a non-default sidecar gRPC endpoint, configure
 `DAPR_GRPC_ENDPOINT` consistently for the workflow and binary-store clients.
+
+`WithBinaryStorePayloads` extends the workflow builder, not `IServiceCollection`. For subsequent service
+registrations, use `builder.Services` or the returned workflow builder's `Services` property.
 
 Offloading is configured for the host, not separately for each workflow. Do not mix payload-aware and
 payload-unaware workers for the same app ID while offloaded workflows are running.
@@ -237,7 +240,7 @@ The stream contains the serialized bytes, not just a document's content property
 the whole payload on read, but `StoreAsync` still serializes the value in memory on write. The streaming path does
 **not** automatically verify the content hash: the consumer must check the bytes against `reference.ContentHash`
 and, where appropriate, `reference.Size`. The
-[streaming activity example](https://github.com/dapr/dotnet-sdk/blob/14071e21c548645d7b64b2fd84773ebbea9f6426/examples/Workflow/WorkflowDataReferences/Activities/MeasurePayloadActivity.cs)
+[streaming activity example](https://github.com/dapr/dotnet-sdk/blob/622c5374db5b06d0cdf538e94927853f0beede88/examples/Workflow/WorkflowDataReferences/Activities/MeasurePayloadActivity.cs)
 demonstrates bounded-buffer reads and SHA-256 verification.
 
 For orchestrator reads, `context.OpenPayloadAsync(reference)` is the corresponding SDK-managed API. Use
@@ -309,7 +312,9 @@ they are not silently treated as ordinary application data.
 | `SkipWriteIfExists` | `true` | Treat an already-existing content-addressed object as a successful write. Does not guarantee that a duplicate upload attempt transfers no bytes. |
 
 `PayloadKind` includes workflow and activity inputs and outputs, external events, continue-as-new input,
-custom status, and child workflow inputs and outputs. Combine flags to restrict automatic offloading, for example:
+custom status, and child workflow inputs and outputs. Detached workflow inputs and rerun input overrides use
+`PayloadKind.WorkflowInput`; termination outputs use `PayloadKind.WorkflowOutput`. Combine flags to restrict
+automatic offloading, for example:
 
 ```csharp
 options.OffloadSites = PayloadKind.WorkflowInput | PayloadKind.ActivityInput;
@@ -358,6 +363,9 @@ app, the default is to require inline input.
 An explicit same-app target follows the normal host preference. The SDK handles the outgoing input after workflow
 execution has removed calls already recorded in history, before submitting the remaining actions to the runtime.
 Storage I/O does not run directly in the deterministic workflow body.
+
+Configure the source app ID correctly: if it is unavailable, a non-empty `TargetAppId` still requires inline input
+unless the call explicitly allows references. The SDK cannot infer that the target is the same app.
 
 An ordinary input is kept inline even under `PreferReference`. A top-level `PayloadReference<T>` is resolved on
 the sender, and the original serialized content is sent without another deserialize/serialize cycle or
@@ -576,10 +584,17 @@ them. Retain storage and readers for as long as any old history or consumer need
 
 ### Reading workflow metadata can download payloads
 
-Client operations that fetch inputs and outputs also resolve their references. Reading an ordinary result with
-`state.ReadOutputAs<DocumentPayload>()` returns the deserialized document; for offloaded output,
-`state.ReadOutputAs<PayloadReference<DocumentPayload>>()` exposes the retained reference. Asking for the reference
-after fetching metadata does **not** undo downloads already performed by that fetch.
+Client operations that fetch inputs and outputs also attempt to resolve their references before returning.
+`ReadInputAs<T>`, `ReadOutputAs<T>`, and `ReadCustomStatusAs<T>` remain synchronous; they do not initiate storage I/O.
+Reading an ordinary result with `state.ReadOutputAs<DocumentPayload>()` returns the deserialized document; for
+offloaded output, `state.ReadOutputAs<PayloadReference<DocumentPayload>>()` exposes the retained reference.
+Asking for the reference after fetching metadata does **not** undo downloads already performed by that fetch.
+
+If buffered resolution exceeds `MaxInMemoryRehydrationSize`, the state retains the reference and the read error.
+You can still obtain `PayloadReference<T>` and stream it with the resolver, but requesting the ordinary `T` throws
+`PayloadRehydrationLimitException`. This handling is specific to buffering-limit errors: missing objects, integrity
+failures, and other read errors still fail the metadata fetch. Asking for `PayloadReference<T>` when the recorded
+value is inline is a contract mismatch, not a request to upload it.
 
 When you only need completion status, avoid requesting inputs and outputs:
 
@@ -616,7 +631,7 @@ for shared references. Also account for payloads stored before a scheduling oper
 
 ## Benchmark comparison
 
-The [SDK benchmark](https://github.com/dapr/dotnet-sdk/tree/14071e21c548645d7b64b2fd84773ebbea9f6426/benchmarks/Dapr.Workflow.Benchmarks)
+The [SDK benchmark](https://github.com/dapr/dotnet-sdk/tree/622c5374db5b06d0cdf538e94927853f0beede88/benchmarks/Dapr.Workflow.Benchmarks)
 compares three ways to process the same **2,000,000-byte serialized document** through **nine sequential
 activities**. The first eight activities coordinate work using small values. Only activity nine needs the document,
 and all three modes compute the same checksum.
@@ -627,7 +642,10 @@ and all three modes compute the same checksum.
 | `Automatic` | `BenchmarkDocument` | Data in the binary store, references in history. Automatically retrieve and deserialize for each execution and the processing activity. |
 | `References` | `PayloadReference<BenchmarkDocument>` | Replay only the reference. Retrieve and deserialize once, in activity nine. |
 
-The following results are from a sample run of the benchmark, not a latency or throughput guarantee:
+The current benchmark explicitly selects `PreferReference` for `Automatic` and `Preserve` for `References`.
+The following results are from the previously documented sample run at
+[revision `14071e21`](https://github.com/dapr/dotnet-sdk/tree/14071e21c548645d7b64b2fd84773ebbea9f6426/benchmarks/Dapr.Workflow.Benchmarks),
+not a new measurement of the latest PR revision or a latency or throughput guarantee:
 
 | Mode | Median total ms | Median execution ms | Min..max total ms | Workflow protobuf bytes | Binary download bytes | Document deserializations | Allocated bytes | Total speedup |
 | --- | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: |
@@ -684,7 +702,7 @@ external storage.
 
 ## Related links
 
-- [Workflow data-reference example](https://github.com/dapr/dotnet-sdk/tree/14071e21c548645d7b64b2fd84773ebbea9f6426/examples/Workflow/WorkflowDataReferences)
+- [Workflow data-reference example](https://github.com/dapr/dotnet-sdk/tree/622c5374db5b06d0cdf538e94927853f0beede88/examples/Workflow/WorkflowDataReferences)
 - [Workflow serialization]({{% ref dotnet-workflow-serialization.md %}})
 - [Workflow payload size]({{% ref workflow-payload-size.md %}})
 - [Multi-application workflows in the .NET SDK]({{% ref dotnet-workflow-multi-app.md %}})

@@ -26,14 +26,21 @@ Multi-application workflow calls require:
 - All participating app IDs must use the same workflow (actor) state store.
 
 {{% alert title="Data-reference compatibility" color="warning" %}}
-[Workflow data references (alpha)]({{% ref dotnet-workflow-data-references.md %}}), including automatic binary-store
-offloading and explicit `PayloadReference<T>` values, can be used between .NET applications when all participating
-workers and SDK clients use a compatible SDK version and enable payload support. Each reader must be able to
-resolve the reference's store name and key to the same binary object through its own sidecar, with compatible
-serialization and payload contracts. Separate in-memory binary stores do not share objects.
+With the [workflow data-reference implementation (alpha)]({{% ref dotnet-workflow-data-references.md %}}),
+cross-app activity, child workflow, and detached workflow inputs are **inline by default**, even when the sending
+host uses `PayloadWritePreference.PreferReference`. The sender resolves a top-level `PayloadReference<T>` before
+submitting the call, so the destination should accept ordinary `T` and need not enable payload support for that input.
+The sender needs registered payload support and storage access to inline a reference; resolution errors prevent
+submission rather than falling back to sending the reference.
 
-Other Dapr language SDKs do not presently support data references. Do not send these references to unsupported
-SDKs or payload-unaware .NET applications.
+Set `AllowPayloadReferences: true` on the call's `WorkflowTaskOptions` or `ChildWorkflowTaskOptions` only for a
+compatible, payload-aware .NET destination. This permits the host's write preference; it does not force offloading
+or override `PreferInline`. Each reader must resolve the reference's store name and key to the same binary object
+through its own sidecar, with compatible serialization and contracts. Separate in-memory stores do not share objects.
+
+Other Dapr language SDKs do not presently support data references. The inline default covers only top-level call
+inputs, not nested references, results, or propagated history. See
+[Cross-app input handling]({{% ref dotnet-workflow-data-references.md %}}#cross-app-input-handling) for examples and limits.
 {{% /alert %}}
 
 ## Call an activity in another application

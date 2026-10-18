@@ -16,8 +16,9 @@ The Dapr .NET SDK repository on GitHub contains several examples demonstrating h
 
 For large payloads, see [Workflow data references (alpha)]({{% ref dotnet-workflow-data-references.md %}}) for
 automatic offloading, explicit references, a streaming example, and a benchmark comparison. The binary store and
-this SDK integration are alpha. Cross-app use requires compatible, payload-aware .NET applications with access to
-the same referenced objects; other Dapr language SDKs do not presently support data references.
+this SDK integration are alpha. Cross-app call inputs are inline by default; explicitly allowing references requires
+compatible, payload-aware .NET destinations with access to the same referenced objects. Other Dapr language SDKs
+do not presently support data references.
 
 ## Next steps
 
