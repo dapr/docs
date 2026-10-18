@@ -107,6 +107,53 @@ spec:
 ...
 ```
 
+## Log destinations and file rotation
+
+By default, Dapr processes write logs to stdout. Starting with Dapr v1.19, the Dapr runtime (`daprd`) and the control plane services (`operator`, `placement`, `scheduler`, `sentry` and `sidecar-injector`) take these flags to choose where logs go, to rotate log files and to set the timestamp format.
+
+| Flag | Description |
+|------|-------------|
+| `--log-outputs` | Comma-separated list of log destinations. Each entry is `stdout`, `stderr` or a file path. Default is `stdout`. |
+| `--log-file` | Path to a file where logs are written. If you also set `--log-outputs`, the two lists are merged. |
+| `--log-file-max-size` | Maximum size in megabytes of a log file before it is rotated. |
+| `--log-file-max-backups` | Maximum number of rotated log files to keep. `0` keeps all rotated files. |
+| `--log-file-max-age` | Maximum number of days to keep rotated log files. `0` keeps them regardless of age. |
+| `--log-file-compression` | Compression for rotated log files: `none` (default) or `gzip`. |
+| `--log-timestamp-format` | Format of the log timestamp, as a [Go time layout](https://pkg.go.dev/time#pkg-constants), for example `2006/01/02 15:04:05.000`. Default is RFC3339 with nanoseconds. Applies to plain-text and JSON logs. |
+
+If you set none of these flags, Dapr logs to stdout as before. If you set only `--log-file`, the file is a plain append-only file that grows without a limit, as before.
+
+### Write logs to more than one destination
+
+List the destinations in `--log-outputs`. For example, to keep logs on stdout for `kubectl logs` and also write them to a file:
+
+```bash
+daprd --app-id myapp --log-outputs stdout,/var/log/dapr/myapp.log
+```
+
+Dapr removes duplicate destinations, including the same file written two different ways, such as `./dapr.log` and `dapr.log`. Console destinations are written first, so console output continues if writes to a file start to fail, for example when the disk is full.
+
+### Rotate log files
+
+Rotation applies only to file destinations. It turns on when at least one of `--log-file-max-size`, `--log-file-max-backups` or `--log-file-max-age` is greater than `0`, or when `--log-file-compression` is `gzip`. For example, to rotate at 50 MB, keep 5 rotated files for at most 7 days, and compress them:
+
+```bash
+daprd --app-id myapp \
+  --log-file /var/log/dapr/myapp.log \
+  --log-file-max-size 50 \
+  --log-file-max-backups 5 \
+  --log-file-max-age 7 \
+  --log-file-compression gzip
+```
+
+When rotation is on and `--log-file-max-size` is not set, or is `0`, a file is rotated at 100 MB. Rotated files are written next to the log file. The log file keeps permissions `0644`, so a log shipper that runs as another user can still read it.
+
+If you set a rotation flag but no file destination, the flag has no effect, and Dapr logs a warning at startup. An invalid value, such as a negative number or a compression other than `none` or `gzip`, stops the process at startup with an error.
+
+{{% alert title="Note" color="primary" %}}
+In Kubernetes, the sidecar annotations do not cover these flags. The Dapr CLI `dapr run` command does not have options for them either. They are flags of the `daprd` and control plane binaries.
+{{% /alert %}}
+
 ## API Logging
 
 API logging enables you to see the API calls your application makes to the Dapr sidecar, to debug issues or monitor the behavior of your application. You can combine both Dapr API logging with Dapr log events.

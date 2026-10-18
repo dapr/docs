@@ -33,6 +33,13 @@ This table is meant to help users understand the equivalent options for running 
 | `--unix-domain-socket` | `--unix-domain-socket` | `-u` | `dapr.io/unix-domain-socket-path`  | The parent directory of socket file. On Linux, when communicating with the Dapr sidecar, use unix domain sockets for lower latency and greater throughput compared to TCP ports. Not available on Windows OS. |
 | `--log-as-json` | not supported | | `dapr.io/log-as-json` | Setting this parameter to `true` outputs [logs in JSON format]({{% ref logs %}}). Default is `false` |
 | `--log-level` | `--log-level` | | `dapr.io/log-level` | Sets the [log level]({{% ref logs-troubleshooting %}}) for the Dapr sidecar. Allowed values are `debug`, `info`, `warn`, `error`. Default is `info` |
+| `--log-file` | not supported | | not supported | Path to a file where logs are written. Merged with `--log-outputs` when both are set. See [log destinations and file rotation]({{% ref "logs.md#log-destinations-and-file-rotation" %}}) |
+| `--log-outputs` | not supported | | not supported | Comma-separated list of log destinations: `stdout`, `stderr` or a file path. Default is `stdout`. Added in v1.19 |
+| `--log-file-max-size` | not supported | | not supported | Maximum size in megabytes of a log file before it is rotated. Added in v1.19 |
+| `--log-file-max-backups` | not supported | | not supported | Maximum number of rotated log files to keep. `0` keeps all. Added in v1.19 |
+| `--log-file-max-age` | not supported | | not supported | Maximum number of days to keep rotated log files. `0` keeps them regardless of age. Added in v1.19 |
+| `--log-file-compression` | not supported | | not supported | Compression for rotated log files: `none` (default) or `gzip`. Added in v1.19 |
+| `--log-timestamp-format` | not supported | | not supported | Log timestamp format as a Go time layout. Default is RFC3339 with nanoseconds. Added in v1.19 |
 | `--enable-api-logging` | `--enable-api-logging` | | `dapr.io/enable-api-logging` | [Enables API logging]({{% ref "api-logs-troubleshooting.md#configuring-api-logging-in-kubernetes" %}}) for the Dapr sidecar |
 | `--app-max-concurrency` | `--app-max-concurrency` | | `dapr.io/app-max-concurrency` | Limit the [concurrency of your application]({{% ref "control-concurrency.md#setting-app-max-concurrency" %}}). A valid value is any number larger than `0`. Default value: `-1`, meaning no concurrency. |
 | `--metrics-port` | `--metrics-port` | | `dapr.io/metrics-port` | Sets the port for the sidecar metrics server. Default is `9090` |
