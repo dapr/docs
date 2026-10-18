@@ -49,6 +49,12 @@ with DaprClient("mydomain:50051?tls=true") as d:
     # use the client
 ```  
 
+Use the `host:port?tls=true` or `host:port?tls=false` form to set the endpoint and whether the connection uses TLS. 
+
+{{% alert title="Deprecated" color="warning" %}}
+A gRPC endpoint that starts with `http://` or `https://`, for example `https://mydomain:443`, still works but emits a `DeprecationWarning` that names the equivalent endpoint. Replace it with `mydomain:443?tls=true` (for `https://`) or `mydomain:443?tls=false` (for `http://`). Python hides a `DeprecationWarning` in many cases, so run with `-W default` to see it.
+{{% /alert %}}
+
 #### Configuration options:  
 
 ##### Dapr Sidecar Endpoints
@@ -69,6 +75,8 @@ with DaprClient() as d:
 The legacy environment variables `DAPR_RUNTIME_HOST`, `DAPR_HTTP_PORT` and `DAPR_GRPC_PORT` are 
 also supported, but `DAPR_GRPC_ENDPOINT` takes precedence.
 
+The `http://` and `https://` prefixes are deprecated for `DAPR_GRPC_ENDPOINT` too. Use `host:port?tls=true` or `host:port?tls=false` instead.
+
 ##### Dapr API Token
 If your Dapr instance is configured to require the `DAPR_API_TOKEN` environment variable, you can
 set it in the environment and the client will use it automatically.  
@@ -79,7 +87,8 @@ On client initialisation, a health check is performed against the Dapr sidecar (
 The client will wait for the sidecar to be up and running before proceeding.  
 
 The default healthcheck timeout is 60 seconds, but it can be overridden by setting the `DAPR_HEALTH_TIMEOUT`
-environment variable.
+environment variable. Each healthcheck attempt is also limited by this timeout, so a sidecar that accepts the
+connection but does not answer cannot block the client forever.
 
 ##### Retries and timeout
 
@@ -113,7 +122,9 @@ factory = ActorProxyFactory(retry_policy=RetryPolicy(max_attempts=3))
 proxy = ActorProxy.create('DemoActor', ActorId('1'), DemoActorInterface, factory)
 ```
 
-**Timeout** can be set for all calls through the environment variable `DAPR_API_TIMEOUT_SECONDS`. The default value is 60 seconds.
+**Timeout** can be set for all calls through the environment variable `DAPR_API_TIMEOUT_SECONDS`. By default, no timeout is set, so calls wait without a time limit.
+
+> Note: `DAPR_API_TIMEOUT_SECONDS` does not apply to the workflow client methods `wait_for_workflow_start` and `wait_for_workflow_completion`. Without their own `timeout_in_seconds` argument, they wait with no time limit. Pass `timeout_in_seconds` to limit the wait. See [Dapr Workflow extension]({{% ref python-workflow-ext %}}).
 
 > Note: You can control timeouts on service invocation separately, by passing a `timeout` parameter to the `invoke_method` method. 
 
@@ -342,6 +353,9 @@ calling the `next_message` method. This will block on the main thread while wait
 When done, you should call the close method to terminate the
 subscription and stop receiving messages.
 
+If the stream fails with a transient error or the sidecar ends it, the subscription reconnects and returns the next message. Before Python SDK 1.19, the subscription returned `None` after a reconnect, so you no longer need to check for `None`.
+After five failed reconnect attempts, `next_message()` and the `for` loop raise `StreamReconnectError`. Catch this error to decide whether to create a new subscription or to stop the application.
+
 The `subscribe_with_handler` method accepts a callback function that is executed for each message
 received from the stream.
 It runs in a separate thread, so it doesn't block the main thread. The callback should return a
@@ -357,7 +371,11 @@ Here's an example of using the `subscribe` method:
 import time
 
 from dapr.clients import DaprClient
-from dapr.clients.grpc.subscription import StreamInactiveError, StreamCancelledError
+from dapr.clients.grpc.subscription import (
+    StreamCancelledError,
+    StreamInactiveError,
+    StreamReconnectError,
+)
 
 counter = 0
 
@@ -380,10 +398,6 @@ def main():
 
         try:
             for message in subscription:
-                if message is None:
-                    print('No message received. The stream might have been cancelled.')
-                    continue
-
                 try:
                     response_status = process_message(message)
 
@@ -405,7 +419,8 @@ def main():
                     break
                 except Exception as e:
                     print(f'Error occurred during message processing: {e}')
-
+        except StreamReconnectError:
+            print('Stream could not be reconnected after 5 attempts')
         finally:
             print('Closing subscription...')
             subscription.close()
