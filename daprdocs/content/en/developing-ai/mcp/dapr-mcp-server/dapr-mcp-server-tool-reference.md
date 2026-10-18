@@ -8,7 +8,7 @@ aliases:
   - /developing-ai/mcp/mcp-server-tool-reference/
 ---
 
-The Dapr MCP server exposes 17 tools. Three are always registered. The rest are registered only while the sidecar has at least one component of the matching type, so an agent never sees tools it can't use.
+The Dapr MCP server exposes 18 tools. Three are always registered. The rest are registered only while the sidecar has at least one component of the matching type, so an agent never sees tools it can't use.
 
 The schema the server sends when a client connects is the authoritative definition of each tool. This page is a readable summary of it.
 
@@ -36,6 +36,7 @@ Every tool except `get_components` also sets `openWorldHint`, because it reaches
 | [`invoke_actor_method`](#invoke_actor_method) | Always | Destructive, side effect, not idempotent |
 | [`save_state`](#save_state) | A `state.*` component | Side effect, idempotent |
 | [`get_state`](#get_state) | A `state.*` component | Read-only, idempotent |
+| [`get_bulk_state`](#get_bulk_state) | A `state.*` component | Read-only, idempotent |
 | [`delete_state`](#delete_state) | A `state.*` component | Destructive, idempotent |
 | [`execute_transaction`](#execute_transaction) | A `state.*` component | Destructive, side effect, not idempotent |
 | [`publish_event`](#publish_event) | A `pubsub.*` component | Side effect, not idempotent |
@@ -109,6 +110,16 @@ Reads the value of one key. Reports `found: false` when the key doesn't exist.
 |---|---|---|
 | `storeName` | Yes | State store component name. |
 | `key` | Yes | Key to read. |
+
+### get_bulk_state
+
+Reads several keys in one call, instead of one `get_state` call per key. Each returned item has `key`, `found`, `value`, and `etag`. A key the store could not read carries an `error` on its own item instead of failing the whole call. The summary line says how many items the store returned out of the keys asked for, and how many were found.
+
+| Input | Required | Description |
+|---|---|---|
+| `storeName` | Yes | State store component name. |
+| `keys` | Yes | Non-empty list of keys to read. |
+| `parallelism` | No | Maximum number of parallel reads the state store performs. Omit or pass `0` to let Dapr choose. |
 
 ### delete_state
 
