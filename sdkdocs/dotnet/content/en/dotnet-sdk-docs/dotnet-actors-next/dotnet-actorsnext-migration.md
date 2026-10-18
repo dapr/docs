@@ -459,7 +459,7 @@ Options that no longer exist as such: `UseJsonSerialization` and `JsonSerializer
 
 ## Delivery semantics are the same contract — now stated plainly
 
-`Dapr.Actors` actor calls were already at-least-once, and reminders already re-fired until acknowledged; many teams simply did not design for it. `Dapr.Actors.Next` does not change the contract, but it makes it explicit and testable: an invoke can be redelivered, and a reminder re-fires until the handling turn commits, so every actor method, reminder, and subscription handler must be safe to run more than once. Turn-local state changes are safe automatically; external side effects (publishing, calling another actor, charging a card) are your responsibility to make idempotent. Unlike the old world, you can now prove your handlers are re-run-safe in a unit test by injecting the redelivery. See [Delivery guarantees you must design for]({{< ref "dotnet-actorsnext-howto.md#delivery-guarantees-you-must-design-for" >}}).
+`Dapr.Actors` actor calls were already at-least-once, and reminders already re-fired until acknowledged; many teams simply did not design for it. `Dapr.Actors.Next` does not change the contract, but it makes failure paths testable: an invoke can be redelivered, and a reminder can re-fire if its acknowledgment is lost, even after the handling turn commits. Every actor method, reminder, and subscription handler must be safe to run more than once. Both state mutations and external side effects (publishing, calling another actor, charging a card) require idempotency or deduplication; using actor state alone does not make an increment or append safe to repeat. Use a decorated callback transport to inject response loss after commit, then explicitly exercise redelivery. See [Delivery guarantees you must design for]({{< ref "dotnet-actorsnext-howto.md#delivery-guarantees-you-must-design-for" >}}).
 
 ## Testing
 
@@ -522,7 +522,7 @@ See [One interface can back several actor types]({{< ref "dotnet-actorsnext-howt
 - **Serializer option drift.** State is JSON on both sides, but a different naming policy, enum handling, or a custom old-side serializer can make existing state unreadable. Verify, and use state migration for real shape changes.
 - **Remoting/JSON straddle during coexistence.** A Next proxy (JSON) does not line up with an old remoting caller (DataContract). Move an actor type and its callers together.
 - **Reminder method renames.** The reminder name is the routed operation; renaming a method leaves registered reminders pointing at the old name.
-- **Assuming exactly-once.** Handlers must be safe to run more than once; make external side effects idempotent.
+- **Assuming exactly-once.** Handlers must be safe to run more than once; make state updates and external side effects idempotent or deduplicate requests.
 - **Static `ActorProxy` facade.** It works, but its process-wide mutable state is a footgun; inject `IActorProxyFactory` instead.
 - **Actors in a referenced project.** Discovery scans only the executing assembly unless you set `DaprActorsScanReferences`.
 

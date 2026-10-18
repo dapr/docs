@@ -75,7 +75,7 @@ Each concept has its own page:
 - [State machine actors]({{< ref dotnet-actorsnext-statemachine.md >}}): the `StateMachineActor` model, when to choose it over a workflow, and how to test it.
 - [Subscription streams]({{< ref dotnet-actorsnext-streams.md >}}): driving actors from pub/sub topics with `[Subscribe]` metadata and explicit stream registration.
 - [Dynamic invocation]({{< ref dotnet-actorsnext-dynamic.md >}}): calling actors by type, id, and method with no compile-time contract, for gateways, tooling, and cross-language callers.
-- [Testing]({{< ref dotnet-actorsnext-testing.md >}}): the in-memory test runtime, xUnit usage, and optional Coyote integration for deep concurrency testing.
+- [Testing]({{< ref dotnet-actorsnext-testing.md >}}): the in-memory test runtime, remote-call simulation, paused state writes and deactivation races, virtual timers/reminders, callback-stream fault injection, and optional Coyote integration.
 - Per-type runtime options are supported through `options.Actors.RegisterActor<TActor>(...)`, including idle timeout, reentrancy, draining, and state-migration overrides.
 
 ## Learn by example
