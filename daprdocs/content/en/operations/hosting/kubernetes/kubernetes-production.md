@@ -322,7 +322,7 @@ When running in production, it's recommended to configure the Placement service 
 4. **Timeouts** Control the sensitivity of network connectivity between the Placement service and the sidecars using the below timeout values. Default values are set, but you can adjust these based on your network conditions.
    1. `dapr_placement.keepAliveTime` sets the interval at which the Placement service sends [keep alive](https://grpc.io/docs/guides/keepalive/) pings to Dapr sidecars on the gRPC stream to check if the connection is still alive. Lower values will lead to shorter actor rebalancing time in case of pod loss/restart, but higher network traffic during normal operation. Accepts values between `1s` and `10s`. Default is `2s`.
    2. `dapr_placement.keepAliveTimeout` sets the timeout period for Dapr sidecars to respond to the Placement service's [keep alive](https://grpc.io/docs/guides/keepalive/) pings before the Placement service closes the connection. Lower values will lead to shorter actor rebalancing time in case of pod loss/restart, but higher network traffic during normal operation. Accepts values between `1s` and `10s`. Default is `3s`.
-   3. `dapr_placement.disseminateTimeout` sets the timeout period for dissemination to be delayed after actor membership change (usually related to pod restarts) to avoid excessive dissemination during multiple pod restarts. Higher values will reduce the frequency of dissemination, but delay the table dissemination. Accepts values between `1s` and `3s`. Default is `2s`.
+   3. `dapr_placement.disseminateTimeout` sets the period of time in which a placement table dissemination round is considered failed if not completed. Sidecars that have not acknowledged the update within this time are considered non-responsive and are removed from the round, and their placement stream is reset. Note that sidecar-side actor draining (`drainOngoingCallTimeout`) delays the sidecar's acknowledgement and therefore counts against this deadline. Default is `8s`.
 
 
 
@@ -381,6 +381,72 @@ If you must run a non-default UID & GID in Kubernetes, set the following env var
 ```bash
 DAPR_UNSAFE_SKIP_CONTAINER_UID_GID_CHECK="true"
 ```
+
+## Graceful shutdown for actor hosts
+
+When a pod is deleted, Kubernetes terminates its containers concurrently, with no ordering guarantee — without a delaying hook, the application container and the `daprd` sidecar receive their stop signals at about the same time. An idle application often exits within milliseconds — before the sidecar shuts down its actor runtime. The sidecar then fails to deactivate its hosted actors (connection refused; `OnDeactivateAsync` never runs), and until it exits and the placement table is re-disseminated, other sidecars keep routing calls to actors on the dying pod. An ordinary rolling restart typically produces a multi-second window of failed actor invocations.
+
+The remedy is to keep the application serving while the sidecar drains and deactivates its actors: a `preStop` hook on the *application* container, and a termination grace period sized to cover it. A working starting point — tune the durations to your workload:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myactorapp
+spec:
+  selector:
+    matchLabels:
+      app: myactorapp
+  template:
+    metadata:
+      labels:
+        app: myactorapp
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "myactorapp"
+        dapr.io/app-port: "8080"
+    spec:
+      # Must exceed the app's preStop sleep plus the app's own graceful shutdown.
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: myactorapp
+          image: myregistry/myactorapp:latest
+          lifecycle:
+            preStop:
+              # Keep the app serving while the sidecar drains and deactivates actors.
+              sleep:
+                seconds: 15
+```
+
+On Kubernetes older than 1.30, use the `exec` form instead of the native `sleep` handler — it requires a shell and `sleep` in the application image, so it silently does nothing on distroless or `scratch` images:
+
+```yaml
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "sleep 15"]
+```
+
+In the application, set `drainRebalancedActors: true` and size `drainOngoingCallTimeout` to the p99 duration of your actor method handlers; if that exceeds a few seconds, raise the Placement service's `disseminateTimeout` above it with headroom for acknowledging the placement update, otherwise Placement resets streams that outlive it; above 30s you must also raise `dapr.io/actors-disseminate-timeout`, or daprd clamps the drain to 80% of it ([Drain timeout clamping]({{% ref "actors-runtime-config.md#drain-timeout-clamping" %}})).
+
+### Sizing the durations
+
+```
+preStop sleep                 >= [block-shutdown-duration +] drainOngoingCallTimeout + 5s (actor deactivation) + margin
+terminationGracePeriodSeconds >  preStop sleep + app graceful shutdown
+```
+
+Include the `block-shutdown-duration` term only if you configure it — needed when the application calls Dapr APIs during its own shutdown. Actor deactivation runs *after* the drain, under a single fixed 5-second budget shared by every actor the host owns — it is not configurable, so hosts with very large actor populations or slow deactivation handlers may not finish within it. If `terminationGracePeriodSeconds` expires first, Kubernetes sends `SIGKILL` and you are back to the original problem.
+
+If you enable the [app health check]({{% ref "app-health.md" %}}) on an actor host, be aware it affects steady state, not just shutdown: an app reported unhealthy has all its actor types deregistered and rebalanced across the cluster, so the probe endpoint must be cheap, `dapr.io/app-health-probe-timeout` sized for it, and the threshold left at its default.
+
+{{% alert title="Important" color="warning" %}}
+Point any probe of the application container — Kubernetes liveness or the Dapr app health check — at an endpoint served by the application alone. A probe path that depends on the sidecar is circular: a Kubernetes liveness probe restarts the container you are trying to keep alive whenever the sidecar is unavailable, and a Dapr app health check marks the app unhealthy and rebalances its actors.
+{{% /alert %}}
+
+{{% alert title="Native sidecars" color="warning" %}}
+Clean actor deactivation is not currently achievable with [native sidecars]({{% ref "sidecar.md#native-sidecars-kubernetes-128" %}}): Kubernetes terminates the application container first and only then signals the sidecar, so deactivation always runs against an exited application and no `preStop` arrangement changes that ordering. Keep actor hosts on the default sidecar injection.
+{{% /alert %}}
 
 ## Best Practices
 

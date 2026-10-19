@@ -42,10 +42,22 @@ That is, the behaviour is the same as when the sidecar loads components on boot.
 - `spec.ignoreErrors=true`: the sidecar continues to run with neither the old or new component configuration registered.
 {{% /alert %}}
 
-All components are supported for hot reloading except for the following types.
-Any create, update, or deletion of these component types is ignored by the sidecar with a restart required to pick up changes.
-- [Actor State Stores]({{% ref "state_api.md#configuring-state-store-for-actors" %}})
-- [Workflow Backends]({{% ref "workflow-architecture.md#workflow-backend" %}})
+All component types are supported for hot reloading.
+
+{{% alert title="Actor State Stores in Dapr 1.18.2 and earlier" color="warning" %}}
+In Dapr 1.18.2 and earlier, the [actor state store]({{% ref "state_api.md#configuring-state-store-for-actors" %}}) is excluded from hot reloading.
+Any create, update, or deletion of the actor state store component is ignored by the sidecar, with a restart required to pick up changes.
+{{% /alert %}}
+
+#### Actor State Stores
+
+Since Dapr 1.18.3, the [actor state store]({{% ref "state_api.md#configuring-state-store-for-actors" %}}) is also hot reloaded, and the actors runtime reconciles actor hosting with the configured store at runtime:
+
+- **Adding** an actor state store enables actor hosting and the workflow APIs, including for workflow workers that connected before the store existed.
+- **Removing** the actor state store drains and deactivates hosted actors, and de-advertises actor types from the placement and scheduler services. Actor state and workflow APIs return errors until a store is configured again. The Dapr sidecar keeps running, and actor hosting resumes automatically when a store is re-added.
+- **Updating** the actor state store in place, for example a reload picking up a rotated secret, swaps the store instance without interrupting actor hosting. Actors are only drained when the store is removed, unmarked as the actor state store, or replaced by a component with a different name.
+
+Only a single actor state store may be configured. Hot loading a second component marked as the actor state store is skipped with an error logged, and that component is applied if the current actor state store is later removed.
 
 #### Referenced Kubernetes secrets
 
