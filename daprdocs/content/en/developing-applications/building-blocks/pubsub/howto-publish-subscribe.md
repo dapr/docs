@@ -666,6 +666,10 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 In order to tell Dapr that a message was processed successfully, return a `200 OK` response. If Dapr receives any other return status code than `200`, or if your app crashes, Dapr will attempt to redeliver the message following at-least-once semantics.
 
+## Test subscriptions with the Dapr Dev Dashboard
+
+When developing locally, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to test your subscriber without running a publisher app. The dashboard shows the subscriptions of your running apps and lets you send test messages to them. Combined with the dashboard's per-app log streaming, this is an easy way to check how your app handles messages and what status codes it returns.
+
 ## Demo video
 
 Watch [this demo video](https://youtu.be/1dqe1k-FXJQ?si=s3gvWxRxeOsmXuE1) to learn more about pub/sub messaging with Dapr.
