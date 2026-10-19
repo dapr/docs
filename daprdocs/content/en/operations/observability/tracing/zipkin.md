@@ -78,7 +78,7 @@ spec:
       endpointAddress: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
 ```
 
-Now, deploy the the Dapr configuration file:
+Now, deploy the Dapr configuration file:
 
 ```bash
 kubectl apply -f tracing.yaml
