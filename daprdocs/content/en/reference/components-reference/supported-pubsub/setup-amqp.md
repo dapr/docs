@@ -198,6 +198,8 @@ spec:
 
 Every replica of the app consumes from the same queue, and closing the subscription never deletes the queue. Create the queue before the app starts: a queue that Artemis creates automatically is subject to `auto-delete-queues`.
 
+This example uses the default address prefixes, which are empty. If you set `topicAddressPrefix`, the component adds it in front of the topic name, so the link opens on `<prefix>orders::billing`.
+
 ### Solace PubSub+
 
 Solace addresses topics as `topic://<name>` and queues as `queue://<name>`:
@@ -221,7 +223,7 @@ A subscription can set these keys in its own metadata:
 
 | Field | Details | Example |
 |-------|---------|---------|
-| subscriptionName | Name of the subscription. Artemis names the subscription queue `<containerID>.<subscriptionName>`. Required for `durable` and `shared`. Must not contain `\|`, and must be unique among the subscriptions of one component. | `billing`
+| subscriptionName | Name of the subscription. Artemis names the subscription queue `<containerID>.<subscriptionName>`. Required for `durable` and `shared`. Must not contain `\|`, and must be unique among the subscriptions of one component. Not allowed on a queue (`queue:<name>`), which has no subscription to name. | `billing`
 | durable | Keep the subscription, and the messages it holds, while no consumer is attached. Defaults to `false`. | `true`
 | shared | Let every replica that uses the same `subscriptionName` consume from one subscription, so that each message reaches one replica. Defaults to `false`. | `true`
 | selector | A JMS selector that the broker applies to the subscription. Messages that do not match never enter it. Can be set without `subscriptionName`. | `eventType = 'invoice'`
