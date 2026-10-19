@@ -44,6 +44,10 @@ Most Dapr SDKs leave `drainOngoingCallTimeout` unset unless your application con
 
 > **Note:** The daprd-side placement dissemination timeout discussed here (default 30 seconds) is distinct from the control plane's dissemination round timeouts: `dapr_placement.disseminateTimeout` on the Placement service, and `--placement-disseminate-timeout` on the Scheduler when it [serves placement]({{% ref "placement#serving-placement-from-the-scheduler-service" %}}). Both default to `8s`.
 
+## Draining at pod termination
+
+`drainOngoingCallTimeout` and `drainRebalancedActors` only take effect while the sidecar can still reach your application. On Kubernetes, with the default sidecar injection, both containers receive `SIGTERM` at the same time, so an application that exits promptly is gone before the sidecar drains, leaving these settings nothing to act on. With native sidecars the application is always terminated first. Configure the application container to outlive the sidecar's shutdown: see [Graceful shutdown for actor hosts]({{% ref "kubernetes-production.md#graceful-shutdown-for-actor-hosts" %}}).
+
 ## Examples
 
 {{< tabpane text=true >}}
