@@ -203,8 +203,6 @@ params:
       url: https://v1-9.docs.dapr.io
     - version: v1.8
       url: https://v1-8.docs.dapr.io
-    - version: v1.7
-      url: https://v1-7.docs.dapr.io
 
   # Google Custom Search Engine ID. Remove or comment out to disable search.
   # gcs_engine_id: d72aa9b2712488cc3
@@ -260,7 +258,7 @@ params:
     # End user relevant links. These will show up on left side of footer and in the community page if you have one.
     user:
       - name: YouTube
-        url: https://www.youtube.com/@darpdev
+        url: https://www.youtube.com/@daprdev
         icon: fab fa-youtube
         desc: Subscribe to our YouTube channel
       - name: LinkedIn
