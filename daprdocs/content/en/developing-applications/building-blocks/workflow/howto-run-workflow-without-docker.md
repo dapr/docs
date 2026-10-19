@@ -125,15 +125,25 @@ On Dapr 1.19 and later, the Scheduler service can serve actor placement. Then yo
 
 1. Start the Scheduler service with `--placement-enabled=true`, in place of the command in [Start the Scheduler service](#start-the-scheduler-service):
 
+   {{< tabpane text=true >}}
+
+   {{% tab "Linux/macOS" %}}
+
    ```bash
    $HOME/.dapr/bin/scheduler --etcd-data-dir ./scheduler-data --placement-enabled=true
    ```
 
-   On Windows:
+   {{% /tab %}}
+
+   {{% tab "Windows" %}}
 
    ```cmd
    %USERPROFILE%\.dapr\bin\scheduler.exe --etcd-data-dir .\scheduler-data --placement-enabled=true
    ```
+
+   {{% /tab %}}
+
+   {{< /tabpane >}}
 
 1. Do not start the Placement service.
 1. In the next step, remove `--placement-host-address` from the `dapr run` command. The sidecar asks the Scheduler service whether it serves actor placement, and it gets actor placement from the Scheduler service.

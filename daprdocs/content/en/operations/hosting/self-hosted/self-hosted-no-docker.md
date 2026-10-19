@@ -73,9 +73,13 @@ $HOME/.dapr/bin/placement --healthz-port 8081 --metrics-port 9091
 
 When running standalone placement on Windows, specify port 6050:
 
-```bash
-%USERPROFILE%/.dapr/bin/placement.exe -port 6050
+```cmd
+%USERPROFILE%\.dapr\bin\placement.exe -port 6050
+```
 
+Output:
+
+```text
 time="2022-10-17T14:56:55.4055836-05:00" level=info msg="starting Dapr Placement Service -- version 1.9.0 -- commit fdce5f1f1b76012291c888113169aee845f25ef8" instance=LAPTOP-OMK50S19 scope=dapr.placement type=log ver=1.9.0
 time="2022-10-17T14:56:55.4066226-05:00" level=info msg="log level set to: info" instance=LAPTOP-OMK50S19 scope=dapr.placement type=log ver=1.9.0
 time="2022-10-17T14:56:55.4067306-05:00" level=info msg="metrics server started on :9090/" instance=LAPTOP-OMK50S19 scope=dapr.metrics type=log ver=1.9.0
@@ -89,8 +93,8 @@ time="2022-10-17T14:56:56.8232286-05:00" level=info msg="leader is established."
 
 Start the Scheduler service on port 6060. On Windows, `dapr run` uses this Scheduler port by default. The command also sets health and metrics ports that are different from the Placement service ports:
 
-```bash
-%USERPROFILE%/.dapr/bin/scheduler.exe --port 6060 --healthz-port 8081 --metrics-port 9091 --etcd-data-dir ./scheduler-data
+```cmd
+%USERPROFILE%\.dapr\bin\scheduler.exe --port 6060 --healthz-port 8081 --metrics-port 9091 --etcd-data-dir .\scheduler-data
 ```
 
 {{% /tab %}}
