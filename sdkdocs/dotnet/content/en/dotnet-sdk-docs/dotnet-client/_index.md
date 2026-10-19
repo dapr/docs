@@ -58,6 +58,8 @@ Console.WriteLine("Returned: id:{0} | Balance:{1}", account.Id, account.Balance)
 {{% /tab %}}
 
 {{% tab header="Console Project" %}}
+
+```csharp
 using Microsoft.Extensins.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -72,6 +74,8 @@ var client = scope.ServiceProvider.GetRequiredService<DaprClient>();
 var data = new { id = "17", amount = 99m };
 var account = await client.InvokeMethodAsync<Account>("routing", "deposit", data, cancellationToken);
 Console.WriteLine("Returned: id:{0} | Balance:{1}", account.Id, account.Balance);
+````
+
 {{% /tab %}}
 
 {{% tab header="HTTP" %}}
