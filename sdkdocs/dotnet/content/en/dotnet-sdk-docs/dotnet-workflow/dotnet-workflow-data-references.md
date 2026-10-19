@@ -604,15 +604,14 @@ and all three modes compute the same checksum.
 | `References` | `PayloadReference<BenchmarkDocument>` | Replay only the reference. Retrieve and deserialize once, in activity nine. |
 
 The current benchmark explicitly selects `PreferReference` for `Automatic` and `Preserve` for `References`.
-The following results are from the previously documented sample run at
-[revision `14071e21`](https://github.com/dapr/dotnet-sdk/tree/14071e21c548645d7b64b2fd84773ebbea9f6426/benchmarks/Dapr.Workflow.Benchmarks),
-not a new measurement of the latest PR revision or a latency or throughput guarantee:
+The following updated sample results reflect the latest implementation of the workflow data references PR.
+The supplied results do not identify an exact revision and are not a latency or throughput guarantee:
 
 | Mode | Median total ms | Median execution ms | Min..max total ms | Workflow protobuf bytes | Binary download bytes | Document deserializations | Allocated bytes | Total speedup |
 | --- | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: |
-| Inline | 351.2 | 351.2 | 261.5..566.5 | 12,010,502 | 0 | 11 | 74,651,944 | 1.00x |
-| Automatic | 205.0 | 192.5 | 165.6..254.8 | 12,263 | 22,000,000 | 11 | 177,754,120 | 1.71x |
-| References | 140.2 | 126.6 | 109.8..211.1 | 12,278 | 2,000,000 | 1 | 24,988,960 | 2.51x |
+| Inline | 299.1 | 299.1 | 289.5..327.4 | 12,010,503 | 0 | 11 | 74,638,360 | 1.00x |
+| Automatic | 192.2 | 181.5 | 177.5..242.8 | 12,263 | 22,000,000 | 11 | 177,679,312 | 1.56x |
+| References | 144.8 | 117.5 | 117.8..251.6 | 12,285 | 2,000,000 | 1 | 25,016,208 | 2.07x |
 
 Except for the min/max range, the measurements shown are medians. Total time includes preparation and execution.
 Both offloaded cases explicitly store the initial document before scheduling so that preparation
@@ -624,12 +623,15 @@ any subsequent offloading. Total speedup is the inline median total time divided
 - **Smaller workflow traffic with either offloading approach:** measured workflow protobuf bytes fell by about
   **99.9%**, from 12.01 MB to about 12.3 KB. This is workflow message traffic, not the persisted history size or total
   network traffic.
-- **Automatic offloading is not a memory optimization by itself:** it was **1.71x faster** in this run (41.6% less
+- **Automatic offloading is not a memory optimization by itself:** it was **1.56x faster** in this run (35.7% less
   total time), but still deserialized the document 11 times, downloaded 22 MB, and allocated **2.38x** as many managed
   bytes as inline processing.
-- **Deferring materialization matters:** explicit references were **2.51x faster** than inline processing (60.1%
+- **Deferring materialization matters:** explicit references were **2.07x faster** than inline processing (51.6%
   less total time) and allocated **66.5% fewer managed bytes**. Compared with automatic offloading, document
   deserializations dropped from 11 to 1 and binary downloads dropped by **90.9%**, from 22 MB to 2 MB.
+- **Median improvements do not eliminate timing variability:** the total-time ranges for automatic offloading
+  (177.5..242.8 ms) and explicit references (117.8..251.6 ms) overlap. The lower median for explicit references
+  does not imply that every run is faster than automatic offloading.
 
 These results support using explicit references when most workflow steps do not need the document. Automatic
 offloading can reduce history pressure with less application change, but moves repeated reads to the binary store
