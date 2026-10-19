@@ -121,11 +121,13 @@ By default, Dapr processes write logs to stdout. Starting with Dapr v1.19, the D
 | `--log-file-compression` | Compression for rotated log files: `none` (default) or `gzip`. |
 | `--log-timestamp-format` | Format of the log timestamp, as a [Go time layout](https://pkg.go.dev/time#pkg-constants), for example `2006/01/02 15:04:05.000`. Default is RFC3339 with nanoseconds. Applies to plain-text and JSON logs. |
 
-If you set none of these flags, Dapr logs to stdout as before. If you set only `--log-file`, the file is a plain append-only file that grows without a limit, as before.
+{{% alert title="Note" color="primary" %}}
+These are command-line flags of `daprd` and the control plane services. In Dapr v1.19, the sidecar injector has no Kubernetes annotations for them. The `dapr run` command has no options for them either. In self-hosted mode, pass them when you run `daprd` or a control plane service directly.
+{{% /alert %}}
 
-### Write logs to more than one destination
+### Write logs to multiple destinations
 
-List the destinations in `--log-outputs`. For example, to keep logs on stdout for `kubectl logs` and also write them to a file:
+List the destinations in `--log-outputs`. For example, to write logs to stdout and to a file:
 
 ```bash
 daprd --app-id myapp --log-outputs stdout,/var/log/dapr/myapp.log
@@ -149,10 +151,6 @@ daprd --app-id myapp \
 When rotation is on and `--log-file-max-size` is not set, or is `0`, a file is rotated at 100 MB. Rotated files are written next to the log file. The log file keeps permissions `0644`, so a log shipper that runs as another user can still read it.
 
 If you set a rotation flag but no file destination, the flag has no effect, and Dapr logs a warning at startup. An invalid value, such as a negative number or a compression other than `none` or `gzip`, stops the process at startup with an error.
-
-{{% alert title="Note" color="primary" %}}
-In Kubernetes, the sidecar annotations do not cover these flags. The Dapr CLI `dapr run` command does not have options for them either. They are flags of the `daprd` and control plane binaries.
-{{% /alert %}}
 
 ## API Logging
 
