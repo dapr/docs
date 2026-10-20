@@ -120,7 +120,7 @@ The following example shows you how to create a Kubernetes secret to hold the co
 
 ## Updating referenced secrets
 
-Dapr reconciles components every 60 seconds. On each reconcile it re-resolves the secrets a component references with `secretKeyRef` and compares the result against the running component. When the value of a referenced secret changes, [hot reloading]({{% ref "component-updates.md#hot-reloading" %}}) closes the component and re-initializes it with the new value. No restart of the application pod or the Dapr sidecar is required, and the Component manifest does not need to change.
+On each reconcile (every 60 seconds), Dapr re-resolves the secrets a component references with `secretKeyRef` and compares them against the running component. When the value of a referenced secret changes, [hot reloading]({{% ref "component-updates.md#hot-reloading" %}}) closes the component and re-initializes it with the new value. No restart of the application pod or the Dapr sidecar is required, and the Component manifest does not need to change.
 
 This applies to every secret store. For the built-in `kubernetes` secret store the Dapr operator resolves the reference and for any other store, such as HashiCorp Vault or Azure Key Vault configured through `auth.secretStore`, the sidecar resolves it directly. The behavior and timing are the same in both cases.
 
@@ -129,7 +129,6 @@ Keep in mind the following when relying on this behavior:
 - Changes to secret values are picked up by the periodic reconciler, so it can take up to 60 seconds for the new value to be applied.
 - The component is unavailable for a short period of time while it is closed and re-initialized.
 - This requires [hot reloading]({{% ref "component-updates.md#hot-reloading" %}}) to be enabled, which is the default. If the `HotReload` feature is disabled, secret changes are only picked up when the Dapr sidecar is restarted.
-- A secret store with its own client-side cache may add its cache lifetime on top of the 60-second reconcile interval.
 - Workflow backends are [excluded from hot reloading]({{% ref "component-updates.md#components-and-subscriptions" %}}), do not pick up secret changes, and require a Dapr sidecar restart. In Dapr 1.18.2 and earlier, the actor state store was also excluded; since Dapr 1.18.3, the actor state store is reloaded like any other component, and a secret rotation swaps the store instance without interrupting actor hosting.
 
 {{% /alert %}}
