@@ -52,9 +52,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | clientKey | N | TLS client key in PEM format, for mutual TLS. Must be used with `clientCert`, and requires the `amqps://` scheme. Can be `secretKeyRef` to use a secret reference. | `"-----BEGIN RSA PRIVATE KEY-----\n<base64-encoded PKCS8>\n-----END RSA PRIVATE KEY-----"`
 | topicAddressPrefix | N | Prefix prepended to the AMQP address of a topic, used for a bare topic name and for topics named `topic:<name>`. Defaults to no prefix, which addresses the topic by name. See [Addressing topics and queues](#addressing-topics-and-queues). | `multicast://`
 | queueAddressPrefix | N | Prefix prepended to the AMQP address of a queue, used for topics named `queue:<name>`. Defaults to no prefix, which addresses the queue by name. See [Addressing topics and queues](#addressing-topics-and-queues). | `anycast://`
-| containerID | N | AMQP container ID of the connections that carry named subscriptions. Every replica of the app must use the same value, and it must not change between restarts. Defaults to the consumer ID that Dapr gives every pub/sub component: the app ID, or `consumerID` if the component sets it (see the [pub/sub broker component file]({{% ref setup-pubsub.md %}})). See [Named, durable and shared subscriptions](#named-durable-and-shared-subscriptions). | `orders-service`
-| durableMessages | N | Mark every published message as durable, so that the broker keeps it across a broker restart. AMQP 1.0 messages are not durable unless the publisher says so. Defaults to `false`. | `true`
-| applicationPropertiesFromMetadata | N | Copy the metadata of each publish request onto the message, so that a broker-side filter can match on it. Defaults to `false`. See [Filter on message properties](#filter-on-message-properties). | `true`
+| containerID | N | AMQP container ID of the connections that carry named subscriptions. The broker identifies a named subscription by the container ID and the subscription name. Defaults to the consumer ID that Dapr gives every pub/sub component: the app ID, or `consumerID` if the component sets it (see the [pub/sub broker component file]({{% ref setup-pubsub.md %}})). So by default every replica of the app shares it. Do not set `containerID` or `consumerID` to a per-replica value, such as the `{podName}` or `{uuid}` [markers]({{% ref component-schema.md %}}): each replica then gets a subscription of its own and a copy of every message. See [Named, durable and shared subscriptions](#named-durable-and-shared-subscriptions). | `orders-service`
+| durableMessages | N | Mark every published message as durable, so that the broker keeps it across a broker restart. AMQP 1.0 messages are not durable unless explicitly specified. Defaults to `false`. | `true`
+| applicationPropertiesFromMetadata | N | Copy the metadata of each publish request into the message, so that a broker-side filter can match on it. Defaults to `false`. See [Filter on message properties](#filter-on-message-properties). | `true`
 | backOffPolicy | N | Retry policy used between attempts to re-open a subscription after the broker connection drops. Either `constant` or `exponential`. Defaults to `constant`. | `"constant"`
 | backOffDuration | N | Delay between attempts to re-open a subscription, when `backOffPolicy` is `constant`. Defaults to `5s`. The component retries for as long as the subscription exists, so this sets the pace, not a limit. | `1s`
 | backOffInitialInterval | N | First delay between attempts, when `backOffPolicy` is `exponential`. Defaults to `500ms`. | `100ms`
@@ -221,16 +221,16 @@ A prefix namespaces the address. A Dapr publisher using `topic://orders` and a n
 The `subscriptionName`, `durable`, `shared` and `selector` subscription keys, and the `containerID`, `durableMessages` and `applicationPropertiesFromMetadata` component keys, need Dapr 1.19 or later.
 {{% /alert %}}
 
-By default, each subscription attaches with the broker defaults. On a multicast address in ActiveMQ Artemis, that is a temporary queue with a generated name: each replica of the app gets its own copy of every message, and messages published while the app is down are lost.
+By default, each subscription attaches with the broker defaults. On a multicast address that is usually a temporary subscription: each replica of the app gets its own copy of every message, and messages published while the app is down are lost.
 
-A subscription can set these keys in its own metadata:
+A subscription can set the keys below in its own metadata. They use standard AMQP 1.0 mechanisms, so they apply to any broker that supports durable subscriptions, the `shared` capability and the JMS selector filter. They are verified with ActiveMQ Artemis. See [Named subscriptions on ActiveMQ Artemis](#named-subscriptions-on-activemq-artemis) for how Artemis applies them, and [Other brokers](#other-brokers).
 
 | Field | Details | Example |
 |-------|---------|---------|
-| subscriptionName | Name of the subscription. Artemis names the subscription queue `<containerID>.<subscriptionName>`. Required for `durable` and `shared`. Must not contain `\|`, and must be unique among the subscriptions of one component. Not allowed on a queue (`queue:<name>`), which has no subscription to name. | `billing`
-| durable | Keep the subscription, and the messages it holds, while no consumer is attached. Defaults to `false`. | `true`
-| shared | Let every replica that uses the same `subscriptionName` consume from one subscription, so that each message reaches one replica. Defaults to `false`. | `true`
-| selector | A JMS selector that the broker applies to the subscription. Messages that do not match never enter it. Can be set without `subscriptionName`. | `eventType = 'invoice'`
+| subscriptionName | Name of the subscription, sent as the AMQP link name. Together with `containerID`, it identifies the subscription on the broker. Required for `durable` and `shared`. Must not contain `\|`, and must be unique among the subscriptions of one component. Not allowed on a queue (`queue:<name>`), which has no subscription to name. | `billing`
+| durable | Ask the broker to keep the subscription, and the messages it holds, while no consumer is attached. The component sends a durable source that never expires. Defaults to `false`. | `true`
+| shared | Ask for a shared subscription, with the `shared` source capability. Every replica that uses the same `subscriptionName` then consumes from one subscription, so that each message reaches one replica. Defaults to `false`. | `true`
+| selector | A JMS selector, sent as the `apache.org:selector-filter:string` filter, that the broker applies to the subscription. Messages that do not match never enter it. If the broker attaches without the filter, the subscription fails. Can be set without `subscriptionName`. | `eventType = 'invoice'`
 
 For example:
 
@@ -251,21 +251,21 @@ spec:
     selector: "eventType = 'invoice'"
 ```
 
-With the app ID `orders-service`, every replica of the app consumes from one durable queue named `orders-service.billing`, which holds only the messages that match the selector.
+Every replica of the app consumes from one durable subscription named `billing`, which holds only the messages that match the selector.
 
-Keep these points in mind:
+Keep these points in mind, on any broker:
 
-- **Replicas.** Set `shared` when the app has more than one replica. Artemis lets only one consumer attach to a durable subscription that is not shared, and refuses the others.
+- **Replicas.** Set `shared` when the app has more than one replica. A broker can let only one consumer attach to a durable subscription that is not shared.
 - **Several subscriptions on one topic.** Dapr keeps one declarative or programmatic subscription per pub/sub component and topic. To hold several named subscriptions on one topic, define one component per subscription, as in the [example below](#several-subscriptions-on-one-topic), or use [streaming subscriptions]({{% ref "subscription-methods.md#streaming-subscriptions" %}}).
-- **Changing a selector.** Artemis compares the selector each time a consumer attaches. If the selector changed and no consumer is attached, Artemis recreates the queue and drops the messages it held. If consumers are attached, Artemis refuses the new consumer. To change a selector, use a new `subscriptionName`.
-- **Removing a subscription.** Dapr never deletes a durable subscription, even when the subscription is removed from the app. Delete the queue on the broker, for example from the Artemis console.
+- **Changing a selector.** A broker can treat a changed selector as a new subscription, and drop the messages the old one held. To change a selector, use a new `subscriptionName`.
+- **Removing a subscription.** Dapr never deletes a durable subscription, even when the subscription is removed from the app. Delete it on the broker.
 - **Broker restarts.** A durable subscription keeps durable messages only. Set `durableMessages` on the publishing component, or publish durable messages from other clients. JMS clients publish durable messages by default.
-- **Permissions.** The broker user needs permission to create durable queues and to consume from them. With `anonymous: "true"` there is no user name: give the permissions to the role that the broker maps the connection to, for example the role of the client certificate.
+- **Permissions.** The broker user needs permission to create durable subscriptions and to consume from them. With `anonymous: "true"` there is no user name: give the permissions to the role that the broker maps the connection to, for example the role of the client certificate.
 - **Connections.** Each named subscription uses a connection of its own, so that the container ID stays fixed and stopping the subscription never deletes it.
 
 ### Several subscriptions on one topic
 
-Two named subscriptions on the topic `orders`, each with its own selector, need two components on the same broker:
+This applies to every broker, because it comes from Dapr: Dapr keeps one declarative or programmatic subscription per pub/sub component and topic. Two named subscriptions on the topic `orders`, each with its own selector, therefore require two Dapr components on the same broker:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -299,7 +299,7 @@ spec:
       value: 'artemis'
 ```
 
-Each component then carries one subscription:
+Each component is then referenced by a single subscription:
 
 ```yaml
 apiVersion: dapr.io/v2alpha1
@@ -333,17 +333,35 @@ spec:
     selector: "eventType = 'login'"
 ```
 
-Artemis then holds the queues `<containerID>.billing` and `<containerID>.audit` on the address `orders`. Both components use the same container ID, the app ID by default, and the subscription names keep the queues apart.
+Both components use the same container ID, the app ID by default, and the subscription names keep the two subscriptions apart.
+
+### Named subscriptions on ActiveMQ Artemis
+
+On ActiveMQ Artemis, the keys behave as follows:
+
+- **Queue names.** Artemis names the queue of a named subscription `<containerID>.<subscriptionName>`. For example, with the app ID `orders-service`, the `billing` subscription above is the durable queue `orders-service.billing` on the address `orders`, with the selector as its filter.
+- **Without the keys.** Each subscription gets a temporary queue with a generated name, which Artemis removes when the subscription detaches.
+- **Replicas.** A durable queue that is not shared accepts one consumer. Artemis refuses the others.
+- **Changing a selector.** Artemis compares the selector each time a consumer attaches. If the selector changed and no consumer is attached, Artemis recreates the queue and drops the messages it held. If consumers are attached, Artemis refuses the new consumer.
+- **Removing a subscription.** Delete the queue, for example from the Artemis console.
+- **Selectors.** A selector reads application properties by name, the AMQP subject as `JMSType`, and header fields such as `AMQPriority` and `AMQDurable`. Artemis does not translate JMS header names such as `JMSPriority` in these selectors. Application properties that Dapr copies are strings, so to compare one with a number, prefix the selector with `convert_string_expressions:`, for example `convert_string_expressions:priority > 5`.
+- **Permissions.** The role needs the `createDurableQueue` and `consume` permissions on the address.
+
+To consume from a queue that Artemis manages instead, see [Consume from a queue that the broker manages](#consume-from-a-queue-that-the-broker-manages).
+
+### Other brokers
+
+These keys are not verified with other brokers, Solace PubSub+ included. A broker that does not support the `shared` capability can refuse a second replica or give it a copy of every message. If a broker ignores the selector filter, the component fails the subscription, because the broker does not return the filter.
 
 ## Filter on message properties
 
-A selector matches on message properties, for example application properties that the publisher sets. By default, a message that Dapr publishes carries no application properties. Set `applicationPropertiesFromMetadata` to `true` on the publishing component to copy the metadata of each publish request onto the message:
+A broker-side filter, such as a selector, matches on message properties. By default, a message that Dapr publishes carries no application properties. Set `applicationPropertiesFromMetadata` to `true` on the publishing component to copy the metadata of each publish request into the message:
 
-- The `subject` key sets the AMQP subject, which Artemis selectors read as `JMSType`.
+- The `subject` key sets the AMQP subject.
 - Every other key becomes an application property with a string value.
 - `ttlInSeconds`, `rawPayload` and `cloudevent.*` keys are not copied.
 
-Every value is a string. To compare a property with a number in an Artemis selector, prefix the selector with `convert_string_expressions:`, for example `convert_string_expressions:priority > 5`.
+These are standard AMQP 1.0 message properties, so any broker or client can read them. The selector syntax depends on the broker. For ActiveMQ Artemis, see [Named subscriptions on ActiveMQ Artemis](#named-subscriptions-on-activemq-artemis).
 
 The mapping works in one direction. The component does not pass the application properties of a received message to the app.
 
