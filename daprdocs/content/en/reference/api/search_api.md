@@ -19,7 +19,10 @@ All HTTP request and response bodies use the JSON mapping of the [search protobu
 - Enum values are sent and returned as their names, for example `INDEX_ACK_COMPLETED`.
 - 64-bit integers, such as `documentCount` and `totalHits`, are returned as strings.
 - Durations, such as `waitTimeout`, are strings with an `s` suffix, for example `"10s"` or `"1.5s"`.
-- Fields with default values (empty, zero, or `false`) are omitted from responses.
+- Responses include fields that hold their default value, for example `"documentCount": "0"`, `"score": 0`, or an empty `failedItems` array. Fields declared `optional` are omitted when unset, for example `continuationToken` on the last page and `totalHits` when the search store can't supply one.
+- Unknown request fields are ignored.
+
+Routes without a request body (get index, list indexes, and delete index) take component-specific metadata as `metadata.<key>=<value>` query parameters.
 
 ## Create index
 
@@ -82,6 +85,12 @@ GET http://localhost:<daprPort>/v1.0-alpha1/search/<storeName>/indexes/<index>
 | `storeName` | The name of the search component |
 | `index` | The name of the index |
 
+### Query parameters
+
+| Parameter | Description |
+| --------- | ----------- |
+| `metadata.<key>` | Component-specific request metadata. Optional |
+
 ### Response content
 
 | Field | Description |
@@ -131,6 +140,12 @@ GET http://localhost:<daprPort>/v1.0-alpha1/search/<storeName>/indexes
 | `daprPort` | The Dapr port |
 | `storeName` | The name of the search component |
 
+### Query parameters
+
+| Parameter | Description |
+| --------- | ----------- |
+| `metadata.<key>` | Component-specific request metadata. Optional |
+
 ### Response content
 
 | Field | Description |
@@ -173,6 +188,12 @@ DELETE http://localhost:<daprPort>/v1.0-alpha1/search/<storeName>/indexes/<index
 | `storeName` | The name of the search component |
 | `index` | The name of the index to delete |
 
+### Query parameters
+
+| Parameter | Description |
+| --------- | ----------- |
+| `metadata.<key>` | Component-specific request metadata. Optional |
+
 ### HTTP response codes
 
 | Code | Description |
@@ -180,6 +201,8 @@ DELETE http://localhost:<daprPort>/v1.0-alpha1/search/<storeName>/indexes/<index
 | `200` | Index deleted |
 | `404` | Search store or index not found |
 | `500` | Search store not configured or request failed |
+
+When a [resiliency]({{% ref resiliency-overview %}}) retry policy retries the delete and a later attempt finds that the index no longer exists, the delete succeeds, because an earlier attempt most likely deleted it. A `NOT_FOUND` on the first attempt is returned as is.
 
 ### Example
 
@@ -226,15 +249,19 @@ The same options apply to every write: [index documents](#index-documents), [del
 | Field | Description |
 | ----- | ----------- |
 | `mode` | When the request returns. One of:<ul><li>`INDEXING_MODE_RETURN_ON_ACCEPTANCE`: return after the search store durably accepts the write for background processing. No eventual result is exposed by the API.</li><li>`INDEXING_MODE_WAIT_FOR_COMPLETION`: wait for the final result, up to `waitTimeout`.</li><li>`INDEXING_MODE_UNSPECIFIED` (default): same as `INDEXING_MODE_RETURN_ON_ACCEPTANCE`.</li></ul> |
-| `waitTimeout` | How long to wait for the write to complete, for example `"10s"`. Required and must be positive with `INDEXING_MODE_WAIT_FOR_COMPLETION`, and must not be set with any other mode. When the request has a deadline, the remaining time must be longer than `waitTimeout` |
-| `onWaitTimeout` | What happens when `waitTimeout` expires. Required with `INDEXING_MODE_WAIT_FOR_COMPLETION`, and must not be set with any other mode. One of:<ul><li>`INDEXING_WAIT_TIMEOUT_ACTION_CONTINUE_ASYNC`: return `INDEX_ACK_QUEUED` and let the queued write continue. Rejected with `INVALID_ARGUMENT` by search stores that have no queued acknowledgement.</li><li>`INDEXING_WAIT_TIMEOUT_ACTION_FAIL_REQUEST`: fail the request with `DEADLINE_EXCEEDED`. This does not guarantee that the search store cancels the write.</li></ul> |
+| `waitTimeout` | How long to wait for the write to complete, for example `"10s"`. Required and must be positive with `INDEXING_MODE_WAIT_FOR_COMPLETION`, and must not be set with any other mode. When the request has a deadline, `waitTimeout` must be shorter than the remaining time. When the store has a [resiliency]({{% ref resiliency-overview %}}) timeout policy, `waitTimeout` must also be shorter than that timeout by at least a tenth of it, and by no less than 100ms. For example, with a `10s` policy timeout, `waitTimeout` can be at most `9s` |
+| `onWaitTimeout` | What happens when `waitTimeout` expires. Required with `INDEXING_MODE_WAIT_FOR_COMPLETION`, and must not be set with any other mode. One of:<ul><li>`INDEXING_WAIT_TIMEOUT_ACTION_CONTINUE_ASYNC`: return `INDEX_ACK_QUEUED` and let the queued write continue. Rejected with `INVALID_ARGUMENT` by search stores that have no queued acknowledgement.</li><li>`INDEXING_WAIT_TIMEOUT_ACTION_FAIL_REQUEST`: fail the request with `DEADLINE_EXCEEDED`. A resiliency retry policy doesn't retry the request, and the search store isn't guaranteed to cancel the write.</li></ul> |
+
+Indexing options that break these rules are rejected before the write reaches the store, with `INVALID_ARGUMENT`, the `ERR_SEARCH_INVALID_REQUEST` error code (`ERR_VECTOR_INVALID_REQUEST` for the vector API), and a `google.rpc.BadRequest` field violation on `options` or `options.wait_timeout`.
 
 ### Response content
 
 | Field | Description |
 | ----- | ----------- |
-| `ack` | The acknowledgement boundary the write reached. Always set on success. One of:<ul><li>`INDEX_ACK_QUEUED`: the search store accepted the write for asynchronous processing. This does not indicate that any document has been indexed.</li><li>`INDEX_ACK_COMPLETED`: the search store completed the write, and `failedItems` contains every item-specific failure.</li></ul> |
-| `failedItems` | Item-specific failures known when the request returns. Each item has the document `id` and an `error` with a canonical [gRPC status code](https://grpc.io/docs/guides/status-codes/) (`code`), a `message`, and optional `details` |
+| `ack` | The acknowledgement boundary the write reached. Always set on success. One of:<ul><li>`INDEX_ACK_QUEUED`: the search store accepted the write for asynchronous processing. This does not indicate that any document has been indexed. Also returned when the search store reports an acknowledgement that Dapr doesn't recognize.</li><li>`INDEX_ACK_COMPLETED`: the search store completed the write, and `failedItems` contains every item-specific failure.</li></ul> |
+| `failedItems` | Item-specific failures known when the request returns. Each item has the document `id` and an `error` with a canonical [gRPC status code](https://grpc.io/docs/guides/status-codes/) (`code`), a `message`, and `details` |
+
+When no document is left to write, because the request has no documents or every document was rejected, the search store isn't called and `ack` is `INDEX_ACK_COMPLETED`.
 
 ### HTTP response codes
 
@@ -280,7 +307,8 @@ In this example, the content of `doc-2` is a JSON array rather than an object, s
       "id": "doc-2",
       "error": {
         "code": 3,
-        "message": "content must be a JSON object"
+        "message": "content must be a JSON object",
+        "details": []
       }
     }
   ],
@@ -316,7 +344,7 @@ POST http://localhost:<daprPort>/v1.0-alpha1/search/<storeName>/indexes/<index>/
 
 | Field | Description |
 | ----- | ----------- |
-| `documents` | The found [documents](#document), in request order. IDs that don't exist are omitted |
+| `documents` | The found [documents](#document), in request order. IDs that don't exist are omitted. When `includeContent` isn't `true`, `content` is an empty string |
 
 ### HTTP response codes
 
@@ -426,17 +454,25 @@ POST http://localhost:<daprPort>/v1.0-alpha1/search/<storeName>/indexes/<index>/
 
 | Field | Description |
 | ----- | ----------- |
-| `text` | A full-text query. Mutually exclusive with `native` |
-| `native` | A provider-native query as a JSON object, passed to the search store. See the [component reference]({{% ref supported-search %}}) for the supported format. Mutually exclusive with `text` |
+| `query` | The [search query](#search-query). When omitted, every document in the index matches. Optional |
+| `metadata` | Component-specific request metadata. Optional |
+
+#### Search query
+
+| Field | Description |
+| ----- | ----------- |
+| `text` | A full-text query. Set at most one of `text` and `native` |
+| `native` | A provider-native query as a JSON object, passed to the search store. See the [component reference]({{% ref supported-search %}}) for the supported format. Set at most one of `text` and `native` |
 | `filter` | A filter written in the portable [filter language](#filter-language). Optional |
 | `topK` | The maximum number of hits to return in this page. When `0` or omitted, the component default is used. Optional |
-| `continuationToken` | The token returned by the previous page. Empty for the first page. Optional |
+| `continuationToken` | The token returned by the previous page. Omitted for the first page. Optional |
 | `searchFields` | Restricts the full-text query to these content fields. Optional |
 | `returnFields` | Returns only these content fields in each hit. Optional |
 | `includeContent` | Whether to return document `content` in each hit. When `false` (default) and `returnFields` is empty, only `id` and `metadata` are returned. Optional |
 | `sort` | Sort clauses, applied in order. Each clause has a `field` and an `order` of `SORT_ORDER_ASC` or `SORT_ORDER_DESC`. Optional |
 | `highlightFields` | Content fields for which to return highlighted fragments. Optional |
-| `metadata` | Component-specific request metadata. Optional |
+
+A query that sets neither `text` nor `native` matches every document in the index, subject to `filter`. All query fields go inside `query`; because unknown fields are ignored, a field such as `text` placed at the top level of the request body has no effect.
 
 #### Filter language
 
@@ -464,14 +500,14 @@ Filters are JSON objects that search components translate into their native quer
 | Field | Description |
 | ----- | ----------- |
 | `hits` | The matching documents. Each hit has a `document`, a `score`, and `highlights` |
-| `hits[].document` | The matching [document](#document). `content` is included when `includeContent` is `true` or `returnFields` is set |
+| `hits[].document` | The matching [document](#document). `content` is included when `includeContent` is `true` or `returnFields` is set, and is an empty string otherwise |
 | `hits[].score` | Unnormalised, provider-specific relevance score. Higher values indicate a more relevant match |
 | `hits[].highlights` | Highlighted fragments, keyed by field name |
 | `totalHits` | Best-effort total number of matching documents. Omitted when the search store can't supply one |
-| `totalHitsRelation` | The accuracy of `totalHits`: `TOTAL_HITS_RELATION_EXACT`, `TOTAL_HITS_RELATION_LOWER_BOUND`, or `TOTAL_HITS_RELATION_ESTIMATE`. Omitted when `totalHits` is omitted |
+| `totalHitsRelation` | The accuracy of `totalHits`: `TOTAL_HITS_RELATION_EXACT`, `TOTAL_HITS_RELATION_LOWER_BOUND`, or `TOTAL_HITS_RELATION_ESTIMATE`. `TOTAL_HITS_RELATION_UNSPECIFIED` when `totalHits` is omitted |
 | `continuationToken` | An opaque token to get the next page. Omitted when there are no more results |
 
-A continuation token is bound to the query that produced it. To get the next page, send the same request with the token; changing the query, filter, sort, or field options returns `INVALID_ARGUMENT`. If the search store's cursor behind the token has expired, the request fails with `FAILED_PRECONDITION` and the `SEARCH_CONTINUATION_EXPIRED` [error reason](#error-reasons).
+A continuation token is bound to the query that produced it. To get the next page, send the same query with `query.continuationToken` set to the token; changing the query, filter, sort, or field options returns `INVALID_ARGUMENT`. If the search store's cursor behind the token has expired, the request fails with `FAILED_PRECONDITION` and the `SEARCH_CONTINUATION_EXPIRED` [error reason](#error-reasons).
 
 ### HTTP response codes
 
@@ -488,12 +524,14 @@ A continuation token is bound to the query that produced it. To get the next pag
 curl -X POST http://localhost:3500/v1.0-alpha1/search/mysearch/indexes/articles/query \
   -H "Content-Type: application/json" \
   -d '{
-        "text": "dapr",
-        "filter": { "category": "guide" },
-        "sort": [ { "field": "price", "order": "SORT_ORDER_ASC" } ],
-        "highlightFields": ["title"],
-        "includeContent": true,
-        "topK": 10
+        "query": {
+          "text": "dapr",
+          "filter": { "category": "guide" },
+          "sort": [ { "field": "price", "order": "SORT_ORDER_ASC" } ],
+          "highlightFields": ["title"],
+          "includeContent": true,
+          "topK": 10
+        }
       }'
 ```
 
@@ -525,10 +563,24 @@ Errors the Dapr runtime detects itself, such as a missing search store or an inv
 | ---------- | ----------- | --------- | ----------- |
 | `ERR_SEARCH_STORE_NOT_FOUND` | `404` | `NOT_FOUND` | The named search store doesn't exist |
 | `ERR_SEARCH_STORE_NOT_CONFIGURED` | `500` | `FAILED_PRECONDITION` | No search store is configured |
-| `ERR_SEARCH_INVALID_REQUEST` | `400` | `INVALID_ARGUMENT` | The request failed validation, for example an empty or duplicate document ID or an invalid combination of indexing options |
+| `ERR_SEARCH_INVALID_REQUEST` | `400` | `INVALID_ARGUMENT` | The request failed validation, for example an empty or duplicate document ID or invalid [indexing options](#indexing-options). A `google.rpc.BadRequest` detail names the offending field, such as `documents.id`, `options`, or `options.wait_timeout` |
 | `ERR_MALFORMED_REQUEST` | `400` | N/A | The HTTP request body is not valid JSON |
 
-Errors returned by the search store are passed through with their canonical [gRPC status code](https://grpc.io/docs/guides/status-codes/) and details. Over HTTP, the status code is mapped to the equivalent HTTP status, and the response body uses the canonical code name as `errorCode`:
+Errors returned by the search store, such as a missing index, are passed through with their canonical [gRPC status code](https://grpc.io/docs/guides/status-codes/) and details. Over HTTP, the response body uses the canonical code name as `errorCode`, carries the status details in `details`, and the HTTP status is mapped from the code:
+
+| gRPC code | HTTP status |
+| --------- | ----------- |
+| `INVALID_ARGUMENT`, `FAILED_PRECONDITION`, `OUT_OF_RANGE` | `400` |
+| `UNAUTHENTICATED` | `401` |
+| `PERMISSION_DENIED` | `403` |
+| `NOT_FOUND` | `404` |
+| `CANCELLED` | `408` |
+| `ALREADY_EXISTS`, `ABORTED` | `409` |
+| `RESOURCE_EXHAUSTED` | `429` |
+| `UNKNOWN`, `INTERNAL`, `DATA_LOSS` | `500` |
+| `UNIMPLEMENTED` | `501` |
+| `UNAVAILABLE` | `503` |
+| `DEADLINE_EXCEEDED` | `504` |
 
 ```json
 {
@@ -536,6 +588,33 @@ Errors returned by the search store are passed through with their canonical [gRP
   "message": "meilisearch index \"articles\" already exists"
 }
 ```
+
+An error with details, such as an expired continuation token:
+
+```json
+{
+  "errorCode": "FAILED_PRECONDITION",
+  "message": "...",
+  "details": [
+    {
+      "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+      "reason": "SEARCH_CONTINUATION_EXPIRED",
+      "domain": "dapr.io"
+    }
+  ]
+}
+```
+
+A search store error that carries no gRPC status is reported as `INTERNAL`.
+
+### Resiliency
+
+Search store calls run under the store's [resiliency]({{% ref resiliency-overview %}}) policy:
+
+- Retry policies can match the search store's canonical gRPC code with `matching.gRPCStatusCodes`.
+- A policy timeout is returned as `DEADLINE_EXCEEDED`, a cancelled request as `CANCELLED`, and an open circuit breaker as `UNAVAILABLE`.
+- `ALREADY_EXISTS` on a retried [create index](#create-index) is returned unchanged, because the index may belong to another caller. `NOT_FOUND` on a retried [delete index](#delete-index) is treated as success.
+- A write whose `INDEXING_WAIT_TIMEOUT_ACTION_FAIL_REQUEST` wait expired isn't retried.
 
 ### Error reasons
 

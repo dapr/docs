@@ -17,7 +17,7 @@ The search API is scoped to storing and querying documents that are already inde
 You can pair the search API with Dapr functionality, like:
 
 - [Resiliency policies]({{% ref resiliency-overview %}}) including circuit breakers, timeouts, and retries for calls to the search engine
-- Observability with metrics and distributed tracing using OpenTelemetry and Zipkin
+- Observability with metrics (`dapr_component_search_count` and `dapr_component_search_latencies`, tagged by `operation`) and distributed tracing using OpenTelemetry and Zipkin
 - [Secret store references]({{% ref component-secrets %}}) for search engine credentials
 
 ## Concepts
@@ -43,7 +43,7 @@ Documents can be read back by ID in request order, and deleted by ID. Deleting a
 
 ### Write acknowledgements
 
-Many search engines index documents asynchronously. Every write (indexing and deleting documents) accepts the same `options` to control when Dapr returns:
+Many search engines index documents asynchronously. Every write (indexing and deleting documents) accepts the same optional `options` to control when Dapr returns:
 
 | Mode | Behaviour |
 | ---- | -------- |
@@ -55,14 +55,16 @@ When waiting for completion, you must also set `onWaitTimeout` to decide what ha
 - `INDEXING_WAIT_TIMEOUT_ACTION_CONTINUE_ASYNC`: return `INDEX_ACK_QUEUED` and let the queued work continue. Only valid for search engines that provide a queued acknowledgement.
 - `INDEXING_WAIT_TIMEOUT_ACTION_FAIL_REQUEST`: fail the request with `DEADLINE_EXCEEDED`. The search engine may still complete the write.
 
+`waitTimeout` must be shorter than the remaining deadline of the call, when one is set. When the search store has a [resiliency]({{% ref resiliency-overview %}}) timeout policy, `waitTimeout` must also be shorter than that timeout by at least a tenth of it, and by no less than 100ms. Otherwise the request is rejected with `INVALID_ARGUMENT` before the search engine is called.
+
 ### Querying
 
-A search request runs either:
+A search request carries an optional `query` that selects and shapes the hits. The query sets at most one of:
 
 - A portable full-text query (`text`), optionally restricted to specific `searchFields`, or
 - A provider-native query (`native`) that is passed to the search engine for features not covered by the portable API.
 
-Queries can be combined with:
+A query that sets neither, or a request without a `query`, matches every document in the index, subject to the filter. Queries can be combined with:
 
 - **Filters** written in the portable [filter language](#filter-language)
 - **Sorting** on one or more fields in ascending or descending order
@@ -74,7 +76,7 @@ Hit scores are unnormalised, provider-specific relevance values where higher is 
 
 ### Pagination
 
-Use `topK` to set the page size. When more results are available, the response includes a `continuationToken`; pass it unchanged in the next request to get the next page. A continuation token is bound to the shape of the query that produced it, so the next request must keep the same query, filter, sort, and field options. If the search engine's cursor behind a token expires, the request fails with `FAILED_PRECONDITION` and the `SEARCH_CONTINUATION_EXPIRED` error reason.
+Use `topK` to set the page size. When it is omitted or `0`, the component's default page size applies. When more results are available, the response includes a `continuationToken`; pass it unchanged in the `query` of the next request to get the next page. A continuation token is bound to the shape of the query that produced it, so the next request must keep the same query, page size, filter, sort, and field options. If the search engine's cursor behind a token expires, the request fails with `FAILED_PRECONDITION` and the `SEARCH_CONTINUATION_EXPIRED` error reason.
 
 The response includes a best-effort `totalHits` along with a `totalHitsRelation` that describes its accuracy: `TOTAL_HITS_RELATION_EXACT`, `TOTAL_HITS_RELATION_LOWER_BOUND`, or `TOTAL_HITS_RELATION_ESTIMATE`.
 
@@ -104,7 +106,19 @@ Some search engines require fields to be declared as filterable or sortable befo
 
 ### Error reporting
 
-Errors that a search engine returns reach your application with their canonical gRPC status code and details, rather than being wrapped in a generic internal error. For example, creating an existing index returns `ALREADY_EXISTS` (HTTP `409`). See the [search API reference]({{% ref "search_api.md#errors" %}}) for details.
+Errors that a search engine returns reach your application with their canonical gRPC status code and details, rather than being wrapped in a generic internal error. Over HTTP, the response status matches the gRPC code and the `errorCode` is the code's name. For example, creating an existing index returns HTTP `409` with the `ALREADY_EXISTS` error code.
+
+Errors that Dapr detects before calling the search engine use Dapr error codes instead: `ERR_SEARCH_STORE_NOT_FOUND`, `ERR_SEARCH_STORE_NOT_CONFIGURED`, and `ERR_SEARCH_INVALID_REQUEST`. See the [search API reference]({{% ref "search_api.md#errors" %}}) for details.
+
+### Resiliency
+
+Calls to the search engine run under the search store's [resiliency policies]({{% ref resiliency-overview %}}):
+
+- Retry policies can match the canonical gRPC code that the search engine returned with `matching.gRPCStatusCodes`.
+- A request that exceeds the policy timeout fails with `DEADLINE_EXCEEDED`.
+- A write that waits for completion with `INDEXING_WAIT_TIMEOUT_ACTION_FAIL_REQUEST` is not retried once its wait expires.
+- When a retried index delete returns `NOT_FOUND`, the delete is reported as successful, because an earlier attempt most likely deleted the index.
+- `ALREADY_EXISTS` on a create is always returned unchanged, including on a retry.
 
 ## Try out the search API
 

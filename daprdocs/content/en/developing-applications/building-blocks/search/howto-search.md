@@ -18,7 +18,7 @@ Let's get started using the [search API]({{% ref search-overview %}}). In this g
 - Run full-text searches with filters, sorting, and pagination.
 - Retrieve and delete documents by ID.
 
-The examples in this guide call the Dapr HTTP API with `curl`. Dapr SDK support for the search API is not yet available.
+The examples in this guide call the Dapr HTTP API with `curl`. The HTTP API uses the [JSON mapping of the protobuf messages](https://protobuf.dev/programming-guides/json/): field names are camelCase, 64-bit integers are strings, and bytes are base64-encoded. Responses include fields set to their zero value and omit optional fields that aren't set. Dapr SDK support for the search API is not yet available.
 
 ## Pre-requisites
 
@@ -32,7 +32,7 @@ Run a local Meilisearch instance with Docker:
 ```bash
 docker run -d --name meilisearch -p 7700:7700 \
   -e MEILI_MASTER_KEY=masterKey \
-  getmeili/meilisearch:latest
+  getmeili/meilisearch:v1.43
 ```
 
 ## Set up the search component
@@ -94,6 +94,7 @@ curl http://localhost:3500/v1.0-alpha1/search/mysearch/indexes/articles
 ```json
 {
   "index": "articles",
+  "documentCount": "0",
   "properties": {
     "filterableAttributes": "category,price",
     "primaryKey": "id",
@@ -137,11 +138,12 @@ curl -X POST http://localhost:3500/v1.0-alpha1/search/mysearch/indexes/articles/
 
 ```json
 {
+  "failedItems": [],
   "ack": "INDEX_ACK_COMPLETED"
 }
 ```
 
-If some documents could not be indexed, they are listed in `failedItems` with their error, while the rest of the batch is still indexed.
+If some documents could not be indexed, they are listed in `failedItems` with their error, while the rest of the batch is still indexed. For example, a document whose `content` isn't a JSON object, or uses an attribute that the Meilisearch component reserves, is reported with `INVALID_ARGUMENT`.
 
 {{% alert title="Note" color="primary" %}}
 If you omit `options`, Dapr returns as soon as Meilisearch queues the write (`INDEX_ACK_QUEUED`). The documents become searchable shortly afterwards, once Meilisearch has processed the task.
@@ -149,18 +151,20 @@ If you omit `options`, Dapr returns as soon as Meilisearch queues the write (`IN
 
 ## Search the index
 
-Run a full-text search for `dapr`, restricted to guides, sorted by price, and highlighting matches in the `title` field:
+Run a full-text search for `dapr`, restricted to guides, sorted by price, and highlighting matches in the `title` field. The query is set in the `query` field of the request:
 
 ```bash
 curl -X POST http://localhost:3500/v1.0-alpha1/search/mysearch/indexes/articles/query \
   -H "Content-Type: application/json" \
   -d '{
-        "text": "dapr",
-        "filter": { "category": "guide" },
-        "sort": [ { "field": "price", "order": "SORT_ORDER_ASC" } ],
-        "highlightFields": [ "title" ],
-        "includeContent": true,
-        "topK": 1
+        "query": {
+          "text": "dapr",
+          "filter": { "category": "guide" },
+          "sort": [ { "field": "price", "order": "SORT_ORDER_ASC" } ],
+          "highlightFields": [ "title" ],
+          "includeContent": true,
+          "topK": 1
+        }
       }'
 ```
 
@@ -191,28 +195,34 @@ Because `topK` is `1` and there are more results, the response includes a `conti
 curl -X POST http://localhost:3500/v1.0-alpha1/search/mysearch/indexes/articles/query \
   -H "Content-Type: application/json" \
   -d '{
-        "text": "dapr",
-        "filter": { "category": "guide" },
-        "sort": [ { "field": "price", "order": "SORT_ORDER_ASC" } ],
-        "highlightFields": [ "title" ],
-        "includeContent": true,
-        "topK": 1,
-        "continuationToken": "<token from the previous response>"
+        "query": {
+          "text": "dapr",
+          "filter": { "category": "guide" },
+          "sort": [ { "field": "price", "order": "SORT_ORDER_ASC" } ],
+          "highlightFields": [ "title" ],
+          "includeContent": true,
+          "topK": 1,
+          "continuationToken": "<token from the previous response>"
+        }
       }'
 ```
 
-A continuation token is only valid for the query that produced it. Changing the query, filter, sort, or field options between pages returns an `INVALID_ARGUMENT` error.
+A continuation token is only valid for the query that produced it. Changing the query, `topK`, filter, sort, or field options between pages returns an `INVALID_ARGUMENT` error.
+
+To list every document in the index, omit `query`, or send a `query` without `text` or `native`. A `filter` still applies.
 
 ### Use a provider-native query
 
-When you need a feature the portable request does not cover, send a provider-native query in `native` instead of `text`. For Meilisearch, `native` accepts the fields of the [Meilisearch search request](https://www.meilisearch.com/docs/reference/api/search), except for pagination and sort fields, which must use the portable `topK`, `continuationToken`, and `sort` fields:
+When you need a feature the portable request does not cover, send a provider-native query in `query.native` instead of `query.text`. For Meilisearch, `native` accepts the fields of the [Meilisearch search request](https://www.meilisearch.com/docs/reference/api/search), except for pagination and sort fields, which must use the portable `topK`, `continuationToken`, and `sort` fields:
 
 ```bash
 curl -X POST http://localhost:3500/v1.0-alpha1/search/mysearch/indexes/articles/query \
   -H "Content-Type: application/json" \
   -d '{
-        "native": { "q": "dapr", "matchingStrategy": "all" },
-        "topK": 10
+        "query": {
+          "native": { "q": "dapr", "matchingStrategy": "all" },
+          "topK": 10
+        }
       }'
 ```
 
@@ -251,6 +261,8 @@ curl -X POST http://localhost:3500/v1.0-alpha1/search/mysearch/indexes/articles/
 ```bash
 curl -X DELETE http://localhost:3500/v1.0-alpha1/search/mysearch/indexes/articles
 ```
+
+Requests without a body (get, list, and delete index) take request metadata as `metadata.<key>=<value>` query parameters.
 
 ## Next steps
 

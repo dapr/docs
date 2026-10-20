@@ -18,7 +18,7 @@ You can pair the vector API with Dapr functionality, like:
 
 - The [conversation API]({{% ref conversation-overview %}}) to send the retrieved context to a large language model (LLM)
 - [Resiliency policies]({{% ref resiliency-overview %}}) including circuit breakers, timeouts, and retries for calls to the vector database
-- Observability with metrics and distributed tracing using OpenTelemetry and Zipkin
+- Observability with metrics (`dapr_component_vector_count` and `dapr_component_vector_latencies`, tagged by `operation`) and distributed tracing using OpenTelemetry and Zipkin
 - [Secret store references]({{% ref component-secrets %}}) for vector database credentials
 
 ## Concepts
@@ -36,7 +36,7 @@ You can pair the vector API with Dapr functionality, like:
 
 Create, get, list, and delete collections. When you create a collection, you set:
 
-- `dimensions` (required): the length of every vector stored in the collection.
+- `dimensions` (required): the length of every vector stored in the collection. A request without `dimensions` is rejected with `INVALID_ARGUMENT`.
 - `metric` (optional): the distance metric used to compare vectors. When unspecified, the component's default metric is used. Requesting a metric the vector database can't provide returns `INVALID_ARGUMENT`.
 
 Creating a collection that already exists returns `ALREADY_EXISTS`. Getting a collection returns its effective dimensions and metric, an approximate record count, and component-specific properties.
@@ -59,16 +59,16 @@ Records can be read back by ID in request order, optionally with their vector va
 
 ### Write acknowledgements
 
-Vector writes share the acknowledgement model of the search API. Upserts and deletes accept the same `options` to either return as soon as the vector database accepts the write (`INDEXING_MODE_RETURN_ON_ACCEPTANCE`, the default), or wait for the final result (`INDEXING_MODE_WAIT_FOR_COMPLETION`) with a timeout and a timeout action. See [write acknowledgements]({{% ref "search-overview.md#write-acknowledgements" %}}) in the search overview.
+Vector writes share the acknowledgement model of the search API. Upserts and deletes accept the same `options` to either return as soon as the vector database accepts the write (`INDEXING_MODE_RETURN_ON_ACCEPTANCE`, the default), or wait for the final result (`INDEXING_MODE_WAIT_FOR_COMPLETION`) with a timeout and a timeout action. The wait timeout follows the same rules, including the headroom it needs below the vector store's resiliency timeout. See [write acknowledgements]({{% ref "search-overview.md#write-acknowledgements" %}}) in the search overview.
 
 ### Querying
 
-A query finds the `topK` records closest to either:
+A query request carries a required `query` that finds the `topK` records closest to exactly one of:
 
-- A query vector (`vector.values`), or
+- A query vector (`vector.values`), which must not be empty. Only the `values` of `vector` are read; its other fields are ignored.
 - The stored vector of an existing record (`byId`).
 
-Queries can be combined with:
+When `topK` is omitted or `0`, the component's default applies. A query can also set a `metric` that determines how scores and the score threshold are interpreted; when unspecified, the collection's metric is used. Queries can be combined with:
 
 - **Metadata filters** written in the portable [filter language](#filter-language)
 - **Score thresholds** to keep only sufficiently close matches
@@ -76,7 +76,7 @@ Queries can be combined with:
 
 ### Batch queries
 
-A batch query runs several queries against the same collection in one call. Each query succeeds or fails on its own, and the response contains one result per query in request order: either the query's matches or its error. Only request-wide failures, such as a missing collection or invalid credentials, fail the whole call.
+A batch query runs several queries against the same collection in one call. The store, collection, and request metadata are set once on the batch request, and each entry of `queries` has the same shape as the `query` of a single query request. Each query succeeds or fails on its own, and the response contains one result per query in request order: either the query's matches or its error. Only request-wide failures, such as a missing collection or invalid credentials, fail the whole call.
 
 ### Filter language
 
@@ -97,6 +97,10 @@ For example, the following filter matches records for Tesla cars sold by a deale
   "dealer.city": { "$in": ["Seattle", "Portland"] }
 }
 ```
+
+### Error reporting and resiliency
+
+Vector errors are reported like [search errors]({{% ref "search-overview.md#error-reporting" %}}): errors that the vector database returns keep their canonical gRPC status code and details, also over HTTP, while errors that Dapr detects before calling the vector database use `ERR_VECTOR_STORE_NOT_FOUND`, `ERR_VECTOR_STORE_NOT_CONFIGURED`, or `ERR_VECTOR_INVALID_REQUEST`. Calls run under the vector store's resiliency policies with the same [retry and timeout behaviour]({{% ref "search-overview.md#resiliency" %}}) as the search API, where a retried collection delete that returns `NOT_FOUND` is reported as successful.
 
 ## Try out the vector API
 

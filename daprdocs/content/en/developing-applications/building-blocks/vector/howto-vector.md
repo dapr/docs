@@ -19,7 +19,7 @@ Let's get started using the [vector API]({{% ref vector-overview %}}). In this g
 - Run several queries in one batch.
 - Retrieve and delete records by ID.
 
-The examples in this guide call the Dapr HTTP API with `curl` and use 4-dimensional vectors to keep them readable. In a real application, vectors come from an embedding model and typically have hundreds or thousands of dimensions. Dapr SDK support for the vector API is not yet available.
+The examples in this guide call the Dapr HTTP API with `curl` and use 4-dimensional vectors to keep them readable. In a real application, vectors come from an embedding model and typically have hundreds or thousands of dimensions. The HTTP API uses the [JSON mapping of the protobuf messages](https://protobuf.dev/programming-guides/json/): field names are camelCase, 64-bit integers are strings, and bytes are base64-encoded. Responses include fields set to their zero value and omit optional fields that aren't set. Dapr SDK support for the vector API is not yet available.
 
 ## Pre-requisites
 
@@ -33,7 +33,7 @@ Run a local Meilisearch instance with Docker:
 ```bash
 docker run -d --name meilisearch -p 7700:7700 \
   -e MEILI_MASTER_KEY=masterKey \
-  getmeili/meilisearch:latest
+  getmeili/meilisearch:v1.43
 ```
 
 ## Set up the vector component
@@ -91,6 +91,7 @@ curl http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars
 ```json
 {
   "collection": "cars",
+  "recordCount": "0",
   "properties": {
     "filterableAttributes": "daprMetadata",
     "primaryKey": "id"
@@ -107,7 +108,7 @@ Each record has an `id`, the vector `values`, structured `metadata` that you can
 The following request upserts three records and waits up to 10 seconds for them to be written:
 
 ```bash
-curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars/upsert \
+curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars/vectors \
   -H "Content-Type: application/json" \
   -d '{
         "records": [
@@ -139,9 +140,12 @@ curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars
 
 ```json
 {
+  "failedItems": [],
   "ack": "INDEX_ACK_COMPLETED"
 }
 ```
+
+Records that can't be written are listed in `failedItems` with their error, while the rest of the batch is still written. For example, with Meilisearch a record whose `values` don't have the collection's dimensions is reported with `INVALID_ARGUMENT`.
 
 {{% alert title="Note" color="primary" %}}
 If you omit `options`, Dapr returns as soon as Meilisearch queues the write (`INDEX_ACK_QUEUED`). The records become queryable shortly afterwards, once Meilisearch has processed the task.
@@ -149,19 +153,21 @@ If you omit `options`, Dapr returns as soon as Meilisearch queues the write (`IN
 
 ## Query the collection
 
-Find the two records closest to a query vector, only for Teslas sold in Seattle or Portland, and return their payloads:
+Find the two records closest to a query vector, only for Teslas sold in Seattle or Portland, and return their payloads. The query is set in the required `query` field of the request:
 
 ```bash
 curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars/query \
   -H "Content-Type: application/json" \
   -d '{
-        "vector": { "values": [1, 0, 0, 0] },
-        "topK": 2,
-        "filter": {
-          "make": "tesla",
-          "dealer.city": { "$in": ["Seattle", "Portland"] }
-        },
-        "includePayload": true
+        "query": {
+          "vector": { "values": [1, 0, 0, 0] },
+          "topK": 2,
+          "filter": {
+            "make": "tesla",
+            "dealer.city": { "$in": ["Seattle", "Portland"] }
+          },
+          "includePayload": true
+        }
       }'
 ```
 
@@ -171,6 +177,7 @@ curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars
     {
       "record": {
         "id": "car-1",
+        "values": [],
         "payload": "eyJuYW1lIjoiTW9kZWwgMyJ9",
         "metadata": { "dealer": { "city": "Seattle" }, "make": "tesla", "year": 2023 }
       },
@@ -179,6 +186,7 @@ curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars
     {
       "record": {
         "id": "car-2",
+        "values": [],
         "payload": "eyJuYW1lIjoiTW9kZWwgWSJ9",
         "metadata": { "dealer": { "city": "Portland" }, "make": "tesla", "year": 2025 }
       },
@@ -189,7 +197,7 @@ curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars
 }
 ```
 
-Scores are the cosine similarity between the query vector and each record, where `1` is identical.
+Scores are the cosine similarity between the query vector and each record, where `1` is identical. `values` is empty because the query didn't set `includeValues`.
 
 ### Filter by score
 
@@ -199,9 +207,11 @@ Use `scoreThreshold` to keep only matches that are close enough. For cosine simi
 curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars/query \
   -H "Content-Type: application/json" \
   -d '{
-        "vector": { "values": [1, 0, 0, 0] },
-        "topK": 10,
-        "scoreThreshold": 0.5
+        "query": {
+          "vector": { "values": [1, 0, 0, 0] },
+          "topK": 10,
+          "scoreThreshold": 0.5
+        }
       }'
 ```
 
@@ -213,14 +223,16 @@ To find records similar to one you've already stored, use `byId` instead of a qu
 curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars/query \
   -H "Content-Type: application/json" \
   -d '{
-        "byId": "car-3",
-        "topK": 3
+        "query": {
+          "byId": "car-3",
+          "topK": 3
+        }
       }'
 ```
 
 ## Run a batch of queries
 
-Send several queries to the same collection in one call. Each query succeeds or fails independently, and results are returned in request order. In this example, the second query is invalid because it sets neither a vector nor a record ID, so its slot contains an error while the first query still returns matches (error `details` are omitted from the response below for brevity):
+Send several queries to the same collection in one call. Each entry of `queries` has the same shape as the `query` of a single query request, and runs against the collection in the URL. Each query succeeds or fails independently, and results are returned in request order. In this example, the second query is invalid because it sets neither a vector nor a record ID, so its slot contains an error while the first query still returns matches (error `details` are omitted from the response below for brevity):
 
 ```bash
 curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars/batch-query \
@@ -239,7 +251,7 @@ curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars
     {
       "response": {
         "matches": [
-          { "record": { "id": "car-3", "metadata": { "dealer": { "city": "Seattle" }, "make": "ford", "year": 2024 } }, "score": 1 }
+          { "record": { "id": "car-3", "values": [], "metadata": { "dealer": { "city": "Seattle" }, "make": "ford", "year": 2024 } }, "score": 1 }
         ],
         "metric": "DISTANCE_METRIC_COSINE"
       }
@@ -259,7 +271,7 @@ curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars
 Fetch records by ID, including their vector values. Found records are returned in request order; IDs that don't exist are omitted:
 
 ```bash
-curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars/get \
+curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars/vectors/get \
   -H "Content-Type: application/json" \
   -d '{
         "ids": [ "car-1", "car-42" ],
@@ -284,6 +296,8 @@ curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars
 ```bash
 curl -X DELETE http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars
 ```
+
+Requests without a body (get, list, and delete collection) take request metadata as `metadata.<key>=<value>` query parameters.
 
 ## Next steps
 

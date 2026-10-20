@@ -19,7 +19,10 @@ All HTTP request and response bodies use the JSON mapping of the [vector protobu
 - Enum values are sent and returned as their names, for example `DISTANCE_METRIC_COSINE`.
 - 64-bit integers, such as `recordCount`, are returned as strings.
 - Durations, such as `waitTimeout`, are strings with an `s` suffix, for example `"10s"`.
-- Fields with default values (empty, zero, or `false`) are omitted from responses.
+- Responses include fields that hold their default value, for example `"recordCount": "0"`, `"score": 0`, or an empty `values` array. Fields declared `optional`, such as record `payload` and `metadata`, are omitted when unset.
+- Unknown request fields are ignored.
+
+Routes without a request body (get collection, list collections, and delete collection) take component-specific metadata as `metadata.<key>=<value>` query parameters.
 
 ## Create collection
 
@@ -91,6 +94,12 @@ GET http://localhost:<daprPort>/v1.0-alpha1/vector/<storeName>/collections/<coll
 | `storeName` | The name of the vector component |
 | `collection` | The name of the collection |
 
+### Query parameters
+
+| Parameter | Description |
+| --------- | ----------- |
+| `metadata.<key>` | Component-specific request metadata. Optional |
+
 ### Response content
 
 | Field | Description |
@@ -143,6 +152,12 @@ GET http://localhost:<daprPort>/v1.0-alpha1/vector/<storeName>/collections
 | `daprPort` | The Dapr port |
 | `storeName` | The name of the vector component |
 
+### Query parameters
+
+| Parameter | Description |
+| --------- | ----------- |
+| `metadata.<key>` | Component-specific request metadata. Optional |
+
 ### Response content
 
 | Field | Description |
@@ -185,6 +200,12 @@ DELETE http://localhost:<daprPort>/v1.0-alpha1/vector/<storeName>/collections/<c
 | `storeName` | The name of the vector component |
 | `collection` | The name of the collection to delete |
 
+### Query parameters
+
+| Parameter | Description |
+| --------- | ----------- |
+| `metadata.<key>` | Component-specific request metadata. Optional |
+
 ### HTTP response codes
 
 | Code | Description |
@@ -192,6 +213,8 @@ DELETE http://localhost:<daprPort>/v1.0-alpha1/vector/<storeName>/collections/<c
 | `200` | Collection deleted |
 | `404` | Vector store or collection not found |
 | `500` | Vector store not configured or request failed |
+
+When a [resiliency]({{% ref resiliency-overview %}}) retry policy retries the delete and a later attempt finds that the collection no longer exists, the delete succeeds, because an earlier attempt most likely deleted it. A `NOT_FOUND` on the first attempt is returned as is.
 
 ### Example
 
@@ -204,7 +227,7 @@ curl -X DELETE http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/ca
 Writes records with a keyed upsert. A record with an ID that already exists in the collection is replaced.
 
 ```
-POST http://localhost:<daprPort>/v1.0-alpha1/vector/<storeName>/collections/<collection>/upsert
+POST http://localhost:<daprPort>/v1.0-alpha1/vector/<storeName>/collections/<collection>/vectors
 ```
 
 ### URL parameters
@@ -236,8 +259,10 @@ POST http://localhost:<daprPort>/v1.0-alpha1/vector/<storeName>/collections/<col
 
 | Field | Description |
 | ----- | ----------- |
-| `ack` | The acknowledgement boundary the write reached. Always set on success. One of:<ul><li>`INDEX_ACK_QUEUED`: the vector store accepted the write for asynchronous processing. This does not indicate that any record has been written.</li><li>`INDEX_ACK_COMPLETED`: the vector store completed the write, and `failedItems` contains every item-specific failure.</li></ul> |
-| `failedItems` | Item-specific failures known when the request returns. Each item has the record `id` and an `error` with a canonical [gRPC status code](https://grpc.io/docs/guides/status-codes/) (`code`), a `message`, and optional `details` |
+| `ack` | The acknowledgement boundary the write reached. Always set on success. One of:<ul><li>`INDEX_ACK_QUEUED`: the vector store accepted the write for asynchronous processing. This does not indicate that any record has been written. Also returned when the vector store reports an acknowledgement that Dapr doesn't recognize.</li><li>`INDEX_ACK_COMPLETED`: the vector store completed the write, and `failedItems` contains every item-specific failure.</li></ul> |
+| `failedItems` | Item-specific failures known when the request returns. Each item has the record `id` and an `error` with a canonical [gRPC status code](https://grpc.io/docs/guides/status-codes/) (`code`), a `message`, and `details` |
+
+An upsert with no records returns `INDEX_ACK_COMPLETED` without calling the vector store.
 
 ### HTTP response codes
 
@@ -252,7 +277,7 @@ POST http://localhost:<daprPort>/v1.0-alpha1/vector/<storeName>/collections/<col
 ### Example
 
 ```shell
-curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars/upsert \
+curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars/vectors \
   -H "Content-Type: application/json" \
   -d '{
         "records": [
@@ -273,6 +298,7 @@ curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars
 
 ```json
 {
+  "failedItems": [],
   "ack": "INDEX_ACK_COMPLETED"
 }
 ```
@@ -282,7 +308,7 @@ curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars
 Gets records by ID.
 
 ```
-POST http://localhost:<daprPort>/v1.0-alpha1/vector/<storeName>/collections/<collection>/get
+POST http://localhost:<daprPort>/v1.0-alpha1/vector/<storeName>/collections/<collection>/vectors/get
 ```
 
 ### URL parameters
@@ -305,7 +331,7 @@ POST http://localhost:<daprPort>/v1.0-alpha1/vector/<storeName>/collections/<col
 
 | Field | Description |
 | ----- | ----------- |
-| `records` | The found [records](#record), in request order. IDs that don't exist are omitted |
+| `records` | The found [records](#record), in request order. IDs that don't exist are omitted. When `includeValues` isn't `true`, `values` is an empty array |
 
 ### HTTP response codes
 
@@ -319,7 +345,7 @@ POST http://localhost:<daprPort>/v1.0-alpha1/vector/<storeName>/collections/<col
 ### Example
 
 ```shell
-curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars/get \
+curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars/vectors/get \
   -H "Content-Type: application/json" \
   -d '{
         "ids": ["car-1", "car-42"],
@@ -416,7 +442,14 @@ POST http://localhost:<daprPort>/v1.0-alpha1/vector/<storeName>/collections/<col
 
 | Field | Description |
 | ----- | ----------- |
-| `vector` | The query vector, as an object with `values`. Only `values` is read; other record fields are ignored. Exactly one of `vector` or `byId` is required |
+| `query` | The [vector query](#vector-query). Required |
+| `metadata` | Component-specific request metadata. Optional |
+
+#### Vector query
+
+| Field | Description |
+| ----- | ----------- |
+| `vector` | The query vector, as an object with `values`. Only `values` is read and it must not be empty; other record fields are ignored. Exactly one of `vector` or `byId` is required |
 | `byId` | The ID of a stored record whose vector is used as the query. Exactly one of `vector` or `byId` is required |
 | `topK` | The maximum number of matches to return. When `0` or omitted, the component default is used. Optional |
 | `filter` | A filter over record `metadata` written in the portable [filter language](#filter-language). Optional |
@@ -424,7 +457,8 @@ POST http://localhost:<daprPort>/v1.0-alpha1/vector/<storeName>/collections/<col
 | `includePayload` | Whether to return the `payload` of each match. Defaults to `false`. Optional |
 | `metric` | The [distance metric](#distance-metrics) used to interpret `score` and `scoreThreshold`. When omitted, the collection's metric is used. A metric the component can't evaluate for the collection returns `INVALID_ARGUMENT`. Optional |
 | `scoreThreshold` | Inclusive score cutoff on the metric's own, unnormalised scale. Matches with a score greater than or equal to this value are kept for cosine and dot product, and matches with a score less than or equal to it are kept for Euclidean. Optional |
-| `metadata` | Component-specific request metadata. Optional |
+
+All query fields go inside `query`; because unknown fields are ignored, a field such as `vector` placed at the top level of the request body has no effect and the request is rejected for a missing query.
 
 #### Filter language
 
@@ -451,7 +485,7 @@ Filters are JSON objects that vector components translate into their native quer
 | Field | Description |
 | ----- | ----------- |
 | `matches` | The closest records, ordered from closest to furthest. Each match has a `record` and a `score` |
-| `matches[].record` | The matching [record](#record). `id` and `metadata` are always returned; `values` and `payload` are returned when requested |
+| `matches[].record` | The matching [record](#record). `id` is always returned and `metadata` is returned when the record has it. `values` is an empty array unless `includeValues` is `true`, and `payload` is returned only when `includePayload` is `true` |
 | `matches[].score` | The unnormalised value of the effective metric |
 | `metric` | The effective metric used for scores. Always a concrete value, even when the request doesn't set `metric` |
 
@@ -460,7 +494,7 @@ Filters are JSON objects that vector components translate into their native quer
 | Code | Description |
 | ---- | ----------- |
 | `200` | Query results returned |
-| `400` | Malformed request, neither or both of `vector` and `byId` set, invalid filter, or unsupported metric |
+| `400` | Malformed request, missing `query`, neither or both of `vector` and `byId` set, empty query vector, invalid filter, or unsupported metric |
 | `404` | Vector store or collection not found |
 | `500` | Vector store not configured or request failed |
 
@@ -470,11 +504,13 @@ Filters are JSON objects that vector components translate into their native quer
 curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars/query \
   -H "Content-Type: application/json" \
   -d '{
-        "vector": { "values": [1, 0, 0, 0] },
-        "topK": 2,
-        "filter": { "make": "tesla" },
-        "includePayload": true,
-        "scoreThreshold": 0.5
+        "query": {
+          "vector": { "values": [1, 0, 0, 0] },
+          "topK": 2,
+          "filter": { "make": "tesla" },
+          "includePayload": true,
+          "scoreThreshold": 0.5
+        }
       }'
 ```
 
@@ -484,6 +520,7 @@ curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars
     {
       "record": {
         "id": "car-1",
+        "values": [],
         "payload": "eyJuYW1lIjoiTW9kZWwgMyJ9",
         "metadata": { "dealer": { "city": "Seattle" }, "make": "tesla", "year": 2023 }
       },
@@ -514,14 +551,16 @@ POST http://localhost:<daprPort>/v1.0-alpha1/vector/<storeName>/collections/<col
 
 | Field | Description |
 | ----- | ----------- |
-| `queries` | The queries to run. Each query takes the same fields as the [query vectors](#query-vectors) request body. Required |
-| `metadata` | Component-specific request metadata. Optional |
+| `queries` | The [vector queries](#vector-query) to run, each with the same fields as the `query` object of a [query vectors](#query-vectors) request. Every query runs against the store and collection in the URL. Required |
+| `metadata` | Component-specific request metadata. Applies to every query. Optional |
 
 ### Response content
 
 | Field | Description |
 | ----- | ----------- |
-| `results` | One result per query, in request order. Each result has either a `response` with the same shape as the [query vectors](#query-vectors) response, or an `error` with a canonical [gRPC status code](https://grpc.io/docs/guides/status-codes/) (`code`), a `message`, and optional `details` |
+| `results` | One result per query, in request order. Each result has either a `response` with the same shape as the [query vectors](#query-vectors) response, or an `error` with a canonical [gRPC status code](https://grpc.io/docs/guides/status-codes/) (`code`), a `message`, and `details` |
+
+A query that fails validation, for example one that sets neither `vector` nor `byId` or has an empty query vector, isn't sent to the vector store. Its slot holds an `INVALID_ARGUMENT` error with the `DAPR_VECTOR_INVALID_REQUEST` reason and a `google.rpc.BadRequest` field violation that names the query by its position, for example `queries[1]` or `queries[1].vector.values`. The other queries still run.
 
 Only request-wide failures, such as a missing vector store or collection, invalid credentials, or a transport error, fail the whole request.
 
@@ -542,12 +581,13 @@ curl -X POST http://localhost:3500/v1.0-alpha1/vector/myvectors/collections/cars
   -d '{
         "queries": [
           { "vector": { "values": [1, 0, 0, 0] }, "topK": 1 },
+          { "topK": 1 },
           { "byId": "car-1", "topK": 1, "metric": "DISTANCE_METRIC_EUCLIDEAN" }
         ]
       }'
 ```
 
-In this example, the second query asks for a metric that Meilisearch doesn't support, so its slot contains an error while the first query returns matches:
+In this example, the second query sets neither `vector` nor `byId`, so Dapr rejects it without calling the vector store. The third query asks for a metric that Meilisearch doesn't support, so the vector store reports an error in its slot. The first query returns matches:
 
 ```json
 {
@@ -555,7 +595,14 @@ In this example, the second query asks for a metric that Meilisearch doesn't sup
     {
       "response": {
         "matches": [
-          { "record": { "id": "car-1", "metadata": { "dealer": { "city": "Seattle" }, "make": "tesla", "year": 2023 } }, "score": 1 }
+          {
+            "record": {
+              "id": "car-1",
+              "values": [],
+              "metadata": { "dealer": { "city": "Seattle" }, "make": "tesla", "year": 2023 }
+            },
+            "score": 1
+          }
         ],
         "metric": "DISTANCE_METRIC_COSINE"
       }
@@ -563,7 +610,40 @@ In this example, the second query asks for a metric that Meilisearch doesn't sup
     {
       "error": {
         "code": 3,
-        "message": "meilisearch only supports the cosine distance metric for user-provided embeddings"
+        "message": "exactly one of vector or by_id must be set",
+        "details": [
+          {
+            "@type": "type.googleapis.com/google.rpc.BadRequest",
+            "fieldViolations": [
+              {
+                "field": "queries[1]",
+                "description": "exactly one of vector or by_id must be set",
+                "reason": "",
+                "localizedMessage": null
+              }
+            ]
+          },
+          {
+            "@type": "type.googleapis.com/google.rpc.ResourceInfo",
+            "resourceType": "vector",
+            "resourceName": "myvectors",
+            "owner": "",
+            "description": ""
+          },
+          {
+            "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+            "reason": "DAPR_VECTOR_INVALID_REQUEST",
+            "domain": "dapr.io",
+            "metadata": {}
+          }
+        ]
+      }
+    },
+    {
+      "error": {
+        "code": 3,
+        "message": "meilisearch only supports the cosine distance metric for user-provided embeddings",
+        "details": []
       }
     }
   ]
@@ -578,10 +658,10 @@ Errors the Dapr runtime detects itself, such as a missing vector store or an inv
 | ---------- | ----------- | --------- | ----------- |
 | `ERR_VECTOR_STORE_NOT_FOUND` | `404` | `NOT_FOUND` | The named vector store doesn't exist |
 | `ERR_VECTOR_STORE_NOT_CONFIGURED` | `500` | `FAILED_PRECONDITION` | No vector store is configured |
-| `ERR_VECTOR_INVALID_REQUEST` | `400` | `INVALID_ARGUMENT` | The request failed validation, for example `dimensions` set to `0`, an empty or duplicate record ID, neither or both of `vector` and `byId` set, or an invalid combination of indexing options |
+| `ERR_VECTOR_INVALID_REQUEST` | `400` | `INVALID_ARGUMENT` | The request failed validation, for example `dimensions` set to `0`, an empty or duplicate record ID, a missing `query`, neither or both of `vector` and `byId` set, an empty query vector, or invalid [indexing options]({{% ref "search_api.md#indexing-options" %}}). A `google.rpc.BadRequest` detail names the offending field, such as `dimensions`, `records.id`, `query`, `query.vector.values`, `options`, or `options.wait_timeout`. In a [batch query](#batch-query-vectors), the error is returned in the failing query's slot instead |
 | `ERR_MALFORMED_REQUEST` | `400` | N/A | The HTTP request body is not valid JSON |
 
-Errors returned by the vector store are passed through with their canonical [gRPC status code](https://grpc.io/docs/guides/status-codes/) and details. Over HTTP, the status code is mapped to the equivalent HTTP status, and the response body uses the canonical code name as `errorCode`:
+Errors returned by the vector store, such as a missing collection, are passed through with their canonical [gRPC status code](https://grpc.io/docs/guides/status-codes/) and details. Over HTTP, the response body uses the canonical code name as `errorCode`, carries the status details in `details`, and the HTTP status is mapped from the code in the same way as for the [search API]({{% ref "search_api.md#errors" %}}), for example `NOT_FOUND` to `404`, `ALREADY_EXISTS` to `409`, `UNAVAILABLE` to `503`, and `DEADLINE_EXCEEDED` to `504`:
 
 ```json
 {
@@ -590,7 +670,18 @@ Errors returned by the vector store are passed through with their canonical [gRP
 }
 ```
 
+A vector store error that carries no gRPC status is reported as `INTERNAL`.
+
 A write whose outcome can't be determined, because the vector store reported a batch-level failure without saying which records were applied, carries a `google.rpc.ErrorInfo` detail with the `INDEXING_OUTCOME_UNKNOWN` reason in the `dapr.io` domain. Retry the request; keyed upserts and deletes are idempotent.
+
+### Resiliency
+
+Vector store calls run under the store's [resiliency]({{% ref resiliency-overview %}}) policy:
+
+- Retry policies can match the vector store's canonical gRPC code with `matching.gRPCStatusCodes`.
+- A policy timeout is returned as `DEADLINE_EXCEEDED`, a cancelled request as `CANCELLED`, and an open circuit breaker as `UNAVAILABLE`.
+- `ALREADY_EXISTS` on a retried [create collection](#create-collection) is returned unchanged, because the collection may belong to another caller. `NOT_FOUND` on a retried [delete collection](#delete-collection) is treated as success.
+- A write whose `INDEXING_WAIT_TIMEOUT_ACTION_FAIL_REQUEST` wait expired isn't retried.
 
 ## gRPC API
 

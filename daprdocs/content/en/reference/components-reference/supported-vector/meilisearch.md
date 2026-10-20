@@ -35,7 +35,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field | Required | Details | Example |
 |-------|:--------:|---------|---------|
 | `host` | Y | The Meilisearch host URL. | `"http://localhost:7700"` |
-| `apiKey` | N | The Meilisearch API key. Required when the Meilisearch instance is protected with a master key. | `"masterKey"` |
+| `apiKey` | N | The Meilisearch API key. Required when the Meilisearch instance is protected with a master key. Defaults to `""`. | `"masterKey"` |
 | `timeout` | N | The HTTP client timeout for requests to Meilisearch, as a Go duration. | `"10s"` |
 
 ## Supported features
@@ -44,7 +44,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |---------|:---------:|---------|
 | Dense vectors | Y | Vectors are stored as [user-provided embeddings](https://www.meilisearch.com/docs/learn/ai_powered_search/search_with_user_provided_embeddings). |
 | Distance metrics | Cosine only | See [distance metric and scores](#distance-metric-and-scores). |
-| Query by ID | Y | `byId` queries use Meilisearch's [similar documents](https://www.meilisearch.com/docs/reference/api/similar) search. |
+| Query by ID | Y | `byId` queries use Meilisearch's [similar documents](https://www.meilisearch.com/docs/reference/api/similar) search. A `byId` that matches no record fails that query with `NOT_FOUND`. |
 | Score threshold | Y | |
 | Metadata filtering | Y | `$regex` isn't supported. |
 | Batch query | Y | Each query is evaluated independently. |
@@ -62,22 +62,22 @@ You can pass the following Meilisearch [index settings](https://www.meilisearch.
 | `filterableAttributes` | Additional Meilisearch attributes to declare as filterable. `daprMetadata` is always filterable. | `"daprMetadata.year"` |
 | `sortableAttributes` | Meilisearch attributes to declare as sortable. | `"daprMetadata.year"` |
 
-Creating a collection that already exists returns `ALREADY_EXISTS` and doesn't change its settings.
+Creating a collection that already exists returns `ALREADY_EXISTS` and doesn't change its settings. Collections share the Meilisearch instance with search indexes: list collections only returns indexes that have the `default` user-provided embedder, and getting or deleting any other index as a collection, or upserting or deleting records in it, returns `FAILED_PRECONDITION`.
 
 [Get collection]({{% ref "vector_api.md#get-collection" %}}) returns the following `properties`: `primaryKey` (always `id`), `filterableAttributes`, and `sortableAttributes` when set.
 
 ## Record mapping
 
-- The record `id` is the Meilisearch primary key.
+- The record `id` is the Meilisearch primary key. It must be 1 to 511 bytes of ASCII letters, digits, hyphens, and underscores.
 - The record `values` are stored in `_vectors.default`.
 - The record `metadata` is stored as the `daprMetadata` object. Filter paths are translated to `daprMetadata.<path>`, so a filter on `dealer.city` addresses `daprMetadata.dealer.city`.
 - The record `payload` is stored base64-encoded under the `daprPayload` attribute.
 
 ## Distance metric and scores
 
-Meilisearch only supports cosine similarity for user-provided embeddings. `DISTANCE_METRIC_UNSPECIFIED` selects cosine, and any other metric in a create collection or query request returns `INVALID_ARGUMENT`.
+Meilisearch only supports cosine similarity for user-provided embeddings. `DISTANCE_METRIC_UNSPECIFIED` selects cosine, and any other metric in a create collection or query request returns `INVALID_ARGUMENT`. Because cosine similarity is undefined for a vector whose values are all zero, such vectors, and vectors with values that aren't finite numbers, are rejected with `INVALID_ARGUMENT`.
 
-For a vector query, Meilisearch reports a normalised ranking score of `(1 + cosine) / 2`. The component converts it back so that match scores are the cosine similarity in `[-1, 1]`, and translates a `scoreThreshold` of `t` into a Meilisearch `rankingScoreThreshold` of `(1 + t) / 2`.
+For a vector query, Meilisearch reports a normalised ranking score of `(1 + cosine) / 2`. The component converts it back so that match scores are the cosine similarity in `[-1, 1]`, and translates a `scoreThreshold` of `t` into a Meilisearch `rankingScoreThreshold` of `(1 + t) / 2`. A `scoreThreshold` outside `[-1, 1]` returns `INVALID_ARGUMENT`.
 
 When `topK` isn't set, the component returns up to 10 matches.
 
@@ -87,7 +87,9 @@ Meilisearch processes writes asynchronously as [tasks](https://www.meilisearch.c
 
 When the experimental Meilisearch [`tasksStreamingRoute`](https://www.meilisearch.com/docs/learn/resources/experimental_features_overview) feature is enabled and the API key has the `tasks.get` permission, the component instead shares a single task-change stream for all waiting writes. If the route reports that it is unavailable, the component falls back to polling. The choice is transparent to your application.
 
-A Meilisearch task is atomic: if the task fails, for example because one record's vector doesn't match the collection's dimensions, none of the records in it are written, and a request that waits for completion fails with the task's error. Records with no vector values are rejected in `failedItems` before the task is sent.
+A Meilisearch task is atomic: if the task fails, none of the records in it are written, and a request that waits for completion fails with the task's error. The component therefore checks the records that Meilisearch would reject before it sends the task. A record with an invalid `id`, no vector values, a number of values that differs from the collection's dimensions, or a vector with a zero norm or non-finite values is reported in `failedItems` with `INVALID_ARGUMENT`, and the rest of the records are still written.
+
+Upserting into a collection that doesn't exist fails the request with `NOT_FOUND`.
 
 ## Setup Meilisearch
 
@@ -99,7 +101,7 @@ Run Meilisearch locally with Docker:
 ```bash
 docker run -d --name meilisearch -p 7700:7700 \
   -e MEILI_MASTER_KEY=masterKey \
-  getmeili/meilisearch:latest
+  getmeili/meilisearch:v1.43
 ```
 
 Set `host` to `http://localhost:7700` and `apiKey` to `masterKey`.
