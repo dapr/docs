@@ -95,6 +95,8 @@ When calling multi-application activities or child workflows:
 - If the target application exists but doesn't contain the specified activity or workflow, the call will return an error.
 - Standard workflow retry policies apply to multi-application calls.
 
+[Client operations](#managing-workflows-across-applications) fail at once when no workflow worker is connected for the target application, local or remote, with the error `no workflow worker is connected for app '<app-id>'`. This tells you to start the app, or wait for its worker to connect, instead of returning an actor routing error such as `did not find address for actor`. Starting a workflow no longer retries in this case, so the error comes about 20 seconds sooner. The original error stays wrapped, so existing error code checks still match.
+
 It is paramount that there is coordination between the teams owning the different app IDs to ensure that the activities and child workflows are defined and available when needed.
 
 ## Durable Activity Results
@@ -285,6 +287,8 @@ Because the caller's identity is what the policy is evaluated against, [mTLS]({{
 
 Leaving the app ID unset, or setting it to the calling application's own ID, is the ordinary local operation. Against a runtime that predates this feature the app ID is ignored and the operation applies to the local application.
 
+Start, get, raise event, pause, resume, terminate, purge and rerun can target another application. Rerun is available through the SDK workflow clients only, not the HTTP or gRPC workflow API. Listing instance IDs and reading instance history always apply to the local application.
+
 ### HTTP
 
 Add the `appID` query parameter to any call in the [workflow API reference]({{% ref workflow_api.md %}}):
@@ -325,25 +329,6 @@ client.purge_workflow(instance_id, app_id='app2')
 ```
 
 The async client in `dapr.ext.workflow.aio` takes the same argument. [See the Python workflow examples.](https://github.com/dapr/python-sdk/tree/master/examples/workflow)
-
-{{% /tab %}}
-
-{{% tab "JavaScript" %}}
-
-<!--javascript-->
-
-Each operation takes a trailing options object carrying `appId`.
-
-```typescript
-const instanceId = await client.scheduleNewWorkflow(orderWf, undefined, undefined, undefined, { appId: "app2" });
-
-const state = await client.getWorkflowState(instanceId, true, { appId: "app2" });
-await client.raiseEvent(instanceId, "approval", "approved", { appId: "app2" });
-await client.suspendWorkflow(instanceId, { appId: "app2" });
-await client.resumeWorkflow(instanceId, { appId: "app2" });
-await client.terminateWorkflow(instanceId, null, { appId: "app2" });
-await client.purgeWorkflow(instanceId, { appId: "app2" });
-```
 
 {{% /tab %}}
 
@@ -411,7 +396,7 @@ err = client.PurgeWorkflowState(ctx, instanceID, workflow.WithPurgeAppID("app2")
 {{% alert title="SDK availability" color="warning" %}}
 Client-level cross-application operations require Dapr runtime v1.19 or later, and the SDK support shipping alongside it. The arguments and options shown above are not present in earlier SDK releases: check that your SDK version includes them before using these snippets.
 
-The set of SDKs differs from the in-workflow support listed earlier on this page. The JavaScript SDK supports cross-application client operations but not cross-application child workflows or activities.
+The JavaScript SDK does not support cross-application client operations.
 {{% /alert %}}
 
 The target application's [workflow access policy]({{% ref workflow-access-policy.md %}}) governs whether each operation is permitted, per operation and per workflow name, using the rules defined in the [WorkflowAccessPolicy spec]({{% ref workflow-access-policy-schema.md %}}). Cross-namespace targeting is not supported.

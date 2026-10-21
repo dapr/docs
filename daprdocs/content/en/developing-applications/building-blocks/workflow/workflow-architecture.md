@@ -38,6 +38,8 @@ The details of these interactions are internally handled by the language-specifi
 
 The history the sidecar sends over this stream is incremental: once a worker is warm for an instance, it is sent only the events added since its previous turn rather than the whole history. See [the stateful workflow client]({{% ref "workflow-stateful-client.md" %}}).
 
+A load balancer or proxy between the app and the sidecar can close a stream that carries no traffic. AWS ALB and nginx, for example, close an idle stream after 60 seconds, which costs the worker a reconnect and a full history resend. To keep the stream open, a worker can advertise the `WORKER_CAPABILITY_HEALTH_PING` capability when it opens the stream, and the sidecar then sends it a health ping every 30 seconds. Workers built with the 1.19 Python, Java, and .NET SDKs, or with the Go SDK v1.16 (durabletask-go v0.15), advertise it. The sidecar reads a `DAPR_WORKFLOW_HEALTH_PING_INTERVAL` environment variable that overrides the interval, but it exists for Dapr's integration tests and is not a supported setting. See the [environment variable reference]({{% ref environment %}}).
+
 ### Differences between workflow and application actor interactions
 
 If you're familiar with Dapr actors, you may notice a few differences in terms of how sidecar interactions works for workflows compared to application defined actors.
