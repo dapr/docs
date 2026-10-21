@@ -96,7 +96,7 @@ A successful request returns `204 No Content`. If the file does not exist, the r
 | `507 Insufficient Storage` | The component rejects the upload because its configured total capacity is exhausted. |
 | `500 Internal Server Error` | The component reports an unexpected error. |
 
-The actual file-size and total-capacity limits depend on the component. A component can also return errors specific to its backend.
+The actual file-size and total-capacity limits depend on the component. HTTP `PUT` and `POST` uploads are exempt from the sidecar [`--max-body-size`]({{% ref increase-request-size.md %}}) limit, so only the component limits apply. A component can also return errors specific to its backend.
 
 ## gRPC API
 

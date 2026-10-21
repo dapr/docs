@@ -367,6 +367,30 @@ public interface DemoActor {
 }
 ```
 
+From Dapr 1.19, an actor that extends `AbstractActor` can limit a timer or reminder to a number of repetitions, a time to live (TTL), or both, so it stops by itself and you do not need to unregister it. Pass `ActorTimerOptions` to `registerActorTimer` or `ActorReminderOptions` to `registerReminder`. Repetitions need a period in whole seconds, and a TTL needs a positive period.
+
+```java
+// Inside the actor implementation: fire 5 times, every 10 seconds
+registerReminder(
+    "myreminder",
+    "reminder state",
+    ActorReminderOptions.builder()
+        .setDueTime(Duration.ofSeconds(5))
+        .setPeriod(Duration.ofSeconds(10))
+        .setRepetitions(5)
+        .build()).block();
+
+// Fire every second, and expire after 1 minute
+registerActorTimer(
+    null,
+    "clock",
+    "ping!",
+    ActorTimerOptions.builder()
+        .setPeriod(Duration.ofSeconds(1))
+        .setTtl(Duration.ofMinutes(1))
+        .build()).block();
+```
+
 - For a full guide on actors visit [How-To: Use virtual actors in Dapr]({{% ref howto-actors.md %}}).
 - Visit [Java SDK examples](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/actors) for code samples and instructions to try actors
 
