@@ -97,7 +97,7 @@ Ed25519 (Curve25519) may not satisfy FIPS 140 requirements; consult your complia
 {{% /alert %}}
 
 {{% alert title="Downgrade floor: 1.17.7" color="warning" %}}
-Sentry writes the Ed25519-keyed CA bundle to the `dapr-trust-bundle` Kubernetes secret. Sentry versions **before 1.17.7** cannot parse this bundle and crash on startup. Do not roll back from 1.18 to a version earlier than 1.17.7 without first rotating the CA. See the [1.18 release notes](https://github.com/dapr/dapr/releases/tag/v1.18.0) for the safe rollback path.
+Sentry writes the Ed25519-keyed CA bundle to the `dapr-trust-bundle` Kubernetes secret. Sentry versions **before 1.17.7** cannot parse this bundle and crash on startup. Do not roll back from 1.18 or 1.19 to a version earlier than 1.17.7 without first rotating the CA. See [Downgrade]({{% ref "kubernetes-upgrade.md#downgrade" %}}) for the safe rollback path.
 {{% /alert %}}
 
 ### Container image references in workload certificates
@@ -112,7 +112,7 @@ This gives security and platform operators supply-chain provenance at the identi
 
 #### Trust model
 
-The image data is sourced from the Kubernetes pod object which Sentry fetches from the Kubernetes API server while validating the certificate signing request. The workload never self-reports its images: the certificate request carries no image fields, and the pod is bound to the requestor by Sentry's existing checks (Kubernetes TokenReview of the pod's projected service account token, service account match, and app-id match against the pod's annotations). A workload cannot forge the image list in its own certificate; it records what Kubernetes actually scheduled.
+The image data is sourced from the Kubernetes pod object which Sentry reads while validating the certificate signing request, from its pod cache (pods with the `dapr.io/sidecar-injected` label) or, for a pod not in the cache, from the Kubernetes API server. The workload never self-reports its images: the certificate request carries no image fields, and the pod is bound to the requestor by Sentry's existing checks (Kubernetes TokenReview of the pod's projected service account token, service account match, and app-id match against the pod's annotations). A workload cannot forge the image list in its own certificate; it records what Kubernetes actually scheduled.
 
 #### What is included
 
