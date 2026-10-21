@@ -205,6 +205,9 @@ If an invocation of the method fails, the timer is not removed. Timers are only 
 - The sidecar terminates
 - The executions run out
 - You delete it explicitly
+- The actor moves to another host (from Dapr 1.19)
+
+From Dapr 1.19, when an actor moves to another host, the old host deletes the actor's timers, so they no longer fire there. Before 1.19, the old host kept firing them, and the actor ran twice once the timer was registered again on the new host. All timer requests, including create and delete, must be sent to the sidecar that owns the actor: a sidecar that hosts the actor type but does not own the actor rejects them with `403` and `ERR_ACTOR_TIMER_NOT_OWNED` (gRPC `PermissionDenied`). Timer fires that Dapr drops because the timer was removed or the actor is no longer hosted on that sidecar, for example a fire that was waiting during the move, are counted in the `dapr_runtime_actor_timers_dropped_total` metric.
 
 ## Managing reminders with the CLI
 
