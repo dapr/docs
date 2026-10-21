@@ -122,7 +122,7 @@ The following example shows you how to create a Kubernetes secret to hold the co
 
 On each reconcile (every 60 seconds), Dapr re-resolves the secrets a component references with `secretKeyRef` and compares them against the running component. When the value of a referenced secret changes, [hot reloading]({{% ref "component-updates.md#hot-reloading" %}}) closes the component and re-initializes it with the new value. No restart of the application pod or the Dapr sidecar is required, and the Component manifest does not need to change.
 
-This applies to every secret store. For the built-in `kubernetes` secret store the Dapr operator resolves the reference and for any other store, such as HashiCorp Vault or Azure Key Vault configured through `auth.secretStore`, the sidecar resolves it directly. The behavior and timing are the same in both cases.
+This applies to every secret store. For the built-in `kubernetes` secret store, the Dapr operator resolves the reference. For any other store, such as HashiCorp Vault or Azure Key Vault configured through `auth.secretStore`, the sidecar resolves it directly. The behavior and timing are the same in both cases.
 
 {{% alert title="Note" color="primary" %}}
 Keep in mind the following when relying on this behavior:
