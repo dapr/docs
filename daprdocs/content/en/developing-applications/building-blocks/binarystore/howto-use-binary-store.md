@@ -124,7 +124,7 @@ await binaryStore.SetBinaryFileAsync("mystore", "report.pdf", content, overwrite
 
 An HTTP overwrite that succeeds returns `204 No Content`.
 
-Neither API requires file data to be encoded as JSON. The runtime streams the content to the component, which may enforce a maximum file size or total store capacity; configure and review the limits of the component you use.
+Neither API requires file data to be encoded as JSON. The runtime streams the content to the component, which may enforce a maximum file size or total store capacity; configure and review the limits of the component you use. HTTP uploads are exempt from the sidecar [`--max-body-size`]({{% ref increase-request-size.md %}}) limit, so a file can be larger than that limit.
 
 ## Retrieve a file
 
