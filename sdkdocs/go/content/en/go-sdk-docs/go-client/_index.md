@@ -482,6 +482,37 @@ func TestWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 }
 ```
 
+To wait for the first of several tasks to complete, use `ctx.Select`. It returns the index of the task that completed first. For example, an approval gate waits for an `Approve` event, a `Reject` event or a timeout, whichever comes first:
+
+```go
+func ApprovalWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+	// A negative timeout waits for the event without a time limit
+	approve := ctx.WaitForExternalEvent("Approve", -1)
+	reject := ctx.WaitForExternalEvent("Reject", -1)
+	timeout := ctx.CreateTimer(24 * time.Hour)
+
+	winner, err := ctx.Select(approve, reject, timeout)
+	if err != nil {
+		return nil, err
+	}
+
+	switch winner {
+	case 0:
+		var approver string
+		if err := approve.Await(&approver); err != nil {
+			return nil, err
+		}
+		return "approved by " + approver, nil
+	case 1:
+		return "rejected", nil
+	default:
+		return "timed out", nil
+	}
+}
+```
+
+Without `Select`, a workflow has to poll each event with short `WaitForExternalEvent` timeouts, and every poll adds a timer and a history entry. `Select` itself adds no timers or history entries, so a workflow that waits at a gate does not grow its history. The tasks that lose stay pending, and you can await them or pass them to a later `Select`. When you select on the same event name in a loop, pass the pending task to the next `Select` instead of calling `WaitForExternalEvent` again for that name. `Select` needs Go SDK v1.16.0 or later, which uses durabletask-go v0.15.0 or later.
+
 Then compose your application that will use the workflow you've created. [Refer to the How-To: Author workflows guide]({{% ref howto-author-workflow.md %}}) for a full walk-through. 
 
 Try out the [Go SDK workflow example.](https://github.com/dapr/go-sdk/blob/main/examples/workflow)
@@ -677,6 +708,28 @@ func main() {
 ```
 
 For a full guide on actors, visit [the Actors building block documentation]({{% ref actors %}}).
+
+#### Host actors over gRPC (Alpha)
+
+From Go SDK v1.16.0, the app can host actors over gRPC instead of an HTTP callback server. `SubscribeActorEvents` registers the actor types of the actor runtime with the Dapr sidecar and receives actor method invocations, reminders, timers and deactivations on one bidirectional stream (`SubscribeActorEventsAlpha1`). It reconnects and registers the actor types again when the stream fails. Use it when the app should not expose HTTP endpoints for actor callbacks. If the sidecar has an app port, run it with `--app-protocol grpc`: the sidecar rejects the stream when the app channel is HTTP.
+
+```go
+// MyActor embeds actor.ServerImplBaseCtx and implements Type().
+// Register the actor types on the actor runtime, as for HTTP hosting.
+rt := runtime.GetActorRuntimeInstanceContext()
+rt.RegisterActorFactory(func() actor.ServerContext { return &MyActor{} })
+
+// Receive the actor callbacks over the actor event stream.
+stop, err := daprClient.SubscribeActorEvents(ctx, rt, client.ActorEventSubscriptionOptions{
+	ActorIdleTimeout: time.Hour,
+})
+if err != nil {
+	log.Fatal("Error subscribing to actor events: ", err)
+}
+defer stop()
+```
+
+Learn more in [Actor app-initiated gRPC event streams]({{% ref actors-app-initiated-streams.md %}}), and try the [Go SDK gRPC actor example](https://github.com/dapr/go-sdk/tree/main/examples/actor-grpc).
 
 ### Secret Management
 

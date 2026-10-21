@@ -15,7 +15,7 @@ the data only where it is needed.
 The **binary store is an alpha building block and is subject to change**. The .NET SDK's workflow data-reference
 implementation is **also alpha**; its APIs and behavior are subject to change.
 
-Use an SDK build that includes that implementation; do not assume an earlier published package includes these APIs.
+These APIs are available from `Dapr.Workflow` 1.19.0. Earlier packages do not include them.
 {{% /alert %}}
 
 {{% alert title="Cross-app SDK compatibility" color="warning" %}}
@@ -70,9 +70,8 @@ when a cross-app input requires inlining. `PreferInline` resolves outgoing refer
 
 ### Prerequisites
 
-- A build of `Dapr.Workflow` containing the PR revision described above. Payload support is included in
-  `Dapr.Workflow`.
-- Dapr runtime 1.19.0-rc.3 or later with binary-store support.
+- `Dapr.Workflow` 1.19.0 or later. Payload support is included in `Dapr.Workflow`.
+- Dapr runtime 1.19.0 or later.
 - A configured binary-store component, in addition to the workflow's usual actor state store, placement, and scheduler.
 - Payload support registered on every client and worker that writes or reads these workflows, with access to the
   referenced component and compatible serialization settings.

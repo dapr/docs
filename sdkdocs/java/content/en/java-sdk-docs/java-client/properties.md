@@ -65,6 +65,14 @@ Configure gRPC keepalive behavior using these environment variables:
 | `DAPR_GRPC_KEEP_ALIVE_TIMEOUT_SECONDS` | gRPC keepalive timeout in seconds | `5` |
 | `DAPR_GRPC_KEEP_ALIVE_WITHOUT_CALLS` | Whether to keep gRPC connection alive without calls | `true` |
 
+#### Workflow Keepalive Settings
+While the workflow runtime runs, the SDK calls the sidecar's `Hello` RPC at a fixed interval, so that load balancers that do not count HTTP/2 PING frames as activity, such as AWS Application Load Balancers, do not close the idle work-item stream:
+
+| Environment Variable | Description | Default |
+|---------------------|-------------|---------|
+| `DAPR_WORKFLOWS_RUNTIME_APP_KEEP_ALIVE_ENABLED` | Whether the workflow runtime sends the keepalive `Hello` calls | `true` |
+| `DAPR_WORKFLOWS_APP_KEEP_ALIVE_INTERVAL_SECONDS` | Interval between the keepalive `Hello` calls, in seconds | `30` |
+
 #### Inbound Message Settings
 Configure gRPC inbound message settings using these environment variables:
 
@@ -116,6 +124,8 @@ All environment variables can be set as system properties using the `-D` flag. H
 | `dapr.grpc.keep.alive.time.seconds` | gRPC keepalive time in seconds | `10` |
 | `dapr.grpc.keep.alive.timeout.seconds` | gRPC keepalive timeout in seconds | `5` |
 | `dapr.grpc.keep.alive.without.calls` | Whether to keep gRPC connection alive without calls | `true` |
+| `dapr.workflows.runtime.app.keep.alive.enabled` | Whether the workflow runtime sends keepalive `Hello` calls to the sidecar | `true` |
+| `dapr.workflows.app.keep.alive.interval.seconds` | Interval between the workflow keepalive `Hello` calls, in seconds | `30` |
 | `dapr.http.endpoint` | HTTP endpoint for remote sidecar | `null` |
 | `dapr.api.maxRetries` | Maximum number of retries for API calls | `0` |
 | `dapr.api.timeoutMilliseconds` | Timeout for API calls in milliseconds | `0` |
