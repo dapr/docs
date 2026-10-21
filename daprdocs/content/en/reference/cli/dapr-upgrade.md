@@ -42,10 +42,10 @@ dapr upgrade [flags]
 dapr upgrade -k
 
 # Upgrade or downgrade to a specified version of Dapr runtime in Kubernetes
-dapr upgrade -k --runtime-version 1.2
+dapr upgrade -k --runtime-version {{% dapr-latest-version long="true" %}}
 
 # Upgrade or downgrade to a specified version of Dapr runtime in Kubernetes with value set
-dapr upgrade -k --runtime-version 1.2 --set global.logAsJson=true
+dapr upgrade -k --runtime-version {{% dapr-latest-version long="true" %}} --set global.logAsJson=true
 ```
 ```bash
 # Upgrade or downgrade using private registry, if you are using private registry for hosting dapr images and have used it while doing `dapr init -k`
