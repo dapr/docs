@@ -18,6 +18,7 @@ description: "List of current alpha and beta APIs"
 | Actor App-Initiated Streams    |  [SubscribeActorEventsAlpha1 proto](https://github.com/dapr/dapr/blob/2fe035dfd8d248a3272dd29574ce2e315b8cf570/dapr/proto/runtime/v1/dapr.proto#L125)    | N/A | Actor hosts open a single bidirectional gRPC stream to daprd and receive all actor callbacks (invoke, reminder, timer, deactivate) over that connection. Apps do not need to expose a server port. | [Actor app-initiated streams]({{% ref "actors-app-initiated-streams" %}}) | v1.18 |
 | Search    |  [Search proto](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/search.proto)    | `v1.0-alpha1/search` | Index, retrieve, and query documents in full-text search engines using the search API. | [Search API]({{% ref "search-overview.md" %}}) | v1.19 |
 | Vector    |  [Vector proto](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/vector.proto)    | `v1.0-alpha1/vector` | Store pre-embedded vectors and run similarity queries using the vector API. | [Vector API]({{% ref "vector-overview.md" %}}) | v1.19 |
+| Binary Store    |  [Binary Store proto](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/binarystore.proto)    | `v1.0-alpha1/binarystore` | Store, retrieve, and delete files that are too large for a state store using the binary store API. | [Binary Store API]({{% ref "binary_store_api.md" %}}) | v1.19 |
 
 ## Beta APIs
 
