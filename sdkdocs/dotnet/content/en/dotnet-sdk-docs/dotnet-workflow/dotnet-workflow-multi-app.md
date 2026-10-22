@@ -39,7 +39,7 @@ or override `PreferInline`. Each reader must resolve the reference's store name 
 through its own sidecar, with compatible serialization and contracts. Separate in-memory stores do not share objects.
 
 The [JavaScript SDK]({{% ref js-workflow-data-references.md %}}) also supports the version-1 envelope from
-`@dapr/dapr` 3.19.0-rc.4 with compatible serialization and storage access, but does not implement payload-stage
+`@dapr/dapr` 3.19.0 with compatible serialization and storage access, but does not implement payload-stage
 reversal. Do not assume other language SDKs support data references. The inline default covers only top-level call
 inputs, not nested references, results, or propagated history. See
 [Cross-app input handling]({{% ref dotnet-workflow-data-references.md %}}#cross-app-input-handling) for examples and limits.

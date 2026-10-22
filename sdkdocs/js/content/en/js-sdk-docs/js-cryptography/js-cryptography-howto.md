@@ -13,14 +13,14 @@ Use `DaprClient.crypto` to encrypt and decrypt data without passing cryptographi
 - [Dapr CLI]({{% ref install-dapr-cli.md %}})
 - An initialized [Dapr environment]({{% ref install-dapr-selfhost.md %}}) with a runtime that supports the alpha Cryptography API
 - [Node.js](https://nodejs.org/) 18 or later; a supported LTS release is recommended
-- The [`@dapr/dapr`](https://www.npmjs.com/package/@dapr/dapr) package, **version 3.19.0-rc.4 or later**
+- The [`@dapr/dapr`](https://www.npmjs.com/package/@dapr/dapr) package, **version 3.19.0 or later**
 - A configured [cryptography component]({{% ref supported-cryptography %}}) and a key compatible with the selected key-wrapping algorithm
 
 In your application directory, initialize an npm project if you do not already have one, then install the SDK:
 
 ```sh
 npm init -y
-npm install @dapr/dapr@3.19.0-rc.4
+npm install @dapr/dapr@3.19.0
 ```
 
 The examples use JavaScript ES modules and run as `.mjs` files without a TypeScript compiler. The same APIs are available in TypeScript.

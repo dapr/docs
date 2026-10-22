@@ -11,20 +11,20 @@ Use `DaprClient.vector` to store precomputed embeddings and find similar records
 ## Prerequisites
 
 - [Dapr CLI]({{% ref install-dapr-cli.md %}})
-- An initialized [Dapr environment]({{% ref install-dapr-selfhost.md %}}) with a Vector-capable runtime from the **1.19 release line or later**
+- An initialized [Dapr environment]({{% ref install-dapr-selfhost.md %}}) with a Vector-capable runtime from the 1.19 release line or later
 - [Node.js](https://nodejs.org/) 18 or later
-- The [`@dapr/dapr`](https://www.npmjs.com/package/@dapr/dapr) package, **version 3.19.0-rc.4 or later**
+- The [`@dapr/dapr`](https://www.npmjs.com/package/@dapr/dapr) package, version 3.19.0 or later
 - A configured vector store component, such as the in-memory component below
 
-{{% alert title="Preview runtime support" color="warning" %}}
-Dapr runtime 1.19.0-rc.0 through 1.19.0-rc.4 do not include the Vector API. For preview development, use a build that includes Vector, such as `edge`. Edge builds are development builds, not production releases.
+{{% alert title="Runtime support" color="warning" %}}
+Use a Dapr runtime that includes the Vector API. Installing JavaScript SDK 3.19.0 alone does not enable runtime support for Vector.
 {{% /alert %}}
 
 In your application directory, initialize an npm project if you do not already have one, then install the SDK:
 
 ```sh
 npm init -y
-npm install @dapr/dapr@3.19.0-rc.4
+npm install @dapr/dapr@3.19.0
 ```
 
 The examples use JavaScript ES modules and run as a `.mjs` file without a TypeScript compiler. The same APIs are available in TypeScript.

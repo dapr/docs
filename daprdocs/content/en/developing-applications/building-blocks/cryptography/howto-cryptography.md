@@ -53,7 +53,7 @@ def encrypt_decrypt_string(dapr: DaprClient):
 
 <!--JavaScript-->
 
-With **`@dapr/dapr` 3.19.0-rc.4 or later**, `client.crypto` supports both HTTP and gRPC. You can encrypt data in a buffer or a UTF-8 string. Prefer gRPC for large payloads and production streaming, because Dapr buffers HTTP cryptography output until it has consumed the request.
+With **`@dapr/dapr` 3.19.0 or later**, `client.crypto` supports both HTTP and gRPC. You can encrypt data in a buffer or a UTF-8 string. Prefer gRPC for large payloads and production streaming, because Dapr buffers HTTP cryptography output until it has consumed the request.
 
 Follow the [JavaScript Cryptography how-to guide]({{% ref js-cryptography-howto.md %}}) for installation, component and key setup, client configuration, and runnable examples.
 

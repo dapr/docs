@@ -6,7 +6,7 @@ weight: 53100
 description: Essential guidance for configuring and using the JavaScript Vector client
 ---
 
-Vector is available through `DaprClient.vector` in JavaScript SDK **3.19.0-rc.4 or later**. Both HTTP and gRPC use the alpha Vector API and require a Vector-capable Dapr runtime from the **1.19 release line or later**. Dapr runtime **1.19.0-rc.0 through 1.19.0-rc.4 do not include Vector**; use a build that includes it, such as `edge`, for preview development.
+Vector is available through `DaprClient.vector` in JavaScript SDK 3.19.0 or later. Both HTTP and gRPC use the alpha Vector API and require a Vector-capable Dapr runtime from the 1.19 release line or later. Installing the JavaScript SDK alone does not enable the Vector API.
 
 ## Client lifetime and configuration
 

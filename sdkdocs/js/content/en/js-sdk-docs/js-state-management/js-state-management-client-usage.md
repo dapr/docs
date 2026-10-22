@@ -6,7 +6,7 @@ weight: 53100
 description: Configuration, options, serialization, response shapes, and protocol-specific behavior of the JavaScript state client
 ---
 
-State management is available through `DaprClient.state`. This page describes the implementation in **3.19.0-rc.4** and the behavior to account for when using that package or a later compatible release.
+State management is available through `DaprClient.state`. This page describes the implementation in 3.19.0 and the behavior to account for when using that package or a later compatible release.
 
 ## Client lifetime and configuration
 
