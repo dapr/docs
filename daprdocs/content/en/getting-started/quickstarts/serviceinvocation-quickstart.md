@@ -29,7 +29,8 @@ Select your preferred language before proceeding with the Quickstart.
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [Python 3.7+ installed](https://www.python.org/downloads/).
+- [Python 3.11 or later installed](https://www.python.org/downloads/).
+- [uv](https://docs.astral.sh/uv/getting-started/installation/), the Python package manager that the sample uses.
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
@@ -39,7 +40,7 @@ For this example, you will need:
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation/python/http).
 
 ```bash
-git clone https://github.com/dapr/quickstarts.git
+git clone --depth 1 https://github.com/dapr/quickstarts.git
 ```
 
 From the root of the Quickstart clone directory, navigate to the quickstart directory.
@@ -51,11 +52,7 @@ cd service_invocation/python/http
 Install the dependencies for the `order-processor` and `checkout` apps:
 
 ```bash
-cd ./order-processor
-pip3 install -r requirements.txt
-cd ../checkout
-pip3 install -r requirements.txt
-cd ..
+uv sync --all-packages
 ```
 
 ### Step 3: Run the `order-processor` and `checkout` services
@@ -65,9 +62,8 @@ With the following command, simultaneously run the following services alongside 
 - The `checkout` service 
 
 ```bash
-dapr run -f .
+uv run dapr run -f .
 ```
-> **Note**: Since Python3.exe is not defined in Windows, you may need to change  `python3` to `python` in the  [`dapr.yaml`]({{% ref "#dapryaml-multi-app-run-template-file" %}}) file before running `dapr run -f .`
 
 **Expected output**
 
@@ -129,10 +125,10 @@ apps:
   - appDirPath: ./order-processor/
     appID: order-processor
     appPort: 8001
-    command: ["python3", "app.py"]
+    command: ["uv", "run", "python", "app.py"]
   - appID: checkout
     appDirPath: ./checkout/
-    command: ["python3", "app.py"]
+    command: ["uv", "run", "python", "app.py"]
 ```
 
 ##### `order-processor` service
@@ -747,7 +743,8 @@ Select your preferred language before proceeding with the Quickstart.
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [Python 3.7+ installed](https://www.python.org/downloads/).
+- [Python 3.11 or later installed](https://www.python.org/downloads/).
+- [uv](https://docs.astral.sh/uv/getting-started/installation/), the Python package manager that the sample uses.
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
@@ -757,7 +754,7 @@ For this example, you will need:
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
 
 ```bash
-git clone https://github.com/dapr/quickstarts.git
+git clone --depth 1 https://github.com/dapr/quickstarts.git
 ```
 
 ### Step 3: Run `order-processor` service
@@ -772,16 +769,15 @@ cd service_invocation/python/http/order-processor
 Install the dependencies and build the application:
 
 ```bash
-pip3 install -r requirements.txt 
+uv sync --all-packages
 ```
 
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-port 8001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- python3 app.py
+dapr run --app-port 8001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- uv run python app.py
 ```
 
-> **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
 
 ```py
 @app.route('/orders', methods=['POST'])
@@ -807,16 +803,15 @@ cd service_invocation/python/http/checkout
 Install the dependencies and build the application:
 
 ```bash
-pip3 install -r requirements.txt 
+uv sync --all-packages
 ```
 
 Run the `checkout` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- python3 app.py
+dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- uv run python app.py
 ```
 
-> **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
 
 In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
 
