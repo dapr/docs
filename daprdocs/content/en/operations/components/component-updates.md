@@ -59,10 +59,9 @@ Since Dapr 1.18.3, the [actor state store]({{% ref "state_api.md#configuring-sta
 
 Only a single actor state store may be configured. Hot loading a second component marked as the actor state store is skipped with an error logged, and that component is applied if the current actor state store is later removed.
 
-#### Referenced Kubernetes secrets
+#### Referenced secrets
 
-When running in Kubernetes, hot reloading also detects changes to Kubernetes secrets that a component references with `secretKeyRef` through the built-in `kubernetes` secret store.
-When a referenced secret is updated, for example because a credential was rotated, the component is closed and re-initialized with the new secret value within 60 seconds, without requiring a pod restart. This does not apply to secrets referenced from other secret stores, which are only resolved when the component initializes on start-up. Read [How-To: Reference secrets in components]({{% ref "component-secrets.md#updating-referenced-secrets" %}}) for more details.
+Hot reloading also detects changes to the secrets a component references with `secretKeyRef`, not only changes to the manifest. On each reconcile the sidecar re-resolves the reference and, if the value changed, closes and re-initializes the component with the new value within 60 seconds, without a pod restart. This applies to every secret store. Read [How-To: Reference secrets in components]({{% ref "component-secrets.md#updating-referenced-secrets" %}}) for more details.
 
 ### Configurations, Resiliency, WorkflowAccessPolicies, and HTTPEndpoints
 
