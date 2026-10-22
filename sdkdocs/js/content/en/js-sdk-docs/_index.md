@@ -28,6 +28,12 @@ Store, retrieve, stream, and delete binary files with `DaprClient.binaryStore` o
 
 Follow the [Binary Store how-to guide]({{% ref js-binarystore-howto.md %}}) to get started, or read the [client usage guidance]({{% ref js-binarystore-client-usage.md %}}) for configuration, streaming, cancellation, and error handling.
 
+## Search
+
+Manage indexes and index, retrieve, delete, and query JSON documents with `DaprClient.search` over HTTP or gRPC. Search requires Dapr runtime **1.19 or later** and JavaScript SDK **3.19.0-rc.5 or later**.
+
+Follow the [Search how-to guide]({{% ref js-search-howto.md %}}) to get started, or read the [client usage guidance]({{% ref js-search-client-usage.md %}}) for query options, pagination, write acknowledgements, cancellation, and errors.
+
 ## Structure
 
 The Dapr JavaScript SDK contains two major components:
