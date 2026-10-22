@@ -129,6 +129,8 @@ See this list of values corresponding to the different Dapr APIs:
 | [Cryptography]({{% ref cryptography_api.md %}}) | `crypto` (`v1.0-alpha1`) | `crypto` (`v1alpha1`) |
 | [Workflow]({{% ref workflow_api.md %}}) | `workflows` (`v1.0`) |`workflows` (`v1`) |
 | [Conversation]({{% ref conversation_api.md %}}) | `conversation` (`v1.0-alpha1`) | `conversation` (`v1alpha1`) |
+| [Search]({{% ref search_api.md %}}) | `search` (`v1.0-alpha1`) | `search` (`v1alpha1`) |
+| [Vector]({{% ref vector_api.md %}}) | `vector` (`v1.0-alpha1`) | `vector` (`v1alpha1`) |
 | [Health]({{% ref health_api.md %}}) | `healthz`  (`v1.0`) | n/a |
 | [Shutdown]({{% ref shutdown_api.md %}}) | `shutdown` (`v1.0`) | `shutdown` (`v1`) |
 
