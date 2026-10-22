@@ -17,21 +17,23 @@ You can download and install the Dapr Workflow extension with:
 
 {{% tab header="Stable" %}}
 ```bash
-pip install dapr-ext-workflow
+pip install "dapr[workflow]"
 ```
 {{% /tab %}}
 
 {{% tab header="Development" %}}
 {{% alert title="Note" color="warning" %}}
-The development package will contain features and behavior that will be compatible with the pre-release version of the Dapr runtime. Make sure to uninstall any stable versions of the Python SDK extension before installing the `dapr-dev` package.
+The development version will contain features and behavior that will be compatible with the pre-release version of the Dapr runtime. Only tagged releases are published to PyPI, so install the development version from the GitHub repository. Make sure to uninstall any stable versions of the Python SDK before installing it.
 {{% /alert %}}
 
 ```bash
-pip install dapr-ext-workflow-dev
+pip install "dapr[workflow] @ git+https://github.com/dapr/python-sdk.git@main"
 ```
 {{% /tab %}}
 
 {{< /tabpane >}}
+
+Starting with Dapr 1.19, this extension is an extra of the `dapr` package. The `dapr-ext-workflow` package is no longer published. If you installed it before, follow the [upgrade steps]({{% ref "python#install-extensions" %}}) to move to the extra. The import path does not change.
 
 ## Example
 
@@ -81,7 +83,7 @@ if __name__ == '__main__':
     wf_client = wf.DaprWorkflowClient()
     instance_id = wf_client.schedule_new_workflow(workflow=task_chain_workflow, input=42)
     print(f'Workflow started. Instance ID: {instance_id}')
-    state = wf_client.wait_for_workflow_completion(instance_id)
+    state = wf_client.wait_for_workflow_completion(instance_id, timeout_in_seconds=60)
     print(f'Workflow completed! Status: {state.runtime_status}')
 
     wfr.shutdown()
@@ -99,6 +101,26 @@ if __name__ == '__main__':
   - [Human approval example](https://github.com/dapr/python-sdk/blob/main/examples/workflow/human_approval.py)
   - [Monitor example](https://github.com/dapr/python-sdk/blob/main/examples/workflow/monitor.py)
 
+
+## Stateful workflow history
+
+From Dapr 1.19, the workflow worker keeps the history of each workflow instance in memory, so the Dapr sidecar sends only the new events on each turn. This is on by default. To turn it off, for example when worker memory is limited, set `disable_stateful_history=True` on `WorkflowRuntime`:
+
+```python
+import dapr.ext.workflow as wf
+
+wfr = wf.WorkflowRuntime(disable_stateful_history=True)
+```
+
+Learn more in [Stateful workflow client]({{% ref workflow-stateful-client.md %}}).
+
+## Waiting for workflows
+
+`wait_for_workflow_start` and `wait_for_workflow_completion` ignore the `DAPR_API_TIMEOUT_SECONDS` environment variable. Without the `timeout_in_seconds` argument, they wait with no time limit. Pass `timeout_in_seconds` to limit how long the call waits. When the time limit passes, the call raises `TimeoutError`:
+
+```python
+state = wf_client.wait_for_workflow_completion(instance_id, timeout_in_seconds=60)
+```
 
 ## Next steps
 
