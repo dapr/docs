@@ -29,7 +29,7 @@ If Consul service registration is managed externally from Dapr you need to ensur
 
 ## Behaviour
 
-On `init` the Consul component either validates the connection to the configured (or default) agent or registers the service if configured to do so. The name resolution interface does not cater for an "on shutdown" pattern so consider this when using Dapr to register services to Consul as it does not deregister services.
+On `init` the Consul component either validates the connection to the configured (or default) agent or registers the service if configured to do so. A service registered by Dapr stays in Consul after the sidecar stops unless you also enable `selfDeregister`, which removes the registration on shutdown.
 
 The component resolves target apps by filtering healthy services and looks for a `DAPR_PORT` in the metadata (key is configurable) in order to retrieve the Dapr sidecar port. Consul `service.meta` is used over `service.port` so as to not interfere with existing Consul estates.
 
@@ -46,8 +46,10 @@ The configuration spec is fixed to v1.3.0 of the Consul API
 | Tags         | N        | `[]string` | Configures any tags to include if/when registering services | `- "dapr"`
 | Meta         | N        | `map[string]string` | Configures any additional metadata to include if/when registering services | `DAPR_METRICS_PORT: "${DAPR_METRICS_PORT}"`
 | DaprPortMetaKey | N     | `string` | The key used for getting the Dapr sidecar port from Consul service metadata during service resolution, it will also be used to set the Dapr sidecar port in metadata during registration. If blank it will default to `DAPR_PORT` | `"DAPR_TO_DAPR_PORT"`
-| SelfRegister | N        | `bool` | Controls if Dapr will register the service to Consul. The name resolution interface does not cater for an "on shutdown" pattern so please consider this if using Dapr to register services to Consul as it will not deregister services. If blank it will default to `false` | `true`
+| SelfRegister | N        | `bool` | Controls if Dapr will register the service to Consul on startup. The registration is not removed on shutdown unless `SelfDeregister` is also enabled. If blank it will default to `false` | `true`
+| SelfDeregister | N      | `bool` | Controls if Dapr will deregister the service from Consul on shutdown. Applies to the registration made through `SelfRegister` or `AdvancedRegistration`. If blank it will default to `false` | `true`
 | AdvancedRegistration | N | [*api.AgentServiceRegistration](https://pkg.go.dev/github.com/hashicorp/consul/api@v1.3.0#AgentServiceRegistration) | Gives full control of service registration through configuration. If configured the component will ignore any configuration of Checks, Tags, Meta and SelfRegister. | See [sample configs](#sample-configurations)
+| UseCache     | N        | `bool` | Configures if Dapr will cache the resolved services in-memory. This is done using Consul [blocking queries](https://developer.hashicorp.com/consul/api-docs/features/blocking) which can be configured via the QueryOptions configuration. This is separate from `QueryOptions.UseCache`, which enables the Consul agent cache. If blank it will default to `false` | `true`
 
 ## Sample configurations
 
