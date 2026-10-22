@@ -22,6 +22,12 @@ To get started with the JavaScript SDK, install the Dapr JavaScript SDK package 
 npm install --save @dapr/dapr
 ```
 
+## Publish and subscribe
+
+Publish single events or batches over HTTP or gRPC, receive programmatic server callbacks, or subscribe through a client-initiated gRPC stream without an application server.
+
+The [publish and subscribe guide]({{% ref js-pubsub %}}) covers JavaScript SDK **3.19.0-rc.4 or later**, including routing, acknowledgements, dead-letter topics, serialization, error handling, and subscription cleanup.
+
 ## Service invocation
 
 Call services over HTTP or gRPC and receive invocations through `DaprServer` or an existing HTTP application.

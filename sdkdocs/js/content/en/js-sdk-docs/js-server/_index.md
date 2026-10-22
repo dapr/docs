@@ -214,357 +214,57 @@ Follow [receiving invocations]({{% ref js-service-invocation-server.md %}}) for 
 
 ### PubSub API
 
+For JavaScript SDK **3.19.0-rc.4 or later**, see the [publish and subscribe overview]({{% ref js-pubsub %}}) to choose a delivery mode. Client-initiated [streaming subscriptions]({{% ref js-pubsub-streaming-howto.md %}}) do not require a `DaprServer`.
+
 #### Subscribe to messages
 
-Subscribing to messages can be done in several ways to offer flexibility of receiving messages on your topics:
-
-- Direct subscription through the `subscribe` method
-- Direct susbcription with options through the `subscribeWithOptions` method
-- Subscription afterwards through the `susbcribeOnEvent` method
-
-Each time an event arrives, we pass its body as `data` and the headers as `headers`, which can contain properties of the event publisher (e.g., a device ID from IoT Hub)
-
-> Dapr requires subscriptions to be set up on startup, but in the JS SDK we allow event handlers to be added afterwards as well, providing you the flexibility of programming.
-
-An example is provided below
+Register each component/topic pair once before `server.start()`. This example uses an HTTP listener on port `50002`:
 
 ```typescript
-import { DaprServer } from "@dapr/dapr";
-
-const daprHost = "127.0.0.1"; // Dapr Sidecar Host
-const daprPort = "3500"; // Dapr Sidecar Port of this Example Server
-const serverHost = "127.0.0.1"; // App Host of this Example Server
-const serverPort = "50051"; // App Port of this Example Server "
+import { DaprPubSubStatusEnum, DaprServer } from "@dapr/dapr";
 
 async function start() {
   const server = new DaprServer({
-    serverHost,
-    serverPort,
-    clientOptions: {
-      daprHost,
-      daprPort,
-    },
+    serverHost: "127.0.0.1",
+    serverPort: "50002",
+    clientOptions: { daprHost: "127.0.0.1", daprPort: "3500" },
   });
 
-  const pubSubName = "my-pubsub-name";
-  const topic = "topic-a";
-
-  // Configure Subscriber for a Topic
-  // Method 1: Direct subscription through the `subscribe` method
-  await server.pubsub.subscribe(pubSubName, topic, async (data: any, headers: object) =>
-    console.log(`Received Data: ${JSON.stringify(data)} with headers: ${JSON.stringify(headers)}`),
-  );
-
-  // Method 2: Direct susbcription with options through the `subscribeWithOptions` method
-  await server.pubsub.subscribeWithOptions(pubSubName, topic, {
-    callback: async (data: any, headers: object) =>
-      console.log(`Received Data: ${JSON.stringify(data)} with headers: ${JSON.stringify(headers)}`),
-  });
-
-  // Method 3: Subscription afterwards through the `susbcribeOnEvent` method
-  // Note: we use default, since if no route was passed (empty options) we utilize "default" as the route name
-  await server.pubsub.subscribeWithOptions("pubsub-redis", "topic-options-1", {});
-  server.pubsub.subscribeToRoute("pubsub-redis", "topic-options-1", "default", async (data: any, headers: object) => {
-    console.log(`Received Data: ${JSON.stringify(data)} with headers: ${JSON.stringify(headers)}`);
-  });
-
-  // Start the server
-  await server.start();
-}
-```
-
-> For a full list of state operations visit [How-To: Publish & subscribe]({{% ref howto-publish-subscribe.md %}}).
-
-#### Subscribe with SUCCESS/RETRY/DROP status
-
-Dapr supports [status codes for retry logic](https://docs.dapr.io/reference/api/pubsub_api/#expected-http-response) to specify what should happen after a message gets processed.
-
-> ⚠️ The JS SDK allows multiple callbacks on the same topic, we handle priority of status on `RETRY` > `DROP` > `SUCCESS` and default to `SUCCESS`
-
-> ⚠️ Make sure to [configure resiliency](https://docs.dapr.io/operations/resiliency/resiliency-overview/) in your application to handle `RETRY` messages
-
-In the JS SDK we support these messages through the `DaprPubSubStatusEnum` enum. To ensure Dapr will retry we configure a Resiliency policy as well.
-
-**components/resiliency.yaml**
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Resiliency
-metadata:
-  name: myresiliency
-spec:
-  policies:
-    retries:
-      # Global Retry Policy for Inbound Component operations
-      DefaultComponentInboundRetryPolicy:
-        policy: constant
-        duration: 500ms
-        maxRetries: 10
-  targets:
-    components:
-      messagebus:
-        inbound:
-          retry: DefaultComponentInboundRetryPolicy
-```
-
-**src/index.ts**
-
-```typescript
-import { DaprServer, DaprPubSubStatusEnum } from "@dapr/dapr";
-
-const daprHost = "127.0.0.1"; // Dapr Sidecar Host
-const daprPort = "3500"; // Dapr Sidecar Port of this Example Server
-const serverHost = "127.0.0.1"; // App Host of this Example Server
-const serverPort = "50051"; // App Port of this Example Server "
-
-async function start() {
-  const server = new DaprServer({
-    serverHost,
-    serverPort,
-    clientOptions: {
-      daprHost,
-      daprPort,
-    },
-  });
-
-  const pubSubName = "my-pubsub-name";
-  const topic = "topic-a";
-
-  // Process a message successfully
-  await server.pubsub.subscribe(pubSubName, topic, async (data: any, headers: object) => {
+  await server.pubsub.subscribe("pubsub", "orders", async (data) => {
+    console.log("Order received:", data);
     return DaprPubSubStatusEnum.SUCCESS;
   });
 
-  // Retry a message
-  // Note: this example will keep on retrying to deliver the message
-  // Note 2: each component can have their own retry configuration
-  //   e.g., https://docs.dapr.io/reference/components-reference/supported-pubsub/setup-redis-pubsub/
-  await server.pubsub.subscribe(pubSubName, topic, async (data: any, headers: object) => {
-    return DaprPubSubStatusEnum.RETRY;
-  });
-
-  // Drop a message
-  await server.pubsub.subscribe(pubSubName, topic, async (data: any, headers: object) => {
-    return DaprPubSubStatusEnum.DROP;
-  });
-
-  // Start the server
   await server.start();
 }
+
+start().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
 ```
+
+Follow the [server subscription guide]({{% ref js-pubsub-subscribe-howto.md %}}) for the matching `dapr run` command, gRPC configuration, registration methods, and callback data and headers. See [configuration and usage]({{% ref js-pubsub-usage.md %}}) for serialization and shutdown.
+
+#### Subscribe with SUCCESS/RETRY/DROP status
+
+Return `DaprPubSubStatusEnum` values rather than response objects. See [acknowledgements and retries]({{% ref "js-pubsub-subscribe-howto.md#acknowledge-retry-or-drop" %}}) for status precedence, thrown errors, and an inbound resiliency policy.
 
 #### Subscribe to messages rule based
 
-Dapr [supports routing messages](https://docs.dapr.io/developing-applications/building-blocks/pubsub/howto-route-messages/) to different handlers (routes) based on rules.
+Use `subscribeWithOptions()` to declare routes and `subscribeToRoute()` to attach handlers. See the [content-based routing example]({{% ref "js-pubsub-subscribe-howto.md#content-based-routing" %}}).
 
-> E.g., you are writing an application that needs to handle messages depending on their "type" with Dapr, you can send them to different routes `handlerType1` and `handlerType2` with the default route being `handlerDefault`
+#### Subscribe with Wildcards
 
-```typescript
-import { DaprServer } from "@dapr/dapr";
-
-const daprHost = "127.0.0.1"; // Dapr Sidecar Host
-const daprPort = "3500"; // Dapr Sidecar Port of this Example Server
-const serverHost = "127.0.0.1"; // App Host of this Example Server
-const serverPort = "50051"; // App Port of this Example Server "
-
-async function start() {
-  const server = new DaprServer({
-    serverHost,
-    serverPort,
-    clientOptions: {
-      daprHost,
-      daprPort,
-    },
-  });
-
-  const pubSubName = "my-pubsub-name";
-  const topic = "topic-a";
-
-  // Configure Subscriber for a Topic with rule set
-  // Note: the default route and match patterns are optional
-  await server.pubsub.subscribe("pubsub-redis", "topic-1", {
-    default: "/default",
-    rules: [
-      {
-        match: `event.type == "my-type-1"`,
-        path: "/type-1",
-      },
-      {
-        match: `event.type == "my-type-2"`,
-        path: "/type-2",
-      },
-    ],
-  });
-
-  // Add handlers for each route
-  server.pubsub.subscribeToRoute("pubsub-redis", "topic-1", "default", async (data) => {
-    console.log(`Handling Default`);
-  });
-  server.pubsub.subscribeToRoute("pubsub-redis", "topic-1", "type-1", async (data) => {
-    console.log(`Handling Type 1`);
-  });
-  server.pubsub.subscribeToRoute("pubsub-redis", "topic-1", "type-2", async (data) => {
-    console.log(`Handling Type 2`);
-  });
-
-  // Start the server
-  await server.start();
-}
-```
-
-#### Susbcribe with Wildcards
-
-The popular wildcards `*` and `+` are supported (make sure to validate if the [pubsub component supports it](https://docs.dapr.io/reference/components-reference/supported-pubsub/)) and can be subscribed to as follows:
-
-```typescript
-import { DaprServer } from "@dapr/dapr";
-
-const daprHost = "127.0.0.1"; // Dapr Sidecar Host
-const daprPort = "3500"; // Dapr Sidecar Port of this Example Server
-const serverHost = "127.0.0.1"; // App Host of this Example Server
-const serverPort = "50051"; // App Port of this Example Server "
-
-async function start() {
-  const server = new DaprServer({
-    serverHost,
-    serverPort,
-    clientOptions: {
-      daprHost,
-      daprPort,
-    },
-  });
-
-  const pubSubName = "my-pubsub-name";
-
-  // * Wildcard
-  await server.pubsub.subscribe(pubSubName, "/events/*", async (data: any, headers: object) =>
-    console.log(`Received Data: ${JSON.stringify(data)}`),
-  );
-
-  // + Wildcard
-  await server.pubsub.subscribe(pubSubName, "/events/+/temperature", async (data: any, headers: object) =>
-    console.log(`Received Data: ${JSON.stringify(data)}`),
-  );
-
-  // Start the server
-  await server.start();
-}
-```
+See [wildcard topics]({{% ref "js-pubsub-subscribe-howto.md#wildcard-topics" %}}) for MQTT-style `#` and `+` examples and component requirements.
 
 #### Bulk Subscribe to messages
 
-Bulk Subscription is supported and is available through following API:
-
-- Bulk subscription through the `subscribeBulk` method: `maxMessagesCount` and `maxAwaitDurationMs` are optional; and if not provided, default values for related components will be used.
-
-While listening for messages, the application receives messages from Dapr in bulk. However, like regular subscribe, the callback function receives a single message at a time, and the user can choose to return a `DaprPubSubStatusEnum` value to acknowledge successfully, retry, or drop the message. The default behavior is to return a success response.
-
-Please refer [this document](https://v1-10.docs.dapr.io/developing-applications/building-blocks/pubsub/pubsub-bulk/) for more details.
-
-```typescript
-import { DaprServer } from "@dapr/dapr";
-
-const pubSubName = "orderPubSub";
-const topic = "topicbulk";
-
-const daprHost = process.env.DAPR_HOST || "127.0.0.1";
-const daprHttpPort = process.env.DAPR_HTTP_PORT || "3502";
-const serverHost = process.env.SERVER_HOST || "127.0.0.1";
-const serverPort = process.env.APP_PORT || 5001;
-
-async function start() {
-  const server = new DaprServer({
-    serverHost,
-    serverPort,
-    clientOptions: {
-      daprHost,
-      daprPort: daprHttpPort,
-    },
-  });
-
-  // Publish multiple messages to a topic with default config.
-  await client.pubsub.subscribeBulk(pubSubName, topic, (data) =>
-    console.log("Subscriber received: " + JSON.stringify(data)),
-  );
-
-  // Publish multiple messages to a topic with specific maxMessagesCount and maxAwaitDurationMs.
-  await client.pubsub.subscribeBulk(
-    pubSubName,
-    topic,
-    (data) => {
-      console.log("Subscriber received: " + JSON.stringify(data));
-      return DaprPubSubStatusEnum.SUCCESS; // If App doesn't return anything, the default is SUCCESS. App can also return RETRY or DROP based on the incoming message.
-    },
-    {
-      maxMessagesCount: 100,
-      maxAwaitDurationMs: 40,
-    },
-  );
-}
-```
+`subscribeBulk()` delivers one entry at a time to your callback and builds per-entry acknowledgements. See [bulk subscriptions]({{% ref "js-pubsub-subscribe-howto.md#bulk-subscriptions" %}}) for batching options and HTTP payload limitations.
 
 #### Dead Letter Topics
 
-Dapr supports [dead letter topic](https://docs.dapr.io/developing-applications/building-blocks/pubsub/pubsub-deadletter/). This means that when a message fails to be processed, it gets sent to a dead letter queue. E.g., when a message fails to be handled on `/my-queue` it will be sent to `/my-queue-failed`.
-E.g., when a message fails to be handled on `/my-queue` it will be sent to `/my-queue-failed`.
-
-You can use the following options with `subscribeWithOptions` method:
-
-- `deadletterTopic`: Specify a deadletter topic name (note: if none is provided we create one named `deadletter`)
-- `deadletterCallback`: The method to trigger as handler for our deadletter
-
-Implementing Deadletter support in the JS SDK can be done by either
-
-- Passing the `deadletterCallback` as an option
-- By subscribing to route manually with `subscribeToRoute`
-
-An example is provided below
-
-```typescript
-import { DaprServer } from "@dapr/dapr";
-
-const daprHost = "127.0.0.1"; // Dapr Sidecar Host
-const daprPort = "3500"; // Dapr Sidecar Port of this Example Server
-const serverHost = "127.0.0.1"; // App Host of this Example Server
-const serverPort = "50051"; // App Port of this Example Server "
-
-async function start() {
-  const server = new DaprServer({
-    serverHost,
-    serverPort,
-    clientOptions: {
-      daprHost,
-      daprPort,
-    },
-  });
-
-  const pubSubName = "my-pubsub-name";
-
-  // Method 1 (direct subscribing through subscribeWithOptions)
-  await server.pubsub.subscribeWithOptions("pubsub-redis", "topic-options-5", {
-    callback: async (data: any) => {
-      throw new Error("Triggering Deadletter");
-    },
-    deadLetterCallback: async (data: any) => {
-      console.log("Handling Deadletter message");
-    },
-  });
-
-  // Method 2 (subscribe afterwards)
-  await server.pubsub.subscribeWithOptions("pubsub-redis", "topic-options-1", {
-    deadletterTopic: "my-deadletter-topic",
-  });
-  server.pubsub.subscribeToRoute("pubsub-redis", "topic-options-1", "default", async () => {
-    throw new Error("Triggering Deadletter");
-  });
-  server.pubsub.subscribeToRoute("pubsub-redis", "topic-options-1", "my-deadletter-topic", async () => {
-    console.log("Handling Deadletter message");
-  });
-
-  // Start server
-  await server.start();
-}
-```
+Set `deadLetterTopic` on the source subscription and register a separate consumer for failed messages. See [dead-letter topics]({{% ref "js-pubsub-subscribe-howto.md#dead-letter-topics" %}}) for the complete example and the limitations of `deadLetterCallback`.
 
 ### Bindings API
 
