@@ -485,6 +485,14 @@ start().catch((e) => {
 
 ### Workflow API
 
+`DaprClient.workflow` exposes the basic workflow management API over HTTP or gRPC. For
+`@dapr/dapr` **3.19.0-rc.4 or later**, use `scheduleNewWorkflow`, `getWorkflowState`, and `raiseEvent`;
+the older `start`, `get`, and `raise` names are deprecated aliases.
+
+For authoring workers, durable waits, listing, history retrieval, reruns, and binary-store payload references,
+use the separate [workflow SDK guides]({{% ref js-workflow-management.md %}}). `DaprWorkflowClient` uses
+gRPC and returns `WorkflowState`, not the basic API's response object shown below.
+
 #### Workflow management
 
 ```typescript
@@ -494,7 +502,7 @@ async function start() {
   const client = new DaprClient();
 
   // Start a new workflow instance
-  const instanceId = await client.workflow.start("OrderProcessingWorkflow", {
+  const instanceId = await client.workflow.scheduleNewWorkflow("OrderProcessingWorkflow", {
     Name: "Paperclips",
     TotalCost: 99.95,
     Quantity: 4,
@@ -502,7 +510,7 @@ async function start() {
   console.log(`Started workflow instance ${instanceId}`);
 
   // Get a workflow instance
-  const workflow = await client.workflow.get(instanceId);
+  const workflow = await client.workflow.getWorkflowState(instanceId);
   console.log(
     `Workflow ${workflow.workflowName}, created at ${workflow.createdAt.toUTCString()}, has status ${
       workflow.runtimeStatus
