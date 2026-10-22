@@ -15,11 +15,13 @@ Out of the box, a `DurableAgent` is triggered by a `TriggerAction` message on it
 ## How it works
 
 1. An extension registers a callback: `agent.add_activation(cb)`.
-2. When the agent is hosted via **any** `AgentRunner` entry point — `serve()`, `subscribe()`, `register_routes()`, `workflow()`, or `run()` — the runner fires each registered callback exactly once, passing an `ActivationContext`.
+2. When the agent is hosted via **any** `AgentRunner` entry point, including `serve()`, `subscribe()`, `register_routes()`, `workflow()`, `run()`, or `run_stream()`, the runner fires each registered callback exactly once, passing an `ActivationContext`.
 3. The callback opens its event source (a subscription, a route, a poller) and **returns an optional closer** — a zero-arg callable the runner invokes on `shutdown()`.
 4. For each external event, the extension schedules an agent run with `ctx.runner.run(ctx.agent, payload={"task": ...}, wait=False)`.
 
 The callback fires once per `(runner, agent)` pair. Hosting the same agent through several entry points (for example `serve()`, which calls `subscribe()` internally) still fires it only once.
+
+For direct `run_stream()` calls, activation happens when stream iteration begins, before the consumer starts and before workflow scheduling. Closing the response stream closes only its consumer; activation resources remain attached until `runner.shutdown()` or `runner.shutdown(agent)`. If `run_stream()` is called after `serve()`, activation does not run again and retains the original FastAPI app context.
 
 ## The `ActivationContext`
 
@@ -29,9 +31,9 @@ Each callback receives an immutable `ActivationContext`. Treat every field as re
 |-------|------|-----------------|-------|
 | `agent` | `DurableAgent` | yes | The agent being hosted. |
 | `runner` | `AgentRunner` | yes | Schedule runs with `runner.run(agent, payload=..., wait=False)`. |
-| `dapr_client` | `DaprClient` | yes | A live client — guaranteed even under `workflow()`/`run()`, which otherwise never create one. Use it to open a streaming subscription. |
+| `dapr_client` | `DaprClient` | yes | A live client, guaranteed even under `workflow()`/`run()`/`run_stream()`, which otherwise never create one. Use it to open a streaming subscription. |
 | `wf_client` | `DaprWorkflowClient` | yes | The runner's workflow client. |
-| `app` | `FastAPI` \| `None` | **no** | Present only under `serve()` and `register_routes(fastapi_app=...)`. It is `None` under `subscribe()`, `workflow()`, and `run()`. |
+| `app` | `FastAPI` \| `None` | **no** | Present when first hosted under `serve()` or `register_routes(fastapi_app=...)`. It is `None` under `subscribe()`, `workflow()`, `run()`, and direct `run_stream()`. |
 
 Because `app` may be `None`, a robust extension **branches on the transport**: mount an HTTP route when `ctx.app` is available, otherwise open a streaming subscription through `ctx.dapr_client`.
 
@@ -47,7 +49,7 @@ def queue_trigger(agent, *, source, mapper=None):
     mapper = mapper or (lambda event: {"task": str(event)})
 
     def _activate(ctx: ActivationContext):
-        # Branch on transport: no FastAPI app under subscribe()/workflow()/run().
+        # No FastAPI app under subscribe()/workflow()/run()/run_stream().
         if ctx.app is not None:
             handle = _mount_route(ctx.app, ctx, mapper)      # HTTP-style source
         else:
@@ -94,7 +96,7 @@ AgentRunner().serve(agent)                # the trigger comes up automatically
 ## Lifecycle
 
 ```text
-runner.subscribe(agent)        # or serve / register_routes / workflow / run
+runner.subscribe(agent)        # or serve / register_routes / workflow / run / run_stream
   └─ first attach? → for cb in agent.activations: closer = cb(ActivationContext(...))
                        runner stores each returned closer
 ... agent runs, extension feeds tasks via runner.run(...) ...
