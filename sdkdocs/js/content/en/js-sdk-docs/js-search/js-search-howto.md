@@ -11,16 +11,16 @@ Use `DaprClient.search` to manage indexes and search JSON documents through a Da
 ## Prerequisites
 
 - [Dapr CLI]({{% ref install-dapr-cli.md %}})
-- An initialized [Dapr environment]({{% ref install-dapr-selfhost.md %}}) with **Dapr runtime 1.19 or later**
+- An initialized [Dapr environment]({{% ref install-dapr-selfhost.md %}}) with Dapr runtime 1.19 or later
 - [Node.js](https://nodejs.org/) 18 or later
 - [Docker](https://docs.docker.com/get-docker/) to run Meilisearch locally
-- The [`@dapr/dapr`](https://www.npmjs.com/package/@dapr/dapr) package, **version 3.19.0-rc.5 or later**
+- The [`@dapr/dapr`](https://www.npmjs.com/package/@dapr/dapr) package, version 3.19.0 or later
 
 In your application directory, initialize an npm project if you do not already have one, then install the SDK:
 
 ```sh
 npm init -y
-npm install @dapr/dapr@3.19.0-rc.5
+npm install @dapr/dapr@3.19.0
 ```
 
 The examples use JavaScript ES modules and run as a `.mjs` file without a TypeScript compiler. The same APIs are available in TypeScript.

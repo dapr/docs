@@ -6,7 +6,7 @@ weight: 3200
 description: "Register HTTP or gRPC subscriptions, handle acknowledgements, route events, and configure bulk and dead-letter delivery"
 ---
 
-Use `DaprServer.pubsub` to receive events through HTTP or gRPC callbacks with **`@dapr/dapr` 3.19.0-rc.4 or later**. Complete the [pub/sub prerequisites]({{% ref js-pubsub %}}) before following this guide. For workers without an application callback listener, use [streaming subscriptions]({{% ref js-pubsub-streaming-howto.md %}}) instead.
+Use `DaprServer.pubsub` to receive events through HTTP or gRPC callbacks with `@dapr/dapr` 3.19.0 or later. Complete the [pub/sub prerequisites]({{% ref js-pubsub %}}) before following this guide. For workers without an application callback listener, use [streaming subscriptions]({{% ref js-pubsub-streaming-howto.md %}}) instead.
 
 ## Register subscriptions before startup
 

@@ -126,7 +126,7 @@ const client = new DaprClient({
 
 ### Proxying Requests
 
-In JavaScript SDK **3.19.0-rc.4**, `client.proxy.create()` is unsupported for both HTTP and the gRPC ConnectRPC transport and rejects when called. Use `client.invoker.invoke()` for Dapr service invocation.
+In JavaScript SDK 3.19.0, `client.proxy.create()` is unsupported for both HTTP and the gRPC ConnectRPC transport and rejects when called. Use `client.invoker.invoke()` for Dapr service invocation.
 
 For native protobuf services, use your generated gRPC client connected to the Dapr sidecar with `dapr-app-id` metadata. See [native gRPC services and streaming]({{% ref "js-service-invocation-usage.md#native-grpc-services-and-streaming" %}}) and the [runtime gRPC proxying guide]({{% ref howto-invoke-services-grpc.md %}}).
 
@@ -136,13 +136,13 @@ The JavaScript Client SDK allows you to interface with all of the [Dapr building
 
 ### Search API
 
-Use `client.search` to manage indexes and index, retrieve, delete, and query JSON documents over HTTP or gRPC. Requires Dapr runtime **1.19 or later** and JavaScript SDK **3.19.0-rc.5 or later**.
+Use `client.search` to manage indexes and index, retrieve, delete, and query JSON documents over HTTP or gRPC. Requires Dapr runtime 1.19 or later and JavaScript SDK 3.19.0 or later.
 
 See the [Search how-to guide]({{% ref js-search-howto.md %}}) for a complete example, and [Search client usage]({{% ref js-search-client-usage.md %}}) for method signatures, query options, write acknowledgements, cancellation, and errors.
 
 ### Invocation API
 
-For JavaScript SDK **3.19.0-rc.4 or later**, see the [service invocation overview]({{% ref js-service-invocation %}}) for HTTP and gRPC capabilities.
+For JavaScript SDK 3.19.0 or later, see the [service invocation overview]({{% ref js-service-invocation %}}) for HTTP and gRPC capabilities.
 
 #### Invoke a Service
 
@@ -182,7 +182,7 @@ Follow [calling services]({{% ref js-service-invocation-howto.md %}}) for a runn
 
 ### State Management API
 
-Use `client.state` to access configured state stores over HTTP or gRPC. The [state management guides]({{% ref js-state-management %}}) cover JavaScript SDK **3.19.0-rc.4 or later**, including bulk deletion, ETags, state options, TTL, transactions, serialization, and protocol-specific errors.
+Use `client.state` to access configured state stores over HTTP or gRPC. The [state management guides]({{% ref js-state-management %}}) cover JavaScript SDK 3.19.0 or later, including bulk deletion, ETags, state options, TTL, transactions, serialization, and protocol-specific errors.
 
 #### Save, Get and Delete application state
 
@@ -196,7 +196,7 @@ The alpha query API supports filtering, sorting, and pagination on query-capable
 
 ### PubSub API
 
-For JavaScript SDK **3.19.0-rc.4 or later**, see the [publish and subscribe overview]({{% ref js-pubsub %}}) to choose a delivery mode.
+For JavaScript SDK 3.19.0 or later, see the [publish and subscribe overview]({{% ref js-pubsub %}}) to choose a delivery mode.
 
 #### Publish messages
 
@@ -290,9 +290,9 @@ start().catch((e) => {
 });
 ```
 
-For **JavaScript SDK 3.19.0-rc.4 or later**, follow the [Secrets how-to guide]({{% ref js-secrets-howto.md %}}) for a runnable example, or read the [Secrets client usage guidance]({{% ref js-secrets-client-usage.md %}}) for configuration, TypeScript response validation, and error handling.
+For JavaScript SDK 3.19.0 or later, follow the [Secrets how-to guide]({{% ref js-secrets-howto.md %}}) for a runnable example, or read the [Secrets client usage guidance]({{% ref js-secrets-client-usage.md %}}) for configuration, TypeScript response validation, and error handling.
 
-In 3.19.0-rc.4, HTTP `get` accepts metadata as a query-string string and preserves all values in a multi-valued secret. gRPC `get` ignores metadata and returns only the first key-value pair. Bulk retrieval preserves nested values with either protocol, but neither exposes bulk metadata.
+In 3.19.0, HTTP `get` accepts metadata as a query-string string and preserves all values in a multi-valued secret. gRPC `get` ignores metadata and returns only the first key-value pair. Bulk retrieval preserves nested values with either protocol, but neither exposes bulk metadata.
 
 For the underlying building block, see [How to: Retrieve a secret]({{% ref howto-secrets.md %}}).
 
@@ -300,7 +300,7 @@ For the underlying building block, see [How to: Retrieve a secret]({{% ref howto
 
 Use `client.configuration` to read application settings and subscribe to changes. The JavaScript SDK requires **gRPC** for every configuration method; the HTTP client is not supported.
 
-The [configuration how-to guide]({{% ref js-configuration-howto.md %}}) provides runnable examples for **`@dapr/dapr` 3.19.0-rc.4 or later**. The [client usage guidance]({{% ref js-configuration-client-usage.md %}}) covers all methods, metadata, response shapes, and subscription error limitations.
+The [configuration how-to guide]({{% ref js-configuration-howto.md %}}) provides runnable examples for `@dapr/dapr` 3.19.0 or later. The [client usage guidance]({{% ref js-configuration-client-usage.md %}}) covers all methods, metadata, response shapes, and subscription error limitations.
 
 #### Get Configuration Keys
 

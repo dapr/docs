@@ -9,7 +9,7 @@ no_list: true
 
 Use `DaprClient.invoker.invoke()` to call another application through your local Dapr sidecar, and `DaprServer.invoker.listen()` to receive invocations. The target can also be an existing HTTP application without the JavaScript SDK.
 
-These guides describe **`@dapr/dapr` 3.19.0-rc.4 or later**. The API and transport limitations below were checked against the published release candidate and the current upstream implementation.
+These guides describe `@dapr/dapr` 3.19.0 or later, including API and transport limitations.
 
 ## Prerequisites
 
@@ -17,13 +17,13 @@ These guides describe **`@dapr/dapr` 3.19.0-rc.4 or later**. The API and transpo
 - A supported Node.js LTS release. The package requires Node.js 18 or later.
 - A target application running with a Dapr app ID and application port. No state store or pub/sub component is required.
 
-Install the release candidate explicitly:
+Install the 3.19.0 release:
 
 ```sh
-npm install @dapr/dapr@3.19.0-rc.4
+npm install @dapr/dapr@3.19.0
 ```
 
-For a later release, substitute its version. An unversioned installation does not necessarily select a prerelease. Examples use ES module imports; run snippets containing `await` inside an async function or an ES module.
+For a later release, substitute its version. Examples use ES module imports; run snippets containing `await` inside an async function or an ES module.
 
 ## Choose the protocol
 
@@ -54,7 +54,7 @@ Selecting gRPC does not turn `invoke()` into a client for arbitrary protobuf ser
 
 ## Implementation references
 
-- [Published 3.19.0-rc.4 package](https://www.npmjs.com/package/@dapr/dapr/v/3.19.0-rc.4)
+- [Published 3.19.0 package](https://www.npmjs.com/package/@dapr/dapr/v/3.19.0)
 - [Client invocation implementation: HTTP](https://github.com/dapr/js-sdk/blob/main/src/implementation/Client/HTTPClient/invoker.ts) and [gRPC](https://github.com/dapr/js-sdk/blob/main/src/implementation/Client/GRPCClient/invoker.ts)
 - [Server invocation implementation: HTTP](https://github.com/dapr/js-sdk/blob/main/src/implementation/Server/HTTPServer/invoker.ts) and [gRPC callbacks](https://github.com/dapr/js-sdk/blob/main/src/implementation/Server/GRPCServer/GRPCServerImpl.ts)
 - [Invocation serialization integration tests](https://github.com/dapr/js-sdk/blob/main/test/e2e/common/server.test.ts)

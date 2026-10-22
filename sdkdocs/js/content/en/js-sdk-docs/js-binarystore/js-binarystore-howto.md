@@ -11,16 +11,16 @@ Use `DaprClient.binaryStore` to store and retrieve files through a Dapr binary s
 ## Prerequisites
 
 - [Dapr CLI]({{% ref install-dapr-cli.md %}})
-- An initialized [Dapr environment]({{% ref install-dapr-selfhost.md %}}) with **Dapr runtime 1.19 or later**
+- An initialized [Dapr environment]({{% ref install-dapr-selfhost.md %}}) with Dapr runtime 1.19 or later
 - [Node.js](https://nodejs.org/) 18 or later
-- The [`@dapr/dapr`](https://www.npmjs.com/package/@dapr/dapr) package, **version 3.19.0-RC.4 or later**
+- The [`@dapr/dapr`](https://www.npmjs.com/package/@dapr/dapr) package, version 3.19.0 or later
 - A configured [binary store component]({{% ref "developing-applications/building-blocks/binarystore/_index.md" %}}), such as the in-memory component below
 
 In your application directory, initialize an npm project if you do not already have one, then install the SDK:
 
 ```sh
 npm init -y
-npm install @dapr/dapr@3.19.0-rc.4
+npm install @dapr/dapr@3.19.0
 ```
 
 The examples use JavaScript ES modules and run as a `.mjs` file without a TypeScript compiler. The same APIs are available in TypeScript.

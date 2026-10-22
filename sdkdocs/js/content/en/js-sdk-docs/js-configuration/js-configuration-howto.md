@@ -12,14 +12,14 @@ Use `DaprClient.configuration` to read application settings and react to changes
 
 - [Dapr CLI]({{% ref install-dapr-cli.md %}}) and an initialized [Dapr environment]({{% ref install-dapr-selfhost.md %}})
 - [Node.js](https://nodejs.org/) 18 or later
-- The [`@dapr/dapr`](https://www.npmjs.com/package/@dapr/dapr) package, **version 3.19.0-rc.4 or later**
+- The [`@dapr/dapr`](https://www.npmjs.com/package/@dapr/dapr) package, version 3.19.0 or later
 - Docker, for the Redis example below
 
 In your application directory, initialize an npm project if needed and install the SDK:
 
 ```sh
 npm init -y
-npm install @dapr/dapr@3.19.0-rc.4
+npm install @dapr/dapr@3.19.0
 ```
 
 The examples use JavaScript ES modules saved as `.mjs` files and do not require a TypeScript compiler. The same APIs are available in TypeScript.

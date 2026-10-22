@@ -166,7 +166,7 @@ The JavaScript Server SDK allows you to interface with all of the [Dapr building
 
 ### Invocation API
 
-For JavaScript SDK **3.19.0-rc.4 or later**, see the [service invocation overview]({{% ref js-service-invocation %}}) for HTTP and gRPC capabilities.
+For JavaScript SDK 3.19.0 or later, see the [service invocation overview]({{% ref js-service-invocation %}}) for HTTP and gRPC capabilities.
 
 #### Listen to an Invocation
 
@@ -214,7 +214,7 @@ Follow [receiving invocations]({{% ref js-service-invocation-server.md %}}) for 
 
 ### PubSub API
 
-For JavaScript SDK **3.19.0-rc.4 or later**, see the [publish and subscribe overview]({{% ref js-pubsub %}}) to choose a delivery mode. Client-initiated [streaming subscriptions]({{% ref js-pubsub-streaming-howto.md %}}) do not require a `DaprServer`.
+For JavaScript SDK 3.19.0 or later, see the [publish and subscribe overview]({{% ref js-pubsub %}}) to choose a delivery mode. Client-initiated [streaming subscriptions]({{% ref js-pubsub-streaming-howto.md %}}) do not require a `DaprServer`.
 
 #### Subscribe to messages
 
@@ -311,7 +311,7 @@ Configuration is a client-side building block, including in applications that al
 
 #### Getting a configuration value
 
-Use `client.configuration.get(storeName, keys?, metadata?)`. Follow the [configuration how-to guide]({{% ref "js-configuration-howto.md#retrieve-configuration-items" %}}) for client setup and examples using `@dapr/dapr` **3.19.0-rc.4 or later**.
+Use `client.configuration.get(storeName, keys?, metadata?)`. Follow the [configuration how-to guide]({{% ref "js-configuration-howto.md#retrieve-configuration-items" %}}) for client setup and examples using `@dapr/dapr` 3.19.0 or later.
 
 #### Subscribing to Key Changes
 
