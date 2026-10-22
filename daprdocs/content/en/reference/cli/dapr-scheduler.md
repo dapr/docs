@@ -57,8 +57,8 @@ actor/myactortype/actorid1/test1               -3.89s    1      2025-10-03T16:58
 actor/myactortype/actorid2/test2               -3.89s    1      2025-10-03T16:58:55Z
 app/test-scheduler/test1                       -3.89s    1      2025-10-03T16:58:55Z
 app/test-scheduler/test2                       -3.89s    1      2025-10-03T16:58:55Z
-activity/test-scheduler/xyz1::0::1             -888.8ms  0
-activity/test-scheduler/xyz2::0::1             -888.8ms  0
+activity/test-scheduler/xyz1::0::0             -888.8ms  0
+activity/test-scheduler/xyz2::0::0             -888.8ms  0
 workflow/test-scheduler/abc1/timer-0-TVIQGkvu  +50.0h    0
 workflow/test-scheduler/abc2/timer-0-OM2xqG9m  +50.0h    0
 ```
@@ -70,8 +70,8 @@ default    actor/myactortype/actorid1/test1               2025-10-03T16:58:55Z  
 default    actor/myactortype/actorid2/test2               2025-10-03T16:58:55Z                        @every 2h46m40s  2025-10-03T17:58:55+01:00          100      1      2025-10-03T16:58:55Z
 default    app/test-scheduler/test1                       2025-10-03T16:58:55Z                        @every 100m      2025-10-03T17:58:55+01:00          1234     1      2025-10-03T16:58:55Z
 default    app/test-scheduler/test2                       2025-10-03T16:58:55Z  2025-10-03T19:45:35Z  @every 100m      2025-10-03T17:58:55+01:00  10000s  56788    1      2025-10-03T16:58:55Z
-default    activity/test-scheduler/xyz1::0::1             2025-10-03T16:58:58Z                                         0s                                          0
-default    activity/test-scheduler/xyz2::0::1             2025-10-03T16:58:58Z                                         0s                                          0
+default    activity/test-scheduler/xyz1::0::0             2025-10-03T16:58:58Z                                         0s                                          0
+default    activity/test-scheduler/xyz2::0::0             2025-10-03T16:58:58Z                                         0s                                          0
 default    workflow/test-scheduler/abc1/timer-0-TVIQGkvu  2025-10-05T18:58:58Z                                         2025-10-05T18:58:58Z                        0
 default    workflow/test-scheduler/abc2/timer-0-OM2xqG9m  2025-10-05T18:58:58Z                                         2025-10-05T18:58:58Z                        0
 ```
@@ -89,7 +89,7 @@ dapr scheduler get <keys...> [flags]
 - App job: `app/<app-id>/<job-name>`
 - Actor reminder: `actor/<actor-type>/<actor-id>/<reminder-name>`
 - Workflow reminder: `workflow/<app-id>/<instance-id>/<reminder-name>`
-- Activity reminder: `activity/<app-id>/<activity-id>`
+- Activity reminder: `activity/<app-id>/<instance-id>::<task-id>::0` (Dapr 1.19 and later; earlier runtimes end the name with the workflow instance's generation, for example `::1`)
 
 ### Flags
 

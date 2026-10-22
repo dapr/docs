@@ -15,7 +15,7 @@ This reference is one-directional. The calling workflow records the spawn as a s
 Recording the spawn in the caller's history is also what keeps the calling workflow deterministic. As with any workflow action, the spawn must be captured in the history so that, when the workflow [replays]({{% ref "workflow-features-concepts.md#workflow-replay" %}}), the runtime knows the detached workflow was already created and does not schedule it a second time. Without this event, a replay would have no way to know whether the detached workflow had already been started.
 
 {{% alert title="Note" color="primary" %}}
-Detached workflows are available in Dapr v1.19 and later. SDK support is currently available in Go, with support for the other SDKs being added soon.
+Detached workflows are available in Dapr v1.19 and later. SDK support is currently available in Go (Go SDK v1.16.0 and later) and .NET (.NET SDK 1.19 and later), with support for the other SDKs being added soon.
 {{% /alert %}}
 
 ## Detached workflows compared to child workflows
@@ -76,6 +76,39 @@ func AuditWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 		return nil, err
 	}
 	return "audit completed for " + orderID, nil
+}
+```
+
+{{% /tab %}}
+
+{{% tab ".NET" %}}
+
+<!--dotnet-->
+
+`ScheduleNewDetachedWorkflowAsync` takes the workflow name and optional `instanceId`, `input`, and `startTime` arguments. When `instanceId` is omitted, the SDK generates a deterministic GUID. The .NET SDK does not take an app ID or app namespace for detached workflows.
+
+```csharp
+// ParentWorkflow schedules a detached workflow and continues immediately,
+// without waiting for it to finish.
+public sealed class ParentWorkflow : Workflow<string, string>
+{
+    public override async Task<string> RunAsync(WorkflowContext context, string orderId)
+    {
+        // Returns the new instance ID. There is no result to await.
+        string instanceId = await context.ScheduleNewDetachedWorkflowAsync(
+            nameof(AuditWorkflow), input: orderId);
+        return instanceId;
+    }
+}
+
+// AuditWorkflow runs independently as its own top-level workflow instance.
+public sealed class AuditWorkflow : Workflow<string, string>
+{
+    public override async Task<string> RunAsync(WorkflowContext context, string orderId)
+    {
+        await context.CreateTimer(TimeSpan.FromSeconds(3));
+        return $"audit completed for {orderId}";
+    }
 }
 ```
 

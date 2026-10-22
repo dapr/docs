@@ -23,6 +23,7 @@ An effort is underway to enrich all gRPC error responses according to the [Riche
 | `ERR_ACTOR_REMINDER_DELETE`        |           | Error deleting actor reminder                                           |
 | `ERR_ACTOR_REMINDER_GET`           |           | Error getting actor reminder                                            |
 | `ERR_ACTOR_REMINDER_NON_HOSTED`    |           | Reminder operation on non-hosted actor type                             |
+| `ERR_ACTOR_TYPE_RESERVED`          |           | Actor API call on a Dapr-reserved actor type (`dapr.internal.*`)        |
 | `ERR_ACTOR_TIMER_CREATE`           |           | Error creating actor timer                                              |
 | `ERR_ACTOR_TIMER_GET`              |           | Error getting actor timer                                               |
 | `ERR_ACTOR_TIMER_LIST`             |           | Error listing actor timers                                              |

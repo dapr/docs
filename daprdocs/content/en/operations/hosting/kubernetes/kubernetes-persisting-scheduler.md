@@ -7,11 +7,11 @@ description: "Configure Scheduler to persist its database to make it resilient t
 ---
 
 The [Scheduler]({{% ref scheduler.md %}}) service is responsible for writing jobs to its Etcd database and scheduling them for execution.
-On fresh Dapr v1.18+ installs, the Scheduler service database embeds Etcd and writes data to a Persistent Volume Claim volume of size `16Gi`, using the cluster's default [storage class](https://kubernetes.io/docs/concepts/storage/storage-classes/). Earlier versions defaulted to `1Gi`, and clusters upgraded from those versions keep their original PVC size because `spec.volumeClaimTemplates` is immutable on an existing StatefulSet; the Helm chart detects the existing StatefulSet and pins `storageSize` to the value already in use.
+On fresh Dapr v1.17.7+ installs, the Scheduler service database embeds Etcd and writes data to a Persistent Volume Claim volume of size `16Gi`, using the cluster's default [storage class](https://kubernetes.io/docs/concepts/storage/storage-classes/). Earlier versions defaulted to `1Gi`, and clusters upgraded from those versions keep their original PVC size because `spec.volumeClaimTemplates` is immutable on an existing StatefulSet; the Helm chart detects the existing StatefulSet and pins `storageSize` to the value already in use.
 This means that there is no additional parameter required to run the scheduler service reliably on most Kubernetes deployments, although you will need [additional configuration](#storage-class) if a default StorageClass is not available or when running a production environment.
 
 {{% alert title="Warning" color="warning" %}}
-Clusters upgraded from before Dapr v1.18 keep their original Scheduler PVC size (typically `1Gi`), which is likely not sufficient for most production deployments.
+Clusters upgraded from before Dapr v1.17.7 keep their original Scheduler PVC size (typically `1Gi`), which is likely not sufficient for most production deployments.
 Remember that the Scheduler is used for [Actor Reminders]({{% ref actors-timers-reminders.md %}}) & [Workflows]({{% ref workflow-overview.md %}}), and the [Jobs API]({{% ref jobs_api.md %}}).
 If your cluster is in this state, see [Increase existing Scheduler Storage Size](#increase-existing-scheduler-storage-size) below to expand the PVCs in place, or reinstall Dapr with a larger Scheduler storage.
 For more information, see the [ETCD Storage Disk Size](#etcd-storage-disk-size) section below.
@@ -21,7 +21,7 @@ For more information, see the [ETCD Storage Disk Size](#etcd-storage-disk-size) 
 
 ### ETCD Storage Disk Size
 
-The default storage size for the Scheduler is `16Gi` on fresh Dapr v1.18+ installs, and `1Gi` on earlier versions (and clusters upgraded from them).
+The default storage size for the Scheduler is `16Gi` on fresh Dapr v1.17.7+ installs, and `1Gi` on earlier versions (and clusters upgraded from them).
 The legacy `1Gi` is likely not sufficient for most production deployments, and even the new `16Gi` default may need to be raised for higher-throughput workloads.
 When the storage size is exceeded, the Scheduler will log an error similar to the following:
 
@@ -84,7 +84,7 @@ Not all storage providers support dynamic volume expansion.
 Please see your storage provider documentation to determine if this feature is supported, and what to do if it is not.
 {{% /alert %}}
 
-On clusters upgraded from before Dapr v1.18, each Scheduler PVC is typically `1Gi` (inherited from the earlier default) against the [default `standard` storage class](#storage-class) for each Scheduler replica. The procedure below applies whenever you need to grow existing PVCs, regardless of their starting size.
+On clusters upgraded from before Dapr v1.17.7, each Scheduler PVC is typically `1Gi` (inherited from the earlier default) against the [default `standard` storage class](#storage-class) for each Scheduler replica. The procedure below applies whenever you need to grow existing PVCs, regardless of their starting size.
 These will look similar to the following, where in this example we are running Scheduler in HA mode.
 
 ```
