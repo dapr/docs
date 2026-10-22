@@ -28,6 +28,12 @@ Store, retrieve, stream, and delete binary files with `DaprClient.binaryStore` o
 
 Follow the [Binary Store how-to guide]({{% ref js-binarystore-howto.md %}}) to get started, or read the [client usage guidance]({{% ref js-binarystore-client-usage.md %}}) for configuration, streaming, cancellation, and error handling.
 
+## Vector
+
+Store precomputed embeddings and run similarity searches with `DaprClient.vector` over HTTP or gRPC. Vector requires a Vector-capable Dapr runtime from the **1.19 release line or later** and JavaScript SDK **3.19.0-rc.4 or later**.
+
+Follow the [Vector how-to guide]({{% ref js-vector-howto.md %}}) to get started, or read the [client usage guidance]({{% ref js-vector-client-usage.md %}}) for configuration, indexing acknowledgements, cancellation, and error handling.
+
 ## Structure
 
 The Dapr JavaScript SDK contains two major components:
