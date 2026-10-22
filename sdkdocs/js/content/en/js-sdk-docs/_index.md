@@ -22,6 +22,12 @@ To get started with the JavaScript SDK, install the Dapr JavaScript SDK package 
 npm install --save @dapr/dapr
 ```
 
+## Service invocation
+
+Call services over HTTP or gRPC and receive invocations through `DaprServer` or an existing HTTP application.
+
+The [service invocation guide]({{% ref js-service-invocation %}}) covers JavaScript SDK **3.19.0-rc.4 or later**, including headers, query parameters, callback responses, serialization, error handling, and transport limitations.
+
 ## Binary Store
 
 Store, retrieve, stream, and delete binary files with `DaprClient.binaryStore` over HTTP or gRPC. Binary Store requires Dapr runtime **1.19 or later** and JavaScript SDK **3.19.0-RC.4 or later**.
