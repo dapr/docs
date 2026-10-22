@@ -22,6 +22,12 @@ To get started with the JavaScript SDK, install the Dapr JavaScript SDK package 
 npm install --save @dapr/dapr
 ```
 
+## State Management
+
+Save, retrieve, and delete application state with `DaprClient.state`. The SDK supports bulk operations, ETags, consistency options, transactions, TTL metadata, custom serialization, and state queries over HTTP or gRPC.
+
+Follow the [state management how-to guide]({{% ref js-state-management-howto.md %}}), read the [client usage guidance]({{% ref js-state-management-client-usage.md %}}) for protocol-specific behavior, or learn how to [query state]({{% ref js-state-management-query.md %}}). These guides target JavaScript SDK **3.19.0-rc.4 or later**.
+
 ## Binary Store
 
 Store, retrieve, stream, and delete binary files with `DaprClient.binaryStore` over HTTP or gRPC. Binary Store requires Dapr runtime **1.19 or later** and JavaScript SDK **3.19.0-RC.4 or later**.

@@ -198,122 +198,17 @@ start().catch((e) => {
 
 ### State Management API
 
+Use `client.state` to access configured state stores over HTTP or gRPC. The [state management guides]({{% ref js-state-management %}}) cover JavaScript SDK **3.19.0-rc.4 or later**, including bulk deletion, ETags, state options, TTL, transactions, serialization, and protocol-specific errors.
+
 #### Save, Get and Delete application state
 
-```typescript
-import { DaprClient } from "@dapr/dapr";
+Follow [How to: Manage state]({{% ref js-state-management-howto.md %}}) for a runnable example with component configuration, save/get/delete, bulk reads and deletes, conditional updates, and transactions.
 
-const daprHost = "127.0.0.1";
-const daprPort = "3500";
-
-async function start() {
-  const client = new DaprClient({ daprHost, daprPort });
-
-  const serviceStoreName = "my-state-store-name";
-
-  // Save State
-  const response = await client.state.save(
-    serviceStoreName,
-    [
-      {
-        key: "first-key-name",
-        value: "hello",
-        metadata: {
-          foo: "bar",
-        },
-      },
-      {
-        key: "second-key-name",
-        value: "world",
-      },
-    ],
-    {
-      metadata: {
-        ttlInSeconds: "3", // this should override the ttl in the state item
-      },
-    },
-  );
-
-  // Get State
-  const response = await client.state.get(serviceStoreName, "first-key-name");
-
-  // Get Bulk State
-  const response = await client.state.getBulk(serviceStoreName, ["first-key-name", "second-key-name"]);
-
-  // State Transactions
-  await client.state.transaction(serviceStoreName, [
-    {
-      operation: "upsert",
-      request: {
-        key: "first-key-name",
-        value: "new-data",
-      },
-    },
-    {
-      operation: "delete",
-      request: {
-        key: "second-key-name",
-      },
-    },
-  ]);
-
-  // Delete State
-  const response = await client.state.delete(serviceStoreName, "first-key-name");
-}
-
-start().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
-```
-
-> For a full list of state operations visit [How-To: Get & save state]({{% ref howto-get-save-state.md %}}).
+HTTP `save`, `delete`, and `deleteBulk` can return `{ error }` instead of rejecting. Check that field and also handle promise rejections; gRPC RPC failures reject. See [state client usage]({{% ref js-state-management-client-usage.md %}}) for the complete method and response reference.
 
 #### Query State API
 
-```typescript
-import { DaprClient } from "@dapr/dapr";
-
-async function start() {
-  const client = new DaprClient({ daprHost, daprPort });
-
-  const res = await client.state.query("state-mongodb", {
-    filter: {
-      OR: [
-        {
-          EQ: { "person.org": "Dev Ops" },
-        },
-        {
-          AND: [
-            {
-              EQ: { "person.org": "Finance" },
-            },
-            {
-              IN: { state: ["CA", "WA"] },
-            },
-          ],
-        },
-      ],
-    },
-    sort: [
-      {
-        key: "state",
-        order: "DESC",
-      },
-    ],
-    page: {
-      limit: 10,
-    },
-  });
-
-  console.log(res);
-}
-
-start().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
-```
+The alpha query API supports filtering, sorting, and pagination on query-capable stores over HTTP and gRPC. Follow [How to: Query state]({{% ref js-state-management-query.md %}}) for query expressions, continuation tokens, and result decoding.
 
 ### PubSub API
 
