@@ -2,7 +2,7 @@
 type: docs
 title: "Dapr Secrets JavaScript SDK"
 linkTitle: "Secrets"
-weight: 180200
+weight: 180300
 description: Retrieve individual and bulk secrets using the Dapr JavaScript SDK
 ---
 
