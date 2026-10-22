@@ -265,7 +265,7 @@ Keep these points in mind, on any broker:
 
 ### Several subscriptions on one topic
 
-This applies to every broker, because it comes from Dapr: Dapr keeps one declarative or programmatic subscription per pub/sub component and topic. Two named subscriptions on the topic `orders`, each with its own selector, therefore require two Dapr components on the same broker:
+Dapr maps one declarative or programmatic subscription per pub/sub component and topic. Thus, two named subscriptions on the topic `orders`, each with its own selector, require two Dapr components on the same broker:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
