@@ -11,12 +11,13 @@ aliases:
 ![Agent Overview](/images/dapr-agents/concepts-agents-overview.png)
 
 
-Dapr Agents is a developer framework for building durable and resilient AI agent systems powered by Large Language Models (LLMs). Built on the battle-tested Dapr project, it enables developers to create autonomous systems that reason through problems, make dynamic decisions, and collaborate seamlessly. It includes built-in observability and stateful workflow execution to ensure agentic workflows complete successfully, regardless of complexity. Whether you're developing single-agent applications or complex multi-agent workflows, Dapr Agents provides the infrastructure for intelligent, adaptive systems that scale across environments.
+Dapr Agents is a developer framework for building durable and resilient AI agent systems powered by Large Language Models (LLMs). Built on the battle-tested Dapr project, it enables developers to create autonomous systems that have identity, reason through problems, make dynamic decisions, and collaborate seamlessly. It includes built-in observability and stateful workflow execution to ensure agentic workflows complete successfully, regardless of complexity. Whether you're developing single-agent applications or complex multi-agent workflows, Dapr Agents provides the infrastructure for intelligent, adaptive systems that scale across environments.
 
 ## Core Capabilities
-
+- **Agent Identity**: With Dapr Agents, each agent is assigned a unique cryptographic identity that is used to authenticate agent interactions and enforce authorization across services and infrastructure.
+- **Durable Execution**: Agents created with Dapr Agents are backed by Dapr’s workflow engine, which persists every agent interaction with LLMs and tools into a durable state store that can recover and continue execution even after the agent restarts.
+- **Resilience**: Dapr Agents can recover from transient failures with automatic retry policies, timeouts, and circuit breakers, and can also apply durable retries backed by workflow state to recover from longer-lasting failures.
 - **Scale and Efficiency**: Run thousands of agents efficiently on a single core. Dapr distributes single and multi-agent apps transparently across fleets of machines and handles their lifecycle.
-- **Workflow Resilience**: Automatically retry agentic workflows and to ensure task completion.
 - **Data-Driven Agents**: Directly integrate with databases, documents, and unstructured data by connecting to dozens of different data sources.
 - **Multi-Agent Systems**: Secure and observable by default, enabling collaboration between agents.
 - **Kubernetes-Native**: Easily deploy and manage agents in Kubernetes environments.
@@ -25,20 +26,19 @@ Dapr Agents is a developer framework for building durable and resilient AI agent
 
 ## Key Features
 
-Dapr Agents provides specialized modules designed for creating intelligent, autonomous systems. Each module is designed to work independently, allowing you to use any combination that fits your application needs.  
-
+Dapr Agents provides specialized modules designed for creating intelligent, autonomous systems. Each module is designed to work independently, allowing you to use any combination that fits your application needs.
  
-| Feature                                                                                      | Description |
-|----------------------------------------------------------------------------------------------|-------------|
-| [**LLM Integration**]({{% ref "dapr-agents-core-concepts.md#llm-integration" %}})            | Uses Dapr [Conversation API]({{% ref conversation-overview.md %}}) to abstract LLM inference APIs for chat completion, or provides native clients for other LLM integrations such as embeddings, audio, etc.
-| [**Structured Outputs**]({{% ref "dapr-agents-core-concepts.md#structured-outputs" %}})      | Leverage capabilities like OpenAI's Function Calling to generate predictable, reliable results following JSON Schema and OpenAPI standards for tool integration.
-| [**Tool Selection**]({{% ref "dapr-agents-core-concepts.md#tool-calling" %}})                      | Dynamic tool selection based on requirements, best action, and execution through [Function Calling](https://platform.openai.com/docs/guides/function-calling) capabilities.
-| [**MCP Support**]({{% ref "dapr-agents-core-concepts.md#mcp-support" %}})                            | Built-in support for [Model Context Protocol](https://modelcontextprotocol.io/) enabling agents to dynamically discover and invoke external tools through standardized interfaces.
-| [**Memory Management**]({{% ref "dapr-agents-core-concepts.md#memory" %}})        | Retain context across interactions with options from simple in-memory lists to vector databases, integrating with [Dapr state stores]({{% ref state-management-overview.md %}}) for scalable, persistent memory.
-| [**Durable Agents**]({{% ref "dapr-agents-core-concepts.md#durable-agents" %}})              | Workflow-backed agents that provide fault-tolerant execution with persistent state management and automatic retry mechanisms for long-running processes.
-| [**Headless Agents**]({{% ref "dapr-agents-core-concepts.md#agent-services" %}})               | Expose agents over REST for long-running tasks, enabling programmatic access and integration without requiring user interfaces or human intervention.
-| [**Event-Driven Communication**]({{% ref "dapr-agents-core-concepts.md#event-driven-orchestration" %}})       | Enable agent collaboration through [Pub/Sub messaging]({{% ref pubsub-overview.md %}}) for event-driven communication, task distribution, and real-time coordination in distributed systems.
-| [**Agent Orchestration**]({{% ref "dapr-agents-core-concepts.md#deterministic-workflows" %}}) | Deterministic agent orchestration using [Dapr Workflows]({{% ref workflow-overview.md %}}) with higher-level tasks that interact with LLMs for complex multi-step processes.
+| Feature                                                                                               | Description |
+|-------------------------------------------------------------------------------------------------------|-------------|
+| [**LLM Integration**]({{% ref "dapr-agents-core-concepts.md#llm-integration" %}})                     | It abstracts the LLM inference API for chat completion using the Dapr [Conversation API]({{% ref conversation-overview.md %}}), enabling you to swap LLM providers without changing high-level agent code, and includes native clients for embeddings, audio, and other specialized integrations.
+| [**Structured Outputs**]({{% ref "dapr-agents-core-concepts.md#structured-outputs" %}})               | Leverage capabilities like OpenAI's Function Calling to generate predictable, reliable results following JSON Schema and OpenAPI standards for tool integration.
+| [**Tool Selection**]({{% ref "dapr-agents-core-concepts.md#tool-calling" %}})                         | Dynamic tool selection based on requirements, best action, and execution through [Function Calling](https://platform.openai.com/docs/guides/function-calling) capabilities.
+| [**MCP Support**]({{% ref "dapr-agents-core-concepts.md#mcp-support" %}})                             | Built-in support for [Model Context Protocol](https://modelcontextprotocol.io/) enabling agents to dynamically discover and invoke external tools through standardized interfaces.
+| [**Memory Management**]({{% ref "dapr-agents-core-concepts.md#memory" %}})                            | Retain context across interactions with options from simple in-memory lists to vector databases, integrating with [Dapr state stores]({{% ref state-management-overview.md %}}) for scalable, persistent memory.
+| [**Durable Agents**]({{% ref "dapr-agents-core-concepts.md#durable-agents" %}})                       | Workflow-backed agents that provide fault-tolerant execution with persistent state management and automatic retry mechanisms for long-running processes.
+| [**Agent Runner**]({{% ref "dapr-agents-core-concepts.md#agent-runner" %}})                           | Expose agents over HTTP or subscribe to a PubSub for long-running tasks, enabling API access to agents without requiring a user interface or human intervention.
+| [**Event-Driven Communication**]({{% ref "dapr-agents-core-concepts.md#event-driven-orchestration" %}}) | Enable agent collaboration through [Pub/Sub messaging]({{% ref pubsub-overview.md %}}) for event-driven communication, task distribution, and real-time coordination in distributed systems.
+| [**Agent Orchestration**]({{% ref "dapr-agents-core-concepts.md#deterministic-workflows" %}})         | Deterministic agent orchestration using [Dapr Workflows]({{% ref workflow-overview.md %}}) with higher-level tasks that interact with LLMs for complex multi-step processes.
  
  
 ## Agentic Patterns
@@ -46,7 +46,7 @@ Dapr Agents enables a comprehensive set of patterns that represent different app
 
 <img src="/images/dapr-agents/agents-patterns-overview.png" width=1200 style="padding-bottom:15px;">
 
-These patterns exist along a spectrum of autonomy, from predictable workflow-based approaches to fully autonomous agents that can dynamically plan and execute their own strategies. Each pattern addresses specific use cases and offers different trade-offs between deterministic outcomes and autonomy:
+These patterns range from deterministic, workflow-driven designs to fully autonomous agents capable of dynamic planning and execution; each addresses different use cases and balances predictability against autonomy.
 
 | Pattern                                                                                | Description |
 |----------------------------------------------------------------------------------------|-------------|

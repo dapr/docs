@@ -10,7 +10,7 @@ description: "Common questions asked about Dapr"
 Dapr is not a service mesh. While service meshes focus on fine-grained network control, Dapr is focused on helping developers build distributed applications. Both Dapr and service meshes use the sidecar pattern and run alongside the application. They do have some overlapping features, but also offer unique benefits. For more information please read the [Dapr & service meshes]({{%ref service-mesh%}}) concept page.
 
 ## Performance Benchmarks
-The Dapr project is focused on performance due to the inherent discussion of Dapr being a sidecar to your application. See [here]({{% ref perf-service-invocation %}}) for updated performance numbers.
+The Dapr project is focused on performance due to the inherent discussion of Dapr being a sidecar to your application. See [performance results](https://github.com/dapr/dapr/tree/release-1.16/tests/perf/report/charts) for updated performance numbers.
 
 ## Actors
 
