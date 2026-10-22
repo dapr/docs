@@ -121,6 +121,9 @@ These steps will prepare the latest release branch for archival.
    ```
 
 1. In VS Code, navigate to `hugo.yaml` located in the root.
+1. Update line 1 to `baseURL: https://v1-0.docs.dapr.io`.
+
+   The branch stops serving `docs.dapr.io` once it is archived, so `baseURL` has to follow it to the version-specific host. Hugo bakes this value into every absolute URL it generates, and `.github/workflows/website-v1-0.yml` builds with a plain `hugo --minify` and no `-b` override, so whatever `hugo.yaml` says is what ships. Left at `https://docs.dapr.io`, each archived page advertises the latest site's URL as its own: `<meta property="og:url">` on `v1-0.docs.dapr.io/concepts/overview/` would read `https://docs.dapr.io/concepts/overview/`, so sharing an archived page sends readers to a different version of the docs. In-page navigation is unaffected either way, because those links are host-relative — which is why the mistake is easy to miss.
 1. Add the following configuration to the `# Versioning` section (around line 121 and onwards):
 
    ```yaml
