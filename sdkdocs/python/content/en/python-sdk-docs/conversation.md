@@ -16,7 +16,7 @@ The Dapr Conversation API is currently in alpha. This page presents the recommen
 
 - [Dapr CLI]({{% ref install-dapr-cli.md %}}) installed
 - Initialized [Dapr environment]({{% ref install-dapr-selfhost.md %}})
-- [Python 3.9+](https://www.python.org/downloads/) installed
+- [Python 3.10+](https://www.python.org/downloads/) installed
 - [Dapr Python package]({{% ref "python#installation" %}}) installed
 - A configured LLM component (for example, OpenAI or Azure OpenAI) in your Dapr environment
 

@@ -12,7 +12,7 @@ The Dapr actor package allows you to interact with Dapr virtual actors from a Py
 
 - [Dapr CLI]({{% ref install-dapr-cli.md %}}) installed
 - Initialized [Dapr environment]({{% ref install-dapr-selfhost.md %}})
-- [Python 3.9+](https://www.python.org/downloads/) installed
+- [Python 3.10+](https://www.python.org/downloads/) installed
 - [Dapr Python package]({{% ref "python#installation" %}}) installed
 
 ## Actor interface
