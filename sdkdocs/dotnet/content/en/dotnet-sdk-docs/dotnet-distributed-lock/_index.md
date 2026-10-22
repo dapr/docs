@@ -13,7 +13,7 @@ cancellation.
 
 {{% alert title="Package guidance" color="primary" %}}
 While this capability is implemented in both the `Dapr.Client` and `Dapr.DistributedLock` packages, the approach differs
-slightly between them and a future release will see the `Dapr.Client` package be deprecated. It's recommended that new
+slightly between them. It's recommended that new
 implementations use the `Dapr.DistributedLock` package.
 {{% /alert %}}
 

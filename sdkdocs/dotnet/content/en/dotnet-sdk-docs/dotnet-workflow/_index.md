@@ -3,25 +3,28 @@ type: docs
 title: "Dapr Workflow .NET SDK"
 linkTitle: "Workflow"
 weight: 40000
-description: "Overview of the Dapr Workflow building block for .NET"
+description: Get up and running with Dapr Workflow and the Dapr .NET SDK
 ---
 
-`Dapr.Workflow` brings durable, long-running orchestration to .NET applications. Workflows are expressed as C# classes that orchestrate sequences of activities — each activity is a discrete unit of work that can call other Dapr building blocks, and the workflow runtime handles persistence, replay, and recovery automatically. If a process restarts mid-workflow, the runtime replays the event log to reconstruct state and resume execution.
+The `Dapr.Workflow` package provides typed workflows and activities, a hosted worker, and `DaprWorkflowClient`
+for managing durable instances. These guides describe **SDK 1.19.0 or later**; use Dapr runtime 1.19 for the full
+feature set. Installing the package does not configure a workflow state store or start the required runtime services.
 
-Workflows and activities are registered with dependency injection via `AddDaprWorkflow()`. Starting with the v1.18 SDK, a build-time source generator discovers and registers all workflow and activity types automatically, so you no longer need to call `RegisterWorkflow<T>` or `RegisterActivity<T>` by hand, though doing so is still fully supported. The `DaprWorkflowClient` is then injected to schedule, manage, and inspect running workflow instances.
+```sh
+dotnet add package Dapr.Workflow
+```
 
-## Core concepts
+| Task | Guide |
+| --- | --- |
+| Register the worker/client, discover types, and configure transport or history caching | [Client registration]({{% ref dotnet-workflowclient-usage.md %}}) |
+| Write deterministic orchestration, activities, retries, timers/events, fan-out, children, and continuation | [Author workflows]({{% ref dotnet-workflow-authoring.md %}}) |
+| Schedule, wait, signal, suspend/resume, terminate, purge, list, inspect history, or rerun | [Management operations]({{% ref dotnet-workflow-management-methods.md %}}) |
+| Customize JSON or use another serializer | [Serialization]({{% ref dotnet-workflow-serialization.md %}}) |
+| Route activities, children, and detached workflows to another app | [Multi-app workflows]({{% ref dotnet-workflow-multi-app.md %}}) |
+| Share ancestor history with child workflows | [History propagation]({{% ref dotnet-workflow-history-propagation.md %}}) |
+| Evolve deployed workflows using patches or versioned names | [Versioning]({{% ref dotnet-workflow-versioning.md %}}) |
+| Offload large payloads or pass explicit binary references (alpha) | [Data references]({{% ref dotnet-workflow-data-references.md %}}) |
+| Explore end-to-end examples | [Examples]({{% ref dotnet-workflow-examples.md %}}) |
 
-- [DaprWorkflowClient registration and lifetime]({{< ref dotnet-workflowclient-usage.md >}}): dependency injection with singleton, scoped, or transient lifetimes, injecting services into activities, and using the replay-safe logger.
-- [Workflow versioning]({{< ref dotnet-workflow-versioning.md >}}): patch-based and name-based versioning strategies, cross-assembly workflow discovery, and override attributes.
-- [Workflow serialization]({{< ref dotnet-workflow-serialization.md >}}): overriding the default System.Text.Json settings and registering custom serializers (e.g. MessagePack).
-- [Multi-application workflows]({{< ref dotnet-workflow-multi-app.md >}}): calling activities and child workflows hosted in a different Dapr application.
-- [Workflow management operations]({{< ref dotnet-workflow-management-methods.md >}}): schedule, retrieve status, raise events, suspend, resume, terminate, and purge workflow instances with `DaprWorkflowClient`.
-- [Workflow history propagation]({{< ref dotnet-workflow-history-propagation.md >}}): opt-in per-call propagation of workflow history to child workflows and activities, querying propagated history, and security considerations.
-- [Workflow examples]({{< ref dotnet-workflow-examples.md >}}): links to runnable tutorials in the Dapr Quickstarts repository and example projects in the .NET SDK repository.
-
-## Next steps
-
-- [DaprWorkflowClient registration and lifetime]({{< ref dotnet-workflowclient-usage.md >}})
-- [Workflow management operations]({{< ref dotnet-workflow-management-methods.md >}})
-- [Workflow examples]({{< ref dotnet-workflow-examples.md >}})
+Workflow code must remain deterministic during replay. Keep I/O and other nondeterministic work in activities,
+make external side effects idempotent, and preserve compatible code and payloads for retained workflow histories.
