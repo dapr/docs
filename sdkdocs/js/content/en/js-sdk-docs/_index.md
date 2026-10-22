@@ -22,6 +22,10 @@ To get started with the JavaScript SDK, install the Dapr JavaScript SDK package 
 npm install --save @dapr/dapr
 ```
 
+## Configuration
+
+Read application settings and subscribe to changes with `DaprClient.configuration`. The [configuration how-to guide]({{% ref js-configuration-howto.md %}}) and [client usage guidance]({{% ref js-configuration-client-usage.md %}}) cover selected or all keys, store-specific metadata, response handling, and subscription cleanup using **`@dapr/dapr` 3.19.0-rc.4 or later**. Configuration operations require gRPC in the JavaScript SDK.
+
 ## Binary Store
 
 Store, retrieve, stream, and delete binary files with `DaprClient.binaryStore` over HTTP or gRPC. Binary Store requires Dapr runtime **1.19 or later** and JavaScript SDK **3.19.0-RC.4 or later**.
