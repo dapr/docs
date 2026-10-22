@@ -134,7 +134,7 @@ const json = await res.json();
 Since HTTP is the default, you will have to adapt the communication protocol to use gRPC. You can do this by passing an extra argument to the client or server constructor.
 
 ```typescript
-import { DaprServer, CommunicationProtocol } from "@dapr/dapr";
+import { DaprServer, CommunicationProtocolEnum } from "@dapr/dapr";
 
 const server = new DaprServer({
   serverHost: appHost,
@@ -166,10 +166,13 @@ The JavaScript Server SDK allows you to interface with all of the [Dapr building
 
 ### Invocation API
 
+For JavaScript SDK **3.19.0-rc.4 or later**, see the [service invocation overview]({{% ref js-service-invocation %}}) for HTTP and gRPC capabilities.
+
 #### Listen to an Invocation
 
 ```typescript
-import { DaprServer, DaprInvokerCallbackContent } from "@dapr/dapr";
+import { DaprServer, HttpMethod } from "@dapr/dapr";
+import type { DaprInvokerCallbackContent } from "@dapr/dapr";
 
 const daprHost = "127.0.0.1"; // Dapr Sidecar Host
 const daprPort = "3500"; // Dapr Sidecar Port of this Example Server
@@ -186,11 +189,12 @@ async function start() {
     },
   });
 
-  const callbackFunction = (data: DaprInvokerCallbackContent) => {
+  const callbackFunction = async (data: DaprInvokerCallbackContent) => {
     console.log("Received body: ", data.body);
     console.log("Received metadata: ", data.metadata);
     console.log("Received query: ", data.query);
     console.log("Received headers: ", data.headers); // only available in HTTP
+    return { received: true };
   };
 
   await server.invoker.listen("hello-world", callbackFunction, { method: HttpMethod.GET });
@@ -206,7 +210,7 @@ start().catch((e) => {
 });
 ```
 
-> For a full guide on service invocation visit [How-To: Invoke a service]({{% ref howto-invoke-discover-services.md %}}).
+Follow [receiving invocations]({{% ref js-service-invocation-server.md %}}) for matching startup commands, callback field shapes, response behavior, and existing Express applications. See [configuration and usage]({{% ref js-service-invocation-usage.md %}}) for custom serialization and failure handling.
 
 ### PubSub API
 

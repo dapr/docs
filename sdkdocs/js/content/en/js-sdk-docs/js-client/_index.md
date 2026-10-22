@@ -65,8 +65,8 @@ npm run start:dapr-http
 Since HTTP is the default, you will have to adapt the communication protocol to use gRPC. You can do this by passing an extra argument to the client or server constructor.
 
 ```typescript
-import { DaprClient, CommunicationProtocol } from "@dapr/dapr";
-const client = new DaprClient({ daprHost, daprPort, communicationProtocol: CommunicationProtocol.GRPC });
+import { DaprClient, CommunicationProtocolEnum } from "@dapr/dapr";
+const client = new DaprClient({ daprHost, daprPort, communicationProtocol: CommunicationProtocolEnum.GRPC });
 ```
 
 ```bash
@@ -87,13 +87,13 @@ and `daprPort` don't have to be set in the options argument of the constructor, 
 out of the provided endpoints.
 
 ```typescript
-import { DaprClient, CommunicationProtocol } from "@dapr/dapr";
+import { DaprClient, CommunicationProtocolEnum } from "@dapr/dapr";
 
 // Using HTTP, when DAPR_HTTP_ENDPOINT is set
 const client = new DaprClient();
 
 // Using gRPC, when DAPR_GRPC_ENDPOINT is set
-const client = new DaprClient({ communicationProtocol: CommunicationProtocol.GRPC });
+const client = new DaprClient({ communicationProtocol: CommunicationProtocolEnum.GRPC });
 ```
 
 If the environment variables are set, but `daprHost` and `daprPort` values are passed to the
@@ -112,51 +112,31 @@ the client will get it automatically.
 You can increase the body size that is used by the application to communicate with the sidecar by using a`DaprClient`'s option.
 
 ```typescript
-import { DaprClient, CommunicationProtocol } from "@dapr/dapr";
+import { DaprClient, CommunicationProtocolEnum } from "@dapr/dapr";
 
 // Allow a body size of 10Mb to be used
 // The default is 4Mb
 const client = new DaprClient({
   daprHost,
   daprPort,
-  communicationProtocol: CommunicationProtocol.HTTP,
+  communicationProtocol: CommunicationProtocolEnum.HTTP,
   maxBodySizeMb: 10,
 });
 ```
 
 ### Proxying Requests
 
-By proxying requests, we can utilize the unique capabilities that Dapr brings with its sidecar architecture such as service discovery, logging, etc., enabling us to instantly "upgrade" our gRPC services. This feature of gRPC proxying was demonstrated in [community call 41](https://www.youtube.com/watch?v=B_vkXqptpXY&t=71s).
+In JavaScript SDK **3.19.0-rc.4**, `client.proxy.create()` is unsupported for both HTTP and the gRPC ConnectRPC transport and rejects when called. Use `client.invoker.invoke()` for Dapr service invocation.
 
-#### Creating a Proxy
-
-To perform gRPC proxying, simply create a proxy by calling the `client.proxy.create()` method:
-
-```typescript
-// As always, create a client to our dapr sidecar
-// this client takes care of making sure the sidecar is started, that we can communicate, ...
-const clientSidecar = new DaprClient({ daprHost, daprPort, communicationProtocol: CommunicationProtocol.GRPC });
-
-// Create a Proxy that allows us to use our gRPC code
-const clientProxy = await clientSidecar.proxy.create<GreeterClient>(GreeterClient);
-```
-
-We can now call the methods as defined in our `GreeterClient` interface (which in this case is from the [Hello World example](https://github.com/grpc/grpc-go/blob/master/examples/helloworld/helloworld/helloworld.proto))
-
-#### Behind the Scenes (Technical Working)
-
-![Architecture](assets/architecture.png)
-
-1. The gRPC service gets started in Dapr. We tell Dapr which port this gRPC server is running on through `--app-port` and give it a unique Dapr app ID with `--app-id <APP_ID_HERE>`
-2. We can now call the Dapr Sidecar through a client that will connect to the Sidecar
-3. Whilst calling the Dapr Sidecar, we provide a metadata key named `dapr-app-id` with the value of our gRPC server booted in Dapr (e.g. `server` in our example)
-4. Dapr will now forward the call to the gRPC server configured
+For native protobuf services, use your generated gRPC client connected to the Dapr sidecar with `dapr-app-id` metadata. See [native gRPC services and streaming]({{% ref "js-service-invocation-usage.md#native-grpc-services-and-streaming" %}}) and the [runtime gRPC proxying guide]({{% ref howto-invoke-services-grpc.md %}}).
 
 ## Building blocks
 
 The JavaScript Client SDK allows you to interface with all of the [Dapr building blocks]({{% ref building-blocks %}}) focusing on Client to Sidecar features.
 
 ### Invocation API
+
+For JavaScript SDK **3.19.0-rc.4 or later**, see the [service invocation overview]({{% ref js-service-invocation %}}) for HTTP and gRPC capabilities.
 
 #### Invoke a Service
 
@@ -172,20 +152,18 @@ async function start() {
   const serviceAppId = "my-app-id";
   const serviceMethod = "say-hello";
 
-  // POST Request
-  const response = await client.invoker.invoke(serviceAppId, serviceMethod, HttpMethod.POST, { hello: "world" });
-
-  // POST Request with headers
-  const response = await client.invoker.invoke(
-    serviceAppId,
-    serviceMethod,
-    HttpMethod.POST,
-    { hello: "world" },
-    { headers: { "X-User-ID": "123" } },
-  );
-
-  // GET Request
-  const response = await client.invoker.invoke(serviceAppId, serviceMethod, HttpMethod.GET);
+  try {
+    const response = await client.invoker.invoke(
+      serviceAppId,
+      serviceMethod,
+      HttpMethod.POST,
+      { hello: "world" },
+      { headers: { "X-User-ID": "123" } },
+    );
+    console.log(response);
+  } finally {
+    await client.stop();
+  }
 }
 
 start().catch((e) => {
@@ -194,7 +172,7 @@ start().catch((e) => {
 });
 ```
 
-> For a full guide on service invocation visit [How-To: Invoke a service]({{% ref howto-invoke-discover-services.md %}}).
+Follow [calling services]({{% ref js-service-invocation-howto.md %}}) for a runnable client and server setup, other verbs, query parameters, namespaces, and non-Dapr endpoints. See [configuration and usage]({{% ref js-service-invocation-usage.md %}}) for serialization and errors. Custom request headers are forwarded by the HTTP invoker, not the gRPC invoker.
 
 ### State Management API
 
