@@ -6,7 +6,7 @@ weight: 300000
 description: How to create Dapr Python virtual actors with the Flask extension
 ---
 
-The Dapr Python SDK provides integration with Flask using the `flask-dapr` extension.
+The Dapr Python SDK provides integration with Flask using the `dapr.ext.flask` extension.
 
 ## Installation
 
@@ -16,27 +16,33 @@ You can download and install the Dapr Flask extension with:
 
 {{% tab header="Stable" %}}
 ```bash
-pip install flask-dapr
+pip install "dapr[flask]"
 ```
 {{% /tab %}}
 
 {{% tab header="Development" %}}
 {{% alert title="Note" color="warning" %}}
-The development package will contain features and behavior that will be compatible with the pre-release version of the Dapr runtime. Make sure to uninstall any stable versions of the Python SDK extension before installing the `dapr-dev` package.
+The development version will contain features and behavior that will be compatible with the pre-release version of the Dapr runtime. Only tagged releases are published to PyPI, so install the development version from the GitHub repository. Make sure to uninstall any stable versions of the Python SDK before installing it.
 {{% /alert %}}
 
 ```bash
-pip install flask-dapr-dev
+pip install "dapr[flask] @ git+https://github.com/dapr/python-sdk.git@main"
 ```
 {{% /tab %}}
 
 {{< /tabpane >}}
 
+Starting with Dapr 1.19, this extension is an extra of the `dapr` package. The `flask-dapr` package is no longer published. If you installed it before, follow the [upgrade steps]({{% ref "python#install-extensions" %}}) to move to the extra.
+
+{{% alert title="Note" color="primary" %}}
+The `flask_dapr` import path still works as a thin compatibility shim, but it emits a `FutureWarning`. Import from `dapr.ext.flask` instead.
+{{% /alert %}}
+
 ## Example
 
 ```python
 from flask import Flask
-from flask_dapr.actor import DaprActor
+from dapr.ext.flask import DaprActor
 
 from dapr.conf import settings
 from demo_actor import DemoActor

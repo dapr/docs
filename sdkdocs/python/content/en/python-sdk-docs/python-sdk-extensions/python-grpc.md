@@ -16,21 +16,23 @@ You can download and install the Dapr gRPC server extension with:
 
 {{% tab header="Stable" %}}
 ```bash
-pip install dapr-ext-grpc
+pip install "dapr[grpc]"
 ```
 {{% /tab %}}
 
 {{% tab header="Development" %}}
 {{% alert title="Note" color="warning" %}}
-The development package will contain features and behavior that will be compatible with the pre-release version of the Dapr runtime. Make sure to uninstall any stable versions of the Python SDK extension before installing the `dapr-dev` package.
+The development version will contain features and behavior that will be compatible with the pre-release version of the Dapr runtime. Only tagged releases are published to PyPI, so install the development version from the GitHub repository. Make sure to uninstall any stable versions of the Python SDK before installing it.
 {{% /alert %}}
 
 ```bash
-pip3 install dapr-ext-grpc-dev
+pip install "dapr[grpc] @ git+https://github.com/dapr/python-sdk.git@main"
 ```
 {{% /tab %}}
 
 {{< /tabpane >}}
+
+Starting with Dapr 1.19, this extension is an extra of the `dapr` package. The `dapr-ext-grpc` package is no longer published. If you installed it before, follow the [upgrade steps]({{% ref "python#install-extensions" %}}) to move to the extra. The import path does not change.
 
 ## Examples
 
@@ -124,4 +126,4 @@ app.run(50051)
 A full sample can be found [here](https://github.com/dapr/python-sdk/tree/v1.0.0rc2/examples/invoke-binding).
 
 ## Related links
-- [PyPi](https://pypi.org/project/dapr-ext-grpc/)
+- [PyPi](https://pypi.org/project/dapr/)

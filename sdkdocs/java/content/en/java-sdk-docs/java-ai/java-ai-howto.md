@@ -17,7 +17,7 @@ This example uses the default configuration from `dapr init` in [self-hosted mod
 ## Prerequisites
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- Java JDK 11 (or greater):
+- Java JDK 17 (or greater):
   - [Oracle JDK](https://www.oracle.com/java/technologies/downloads), or
   - OpenJDK
 - [Apache Maven](https://maven.apache.org/install.html), version 3.x.
