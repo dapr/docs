@@ -271,11 +271,11 @@ async function start() {
   const secretStoreName = "my-secret-store";
   const secretKey = "secret-key";
 
-  // Retrieve a single secret from secret store
-  const response = await client.secret.get(secretStoreName, secretKey);
+  // Retrieve a single secret; the result is the secret's key-value data
+  const secret = await client.secret.get(secretStoreName, secretKey);
 
-  // Retrieve all secrets from secret store
-  const response = await client.secret.getBulk(secretStoreName);
+  // Retrieve all accessible secrets, nested by secret name
+  const secrets = await client.secret.getBulk(secretStoreName);
 }
 
 start().catch((e) => {
@@ -284,7 +284,11 @@ start().catch((e) => {
 });
 ```
 
-> For a full guide on secrets visit [How-To: Retrieve secrets]({{% ref howto-secrets.md %}}).
+For **JavaScript SDK 3.19.0-rc.4 or later**, follow the [Secrets how-to guide]({{% ref js-secrets-howto.md %}}) for a runnable example, or read the [Secrets client usage guidance]({{% ref js-secrets-client-usage.md %}}) for configuration, TypeScript response validation, and error handling.
+
+In 3.19.0-rc.4, HTTP `get` accepts metadata as a query-string string and preserves all values in a multi-valued secret. gRPC `get` ignores metadata and returns only the first key-value pair. Bulk retrieval preserves nested values with either protocol, but neither exposes bulk metadata.
+
+For the underlying building block, see [How to: Retrieve a secret]({{% ref howto-secrets.md %}}).
 
 ### Configuration API
 
