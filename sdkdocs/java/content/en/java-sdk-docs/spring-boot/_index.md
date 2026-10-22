@@ -11,7 +11,8 @@ By combining Dapr and Spring Boot, we can create infrastructure independent Java
 First, we will start with a simple integration covering the `DaprClient` and the [Testcontainers](https://testcontainers.com/) integration, to then use Spring and Spring Boot mechanisms and programming model to leverage the Dapr APIs under the hood. This helps teams to remove dependencies such as clients and drivers required to connect to environment-specific infrastructure (databases, key-value stores, message brokers, configuration/secret stores, etc) 
 
 {{% alert title="Note" color="primary" %}}
-The Spring Boot integration requires Spring Boot 3.x+ to work. This will not work with Spring Boot 2.x.
+From Dapr Java SDK 1.19, the Spring Boot integration requires Spring Boot 4.0. It does not work with Spring Boot 3.x or 2.x.
+If you use Spring Boot 3.5, stay on Dapr Java SDK 1.18.x. The two combinations are not binary compatible and fail at runtime, for example with a `NoClassDefFoundError` or a `NoSuchMethodError`.
 The Spring Boot integration remains in alpha. We need your help and feedback to graduate it. 
 Please join the [#java-sdk discord channel](https://discord.com/channels/778680217417809931/778749797242765342) discussion or open issues in the [dapr/java-sdk](https://github.com/dapr/java-sdk/issues).
 
@@ -26,17 +27,30 @@ If you already have a Spring Boot application, you can directly add the followin
 	<dependency>
     <groupId>io.dapr.spring</groupId>
 		<artifactId>dapr-spring-boot-starter</artifactId>
-		<version>1.16.0</version>
+		<version>1.19.0</version>
 	</dependency>
 	<dependency>
 		<groupId>io.dapr.spring</groupId>
 		<artifactId>dapr-spring-boot-starter-test</artifactId>
-		<version>1.16.0</version>
+		<version>1.19.0</version>
 		<scope>test</scope>
 	</dependency>
 ```
 
 You can find the [latest released version here](https://central.sonatype.com/artifact/io.dapr.spring/dapr-spring-boot-starter). 
+
+{{% alert title="Upgrading from the Spring Boot 4 artifacts" color="warning" %}}
+SDK 1.19 removes the separate Spring Boot 4 artifacts, because the main artifacts now target Spring Boot 4.0. If you used these artifacts, change your dependencies and imports:
+
+| Before | From SDK 1.19 |
+| ------ | ------------- |
+| `dapr-spring-boot-4-starter` | `dapr-spring-boot-starter` |
+| `dapr-spring-boot-4-starter-test` | `dapr-spring-boot-starter-test` |
+| `dapr-spring-boot-4-autoconfigure` | `dapr-spring-boot-autoconfigure` |
+| `dapr-spring-6-data` | `dapr-spring-data` |
+| `io.dapr.spring6.data` (imports) | `io.dapr.spring.data` |
+
+{{% /alert %}}
 
 By adding these dependencies, you can: 
 - Autowire a `DaprClient` to use inside your applications
@@ -95,7 +109,7 @@ public class DaprTestContainersConfig {
   @ServiceConnection
   public DaprContainer daprContainer(Network daprNetwork, PostgreSQLContainer<?> postgreSQLContainer){
     
-    return new DaprContainer("daprio/daprd:1.16.0-rc.5")
+    return new DaprContainer("daprio/daprd:1.19.0")
             .withAppName("producer-app")
             .withNetwork(daprNetwork)
             .withComponent(new Component("kvstore", "state.postgresql", "v1", STATE_STORE_PROPERTIES))
@@ -250,7 +264,7 @@ Finally, because Dapr PubSub requires a bidirectional connection between your ap
 @ServiceConnection
 public DaprContainer daprContainer(Network daprNetwork, PostgreSQLContainer<?> postgreSQLContainer, RabbitMQContainer rabbitMQContainer){
     
-    return new DaprContainer("daprio/daprd:1.16.0-rc.5")
+    return new DaprContainer("daprio/daprd:1.19.0")
             .withAppName("producer-app")
             .withNetwork(daprNetwork)
             .withComponent(new Component("kvstore", "state.postgresql", "v1", STATE_STORE_PROPERTIES))
@@ -302,8 +316,26 @@ From Dapr 1.19, the `testcontainers-dapr` module's `Configuration` class accepts
 - `NameResolutionConfigurationSettings` — the `nameResolution` block.
 - `ComponentsConfigurationSettings` — the `components` block (for example, denying component types).
 - `SecretsConfigurationSettings` — the `secrets` block (secret store access scoping).
+- `HttpPipeline` — the `httpPipeline` block (middleware handlers for incoming HTTP requests to the Dapr sidecar). The `Configuration` class already accepted an `AppHttpPipeline` for the `appHttpPipeline` block.
 
 Each settings class mirrors the matching field on the Configuration resource; see [Configuration overview]({{% ref configuration-overview.md %}}) for what each field does.
+
+For example, this configuration adds a `uppercase` and a `ratelimit` middleware handler to the `httpPipeline`. The `httpPipeline` is the last argument of the `Configuration` constructor, so pass `null` for the settings that you don't use:
+
+```java
+HttpPipeline httpPipeline = new HttpPipeline(List.of(
+    new ListEntry("uppercase", "middleware.http.uppercase"),
+    new ListEntry("ratelimit", "middleware.http.ratelimit")));
+
+Configuration configuration =
+    new Configuration("my-config", null, null, null, null, null, null, null, null, httpPipeline);
+
+DaprContainer daprContainer = new DaprContainer("daprio/daprd:1.19.0")
+    .withAppName("my-app")
+    .withConfiguration(configuration);
+```
+
+The handler `name` must match the name of a [middleware component]({{% ref middleware.md %}}) that you add to the container.
 
 Separately, `Subscription` now accepts a `scopes` list (the app IDs allowed to use the subscription), matching the `scopes` field on a declarative subscription.
 

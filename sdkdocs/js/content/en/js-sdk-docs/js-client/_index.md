@@ -10,6 +10,8 @@ description: JavaScript Client SDK for developing Dapr applications
 
 The Dapr Client allows you to communicate with the Dapr Sidecar and get access to its client facing features such as Publishing Events, Invoking Output Bindings, State Management, Secret Management, and much more.
 
+For LLM interactions, use `client.conversation.converse(request)`. The [Conversation guides]({{% ref js-conversation %}}) cover setup, message history, structured output, caching, token usage, and tool calling with JavaScript SDK **3.19.0-rc.4 or later**.
+
 ## Pre-requisites
 
 - [Dapr CLI]({{% ref install-dapr-cli.md %}}) installed
@@ -139,6 +141,10 @@ The JavaScript Client SDK allows you to interface with all of the [Dapr building
 Use `client.search` to manage indexes and index, retrieve, delete, and query JSON documents over HTTP or gRPC. Requires Dapr runtime 1.19 or later and JavaScript SDK 3.19.0 or later.
 
 See the [Search how-to guide]({{% ref js-search-howto.md %}}) for a complete example, and [Search client usage]({{% ref js-search-client-usage.md %}}) for method signatures, query options, write acknowledgements, cancellation, and errors.
+
+### Jobs API
+
+Use `client.jobs` to schedule, retrieve, and delete jobs with JavaScript SDK **3.19.0-rc.4 or later**. See the [Jobs how-to guide]({{% ref js-jobs-howto.md %}}) and [client usage guidance]({{% ref js-jobs-client-usage.md %}}) for scheduling options, payloads, runtime compatibility, and error handling.
 
 ### Invocation API
 
@@ -391,83 +397,32 @@ To watch all keys, use `subscribe(storeName, callback)`. To include store-specif
 
 ### Cryptography API
 
-> Support for the cryptography API is only available on the gRPC client in the JavaScript SDK.
+In **`@dapr/dapr` 3.19.0-rc.4 or later**, `client.crypto` supports encryption and decryption over both HTTP and gRPC. Pass data and options to receive a `Buffer`, or pass only options to receive a Node.js `Duplex` stream.
+
+Prefer gRPC for large payloads and production streaming. Dapr buffers HTTP cryptography output until the request is fully consumed.
 
 ```typescript
-import { createReadStream, createWriteStream } from "node:fs";
-import { readFile, writeFile } from "node:fs/promises";
-import { pipeline } from "node:stream/promises";
-
 import { DaprClient, CommunicationProtocolEnum } from "@dapr/dapr";
-
-const daprHost = "127.0.0.1";
-const daprPort = "50050"; // Dapr Sidecar Port of this example server
 
 async function start() {
   const client = new DaprClient({
-    daprHost,
-    daprPort,
+    daprHost: "127.0.0.1",
+    daprPort: "50001",
     communicationProtocol: CommunicationProtocolEnum.GRPC,
   });
 
-  // Encrypt and decrypt a message using streams
-  await encryptDecryptStream(client);
-
-  // Encrypt and decrypt a message from a buffer
-  await encryptDecryptBuffer(client);
-}
-
-async function encryptDecryptStream(client: DaprClient) {
-  // First, encrypt the message
-  console.log("== Encrypting message using streams");
-  console.log("Encrypting plaintext.txt to ciphertext.out");
-
-  await pipeline(
-    createReadStream("plaintext.txt"),
-    await client.crypto.encrypt({
+  try {
+    const ciphertext = await client.crypto.encrypt("A message to encrypt", {
       componentName: "crypto-local",
       keyName: "symmetric256",
       keyWrapAlgorithm: "A256KW",
-    }),
-    createWriteStream("ciphertext.out"),
-  );
-
-  // Decrypt the message
-  console.log("== Decrypting message using streams");
-  console.log("Encrypting ciphertext.out to plaintext.out");
-  await pipeline(
-    createReadStream("ciphertext.out"),
-    await client.crypto.decrypt({
+    });
+    const plaintext = await client.crypto.decrypt(ciphertext, {
       componentName: "crypto-local",
-    }),
-    createWriteStream("plaintext.out"),
-  );
-}
-
-async function encryptDecryptBuffer(client: DaprClient) {
-  // Read "plaintext.txt" so we have some content
-  const plaintext = await readFile("plaintext.txt");
-
-  // First, encrypt the message
-  console.log("== Encrypting message using buffers");
-
-  const ciphertext = await client.crypto.encrypt(plaintext, {
-    componentName: "crypto-local",
-    keyName: "my-rsa-key",
-    keyWrapAlgorithm: "RSA",
-  });
-
-  await writeFile("test.out", ciphertext);
-
-  // Decrypt the message
-  console.log("== Decrypting message using buffers");
-  const decrypted = await client.crypto.decrypt(ciphertext, {
-    componentName: "crypto-local",
-  });
-
-  // The contents should be equal
-  if (plaintext.compare(decrypted) !== 0) {
-    throw new Error("Decrypted message does not match original message");
+    });
+    console.log("Decrypted bytes:", plaintext.length);
+  } finally {
+    await client.stop();
   }
 }
 
@@ -477,7 +432,7 @@ start().catch((e) => {
 });
 ```
 
-> For a full guide on cryptography visit [How-To: Cryptography]({{% ref howto-cryptography.md %}}).
+This example requires a configured `crypto-local` component and a compatible `symmetric256` key. Follow the [JavaScript Cryptography how-to guide]({{% ref js-cryptography-howto.md %}}) for complete setup and file-stream examples. See the [client usage guidance]({{% ref js-cryptography-client-usage.md %}}) for ciphers, key references, errors, and runtime limitations.
 
 ### Distributed Lock API
 
@@ -530,6 +485,14 @@ start().catch((e) => {
 
 ### Workflow API
 
+`DaprClient.workflow` exposes the basic workflow management API over HTTP or gRPC. For
+`@dapr/dapr` **3.19.0-rc.4 or later**, use `scheduleNewWorkflow`, `getWorkflowState`, and `raiseEvent`;
+the older `start`, `get`, and `raise` names are deprecated aliases.
+
+For authoring workers, durable waits, listing, history retrieval, reruns, and binary-store payload references,
+use the separate [workflow SDK guides]({{% ref js-workflow-management.md %}}). `DaprWorkflowClient` uses
+gRPC and returns `WorkflowState`, not the basic API's response object shown below.
+
 #### Workflow management
 
 ```typescript
@@ -539,7 +502,7 @@ async function start() {
   const client = new DaprClient();
 
   // Start a new workflow instance
-  const instanceId = await client.workflow.start("OrderProcessingWorkflow", {
+  const instanceId = await client.workflow.scheduleNewWorkflow("OrderProcessingWorkflow", {
     Name: "Paperclips",
     TotalCost: 99.95,
     Quantity: 4,
@@ -547,7 +510,7 @@ async function start() {
   console.log(`Started workflow instance ${instanceId}`);
 
   // Get a workflow instance
-  const workflow = await client.workflow.get(instanceId);
+  const workflow = await client.workflow.getWorkflowState(instanceId);
   console.log(
     `Workflow ${workflow.workflowName}, created at ${workflow.createdAt.toUTCString()}, has status ${
       workflow.runtimeStatus
