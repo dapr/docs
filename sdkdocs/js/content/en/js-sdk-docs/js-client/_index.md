@@ -10,6 +10,8 @@ description: JavaScript Client SDK for developing Dapr applications
 
 The Dapr Client allows you to communicate with the Dapr Sidecar and get access to its client facing features such as Publishing Events, Invoking Output Bindings, State Management, Secret Management, and much more.
 
+For LLM interactions, use `client.conversation.converse(request)`. The [Conversation guides]({{% ref js-conversation %}}) cover setup, message history, structured output, caching, token usage, and tool calling with JavaScript SDK **3.19.0-rc.4 or later**.
+
 ## Pre-requisites
 
 - [Dapr CLI]({{% ref install-dapr-cli.md %}}) installed

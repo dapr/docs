@@ -22,6 +22,12 @@ To get started with the JavaScript SDK, install the Dapr JavaScript SDK package 
 npm install --save @dapr/dapr
 ```
 
+## Conversation
+
+Converse with LLMs using `DaprClient.conversation` over HTTP or gRPC, including tool calling, structured output, PII scrubbing, prompt cache retention, and token usage statistics. These guides target JavaScript SDK **3.19.0-rc.4 or later**.
+
+Follow the [Conversation how-to guide]({{% ref js-conversation-howto.md %}}) to get started. See [client usage]({{% ref js-conversation-client-usage.md %}}) for runtime requirements and request options, and [tool calling]({{% ref js-conversation-tools-howto.md %}}) for a complete function-call round trip.
+
 ## Jobs
 
 Schedule one-time, interval-based, or cron-based jobs and receive their callbacks using `DaprClient.jobs` and `DaprServer.jobs`. Jobs requires JavaScript SDK **3.19.0-rc.4 or later**, Dapr runtime **1.16 or later**, and a running Scheduler service.
