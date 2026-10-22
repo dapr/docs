@@ -24,6 +24,8 @@ This step is crucial for preparing knowledge to be embedded into a searchable fo
 
 The Text Splitter supports multiple strategies to handle different types of documents effectively. These strategies balance the size of each chunk with the need to maintain context.
 
+When the primary and fallback separators produce at most one segment, `TextSplitter` falls back to sentence tokenization with NLTK if available, or to `fallback_regex` otherwise. The regex fallback retains unmatched text before, between, and after matches, including trailing text without sentence-ending punctuation. Blank-only segments are omitted; if the pattern has no matches, the original non-blank text is retained as one segment.
+
 #### 1. Character-Based Length
 
 * **How It Works**: Counts the number of characters in each chunk.
