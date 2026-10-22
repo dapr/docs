@@ -13,13 +13,13 @@ Let's register an endpoint to receive a job notification, then schedule the job 
 - [Dapr CLI]({{% ref install-dapr-cli.md %}})
 - An initialized [Dapr environment]({{% ref install-dapr-selfhost.md %}}) with **Dapr runtime 1.16 or later** and the [Scheduler service]({{% ref "concepts/dapr-services/scheduler.md" %}}) running
 - [Node.js](https://nodejs.org/) 18 or later
-- The [`@dapr/dapr`](https://www.npmjs.com/package/@dapr/dapr) package, **version 3.19.0-rc.4 or later**
+- The [`@dapr/dapr`](https://www.npmjs.com/package/@dapr/dapr) package, **version 3.19.0 or later**
 
 In your application directory, initialize an npm project if needed and install the SDK:
 
 ```sh
 npm init -y
-npm install @dapr/dapr@3.19.0-rc.4
+npm install @dapr/dapr@3.19.0
 ```
 
 The examples use JavaScript ES modules in a `.mjs` file, so no TypeScript compiler is required. The same APIs are available in TypeScript.

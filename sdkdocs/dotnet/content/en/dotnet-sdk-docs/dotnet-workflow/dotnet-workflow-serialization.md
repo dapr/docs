@@ -23,7 +23,7 @@ support. Registration alone preserves ordinary inline values; select `PayloadWri
 enable automatic offloading. Cross-app call inputs remain inline unless the call explicitly allows references.
 Forwarding references requires compatible, payload-aware destinations with access to the same referenced
 objects. The [JavaScript SDK]({{% ref js-workflow-data-references.md %}}) also supports the version-1
-reference envelope from `@dapr/dapr` 3.19.0-rc.4, provided serialization and storage access are compatible
+reference envelope from `@dapr/dapr` 3.19.0, provided serialization and storage access are compatible
 and payload stages do not require reversal. Do not assume other language SDKs support data references.
 
 {{% alert title="Note" color="primary" %}}

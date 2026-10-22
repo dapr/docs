@@ -13,7 +13,7 @@ keep ordinary workflow inputs and let the SDK retrieve data automatically, or fo
 
 {{% alert title="Alpha feature" color="warning" %}}
 The binary-store building block and this SDK integration are alpha and subject to change.
-These APIs require **`@dapr/dapr` 3.19.0-rc.4 or later**, Dapr runtime **1.19 or later**, and a binary-store
+These APIs require **`@dapr/dapr` 3.19.0 or later**, Dapr runtime **1.19 or later**, and a binary-store
 component in addition to the normal workflow infrastructure.
 {{% /alert %}}
 

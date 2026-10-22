@@ -7,7 +7,7 @@ description: Coordinate remote activities, child workflows, and detached workflo
 ---
 
 Use `targetAppId` to route activity and workflow calls to another Dapr application. This guide uses
-`@dapr/dapr` **3.19.0-rc.4 or later** and Dapr runtime **1.19 or later**.
+`@dapr/dapr` **3.19.0 or later** and Dapr runtime **1.19 or later**.
 See [Multi Application Workflows]({{% ref workflow-multi-app.md %}}) for runtime architecture and constraints.
 
 ## Requirements

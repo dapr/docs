@@ -10,7 +10,7 @@ description: JavaScript Client SDK for developing Dapr applications
 
 The Dapr Client allows you to communicate with the Dapr Sidecar and get access to its client facing features such as Publishing Events, Invoking Output Bindings, State Management, Secret Management, and much more.
 
-For LLM interactions, use `client.conversation.converse(request)`. The [Conversation guides]({{% ref js-conversation %}}) cover setup, message history, structured output, caching, token usage, and tool calling with JavaScript SDK **3.19.0-rc.4 or later**.
+For LLM interactions, use `client.conversation.converse(request)`. The [Conversation guides]({{% ref js-conversation %}}) cover setup, message history, structured output, caching, token usage, and tool calling with JavaScript SDK **3.19.0 or later**.
 
 ## Pre-requisites
 
@@ -144,7 +144,7 @@ See the [Search how-to guide]({{% ref js-search-howto.md %}}) for a complete exa
 
 ### Jobs API
 
-Use `client.jobs` to schedule, retrieve, and delete jobs with JavaScript SDK **3.19.0-rc.4 or later**. See the [Jobs how-to guide]({{% ref js-jobs-howto.md %}}) and [client usage guidance]({{% ref js-jobs-client-usage.md %}}) for scheduling options, payloads, runtime compatibility, and error handling.
+Use `client.jobs` to schedule, retrieve, and delete jobs with JavaScript SDK **3.19.0 or later**. See the [Jobs how-to guide]({{% ref js-jobs-howto.md %}}) and [client usage guidance]({{% ref js-jobs-client-usage.md %}}) for scheduling options, payloads, runtime compatibility, and error handling.
 
 ### Invocation API
 
@@ -397,7 +397,7 @@ To watch all keys, use `subscribe(storeName, callback)`. To include store-specif
 
 ### Cryptography API
 
-In **`@dapr/dapr` 3.19.0-rc.4 or later**, `client.crypto` supports encryption and decryption over both HTTP and gRPC. Pass data and options to receive a `Buffer`, or pass only options to receive a Node.js `Duplex` stream.
+In **`@dapr/dapr` 3.19.0 or later**, `client.crypto` supports encryption and decryption over both HTTP and gRPC. Pass data and options to receive a `Buffer`, or pass only options to receive a Node.js `Duplex` stream.
 
 Prefer gRPC for large payloads and production streaming. Dapr buffers HTTP cryptography output until the request is fully consumed.
 
@@ -486,7 +486,7 @@ start().catch((e) => {
 ### Workflow API
 
 `DaprClient.workflow` exposes the basic workflow management API over HTTP or gRPC. For
-`@dapr/dapr` **3.19.0-rc.4 or later**, use `scheduleNewWorkflow`, `getWorkflowState`, and `raiseEvent`;
+`@dapr/dapr` **3.19.0 or later**, use `scheduleNewWorkflow`, `getWorkflowState`, and `raiseEvent`;
 the older `start`, `get`, and `raise` names are deprecated aliases.
 
 For authoring workers, durable waits, listing, history retrieval, reruns, and binary-store payload references,

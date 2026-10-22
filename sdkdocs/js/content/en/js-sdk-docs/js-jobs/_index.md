@@ -8,7 +8,7 @@ description: Schedule, retrieve, delete, and handle Dapr Jobs using the JavaScri
 
 Use the Dapr JavaScript SDK to schedule future operations in Node.js applications. Jobs can run once, at a fixed interval, or on a calendar-based schedule, with an optional payload and failure policy.
 
-This documentation targets **`@dapr/dapr` 3.19.0-rc.4 or later** and **Dapr runtime 1.16 or later**, with a running [Scheduler service]({{% ref "concepts/dapr-services/scheduler.md" %}}).
+This documentation targets **`@dapr/dapr` 3.19.0 or later** and **Dapr runtime 1.16 or later**, with a running [Scheduler service]({{% ref "concepts/dapr-services/scheduler.md" %}}).
 
 The SDK exposes Jobs through the existing client and server:
 

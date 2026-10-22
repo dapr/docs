@@ -6,7 +6,7 @@ weight: 54100
 description: Configure and use JavaScript cryptography operations, encryption options, and streams
 ---
 
-Cryptography is available through `DaprClient.crypto`. This page describes **`@dapr/dapr` version 3.19.0-rc.4 or later**, which supports both HTTP and gRPC. Both transports use the alpha Cryptography API.
+Cryptography is available through `DaprClient.crypto`. This page describes **`@dapr/dapr` version 3.19.0 or later**, which supports both HTTP and gRPC. Both transports use the alpha Cryptography API.
 
 ## Client lifetime and configuration
 
@@ -82,7 +82,7 @@ const decryptOptions: DecryptRequest = {
 };
 ```
 
-These request types are not exported from the package root in `3.19.0-rc.4`.
+These request types are not exported from the package root in `3.19.0`.
 
 ## Decryption and key references
 
@@ -135,7 +135,7 @@ The data overloads accumulate the complete result in memory, even when gRPC stre
 
 - **HTTP:** The SDK supports both overloads and sends raw bytes, but Dapr buffers cryptography output until it has consumed the request. Do not wait for output before finishing input. Prefer gRPC for large payloads and production streaming.
 - **gRPC:** Uses bidirectional streaming and splits writes into 2 KiB request chunks. The crypto API has no configurable `chunkSize`. The current stream implementation can queue input and output internally; do not assume that using streams guarantees bounded memory at arbitrary producer or consumer speeds.
-- **Empty input:** HTTP supports empty plaintext with either overload. In the `3.19.0-rc.4` gRPC implementation, options are sent with the first nonempty input chunk, so an empty input does not send an initial options frame. Use HTTP for empty plaintext rather than relying on gRPC empty-input behavior.
+- **Empty input:** HTTP supports empty plaintext with either overload. In the `3.19.0` gRPC implementation, options are sent with the first nonempty input chunk, so an empty input does not send an initial options frame. Use HTTP for empty plaintext rather than relying on gRPC empty-input behavior.
 
 Ciphertext produced over HTTP can be decrypted over gRPC and vice versa, provided the component can access the correct key. The document uses Dapr's encryption format, not a bare AES or RSA ciphertext.
 

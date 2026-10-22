@@ -24,13 +24,13 @@ npm install --save @dapr/dapr
 
 ## Conversation
 
-Converse with LLMs using `DaprClient.conversation` over HTTP or gRPC, including tool calling, structured output, PII scrubbing, prompt cache retention, and token usage statistics. These guides target JavaScript SDK **3.19.0-rc.4 or later**.
+Converse with LLMs using `DaprClient.conversation` over HTTP or gRPC, including tool calling, structured output, PII scrubbing, prompt cache retention, and token usage statistics. These guides target JavaScript SDK **3.19.0 or later**.
 
 Follow the [Conversation how-to guide]({{% ref js-conversation-howto.md %}}) to get started. See [client usage]({{% ref js-conversation-client-usage.md %}}) for runtime requirements and request options, and [tool calling]({{% ref js-conversation-tools-howto.md %}}) for a complete function-call round trip.
 
 ## Jobs
 
-Schedule one-time, interval-based, or cron-based jobs and receive their callbacks using `DaprClient.jobs` and `DaprServer.jobs`. Jobs requires JavaScript SDK **3.19.0-rc.4 or later**, Dapr runtime **1.16 or later**, and a running Scheduler service.
+Schedule one-time, interval-based, or cron-based jobs and receive their callbacks using `DaprClient.jobs` and `DaprServer.jobs`. Jobs requires JavaScript SDK **3.19.0 or later**, Dapr runtime **1.16 or later**, and a running Scheduler service.
 
 Follow the [Jobs how-to guide]({{% ref js-jobs-howto.md %}}), read the [client and callback usage guidance]({{% ref js-jobs-client-usage.md %}}), or build calendar-based schedules with the [cron builder]({{% ref js-jobs-cron.md %}}).
 
@@ -68,7 +68,7 @@ Follow the [Binary Store how-to guide]({{% ref js-binarystore-howto.md %}}) to g
 
 ## Cryptography
 
-Encrypt and decrypt messages and files with `DaprClient.crypto` over HTTP or gRPC in **`@dapr/dapr` 3.19.0-rc.4 or later**. Prefer gRPC for large payloads and production streaming.
+Encrypt and decrypt messages and files with `DaprClient.crypto` over HTTP or gRPC in **`@dapr/dapr` 3.19.0 or later**. Prefer gRPC for large payloads and production streaming.
 
 Follow the [Cryptography how-to guide]({{% ref js-cryptography-howto.md %}}) to configure a component and encrypt data. Read the [client usage guidance]({{% ref js-cryptography-client-usage.md %}}) for supported inputs, ciphers, key references, streaming, and limitations.
 

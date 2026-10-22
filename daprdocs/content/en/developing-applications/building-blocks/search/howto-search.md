@@ -70,11 +70,11 @@ Start a Dapr sidecar that loads the component:
 
 {{% tab "JavaScript" %}}
 
-Create a Node.js project and install the Dapr SDK (version **3.19.0-rc.5 or later**):
+Create a Node.js project and install the Dapr SDK (version **3.19.0 or later**):
 
 ```bash
 npm init -y
-npm install @dapr/dapr@3.19.0-rc.5
+npm install @dapr/dapr@3.19.0
 ```
 
 The examples below go in a single `app.mjs` file. Create the client once and reuse it for every call. The search API is available over both HTTP and gRPC; the gRPC protocol sends document content as raw bytes, while HTTP base64-encodes it for you.

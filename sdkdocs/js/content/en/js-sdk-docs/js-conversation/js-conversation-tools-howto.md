@@ -10,7 +10,7 @@ Tool calling lets a model request an application-defined function. Dapr and the 
 
 ## Prerequisites
 
-Complete the [conversation setup guide]({{% ref js-conversation-howto.md %}}) using `@dapr/dapr` **3.19.0-rc.4 or later**, Dapr runtime **1.16 or later**, and a component/model that supports tool calling. The echo component is not sufficient.
+Complete the [conversation setup guide]({{% ref js-conversation-howto.md %}}) using `@dapr/dapr` **3.19.0 or later**, Dapr runtime **1.16 or later**, and a component/model that supports tool calling. The echo component is not sufficient.
 
 ## Define a tool and handle its result
 
