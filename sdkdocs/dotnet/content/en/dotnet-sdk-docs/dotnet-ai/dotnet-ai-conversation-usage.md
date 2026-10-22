@@ -66,7 +66,7 @@ to configure these options yourself, make sure to enable the [ThrowOperationCanc
 
 ```cs
 var daprConversationClient = new DaprConversationClientBuilder()
-    .UseGrpcChannelOptions(new GrpcChannelOptions { ... ThrowOperationCanceledOnCancellation = true })
+    .UseGrpcChannelOptions(new GrpcChannelOptions { ThrowOperationCanceledOnCancellation = true })
     .Build();
 ```
 
@@ -76,7 +76,7 @@ The APIs on `DaprConversationClient` perform asynchronous operations and accept 
 follows a standard .NET practice for cancellable operations. Note that when cancellation occurs, there is no guarantee that
 the remote endpoint stops processing the request, only that the client has stopped waiting for completion.
 
-When an operation is cancelled, it will throw an `OperationCancelledException`.
+When an operation is canceled, it can throw an `OperationCanceledException`.
 
 ## Configuring `DaprConversationClient` via dependency injection
 
@@ -104,12 +104,15 @@ var app = builder.Build();
 Use `ConversationInput` and `ConversationOptions` to send prompts to your conversation component:
 
 ```cs
+using Dapr.AI.Conversation;
+using Dapr.AI.Conversation.ConversationRoles;
+
 var inputs = new[]
 {
     new ConversationInput(new IConversationMessage[]
     {
-        new SystemMessage("You are a helpful assistant."),
-        new UserMessage("Summarize the following text...")
+        new SystemMessage { Content = [new MessageContent("You are a helpful assistant.")] },
+        new UserMessage { Content = [new MessageContent("Explain Dapr service invocation briefly.")] }
     })
 };
 
@@ -119,7 +122,41 @@ var options = new ConversationOptions("my-conversation-component")
 };
 
 var response = await daprConversationClient.ConverseAsync(inputs, options);
+
+foreach (var output in response.Outputs)
+{
+    foreach (var choice in output.Choices)
+    {
+        Console.WriteLine($"{choice.Index}: {choice.Message.Content} ({choice.FinishReason})");
+    }
+}
 ```
+
+Each `ConversationInput` contains a list of role-specific messages. The SDK supports `SystemMessage`,
+`DeveloperMessage`, `UserMessage`, `AssistantMessage`, and `ToolMessage`. Content consists of text
+`MessageContent` entries; this API does not expose image/audio message parts.
+
+Each response output contains `Choices`, optional `Model`, and optional `Usage`. Each choice has an
+`Index`, nullable `FinishReason`, and a `Message` with text and a list of tool calls. Do not assume the
+response always contains a single text choice.
+
+## Request options and conversation context
+
+| Option | Behavior |
+| --- | --- |
+| `ConversationComponentId` | Required component name supplied to the `ConversationOptions` constructor. |
+| `ContextId` | Optional existing conversation context. A returned context is available as `ConversationResponse.ConversationId`; retention depends on the runtime/component. |
+| `Temperature` | Provider-supported creativity/predictability setting. |
+| `ScrubPII` | Requests scrubbing of response data. `ConversationInput.ScrubPII` separately requests scrubbing of input data. |
+| `Metadata` | Component-specific string key/value metadata. |
+| `Parameters` | Custom parameters represented as `Google.Protobuf.WellKnownTypes.Any` values. |
+| `Tools`, `ToolChoice` | Per-request tool declarations and selection policy; see [tool calling]({{< ref dotnet-ai-conversation-tools.md >}}). |
+| `ResponseFormat` | Optional protobuf `Struct` describing the requested response schema. |
+| `PromptCacheRetention` | Optional cache-retention duration where supported. |
+
+The client sends these options to the runtime; provider support varies. A context ID is not a client-side
+message history store. Keep/send any history your provider requires. `ConverseAsync` returns a complete
+response; this client has no token-streaming API in this release.
 
 ## Response format (JSON schema)
 
@@ -195,8 +232,10 @@ if (result.Usage is not null)
 }
 ```
 
+## Additional DI configuration
+
 Sometimes the developer will need to configure the created client using the various configuration options detailed
-above. This is done through an overload that passes in the `DaprConversationClientBuiler` and exposes methods for configuring
+above. This is done through an overload that passes in the `DaprConversationClientBuilder` and exposes methods for configuring
 the necessary options.
 
 ```cs

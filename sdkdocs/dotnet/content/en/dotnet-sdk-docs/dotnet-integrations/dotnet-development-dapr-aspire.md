@@ -28,13 +28,19 @@ services can be found [here](https://github.com/dapr/dotnet-sdk/tree/master/exam
 
 ## Prerequisites
 - The Dapr .NET SDK supports [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0),
-  [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0), and
-  [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0). Use a .NET Aspire version that supports the runtime you choose.
+  [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0),
+  [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0), and
+  [.NET 11](https://dotnet.microsoft.com/download/dotnet/11.0). Use a .NET Aspire version that supports the runtime you choose.
 - An OCI compliant container runtime such as [Docker Desktop](https://www.docker.com/products/docker-desktop) or 
 [Podman](https://podman.io/)
 - Install and initialize Dapr v1.16 or later
 
 ## Using .NET Aspire via CLI
+
+{{% alert title=".NET framework support" color="warning" %}}
+Be advised that .NET 8 and .NET 9 reach end of support in November 2026. Support for both will be dropped
+in Dapr v1.20; only .NET 10 and .NET 11 will be supported through the end of 2027.
+{{% /alert %}}
 
 We'll start by creating a brand new .NET application. Open your preferred CLI and navigate to the directory you wish
 to create your new .NET solution within. Start by using the following command to install a template that will create

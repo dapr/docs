@@ -12,12 +12,12 @@ This guide demonstrates how to author and manage Dapr topic subscriptions using 
 
 - [Dapr CLI]({{< ref install-dapr-cli.md >}}) installed
 - Initialized [Dapr environment]({{< ref install-dapr-selfhost.md >}})
-- [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0), [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0), or [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0) installed
+- [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0), [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0), [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0), or [.NET 11](https://dotnet.microsoft.com/download/dotnet/11.0) installed
 - `Dapr.Messaging` package installed:
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="Dapr.Messaging" Version="..." />
+  <PackageReference Include="Dapr.Messaging" Version="1.19.0" />
 </ItemGroup>
 ```
 
@@ -27,6 +27,11 @@ This guide demonstrates how to author and manage Dapr topic subscriptions using 
 
 ## Define a topic handler
 
+{{% alert title=".NET framework support" color="warning" %}}
+Be advised that .NET 8 and .NET 9 reach end of support in November 2026. Support for both will be dropped
+in Dapr v1.20; only .NET 10 and .NET 11 will be supported through the end of 2027.
+{{% /alert %}}
+
 Topic subscribers implement the strongly-typed `ITopicHandler<TMessage>` interface (or its generic variant `ITopicHandler<TMessage, TResult>`) and are decorated with the `[DaprTopic]` attribute.
 
 ### Why use `ITopicHandler`?
@@ -34,7 +39,7 @@ Topic subscribers implement the strongly-typed `ITopicHandler<TMessage>` interfa
 - **Strongly-typed payloads**: Automatically deserializes incoming JSON or CloudEvent payloads into strongly-typed .NET models (`TMessage`) without manual boilerplate.
 - **Explicit message disposition**: The `HandleAsync` method returns a `TopicResponseAction` (`Success`, `Retry`, or `Drop`), giving you precise control over acknowledgment, retries, and dead-letter queue routing.
 - **Scoped dependency injection**: Handlers are resolved from an isolated `IServiceScope` for each message delivery, enabling clean constructor injection for scoped dependencies like Entity Framework `DbContext`, repositories, or loggers.
-- **Compile-time source generation**: Annotated handlers are discovered by the Roslyn source generator at build time to emit reflection-free, Native AOT–compatible dispatchers.
+- **Compile-time source generation**: Annotated handlers are discovered at build time for reflection-free registration and dispatch. Validate Native AOT separately because generated message deserialization still uses runtime JSON metadata.
 
 {{% alert title="Analyzer Validation" color="primary" %}}
 - **`DAPR1611` (Error)**: If a class decorated with `[DaprTopic]` does not implement `ITopicHandler<TMessage>` or `ITopicHandler<TMessage, TResult>`, `DAPR1611` triggers a build error.
@@ -223,17 +228,18 @@ Not all properties on `[DaprTopic]` are relevant to every delivery mode. The tab
 You can filter and route messages based on Common Expression Language (CEL) expressions using the `Match` and `Priority` properties:
 
 ```csharp
-[DaprTopic("pubsub", "orders", Match = "event.type == \"priority\"", Priority = 1)]
+[DaprTopic("pubsub", "orders", Delivery = DeliveryMode.Http,
+    Match = "event.type == \"priority\"", Priority = 1)]
 public sealed class PriorityOrderHandler : ITopicHandler<Order> { /* ... */ }
 
-[DaprTopic("pubsub", "orders", Priority = 2)]
+[DaprTopic("pubsub", "orders", Delivery = DeliveryMode.Http, Priority = 2)]
 public sealed class StandardOrderHandler : ITopicHandler<Order> { /* ... */ }
 ```
 
 ### Dead-letter topics and bulk subscription
 
 - **Dead-letter topic**: Set `DeadLetterTopic = "orders-dlq"` to route dropped messages to a dead-letter queue.
-- **Bulk subscription**: Set `BulkSubscribe = true`, `MaxMessagesCount`, and `MaxAwaitDurationMs` to receive batches of messages.
+- **Bulk subscription**: Select HTTP or programmatic delivery and set `BulkSubscribe = true`, `MaxMessagesCount`, and `MaxAwaitDurationMs` to receive batches of messages.
 - **Raw payloads**: Set `EnableRawPayload = true` to receive the unparsed event payload without CloudEvent envelope parsing.
 
 ### Topic metadata with `[DaprTopicMetadata]`

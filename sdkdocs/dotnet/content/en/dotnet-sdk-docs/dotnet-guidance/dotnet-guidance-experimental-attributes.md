@@ -15,6 +15,11 @@ APIs that are still in development or experimental. This attribute is defined in
 namespace and requires a diagnostic ID parameter used to generate compiler warnings when the experimental API 
 is used.
 
+{{% alert title=".NET framework support" color="warning" %}}
+Be advised that .NET 8 and .NET 9 reach end of support in November 2026. Support for both will be dropped
+in Dapr v1.20; only .NET 10 and .NET 11 will be supported through the end of 2027.
+{{% /alert %}}
+
 In the Dapr .NET SDK, we now use the `[Experimental]` attribute instead of `[Obsolete]` to mark building blocks and 
 components that have not yet passed the stable lifecycle certification. This approach provides a clearer distinction 
 between:

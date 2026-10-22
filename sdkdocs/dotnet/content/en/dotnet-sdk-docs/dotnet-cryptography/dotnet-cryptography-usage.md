@@ -3,7 +3,7 @@ type: docs
 title: "Dapr Cryptography Client"
 linkTitle: "Cryptography client"
 weight: 510005
-description: Learn how to create Dapr Crytography clients
+description: Learn how to create Dapr Cryptography clients
 ---
 
 The Dapr Cryptography package allows you to perform encryption and decryption operations provided by the Dapr sidecar.
@@ -25,7 +25,7 @@ the client from scratch in each of your classes.
 Avoid creating a `DaprEncryptionClient` for each operation.
 
 ## Configuring `DaprEncryptionClient` via `DaprEncryptionClientBuilder`
-A `DaprCryptographyClient` can be configured by invoking methods on the `DaprEncryptionClientBuilder` class before calling
+A `DaprEncryptionClient` can be configured by invoking methods on the `DaprEncryptionClientBuilder` class before calling
 `.Build()` to create the client itself. The settings for each `DaprEncryptionClientBuilder` are separate can cannot be
 changed after calling `.Build()`.
 
@@ -59,7 +59,7 @@ to configure these options yourself, make sure to enable the [ThrowOperationCanc
 
 ```cs
 var daprEncryptionClient = new DaprEncryptionClientBuilder()
-    .UseGrpcChannelOptions(new GrpcChannelOptions { .. ThrowOperationCanceledOnCancellation = true })
+    .UseGrpcChannelOptions(new GrpcChannelOptions { ThrowOperationCanceledOnCancellation = true })
     .Build();
 ```
 
@@ -68,7 +68,8 @@ The APIs on `DaprEncryptionClient` perform asynchronous operations and accept an
 follows a standard .NET practice for cancellable operations. Note that when cancellation occurs, there is no guarantee that
 the remote endpoint stops processing the request, only that the client has stopped waiting for completion.
 
-When an operation is cancelled, it will throw an `OperationCancelledException`.
+When an operation is canceled, it can throw an `OperationCanceledException`. Stream failures are surfaced while
+enumerating results; see [streaming and operation options]({{< ref dotnet-cryptography-howto.md >}}).
 
 ## Configuring `DaprEncryptionClient` via dependency injection
 Using the built-in extension methods for registering the `DaprEncryptionClient` in a dependency injection container can
@@ -86,7 +87,7 @@ default settings.
 ```cs
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDaprEncryptionClent(); //Registers the `DaprEncryptionClient` to be injected as needed
+builder.Services.AddDaprEncryptionClient();
 var app = builder.Build();
 ```
 
@@ -97,7 +98,7 @@ the necessary options.
 ```cs
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDaprEncryptionClient((_, daprEncrpyptionClientBuilder) => {
+builder.Services.AddDaprEncryptionClient((_, daprEncryptionClientBuilder) => {
    //Set the API token
    daprEncryptionClientBuilder.UseDaprApiToken("abc123");
    //Specify a non-standard HTTP endpoint

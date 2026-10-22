@@ -61,7 +61,7 @@ to configure these options yourself, make sure to enable the [ThrowOperationCanc
 
 ```cs
 var daprJobsClient = new DaprJobsClientBuilder()
-    .UseGrpcChannelOptions(new GrpcChannelOptions { ... ThrowOperationCanceledOnCancellation = true })
+    .UseGrpcChannelOptions(new GrpcChannelOptions { ThrowOperationCanceledOnCancellation = true })
     .Build();
 ```
 
@@ -71,7 +71,11 @@ The APIs on `DaprJobsClient` perform asynchronous operations and accept an optio
 follows a standard .NET practice for cancellable operations. Note that when cancellation occurs, there is no guarantee that 
 the remote endpoint stops processing the request, only that the client has stopped waiting for completion.
 
-When an operation is cancelled, it will throw an `OperationCancelledException`. 
+Pass cancellation tokens to bound calls. In SDK `1.19.0`, scheduling, deletion, and listing catch
+caller-initiated cancellation: write methods can complete without confirming a change and listing can return
+an empty list. `GetJobAsync` can surface a `DaprException` after cancellation. Do not rely on an
+`OperationCanceledException` being thrown by every Jobs operation, or interpret a canceled call as confirmation
+that a job was created/deleted. Check the token and reconcile with the runtime when the outcome matters.
 
 ## Configuring `DaprJobsClient` via dependency injection
 
@@ -141,9 +145,8 @@ While there are many methods on the `DaprClient` that automatically serialize an
 payload of `ReadOnlyMemory<byte>` meaning that serialization is an exercise left to the developer and is not 
 generally handled by the SDK.
 
-That said, there are some helper extension methods available for each of the scheduling methods. If you know that you 
-want to use a type that's JSON-serializable, you can use the `Schedule*WithPayloadAsync` method for each scheduling 
-type that accepts an `object` as a payload and an optional `JsonSerializerOptions` to use when serializing the value. 
+For JSON-serializable values, use `ScheduleJobWithPayloadAsync` from `Dapr.Jobs.Extensions`. It accepts a
+`DaprJobSchedule`, an `object` payload, and optional `JsonSerializerOptions`.
 This will convert the value to UTF-8 encoded bytes for you as a convenience. Here's an example of what this might 
 look like when scheduling a Cron expression:
 
@@ -152,7 +155,8 @@ public sealed record Doodad (string Name, int Value);
 
 //...
 var doodad = new Doodad("Thing", 100);
-await daprJobsClient.ScheduleCronJobWithPayloadAsync("myJob", "5 * * * *", doodad);
+await daprJobsClient.ScheduleJobWithPayloadAsync(
+    "myJob", DaprJobSchedule.FromExpression("5 * * * *"), doodad);
 ```
 
 In the same vein, if you have a plain string value, you can use an overload of the same method to serialize a 
@@ -160,19 +164,19 @@ string-typed payload and the JSON serialization step will be skipped and it'll o
 UTF-8 encoded bytes. Here's an example of what this might look like when scheduling a one-time job:
 
 ```cs
-var now = DateTime.UtcNow;
+var now = DateTimeOffset.UtcNow;
 var oneWeekFromNow = now.AddDays(7);
-await daprJobsClient.ScheduleOneTimeJobWithPayloadAsync("myOtherJob", oneWeekFromNow, "This is a test!");
+await daprJobsClient.ScheduleJobWithPayloadAsync(
+    "myOtherJob", DaprJobSchedule.FromDateTime(oneWeekFromNow), "This is a test!");
 ```
 
 The delegate handling the job invocation expects at least two arguments to be present:
 - A `string` that is populated with the `jobName`, providing the name of the invoked job
 - A `ReadOnlyMemory<byte>` that is populated with the bytes originally provided during the job registration.
 
-Because the payload is stored as a `ReadOnlyMemory<byte>`, the developer has the freedom to serialize and deserialize 
-as they wish, but there are again two helper extensions included that can deserialize this to either a JSON-compatible 
-type or a string. Both methods assume that the developer encoded the originally scheduled job (perhaps using the 
-helper serialization methods) as these methods will not force the bytes to represent something they're not.
+Deserialize with the same format used when scheduling. For JSON, use
+`JsonSerializer.Deserialize<T>(jobPayload.Span, options)` with matching serializer options; for UTF-8 text,
+use `Encoding.UTF8.GetString`. The client does not infer the payload's type or encoding.
 
 To deserialize the bytes to a string, the following helper method can be used:
 ```cs
@@ -181,12 +185,9 @@ var payloadAsString = Encoding.UTF8.GetString(jobPayload.Span); //If successful,
 
 ## Error handling
 
-Methods on `DaprJobsClient` will throw a `DaprJobsServiceException` if an issue is encountered between the SDK 
-and the Jobs API service running on the Dapr sidecar. If a failure is encountered because of a poorly formatted 
-request made to the Jobs API service through this SDK, a `DaprMalformedJobException` will be thrown. In case of 
-illegal argument values, the appropriate standard exception will be thrown (e.g. `ArgumentOutOfRangeException` 
-or `ArgumentNullException`) with the name of the offending argument. And for anything else, a `DaprException` 
-will be thrown.
+`DaprJobsClient` wraps runtime/gRPC failures in `DaprException`. Invalid argument values raise standard
+exceptions such as `ArgumentOutOfRangeException` or `ArgumentNullException`. Do not depend on
+`DaprJobsServiceException` or `DaprMalformedJobException` as the exception contract of this release.
 
 The most common cases of failure will be related to:
 

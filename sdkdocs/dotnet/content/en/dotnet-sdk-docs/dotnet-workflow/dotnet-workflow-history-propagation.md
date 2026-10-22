@@ -8,7 +8,9 @@ description: Share ancestor workflow execution history with child workflows and 
 
 ## Overview
 
-Workflow history propagation allows a parent workflow to share its execution history — and optionally its full ancestor chain — with the child workflows and activities it calls. The child can then inspect those upstream events at runtime.
+Workflow history propagation allows a parent workflow to share its execution history — and optionally its full ancestor chain —
+with child workflows. Call options also expose propagation scopes for activities, but the public .NET reader is
+`WorkflowContext.GetPropagatedHistory()` on a workflow, not a method on `WorkflowActivityContext`.
 
 Common use cases include:
 
@@ -70,6 +72,13 @@ var auditResult = await context.CallActivityAsync<AuditResult>(
     nameof(WriteAuditTrailActivity), payload, options);
 ```
 
+{{% alert title="Activity reader limitation" color="warning" %}}
+In SDK 1.19.0, the activity scheduling action carries this scope, but `WorkflowActivityContext` exposes only
+`Identifier`, `InstanceId`, and `TaskExecutionKey`. It has no public history reader, and the worker does not
+populate an activity history property. Use a child workflow when application code needs to inspect propagated
+history; do not assume the activity above can call `GetPropagatedHistory()`.
+{{% /alert %}}
+
 ## Read propagated history
 
 Inside a child workflow, call `GetPropagatedHistory()` on `WorkflowContext` to retrieve the history passed by the parent. The method returns `null` if propagation was not requested for this invocation.
@@ -119,8 +128,8 @@ Each `PropagatedHistoryActivityResult` is a sealed record describing a single ac
 |---|---|---|
 | `Name` | `string` | The scheduled name of the activity |
 | `Status` | `PropagatedHistoryStatus` | Lifecycle status — `Pending`, `Completed`, or `Failed` |
-| `Input` | `string?` | JSON-encoded input payload, or `null` when unset |
-| `Output` | `string?` | JSON-encoded output payload, or `null` when the activity has not completed |
+| `Input` | `string?` | Serialized input payload, or `null` when unset |
+| `Output` | `string?` | Serialized output payload, or `null` when the activity has not completed |
 | `FailureDetails` | `WorkflowTaskFailureDetails?` | Failure details when `Status` is `Failed`, otherwise `null` |
 
 ### PropagatedHistoryWorkflowResult type
@@ -131,8 +140,13 @@ Each `PropagatedHistoryWorkflowResult` is a sealed record describing a single ch
 |---|---|---|
 | `Name` | `string` | The scheduled name of the child workflow |
 | `Status` | `PropagatedHistoryStatus` | Lifecycle status — `Pending`, `Completed`, or `Failed` |
-| `Output` | `string?` | JSON-encoded output payload, or `null` when the workflow has not completed |
+| `Output` | `string?` | Serialized output payload, or `null` when the workflow has not completed |
 | `FailureDetails` | `WorkflowTaskFailureDetails?` | Failure details when `Status` is `Failed`, otherwise `null` |
+
+Input/output strings retain the configured serialization format; they are JSON only with a JSON serializer.
+With binary payload support they can also contain reference envelopes. Propagation does not automatically
+materialize all ancestor payloads; apply compatible serialization and
+[data-reference handling]({{% ref dotnet-workflow-data-references.md %}}).
 
 ### PropagatedHistoryStatus enum
 

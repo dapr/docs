@@ -470,7 +470,7 @@ Event APIs do not expose `TargetAppId` or `AllowPayloadReferences` and instead f
 
 | Event path | Outgoing policy |
 | --- | --- |
-| `context.SendEvent` | Uses the workflow host's `WritePreference`. The target instance is in the current app; local events are not forced inline. (Note: Dapr `1.19.0-rc.3` rejects workflow-originated `EventSent` messages regardless of payload representation.) |
+| `context.SendEvent` | Uses the workflow host's `WritePreference`. The target instance is in the current app; local events are not forced inline. |
 | Client `RaiseEventAsync` | Uses the publishing client's configured `WritePreference`. The destination is determined by the sidecar endpoint configured for that client. |
 
 Under `PreferReference`, automatic event offloading is controlled by `PayloadKind.ExternalEvent` in `OffloadSites`

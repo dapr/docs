@@ -3,7 +3,7 @@ type: docs
 title: "Multi-application workflows in the .NET SDK"
 linkTitle: "Multi-app workflows"
 weight: 1600
-description: Call activities and child workflows hosted in another Dapr application using the .NET SDK
+description: Call activities, children, and detached workflows hosted in another Dapr application
 ---
 
 ## Overview
@@ -83,6 +83,31 @@ If the target application is a .NET app that uses named workflow versioning, you
 workflow name and the target app will route it to the latest version. Named workflow versioning requires Dapr runtime
 v1.17.0 or later (multi-app workflows only require v1.16.0+).
 {{% /alert %}}
+
+## Schedule a detached workflow in another application
+
+SDK/runtime 1.19 also support independent, replay-safe detached workflow scheduling from the workflow context:
+
+```csharp
+var detachedId = await context.ScheduleNewDetachedWorkflowAsync(
+    workflowName: "DocumentWorkflow",
+    instanceId: null,
+    input: document,
+    startTime: null,
+    options: new WorkflowTaskOptions(TargetAppId: "document-service"));
+```
+
+Unlike `CallChildWorkflowAsync`, this returns the scheduled ID without waiting for output. The detached instance
+has independent failure and termination semantics: terminating the source workflow does not terminate it.
+The options overload allows `TargetAppId` and `AllowPayloadReferences`, but rejects `RetryPolicy` and any
+`PropagationScope` other than `None`.
+
+## Events and client targeting
+
+`WorkflowContext.SendEvent` does not accept `TargetAppId`; it signals an instance in the current application.
+For external event submission, `DaprWorkflowClient.RaiseEventAsync` targets the application associated with the
+client's sidecar, not an arbitrary app ID argument. Do not call a management client directly from deterministic
+workflow code to bypass that restriction; put external I/O in an activity.
 
 ## Next steps
 

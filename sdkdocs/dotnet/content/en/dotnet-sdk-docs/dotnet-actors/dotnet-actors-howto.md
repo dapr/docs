@@ -44,8 +44,13 @@ This project contains the implementation of the actor client which calls MyActor
 ## Prerequisites
 - [Dapr CLI]({{< ref install-dapr-cli.md >}}) installed.
 - Initialized [Dapr environment]({{< ref install-dapr-selfhost.md >}}).
-- [.NET 8](https://dotnet.microsoft.com/download), [.NET 9](https://dotnet.microsoft.com/download), or
-  [.NET 10](https://dotnet.microsoft.com/download) installed
+- [.NET 8](https://dotnet.microsoft.com/download), [.NET 9](https://dotnet.microsoft.com/download),
+  [.NET 10](https://dotnet.microsoft.com/download), or [.NET 11](https://dotnet.microsoft.com/download) installed
+
+{{% alert title=".NET framework support" color="warning" %}}
+Be advised that .NET 8 and .NET 9 reach end of support in November 2026. Support for both will be dropped
+in Dapr v1.20; only .NET 10 and .NET 11 will be supported through the end of 2027.
+{{% /alert %}}
 
 ## Step 0: Prepare
 
