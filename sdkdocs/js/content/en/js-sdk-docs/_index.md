@@ -40,6 +40,10 @@ Call services over HTTP or gRPC and receive invocations through `DaprServer` or 
 
 The [service invocation guide]({{% ref js-service-invocation %}}) covers JavaScript SDK **3.19.0-rc.4 or later**, including headers, query parameters, callback responses, serialization, error handling, and transport limitations.
 
+## Secrets
+
+Retrieve individual and bulk secrets with `DaprClient.secret`. Follow the [Secrets how-to guide]({{% ref js-secrets-howto.md %}}) for setup, or read the [client usage guidance]({{% ref js-secrets-client-usage.md %}}) for metadata, response shapes, and HTTP/gRPC differences. The guides target JavaScript SDK **3.19.0-rc.4 or later**.
+
 ## Binary Store
 
 Store, retrieve, stream, and delete binary files with `DaprClient.binaryStore` over HTTP or gRPC. Binary Store requires Dapr runtime **1.19 or later** and JavaScript SDK **3.19.0-RC.4 or later**.
