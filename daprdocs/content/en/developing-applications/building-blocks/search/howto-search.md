@@ -18,7 +18,9 @@ Let's get started using the [search API]({{% ref search-overview %}}). In this g
 - Run full-text searches with filters, sorting, and pagination.
 - Retrieve and delete documents by ID.
 
-The HTTP API uses the [JSON mapping of the protobuf messages](https://protobuf.dev/programming-guides/json/): field names are camelCase, 64-bit integers are strings, and bytes are base64-encoded. Responses include fields set to their zero value and omit optional fields that aren't set. The SDKs hide these details: document content is a plain object, and enumerations are short strings such as `"completed"` or `"asc"`.
+The HTTP API uses the [JSON mapping of the protobuf messages](https://protobuf.dev/programming-guides/json/): field names are camelCase, 64-bit integers are strings, and bytes are base64-encoded. Responses include fields set to their zero value and omit optional fields that aren't set. The JavaScript SDK hides these details: document content is a plain object, and enumerations are short strings such as `"completed"` or `"asc"`.
+
+For .NET examples using typed documents, query options, pagination, and generated index clients, see the [Search .NET SDK guide]({{% ref dotnet-search-howto.md %}}), targeting SDK 1.19.0 or later.
 
 ## Pre-requisites
 
