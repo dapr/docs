@@ -134,6 +134,12 @@ For native protobuf services, use your generated gRPC client connected to the Da
 
 The JavaScript Client SDK allows you to interface with all of the [Dapr building blocks]({{% ref building-blocks %}}) focusing on Client to Sidecar features.
 
+### Search API
+
+Use `client.search` to manage indexes and index, retrieve, delete, and query JSON documents over HTTP or gRPC. Requires Dapr runtime **1.19 or later** and JavaScript SDK **3.19.0-rc.5 or later**.
+
+See the [Search how-to guide]({{% ref js-search-howto.md %}}) for a complete example, and [Search client usage]({{% ref js-search-client-usage.md %}}) for method signatures, query options, write acknowledgements, cancellation, and errors.
+
 ### Invocation API
 
 For JavaScript SDK **3.19.0-rc.4 or later**, see the [service invocation overview]({{% ref js-service-invocation %}}) for HTTP and gRPC capabilities.
