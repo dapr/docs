@@ -88,6 +88,8 @@ Each workflow you define has a type name, and individual executions of a workflo
 
 Only one workflow instance with a given ID can exist at any given time. Attempting to create a new workflow instance with the same ID as an existing instance results in an error unless the existing instance, and every child workflow it created (checked recursively), has reached a terminal state: `COMPLETED`, `FAILED`, or `TERMINATED`. Once the entire workflow tree is terminal, creating a new instance with the same ID starts a fresh execution that replaces the previous one in the state store.
 
+SDK workflow clients get the gRPC `AlreadyExists` status code when the instance ID belongs to an active instance (the Java SDK raises `WorkflowInstanceAlreadyExistsException`). A client can therefore start a workflow with a fixed instance ID as an idempotent call and treat `AlreadyExists` as "already running", without parsing the error message. A completed instance ID is reused by default. It also returns `AlreadyExists` when a durabletask-go client sets `api.WithEnforceUniqueInstanceID()`, or when the old instance's child workflows have not finished. The [workflow API]({{% ref "workflow_api.md#start-workflow-request" %}}) (HTTP and gRPC `StartWorkflowBeta1`) keeps its error response: HTTP `500` with error code `ERR_START_WORKFLOW`.
+
 #### Implications of Instance ID Reuse
 
 {{% alert title="Recommendation" color="primary" %}}
@@ -108,7 +110,7 @@ Recommended patterns instead of reuse:
 - **If a business identifier must be the instance ID and executions repeat**, purge the previous instance with the [purge API]({{% ref "workflow_api.md#purge-workflow-request" %}}) or a [retention policy]({{% ref workflow-history-retention-policy.md %}}) before starting the next one, and treat the purge and the create as as transaction in code.
 
 {{% alert title="Important" color="warning" %}}
-An instance ID cannot be reused while its workflow is running, or while any child workflow created by its previous execution is still running. This includes children abandoned by a parent that completed without awaiting them or that was terminated non-recursively; a still-running child from the old execution could otherwise deliver its results into the new one. The create request is rejected with a conflict error naming the child workflow that is not yet terminal.
+An instance ID cannot be reused while its workflow is running, or while any child workflow created by its previous execution is still running. This includes children abandoned by a parent that completed without awaiting them or that was terminated non-recursively; a still-running child from the old execution could otherwise deliver its results into the new one. The create request fails with an error naming the child workflow that is not yet terminal: gRPC `AlreadyExists` for SDK workflow clients, or HTTP `500` with `ERR_START_WORKFLOW` from the workflow HTTP API.
 
 To free up an instance ID, purge the workflow using the [purge API]({{% ref "workflow_api.md#purge-workflow-request" %}}) or configure a [workflow retention policy]({{% ref workflow-history-retention-policy.md %}}).
 
@@ -232,6 +234,8 @@ Because workflow retry policies are configured in code, the exact developer expe
 | **Maximum retry interval** | The maximum amount of time to wait before each subsequent retry. If set to 0, no retries will happen. |
 | **Retry timeout** | The global timeout for retries, regardless of any configured max number of attempts.  No further attempts are made executing activities after this timeout expires.
 
+Each retry of a child workflow is a separate instance with its own instance ID. From Dapr 1.19, the `ChildWorkflowInstanceCreated` event of a retry attempt in the parent's history records the instance ID of the first attempt (`retryParentInstanceInfo`). Tooling that reads a parent's history can group the attempts of one call by that ID, without walking the retry timers between them.
+
 ## External events
 
 Sometimes workflows will need to wait for events that are raised by external systems. For example, an approval workflow may require a human to explicitly approve an order request within an order processing workflow if the total cost exceeds some threshold. Another example is a trivia game orchestration workflow that pauses while waiting for all participants to submit their answers to trivia questions. These mid-execution inputs are referred to as _external events_.
@@ -257,6 +261,14 @@ The receiving workflow/activity reads its inherited history via the SDKs `GetPro
 
 For details, the scope comparison, and code examples, see [workflow history propagation]({{< ref workflow-history-propagation.md >}}).
 
+## Stateful workflow client
+
+A workflow is replayed from its history on every turn, and that history only grows. Rather than sending the whole thing each time, the workflow SDK keeps the history it has already replayed in memory and the sidecar sends only the events added since the previous turn. The per-turn payload therefore stops growing with the length of the workflow, which matters most for long-running, monitor-pattern, and large fan-out workflows.
+
+This is enabled by default, requires no configuration or code changes, and never affects correctness: if the worker's cached history does not match what the sidecar expects, the full history is fetched instead.
+
+Learn more about [the stateful workflow client]({{< ref workflow-stateful-client.md >}}).
+
 ## Purging
 
 Workflow state can be purged from a state store, purging all its history and removing all metadata related to a specific workflow instance. The purge capability is used for workflows that have run to a `COMPLETED`, `FAILED`, or `TERMINATED` state.
@@ -272,6 +284,10 @@ Workflow code is long-running and must remain deterministic during updates. For 
 ### Payload size
 
 A single workflow or activity dispatch is bounded by the sidecar's `--max-body-size` setting (default 4 MiB). If a workflow's `PastEvents + NewEvents + PropagatedHistory` would exceed 95% of that limit, the workflow is stalled rather than tearing down the dispatch stream. Metrics expose how close each workflow and activity is to the limit so operators can act before a stall. See [Workflow payload size]({{% ref workflow-payload-size.md %}}) for details and remediation steps.
+
+### Fast path and concurrency limits
+
+The `WorkflowsFastPath` preview feature disables itself when Scheduler-enforced concurrency limits (`globalMaxConcurrentWorkflowInvocations`, `globalMaxConcurrentActivityInvocations`, or per-name `workflowConcurrencyLimits` and `activityConcurrencyLimits`) are configured, because those limits gate each Scheduler job delivery and the fast path drives work without Scheduler jobs. Per-sidecar limits are compatible. See [Workflow fast path]({{% ref workflow-fast-path.md %}}) and [Workflow concurrency limits]({{% ref workflow-concurrency.md %}}).
 
 ### Workflow determinism and code restraints
 
@@ -600,6 +616,7 @@ patch and introduce new named workflow versions to incorporate changes to your w
 
 - [Try out Dapr Workflow using the quickstart]({{% ref workflow-quickstart.md %}})
 - [Workflow overview]({{% ref workflow-overview.md %}})
+- [Workflow fast path]({{% ref workflow-fast-path.md %}})
 - [How-To: Apply workflow access policies]({{% ref workflow-access-policy.md %}})
 - [Workflow API reference]({{% ref workflow_api.md %}})
 - Try out the following examples:

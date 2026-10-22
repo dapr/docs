@@ -25,7 +25,8 @@ Select your preferred language-specific Dapr SDK before proceeding with the Quic
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [Python 3.7+ installed](https://www.python.org/downloads/).
+- [Python 3.11 or later installed](https://www.python.org/downloads/).
+- [uv](https://docs.astral.sh/uv/getting-started/installation/), the Python package manager that the sample uses.
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
@@ -35,7 +36,7 @@ For this example, you will need:
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation/python/http).
 
 ```bash
-git clone https://github.com/dapr/quickstarts.git
+git clone --depth 1 https://github.com/dapr/quickstarts.git
 ```
 
 ### Step 2: Run `order-processor` service
@@ -49,13 +50,13 @@ cd service_invocation/python/http/order-processor
 Install dependencies:
 
 ```bash
-pip3 install -r requirements.txt
+uv sync --all-packages
 ```
 
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-port 8001 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- python3 app.py
+dapr run --app-port 8001 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- uv run python app.py
 ```
 
 ### Step 3: Run the `checkout` service application 
@@ -69,13 +70,13 @@ cd service_invocation/python/http/checkout
 Install dependencies:
 
 ```bash
-pip3 install -r requirements.txt
+uv sync --all-packages
 ```
 
 Run the `checkout` service alongside a Dapr sidecar. 
 
 ```bash
-dapr run --app-id checkout --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- python3 app.py
+dapr run --app-id checkout --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- uv run python app.py
 ```
 
 The Dapr sidecar then loads the resiliency spec located in the resources directory:
@@ -216,7 +217,7 @@ Once you restart the `order-processor` service, the application will recover sea
 In the `order-processor` service terminal, restart the application:
 
 ```bash
-dapr run --app-port 8001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- python3 app.py
+dapr run --app-port 8001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- uv run python app.py
 ```
 
 `checkout` service output:

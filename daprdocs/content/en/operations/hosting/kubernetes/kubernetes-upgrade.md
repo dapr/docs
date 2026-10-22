@@ -83,6 +83,8 @@ As of version 1.0.0 onwards, existing certificate values will automatically be r
    kubectl replace -f https://raw.githubusercontent.com/dapr/dapr/v{{% dapr-latest-version long="true" %}}/charts/dapr/crds/subscription.yaml
    kubectl apply -f https://raw.githubusercontent.com/dapr/dapr/v{{% dapr-latest-version long="true" %}}/charts/dapr/crds/resiliency.yaml
    kubectl apply -f https://raw.githubusercontent.com/dapr/dapr/v{{% dapr-latest-version long="true" %}}/charts/dapr/crds/httpendpoints.yaml
+   kubectl apply -f https://raw.githubusercontent.com/dapr/dapr/v{{% dapr-latest-version long="true" %}}/charts/dapr/crds/mcpservers.yaml
+   kubectl apply -f https://raw.githubusercontent.com/dapr/dapr/v{{% dapr-latest-version long="true" %}}/charts/dapr/crds/workflowaccesspolicy.yaml
    ```
 
    ```bash
@@ -116,6 +118,9 @@ As of version 1.0.0 onwards, existing certificate values will automatically be r
 
 {{< /tabpane >}}
 
+## Scheduler RBAC
+
+From Dapr 1.19, the Scheduler needs `get`, `list` and `watch` on `pods` in the Dapr control plane namespace to detect whether a Placement service is deployed. It needs this on every 1.19 upgrade, whether or not you enable scheduler placement. The Helm chart and `dapr upgrade -k` add it as the `dapr-scheduler-pods` Role and RoleBinding in the release namespace. The `dapr-scheduler` ClusterRole (or Role, in namespaced RBAC mode) keeps `namespaces` only.
 
 ## Upgrade existing Dapr deployment to enable high availability mode
 
@@ -129,9 +134,71 @@ Actor placement can be served by the Scheduler service instead of the standalone
 Complete your Dapr version rollout before enabling this setting. Sidecars running an older Dapr version can only use the Placement service: with it undeployed, their Actor and Workflow APIs stall until the pod is upgraded to a version that supports scheduler placement. No actor state is lost. While a Placement service is running, it remains the placement authority: the Scheduler does not serve placement while one is present, so the cluster keeps a single placement authority throughout the rollout. Once no Placement service remains, the Scheduler serves placement, and a connected older sidecar is logged as a warning, since nothing is left to serve it.
 {{% /alert %}}
 
+Before you enable it:
+
+- Upgrade every sidecar to 1.19 or later: restart your applications after the control plane upgrade.
+- Keep `global.scheduler.enabled=true`, `global.actors.enabled=true` and `global.actors.serviceName=placement` (the defaults). The Helm chart fails to render the setting without them.
+- If you manage RBAC outside the Helm chart, add the [Scheduler RBAC](#scheduler-rbac) Role.
+
+Enable it with `helm upgrade` and `--set global.scheduler.placement.enabled=true` plus your usual values, or with the CLI:
+
+```bash
+dapr upgrade -k --runtime-version={{% dapr-latest-version long="true" %}} --set global.scheduler.placement.enabled=true
+```
+
+The same upgrade restarts the Schedulers to pick up `--placement-enabled=true`, so expect actor and workflow activity to pause until the Schedulers are ready again, longer than the few seconds of the takeover itself.
+
+To verify, check that sidecars log `Connected to scheduler placement leader <address>` and that exactly one Scheduler reports `dapr_scheduler_placement_leader` as `1`. If `dapr_scheduler_placement_incapable_sidecars` is above `0`, or a Scheduler logs `A sidecar running an older Dapr version is connected`, upgrade those pods: their actor and workflow APIs stall.
+
 To roll back, upgrade with the setting `false`: the placement StatefulSet is redeployed and the schedulers hand placement back to it, again without sidecar restarts. In both directions, the change [reassigns actors once]({{% ref "placement#serving-placement-from-the-scheduler-service" %}}) because the two services place actors with different algorithms. Actor state is unaffected.
 
 Because `helm upgrade` resets values not passed on the command line, pass the setting on every subsequent upgrade (or keep it in your values file), otherwise the placement StatefulSet is redeployed and placement hands back to it.
+
+## Downgrade
+
+{{% alert title="Warning" color="warning" %}}
+Do not roll back from 1.19 directly to 1.17.6 or earlier. The safe rollback target is 1.18.x.
+{{% /alert %}}
+
+Dapr 1.19 still issues the Ed25519 workload identity keys that Dapr 1.18 introduced, and Sentry persists the Ed25519-keyed CA in the `dapr-trust-bundle` secret. Sentry versions before 1.17.7 cannot parse this bundle and crash on startup with:
+
+```
+fatal: error creating CA: failed to get CA bundle:
+failed to verify CA bundle: unsupported key type ed25519.PrivateKey
+```
+
+| From | To | Result |
+|---|---|---|
+| 1.19 | 1.18.x | Safe. 1.18 and 1.19 write the same trust bundle format. |
+| 1.19 | 1.17.7 or a later 1.17.x | Safe. 1.17.7 reads the Ed25519 trust bundle ([#9904](https://github.com/dapr/dapr/pull/9904)). |
+| 1.19 | 1.17.6 or earlier | Sentry crash-loops at startup. Roll back to 1.17.7 first, confirm `dapr status -k` is healthy, then downgrade from there. |
+
+A downgrade to 1.18.x or 1.17.7 needs no CA rotation. Rotate the CA only if your target is below 1.17.7 or your security posture requires it.
+
+Downgrade in this order:
+
+1. If you enabled [scheduler placement](#enable-scheduler-placement-in-an-existing-dapr-deployment), upgrade with `global.scheduler.placement.enabled=false` and wait for the Placement pods to be ready. Check that your sidecars log `Connected to placement service: <address>`.
+
+1. If you created `WorkflowAccessPolicy` rules that use `requires`, remove or narrow them. A 1.18 control plane and sidecar do not know the field and apply those rules without the gate.
+
+1. Roll back the control plane with Helm:
+
+   ```bash
+   helm history dapr -n dapr-system
+   helm rollback dapr <REVISION> -n dapr-system --wait
+   ```
+
+   Or pin a specific version:
+
+   ```bash
+   helm upgrade dapr dapr/dapr --version 1.18.7 --namespace dapr-system --wait
+   ```
+
+1. Restart your application deployments, so the sidecars pick up the older injector image and get new identities from the rolled-back Sentry:
+
+   ```bash
+   kubectl rollout restart deploy/<DEPLOYMENT-NAME>
+   ```
 
 ## Related links
 

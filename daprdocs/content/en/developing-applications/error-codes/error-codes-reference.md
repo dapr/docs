@@ -23,7 +23,13 @@ An effort is underway to enrich all gRPC error responses according to the [Riche
 | `ERR_ACTOR_REMINDER_DELETE`        |           | Error deleting actor reminder                                           |
 | `ERR_ACTOR_REMINDER_GET`           |           | Error getting actor reminder                                            |
 | `ERR_ACTOR_REMINDER_NON_HOSTED`    |           | Reminder operation on non-hosted actor type                             |
+| `ERR_ACTOR_TYPE_RESERVED`          |           | Actor API call on a Dapr-reserved actor type (`dapr.internal.*`)        |
 | `ERR_ACTOR_TIMER_CREATE`           |           | Error creating actor timer                                              |
+| `ERR_ACTOR_TIMER_GET`              |           | Error getting actor timer                                               |
+| `ERR_ACTOR_TIMER_LIST`             |           | Error listing actor timers                                              |
+| `ERR_ACTOR_TIMER_NOT_FOUND`        |           | Actor timer not found                                                   |
+| `ERR_ACTOR_TIMER_NON_HOSTED`       |           | Timer operation on non-hosted actor type                                |
+| `ERR_ACTOR_TIMER_NOT_OWNED`        |           | Timer operation on an actor not owned by this host                      |
 | `ERR_ACTOR_NO_APP_CHANNEL`         |           | App channel not initialized                                             |
 | `ERR_ACTOR_STACK_DEPTH`            |           | Maximum actor call stack depth exceeded                                 |
 | `ERR_ACTOR_NO_PLACEMENT`           |           | Placement service not configured                                        |
@@ -131,6 +137,24 @@ An effort is underway to enrich all gRPC error responses according to the [Riche
 | `ERR_CONVERSATION_INVOKE`         |           | Error invoking conversation                   |
 | `ERR_CONVERSATION_MISSING_INPUTS` |           | Missing inputs for conversation               |
 | `ERR_CONVERSATION_NOT_FOUND`      |           | Conversation not found                        |
+
+
+### Search API
+
+| HTTP Code                         | gRPC Code                          | Description                    |
+| --------------------------------- | ---------------------------------- | ------------------------------ |
+| `ERR_SEARCH_STORE_NOT_FOUND`      | `DAPR_SEARCH_STORE_NOT_FOUND`      | Search store not found         |
+| `ERR_SEARCH_STORE_NOT_CONFIGURED` | `DAPR_SEARCH_STORE_NOT_CONFIGURED` | No search store is configured  |
+| `ERR_SEARCH_INVALID_REQUEST`      | `DAPR_SEARCH_INVALID_REQUEST`      | Invalid search request         |
+
+
+### Vector API
+
+| HTTP Code                         | gRPC Code                          | Description                    |
+| --------------------------------- | ---------------------------------- | ------------------------------ |
+| `ERR_VECTOR_STORE_NOT_FOUND`      | `DAPR_VECTOR_STORE_NOT_FOUND`      | Vector store not found         |
+| `ERR_VECTOR_STORE_NOT_CONFIGURED` | `DAPR_VECTOR_STORE_NOT_CONFIGURED` | No vector store is configured  |
+| `ERR_VECTOR_INVALID_REQUEST`      | `DAPR_VECTOR_INVALID_REQUEST`      | Invalid vector request         |
 
 
 ### Service Invocation / Direct Messaging API

@@ -151,6 +151,24 @@ INFO[0006] dc040bea-6436-4051-9166-c9294f9d2201: 'sequence' completed with a COM
 == APP == Orchestration completed! Result: ["Hello Tokyo!","Hello Seattle!","Hello London!"]
 ```
 
+## Changes in the next JavaScript SDK release
+
+{{% alert title="Note" color="primary" %}}
+These changes are on the `main` branch of the JavaScript SDK and ship in the next JavaScript SDK release. No JavaScript SDK release for Dapr 1.19 exists yet.
+{{% /alert %}}
+
+- **New workflow engine.** The SDK replaces its workflow engine and no longer depends on the shared DurableTask client library ([js-sdk#857](https://github.com/dapr/js-sdk/pull/857)). `WorkflowContext`, `DaprWorkflowClient` and `WorkflowState` keep their public method names, but re-test your workflow code after you upgrade. The new engine does not support [stateful workflow history]({{% ref workflow-stateful-client.md %}}).
+- **Retry policies.** Pass a `retryPolicy` in the options of `ctx.callActivity` or `ctx.callChildWorkflow` to retry a failed activity or child workflow without writing the retry loop yourself ([js-sdk#858](https://github.com/dapr/js-sdk/pull/858)). Intervals are in seconds, and `maxNumberOfAttempts` includes the first attempt:
+
+  ```typescript
+  const result = yield ctx.callActivity(hello, "Tokyo", {
+    retryPolicy: { firstRetryInterval: 1, maxNumberOfAttempts: 3, backoffCoefficient: 2 },
+  });
+  ```
+
+- **Replay-safe logger.** `ctx.logger` writes a message only when the workflow is not replaying, so each message appears once instead of once per replay ([js-sdk#903](https://github.com/dapr/js-sdk/pull/903)).
+- **`grpcOptions` limits.** Of the `@grpc/grpc-js` channel options in `grpcOptions` on `DaprWorkflowClient` and `WorkflowRuntime`, only `grpc.max_receive_message_length` and `grpc.max_send_message_length` take effect. Both default to 128 MiB. Keepalive, credential, compression and other grpc-js settings are ignored without an error ([js-sdk#857](https://github.com/dapr/js-sdk/pull/857)).
+
 ## Next steps
 
 - [Learn more about Dapr workflow]({{% ref workflow-overview.md %}})

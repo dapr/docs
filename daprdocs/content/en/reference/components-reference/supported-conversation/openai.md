@@ -40,12 +40,14 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | `key`   | Y | API key for OpenAI. | `mykey` |
-| `model` | N | The OpenAI LLM to use. Defaults to `gpt-4-turbo`.  | `gpt-4-turbo` |
+| `model` | N | The OpenAI LLM to use. Defaults to `gpt-5-nano`, or to the `OPENAI_MODEL` environment variable when it is set. | `gpt-4-turbo` |
 | `maxTokens` | N | Default maximum number of tokens the model may generate per request. A request-level `maxTokens` value overrides this default. When unset, no cap is sent and the provider's own default applies. | `2048` |
+| `useLegacyMaxTokensField` | N | Send the token cap as `max_tokens` instead of `max_completion_tokens`. Set this when `endpoint` points at an OpenAI-compatible service that doesn't recognize `max_completion_tokens`, otherwise the cap is ignored. Defaults to `false`. | `true` |
 | `endpoint` | N | Custom API endpoint URL for OpenAI API-compatible services. If not specified, the default OpenAI API endpoint is used. Required when `apiType` is set to `azure`. | `https://api.openai.com/v1`, `https://example.openai.azure.com/` |
 | `responseCacheTTL` | N | Time-to-live for the in-memory response cache. When set, identical requests are served from cache until they expire. | `10m` |
 | `apiType` | N | Specifies the API provider type. Required when using a provider that does not follow the default OpenAI API endpoint conventions. | `azure` |
 | `apiVersion`| N | The API version to use. Required when the `apiType` is set to `azure`. | `2025-04-01-preview` |
+| `useResponsesAPI` | N | Send requests to the OpenAI Responses API (`/v1/responses`) instead of the Chat Completions API. Set this to use function tools with reasoning models that reject tools on Chat Completions. Requests are sent with `store: false`, so OpenAI keeps no conversation state. Not supported when `apiType` is set to `azure`: the component fails to initialize. Defaults to `false`. | `true` |
 
 ## Azure OpenAI Configuration
 

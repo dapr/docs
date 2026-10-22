@@ -121,6 +121,26 @@ The following request body configures a timer with a `dueTime` of 10 seconds, a 
 }
 ```
 
+### Retrieve actor timer
+
+You can retrieve a single timer registered for an actor by calling
+
+```md
+GET http://localhost:3500/v1.0/actors/<actorType>/<actorId>/timers/<name>
+```
+
+### List actor timers
+
+You can list all the timers registered for an actor by calling
+
+```md
+GET http://localhost:3500/v1.0/actors/<actorType>/<actorId>/timers
+```
+
+Timers are kept in memory by the sidecar that hosts the actor and are not persisted. Both requests must therefore be sent to the sidecar that currently owns the actor. A sidecar that hosts the actor type but does not own this actor returns `403` with `ERR_ACTOR_TIMER_NOT_OWNED`; a sidecar that does not host the actor type returns `403` with `ERR_ACTOR_TIMER_NON_HOSTED`. Timers whose `ttl` had already elapsed at registration are never stored and are not returned. The gRPC equivalents are `GetActorTimer` and `ListActorTimers`.
+
+### Remove the actor timer
+
 You can remove the actor timer by calling
 
 ```md
@@ -141,6 +161,10 @@ POST/PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name
 
 Unlike timers, reminders support an `overwrite` option that allows you to replace an existing reminder with the same name, as well as a `failurePolicy` option that defines the behavior when a reminder invocation fails.
 
+{{% alert title="Note" color="primary" %}}
+From Dapr 1.19, reminder names and actor IDs can contain the pipe character (`|`) and `@`. A name or actor ID is still rejected if it contains a character that is unsafe in an HTTP path segment (such as `/`, `\`, `#`, `?`, a newline, or a NUL byte), is `.` or `..`, or exceeds the maximum length.
+{{% /alert %}}
+
 ### Retrieve actor reminder
 
 You can retrieve the actor reminder by calling
@@ -148,6 +172,16 @@ You can retrieve the actor reminder by calling
 ```md
 GET http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
+
+### List actor reminders
+
+You can list all the reminders registered for an actor by calling
+
+```md
+GET http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders
+```
+
+The gRPC equivalent, `ListActorReminders`, also accepts a request without an actor ID to list the reminders of every actor of a given type.
 
 ### Remove the actor reminder
 
@@ -171,6 +205,9 @@ If an invocation of the method fails, the timer is not removed. Timers are only 
 - The sidecar terminates
 - The executions run out
 - You delete it explicitly
+- The actor moves to another host (from Dapr 1.19)
+
+From Dapr 1.19, when an actor moves to another host, the old host deletes the actor's timers, so they no longer fire there. Before 1.19, the old host kept firing them, and the actor ran twice once the timer was registered again on the new host. All timer requests, including create and delete, must be sent to the sidecar that owns the actor: a sidecar that hosts the actor type but does not own the actor rejects them with `403` and `ERR_ACTOR_TIMER_NOT_OWNED` (gRPC `PermissionDenied`). Timer fires that Dapr drops because the timer was removed or the actor is no longer hosted on that sidecar, for example a fire that was waiting during the move, are counted in the `dapr_runtime_actor_timers_dropped_total` metric.
 
 ## Managing reminders with the CLI
 
@@ -276,7 +313,7 @@ dapr scheduler import -f reminders-backup.bin
 #### Summary
 
 - Reminders are stored in the Dapr Scheduler, not in the app.
-- Create reminders via the Actors API
+- Create, get, list, and delete reminders via the Actors API.
 - Manage existing reminders (list, get, delete, backup/restore) using the `dapr scheduler` CLI.
 
 ## Next steps

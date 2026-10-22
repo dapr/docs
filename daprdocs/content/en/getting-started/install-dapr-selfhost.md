@@ -30,6 +30,8 @@ To initialize Dapr in your local or remote **Kubernetes** cluster for developmen
 {{% alert title="Docker" color="primary" %}}
 The recommended development environment requires [Docker](https://docs.docker.com/install/). While you can [initialize Dapr without a dependency on Docker]({{% ref self-hosted-no-docker.md %}}), the next steps in this guide assume the recommended Docker development environment.
 
+If you do not have Docker and cannot install it, do not use the `dapr init` step in this guide. Follow [How-To: Run Dapr in self-hosted mode without Docker]({{% ref self-hosted-no-docker.md %}}) instead.
+
 You can also install [Podman](https://podman.io/) in place of Docker. Read more about [initializing Dapr using Podman]({{% ref dapr-init.md %}}).
 {{% /alert %}}
 

@@ -1,0 +1,441 @@
+---
+type: docs
+title: "AMQP 1.0"
+linkTitle: "AMQP 1.0"
+description: "Detailed documentation on the AMQP 1.0 pubsub component, used with brokers such as Apache ActiveMQ Artemis and Solace PubSub+"
+aliases:
+  - "/operations/components/setup-pubsub/supported-pubsub/setup-solace-amqp/"
+  - "/reference/components-reference/supported-pubsub/setup-solace-amqp/"
+---
+
+This component speaks AMQP 1.0. It is verified against [Apache ActiveMQ Artemis](https://activemq.apache.org/components/artemis/) and [Solace PubSub+](https://solace.com/products/event-broker/software/).
+
+{{% alert title="AMQP 1.0, not AMQP 0-9-1" color="primary" %}}
+AMQP 1.0 and AMQP 0-9-1 are different protocols. For RabbitMQ, use the [RabbitMQ component]({{% ref setup-rabbitmq.md %}}) instead, which speaks AMQP 0-9-1.
+{{% /alert %}}
+
+## Component format
+
+To set up AMQP pub/sub, create a component of type `pubsub.amqp`. See the [pub/sub broker component file]({{% ref setup-pubsub.md %}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{% ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" %}}) on how to create and apply a pub/sub configuration.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: amqp-pubsub
+spec:
+  type: pubsub.amqp
+  version: v1
+  metadata:
+    - name: url
+      value: 'amqp://localhost:5672'
+    - name: username
+      value: 'default'
+    - name: password
+      value: 'default'
+```
+
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{% ref component-secrets.md %}}).
+{{% /alert %}}
+
+## Spec metadata fields
+
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| url    | Y  | Address of the AMQP broker. Can be `secretKeyRef` to use a secret reference. <br> Use the **`amqp://`** URI scheme for non-TLS communication. <br> Use the **`amqps://`** URI scheme for TLS communication. | `"amqp://host.domain[:port]"`
+| username | N | The username to connect to the broker. Required unless `anonymous` is `true`. | `default`
+| password | N | The password to connect to the broker. Required unless `anonymous` is `true`. | `default`
+| anonymous | N | Skip SASL username/password authentication (SASL ANONYMOUS). Combine with `clientCert` and `clientKey` over `amqps://` to authenticate with the client certificate only (mutual TLS). Must be allowed on the broker. | `true`
+| caCert | N | Certificate Authority (CA) certificate in PEM format for verifying server TLS certificates. Only needed when the broker certificate is not signed by a publicly trusted CA. Requires the `amqps://` scheme. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
+| clientCert  | N | TLS client certificate in PEM format, for mutual TLS. Must be used with `clientKey`, and requires the `amqps://` scheme. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
+| clientKey | N | TLS client key in PEM format, for mutual TLS. Must be used with `clientCert`, and requires the `amqps://` scheme. Can be `secretKeyRef` to use a secret reference. | `"-----BEGIN RSA PRIVATE KEY-----\n<base64-encoded PKCS8>\n-----END RSA PRIVATE KEY-----"`
+| topicAddressPrefix | N | Prefix prepended to the AMQP address of a topic, used for a bare topic name and for topics named `topic:<name>`. Defaults to no prefix, which addresses the topic by name. See [Addressing topics and queues](#addressing-topics-and-queues). | `multicast://`
+| queueAddressPrefix | N | Prefix prepended to the AMQP address of a queue, used for topics named `queue:<name>`. Defaults to no prefix, which addresses the queue by name. See [Addressing topics and queues](#addressing-topics-and-queues). | `anycast://`
+| containerID | N | AMQP container ID of the connections that carry named subscriptions. The broker identifies a named subscription by the container ID and the subscription name. Defaults to the consumer ID that Dapr gives every pub/sub component: the app ID, or `consumerID` if the component sets it (see the [pub/sub broker component file]({{% ref setup-pubsub.md %}})). So by default every replica of the app shares it. Do not set `containerID` or `consumerID` to a per-replica value, such as the `{podName}` or `{uuid}` [markers]({{% ref component-schema.md %}}): each replica then gets a subscription of its own and a copy of every message. See [Named, durable and shared subscriptions](#named-durable-and-shared-subscriptions). | `orders-service`
+| durableMessages | N | Mark every published message as durable, so that the broker keeps it across a broker restart. AMQP 1.0 messages are not durable unless explicitly specified. Defaults to `false`. | `true`
+| applicationPropertiesFromMetadata | N | Copy the metadata of each publish request into the message, so that a broker-side filter can match on it. Defaults to `false`. See [Filter on message properties](#filter-on-message-properties). | `true`
+| backOffPolicy | N | Retry policy used between attempts to re-open a subscription after the broker connection drops. Either `constant` or `exponential`. Defaults to `constant`. | `"constant"`
+| backOffDuration | N | Delay between attempts to re-open a subscription, when `backOffPolicy` is `constant`. Defaults to `5s`. The component retries for as long as the subscription exists, so this sets the pace, not a limit. | `1s`
+| backOffInitialInterval | N | First delay between attempts, when `backOffPolicy` is `exponential`. Defaults to `500ms`. | `100ms`
+| backOffMaxInterval | N | Longest delay between attempts, when `backOffPolicy` is `exponential`. Defaults to `60s`. | `30s`
+
+### Communication using TLS
+
+To configure communication using TLS:
+
+1. Ensure that the broker is configured to support certificates. For mutual TLS on ActiveMQ Artemis, set `sslEnabled=true;needClientAuth=true` on the acceptor so clients without a trusted certificate are rejected.
+1. Provide the `caCert`, `clientCert`, and `clientKey` metadata in the component configuration.
+
+For example:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: amqp-pubsub
+spec:
+  type: pubsub.amqp
+  version: v1
+  metadata:
+  - name: url
+    value: "amqps://host.domain[:port]"
+  - name: username
+    value: 'default'
+  - name: password
+    value: 'default'
+  - name: caCert
+    value: ${{ myLoadedCACert }}
+  - name: clientCert
+    value: ${{ myLoadedClientCert }}
+  - name: clientKey
+    secretKeyRef:
+      name: myAmqpClientKey
+      key: myAmqpClientKey
+auth:
+  secretStore: <SECRET_STORE_NAME>
+```
+
+> While the `caCert` and `clientCert` values may not be secrets, they can be referenced from a Dapr secret store as well for convenience.
+
+To authenticate with the client certificate only (mutual TLS), set `anonymous` to `true` and omit `username` and `password`:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: amqp-pubsub
+spec:
+  type: pubsub.amqp
+  version: v1
+  metadata:
+  - name: url
+    value: "amqps://host.domain[:port]"
+  - name: anonymous
+    value: "true"
+  - name: caCert
+    value: ${{ myLoadedCACert }}
+  - name: clientCert
+    value: ${{ myLoadedClientCert }}
+  - name: clientKey
+    secretKeyRef:
+      name: myAmqpClientKey
+      key: myAmqpClientKey
+auth:
+  secretStore: <SECRET_STORE_NAME>
+```
+
+Before Dapr 1.19, `anonymous` was ignored over `amqps://` and SASL PLAIN was always used.
+
+## Addressing topics and queues
+
+The component turns a Dapr topic name into an AMQP address. `topicAddressPrefix` and `queueAddressPrefix` control that translation, and both default to no prefix. So out of the box the AMQP address is the Dapr topic name, unchanged:
+
+| Dapr topic name | AMQP address, with the default prefixes |
+|-----------------|------------------------------------------|
+| `orders` | `orders` |
+| `topic:orders` | `orders` |
+| `queue:orders` | `orders` |
+
+{{% alert title="`queue:` does nothing until the prefixes are configured" color="warning" %}}
+A Dapr topic name may carry a `queue:` or `topic:` scheme. The scheme selects which of the two prefixes is applied — it does not select a routing type by itself.
+
+With no prefixes configured, `queue:orders` and `orders` resolve to the same address, so the scheme has no effect and the routing type is whatever the broker resolves for that address.
+
+To make `queue:` select a queue, set both prefixes to the values your broker uses. See [Brokers that namespace destinations](#brokers-that-namespace-destinations).
+{{% /alert %}}
+
+A topic name that already begins with one of the configured prefixes is used as the AMQP address unchanged.
+
+## Brokers that namespace destinations
+
+Some brokers select the routing type from a prefix on the address. Set `topicAddressPrefix` and `queueAddressPrefix` to the prefixes that broker uses, and the `queue:` and `topic:` schemes then select the routing type.
+
+### Apache ActiveMQ Artemis
+
+An Artemis acceptor takes `anycastPrefix` and `multicastPrefix` settings. If the acceptor is configured with `anycastPrefix=anycast://;multicastPrefix=multicast://`, configure the component to match. Use whatever prefixes your acceptor defines; `queue://` and `topic://` are also common:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: artemis
+spec:
+  type: pubsub.amqp
+  version: v1
+  metadata:
+    - name: url
+      value: 'amqp://localhost:5672'
+    - name: username
+      value: 'artemis'
+    - name: password
+      value: 'artemis'
+    - name: topicAddressPrefix
+      value: 'multicast://'
+    - name: queueAddressPrefix
+      value: 'anycast://'
+```
+
+A Dapr topic named `orders` is then addressed as `multicast://orders`, and `queue:orders` as `anycast://orders`.
+
+Without these prefixes, the routing type comes from the broker instead, through the `default-address-routing-type` of the matching address setting.
+
+#### Consume from a queue that the broker manages
+
+Artemis accepts a fully qualified queue name, `<address>::<queue>`. Subscribe to it to consume from a queue defined in `broker.xml`, with the durability and filter configured there:
+
+```yaml
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: billing
+spec:
+  pubsubname: artemis
+  topic: "orders::billing"
+  routes:
+    default: /billing
+```
+
+Every replica of the app consumes from the same queue, and closing the subscription never deletes the queue. Create the queue before the app starts: a queue that Artemis creates automatically is subject to `auto-delete-queues`.
+
+This example uses the default address prefixes, which are empty. If you set `topicAddressPrefix`, the component adds it in front of the topic name, so the link opens on `<prefix>orders::billing`.
+
+### Solace PubSub+
+
+Solace addresses topics as `topic://<name>` and queues as `queue://<name>`:
+
+```yaml
+    - name: topicAddressPrefix
+      value: 'topic://'
+    - name: queueAddressPrefix
+      value: 'queue://'
+```
+
+{{% alert title="Interoperating with non-Dapr clients" color="primary" %}}
+A prefix namespaces the address. A Dapr publisher using `topic://orders` and a non-Dapr client subscribing to `orders` are on two different addresses and never exchange messages. Make sure every client on a destination agrees on the address.
+{{% /alert %}}
+
+## Named, durable and shared subscriptions
+
+{{% alert title="Dapr 1.19 or later" color="primary" %}}
+The `subscriptionName`, `durable`, `shared` and `selector` subscription keys, and the `containerID`, `durableMessages` and `applicationPropertiesFromMetadata` component keys, need Dapr 1.19 or later.
+{{% /alert %}}
+
+By default, each subscription attaches with the broker defaults. On a multicast address that is usually a temporary subscription: each replica of the app gets its own copy of every message, and messages published while the app is down are lost.
+
+A subscription can set the keys below in its own metadata. They use standard AMQP 1.0 mechanisms, so they apply to any broker that supports durable subscriptions, the `shared` capability and the JMS selector filter. They are verified with ActiveMQ Artemis. See [Named subscriptions on ActiveMQ Artemis](#named-subscriptions-on-activemq-artemis) for how Artemis applies them, and [Other brokers](#other-brokers).
+
+| Field | Details | Example |
+|-------|---------|---------|
+| subscriptionName | Name of the subscription, sent as the AMQP link name. Together with `containerID`, it identifies the subscription on the broker. Required for `durable` and `shared`. Must not contain `\|`, and must be unique among the subscriptions of one component. Not allowed on a queue (`queue:<name>`), which has no subscription to name. | `billing`
+| durable | Ask the broker to keep the subscription, and the messages it holds, while no consumer is attached. The component sends a durable source that never expires. Defaults to `false`. | `true`
+| shared | Ask for a shared subscription, with the `shared` source capability. Every replica that uses the same `subscriptionName` then consumes from one subscription, so that each message reaches one replica. Defaults to `false`. | `true`
+| selector | A JMS selector, sent as the `apache.org:selector-filter:string` filter, that the broker applies to the subscription. Messages that do not match never enter it. If the broker attaches without the filter, the subscription fails. Can be set without `subscriptionName`. | `eventType = 'invoice'`
+
+For example:
+
+```yaml
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: billing
+spec:
+  pubsubname: artemis
+  topic: orders
+  routes:
+    default: /billing
+  metadata:
+    subscriptionName: billing
+    durable: "true"
+    shared: "true"
+    selector: "eventType = 'invoice'"
+```
+
+Every replica of the app consumes from one durable subscription named `billing`, which holds only the messages that match the selector.
+
+Keep these points in mind, on any broker:
+
+- **Replicas.** Set `shared` when the app has more than one replica. A broker can let only one consumer attach to a durable subscription that is not shared.
+- **Several subscriptions on one topic.** Dapr keeps one declarative or programmatic subscription per pub/sub component and topic. To hold several named subscriptions on one topic, define one component per subscription, as in the [example below](#several-subscriptions-on-one-topic), or use [streaming subscriptions]({{% ref "subscription-methods.md#streaming-subscriptions" %}}).
+- **Changing a selector.** A broker can treat a changed selector as a new subscription, and drop the messages the old one held. To change a selector, use a new `subscriptionName`.
+- **Removing a subscription.** Dapr never deletes a durable subscription, even when the subscription is removed from the app. Delete it on the broker.
+- **Broker restarts.** A durable subscription keeps durable messages only. Set `durableMessages` on the publishing component, or publish durable messages from other clients. JMS clients publish durable messages by default.
+- **Permissions.** The broker user needs permission to create durable subscriptions and to consume from them. With `anonymous: "true"` there is no user name: give the permissions to the role that the broker maps the connection to, for example the role of the client certificate.
+- **Connections.** Each named subscription uses a connection of its own, so that the container ID stays fixed and stopping the subscription never deletes it.
+
+### Several subscriptions on one topic
+
+Dapr maps one declarative or programmatic subscription per pub/sub component and topic. Thus, two named subscriptions on the topic `orders`, each with its own selector, require two Dapr components on the same broker:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: billing
+spec:
+  type: pubsub.amqp
+  version: v1
+  metadata:
+    - name: url
+      value: 'amqp://localhost:5672'
+    - name: username
+      value: 'artemis'
+    - name: password
+      value: 'artemis'
+---
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: audit
+spec:
+  type: pubsub.amqp
+  version: v1
+  metadata:
+    - name: url
+      value: 'amqp://localhost:5672'
+    - name: username
+      value: 'artemis'
+    - name: password
+      value: 'artemis'
+```
+
+Each component is then referenced by a single subscription:
+
+```yaml
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: billing
+spec:
+  pubsubname: billing
+  topic: orders
+  routes:
+    default: /billing
+  metadata:
+    subscriptionName: billing
+    durable: "true"
+    shared: "true"
+    selector: "eventType = 'invoice'"
+---
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: audit
+spec:
+  pubsubname: audit
+  topic: orders
+  routes:
+    default: /audit
+  metadata:
+    subscriptionName: audit
+    durable: "true"
+    shared: "true"
+    selector: "eventType = 'login'"
+```
+
+Both components use the same container ID, the app ID by default, and the subscription names keep the two subscriptions apart.
+
+### Named subscriptions on ActiveMQ Artemis
+
+On ActiveMQ Artemis, the keys behave as follows:
+
+- **Queue names.** Artemis names the queue of a named subscription `<containerID>.<subscriptionName>`. For example, with the app ID `orders-service`, the `billing` subscription above is the durable queue `orders-service.billing` on the address `orders`, with the selector as its filter.
+- **Without the keys.** Each subscription gets a temporary queue with a generated name, which Artemis removes when the subscription detaches.
+- **Replicas.** A durable queue that is not shared accepts one consumer. Artemis refuses the others.
+- **Changing a selector.** Artemis compares the selector each time a consumer attaches. If the selector changed and no consumer is attached, Artemis recreates the queue and drops the messages it held. If consumers are attached, Artemis refuses the new consumer.
+- **Removing a subscription.** Delete the queue, for example from the Artemis console.
+- **Selectors.** A selector reads application properties by name, the AMQP subject as `JMSType`, and header fields such as `AMQPriority` and `AMQDurable`. Artemis does not translate JMS header names such as `JMSPriority` in these selectors. Application properties that Dapr copies are strings, so to compare one with a number, prefix the selector with `convert_string_expressions:`, for example `convert_string_expressions:priority > 5`.
+- **Permissions.** The role needs the `createDurableQueue` and `consume` permissions on the address.
+
+To consume from a queue that Artemis manages instead, see [Consume from a queue that the broker manages](#consume-from-a-queue-that-the-broker-manages).
+
+### Other brokers
+
+These keys are not verified with other brokers, Solace PubSub+ included. A broker that does not support the `shared` capability can refuse a second replica or give it a copy of every message. If a broker ignores the selector filter, the component fails the subscription, because the broker does not return the filter.
+
+## Filter on message properties
+
+A broker-side filter, such as a selector, matches on message properties. By default, a message that Dapr publishes carries no application properties. Set `applicationPropertiesFromMetadata` to `true` on the publishing component to copy the metadata of each publish request into the message:
+
+- The `subject` key sets the AMQP subject.
+- Every other key becomes an application property with a string value.
+- `ttlInSeconds`, `rawPayload` and `cloudevent.*` keys are not copied.
+
+These are standard AMQP 1.0 message properties, so any broker or client can read them. The selector syntax depends on the broker. For ActiveMQ Artemis, see [Named subscriptions on ActiveMQ Artemis](#named-subscriptions-on-activemq-artemis).
+
+The mapping works in one direction. The component does not pass the application properties of a received message to the app.
+
+For example, this publish request reaches the `billing` subscription above:
+
+```bash
+curl -X POST "http://localhost:3500/v1.0/publish/artemis/orders?metadata.eventType=invoice" \
+  -H "Content-Type: application/json" \
+  -d '{"orderId": "100"}'
+```
+
+## When a subscriber returns an error
+
+A message whose handler returns an error is returned to the broker as `modified`
+with `delivery-failed`. The broker redelivers it and counts the attempt, so the
+broker's own `redelivery-delay` and `max-delivery-attempts` settings apply and a
+message that always fails eventually reaches the dead-letter address.
+
+Redelivery pacing and the attempt limit are broker settings, not component
+settings. On ActiveMQ Artemis they live in `address-settings`; make sure a dead-letter address and `max-delivery-attempts` are configured there.
+
+## Migrating from `pubsub.solace.amqp`
+
+{{% alert title="Compatibility name" color="primary" %}}
+`pubsub.solace.amqp` is the earlier name of this component. It stays registered, and existing components of that type keep working with their `topic://` and `queue://` defaults. Use `pubsub.amqp` for new components.
+{{% /alert %}}
+
+`pubsub.amqp` applies no address prefix by default, where `pubsub.solace.amqp` applies the Solace convention. To migrate a Solace component without changing the addresses it uses, change the type and set both prefixes explicitly:
+
+```yaml
+spec:
+  type: pubsub.amqp          # was pubsub.solace.amqp
+  version: v1
+  metadata:
+    - name: topicAddressPrefix
+      value: 'topic://'
+    - name: queueAddressPrefix
+      value: 'queue://'
+```
+
+Everything else in the component stays the same.
+
+## Create a broker
+
+{{< tabpane text=true >}}
+
+{{% tab "ActiveMQ Artemis" %}}
+Run an Artemis broker [locally using Docker](https://hub.docker.com/r/apache/activemq-artemis):
+
+```bash
+docker run -d -p 5672:5672 -p 8161:8161 --env ARTEMIS_USER=artemis --env ARTEMIS_PASSWORD=artemis --name artemis apache/activemq-artemis:latest
+```
+
+The AMQP acceptor listens on `amqp://localhost:5672`, and the web console on `http://localhost:8161`.
+{{% /tab %}}
+
+{{% tab "Solace, self-hosted" %}}
+Run a Solace broker [locally using Docker](https://hub.docker.com/r/solace/solace-pubsub-standard):
+
+```bash
+docker run -d -p 8080:8080 -p 55554:55555 -p 8008:8008 -p 1883:1883 -p 8000:8000 -p 5672:5672 -p 9000:9000 -p 2222:2222 --shm-size=2g --env username_admin_globalaccesslevel=admin --env username_admin_password=admin --name=solace solace/solace-pubsub-standard
+```
+
+You can then interact with the server using the client port: `amqp://localhost:5672`
+{{% /tab %}}
+
+{{% tab "Solace, SaaS" %}}
+You can also sign up for a free SaaS broker on [Solace Cloud](https://console.solace.cloud/login/new-account?product=event-streaming).
+{{% /tab %}}
+
+{{< /tabpane >}}
+
+## Related links
+
+- [Basic schema for a Dapr component]({{% ref component-schema %}})
+- Read [this guide]({{% ref "howto-publish-subscribe.md#step-2-publish-a-topic" %}}) for instructions on configuring pub/sub components
+- [Pub/sub building block]({{% ref pubsub %}})
