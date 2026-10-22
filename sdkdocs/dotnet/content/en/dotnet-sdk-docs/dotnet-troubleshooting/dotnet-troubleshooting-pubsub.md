@@ -6,8 +6,6 @@ weight: 100000
 description: Troubleshoot Pub/Sub with the .NET SDK
 ---
 
-# Troubleshooting Pub/Sub
-
 The most common problem with pub/sub is that the pub/sub endpoint in your application is not being called.
 
 There are a few layers to this problem with different solutions:
@@ -96,7 +94,7 @@ With the output of this command in hand, you are ready to diagnose a problem or 
 
 ### Option 0: The response was a 200 included some pub/sub entries
 
-**If you have entries in the JSON output from this test then the problem lies elsewhere, move on to step 2.**
+**If you have entries in the JSON output from this test then the problem lies elsewhere, move on to step 4.**
 
 ### Option 1: The response was not a 200, or didn't contain JSON
 
