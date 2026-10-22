@@ -27,11 +27,11 @@ description: "Follow these steps to upgrade Dapr in self-hosted mode and ensure 
 
    To have the Scheduler serve actor placement instead of the Placement service (Dapr 1.19 or later), add `--scheduler-placement`. It does not start the `dapr_placement` container. [Learn more about serving placement from the Scheduler service.]({{% ref "placement#serving-placement-from-the-scheduler-service" %}})
 
-1. Ensure you are using the latest version of Dapr (v{{% dapr-latest-version long="true" %}})) with:
+1. Ensure you are using the latest version of Dapr (v{{% dapr-latest-version long="true" %}}) with:
 
    ```bash
    $ dapr --version
 
    CLI version: {{% dapr-latest-version cli="true" %}}
-   Runtime version: {{% dapr-latest-version short="true" %}}
+   Runtime version: {{% dapr-latest-version long="true" %}}
    ```
