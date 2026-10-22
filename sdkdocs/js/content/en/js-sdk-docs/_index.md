@@ -22,6 +22,10 @@ To get started with the JavaScript SDK, install the Dapr JavaScript SDK package 
 npm install --save @dapr/dapr
 ```
 
+## Configuration
+
+Read application settings and subscribe to changes with `DaprClient.configuration`. The [configuration how-to guide]({{% ref js-configuration-howto.md %}}) and [client usage guidance]({{% ref js-configuration-client-usage.md %}}) cover selected or all keys, store-specific metadata, response handling, and subscription cleanup using **`@dapr/dapr` 3.19.0-rc.4 or later**. Configuration operations require gRPC in the JavaScript SDK.
+
 ## State Management
 
 Save, retrieve, and delete application state with `DaprClient.state`. The SDK supports bulk operations, ETags, consistency options, transactions, TTL metadata, custom serialization, and state queries over HTTP or gRPC.

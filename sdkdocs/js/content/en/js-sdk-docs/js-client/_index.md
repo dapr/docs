@@ -298,22 +298,30 @@ For the underlying building block, see [How to: Retrieve a secret]({{% ref howto
 
 ### Configuration API
 
+Use `client.configuration` to read application settings and subscribe to changes. The JavaScript SDK requires **gRPC** for every configuration method; the HTTP client is not supported.
+
+The [configuration how-to guide]({{% ref js-configuration-howto.md %}}) provides runnable examples for **`@dapr/dapr` 3.19.0-rc.4 or later**. The [client usage guidance]({{% ref js-configuration-client-usage.md %}}) covers all methods, metadata, response shapes, and subscription error limitations.
+
 #### Get Configuration Keys
 
 ```typescript
-import { DaprClient } from "@dapr/dapr";
+import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr";
 
 const daprHost = "127.0.0.1";
 
 async function start() {
   const client = new DaprClient({
     daprHost,
-    daprPort: process.env.DAPR_GRPC_PORT,
+    daprPort: process.env.DAPR_GRPC_PORT ?? "50001",
     communicationProtocol: CommunicationProtocolEnum.GRPC,
   });
 
-  const config = await client.configuration.get("config-store", ["key1", "key2"]);
-  console.log(config);
+  try {
+    const config = await client.configuration.get("config-store", ["key1", "key2"]);
+    console.log(config);
+  } finally {
+    await client.stop();
+  }
 }
 
 start().catch((e) => {
@@ -336,25 +344,30 @@ Sample output:
 #### Subscribe to Configuration Updates
 
 ```typescript
-import { DaprClient } from "@dapr/dapr";
+import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr";
 
 const daprHost = "127.0.0.1";
 
 async function start() {
   const client = new DaprClient({
     daprHost,
-    daprPort: process.env.DAPR_GRPC_PORT,
+    daprPort: process.env.DAPR_GRPC_PORT ?? "50001",
     communicationProtocol: CommunicationProtocolEnum.GRPC,
   });
 
-  // Subscribes to config store changes for keys "key1" and "key2"
-  const stream = await client.configuration.subscribeWithKeys("config-store", ["key1", "key2"], async (data) => {
-    console.log("Subscribe received updates from config store: ", data);
-  });
+  try {
+    const stream = await client.configuration.subscribeWithKeys("config-store", ["key1", "key2"], async (data) => {
+      console.log("Subscribe received updates from config store: ", data);
+    });
 
-  // Wait for 60 seconds and unsubscribe.
-  await new Promise((resolve) => setTimeout(resolve, 60000));
-  stream.stop();
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 60000));
+    } finally {
+      await stream.stop();
+    }
+  } finally {
+    await client.stop();
+  }
 }
 
 start().catch((e) => {
@@ -373,6 +386,8 @@ Subscribe received updates from config store:  {
   items: { key1: { key: 'key1', value: 'foobar', version: '', metadata: {} } }
 }
 ```
+
+To watch all keys, use `subscribe(storeName, callback)`. To include store-specific metadata, use `subscribeWithMetadata(storeName, keys, metadata, callback)`. All-key behavior depends on the component. See [subscription lifetime and callbacks]({{% ref "js-configuration-client-usage.md#subscription-lifetime-and-callbacks" %}}) before relying on a subscription for configuration freshness.
 
 ### Cryptography API
 
