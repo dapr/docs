@@ -1,0 +1,10 @@
+- component: Meilisearch
+  link: meilisearch
+  state: Alpha
+  version: v1
+  since: "1.19"
+- component: In-memory
+  link: in-memory
+  state: Alpha
+  version: v1
+  since: "1.19"

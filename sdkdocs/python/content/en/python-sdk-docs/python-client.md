@@ -66,6 +66,8 @@ with DaprClient() as d:
     # the client will use the endpoint specified in the environment variables
 ```  
 
+To connect to the sidecar over a Unix domain socket, give the absolute socket path after three slashes, for example `unix:///tmp/dapr.sock`. `DaprClient`, `WorkflowRuntime` and `DaprWorkflowClient` all accept this form. An endpoint with a host part after `unix://`, such as `unix://dapr.sock`, raises `ValueError` when the client is created. For a relative path, use `unix:dapr.sock`.
+
 The legacy environment variables `DAPR_RUNTIME_HOST`, `DAPR_HTTP_PORT` and `DAPR_GRPC_PORT` are 
 also supported, but `DAPR_GRPC_ENDPOINT` takes precedence.
 
@@ -116,6 +118,10 @@ proxy = ActorProxy.create('DemoActor', ActorId('1'), DemoActorInterface, factory
 **Timeout** can be set for all calls through the environment variable `DAPR_API_TIMEOUT_SECONDS`. The default value is 60 seconds.
 
 > Note: You can control timeouts on service invocation separately, by passing a `timeout` parameter to the `invoke_method` method. 
+
+##### DNS resolution on macOS
+
+On macOS, the client sets the `GRPC_DNS_RESOLVER` environment variable to `native` when it is not already set, so gRPC uses the operating system resolver. The resolver that ships with gRPC can fail with `DNS query cancelled` for host names that resolve on the system. To use a different resolver, set `GRPC_DNS_RESOLVER` before you create the client. The variable applies to the whole process.
 
 ## Error handling
 Initially, errors in Dapr followed the [Standard gRPC error model](https://grpc.io/docs/guides/error/#standard-error-model). However, to provide more detailed and informative error messages, in version 1.13 an enhanced error model has been introduced which aligns with the gRPC [Richer error model](https://grpc.io/docs/guides/error/#richer-error-model). In response, the Python SDK implemented `DaprGrpcError`, a custom exception class designed to improve the developer experience.  
@@ -306,27 +312,27 @@ For more details, see the [bulk publish guide]({{% ref pubsub-bulk.md %}}).
 #### Subscribe to messages
 
 ```python
-from cloudevents.sdk.event import v1
-from dapr.ext.grpc import App
-import json
+from dapr.ext.grpc import App, Rule, SubscriptionMessage
 
 app = App()
 
 # Default subscription for a topic
 @app.subscribe(pubsub_name='pubsub', topic='TOPIC_A')
-def mytopic(event: v1.Event) -> None:
-    data = json.loads(event.Data())
+def mytopic(event: SubscriptionMessage) -> None:
+    data = event.data()
     print(f'Received: id={data["id"]}, message="{data ["message"]}"' 
-          ' content_type="{event.content_type}"',flush=True)
+          f' content_type="{event.data_content_type()}"',flush=True)
 
 # Specific handler using Pub/Sub routing
 @app.subscribe(pubsub_name='pubsub', topic='TOPIC_A',
                rule=Rule("event.type == \"important\"", 1))
-def mytopic_important(event: v1.Event) -> None:
-    data = json.loads(event.Data())
+def mytopic_important(event: SubscriptionMessage) -> None:
+    data = event.data()
     print(f'Received: id={data["id"]}, message="{data ["message"]}"' 
-          ' content_type="{event.content_type}"',flush=True)
+          f' content_type="{event.data_content_type()}"',flush=True)
 ```
+
+Annotate the event parameter with `SubscriptionMessage`, the same type that streaming subscriptions deliver. `data()` returns the payload parsed by content type, for example a `dict` for JSON. Handlers that are not annotated, or that are annotated with `cloudevents.sdk.event.v1.Event`, receive the deprecated CloudEvents-based event, and `subscribe()` emits a `DeprecationWarning`. See [Python gRPC extension]({{% ref "python-grpc.md#subscribe-to-a-topic" %}}) for the deprecation timeline.
 
 - For more information about pub/sub, visit [How-To: Publish & subscribe]({{% ref howto-publish-subscribe.md %}}).
 - Visit [Python SDK examples](https://github.com/dapr/python-sdk/tree/master/examples/pubsub-simple) for code samples and instructions to try out pub/sub.

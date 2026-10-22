@@ -81,7 +81,7 @@ public async Task AddItem(CartItem item, CancellationToken ct = default)
 You rarely call save explicitly, and multiple mutations in a single method (or across a reentrant call chain within the same turn) collapse into a single write.
 
 {{% alert title="The end-of-turn save interacts with retries" color="primary" %}}
-The save is what makes a turn's state changes durable, and the response the SDK sends afterward is the runtime's signal that the turn completed. Those two steps are not a single atomic operation, and invokes are at-least-once, so a turn can be retried after its state was already committed (see [delivery guarantees]({{< ref "dotnet-actorsnext-howto.md#delivery-guarantees-you-must-design-for" >}})). State-only changes are safe under a re-run because they land on the same state; external side effects in the same method are not, and must be made idempotent. Keeping mutations in `State` rather than in side effects is what keeps a turn re-run-safe.
+The save is what makes a turn's state changes durable, and the response the SDK sends afterward signals completion. Those two steps are not a single atomic operation, so a turn can be retried after its state was already committed (see [delivery guarantees]({{< ref "dotnet-actorsnext-howto.md#delivery-guarantees-you-must-design-for" >}})). State-only changes are not automatically safe under a re-run: incrementing a counter or appending an item can apply twice. Make both state updates and external side effects idempotent, or deduplicate using a stable request identity persisted with the change. [Callback-stream fault injection]({{< ref "dotnet-actorsnext-testing.md#inject-callback-stream-failures" >}}) can test response loss after commit; it does not roll state back.
 {{% /alert %}}
 
 {{% alert title="The serializer is part of your at-rest contract" color="warning" %}}
@@ -97,7 +97,7 @@ When a state type's shape changes between releases, older persisted data must st
 - Register a `JsonSerializerContext` for your actor payloads to stay on the AOT-safe path.
 - Keep serializer configuration for state types stable, and treat a change that alters the persisted shape as a versioning decision (see [State migration]({{< ref dotnet-actorsnext-statemigration.md >}})).
 - Keep per-actor state reasonably sized, since the whole state saves as one value per turn.
-- Keep mutations in `State` rather than in external side effects, so a re-run turn stays safe under at-least-once delivery.
+- Make state mutations and external side effects idempotent, or deduplicate requests, so a re-run turn stays safe under at-least-once delivery.
 
 ## Next steps
 

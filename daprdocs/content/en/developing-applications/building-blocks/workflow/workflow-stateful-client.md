@@ -11,7 +11,7 @@ Every time a workflow makes progress, the Dapr sidecar hands the workflow SDK th
 The stateful workflow client removes that repetition. The SDK's workflow worker keeps the history it has already replayed in memory, tells the sidecar it can do so, and the sidecar then sends only the events added since the last turn.
 
 {{% alert title="Note" color="primary" %}}
-The stateful workflow client is available in Dapr v1.19 and later and is **enabled by default**. No sidecar configuration is required, and no application code changes are needed to benefit from it. The Python, .NET, Java, and Go SDKs additionally expose options to disable or tune it, described below.
+The stateful workflow client is available in Dapr v1.19 and later and is **enabled by default** in the SDKs that support it (see [Version compatibility](#version-compatibility)). No sidecar configuration is required, and no application code changes are needed to benefit from it. The Python, .NET, and Java SDKs additionally expose options to disable or tune it, described below. In Go, these options are on the durabletask-go client, not the Go SDK workflow client. The JavaScript SDK does not support the stateful workflow client.
 {{% /alert %}}
 
 ## Why it matters
@@ -154,15 +154,35 @@ WorkflowRuntime runtime = new WorkflowRuntimeBuilder()
 
 {{% tab header="Go" %}}
 
+The Go SDK workflow client (`client.NewWorkflowClient`) has no option to disable the feature. To disable it, run the worker on the durabletask-go client and pass `WithStatefulHistoryDisabled`. This client registers workflows on a `task.TaskRegistry`, so workflow functions take a `*task.WorkflowContext`.
+
 ```go
 import (
+	"context"
+	"log"
+
+	"github.com/dapr/durabletask-go/backend"
 	dtclient "github.com/dapr/durabletask-go/client"
+	"github.com/dapr/durabletask-go/task"
 	"github.com/dapr/go-sdk/client"
 )
 
-wclient, err := client.NewWorkflowClient(
+daprClient, err := client.NewClient()
+if err != nil {
+	log.Fatal(err)
+}
+
+registry := task.NewTaskRegistry()
+if err := registry.AddWorkflow(MyWorkflow); err != nil {
+	log.Fatal(err)
+}
+
+worker := dtclient.NewTaskHubGrpcClient(daprClient.GrpcClientConn(), backend.DefaultLogger(),
 	dtclient.WithStatefulHistoryDisabled(),
 )
+if err := worker.StartWorkItemListener(context.Background(), registry); err != nil {
+	log.Fatal(err)
+}
 ```
 
 {{% /tab %}}
@@ -237,15 +257,24 @@ WorkflowRuntime runtime = new WorkflowRuntimeBuilder()
 
 {{% tab header="Go" %}}
 
+The cache options are also on the durabletask-go client constructor. Start the worker with `worker.StartWorkItemListener`, as in the example under [Enabling and disabling](#enabling-and-disabling).
+
 ```go
 import (
+	"log"
 	"time"
 
+	"github.com/dapr/durabletask-go/backend"
 	dtclient "github.com/dapr/durabletask-go/client"
 	"github.com/dapr/go-sdk/client"
 )
 
-wclient, err := client.NewWorkflowClient(
+daprClient, err := client.NewClient()
+if err != nil {
+	log.Fatal(err)
+}
+
+worker := dtclient.NewTaskHubGrpcClient(daprClient.GrpcClientConn(), backend.DefaultLogger(),
 	dtclient.WithWorkflowHistoryCacheTTL(10*time.Minute),
 	dtclient.WithWorkflowHistoryCacheMaxInstances(10_000),
 	dtclient.WithWorkflowHistoryCacheMaxBytes(256*1024*1024),
@@ -263,6 +292,12 @@ dtclient.WithWorkflowHistoryCacheSweepInterval(30 * time.Second)
 {{< /tabpane >}}
 
 ## Version compatibility
+
+The stateful workflow client needs a Dapr v1.19 or later sidecar and a worker built with one of these SDKs:
+
+- **Python, Java, and .NET:** SDK 1.19 or later.
+- **Go:** Go SDK v1.16.0 or later, or durabletask-go v0.15.0 or later when you use it directly.
+- **JavaScript:** not supported. The JavaScript SDK workflow engine does not use the shared durabletask client library, so its workers receive the full history on every turn.
 
 The feature is negotiated per connection, so mixed versions degrade to the previous behavior with no configuration and no errors:
 

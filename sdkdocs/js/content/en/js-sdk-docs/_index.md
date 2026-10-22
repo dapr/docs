@@ -22,6 +22,12 @@ To get started with the JavaScript SDK, install the Dapr JavaScript SDK package 
 npm install --save @dapr/dapr
 ```
 
+## Binary Store
+
+Store, retrieve, stream, and delete binary files with `DaprClient.binaryStore` over HTTP or gRPC. Binary Store requires Dapr runtime **1.19 or later** and JavaScript SDK **3.19.0-RC.4 or later**.
+
+Follow the [Binary Store how-to guide]({{% ref js-binarystore-howto.md %}}) to get started, or read the [client usage guidance]({{% ref js-binarystore-client-usage.md %}}) for configuration, streaming, cancellation, and error handling.
+
 ## Vector
 
 Store precomputed embeddings and run similarity searches with `DaprClient.vector` over HTTP or gRPC. Vector requires a Vector-capable Dapr runtime from the **1.19 release line or later** and JavaScript SDK **3.19.0-rc.4 or later**.

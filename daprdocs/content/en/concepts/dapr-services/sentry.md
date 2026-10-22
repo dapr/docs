@@ -35,7 +35,7 @@ dapr_sentry:
     - "--healthz-listen-address=127.0.0.1"
 ```
 
-`--healthz-listen-address` (available from Dapr 1.19) sets the address the sentry healthz server listens on. It defaults to all interfaces.
+`--healthz-listen-address` sets the address the sentry healthz server listens on, and `--metrics-listen-address` sets the address of its metrics server. Both default to all interfaces.
 
 ## Further reading
 
