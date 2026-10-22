@@ -317,6 +317,8 @@ start().catch((e) => {
 
 ### PubSub API
 
+For JavaScript SDK **3.19.0-rc.4 or later**, see the [publish and subscribe overview]({{% ref js-pubsub %}}) to choose a delivery mode.
+
 #### Publish messages
 
 ```typescript
@@ -328,65 +330,14 @@ const daprPort = "3500";
 async function start() {
   const client = new DaprClient({ daprHost, daprPort });
 
-  const pubSubName = "my-pubsub-name";
-  const topic = "topic-a";
-
-  // Publish message to topic as text/plain
-  // Note, the content type is inferred from the message type unless specified explicitly
-  const response = await client.pubsub.publish(pubSubName, topic, "hello, world!");
-  // If publish fails, response contains the error
-  console.log(response);
-
-  // Publish message to topic as application/json
-  await client.pubsub.publish(pubSubName, topic, { hello: "world" });
-
-  // Publish a JSON message as plain text
-  const options = { contentType: "text/plain" };
-  await client.pubsub.publish(pubSubName, topic, { hello: "world" }, options);
-
-  // Publish message to topic as application/cloudevents+json
-  // You can also use the cloudevent SDK to create cloud events https://github.com/cloudevents/sdk-javascript
-  const cloudEvent = {
-    specversion: "1.0",
-    source: "/some/source",
-    type: "example",
-    id: "1234",
-  };
-  await client.pubsub.publish(pubSubName, topic, cloudEvent);
-
-  // Publish a cloudevent as raw payload
-  const options = { metadata: { rawPayload: true } };
-  await client.pubsub.publish(pubSubName, topic, "hello, world!", options);
-
-  // Publish multiple messages to a topic as text/plain
-  await client.pubsub.publishBulk(pubSubName, topic, ["message 1", "message 2", "message 3"]);
-
-  // Publish multiple messages to a topic as application/json
-  await client.pubsub.publishBulk(pubSubName, topic, [
-    { hello: "message 1" },
-    { hello: "message 2" },
-    { hello: "message 3" },
-  ]);
-
-  // Publish multiple messages with explicit bulk publish messages
-  const bulkPublishMessages = [
-    {
-      entryID: "entry-1",
-      contentType: "application/json",
-      event: { hello: "foo message 1" },
-    },
-    {
-      entryID: "entry-2",
-      contentType: "application/cloudevents+json",
-      event: { ...cloudEvent, data: "foo message 2", datacontenttype: "text/plain" },
-    },
-    {
-      entryID: "entry-3",
-      contentType: "text/plain",
-      event: "foo message 3",
-    },
-  ];
-  await client.pubsub.publishBulk(pubSubName, topic, bulkPublishMessages);
+  try {
+    const response = await client.pubsub.publish("pubsub", "orders", { orderId: "101" });
+    if (response.error) {
+      throw response.error;
+    }
+  } finally {
+    await client.stop();
+  }
 }
 
 start().catch((e) => {
@@ -394,6 +345,12 @@ start().catch((e) => {
   process.exit(1);
 });
 ```
+
+See [publishing events]({{% ref js-pubsub-publish-howto.md %}}) for bulk operations, metadata, CloudEvents, raw payloads, and transport-specific error handling. See [configuration and usage]({{% ref js-pubsub-usage.md %}}) for client lifetime and serialization.
+
+#### Streaming message subscriptions
+
+With a gRPC client, `client.pubsub.subscribeStream()` receives messages without `DaprServer` or an application callback port. Follow the [streaming subscription guide]({{% ref js-pubsub-streaming-howto.md %}}) for a complete worker, runtime requirements, acknowledgements, cancellation, and failure supervision.
 
 ### Bindings API
 
