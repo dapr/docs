@@ -28,6 +28,12 @@ This is a per-workflow safety mechanism only, not a backpressure or quota featur
 2. **Force-purge the workflow** if the payload has grown unboundedly (for example, a workflow that has been appending to a large list for too long). See [How to: Manage workflows]({{% ref howto-manage-workflow.md %}}).
 3. **Restructure the workflow** to avoid carrying large payloads across activities, for example by passing references (object store URLs, state-store keys) instead of inline data.
 
+The .NET SDK's [workflow data references (alpha)]({{% ref dotnet-workflow-data-references.md %}}) provide opt-in
+binary-store offloading and explicit references for this third approach. Both the binary store and the SDK
+integration are alpha and subject to change. Cross-app use requires compatible, payload-aware .NET applications
+with access to the same referenced objects; other Dapr language SDKs do not presently support data references.
+Offloading does not raise dispatch limits or remove the size of other history events.
+
 The same pre-check applies to activity dispatches; an oversized activity request stalls only that activity, not the parent workflow.
 
 ## Metrics

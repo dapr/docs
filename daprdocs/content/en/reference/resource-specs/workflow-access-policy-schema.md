@@ -56,6 +56,8 @@ Fields are listed in the order they appear in the YAML document.
 
 \* At least one of `workflows` or `activities` must be present in each rule.
 
+The schema also sets size limits, so a large or generated policy can fail validation: `rules`, `rules[].callers`, `rules[].workflows`, and `rules[].activities` hold at most 100 entries each, `operations` holds at most 8, and each `requires` list holds at most 20. Every `appID` and `name` value is 1 to 256 characters. With the 1.19 CRD applied, the Kubernetes API server rejects a policy that breaks these limits. The sidecar also validates each policy against the same schema when it loads or reloads it, in both Kubernetes and self-hosted mode, and skips an invalid policy with a warning in its log.
+
 ## Example
 
 The policy below applies to the `order-service` application. It grants `frontend-app` and `api-gateway` permission to schedule `OrderWF`, `CheckoutWF`, and the `ProcessPayment` activity. A second rule grants `admin-app` permission to schedule any workflow or activity on `order-service`.

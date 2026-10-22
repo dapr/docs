@@ -22,6 +22,36 @@ To get started with the JavaScript SDK, install the Dapr JavaScript SDK package 
 npm install --save @dapr/dapr
 ```
 
+## State Management
+
+Save, retrieve, and delete application state with `DaprClient.state`. The SDK supports bulk operations, ETags, consistency options, transactions, TTL metadata, custom serialization, and state queries over HTTP or gRPC.
+
+Follow the [state management how-to guide]({{% ref js-state-management-howto.md %}}), read the [client usage guidance]({{% ref js-state-management-client-usage.md %}}) for protocol-specific behavior, or learn how to [query state]({{% ref js-state-management-query.md %}}). These guides target JavaScript SDK **3.19.0-rc.4 or later**.
+
+## Publish and subscribe
+
+Publish single events or batches over HTTP or gRPC, receive programmatic server callbacks, or subscribe through a client-initiated gRPC stream without an application server.
+
+The [publish and subscribe guide]({{% ref js-pubsub %}}) covers JavaScript SDK **3.19.0-rc.4 or later**, including routing, acknowledgements, dead-letter topics, serialization, error handling, and subscription cleanup.
+
+## Service invocation
+
+Call services over HTTP or gRPC and receive invocations through `DaprServer` or an existing HTTP application.
+
+The [service invocation guide]({{% ref js-service-invocation %}}) covers JavaScript SDK **3.19.0-rc.4 or later**, including headers, query parameters, callback responses, serialization, error handling, and transport limitations.
+
+## Binary Store
+
+Store, retrieve, stream, and delete binary files with `DaprClient.binaryStore` over HTTP or gRPC. Binary Store requires Dapr runtime **1.19 or later** and JavaScript SDK **3.19.0-RC.4 or later**.
+
+Follow the [Binary Store how-to guide]({{% ref js-binarystore-howto.md %}}) to get started, or read the [client usage guidance]({{% ref js-binarystore-client-usage.md %}}) for configuration, streaming, cancellation, and error handling.
+
+## Vector
+
+Store precomputed embeddings and run similarity searches with `DaprClient.vector` over HTTP or gRPC. Vector requires a Vector-capable Dapr runtime from the **1.19 release line or later** and JavaScript SDK **3.19.0-rc.4 or later**.
+
+Follow the [Vector how-to guide]({{% ref js-vector-howto.md %}}) to get started, or read the [client usage guidance]({{% ref js-vector-client-usage.md %}}) for configuration, indexing acknowledgements, cancellation, and error handling.
+
 ## Structure
 
 The Dapr JavaScript SDK contains two major components:
