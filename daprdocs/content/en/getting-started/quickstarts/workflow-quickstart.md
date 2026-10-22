@@ -797,10 +797,8 @@ For this example, you will need:
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
-- [.NET 7](https://dotnet.microsoft.com/download/dotnet/7.0), [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0) or [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0) installed
-
-**NOTE:** .NET 7 is the minimally supported version of .NET by Dapr.Workflows in Dapr v1.15. Only .NET 8 and .NET 9
-will be supported in Dapr v1.16 and later releases.
+- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) installed. The sample uses a source generator that needs the compiler in the .NET 10 SDK. Earlier SDKs fail to build the sample.
+- [.NET 8 runtime](https://dotnet.microsoft.com/download/dotnet/8.0) installed. The sample targets `net8.0`, so it needs this runtime to run.
 
 ### Step 2: Set up the environment
 
