@@ -352,11 +352,29 @@ Deploy a new Azure Static Web App for the future Dapr release. For this example,
 
 1. In the same terminal, set these environment variables:
 
+   {{< tabpane text=true >}}
+
+   {{% tab header="Linux/macOS" %}}
+
    ```bash
    export AZURE_RESOURCE_GROUP=docs-website
    export IDENTITY_RESOURCE_GROUP=dapr-identities
-   export AZURE_STATICWEBSITE_NAME==daprdocs-v1-1
+   export AZURE_STATICWEBSITE_NAME=daprdocs-v1-1
    ```
+
+   {{% /tab %}}
+
+   {{% tab header="Windows (PowerShell)" %}}
+
+   ```powershell
+   $env:AZURE_RESOURCE_GROUP = "docs-website"
+   $env:IDENTITY_RESOURCE_GROUP = "dapr-identities"
+   $env:AZURE_STATICWEBSITE_NAME = "daprdocs-v1-1"
+   ```
+
+   {{% /tab %}}
+
+   {{< /tabpane >}}
 
 Where `daprdocs-v1-1` should be updated with the new preview version.
 
@@ -374,7 +392,7 @@ Where `daprdocs-v1-1` should be updated with the new preview version.
    azd up
    ```
 
-1. When prompted, select an Azure subscription (Dapr Tests) and deployment location (West US 2).
+1. When prompted, select an Azure subscription (Azure subscription 1) and deployment location (West US 2).
 
 #### Configure the SWA in the Azure portal
 
@@ -386,7 +404,7 @@ Optionally, grant the correct minimal permissions for inbound publishing and out
 
 1. In the Azure portal, from the new SWA you just created, naviage to **Custom domains** from the left side menu.
 1. Copy the "CNAME" value of the web app.
-1. Using your own account, [submit a CNCF ticket](https://jira.linuxfoundation.org/secure/Dashboard.jspa) to create a new domain name mapped to the CNAME value you copied. For this example, to create a new domain for Dapr v1.1, you'd request to map to `v1-1.docs.dapr.io`.
+1. Using your own account, [submit a CNCF ticket](https://cncfservicedesk.atlassian.net/servicedesk/customer/portals) to create a new domain name mapped to the CNAME value you copied. For this example, to create a new domain for Dapr v1.1, you'd request to map to `v1-1.docs.dapr.io`.
 
    Request resolution may take some time.
 
