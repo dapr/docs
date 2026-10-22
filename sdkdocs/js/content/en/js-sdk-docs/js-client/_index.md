@@ -156,6 +156,10 @@ We can now call the methods as defined in our `GreeterClient` interface (which i
 
 The JavaScript Client SDK allows you to interface with all of the [Dapr building blocks]({{% ref building-blocks %}}) focusing on Client to Sidecar features.
 
+### Jobs API
+
+Use `client.jobs` to schedule, retrieve, and delete jobs with JavaScript SDK **3.19.0-rc.4 or later**. See the [Jobs how-to guide]({{% ref js-jobs-howto.md %}}) and [client usage guidance]({{% ref js-jobs-client-usage.md %}}) for scheduling options, payloads, runtime compatibility, and error handling.
+
 ### Invocation API
 
 #### Invoke a Service

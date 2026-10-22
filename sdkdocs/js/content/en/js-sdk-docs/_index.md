@@ -22,6 +22,12 @@ To get started with the JavaScript SDK, install the Dapr JavaScript SDK package 
 npm install --save @dapr/dapr
 ```
 
+## Jobs
+
+Schedule one-time, interval-based, or cron-based jobs and receive their callbacks using `DaprClient.jobs` and `DaprServer.jobs`. Jobs requires JavaScript SDK **3.19.0-rc.4 or later**, Dapr runtime **1.16 or later**, and a running Scheduler service.
+
+Follow the [Jobs how-to guide]({{% ref js-jobs-howto.md %}}), read the [client and callback usage guidance]({{% ref js-jobs-client-usage.md %}}), or build calendar-based schedules with the [cron builder]({{% ref js-jobs-cron.md %}}).
+
 ## Binary Store
 
 Store, retrieve, stream, and delete binary files with `DaprClient.binaryStore` over HTTP or gRPC. Binary Store requires Dapr runtime **1.19 or later** and JavaScript SDK **3.19.0-RC.4 or later**.
