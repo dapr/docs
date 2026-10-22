@@ -8,7 +8,7 @@ description: Schedule jobs, receive HTTP or gRPC callbacks, and manage job regis
 
 Use `Dapr.Jobs` version `1.19.0` or later with a running Dapr sidecar and Scheduler. The complete
 management surface described here requires a runtime that supports the corresponding operations; use
-Dapr 1.19 for the 1.19 features. Scheduling/get/delete use version-aware stable/alpha API fallback, but that
+Dapr 1.19 for the 1.19 features. All client operations use version-aware stable/alpha API fallback, but that
 does not make newer management operations available on an older runtime.
 
 ```sh
@@ -126,7 +126,7 @@ await jobsClient.ScheduleJobAsync("morning-report", schedule,
     cancellationToken: cancellationToken);
 ```
 
-The builder also supports `WithTimeZone(string)`. `DaprJobSchedule.TimeZone` exposes an embedded `CRON_TZ`
+The builder also supports `WithTimeZone(string)` and `WithTimeZone(TimeZoneInfo)`. `DaprJobSchedule.TimeZone` exposes an embedded `CRON_TZ`
 identifier. Use valid IANA time-zone IDs and account for daylight-saving changes when choosing calendar schedules.
 
 ### JSON and string payload helpers
@@ -167,7 +167,7 @@ idempotent because triggers can be delivered more than once.
 var details = await jobsClient.GetJobAsync("refresh-catalog", cancellationToken);
 ```
 
-`DaprJobDetails` exposes `Name`, `Schedule`, `DueTime`, `Ttl`, `RepeatCount`, `Payload`, and `FailurePolicy`.
+`DaprJobDetails` exposes `Name`, `Schedule`, `DueTime`, `Ttl`, `RepeatCount`, `Payload`, `FailurePolicy`, and `Overwrite`.
 `Name` can be null for manually constructed or older-runtime results. Inspect
 `details.Schedule.ExpressionValue` and schedule classification properties such as `IsCronExpression` and
 `IsPointInTimeExpression`. The response does not expose top-level `Interval` or `CronExpression` properties.
@@ -215,3 +215,11 @@ argument exceptions. In `1.19.0`, several Jobs methods catch caller cancellation
 `OperationCanceledException`: writes/deletes can return without confirmation and listing can return empty.
 `GetJobAsync` reports a missing expected result as `DaprException` after cancellation. See
 [DaprJobsClient usage]({{< ref dotnet-jobsclient-usage.md >}}) for client configuration and payload conventions.
+
+## Analyzer
+
+The `Dapr.Jobs.Analyzers` package ships diagnostic `DAPR1501` (warning, category Usage). It fires when
+`ScheduleJobAsync` is called with a literal job name and no `MapDaprScheduledJobHandler` call exists in the same
+source file, with the message "Job invocations require the MapDaprScheduledJobHandler be set and configured for
+job name '{name}' on IEndpointRouteBuilder". Add the handler mapping, or suppress the diagnostic with
+`#pragma warning disable DAPR1501` or an `.editorconfig` rule if the handler is intentionally mapped elsewhere.

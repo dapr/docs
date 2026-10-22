@@ -109,8 +109,8 @@ var plaintext = await daprEncryptionClient.DecryptAsync(
 ```
 
 Choose a key-wrap algorithm supported by your configured key and component. The SDK exposes AES key-wrap
-and RSA-OAEP-256 choices (including aliases); exposing an enum value does not guarantee that every
-cryptography component supports it.
+(`Aes`, `A256kw`), AES-CBC (`A128cbc`, `A192cbc`, `A256cbc`), and RSA (`Rsa`, `RsaOaep256`) choices;
+exposing an enum value does not guarantee that every cryptography component supports it.
 
 ## Encrypt and decrypt streams
 

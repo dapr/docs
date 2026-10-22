@@ -1,4 +1,4 @@
-﻿---
+---
 type: docs
 title: "Experimental Attributes"
 linkTitle: "Experimental Attributes"
@@ -56,7 +56,6 @@ The diagnostic IDs follow a naming convention of `DAPR_[BUILDING_BLOCK_NAME]`, s
 
 - `DAPR_CONVERSATION` - For the Conversation building block
 - `DAPR_CRYPTOGRAPHY` - For the Cryptography building block
-- `DAPR_JOBS` - For the Jobs building block
 - `DAPR_DISTRIBUTEDLOCK` - For the Distributed Lock building block
 
 ### Suppressing Experimental Warnings
@@ -95,7 +94,7 @@ You can include multiple diagnostic IDs separated by semicolons:
 
 ```xml
 <PropertyGroup>
-    <NoWarn>$(NoWarn);DAPR_CONVERSATION;DAPR_JOBS;DAPR_DISTRIBUTEDLOCK;DAPR_CRYPTOGRAPHY</NoWarn>
+    <NoWarn>$(NoWarn);DAPR_CONVERSATION;DAPR_DISTRIBUTEDLOCK;DAPR_CRYPTOGRAPHY</NoWarn>
 </PropertyGroup>
 ```
 
@@ -107,7 +106,7 @@ For suppressing warnings across multiple projects in a directory, add a `Directo
 
 ```xml
 <PropertyGroup>
-    <NoWarn>$(NoWarn);DAPR_CONVERSATION;DAPR_JOBS;DAPR_DISTRIBUTEDLOCK;DAPR_CRYPTOGRAPHY</NoWarn>
+    <NoWarn>$(NoWarn);DAPR_CONVERSATION;DAPR_DISTRIBUTEDLOCK;DAPR_CRYPTOGRAPHY</NoWarn>
 </PropertyGroup>
 ```
 

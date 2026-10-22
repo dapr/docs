@@ -176,11 +176,14 @@ public sealed class SquareNumberActivity(ILogger<SquareNumberActivity> logger) :
 
 ### Activity task execution identifiers
 
-`WorkflowActivityContext` exposes `Identifier`, `InstanceId`, and **`TaskExecutionKey`**, not `TaskExecutionId`.
+`WorkflowActivityContext` exposes `Identifier`, `InstanceId`, **`TaskExecutionKey`** (not `TaskExecutionId`), and
+`ScheduledEventId`, the ID of the `TaskScheduled` history event for the activity attempt.
 The worker uses the runtime's task execution ID when available, falling back to the numeric task ID otherwise.
 SDK activity retries preserve the task execution ID. Combine the key with the workflow instance/app identity when
 designing an idempotency key, and persist deduplication atomically with the side effect. The identifier alone does
-not make an activity exactly-once.
+not make an activity exactly-once. `ScheduledEventId` can be recorded alongside the instance ID and later passed
+to `RerunWorkflowFromEventAsync` to rerun the workflow from that activity (see
+[Rerun from a history event]({{% ref "dotnet-workflow-management-methods.md#rerun-from-a-history-event" %}})).
 
 ### Replay-safe logging
 

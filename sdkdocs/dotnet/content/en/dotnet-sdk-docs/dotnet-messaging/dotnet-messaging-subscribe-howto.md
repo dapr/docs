@@ -218,7 +218,7 @@ Not all properties on `[DaprTopic]` are relevant to every delivery mode. The tab
    ```
 
 {{% alert title="Delivery mode & endpoint analyzer validation" color="warning" %}}
-- **`DAPR1610` (Error)**: Ensures the same pub/sub component and topic are not registered with conflicting delivery modes across different handlers.
+- **`DAPR1610` (Warning)**: Ensures the same pub/sub component and topic are not registered with conflicting delivery modes across different handlers.
 - **`DAPR1613` (Warning)**: Warns when programmatic subscriptions are declared but endpoint mapping (`app.MapDaprMessaging()`) is omitted from the application pipeline. Includes an automated IDE Code Fix.
 - **`DAPR1615` (Warning)**: Warns when endpoint mapping or subscriber registration methods are called without matching topic subscribers in the application.
 {{% /alert %}}
@@ -357,7 +357,7 @@ await ((IDaprSubscription)subscription).Completion;
 
 | ID | Title | Severity | Description |
 | --- | --- | --- | --- |
-| `DAPR1610` | Duplicate topic with conflicting delivery modes | **Error** | Triggered when the same `(pubsubName, topicName)` is configured with different `DeliveryMode` values across `[DaprTopic]` attributes. |
+| `DAPR1610` | Duplicate topic with conflicting delivery modes | **Warning** | Triggered when the same `(pubsubName, topicName)` is configured with different `DeliveryMode` values across `[DaprTopic]` attributes. |
 | `DAPR1611` | Handler must implement `ITopicHandler<T>` | **Error** | Triggered when `[DaprTopic]` is placed on a class that does not implement `ITopicHandler<TMessage>` or `ITopicHandler<TMessage, TResult>`. |
 | `DAPR1612` | Message type not registered in `JsonSerializerContext` | **Warning** | Warns when a message type is not covered by `[JsonSerializable]` in a Native AOT compilation. |
 | `DAPR1613` | Map endpoints for programmatic subscriptions | **Warning** | Warns when programmatic subscriptions are configured without `app.MapDaprAppCallback()` or `app.MapDaprMessaging()`. Includes an automated Code Fix. |

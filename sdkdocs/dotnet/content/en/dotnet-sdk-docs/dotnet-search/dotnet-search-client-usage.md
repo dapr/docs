@@ -155,7 +155,7 @@ The generated index client below does not generate JSON serialization metadata. 
 
 ## Generate a typed index client
 
-The `Dapr.Search` package bundles a source generator. Declare a top-level, non-generic `partial` interface, extending exactly one `IDaprSearchIndex<T>`, without additional abstract members:
+The `Dapr.Search` package bundles a source generator. Declare a top-level, non-generic, non-file-local `partial` interface, extending exactly one `IDaprSearchIndex<T>`, without additional abstract members:
 
 ```csharp
 using Dapr.Search;

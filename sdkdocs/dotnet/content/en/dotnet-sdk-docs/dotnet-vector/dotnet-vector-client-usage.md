@@ -50,7 +50,7 @@ Every operation accepts optional component-specific request `metadata` (`IReadOn
 | `UpsertVectorsAsync<T>` | `UpsertVectorsResult` with `Ack` and `FailedItems`. |
 | `GetVectorsAsync<T>` | Found `VectorRecord<T>` entries in request order; `includeValues` defaults to false. |
 | `DeleteVectorsAsync` | `IndexAck` for the deletion. |
-| `QueryVectorsAsync<T>` | `VectorQueryResult<T>` with `Matches` and the effective `Metric`. |
+| `QueryVectorsAsync<T>` | `VectorQueryResult<T>` with `Matches` (a list of `VectorMatch<T>`, each exposing the `Record` and its `Score`) and the effective `Metric`. |
 | `BatchQueryVectorsAsync<T>` | Ordered `VectorBatchQueryResult<T>` entries, each containing a response or error. |
 
 Request metadata configures an operation and is separate from each record's structured, filterable `Metadata`. There is no embedding-generation API, hybrid lexical/vector query, or continuation-token pagination in this alpha client. Generate embeddings in your application and use Search separately for lexical queries.
@@ -172,7 +172,7 @@ Local argument validation occurs for the entire batch before sending the RPC. A 
 
 ## Generate a typed collection client
 
-The `Dapr.Vector` package bundles a source generator. Define a top-level, non-generic `partial` interface extending exactly one `IDaprVectorCollection<T>` with no additional abstract members:
+The `Dapr.Vector` package bundles a source generator. Define a top-level, non-generic, non-file-local `partial` interface extending exactly one `IDaprVectorCollection<T>` with no additional abstract members:
 
 ```csharp
 using Dapr.Vector;

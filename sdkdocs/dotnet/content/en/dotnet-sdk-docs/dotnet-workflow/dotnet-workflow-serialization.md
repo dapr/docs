@@ -70,7 +70,9 @@ compatible settings too. Serializer instances are shared, so custom implementati
 
 In SDK 1.19.0, serializers implement `IDaprSerializer` from `Dapr.Common.Serialization`.
 `IWorkflowSerializer` from `Dapr.Workflow.Serialization` extends that shared interface and remains supported,
-including by the factory-based registration overload. Implement all four methods, including `Serialize<T>`.
+including by the factory-based registration overload. Registering an `IWorkflowSerializer` directly in DI is
+marked `[Obsolete]` and will be removed in the SDK release coinciding with Dapr v1.20; prefer implementing
+`IDaprSerializer` for new code. Implement all four methods, including `Serialize<T>`.
 The following example shows a MessagePack-based implementation that encodes data as Base64 strings for transport.
 It also requires the `MessagePack` NuGet package; choose serialization options compatible with your DTO contracts:
 

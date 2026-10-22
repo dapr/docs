@@ -36,7 +36,7 @@ A `DaprDistributedLockClient` maintains access to networking resources in the fo
 
 The `AddDaprDistributedLock()` method will register the Dapr client ASP.NET Core dependency injection and is the recommended approach
 for using this package. This method accepts an optional options delegate for configuring the `DaprDistributedLockClient` and a
-`ServiceLifetime` argument, allowing you to specify a different lifetime for the registered services instead of the default `Singleton`
+`ServiceLifetime` argument, allowing you to specify a different lifetime for the registered services instead of the default `Scoped`
 value.
 
 The following example assumes all default values are acceptable and is sufficient to register the `DaprDistributedLockClient`:

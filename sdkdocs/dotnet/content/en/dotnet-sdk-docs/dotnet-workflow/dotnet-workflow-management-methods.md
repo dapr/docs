@@ -187,19 +187,25 @@ and not every event is a valid rerun boundary.
 ```csharp
 using Dapr.Workflow.Client;
 
+// Pick a rerun point: the first scheduled activity in the source history.
+var history = await client.GetInstanceHistoryAsync(instanceId, cancellationToken);
+var scheduledEvent = history.First(e => e.EventType == WorkflowHistoryEventType.TaskScheduled);
+
 var rerunId = await client.RerunWorkflowFromEventAsync(
     sourceInstanceId: instanceId,
-    eventId: eventId,
+    eventId: (uint)scheduledEvent.EventId,
     options: new RerunWorkflowFromEventOptions
     {
         NewInstanceId = null,
         OverwriteInput = true,
-        Input = replacementActivityInput
+        Input = new { Quantity = 3 }
     },
     cancellation: cancellationToken);
 ```
 
-The `eventId` argument is `uint`. Omit options to retain recorded input and let the runtime allocate an ID.
+The `eventId` argument is `uint`, while `WorkflowHistoryEvent.EventId` is `int`, so cast when passing an ID from
+history. An activity can also capture its own rerun point via `WorkflowActivityContext.ScheduledEventId`.
+Omit options to retain recorded input and let the runtime allocate an ID.
 `NewInstanceId` optionally chooses the new ID. Set `OverwriteInput = true` when supplying `Input`; otherwise a
 non-null input is rejected. The override is applied at the next activity event at the rerun point, not as a
 general replacement for all earlier history.

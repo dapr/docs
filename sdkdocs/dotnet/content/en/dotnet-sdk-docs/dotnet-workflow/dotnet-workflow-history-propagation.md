@@ -74,7 +74,7 @@ var auditResult = await context.CallActivityAsync<AuditResult>(
 
 {{% alert title="Activity reader limitation" color="warning" %}}
 In SDK 1.19.0, the activity scheduling action carries this scope, but `WorkflowActivityContext` exposes only
-`Identifier`, `InstanceId`, and `TaskExecutionKey`. It has no public history reader, and the worker does not
+`Identifier`, `InstanceId`, `TaskExecutionKey`, and `ScheduledEventId`. It has no public history reader, and the worker does not
 populate an activity history property. Use a child workflow when application code needs to inspect propagated
 history; do not assume the activity above can call `GetPropagatedHistory()`.
 {{% /alert %}}

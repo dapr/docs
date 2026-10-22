@@ -16,9 +16,8 @@ Use `DaprVectorClient` to store precomputed embeddings and retrieve similar reco
 - The [Dapr.Vector](https://www.nuget.org/packages/Dapr.Vector) NuGet package, version 1.19.0 or later
 
 {{% alert title=".NET framework support" color="warning" %}}
-Be advised that the .NET 8 and .NET 9 frameworks will fall out of support in November 2026.
-As such, both will be dropped from the next v1.20 release, and only .NET 10 and .NET 11 will be
-supported through the end of 2027.
+Be advised that .NET 8 and .NET 9 reach end of support in November 2026. Support for both will be dropped
+in Dapr v1.20; only .NET 10 and .NET 11 will be supported through the end of 2027.
 {{% /alert %}}
 
 Install the package in an ASP.NET Core project:

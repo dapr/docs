@@ -186,8 +186,7 @@ var payloadAsString = Encoding.UTF8.GetString(jobPayload.Span); //If successful,
 ## Error handling
 
 `DaprJobsClient` wraps runtime/gRPC failures in `DaprException`. Invalid argument values raise standard
-exceptions such as `ArgumentOutOfRangeException` or `ArgumentNullException`. Do not depend on
-`DaprJobsServiceException` or `DaprMalformedJobException` as the exception contract of this release.
+exceptions such as `ArgumentOutOfRangeException` or `ArgumentNullException`.
 
 The most common cases of failure will be related to:
 
