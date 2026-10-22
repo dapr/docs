@@ -8,7 +8,12 @@ description: "A seven-part tutorial for publishing and subscribing with the Dapr
 
 This tutorial uses the runnable examples in the [.NET SDK repository](https://github.com/dapr/dotnet-sdk/tree/master/examples/Messaging) to demonstrate the main capabilities of `Dapr.Messaging`. Each part includes the implementation pattern and the corresponding unit and integration testing approach.
 
-The examples use .NET 8, .NET 9, or .NET 10 and require Dapr runtime 1.18 or later. The unit tests run without Dapr, Docker, or a message broker. The integration tests use `Dapr.Testcontainers` to run a real Dapr sidecar and Redis pub/sub component, which is the recommended way to verify delivery behavior in an application.
+The examples support .NET 8, .NET 9, .NET 10, or .NET 11 and require Dapr runtime 1.18 or later. The unit tests run without Dapr, Docker, or a message broker. The integration tests use `Dapr.Testcontainers` to run a real Dapr sidecar and Redis pub/sub component, which is the recommended way to verify delivery behavior in an application.
+
+{{% alert title=".NET framework support" color="warning" %}}
+Be advised that .NET 8 and .NET 9 reach end of support in November 2026. Support for both will be dropped
+in Dapr v1.20; only .NET 10 and .NET 11 will be supported through the end of 2027.
+{{% /alert %}}
 
 ## Tutorial content
 
@@ -28,11 +33,10 @@ Add integration tests for the infrastructure boundary. The examples create a `Pu
 
 ## Prerequisites
 
-- [.NET SDK](https://dotnet.microsoft.com/download) 8, 9, or 10
+- [.NET SDK](https://dotnet.microsoft.com/download) 8, 9, 10, or 11
 - [Dapr CLI]({{< ref install-dapr-cli.md >}}) and a Dapr environment
 - Dapr runtime 1.18 or later for streaming subscriptions
 - Docker or another container runtime for integration tests
 - The `Dapr.Messaging` package
 
 When using the SDK repository directly, the examples reference the local SDK projects. In an application, install the published `Dapr.Messaging` package instead.
-

@@ -8,7 +8,7 @@ description: Save, retrieve, delete, transact, and query application state with 
 
 Use `DaprClient.state` to access configured Dapr state store components from JavaScript or TypeScript. The client supports single-key reads and deletes, bulk saves, bulk reads and deletes, optimistic concurrency with ETags, multi-key transactions, and state queries over HTTP or gRPC.
 
-These guides target [`@dapr/dapr`](https://www.npmjs.com/package/@dapr/dapr) **3.19.0-rc.4 or later**. State management is part of this package; there is no separate state management package or client registration.
+These guides target [`@dapr/dapr`](https://www.npmjs.com/package/@dapr/dapr) 3.19.0 or later. State management is part of this package; there is no separate state management package or client registration.
 
 | Guide | What you will learn |
 |-------|---------------------|
@@ -24,5 +24,5 @@ This section covers application state, not the [actor state manager]({{% ref js-
 
 - [State management overview]({{% ref state-management-overview.md %}})
 - [State management API reference]({{% ref state_api.md %}})
-- [JavaScript state client interface](https://github.com/dapr/js-sdk/blob/v3.19.0-rc.4/src/interfaces/Client/IClientState.ts)
-- [HTTP implementation](https://github.com/dapr/js-sdk/blob/v3.19.0-rc.4/src/implementation/Client/HTTPClient/state.ts) and [gRPC implementation](https://github.com/dapr/js-sdk/blob/v3.19.0-rc.4/src/implementation/Client/GRPCClient/state.ts)
+- [JavaScript state client interface](https://github.com/dapr/js-sdk/blob/v3.19.0/src/interfaces/Client/IClientState.ts)
+- [HTTP implementation](https://github.com/dapr/js-sdk/blob/v3.19.0/src/implementation/Client/HTTPClient/state.ts) and [gRPC implementation](https://github.com/dapr/js-sdk/blob/v3.19.0/src/implementation/Client/GRPCClient/state.ts)

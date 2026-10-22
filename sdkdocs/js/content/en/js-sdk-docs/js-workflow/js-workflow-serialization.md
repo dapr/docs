@@ -6,7 +6,7 @@ weight: 1400
 description: Configure payload serialization consistently across JavaScript workflow clients and workers
 ---
 
-The JavaScript SDK uses JSON by default. With `@dapr/dapr` **3.19.0-rc.4 or later**, clients and workers can
+The JavaScript SDK uses JSON by default. With `@dapr/dapr` **3.19.0 or later**, clients and workers can
 share a custom `IDaprSerializer` through their `serializer` option. Serializer selection is client-side;
 it does not by itself require binary-store support.
 

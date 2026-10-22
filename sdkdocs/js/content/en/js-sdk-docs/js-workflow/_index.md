@@ -11,12 +11,12 @@ Use the Dapr JavaScript SDK to coordinate activities, durable timers, external e
 manages their lifecycle. Both use the Dapr sidecar's gRPC endpoint, independently of the protocol you select
 for a `DaprClient`.
 
-These guides target **`@dapr/dapr` 3.19.0-rc.4 or later**. The examples use Dapr runtime **1.19 or later** so
+These guides target **`@dapr/dapr` 3.19.0 or later**. The examples use Dapr runtime **1.19 or later** so
 that all documented capabilities are available, including detached workflows, management operations, and
 the alpha binary-store building block. Use Node.js 18 or later.
 
 ```sh
-npm install @dapr/dapr@3.19.0-rc.4
+npm install @dapr/dapr@3.19.0
 ```
 
 ## Choose a guide

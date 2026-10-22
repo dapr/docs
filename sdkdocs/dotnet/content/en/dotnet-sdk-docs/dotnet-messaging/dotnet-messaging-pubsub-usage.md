@@ -8,6 +8,8 @@ description: "Configuration, options, lifetime management, delivery modes, and a
 
 This guide covers advanced configuration, service lifetimes, delivery mode trade-offs, serialization, Native AOT support, and resilience patterns when working with the `Dapr.Messaging` SDK.
 
+The API coverage on this page targets SDK `1.19.0` or later.
+
 ## Lifetime management and thread safety
 
 Understanding the lifetime of messaging services ensures optimal performance and prevents socket exhaustion or memory leaks.
@@ -72,15 +74,27 @@ builder.Services.AddDaprMessaging(options =>
 | `StreamingReconnectDelay` | `5 seconds` | The delay interval applied before attempting to reconnect a dropped streaming subscription. |
 | `JsonSerializerOptions` | `JsonSerializerDefaults.Web` | Options used by the messaging publishing client. Generated subscriber dispatchers currently use their generated default options. |
 
-### Environment variable fallbacks
+### Endpoint and environment precedence
 
-If not explicitly configured in `DaprMessagingOptions`, the SDK automatically reads the standard Dapr environment variables:
+The underlying builder understands the standard Dapr endpoint/port and API-token environment variables.
+However, in SDK `1.19.0`, `AddDaprMessaging` applies the nonempty
+`DaprMessagingOptions.DaprGrpcEndpoint` **after** creating the builder. Its default
+`http://localhost:50001` therefore overrides the environment-derived gRPC address even when you did not
+explicitly configure it.
 
-- `DAPR_GRPC_ENDPOINT`: Used as the gRPC endpoint.
-- `DAPR_GRPC_PORT`: Used to construct `http://127.0.0.1:<port>` when `DAPR_GRPC_ENDPOINT` is not set.
-- `DAPR_HTTP_ENDPOINT`: Used for HTTP endpoints.
-- `DAPR_HTTP_PORT`: Used to construct `http://127.0.0.1:<port>` for HTTP when `DAPR_HTTP_ENDPOINT` is not set.
-- `DAPR_API_TOKEN`: Used as the Dapr API authentication token.
+Bind the correct endpoint when the sidecar uses another port:
+
+```csharp
+builder.Services.AddDaprMessaging(options =>
+{
+    options.DaprGrpcEndpoint =
+        builder.Configuration["DAPR_GRPC_ENDPOINT"] ??
+        $"http://127.0.0.1:{builder.Configuration["DAPR_GRPC_PORT"] ?? "50001"}";
+});
+```
+
+An explicitly configured `DaprApiToken` overrides the builder's environment-derived token. Do not hard-code
+production tokens in source; obtain them from your deployment's configuration or secret mechanism.
 
 ## Choosing the right delivery mode
 
@@ -121,7 +135,8 @@ foreach (var failed in response.FailedEntries)
 Configure bulk consumption by enabling `BulkSubscribe = true` on the `[DaprTopic]` attribute:
 
 ```csharp
-[DaprTopic("pubsub", "orders", BulkSubscribe = true, MaxMessagesCount = 50, MaxAwaitDurationMs = 500)]
+[DaprTopic("pubsub", "orders", Delivery = DeliveryMode.Http,
+    BulkSubscribe = true, MaxMessagesCount = 50, MaxAwaitDurationMs = 500)]
 public sealed class BulkOrderHandler : ITopicHandler<Order>
 {
     public async Task<TopicResponseAction> HandleAsync(
@@ -139,6 +154,9 @@ public sealed class BulkOrderHandler : ITopicHandler<Order>
 Bulk delivery batches messages at the Dapr protocol level, but the current SDK dispatches
 each entry to the handler separately. The handler therefore implements `ITopicHandler<Order>`,
 not `ITopicHandler<IReadOnlyList<Order>>`.
+
+Bulk subscription requires HTTP or programmatic push delivery and `app.MapDaprMessaging()`.
+Leaving the default streaming delivery mode would ignore the bulk settings.
 
 ### Dead-letter topics
 
@@ -163,7 +181,7 @@ public sealed class ResilientOrderHandler : ITopicHandler<Order>
 
 ### Working with CloudEvents
 
-When messages adhere to the CloudEvents specification, you can publish or consume them with full fidelity:
+You can publish typed CloudEvents and inspect the exposed CloudEvent headers on delivery:
 
 #### Publishing typed CloudEvents
 ```csharp
@@ -212,7 +230,9 @@ does not by itself make the generated subscriber deserialization trim-safe.
 
 ### Backpressure management in streaming mode
 
-When using `DeliveryMode.Streaming` or dynamic streaming subscriptions, the Dapr Messaging SDK maintains an internal backpressure queue. Messages remain held in the Dapr sidecar runtime until your handler is ready to process them.
+When using `DeliveryMode.Streaming` or dynamic streaming subscriptions, the SDK queues incoming messages in
+application memory. `MaximumQueuedMessages` is nullable and defaults to an unbounded queue; set a positive
+limit to bound client buffering and apply backpressure.
 
 You can tune the queue size and cleanup timeout in `DaprSubscriptionOptions`:
 
@@ -234,7 +254,28 @@ var options = new DaprSubscriptionOptions(
 
 ### Graceful shutdown
 
-When your application shuts down, streaming subscriptions stop pulling new messages and flush pending acknowledgments to the Dapr sidecar within the configured `MaximumCleanupTimeout`, ensuring zero message loss during deployments or scale-downs.
+Streaming subscriptions attempt to flush pending acknowledgments within `MaximumCleanupTimeout` (30 seconds
+by default). This is a bounded, best-effort shutdown, not a zero-loss or exactly-once guarantee. Delivery can be
+repeated when an acknowledgment is not received, including after processing succeeded. Make handlers idempotent.
+
+### Observe background subscription failures
+
+`SubscribeAsync` returns `IAsyncDisposable`, but its runtime handle implements `IDaprSubscription`.
+Observe `IDaprSubscription.Completion` to detect a stream or acknowledgment-loop failure after startup.
+`ErrorHandler` is a notification callback, not a recovery mechanism: the original fault still completes the
+subscription exceptionally. If that callback also throws, the completion task reports both failures through
+an `AggregateException`. Recreate a failed dynamic subscription according to an application-owned retry policy.
+
+Generated streaming subscribers use the configured reconnect delay. Do not assume that an arbitrary dynamic
+subscription automatically reconnects because generated hosting does.
+
+## Existing DaprClient and ASP.NET integrations
+
+`DaprClient.PublishEventAsync` and `BulkPublishEventAsync`, as well as `Dapr.AspNetCore` `[Topic]`,
+CloudEvents middleware, and subscription endpoint mapping, remain separate supported API surfaces.
+The generated `[DaprTopic]`/`ITopicHandler<T>` model does not require a wholesale migration of existing
+subscribers. The dedicated publisher uses `PublishOptions`; the older client uses metadata dictionaries.
+Avoid registering duplicate subscriptions while migrating a topic.
 
 ## Next steps
 

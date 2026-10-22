@@ -33,10 +33,15 @@ The single idea underneath the whole set: the old SDK could run actors, and the 
 
 ## Prerequisites
 
-- The .NET 8, 9, or 10 SDK (though all the examples use .NET 10 since 8 and 9 will reach end of life towards the end of 2026).
+- The .NET 8, 9, 10, or 11 SDK (the examples target .NET 10).
 - The `Dapr.Actors.Next` package (or the solution's project references) and, for the test projects, `Dapr.Actors.Next.Testing`.
   - If you're building against this solution directly, you can use the referenced packages the examples use, but otherwise use the combined package on NuGet.
 - At least v1.18 of the Dapr runtime as it's required for the `Dapr.Actors.Next` implementation. Every unit test in this tutorial runs with no sidecar, no state store, and no Docker (testing using the built-in test functionality), but in a real-world environment you'd be expected to supplement with your own integration and E2E testing against the Dapr runtime and components.
+
+{{% alert title=".NET framework support" color="warning" %}}
+Be advised that .NET 8 and .NET 9 reach end of support in November 2026. Support for both will be dropped
+in Dapr v1.20; only .NET 10 and .NET 11 will be supported through the end of 2027.
+{{% /alert %}}
 
 If you are new to the SDK, skim the [overview]({{< ref _index.md >}}) first; each part links to the relevant concept page for reference detail.
 

@@ -6,7 +6,7 @@ weight: 3400
 description: "Configure pub/sub client lifetimes, endpoints, authentication, serialization, and reliable message processing"
 ---
 
-This guide covers shared configuration and operational guidance for pub/sub with **`@dapr/dapr` 3.19.0-rc.4 or later**. See the [overview]({{% ref js-pubsub %}}) to choose between server callbacks and streaming subscriptions.
+This guide covers shared configuration and operational guidance for pub/sub with `@dapr/dapr` 3.19.0 or later. See the [overview]({{% ref js-pubsub %}}) to choose between server callbacks and streaming subscriptions.
 
 ## Client lifetime
 

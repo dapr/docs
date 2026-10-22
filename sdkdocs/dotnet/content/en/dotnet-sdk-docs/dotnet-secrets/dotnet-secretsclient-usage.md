@@ -62,7 +62,7 @@ to configure these options yourself, make sure to enable the [ThrowOperationCanc
 
 ```cs
 var daprSecretsClient = new DaprSecretsManagementClientBuilder()
-    .UseGrpcChannelOptions(new GrpcChannelOptions { ... ThrowOperationCanceledOnCancellation = true })
+    .UseGrpcChannelOptions(new GrpcChannelOptions { ThrowOperationCanceledOnCancellation = true })
     .Build();
 ```
 
@@ -73,7 +73,7 @@ parameter. This follows a standard .NET practice for cancellable operations. Not
 is no guarantee that the remote endpoint stops processing the request, only that the client has stopped waiting for
 completion.
 
-When an operation is cancelled, it will throw an `OperationCancelledException`.
+When an operation is canceled, it throws an `OperationCanceledException`.
 
 ## Configuring DaprSecretsManagementClient via dependency injection
 
@@ -168,6 +168,15 @@ builder.Services.AddDaprSecretsManagementClient()
 ```
 
 Each call registers the typed interface, its concrete implementation, and an `IHostedService` that pre-loads the secrets at startup.
+
+This is a startup snapshot, not a secret rotation subscription. Do not resolve the generated interface before
+the host has started: its loader rejects access before loading. A missing mapped key throws
+`KeyNotFoundException` when the property is read.
+
+The generator flattens **inner dictionary keys** returned by bulk retrieval into its property lookup.
+For multi-value secrets, `[Secret("...")]` must therefore name the desired inner value key, not necessarily the
+outer secret name. Duplicate inner keys across secrets collide in the flattened snapshot; use the direct API
+when the outer/inner hierarchy matters.
 
 From there, simply inject your `IMyVaultSecrets` into a type and the properties will be populated with the values from your secret store via Dapr.
 

@@ -7,7 +7,7 @@ description: "Choose a pub/sub delivery mode and get started with publishing, se
 no_list: true
 ---
 
-The JavaScript SDK supports publishing events over HTTP or gRPC, programmatic subscriptions through `DaprServer`, and client-initiated streaming subscriptions through `DaprClient`. These guides describe **`@dapr/dapr` 3.19.0-rc.4 or later**.
+The JavaScript SDK supports publishing events over HTTP or gRPC, programmatic subscriptions through `DaprServer`, and client-initiated streaming subscriptions through `DaprClient`. These guides describe `@dapr/dapr` 3.19.0 or later.
 
 ## Prerequisites
 
@@ -17,13 +17,13 @@ The JavaScript SDK supports publishing events over HTTP or gRPC, programmatic su
 
 ## Installation
 
-Install the package explicitly when using the release candidate:
+Install the 3.19.0 release:
 
 ```sh
-npm install @dapr/dapr@3.19.0-rc.4
+npm install @dapr/dapr@3.19.0
 ```
 
-For a later release, substitute its version. An unversioned install does not necessarily select a prerelease.
+For a later release, substitute its version.
 
 Code snippets use ES module imports. Run statements containing `await` in an async function or an ES module. Each guide identifies the client or server configuration used by its examples.
 
@@ -57,7 +57,7 @@ Streaming subscriptions use `SubscribeTopicEventsAlpha1`, an alpha gRPC API. Use
 
 ## Implementation references
 
-The documented behavior was checked against the published [3.19.0-rc.4 package](https://www.npmjs.com/package/@dapr/dapr/v/3.19.0-rc.4) and the upstream SDK implementation:
+For implementation details, see the published [3.19.0 package](https://www.npmjs.com/package/@dapr/dapr/v/3.19.0) and the upstream SDK implementation:
 
 - [Client pub/sub interface](https://github.com/dapr/js-sdk/blob/main/src/interfaces/Client/IClientPubSub.ts)
 - [Server pub/sub interface](https://github.com/dapr/js-sdk/blob/main/src/interfaces/Server/IServerPubSub.ts)

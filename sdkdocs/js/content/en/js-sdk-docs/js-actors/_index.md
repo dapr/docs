@@ -8,7 +8,7 @@ description: Author, host, and call virtual actors with the Dapr JavaScript SDK
 
 The Dapr JavaScript SDK lets Node.js applications host virtual actors, call actors through proxies or by method name, manage actor state, and schedule timers and durable reminders.
 
-These guides target **`@dapr/dapr` 3.19.0-rc.4 or later**. Use a supported Node.js LTS release and a Dapr runtime that supports the APIs you use. The [how-to guide]({{% ref js-actors-howto.md %}}) uses HTTP actor hosting and a local Dapr environment.
+These guides target `@dapr/dapr` 3.19.0 or later. Use a supported Node.js LTS release and a Dapr runtime that supports the APIs you use. The [how-to guide]({{% ref js-actors-howto.md %}}) uses HTTP actor hosting and a local Dapr environment.
 
 ## Choose a guide
 
@@ -30,7 +30,7 @@ The application protocol and the protocol used to call the sidecar are separate 
 | Invoke actor methods through a proxy or the lower-level actor client | Supported | Supported |
 | Read and transact actor state; register and unregister timers and individual reminders | Supported | Supported |
 | Retrieve an individual reminder with `getActorReminder` | Supported | Supported |
-| List reminders for one actor with `listActorReminders` | Dapr 1.19+, including 1.19.0-rc.4 | Dapr 1.17+ |
+| List reminders for one actor with `listActorReminders` | Dapr 1.19+ | Dapr 1.17+ |
 | List reminders for every instance of an actor type | Not supported | Dapr 1.17+ |
 | Delete reminders in bulk with `unregisterActorRemindersByType` | Not supported | Dapr 1.17+ |
 

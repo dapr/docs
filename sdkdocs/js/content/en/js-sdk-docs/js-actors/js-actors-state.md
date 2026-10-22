@@ -6,7 +6,7 @@ weight: 40000
 description: Use the actor state manager, understand automatic persistence, and handle cache consistency
 ---
 
-Actors access named state through `this.getStateManager<T>()`. State is scoped to an actor's **type and ID**, and is persisted through the configured actor state store. Ordinary fields on the actor instance are not durable. These examples target `@dapr/dapr` **3.19.0-rc.4 or later**.
+Actors access named state through `this.getStateManager<T>()`. State is scoped to an actor's **type and ID**, and is persisted through the configured actor state store. Ordinary fields on the actor instance are not durable. These examples target `@dapr/dapr` 3.19.0 or later.
 
 ## Read and update state
 

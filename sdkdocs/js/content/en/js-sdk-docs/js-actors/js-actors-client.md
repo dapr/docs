@@ -6,7 +6,7 @@ weight: 30000
 description: Use actor identities, typed proxies, dynamic invocations, and the lower-level actor client
 ---
 
-Use a long-lived `DaprClient` and reuse an `ActorProxyBuilder` to call actors. These examples target `@dapr/dapr` **3.19.0-rc.4 or later** and use the counter contract and implementation from the [how-to guide]({{% ref js-actors-howto.md %}}).
+Use a long-lived `DaprClient` and reuse an `ActorProxyBuilder` to call actors. These examples target `@dapr/dapr` 3.19.0 or later and use the counter contract and implementation from the [how-to guide]({{% ref js-actors-howto.md %}}).
 
 ## Build a proxy for a known identity
 

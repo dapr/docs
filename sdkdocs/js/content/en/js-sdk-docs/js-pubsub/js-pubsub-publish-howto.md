@@ -6,7 +6,7 @@ weight: 3100
 description: "Publish single events and batches, configure metadata and CloudEvents, and handle publication failures"
 ---
 
-Use `DaprClient.pubsub` to publish events over HTTP or gRPC with **`@dapr/dapr` 3.19.0-rc.4 or later**. Complete the [pub/sub prerequisites]({{% ref js-pubsub %}}) before following this guide.
+Use `DaprClient.pubsub` to publish events over HTTP or gRPC with `@dapr/dapr` 3.19.0 or later. Complete the [pub/sub prerequisites]({{% ref js-pubsub %}}) before following this guide.
 
 ## Configure a publisher
 

@@ -6,7 +6,7 @@ weight: 53150
 description: Filter, sort, and paginate state with the JavaScript SDK's alpha state query API
 ---
 
-Use `client.state.query` to query JSON documents in a state store that supports the [state query API]({{% ref howto-state-query-api.md %}}). Both HTTP and gRPC are implemented in **3.19.0-rc.4**. This is the **alpha** state query API, not a general-purpose SQL or native database query interface.
+Use `client.state.query` to query JSON documents in a state store that supports the [state query API]({{% ref howto-state-query-api.md %}}). Both HTTP and gRPC are implemented in 3.19.0. This is the **alpha** state query API, not a general-purpose SQL or native database query interface.
 
 ## Prerequisites
 

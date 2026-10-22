@@ -19,11 +19,17 @@ hosted service that retrieves metadata from the Dapr sidecar during application 
 - [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/)
 - [Initialized Dapr environment](https://docs.dapr.io/getting-started/install-dapr-selfhost)
 - [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0),
-  [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0), or
-  [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0) installed
+  [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0),
+  [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0), or
+  [.NET 11](https://dotnet.microsoft.com/download/dotnet/11.0) installed
 - [Dapr.Metadata](https://www.nuget.org/packages/Dapr.Metadata) NuGet package installed to your project
 
 ## Install the package
+
+{{% alert title=".NET framework support" color="warning" %}}
+Be advised that .NET 8 and .NET 9 reach end of support in November 2026. Support for both will be dropped
+in Dapr v1.20; only .NET 10 and .NET 11 will be supported through the end of 2027.
+{{% /alert %}}
 
 Install the Dapr Metadata package:
 

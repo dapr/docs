@@ -1,4 +1,4 @@
-﻿---
+---
 type: docs
 title: "Experimental Attributes"
 linkTitle: "Experimental Attributes"
@@ -14,6 +14,11 @@ With the release of .NET 8, C# 12 introduced the `[Experimental]` attribute, whi
 APIs that are still in development or experimental. This attribute is defined in the `System.Diagnostics.CodeAnalysis` 
 namespace and requires a diagnostic ID parameter used to generate compiler warnings when the experimental API 
 is used.
+
+{{% alert title=".NET framework support" color="warning" %}}
+Be advised that .NET 8 and .NET 9 reach end of support in November 2026. Support for both will be dropped
+in Dapr v1.20; only .NET 10 and .NET 11 will be supported through the end of 2027.
+{{% /alert %}}
 
 In the Dapr .NET SDK, we now use the `[Experimental]` attribute instead of `[Obsolete]` to mark building blocks and 
 components that have not yet passed the stable lifecycle certification. This approach provides a clearer distinction 
@@ -51,7 +56,6 @@ The diagnostic IDs follow a naming convention of `DAPR_[BUILDING_BLOCK_NAME]`, s
 
 - `DAPR_CONVERSATION` - For the Conversation building block
 - `DAPR_CRYPTOGRAPHY` - For the Cryptography building block
-- `DAPR_JOBS` - For the Jobs building block
 - `DAPR_DISTRIBUTEDLOCK` - For the Distributed Lock building block
 
 ### Suppressing Experimental Warnings
@@ -90,7 +94,7 @@ You can include multiple diagnostic IDs separated by semicolons:
 
 ```xml
 <PropertyGroup>
-    <NoWarn>$(NoWarn);DAPR_CONVERSATION;DAPR_JOBS;DAPR_DISTRIBUTEDLOCK;DAPR_CRYPTOGRAPHY</NoWarn>
+    <NoWarn>$(NoWarn);DAPR_CONVERSATION;DAPR_DISTRIBUTEDLOCK;DAPR_CRYPTOGRAPHY</NoWarn>
 </PropertyGroup>
 ```
 
@@ -102,7 +106,7 @@ For suppressing warnings across multiple projects in a directory, add a `Directo
 
 ```xml
 <PropertyGroup>
-    <NoWarn>$(NoWarn);DAPR_CONVERSATION;DAPR_JOBS;DAPR_DISTRIBUTEDLOCK;DAPR_CRYPTOGRAPHY</NoWarn>
+    <NoWarn>$(NoWarn);DAPR_CONVERSATION;DAPR_DISTRIBUTEDLOCK;DAPR_CRYPTOGRAPHY</NoWarn>
 </PropertyGroup>
 ```
 
