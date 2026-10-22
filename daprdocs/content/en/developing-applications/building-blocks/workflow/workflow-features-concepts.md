@@ -88,6 +88,8 @@ Each workflow you define has a type name, and individual executions of a workflo
 
 Only one workflow instance with a given ID can exist at any given time. Attempting to create a new workflow instance with the same ID as an existing instance results in an error unless the existing instance, and every child workflow it created (checked recursively), has reached a terminal state: `COMPLETED`, `FAILED`, or `TERMINATED`. Once the entire workflow tree is terminal, creating a new instance with the same ID starts a fresh execution that replaces the previous one in the state store.
 
+SDK workflow clients get the gRPC `AlreadyExists` status code when the instance ID belongs to an active instance (the Java SDK raises `WorkflowInstanceAlreadyExistsException`). A client can therefore start a workflow with a fixed instance ID as an idempotent call and treat `AlreadyExists` as "already running", without parsing the error message. A completed instance ID is reused by default. It also returns `AlreadyExists` when a durabletask-go client sets `api.WithEnforceUniqueInstanceID()`, or when the old instance's child workflows have not finished. The [workflow API]({{% ref "workflow_api.md#start-workflow-request" %}}) (HTTP and gRPC `StartWorkflowBeta1`) keeps its error response: HTTP `500` with error code `ERR_START_WORKFLOW`.
+
 #### Implications of Instance ID Reuse
 
 {{% alert title="Recommendation" color="primary" %}}
@@ -108,7 +110,7 @@ Recommended patterns instead of reuse:
 - **If a business identifier must be the instance ID and executions repeat**, purge the previous instance with the [purge API]({{% ref "workflow_api.md#purge-workflow-request" %}}) or a [retention policy]({{% ref workflow-history-retention-policy.md %}}) before starting the next one, and treat the purge and the create as as transaction in code.
 
 {{% alert title="Important" color="warning" %}}
-An instance ID cannot be reused while its workflow is running, or while any child workflow created by its previous execution is still running. This includes children abandoned by a parent that completed without awaiting them or that was terminated non-recursively; a still-running child from the old execution could otherwise deliver its results into the new one. The create request is rejected with a conflict error naming the child workflow that is not yet terminal.
+An instance ID cannot be reused while its workflow is running, or while any child workflow created by its previous execution is still running. This includes children abandoned by a parent that completed without awaiting them or that was terminated non-recursively; a still-running child from the old execution could otherwise deliver its results into the new one. The create request fails with an error naming the child workflow that is not yet terminal: gRPC `AlreadyExists` for SDK workflow clients, or HTTP `500` with `ERR_START_WORKFLOW` from the workflow HTTP API.
 
 To free up an instance ID, purge the workflow using the [purge API]({{% ref "workflow_api.md#purge-workflow-request" %}}) or configure a [workflow retention policy]({{% ref workflow-history-retention-policy.md %}}).
 
@@ -231,6 +233,8 @@ Because workflow retry policies are configured in code, the exact developer expe
 | **Backoff coefficient** | The coefficient used to determine the rate of increase of back-off. For example a coefficient of 2 doubles the wait of each subsequent retry. |
 | **Maximum retry interval** | The maximum amount of time to wait before each subsequent retry. If set to 0, no retries will happen. |
 | **Retry timeout** | The global timeout for retries, regardless of any configured max number of attempts.  No further attempts are made executing activities after this timeout expires.
+
+Each retry of a child workflow is a separate instance with its own instance ID. From Dapr 1.19, the `ChildWorkflowInstanceCreated` event of a retry attempt in the parent's history records the instance ID of the first attempt (`retryParentInstanceInfo`). Tooling that reads a parent's history can group the attempts of one call by that ID, without walking the retry timers between them.
 
 ## External events
 

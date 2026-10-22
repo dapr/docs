@@ -49,6 +49,12 @@ with DaprClient("mydomain:50051?tls=true") as d:
     # use the client
 ```  
 
+Use the `host:port?tls=true` or `host:port?tls=false` form to set the endpoint and whether the connection uses TLS. 
+
+{{% alert title="Deprecated" color="warning" %}}
+A gRPC endpoint that starts with `http://` or `https://`, for example `https://mydomain:443`, still works but emits a `DeprecationWarning` that names the equivalent endpoint. Replace it with `mydomain:443?tls=true` (for `https://`) or `mydomain:443?tls=false` (for `http://`). Python hides a `DeprecationWarning` in many cases, so run with `-W default` to see it.
+{{% /alert %}}
+
 #### Configuration options:  
 
 ##### Dapr Sidecar Endpoints
@@ -66,8 +72,12 @@ with DaprClient() as d:
     # the client will use the endpoint specified in the environment variables
 ```  
 
+To connect to the sidecar over a Unix domain socket, give the absolute socket path after three slashes, for example `unix:///tmp/dapr.sock`. `DaprClient`, `WorkflowRuntime` and `DaprWorkflowClient` all accept this form. An endpoint with a host part after `unix://`, such as `unix://dapr.sock`, raises `ValueError` when the client is created. For a relative path, use `unix:dapr.sock`.
+
 The legacy environment variables `DAPR_RUNTIME_HOST`, `DAPR_HTTP_PORT` and `DAPR_GRPC_PORT` are 
 also supported, but `DAPR_GRPC_ENDPOINT` takes precedence.
+
+The `http://` and `https://` prefixes are deprecated for `DAPR_GRPC_ENDPOINT` too. Use `host:port?tls=true` or `host:port?tls=false` instead.
 
 ##### Dapr API Token
 If your Dapr instance is configured to require the `DAPR_API_TOKEN` environment variable, you can
@@ -79,7 +89,8 @@ On client initialisation, a health check is performed against the Dapr sidecar (
 The client will wait for the sidecar to be up and running before proceeding.  
 
 The default healthcheck timeout is 60 seconds, but it can be overridden by setting the `DAPR_HEALTH_TIMEOUT`
-environment variable.
+environment variable. Each healthcheck attempt is also limited by this timeout, so a sidecar that accepts the
+connection but does not answer cannot block the client forever.
 
 ##### Retries and timeout
 
@@ -113,9 +124,15 @@ factory = ActorProxyFactory(retry_policy=RetryPolicy(max_attempts=3))
 proxy = ActorProxy.create('DemoActor', ActorId('1'), DemoActorInterface, factory)
 ```
 
-**Timeout** can be set for all calls through the environment variable `DAPR_API_TIMEOUT_SECONDS`. The default value is 60 seconds.
+**Timeout** can be set for all calls through the environment variable `DAPR_API_TIMEOUT_SECONDS`. By default, no timeout is set, so calls wait without a time limit.
+
+> Note: `DAPR_API_TIMEOUT_SECONDS` does not apply to the workflow client methods `wait_for_workflow_start` and `wait_for_workflow_completion`. Without their own `timeout_in_seconds` argument, they wait with no time limit. Pass `timeout_in_seconds` to limit the wait. See [Dapr Workflow extension]({{% ref python-workflow-ext %}}).
 
 > Note: You can control timeouts on service invocation separately, by passing a `timeout` parameter to the `invoke_method` method. 
+
+##### DNS resolution on macOS
+
+On macOS, the client sets the `GRPC_DNS_RESOLVER` environment variable to `native` when it is not already set, so gRPC uses the operating system resolver. The resolver that ships with gRPC can fail with `DNS query cancelled` for host names that resolve on the system. To use a different resolver, set `GRPC_DNS_RESOLVER` before you create the client. The variable applies to the whole process.
 
 ## Error handling
 Initially, errors in Dapr followed the [Standard gRPC error model](https://grpc.io/docs/guides/error/#standard-error-model). However, to provide more detailed and informative error messages, in version 1.13 an enhanced error model has been introduced which aligns with the gRPC [Richer error model](https://grpc.io/docs/guides/error/#richer-error-model). In response, the Python SDK implemented `DaprGrpcError`, a custom exception class designed to improve the developer experience.  
@@ -306,27 +323,27 @@ For more details, see the [bulk publish guide]({{% ref pubsub-bulk.md %}}).
 #### Subscribe to messages
 
 ```python
-from cloudevents.sdk.event import v1
-from dapr.ext.grpc import App
-import json
+from dapr.ext.grpc import App, Rule, SubscriptionMessage
 
 app = App()
 
 # Default subscription for a topic
 @app.subscribe(pubsub_name='pubsub', topic='TOPIC_A')
-def mytopic(event: v1.Event) -> None:
-    data = json.loads(event.Data())
+def mytopic(event: SubscriptionMessage) -> None:
+    data = event.data()
     print(f'Received: id={data["id"]}, message="{data ["message"]}"' 
-          ' content_type="{event.content_type}"',flush=True)
+          f' content_type="{event.data_content_type()}"',flush=True)
 
 # Specific handler using Pub/Sub routing
 @app.subscribe(pubsub_name='pubsub', topic='TOPIC_A',
                rule=Rule("event.type == \"important\"", 1))
-def mytopic_important(event: v1.Event) -> None:
-    data = json.loads(event.Data())
+def mytopic_important(event: SubscriptionMessage) -> None:
+    data = event.data()
     print(f'Received: id={data["id"]}, message="{data ["message"]}"' 
-          ' content_type="{event.content_type}"',flush=True)
+          f' content_type="{event.data_content_type()}"',flush=True)
 ```
+
+Annotate the event parameter with `SubscriptionMessage`, the same type that streaming subscriptions deliver. `data()` returns the payload parsed by content type, for example a `dict` for JSON. Handlers that are not annotated, or that are annotated with `cloudevents.sdk.event.v1.Event`, receive the deprecated CloudEvents-based event, and `subscribe()` emits a `DeprecationWarning`. See [Python gRPC extension]({{% ref "python-grpc.md#subscribe-to-a-topic" %}}) for the deprecation timeline.
 
 - For more information about pub/sub, visit [How-To: Publish & subscribe]({{% ref howto-publish-subscribe.md %}}).
 - Visit [Python SDK examples](https://github.com/dapr/python-sdk/tree/master/examples/pubsub-simple) for code samples and instructions to try out pub/sub.
@@ -341,6 +358,9 @@ stream by using a `for` loop (ex. `for message in subscription`) or by
 calling the `next_message` method. This will block on the main thread while waiting for messages.
 When done, you should call the close method to terminate the
 subscription and stop receiving messages.
+
+If the stream fails with a transient error or the sidecar ends it, the subscription reconnects and returns the next message. Before Python SDK 1.19, the subscription returned `None` after a reconnect, so you no longer need to check for `None`.
+After five failed reconnect attempts, `next_message()` and the `for` loop raise `StreamReconnectError`. Catch this error to decide whether to create a new subscription or to stop the application.
 
 The `subscribe_with_handler` method accepts a callback function that is executed for each message
 received from the stream.
@@ -357,7 +377,11 @@ Here's an example of using the `subscribe` method:
 import time
 
 from dapr.clients import DaprClient
-from dapr.clients.grpc.subscription import StreamInactiveError, StreamCancelledError
+from dapr.clients.grpc.subscription import (
+    StreamCancelledError,
+    StreamInactiveError,
+    StreamReconnectError,
+)
 
 counter = 0
 
@@ -380,10 +404,6 @@ def main():
 
         try:
             for message in subscription:
-                if message is None:
-                    print('No message received. The stream might have been cancelled.')
-                    continue
-
                 try:
                     response_status = process_message(message)
 
@@ -405,7 +425,8 @@ def main():
                     break
                 except Exception as e:
                     print(f'Error occurred during message processing: {e}')
-
+        except StreamReconnectError:
+            print('Stream could not be reconnected after 5 attempts')
         finally:
             print('Closing subscription...')
             subscription.close()

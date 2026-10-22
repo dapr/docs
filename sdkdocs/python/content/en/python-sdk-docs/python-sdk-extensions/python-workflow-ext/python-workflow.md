@@ -22,7 +22,7 @@ In the Python example project, the `simple.py` file contains the setup of the ap
 ## Prerequisites
 - [Dapr CLI]({{% ref install-dapr-cli.md %}}) installed
 - Initialized [Dapr environment]({{% ref install-dapr-selfhost.md %}})
-- [Python 3.9+](https://www.python.org/downloads/) installed
+- [Python 3.10+](https://www.python.org/downloads/) installed
 - [Dapr Python package]({{% ref "python#installation" %}}) and the [workflow extension]({{% ref "python-workflow/_index.md" %}}) installed
 - Verify you're using the latest proto bindings
 
@@ -160,6 +160,48 @@ When you run the application, several key workflow features are shown:
    )
    wf_client.purge_workflow(instance_id=instance_id)
    ```
+
+## List, inspect and rerun workflow instances
+
+From Dapr 1.19, `DaprWorkflowClient` and the async client in `dapr.ext.workflow.aio` can list the workflow instances of the app, read the history of an instance, and rerun a finished instance from one of its history events. Use them to find instances without storing their IDs yourself, to see where a failed instance stopped, and to retry it from that step with a corrected input instead of from the start.
+
+```python
+import dapr.ext.workflow as wf
+
+wf_client = wf.DaprWorkflowClient()
+
+# Page through the instance IDs of this app, 100 IDs per request
+for instance_id in wf_client.iter_workflow_instance_ids(page_size=100):
+    print(instance_id)
+
+# Read the history of an instance, oldest event first
+history = wf_client.get_workflow_history('order-123')
+for event in history:
+    print(event.event_id, event.event_type.name, event.name)
+
+# Rerun from the scheduling of the charge_order activity, with a new input
+event_id = next(e.event_id for e in history if e.is_rerunnable and e.name == 'charge_order')
+new_instance_id = wf_client.rerun_workflow_from_event('order-123', event_id, input=25)
+```
+
+- `list_workflow_instance_ids(page_size=..., continuation_token=...)` returns one page with `instance_ids` and `continuation_token`. `iter_workflow_instance_ids()` fetches the pages for you. Listing needs an actor state store that can list keys. Otherwise the call raises `NotImplementedError`.
+- `rerun_workflow_from_event` starts a new instance and leaves the source instance unchanged. The source instance must be in a terminal state and must not be a child workflow. The event must be the scheduling of an activity, the creation of a timer or the creation of a child workflow, which `is_rerunnable` reports. Omit `input` to keep the recorded input, and pass `new_instance_id` to choose the ID of the new instance.
+
+For a runnable version, see the [workflow management example](https://github.com/dapr/python-sdk/blob/main/examples/workflow/workflow_management.py).
+
+## Large workflow payloads
+
+By default, the workflow gRPC channel receives messages of up to 4 MiB, the gRPC default, so a larger message, for example a large workflow input or output, fails with `RESOURCE_EXHAUSTED`. To raise the limit for sending and receiving, pass `max_grpc_message_length` in bytes to `WorkflowRuntime`, `DaprWorkflowClient` and the async `DaprWorkflowClient`, or set the `DAPR_GRPC_MAX_INBOUND_MESSAGE_SIZE_BYTES` environment variable. The argument takes precedence over the environment variable.
+
+```python
+wfr = wf.WorkflowRuntime(max_grpc_message_length=16 * 1024 * 1024)
+wf_client = wf.DaprWorkflowClient(max_grpc_message_length=16 * 1024 * 1024)
+```
+
+## Worker readiness
+
+`wfr.start()` waits until the worker has opened its work-item stream to the Dapr sidecar, for 30 seconds by default (`worker_ready_timeout` on `WorkflowRuntime`). After that, `wfr.wait_for_worker_ready(timeout=30.0)` returns `True` when the stream is open, and `False` if the stream does not open again within the timeout, for example while the worker reconnects after a sidecar restart. Use it in a readiness check, so that the app reports not ready while its worker cannot receive work. Before Python SDK 1.19, it kept returning `True` after the first connection.
+
 ## Next steps
 - [Learn more about Dapr workflow]({{% ref workflow-overview.md %}})
 - [Workflow API reference]({{% ref workflow_api.md %}})

@@ -17,11 +17,10 @@ Dapr offers a variety of packages to help with the development of Java applicati
 
 - [Dapr CLI]({{% ref install-dapr-cli.md %}}) installed
 - Initialized [Dapr environment]({{% ref install-dapr-selfhost.md %}})
-- JDK 11 or above - the published jars are compatible with Java 8:
-    - [AdoptOpenJDK 11 - LTS](https://adoptopenjdk.net/)
-    - [Oracle's JDK 15](https://www.oracle.com/java/technologies/javase-downloads.html)
-    - [Oracle's JDK 11 - LTS](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
-    - [OpenJDK](https://openjdk.java.net/)
+- JDK 17 or above:
+    - [Eclipse Temurin](https://adoptium.net/)
+    - [Oracle JDK](https://www.oracle.com/java/technologies/downloads/)
+    - [OpenJDK](https://openjdk.org/)
 - Install one of the following build tools for Java:
     - [Maven 3.x](https://maven.apache.org/install.html)
     - [Gradle 6.x](https://gradle.org/install/)
@@ -46,19 +45,19 @@ For a Maven project, add the following to your `pom.xml` file:
     <dependency>
       <groupId>io.dapr</groupId>
       <artifactId>dapr-sdk</artifactId>
-      <version>1.16.0</version>
+      <version>1.19.0</version>
     </dependency>
     <!-- Dapr's SDK for Actors (optional). -->
     <dependency>
       <groupId>io.dapr</groupId>
       <artifactId>dapr-sdk-actors</artifactId>
-      <version>1.16.0</version>
+      <version>1.19.0</version>
     </dependency>
     <!-- Dapr's SDK integration with SpringBoot (optional). -->
     <dependency>
       <groupId>io.dapr</groupId>
       <artifactId>dapr-sdk-springboot</artifactId>
-      <version>1.16.0</version>
+      <version>1.19.0</version>
     </dependency>
     ...
   </dependencies>
@@ -76,11 +75,11 @@ For a Gradle project, add the following to your `build.gradle` file:
 dependencies {
 ...
     // Dapr's core SDK with all features, except Actors.
-    compile('io.dapr:dapr-sdk:1.16.0')
+    compile('io.dapr:dapr-sdk:1.19.0')
     // Dapr's SDK for Actors (optional).
-    compile('io.dapr:dapr-sdk-actors:1.16.0')
+    compile('io.dapr:dapr-sdk-actors:1.19.0')
     // Dapr's SDK integration with SpringBoot (optional).
-    compile('io.dapr:dapr-sdk-springboot:1.16.0')
+    compile('io.dapr:dapr-sdk-springboot:1.19.0')
 }
 ```
 
@@ -88,17 +87,31 @@ dependencies {
 
 {{< /tabpane >}}
 
-If you are also using Spring Boot, you may run into a common issue where the `OkHttp` version that the Dapr SDK uses conflicts with the one specified in the Spring Boot _Bill of Materials_.
+### Spring Boot compatibility
 
-You can fix this by specifying a compatible `OkHttp` version in your project to match the version that the Dapr SDK uses:
+The Spring Boot integration modules (`dapr-sdk-springboot` and the `dapr-spring-*` modules) require Spring Boot 4.0 from SDK 1.19. To use Spring Boot 3.5, stay on SDK 1.18.x. Learn more in [Spring Boot integration]({{% ref spring-boot %}}).
+
+### Netty version
+
+The Dapr Java SDK uses gRPC with Netty. From SDK 1.19, the SDK pulls Netty 4.2.x transitively. A project that pins Netty 4.1.x directly, or that uses a dependency management file that manages Netty 4.1.x, can get a dependency conflict.
+
+You can fix this by removing the Netty 4.1.x pin. You can also import the `dapr-sdk-bom`, which manages the Netty version that matches the gRPC version the SDK uses:
 
 ```xml
-<dependency>
-  <groupId>com.squareup.okhttp3</groupId>
-  <artifactId>okhttp</artifactId>
-  <version>1.16.0</version>
-</dependency>
+<dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>io.dapr</groupId>
+      <artifactId>dapr-sdk-bom</artifactId>
+      <version>1.19.0</version>
+      <type>pom</type>
+      <scope>import</scope>
+    </dependency>
+  </dependencies>
+</dependencyManagement>
 ```
+
+For Spring Boot projects, import `io.dapr.spring:dapr-spring-bom` instead, which imports `dapr-sdk-bom`.
 
 ## Try it out
 

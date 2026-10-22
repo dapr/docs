@@ -12,9 +12,10 @@ The Dapr Scheduler service is used to schedule different types of jobs, running 
 
 The Scheduler service can also serve actor placement in place of the standalone [Placement service]({{% ref placement %}}). See [Serving actor placement](#serving-actor-placement).
 
-There is no concept of a leader Scheduler instance.
+There is no leader Scheduler instance for jobs.
 All Scheduler service replicas are considered peers.
 All receive jobs to be scheduled for execution and the jobs are allocated between the available Scheduler service replicas for load balancing of the trigger events.
+When the Scheduler serves [actor placement](#serving-actor-placement), one replica is the placement leader, and its `dapr_scheduler_placement_leader` metric is `1`.
 
 The diagram below shows how the Scheduler service is used via the jobs API when called from your application. All the jobs that are tracked by the Scheduler service are stored in the Etcd database.
 
@@ -59,6 +60,8 @@ The Scheduler can be run in both high availability (HA) and non-HA modes in self
 The Scheduler service is deployed as part of `dapr init -k`, or via the Dapr Helm charts. Scheduler always runs in high availability (HA) mode in Kubernetes deployments. Scaling the Scheduler service replicas up or down is not possible without incurring data loss due to the nature of the embedded data store. [Learn more about setting HA mode in your Kubernetes service.]({{% ref "kubernetes-production#individual-service-ha-helm-configuration" %}})
 
 When a Kubernetes namespace is deleted, all the Job and Actor Reminders corresponding to that namespace are deleted.
+
+The Scheduler needs `get`, `list` and `watch` on `pods` in the Dapr control plane namespace to detect whether a Placement service is deployed. From Dapr 1.19, the Helm chart grants this with the `dapr-scheduler-pods` Role and RoleBinding in the release namespace, whether or not the Scheduler serves actor placement. The `dapr-scheduler` ClusterRole (or Role, with `global.rbac.namespaced=true`) keeps `namespaces` only. If you manage the control plane RBAC outside the Helm chart, add the `pods` permission before you upgrade to 1.19.
 
 ## Docker Compose Example
 
@@ -111,6 +114,8 @@ There are several different types of jobs which Scheduler manages:
 - `activity/{app-id}/{instance-id}::{task-id}::0`: Used internally for [Workflow Activity reminders]({{% ref "workflow-features-concepts.md#workflow-activities" %}})
 - `workflow/{app-id}/{instance-id}/{random-name}`: Used internally for [Workflows]({{% ref "workflow-overview.md" %}}).
 
+From Dapr 1.19, activity job names always end in `::0`. Earlier runtimes used the workflow instance's generation as the last component, for example `::1` on the first run, so update scripts that build these names.
+
 Please see [here for how to manage specifically reminders]({{% ref "actors-timers-reminders#managing-reminders-with-the-cli" %}}) with the CLI.
 
 ### List jobs
@@ -127,8 +132,8 @@ actor/myactortype/actorid1/test1               -3.89s    1      2025-10-03T16:58
 actor/myactortype/actorid2/test2               -3.89s    1      2025-10-03T16:58:55Z
 app/test-scheduler/test1                       -3.89s    1      2025-10-03T16:58:55Z
 app/test-scheduler/test2                       -3.89s    1      2025-10-03T16:58:55Z
-activity/test-scheduler/xyz1::0::1             -888.8ms  0
-activity/test-scheduler/xyz2::0::1             -888.8ms  0
+activity/test-scheduler/xyz1::0::0             -888.8ms  0
+activity/test-scheduler/xyz2::0::0             -888.8ms  0
 workflow/test-scheduler/abc1/timer-0-TVIQGkvu  +50.0h    0
 workflow/test-scheduler/abc2/timer-0-OM2xqG9m  +50.0h    0
 ```
@@ -145,8 +150,8 @@ default    actor/myactortype/actorid1/test1               2025-10-03T16:58:55Z  
 default    actor/myactortype/actorid2/test2               2025-10-03T16:58:55Z                        @every 2h46m40s  2025-10-03T17:58:55+01:00          100      1      2025-10-03T16:58:55Z
 default    app/test-scheduler/test1                       2025-10-03T16:58:55Z                        @every 100m      2025-10-03T17:58:55+01:00          1234     1      2025-10-03T16:58:55Z
 default    app/test-scheduler/test2                       2025-10-03T16:58:55Z  2025-10-03T19:45:35Z  @every 100m      2025-10-03T17:58:55+01:00  10000s  56788    1      2025-10-03T16:58:55Z
-default    activity/test-scheduler/xyz1::0::1             2025-10-03T16:58:58Z                                         0s                                          0
-default    activity/test-scheduler/xyz2::0::1             2025-10-03T16:58:58Z                                         0s                                          0
+default    activity/test-scheduler/xyz1::0::0             2025-10-03T16:58:58Z                                         0s                                          0
+default    activity/test-scheduler/xyz2::0::0             2025-10-03T16:58:58Z                                         0s                                          0
 default    workflow/test-scheduler/abc1/timer-0-TVIQGkvu  2025-10-05T18:58:58Z                                         2025-10-05T18:58:58Z                        0
 default    workflow/test-scheduler/abc2/timer-0-OM2xqG9m  2025-10-05T18:58:58Z                                         2025-10-05T18:58:58Z                        0
 ```
@@ -211,6 +216,8 @@ In Kubernetes mode, set the Helm value:
 global.scheduler.placement.enabled=true
 ```
 
+With this value, the Helm chart fails to render unless `global.scheduler.enabled=true`, `global.actors.enabled=true` and `global.actors.serviceName=placement` (the defaults). The upgrade that sets the value removes the Placement StatefulSet, and the Schedulers take over placement within a few seconds. The same upgrade also restarts the Schedulers to pick up `--placement-enabled=true`, so expect actor and workflow activity to pause until the Schedulers are ready again.
+
 In self-hosted mode, initialize Dapr with the `--scheduler-placement` flag, which skips the Placement container and starts the Scheduler with `--placement-enabled=true`:
 
 ```bash
@@ -218,6 +225,10 @@ dapr init --scheduler-placement
 ```
 
 Sidecars take actor placement from whichever service the control plane advertises, so applications need no configuration of their own and the cluster always has exactly one placement authority. Toggling the setting in either direction requires no sidecar restarts. [Learn more about serving placement from the Scheduler service.]({{% ref "placement#serving-placement-from-the-scheduler-service" %}})
+
+To check which service a sidecar uses, look in its log for `Connected to scheduler placement leader <address>` (Scheduler) or `Connected to placement service: <address>` (Placement service). On the Scheduler, `dapr_scheduler_placement_leader` is `1` on the placement leader, `dapr_scheduler_placement_streams_connected` counts the connected sidecar placement streams, and `dapr_scheduler_placement_incapable_sidecars` counts connected sidecars older than 1.19. Upgrade those sidecars: without a Placement service, their actor and workflow APIs stall.
+
+At startup, a sidecar waits for the Scheduler to advertise placement for up to `--actors-placement-startup-timeout` (annotation `dapr.io/actors-placement-startup-timeout`, default `30s`), then falls back to the configured Placement service. The Scheduler advertises placement only after the sidecar's jobs stream registers, so set the timeout higher than your app health probe budget.
 
 The dissemination behavior of scheduler-served placement can be tuned with the following Scheduler flags:
 
@@ -232,6 +243,12 @@ The dissemination behavior of scheduler-served placement can be tuned with the f
 If you are not using any features that require the Scheduler service (Jobs API, Actor Reminders, or Workflows), you can disable it by setting `global.scheduler.enabled=false`.
 The Scheduler service cannot be disabled while it serves actor placement (`global.scheduler.placement.enabled=true`).
 For more information on running Dapr on Kubernetes, visit the [Kubernetes hosting page]({{% ref kubernetes %}}).
+
+## Failure behaviour
+
+From Dapr 1.19, when the Scheduler server stops with a runtime error, for example because its embedded Etcd is briefly unavailable, the Scheduler recreates the server in the same process after a jittered backoff from 500 ms up to 10 s. Meanwhile its healthz endpoint reports not ready, and the log shows `Scheduler server failed, recreating in <delay>`. The process does not exit, so alerts that count Scheduler pod restarts do not see this condition: use readiness or the logs instead.
+
+A port bind failure is the exception: the Scheduler process exits and Kubernetes restarts it. The Scheduler port, 50006, is inside the default Linux ephemeral port range, so one of the process's own outbound connections can hold it. Without the exit, the replica would stay not ready until its liveness probe restarts it, 230 s with the chart defaults (180 s initial delay, then 5 failed probes 10 s apart).
 
 ## Flag tuning
 
@@ -292,7 +309,7 @@ Changing these settings should always been done first in a testing environment, 
 --etcd-backend-batch-interval string                            Maximum time before committing the backend transaction. (default "100ms")
 --etcd-backend-batch-limit int                                  Maximum operations before committing the backend transaction. (default 10000)
 --etcd-compaction-mode string                                   Compaction mode for etcd. Can be 'periodic' or 'revision' (default "revision")
---etcd-compaction-retention string                              Compaction retention for etcd. Can express time or number of revisions, depending on the value of 'etcd-compaction-mode' (default "1000000")
+--etcd-compaction-retention string                              Compaction retention for etcd. Can express time or number of revisions, depending on the value of 'etcd-compaction-mode' (default "10000")
 --etcd-experimental-bootstrap-defrag-threshold-megabytes uint   Minimum number of megabytes needed to be freed for etcd to consider running defrag during bootstrap. Needs to be set to non-zero value to take effect. (default 100)
 --etcd-max-snapshots uint                                       Maximum number of snapshot files to retain (0 is unlimited). (default 10)
 --etcd-max-txn-ops uint                                         Maximum number of operations permitted in a single etcd transaction. (default 10000)
@@ -306,11 +323,13 @@ Helm:
 dapr_scheduler.etcdBackendBatchInterval="100ms"
 dapr_scheduler.etcdBackendBatchLimit=10000
 dapr_scheduler.etcdCompactionMode="revision"
-dapr_scheduler.etcdCompactionRetention="1000000"
+dapr_scheduler.etcdCompactionRetention="10000"
 dapr_scheduler.etcdDefragThresholdMB=100
 dapr_scheduler.etcdMaxSnapshots=10
 dapr_scheduler.etcdMaxTxnOps=10000
 ```
+
+From Dapr 1.19, the default compaction retention is `10000` revisions (earlier releases: `1000000`). Every revision keeps the payload of the job it wrote, so under workflow load the old default grew the database to gigabytes of disk and memory. The retention bounds the number of revisions, not their size. A value you set yourself is kept, and `helm upgrade --reuse-values` keeps the old `1000000`, so pass the new value or drop the override. A Scheduler watch that falls more than 10,000 revisions behind, for example during a leadership change under a write burst, is cancelled by Etcd. The Scheduler then re-reads the job list and reconnects, and job API calls wait until it is ready.
 
 ### Healthz listen address
 

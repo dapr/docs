@@ -31,6 +31,8 @@ To get the current status of a workflow instance, use the `GetWorkflowStateAsync
 var workflowStatus = await daprWorkflowClient.GetWorkflowStateAsync(instanceId);
 ```
 
+If the workflow instance does not exist, the returned state has `Exists` set to `false`. Any other gRPC error from the runtime, for example `Unavailable`, is thrown as an `RpcException`, so that a transient error does not look like a missing workflow. Handle `RpcException` where you poll workflow state. Before SDK 1.18.5, these errors also returned a state with `Exists` set to `false`.
+
 ### Raise an event to a running workflow instance
 
 To send an event to a running workflow instance that is waiting for an external event, use the `RaiseEventAsync` method. This method requires the instance ID of the workflow, the name of the event, and optionally the event payload.

@@ -16,21 +16,23 @@ You can download and install the Dapr gRPC server extension with:
 
 {{% tab header="Stable" %}}
 ```bash
-pip install dapr-ext-grpc
+pip install "dapr[grpc]"
 ```
 {{% /tab %}}
 
 {{% tab header="Development" %}}
 {{% alert title="Note" color="warning" %}}
-The development package will contain features and behavior that will be compatible with the pre-release version of the Dapr runtime. Make sure to uninstall any stable versions of the Python SDK extension before installing the `dapr-dev` package.
+The development version will contain features and behavior that will be compatible with the pre-release version of the Dapr runtime. Only tagged releases are published to PyPI, so install the development version from the GitHub repository. Make sure to uninstall any stable versions of the Python SDK before installing it.
 {{% /alert %}}
 
 ```bash
-pip3 install dapr-ext-grpc-dev
+pip install "dapr[grpc] @ git+https://github.com/dapr/python-sdk.git@main"
 ```
 {{% /tab %}}
 
 {{< /tabpane >}}
+
+Starting with Dapr 1.19, this extension is an extra of the `dapr` package. The `dapr-ext-grpc` package is no longer published. If you installed it before, follow the [upgrade steps]({{% ref "python#install-extensions" %}}) to move to the extra. The import path does not change.
 
 ## Examples
 
@@ -63,18 +65,19 @@ A full sample can be found [here](https://github.com/dapr/python-sdk/tree/v1.0.0
 
 When subscribing to a topic, you can instruct dapr whether the event delivered has been accepted, or whether it should be dropped, or retried later.
 
+Annotate the event parameter of each handler with `SubscriptionMessage`, the same type that streaming subscriptions deliver. It gives you the parsed payload (`data()`), the delivery metadata (`metadata()`) and the CloudEvent fields, such as `id()`, `type()` and `extensions()`.
+
 ```python
 from typing import Optional
-from cloudevents.sdk.event import v1
-from dapr.ext.grpc import App
+from dapr.ext.grpc import App, Rule, SubscriptionMessage
 from dapr.clients.grpc._response import TopicEventResponse
 
 app = App()
 
 # Default subscription for a topic
 @app.subscribe(pubsub_name='pubsub', topic='TOPIC_A')
-def mytopic(event: v1.Event) -> Optional[TopicEventResponse]:
-    print(event.Data(),flush=True)
+def mytopic(event: SubscriptionMessage) -> Optional[TopicEventResponse]:
+    print(event.data(),flush=True)
     # Returning None (or not doing a return explicitly) is equivalent
     # to returning a TopicEventResponse("success").
     # You can also return TopicEventResponse("retry") for dapr to log
@@ -85,18 +88,26 @@ def mytopic(event: v1.Event) -> Optional[TopicEventResponse]:
 # Specific handler using Pub/Sub routing
 @app.subscribe(pubsub_name='pubsub', topic='TOPIC_A',
                rule=Rule("event.type == \"important\"", 1))
-def mytopic_important(event: v1.Event) -> None:
-    print(event.Data(),flush=True)
+def mytopic_important(event: SubscriptionMessage) -> None:
+    print(event.data(),flush=True)
 
 # Handler with disabled topic validation
 @app.subscribe(pubsub_name='pubsub-mqtt', topic='topic/#', disable_topic_validation=True,)
-def mytopic_wildcard(event: v1.Event) -> None:
-    print(event.Data(),flush=True)
+def mytopic_wildcard(event: SubscriptionMessage) -> None:
+    print(event.data(),flush=True)
 
 app.run(50051)
 ```
 
 A full sample can be found [here](https://github.com/dapr/python-sdk/blob/v1.0.0rc2/examples/pubsub-simple/subscriber.py).
+
+{{% alert title="Deprecated" color="warning" %}}
+Handlers that are not annotated, or that are annotated with `cloudevents.sdk.event.v1.Event`, receive the CloudEvents-based event, and `subscribe()` emits a `DeprecationWarning` when it registers them. Annotate them with `SubscriptionMessage` before the type is removed:
+
+- In 1.20, handlers that are not annotated receive `SubscriptionMessage`. Only handlers annotated with the CloudEvents type still receive it.
+- In 1.21, the `dapr[grpc]` extra no longer installs `cloudevents`.
+- In 1.22, the CloudEvents-based type is removed.
+{{% /alert %}}
 
 ### Setup input binding trigger
 
@@ -115,4 +126,4 @@ app.run(50051)
 A full sample can be found [here](https://github.com/dapr/python-sdk/tree/v1.0.0rc2/examples/invoke-binding).
 
 ## Related links
-- [PyPi](https://pypi.org/project/dapr-ext-grpc/)
+- [PyPi](https://pypi.org/project/dapr/)

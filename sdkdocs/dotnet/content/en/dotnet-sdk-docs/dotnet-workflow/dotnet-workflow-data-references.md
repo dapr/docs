@@ -15,14 +15,16 @@ the data only where it is needed.
 The **binary store is an alpha building block and is subject to change**. The .NET SDK's workflow data-reference
 implementation is **also alpha**; its APIs and behavior are subject to change.
 
-Use an SDK build that includes that implementation; do not assume an earlier published package includes these APIs.
+These APIs are available from `Dapr.Workflow` 1.19.0. Earlier packages do not include them.
 {{% /alert %}}
 
 {{% alert title="Cross-app SDK compatibility" color="warning" %}}
 Cross-app activity and workflow call inputs are **inline by default**. When using cross-app workflows with other .NET
 applications, register `WithBinaryStorePayloads(...)` on every participating .NET application (with access to the
 same binary store) to preserve compatibility across return values, propagated history, and forwarded references—and
-**never unregister it** once enabled. Other Dapr language SDKs do not presently support this scheme. See
+**never unregister it** once enabled. The [JavaScript SDK]({{% ref js-workflow-data-references.md %}}) also
+supports the version-1 reference envelope from `@dapr/dapr` 3.19.0-rc.4, with compatible serialization and
+storage access, but does not implement payload-stage reversal. Do not assume other SDKs support this scheme. See
 [Cross-app input handling](#cross-app-input-handling) for requirements and limits.
 {{% /alert %}}
 
@@ -70,9 +72,8 @@ when a cross-app input requires inlining. `PreferInline` resolves outgoing refer
 
 ### Prerequisites
 
-- A build of `Dapr.Workflow` containing the PR revision described above. Payload support is included in
-  `Dapr.Workflow`.
-- Dapr runtime 1.19.0-rc.3 or later with binary-store support.
+- `Dapr.Workflow` 1.19.0 or later. Payload support is included in `Dapr.Workflow`.
+- Dapr runtime 1.19.0 or later.
 - A configured binary-store component, in addition to the workflow's usual actor state store, placement, and scheduler.
 - Payload support registered on every client and worker that writes or reads these workflows, with access to the
   referenced component and compatible serialization settings.
@@ -417,9 +418,12 @@ var length = await context.CallActivityAsync<int>(
 
 Opt out per call with `AllowPayloadReferences: true` only when all of the following hold:
 
-1. The destination is a .NET application with compatible payload contracts and serialization settings (`v1.19` other
-   language SDKs do not support this scheme).
-2. The destination registers `WithBinaryStorePayloads(...)` (upgrading the SDK alone is not enough).
+1. The destination supports the version-1 envelope with compatible payload contracts and serialization settings.
+   The JavaScript SDK supports unstaged references from `@dapr/dapr` 3.19.0-rc.4; it does not implement
+   payload-stage reversal. Do not assume other language SDKs support this scheme.
+2. The destination registers `WithBinaryStorePayloads(...)` in .NET, or a
+   [payload resolver in JavaScript]({{% ref js-workflow-data-references.md %}}#register-a-resolver-on-clients-and-workers)
+   (upgrading the SDK alone is not enough).
 3. Both apps can access the same underlying storage objects via the named binary-store component in their respective
    sidecars (matching component names pointing to separate in-memory stores do not share data).
 4. The sending host uses `Preserve` or `PreferReference` (`PreferInline` still forces inline content).
