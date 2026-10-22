@@ -10,6 +10,8 @@ description: JavaScript Server SDK for developing Dapr applications
 
 The Dapr Server will allow you to receive communication from the Dapr Sidecar and get access to its server facing features such as: Subscribing to Events, Receiving Input Bindings, and much more.
 
+With JavaScript SDK **3.19.0-rc.4 or later**, register scheduled job callbacks through `server.jobs.listen(name, callback)`. See the [Jobs how-to guide]({{% ref js-jobs-howto.md %}}) for a runnable example and the [callback usage guidance]({{% ref js-jobs-client-usage.md %}}) for acknowledgments, retries, and protocol requirements.
+
 ## Pre-requisites
 
 - [Dapr CLI]({{% ref install-dapr-cli.md %}}) installed
@@ -307,62 +309,15 @@ start().catch((e) => {
 
 ### Configuration API
 
-> 💡 The configuration API is currently only available through gRPC
+Configuration is a client-side building block, including in applications that also run a `DaprServer`. Use a gRPC `DaprClient` to read settings or subscribe to updates. A configuration subscription receives updates over the client's gRPC stream; it does not require a server callback route.
 
 #### Getting a configuration value
 
-```typescript
-import { DaprServer } from "@dapr/dapr";
-
-const daprHost = "127.0.0.1";
-const daprPort = "3500";
-const serverHost = "127.0.0.1";
-const serverPort = "5051";
-
-async function start() {
-  const client = new DaprClient({
-    daprHost,
-    daprPort,
-    communicationProtocol: CommunicationProtocolEnum.GRPC,
-  });
-  const config = await client.configuration.get("config-redis", ["myconfigkey1", "myconfigkey2"]);
-}
-
-start().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
-```
+Use `client.configuration.get(storeName, keys?, metadata?)`. Follow the [configuration how-to guide]({{% ref "js-configuration-howto.md#retrieve-configuration-items" %}}) for client setup and examples using `@dapr/dapr` **3.19.0-rc.4 or later**.
 
 #### Subscribing to Key Changes
 
-```typescript
-import { DaprServer } from "@dapr/dapr";
-
-const daprHost = "127.0.0.1";
-const daprPort = "3500";
-const serverHost = "127.0.0.1";
-const serverPort = "5051";
-
-async function start() {
-  const client = new DaprClient({
-    daprHost,
-    daprPort,
-    communicationProtocol: CommunicationProtocolEnum.GRPC,
-  });
-  const stream = await client.configuration.subscribeWithKeys("config-redis", ["myconfigkey1", "myconfigkey2"], () => {
-    // Received a key update
-  });
-
-  // When you are ready to stop listening, call the following
-  await stream.close();
-}
-
-start().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
-```
+Use `subscribe`, `subscribeWithKeys`, or `subscribeWithMetadata` on `client.configuration`. Retain each returned handle and call `await subscription.stop()` during shutdown, not `close()`. See the [subscription example]({{% ref "js-configuration-howto.md#subscribe-to-configuration-changes" %}}) and [client usage guidance]({{% ref js-configuration-client-usage.md %}}) for callback behavior, cleanup, and stream failure limitations.
 
 ## Related links
 

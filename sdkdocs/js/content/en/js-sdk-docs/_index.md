@@ -22,6 +22,16 @@ To get started with the JavaScript SDK, install the Dapr JavaScript SDK package 
 npm install --save @dapr/dapr
 ```
 
+## Jobs
+
+Schedule one-time, interval-based, or cron-based jobs and receive their callbacks using `DaprClient.jobs` and `DaprServer.jobs`. Jobs requires JavaScript SDK **3.19.0-rc.4 or later**, Dapr runtime **1.16 or later**, and a running Scheduler service.
+
+Follow the [Jobs how-to guide]({{% ref js-jobs-howto.md %}}), read the [client and callback usage guidance]({{% ref js-jobs-client-usage.md %}}), or build calendar-based schedules with the [cron builder]({{% ref js-jobs-cron.md %}}).
+
+## Configuration
+
+Read application settings and subscribe to changes with `DaprClient.configuration`. The [configuration how-to guide]({{% ref js-configuration-howto.md %}}) and [client usage guidance]({{% ref js-configuration-client-usage.md %}}) cover selected or all keys, store-specific metadata, response handling, and subscription cleanup using **`@dapr/dapr` 3.19.0-rc.4 or later**. Configuration operations require gRPC in the JavaScript SDK.
+
 ## State Management
 
 Save, retrieve, and delete application state with `DaprClient.state`. The SDK supports bulk operations, ETags, consistency options, transactions, TTL metadata, custom serialization, and state queries over HTTP or gRPC.
@@ -55,6 +65,12 @@ Follow the [Binary Store how-to guide]({{% ref js-binarystore-howto.md %}}) to g
 Encrypt and decrypt messages and files with `DaprClient.crypto` over HTTP or gRPC in **`@dapr/dapr` 3.19.0-rc.4 or later**. Prefer gRPC for large payloads and production streaming.
 
 Follow the [Cryptography how-to guide]({{% ref js-cryptography-howto.md %}}) to configure a component and encrypt data. Read the [client usage guidance]({{% ref js-cryptography-client-usage.md %}}) for supported inputs, ciphers, key references, streaming, and limitations.
+
+## Search
+
+Manage indexes and index, retrieve, delete, and query JSON documents with `DaprClient.search` over HTTP or gRPC. Search requires Dapr runtime **1.19 or later** and JavaScript SDK **3.19.0-rc.5 or later**.
+
+Follow the [Search how-to guide]({{% ref js-search-howto.md %}}) to get started, or read the [client usage guidance]({{% ref js-search-client-usage.md %}}) for query options, pagination, write acknowledgements, cancellation, and errors.
 
 ## Vector
 
