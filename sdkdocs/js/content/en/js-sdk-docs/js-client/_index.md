@@ -136,6 +136,16 @@ For native protobuf services, use your generated gRPC client connected to the Da
 
 The JavaScript Client SDK allows you to interface with all of the [Dapr building blocks]({{% ref building-blocks %}}) focusing on Client to Sidecar features.
 
+### Search API
+
+Use `client.search` to manage indexes and index, retrieve, delete, and query JSON documents over HTTP or gRPC. Requires Dapr runtime **1.19 or later** and JavaScript SDK **3.19.0-rc.5 or later**.
+
+See the [Search how-to guide]({{% ref js-search-howto.md %}}) for a complete example, and [Search client usage]({{% ref js-search-client-usage.md %}}) for method signatures, query options, write acknowledgements, cancellation, and errors.
+
+### Jobs API
+
+Use `client.jobs` to schedule, retrieve, and delete jobs with JavaScript SDK **3.19.0-rc.4 or later**. See the [Jobs how-to guide]({{% ref js-jobs-howto.md %}}) and [client usage guidance]({{% ref js-jobs-client-usage.md %}}) for scheduling options, payloads, runtime compatibility, and error handling.
+
 ### Invocation API
 
 For JavaScript SDK **3.19.0-rc.4 or later**, see the [service invocation overview]({{% ref js-service-invocation %}}) for HTTP and gRPC capabilities.
@@ -294,22 +304,30 @@ For the underlying building block, see [How to: Retrieve a secret]({{% ref howto
 
 ### Configuration API
 
+Use `client.configuration` to read application settings and subscribe to changes. The JavaScript SDK requires **gRPC** for every configuration method; the HTTP client is not supported.
+
+The [configuration how-to guide]({{% ref js-configuration-howto.md %}}) provides runnable examples for **`@dapr/dapr` 3.19.0-rc.4 or later**. The [client usage guidance]({{% ref js-configuration-client-usage.md %}}) covers all methods, metadata, response shapes, and subscription error limitations.
+
 #### Get Configuration Keys
 
 ```typescript
-import { DaprClient } from "@dapr/dapr";
+import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr";
 
 const daprHost = "127.0.0.1";
 
 async function start() {
   const client = new DaprClient({
     daprHost,
-    daprPort: process.env.DAPR_GRPC_PORT,
+    daprPort: process.env.DAPR_GRPC_PORT ?? "50001",
     communicationProtocol: CommunicationProtocolEnum.GRPC,
   });
 
-  const config = await client.configuration.get("config-store", ["key1", "key2"]);
-  console.log(config);
+  try {
+    const config = await client.configuration.get("config-store", ["key1", "key2"]);
+    console.log(config);
+  } finally {
+    await client.stop();
+  }
 }
 
 start().catch((e) => {
@@ -332,25 +350,30 @@ Sample output:
 #### Subscribe to Configuration Updates
 
 ```typescript
-import { DaprClient } from "@dapr/dapr";
+import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr";
 
 const daprHost = "127.0.0.1";
 
 async function start() {
   const client = new DaprClient({
     daprHost,
-    daprPort: process.env.DAPR_GRPC_PORT,
+    daprPort: process.env.DAPR_GRPC_PORT ?? "50001",
     communicationProtocol: CommunicationProtocolEnum.GRPC,
   });
 
-  // Subscribes to config store changes for keys "key1" and "key2"
-  const stream = await client.configuration.subscribeWithKeys("config-store", ["key1", "key2"], async (data) => {
-    console.log("Subscribe received updates from config store: ", data);
-  });
+  try {
+    const stream = await client.configuration.subscribeWithKeys("config-store", ["key1", "key2"], async (data) => {
+      console.log("Subscribe received updates from config store: ", data);
+    });
 
-  // Wait for 60 seconds and unsubscribe.
-  await new Promise((resolve) => setTimeout(resolve, 60000));
-  stream.stop();
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 60000));
+    } finally {
+      await stream.stop();
+    }
+  } finally {
+    await client.stop();
+  }
 }
 
 start().catch((e) => {
@@ -370,85 +393,36 @@ Subscribe received updates from config store:  {
 }
 ```
 
+To watch all keys, use `subscribe(storeName, callback)`. To include store-specific metadata, use `subscribeWithMetadata(storeName, keys, metadata, callback)`. All-key behavior depends on the component. See [subscription lifetime and callbacks]({{% ref "js-configuration-client-usage.md#subscription-lifetime-and-callbacks" %}}) before relying on a subscription for configuration freshness.
+
 ### Cryptography API
 
-> Support for the cryptography API is only available on the gRPC client in the JavaScript SDK.
+In **`@dapr/dapr` 3.19.0-rc.4 or later**, `client.crypto` supports encryption and decryption over both HTTP and gRPC. Pass data and options to receive a `Buffer`, or pass only options to receive a Node.js `Duplex` stream.
+
+Prefer gRPC for large payloads and production streaming. Dapr buffers HTTP cryptography output until the request is fully consumed.
 
 ```typescript
-import { createReadStream, createWriteStream } from "node:fs";
-import { readFile, writeFile } from "node:fs/promises";
-import { pipeline } from "node:stream/promises";
-
 import { DaprClient, CommunicationProtocolEnum } from "@dapr/dapr";
-
-const daprHost = "127.0.0.1";
-const daprPort = "50050"; // Dapr Sidecar Port of this example server
 
 async function start() {
   const client = new DaprClient({
-    daprHost,
-    daprPort,
+    daprHost: "127.0.0.1",
+    daprPort: "50001",
     communicationProtocol: CommunicationProtocolEnum.GRPC,
   });
 
-  // Encrypt and decrypt a message using streams
-  await encryptDecryptStream(client);
-
-  // Encrypt and decrypt a message from a buffer
-  await encryptDecryptBuffer(client);
-}
-
-async function encryptDecryptStream(client: DaprClient) {
-  // First, encrypt the message
-  console.log("== Encrypting message using streams");
-  console.log("Encrypting plaintext.txt to ciphertext.out");
-
-  await pipeline(
-    createReadStream("plaintext.txt"),
-    await client.crypto.encrypt({
+  try {
+    const ciphertext = await client.crypto.encrypt("A message to encrypt", {
       componentName: "crypto-local",
       keyName: "symmetric256",
       keyWrapAlgorithm: "A256KW",
-    }),
-    createWriteStream("ciphertext.out"),
-  );
-
-  // Decrypt the message
-  console.log("== Decrypting message using streams");
-  console.log("Encrypting ciphertext.out to plaintext.out");
-  await pipeline(
-    createReadStream("ciphertext.out"),
-    await client.crypto.decrypt({
+    });
+    const plaintext = await client.crypto.decrypt(ciphertext, {
       componentName: "crypto-local",
-    }),
-    createWriteStream("plaintext.out"),
-  );
-}
-
-async function encryptDecryptBuffer(client: DaprClient) {
-  // Read "plaintext.txt" so we have some content
-  const plaintext = await readFile("plaintext.txt");
-
-  // First, encrypt the message
-  console.log("== Encrypting message using buffers");
-
-  const ciphertext = await client.crypto.encrypt(plaintext, {
-    componentName: "crypto-local",
-    keyName: "my-rsa-key",
-    keyWrapAlgorithm: "RSA",
-  });
-
-  await writeFile("test.out", ciphertext);
-
-  // Decrypt the message
-  console.log("== Decrypting message using buffers");
-  const decrypted = await client.crypto.decrypt(ciphertext, {
-    componentName: "crypto-local",
-  });
-
-  // The contents should be equal
-  if (plaintext.compare(decrypted) !== 0) {
-    throw new Error("Decrypted message does not match original message");
+    });
+    console.log("Decrypted bytes:", plaintext.length);
+  } finally {
+    await client.stop();
   }
 }
 
@@ -458,7 +432,7 @@ start().catch((e) => {
 });
 ```
 
-> For a full guide on cryptography visit [How-To: Cryptography]({{% ref howto-cryptography.md %}}).
+This example requires a configured `crypto-local` component and a compatible `symmetric256` key. Follow the [JavaScript Cryptography how-to guide]({{% ref js-cryptography-howto.md %}}) for complete setup and file-stream examples. See the [client usage guidance]({{% ref js-cryptography-client-usage.md %}}) for ciphers, key references, errors, and runtime limitations.
 
 ### Distributed Lock API
 
