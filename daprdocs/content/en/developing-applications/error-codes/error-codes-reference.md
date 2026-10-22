@@ -139,6 +139,24 @@ An effort is underway to enrich all gRPC error responses according to the [Riche
 | `ERR_CONVERSATION_NOT_FOUND`      |           | Conversation not found                        |
 
 
+### Search API
+
+| HTTP Code                         | gRPC Code                          | Description                    |
+| --------------------------------- | ---------------------------------- | ------------------------------ |
+| `ERR_SEARCH_STORE_NOT_FOUND`      | `DAPR_SEARCH_STORE_NOT_FOUND`      | Search store not found         |
+| `ERR_SEARCH_STORE_NOT_CONFIGURED` | `DAPR_SEARCH_STORE_NOT_CONFIGURED` | No search store is configured  |
+| `ERR_SEARCH_INVALID_REQUEST`      | `DAPR_SEARCH_INVALID_REQUEST`      | Invalid search request         |
+
+
+### Vector API
+
+| HTTP Code                         | gRPC Code                          | Description                    |
+| --------------------------------- | ---------------------------------- | ------------------------------ |
+| `ERR_VECTOR_STORE_NOT_FOUND`      | `DAPR_VECTOR_STORE_NOT_FOUND`      | Vector store not found         |
+| `ERR_VECTOR_STORE_NOT_CONFIGURED` | `DAPR_VECTOR_STORE_NOT_CONFIGURED` | No vector store is configured  |
+| `ERR_VECTOR_INVALID_REQUEST`      | `DAPR_VECTOR_INVALID_REQUEST`      | Invalid vector request         |
+
+
 ### Service Invocation / Direct Messaging API
 
 | HTTP Code           | gRPC Code | Description            |
