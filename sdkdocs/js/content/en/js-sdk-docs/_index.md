@@ -28,6 +28,12 @@ Store, retrieve, stream, and delete binary files with `DaprClient.binaryStore` o
 
 Follow the [Binary Store how-to guide]({{% ref js-binarystore-howto.md %}}) to get started, or read the [client usage guidance]({{% ref js-binarystore-client-usage.md %}}) for configuration, streaming, cancellation, and error handling.
 
+## Cryptography
+
+Encrypt and decrypt messages and files with `DaprClient.crypto` over HTTP or gRPC in **`@dapr/dapr` 3.19.0-rc.4 or later**. Prefer gRPC for large payloads and production streaming.
+
+Follow the [Cryptography how-to guide]({{% ref js-cryptography-howto.md %}}) to configure a component and encrypt data. Read the [client usage guidance]({{% ref js-cryptography-client-usage.md %}}) for supported inputs, ciphers, key references, streaming, and limitations.
+
 ## Structure
 
 The Dapr JavaScript SDK contains two major components:
