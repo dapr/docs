@@ -6,7 +6,7 @@ weight: 53100
 description: Essential guidance for configuring and using the JavaScript Binary Store client
 ---
 
-Binary Store is available through `DaprClient.binaryStore` in JavaScript SDK **3.19.0-RC.4 or later** and requires **Dapr runtime 1.19 or later**. Both HTTP and gRPC use the alpha Binary Store API.
+Binary Store is available through `DaprClient.binaryStore` in JavaScript SDK 3.19.0 or later and requires Dapr runtime 1.19 or later. Both HTTP and gRPC use the alpha Binary Store API.
 
 ## Client lifetime and configuration
 

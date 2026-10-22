@@ -53,7 +53,9 @@ def encrypt_decrypt_string(dapr: DaprClient):
 
 <!--JavaScript-->
 
-Using the Dapr SDK in your project, with the gRPC APIs, you can encrypt data in a buffer or a string:
+With **`@dapr/dapr` 3.19.0 or later**, `client.crypto` supports both HTTP and gRPC. You can encrypt data in a buffer or a UTF-8 string. Prefer gRPC for large payloads and production streaming, because Dapr buffers HTTP cryptography output until it has consumed the request.
+
+Follow the [JavaScript Cryptography how-to guide]({{% ref js-cryptography-howto.md %}}) for installation, component and key setup, client configuration, and runnable examples.
 
 ```js
 // When passing data (a buffer or string), `encrypt` returns a Buffer with the encrypted message
@@ -232,12 +234,12 @@ def encrypt_decrypt_string(dapr: DaprClient):
 
 <!--JavaScript-->
 
-Using the Dapr SDK, you can decrypt data in a buffer or using streams.
+Using the Dapr SDK over HTTP or gRPC, you can decrypt binary data in a buffer or using streams. By default, the runtime uses the key reference embedded in the encrypted document. Pass `keyName` explicitly when the document omits that reference or when you need to override it.
 
 ```js
 // When passing data as a buffer, `decrypt` returns a Buffer with the decrypted message
 const plaintext = await client.crypto.decrypt(ciphertext, {
-    // Only required option is the component name
+    // keyName is optional when the encrypted document includes a key reference
     componentName: "mycryptocomponent",
 });
 
@@ -245,12 +247,14 @@ const plaintext = await client.crypto.decrypt(ciphertext, {
 await pipeline(
     fs.createReadStream("ciphertext.out"),
     await client.crypto.decrypt({
-        // Only required option is the component name
+        // keyName is optional when the encrypted document includes a key reference
         componentName: "mycryptocomponent",
     }),
     fs.createWriteStream("plaintext.out"),
 );
 ```
+
+Finish encryption before starting decryption. Runtimes affected by [dapr/kit#170](https://github.com/dapr/kit/issues/170) can fail when decryption overlaps other cryptography operations. See the [JavaScript client usage guidance]({{% ref js-cryptography-client-usage.md %}}) for all encryption options, stream behavior, and limitations.
 
 {{% /tab %}}
 

@@ -3,193 +3,197 @@ type: docs
 title: "DaprWorkflowClient lifetime management and registration"
 linkTitle: "DaprWorkflowClient registration"
 weight: 1000
-description: Learn how to configure the `DaprWorkflowClient` lifetime management and dependency injection
+description: Configure workflow hosting, discovery, client lifetime, transport limits, and history caching
 ---
 
-## Lifetime management
+## Install and register
 
-A `DaprWorkflowClient` holds access to networking resources in the form of TCP sockets used to communicate with the Dapr sidecar as well as other types used in the management and operation of Workflows. `DaprWorkflowClient` implements `IAsyncDisposable` to support eager cleanup of resources.
+Use `Dapr.Workflow` 1.19.0 or a later compatible release:
 
-## Dependency Injection
-
-The `AddDaprWorkflow()` method will register the Dapr workflow services with ASP.NET Core dependency injection. This method requires an options delegate that defines each of the workflows and activities you wish to register and use in your application.
-
-### Change gRPC Message Size Limits 
-You can also configure gRPC message size limits for the workflow client during registration. This is useful when workflow payloads are larger than the default gRPC limits.
-
-```csharp
-services
-    .AddDaprWorkflowClient()
-    .WithGrpcMessageSizeLimits( 
-        maxReceiveMessageSize: 16 * 1024 * 1024, 
-        maxSendMessageSize: 16 * 1024 * 1024);
+```sh
+dotnet add package Dapr.Workflow
 ```
 
-### Change gRPC Message Size Limits 
-You can also configure gRPC message size limits for the workflow client during registration. This is useful when workflow payloads are larger than the default gRPC limits.
+`AddDaprWorkflow` registers the workflow worker as a hosted service, its dependencies, and a
+`DaprWorkflowClient`. It works with ASP.NET Core and the .NET Generic Host. Start the host to process work items;
+building a service provider alone does not start the worker.
 
 ```csharp
-services
-    .AddDaprWorkflowClient()
-    .WithGrpcMessageSizeLimits( 
-        maxReceiveMessageSize: 16 * 1024 * 1024, 
-        maxSendMessageSize: 16 * 1024 * 1024);
-```
+using Dapr.Workflow;
 
-### Singleton Registration
-
-By default, the `AddDaprWorkflow` method registers the `DaprWorkflowClient` and associated services using a singleton lifetime. This means that the services are instantiated only a single time.
-
-The following is an example of how registration of the `DaprWorkflowClient` as it would appear in a typical `Program.cs` file:
-
-```csharp
+var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDaprWorkflow();
 
 var app = builder.Build();
 await app.RunAsync();
 ```
 
-{{% alert title="Note" color="primary" %}}
-Starting with Dapr .NET SDK 1.18.x a build-time source generator automatically discovers and registers all workflow and activity types. You no longer need to call `RegisterWorkflow<T>` or `ReigsterActivity<T>` inside the `AddDaprWorkflow` options delegate, though doing so is still fully supported.
+Configure a workflow-compatible state store and the Dapr runtime services described in
+[Author workflows]({{% ref howto-author-workflow.md %}}). Use Dapr runtime 1.19 for the full SDK 1.19 surface.
 
-If your workflows or activities live in a referenced assembly (not the entry-point project), add the following to the executing application's `.csproj` to enable cross-assembly discovery:
+### Automatic discovery and explicit registration
+
+The included source generator discovers accessible, concrete classes deriving from `Workflow<TInput, TOutput>`
+and `WorkflowActivity<TInput, TOutput>` in the project being compiled. An options delegate is not required.
+Abstract classes and open generic types are not registered.
+
+Explicit registration is supported for custom names, delegate implementations, or types not discovered by the
+generator. Explicit registrations take precedence over generated registrations:
+
+```csharp
+builder.Services.AddDaprWorkflow(options =>
+{
+    options.RegisterWorkflow<OrderProcessingWorkflow>();
+    options.RegisterActivity<SquareNumberActivity>();
+    options.RegisterActivity<int, int>("Double", (_, input) => Task.FromResult(input * 2));
+});
+```
+
+To scan accessible workflow and activity types in referenced assemblies, add **both** the property value and
+compiler-visible property to the host project's `.csproj`. Reference scanning is disabled by default to limit
+build overhead:
+
 ```xml
+<PropertyGroup>
+  <DaprWorkflowVersioningScanReferences>true</DaprWorkflowVersioningScanReferences>
+</PropertyGroup>
 <ItemGroup>
   <CompilerVisibleProperty Include="DaprWorkflowVersioningScanReferences" />
 </ItemGroup>
 ```
 
-This is disabled by default for build-performance reasons.
-{{% /alert %}}
+Discovery does not require opting into [name-based workflow versioning]({{% ref dotnet-workflow-versioning.md %}}).
+Avoid colliding simple type names, or register distinct explicit names.
 
-### Scoped Registration
+## Client lifetime and dependency injection
 
-While this may generally be acceptable in your use case, you may instead wish to override the lifetime specified. This is done by passing a `ServiceLifetime` argument in `AddDaprWorkflow`. For example, you may wish to inject another scoped service into your ASP.NET Core processing pipeline that needs context used by the `DaprWorkflowClient` that wouldn't be available if the former service were registered as a singleton.
+The client defaults to a singleton. Reuse it instead of constructing a client for every operation, and let the
+container manage disposal of injected instances. `DaprWorkflowClient` implements both `IDisposable` and
+`IAsyncDisposable`; the DI-registered gRPC transport is managed by the client factory.
 
-This is demonstrated in the following example:
+The overload with an options delegate accepts `lifetime` to change the **client** lifetime:
 
 ```csharp
-builder.Services.AddDaprWorkflow(serviceLifetime: ServiceLifecycle.Scoped);
-
-var app = builder.Build();
-await app.RunAsync();
+builder.Services.AddDaprWorkflow(
+    options => { },
+    lifetime: ServiceLifetime.Scoped);
 ```
 
-### Transient Registration
+Use `ServiceLifetime.Transient` for a new client on each resolution. This does not change the singleton runtime
+options/factory or turn the hosted worker into a scoped service.
 
-Finally, Dapr services can also be registered using a transient lifetime meaning that they will be initialized every time they're injected. This is demonstrated in the following example:
-
-```csharp
-builder.Services.AddDaprWorkflow(serviceLifetime: ServiceLifecycle.Transient);
-
-var app = builder.Build();
-await app.RunAsync();
-```
-
-### Using a `DaprWorkflowClient` instance
-
-{{< tabpane text=true >}}
-
-{{% tab "ASP.Net Core App" %}}
-
-In an ASP.Net Core application, you can inject the `DaprWorkflowClient` into methods or controllers via method or constructor injection. This example demonstrates method injection in a minimal API scenario:
+Inject the concrete `DaprWorkflowClient` into an ASP.NET Core endpoint:
 
 ```csharp
-app.MapPost("/start", async (
-    [FromServices] DaprWorkflowClient daprWorkflowClient,
-    Order order
-    ) => {
-        var instanceId = await daprWorkflowClient.ScheduleNewWorkflowAsync(
-            nameof(OrderProcessingWorkflow),
-            input: order);
-
-        return Results.Accepted(instanceId);
+app.MapPost("/start", async (DaprWorkflowClient client, Order order) =>
+{
+    var instanceId = await client.ScheduleNewWorkflowAsync(
+        nameof(OrderProcessingWorkflow), input: order);
+    return Results.Accepted(value: new { instanceId });
 });
 ```
 
-{{% /tab %}}
-
-{{% tab "Console App" %}}
-
-To create a `DaprWorkflowClient` instance in a console app, retrieve it from the `ServiceProvider`:
+In a Generic Host application, resolve it from the host's services. Use asynchronous disposal for an async scope:
 
 ```csharp
-using var scope = host.Services.CreateAsyncScope();
-var daprWorkflowClient = scope.ServiceProvider.GetRequiredService<DaprWorkflowClient>();
+await using var scope = host.Services.CreateAsyncScope();
+var client = scope.ServiceProvider.GetRequiredService<DaprWorkflowClient>();
 ```
 
-{{% /tab %}}
+The public `DaprWorkflowClientBuilder` in `Dapr.Workflow.Registration` can also construct a management client
+without hosting a worker. Dispose clients you construct yourself. `AddDaprWorkflowClient` is **not a public
+registration extension** in this release; use `AddDaprWorkflow` when hosting workflows.
 
-{{< /tabpane >}}
+## Transport configuration
 
-Now, you can use this client to perform workflow management operations such as starting, pausing, resuming, and terminating a workflow instance. See [Workflow management operations with `DaprWorkflowClient`]({{% ref dotnet-workflow-management-methods.md %}}) for more information on these operations.
+The hosted worker and DI client resolve their sidecar gRPC address through Dapr configuration, including
+`DAPR_GRPC_ENDPOINT` / `DAPR_GRPC_PORT`. Configure `DAPR_API_TOKEN` when the sidecar requires authentication.
+Workflow operations use gRPC; changing an HTTP timeout is not a workflow execution deadline.
 
-## Injecting Services into Workflow Activities
+### Change gRPC message size limits
 
-Workflow activities support the same dependency injection that developers have come to expect of modern C# applications. Assuming a proper registration at startup, any such type can be injected into the constructor of the workflow activity and available to utilize during the execution of the workflow. This makes it simple to add logging via an injected `ILogger` or access to other Dapr building blocks by injecting `DaprClient` or `DaprJobsClient`, for example.
+Use the builder returned by `AddDaprWorkflow`:
 
 ```csharp
-internal sealed class SquareNumberActivity(ILogger logger) : WorkflowActivity<int, int>
-{    
-    public override Task<int> RunAsync(WorkflowActivityContext context, int input) 
+builder.Services.AddDaprWorkflow()
+    .WithGrpcMessageSizeLimits(
+        maxReceiveMessageSize: 16 * 1024 * 1024,
+        maxSendMessageSize: 16 * 1024 * 1024);
+```
+
+The DI transport defaults to no SDK send/receive size limit. Explicit limits must be positive byte counts.
+Sidecar, scheduler, and state-store limits still apply independently. Consider
+[data references]({{% ref dotnet-workflow-data-references.md %}}) rather than increasing limits for large payloads.
+`WorkflowRuntimeOptions.UseGrpcChannelOptions` also supports setting the send/receive limits; the registration
+does not copy every property of that `GrpcChannelOptions` object.
+
+## Worker history caching
+
+The worker enables stateful history by default: the sidecar can send new events rather than the complete history
+on every turn. A cache miss is recovered through the history RPC; the cache is not durable application state.
+
+```csharp
+builder.Services.AddDaprWorkflow(options =>
+{
+    options.HistoryCacheTtl = TimeSpan.FromMinutes(30);
+    options.HistoryCacheMaxInstances = 10_000;
+    options.HistoryCacheMaxBytes = 256L * 1024 * 1024;
+});
+```
+
+| Option | Default and behavior |
+| --- | --- |
+| `DisableStatefulHistory` | `false`; set `true` to always receive full history and ignore cache settings. |
+| `HistoryCacheTtl` | `null` uses a one-hour sliding TTL. Explicit values must be positive. |
+| `HistoryCacheMaxInstances` | `0` uses the built-in limit of 100,000 instances per work-item stream. |
+| `HistoryCacheMaxBytes` | `0` means no byte budget; instance count and TTL still apply. |
+
+Capacity values cannot be negative. Entries are evicted using least-recently-used ordering when a capacity limit
+is exceeded. This cache does not eliminate workflow replay or automatically cache resolved binary payloads.
+
+`MaxConcurrentWorkflows` and `MaxConcurrentActivities` on `WorkflowRuntimeOptions` are obsolete and have no
+effect. Configure dispatch concurrency in the Dapr runtime instead. For concurrency within one workflow, see
+[bounded parallel processing]({{% ref dotnet-workflow-authoring.md %}}#fan-out-and-bounded-parallel-processing).
+
+## Inject services into activities
+
+Activities are activated through dependency injection in a scope for each activity invocation. Register their
+dependencies normally:
+
+```csharp
+using Dapr.Workflow;
+using Microsoft.Extensions.Logging;
+
+public sealed class SquareNumberActivity(ILogger<SquareNumberActivity> logger) : WorkflowActivity<int, int>
+{
+    public override Task<int> RunAsync(WorkflowActivityContext context, int input)
     {
-        this.logger.LogInformation("Squaring the value {number}", input);
-        var result = input * input;
-        this.logger.LogInformation("Got a result of {squareResult}", result);
-        
-        return Task.FromResult(result);
+        logger.LogInformation("Squaring {Number}; task key {TaskKey}", input, context.TaskExecutionKey);
+        return Task.FromResult(input * input);
     }
 }
 ```
 
 ### Activity task execution identifiers
 
-Starting with Dapr .NET SDK v1.17.0, `WorkflowActivityContext` exposes a task execution identifier that is:
+`WorkflowActivityContext` exposes `Identifier`, `InstanceId`, **`TaskExecutionKey`** (not `TaskExecutionId`), and
+`ScheduledEventId`, the ID of the `TaskScheduled` history event for the activity attempt.
+The worker uses the runtime's task execution ID when available, falling back to the numeric task ID otherwise.
+SDK activity retries preserve the task execution ID. Combine the key with the workflow instance/app identity when
+designing an idempotency key, and persist deduplication atomically with the side effect. The identifier alone does
+not make an activity exactly-once. `ScheduledEventId` can be recorded alongside the instance ID and later passed
+to `RerunWorkflowFromEventAsync` to rerun the workflow from that activity (see
+[Rerun from a history event]({{% ref "dotnet-workflow-management-methods.md#rerun-from-a-history-event" %}})).
 
-- **Unique per activity task**
-- **Stable across retries**
+### Replay-safe logging
 
-This makes it useful for idempotency keys, task-level state tracking, and correlating logs.
-
-```csharp
-internal sealed class IdempotentActivity : WorkflowActivity<int, int>
-{
-    public override Task<int> RunAsync(WorkflowActivityContext context, int input)
-    {
-        var executionId = context.TaskExecutionId;
-        // Use executionId as your idempotency key or task state key.
-
-        return Task.FromResult(input * input);
-    }
-}
-```
-
-### Using ILogger in Workflow
-
-Because workflows must be deterministic, it is not possible to inject arbitrary services into them. For example, if you were able to inject a standard `ILogger` into a workflow and it needed to be replayed because of an error, subsequent replay from the event source log would result in the log recording additional operations that didn't actually take place a second or third time because their results were sourced from the log. This has the potential to introduce a significant amount of confusion. Rather, a replay-safe logger is made available for use within workflows. It will only log events the first time the workflow runs and will not log anything whenever the workflow is being replayed.
-
-This logger can be retrieved from a method present on the `WorkflowContext` available on your workflow instance and otherwise used precisely as you might otherwise use an `ILogger` instance.
-
-An end-to-end sample demonstrating this can be seen in the [.NET SDK repository](https://github.com/dapr/dotnet-sdk/blob/master/examples/Workflow/WorkflowConsoleApp/Workflows/OrderProcessingWorkflow.cs) but a brief extraction of this sample is available below.
-
-```csharp
-public sealed class OrderProcessingWorkflow : Workflow<OrderPayload, OrderResult>
-{
-    public override async Task<OrderResult> RunAsync(WorkflowContext context, OrderPayload order)
-    {
-        string orderId = context.InstanceId;
-        var logger = context.CreateReplaySafeLogger<OrderProcessingWorkflow>(); //Use this method to access the logger instance
-
-        logger.LogInformation("Received order {orderId} for {quantity} {name} at ${totalCost}", orderId, order.Quantity, order.Name, order.TotalCost);
-        
-        //...
-    }
-}
-```
+Use `context.CreateReplaySafeLogger<T>()` inside workflows. It suppresses log writes during replay. Although
+the current factory can activate workflow constructors through DI, the included `DAPR1305` analyzer warns against
+workflow constructor injection. Keep injected I/O dependencies in activities; they do not make nondeterministic
+operations safe during workflow replay.
 
 ## Next steps
 
-- [Learn more about Dapr workflow management operations]({{% ref dotnet-workflow-management-methods.md %}})
-- [Multi-application workflows in .NET]({{% ref dotnet-workflow-multi-app.md %}})
+- [Author workflows and activities in .NET]({{% ref dotnet-workflow-authoring.md %}})
+- [Workflow management operations]({{% ref dotnet-workflow-management-methods.md %}})
 - [Configure workflow serialization]({{% ref dotnet-workflow-serialization.md %}})
-- [Learn how to author workflows and activities]({{% ref howto-author-workflow.md %}})  

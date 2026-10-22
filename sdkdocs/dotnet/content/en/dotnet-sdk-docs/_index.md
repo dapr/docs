@@ -17,15 +17,20 @@ Dapr offers a variety of packages to help with the development of .NET applicati
 ## Prerequisites
 - [Dapr CLI]({{< ref install-dapr-cli.md >}}) installed
 - Initialized [Dapr environment]({{< ref install-dapr-selfhost.md >}})
-- [.NET 8](https://dotnet.microsoft.com/download), [.NET 9](https://dotnet.microsoft.com/download), or
-  [.NET 10](https://dotnet.microsoft.com/download) installed
+- [.NET 8](https://dotnet.microsoft.com/download), [.NET 9](https://dotnet.microsoft.com/download),
+  [.NET 10](https://dotnet.microsoft.com/download), or [.NET 11](https://dotnet.microsoft.com/download) installed
 
-{{% alert title="Note" color="primary" %}}
-The Dapr .NET SDK supports .NET 8, .NET 9, and .NET 10. .NET 8 and .NET 9 will remain supported until the first Dapr
-release after their end of life in November 2026, after which we expect to support .NET 10 and .NET 11 instead.
+{{% alert title=".NET framework support" color="warning" %}}
+The Dapr .NET SDK supports .NET 8, .NET 9, .NET 10, and .NET 11. Be advised that .NET 8 and .NET 9
+reach end of support in November 2026. Support for both will be dropped in Dapr v1.20; only .NET 10 and
+.NET 11 will be supported through the end of 2027.
 {{% /alert %}}
 
 ## Installation
+
+For the package/API coverage in SDK `1.19.0`, see
+[.NET building block support]({{< ref dotnet-building-blocks.md >}}). Use that release or a later compatible
+release for the 1.19 features in these guides.
 
 To get started with the Client .NET SDK, install the Dapr .NET SDK package:
 
@@ -54,22 +59,24 @@ Put the Dapr .NET SDK to the test. Walk through the .NET quickstarts and tutoria
 | [Dapr.AI.Microsoft.Extensions](https://www.nuget.org/packages/Dapr.AI.Microsoft.Extensions)               | [Documentation]({{% ref dotnet-ai-extensions-howto %}})      | Easily interact with LLMs conversationally and using tooling via the Dapr Conversation building block.                                                           |   
 | [Dapr.AspNetCore](https://www.nuget.org/packages/Dapr.AspNetCore)                                         | [Documentation]({{% ref dotnet-client %}})                   | Write servers and services in .NET using the Dapr SDK. Includes support and utilities providing richer integration with ASP.NET Core.                            |
 | [Dapr.Actors](https://www.nuget.org/packages/Dapr.Actors)                                                 | [Documentation]({{% ref dotnet-actors %}})                   | Create virtual actors with state, reminders/timers, and methods.                                                                                                 |
-| [Dapr.Actors.AspNetCore](https://www.nuget.org/packages/Dapr.Actors)                                      | [Documentation]({{% ref dotnet-actors %}})                   | Create virtual actors with state, reminders/timers, and methods with rich integration with ASP.NET Core.                                                         |
+| [Dapr.Actors.AspNetCore](https://www.nuget.org/packages/Dapr.Actors.AspNetCore)                           | [Documentation]({{% ref dotnet-actors %}})                   | Create virtual actors with state, reminders/timers, and methods with rich integration with ASP.NET Core.                                                         |
 | [Dapr.Actors.Analyzers](https://www.nuget.org/packages/Dapr.Actors.Analyzers)                             | [Documentation]({{% ref dotnet-guidance-source-generators %}}) | A collection of Roslyn source generators and analyzers for enabling better practices and preventing common errors when using Dapr Actors in .NET.                |
-| [Dapr.Actors.Next](https://www.nuget.org/packages/Dapr.Actors.Analyzers) | [Documentation]({{% ref dotnet-actors-next %}}) | Create virtual actors with state, timers/reminders, state machines, integrated Pub/Sub and more!                                                                 |
+| [Dapr.Actors.Next](https://www.nuget.org/packages/Dapr.Actors.Next) | [Documentation]({{% ref dotnet-actors-next %}}) | Create virtual actors with state, timers/reminders, state machines, integrated Pub/Sub and more!                                                                 |
 | [Dapr.Cryptography](https://www.nuget.org/packages/Dapr.Cryptography)                                     | [Documentation]({{% ref dotnet-cryptography %}})                 | Encrypt and decrypt streaming state of any size using Dapr's cryptography building block.                                                                        |
 | [Dapr.Jobs](https://www.nuget.org/packages/Dapr.Jobs)                                                     | [Documentation]({{% ref dotnet-jobs %}})                     | Create and manage the scheduling and orchestration of jobs.                                                                                                      |
 | [Dapr.Jobs.Analyzers](https://www.nuget.org/packages/Dapr.Jobs.Analyzers)                                 | [Documentation]({{% ref dotnet-guidance-source-generators %}})                     | A collection of Roslyn source generators and analyzers for enabling better practices and preventing common errors when using Dapr Jobs in .NET.                  |
-| [Dapr.DistributedLocks](https://www.nuget.org/packages/Dapr.DistributedLocks)                             | [Documentation]({{% ref dotnet-distributed-lock %}})         | Create and manage distributed locks for managing exclusive resource access.                                                                                      |
+| [Dapr.DistributedLock](https://www.nuget.org/packages/Dapr.DistributedLock)                             | [Documentation]({{% ref dotnet-distributed-lock %}})         | Create and manage distributed locks for managing exclusive resource access.                                                                                      |
 | [Dapr.BinaryStore](https://www.nuget.org/packages/Dapr.BinaryStore)                                       | [Documentation]({{% ref dotnet-binarystore %}})              | Store, retrieve, stream, and delete binary files using Dapr.                                                                                                     |
-| [Dapr.Extensions.Configuration](https://www.nuget.org/packages/Dapr.Extensions.Configuration)             |                                                              | Dapr secret store configuration provider implementation for `Microsoft.Extensions.Configuration`.                                                                |
+| [Dapr.Search](https://www.nuget.org/packages/Dapr.Search) | [Documentation]({{% ref dotnet-search %}}) | Manage indexes and typed documents, run full-text and native queries, and generate typed index clients. |
+| [Dapr.Vector](https://www.nuget.org/packages/Dapr.Vector) | [Documentation]({{% ref dotnet-vector %}}) | Store embeddings and typed payloads, run similarity and batch queries, and generate typed collection clients. |
+| [Dapr.Extensions.Configuration](https://www.nuget.org/packages/Dapr.Extensions.Configuration)             |                                                              | Dapr secret store configuration provider implementation for `Microsoft.Extensions.Configuration`. |
 | [Dapr.PluggableComponents](https://www.nuget.org/packages/Dapr.PluggableComponents)                       |                                                              | Used to implement pluggable components with Dapr using .NET.                                                                                                     |
 | [Dapr.PluggableComponents.AspNetCore](https://www.nuget.org/packages/Dapr.PluggableComponents.AspNetCore) |                                                              | Implement pluggable components with Dapr using .NET with rich ASP.NET Core support.                                                                              |
 | [Dapr.PluggableComponents.Protos](https://www.nuget.org/packages/Dapr.PluggableComponents.Protos)         |                                                              | **Note:** Developers needn't install this package directly in their applications.                                                                                |
 | [Dapr.Messaging](https://www.nuget.org/packages/Dapr.Messaging)                                           | [Documentation]({{% ref dotnet-messaging %}})                | Unified Pub/Sub messaging SDK for .NET: event publishing, streaming pull, programmatic gRPC push, and HTTP subscriptions with reflection-free source generators. |
 | [Dapr.Metadata](https://www.nuget.org/packages/Dapr.Metadata)                                             | [Documentation]({{% ref dotnet-metadata %}})                  | Retrieve typed Dapr runtime metadata in .NET through the options pattern.                                                                                        |
-| [Dapr.StateManagement](https://www.nuget.org/packages/Dapr.StateManagement)                               | [Document]({{% ref dotnet-state-management %}}) | Create and manage state in Dapr applications.                                                                                                                    |
-| [Dapr.SecretsManagement](https://www.nuget.org/packages/Dapr.SecretsManagement)                          | [Document]({{% ref dotnet-secrets %}}) | Retrieve secrets in Dapr applications.                                                                                                                           |
+| [Dapr.StateManagement](https://www.nuget.org/packages/Dapr.StateManagement)                               | [Documentation]({{% ref dotnet-state-management %}}) | Create and manage state in Dapr applications.                                                                                                                    |
+| [Dapr.SecretsManagement](https://www.nuget.org/packages/Dapr.SecretsManagement)                          | [Documentation]({{% ref dotnet-secrets %}}) | Retrieve secrets in Dapr applications.                                                                                                                           |
 | [Dapr.Testcontainers](https://www.nuget.org/packages/Dapr.Testcontainers)                                 | [Documentation]({{% ref dotnet-guidance-testcontainers.md %}}) | Run Dapr integration tests using Testcontainers-based harnesses.                                                                                                 |
 | [Dapr.Workflow](https://www.nuget.org/packages/Dapr.Workflow)                                             | [Documentation]({{% ref dotnet-workflow %}})                 | Create and manage workflows that work with other Dapr APIs.                                                                                                      |
 

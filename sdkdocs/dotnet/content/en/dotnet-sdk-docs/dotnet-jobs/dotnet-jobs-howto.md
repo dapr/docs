@@ -1,476 +1,225 @@
-﻿---
+---
 type: docs
 title: "How to: Author and manage Dapr Jobs in the .NET SDK"
 linkTitle: "How to: Author & manage jobs"
 weight: 51000
-description: Learn how to author and manage Dapr Jobs using the .NET SDK
+description: Schedule jobs, receive HTTP or gRPC callbacks, and manage job registrations in .NET
 ---
 
-Let's create an endpoint that will be invoked by Dapr Jobs when it triggers, then schedule the job in the same app. We'll use the [simple example provided here](https://github.com/dapr/dotnet-sdk/tree/master/examples/Jobs), for the following demonstration and walk through it as an explainer of how you can schedule one-time or recurring jobs using either an interval or Cron expression yourself. In this guide,
-you will:
-
-- Deploy a .NET Web API application ([JobsSample](https://github.com/dapr/dotnet-sdk/tree/master/examples/Jobs/JobsSample))
-- Utilize the Dapr .NET Jobs SDK to schedule a job invocation and set up the endpoint to be triggered
-
-In the .NET example project:
-- The main [`Program.cs`](https://github.com/dapr/dotnet-sdk/tree/master/examples/Jobs/JobsSample/Program.cs) file comprises the entirety of this demonstration.
-
-## Prerequisites
-- [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/)
-- [Initialized Dapr environment](https://docs.dapr.io/getting-started/install-dapr-selfhost)
-- [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0),
-  [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0), or
-  [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0) installed
-- [Dapr.Jobs](https://www.nuget.org/packages/Dapr.Jobs) NuGet package installed to your project
-
-## Set up the environment
-Clone the [.NET SDK repo](https://github.com/dapr/dotnet-sdk).
+Use `Dapr.Jobs` version `1.19.0` or later with a running Dapr sidecar and Scheduler. The complete
+management surface described here requires a runtime that supports the corresponding operations; use
+Dapr 1.19 for the 1.19 features. All client operations use version-aware stable/alpha API fallback, but that
+does not make newer management operations available on an older runtime.
 
 ```sh
-git clone https://github.com/dapr/dotnet-sdk.git
+dotnet add package Dapr.Jobs
 ```
 
-From the .NET SDK root directory, navigate to the Dapr Jobs example.
+Jobs are scoped to the scheduling application's Dapr app ID. The client does not accept a different target
+app ID when scheduling a trigger. See the
+[Jobs sample](https://github.com/dapr/dotnet-sdk/tree/v1.19.0/examples/Jobs/JobsSample).
 
-```sh
-cd examples/Jobs
-```
+## Register the client and callback handler
 
-## Run the application locally
-
-To run the Dapr application, you need to start the .NET program and a Dapr sidecar. Navigate to the `JobsSample` directory.
-
-```sh
-cd JobsSample
-```
-
-We'll run a command that starts both the Dapr sidecar and the .NET program at the same time.
-
-```sh
-dapr run --app-id jobsapp --dapr-grpc-port 4001 --dapr-http-port 3500 -- dotnet run
-```
-
-> Dapr listens for HTTP requests at `http://localhost:3500` and internal Jobs gRPC requests at `http://localhost:4001`.
-
-## Register the Dapr Jobs client with dependency injection
-The Dapr Jobs SDK provides an extension method to simplify the registration of the Dapr Jobs client. Before completing 
-the dependency injection registration in `Program.cs`, add the following line:
-
-```cs
-var builder = WebApplication.CreateBuilder(args);
-
-//Add anywhere between these two lines
-builder.Services.AddDaprJobsClient();
-
-var app = builder.Build();
-```
-
-> Note that in today's implementation of the Jobs API, the app that schedules the job will also be the app that receives the trigger notification. In other words, you cannot schedule a trigger to run in another application. As a result, while you don't explicitly need the Dapr Jobs client to be registered in your application to schedule a trigger invocation endpoint, your endpoint will never be invoked without the same app also scheduling the job somehow (whether via this Dapr Jobs .NET SDK or an HTTP call to the sidecar).
-
-It's possible that you may want to provide some configuration options to the Dapr Jobs client that
-should be present with each call to the sidecar such as a Dapr API token, or you want to use a non-standard
-HTTP or gRPC endpoint. This is possible through use of an overload of the registration method that allows configuration of a 
-`DaprJobsClientBuilder` instance:
-
-```cs
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddDaprJobsClient((_, daprJobsClientBuilder) =>
-{
-    daprJobsClientBuilder.UseDaprApiToken("abc123");
-    daprJobsClientBuilder.UseHttpEndpoint("http://localhost:8512"); //Non-standard sidecar HTTP endpoint
-});
-
-var app = builder.Build();
-```
-
-Still, it's possible that whatever values you wish to inject need to be retrieved from some other source, itself registered as a dependency. There's one more overload you can use to inject an `IServiceProvider` into the configuration action method. In the following example, we register a fictional singleton that can retrieve secrets from somewhere and pass it into the configuration method for `AddDaprJobClient` so
-we can retrieve our Dapr API token from somewhere else for registration here:
-
-```cs
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddSingleton<SecretRetriever>();
-builder.Services.AddDaprJobsClient((serviceProvider, daprJobsClientBuilder) =>
-{
-    var secretRetriever = serviceProvider.GetRequiredService<SecretRetriever>();
-    var daprApiToken = secretRetriever.GetSecret("DaprApiToken").Value;
-    daprJobsClientBuilder.UseDaprApiToken(daprApiToken);
-
-    daprJobsClientBuilder.UseHttpEndpoint("http://localhost:8512");
-});
-
-var app = builder.Build();
-```
-
-## Use the Dapr Jobs client using IConfiguration
-It's possible to configure the Dapr Jobs client using the values in your registered `IConfiguration` as well without
-explicitly specifying each of the value overrides using the `DaprJobsClientBuilder` as demonstrated in the previous
-section. Rather, by populating an `IConfiguration` made available through dependency injection the `AddDaprJobsClient()`
-registration will automatically use these values over their respective defaults.
-
-Start by populating the values in your configuration. This can be done in several different ways as demonstrated below.
-
-### Configuration via `ConfigurationBuilder`
-Application settings can be configured without using a configuration source and by instead populating the value in-memory
-using a `ConfigurationBuilder` instance:
+Register the client before building the host, and map one handler for dynamically named jobs:
 
 ```csharp
-var builder = WebApplication.CreateBuilder();
+using Dapr.Jobs;
+using Dapr.Jobs.Extensions;
+using Dapr.Jobs.Models;
+using System.Text;
 
-//Create the configuration
-var configuration = new ConfigurationBuilder()
-    .AddInMemoryCollection(new Dictionary<string, string> {
-            { "DAPR_HTTP_ENDPOINT", "http://localhost:54321" },
-            { "DAPR_API_TOKEN", "abc123" }
-        })
-    .Build();
-
-builder.Configuration.AddConfiguration(configuration);
-builder.Services.AddDaprJobsClient(); //This will automatically populate the HTTP endpoint and API token values from the IConfiguration
-```
-
-### Configuration via Environment Variables
-Application settings can be accessed from environment variables available to your application.
-
-The following environment variables will be used to populate both the HTTP endpoint and API token used to register the
-Dapr Jobs client.
-
-| Key | Value |
-| --- | --- |
-| DAPR_HTTP_ENDPOINT | http://localhost:54321 |
-| DAPR_API_TOKEN | abc123 |
-
-```csharp
-var builder = WebApplication.CreateBuilder();
-
-builder.Configuration.AddEnvironmentVariables();
+var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDaprJobsClient();
-```
 
-The Dapr Jobs client will be configured to use both the HTTP endpoint `http://localhost:54321` and populate all outbound
-requests with the API token header `abc123`.
+await using var app = builder.Build();
 
-### Configuration via prefixed Environment Variables
-
-However, in shared-host scenarios where there are multiple applications all running on the same machine without using
-containers or in development environments, it's not uncommon to prefix environment variables. The following example
-assumes that both the HTTP endpoint and the API token will be pulled from environment variables prefixed with the
-value "myapp_". The two environment variables used in this scenario are as follows:
-
-| Key | Value |
-| --- | --- |
-| myapp_DAPR_HTTP_ENDPOINT | http://localhost:54321 |
-| myapp_DAPR_API_TOKEN | abc123 |
-
-These environment variables will be loaded into the registered configuration in the following example and made available
-without the prefix attached.
-
-```csharp
-var builder = WebApplication.CreateBuilder();
-
-builder.Configuration.AddEnvironmentVariables(prefix: "myapp_");
-builder.Services.AddDaprJobsClient();
-```
-
-The Dapr Jobs client will be configured to use both the HTTP endpoint `http://localhost:54321` and populate all outbound
-requests with the API token header `abc123`.
-
-## Use the Dapr Jobs client without relying on dependency injection
-While the use of dependency injection simplifies the use of complex types in .NET and makes it easier to
-deal with complicated configurations, you're not required to register the `DaprJobsClient` in this way. Rather, you can also elect to create an instance of it from a `DaprJobsClientBuilder` instance as demonstrated below:
-
-```cs
-
-public class MySampleClass
-{
-    public void DoSomething()
+app.MapDaprScheduledJobHandler(
+    async (string jobName, ReadOnlyMemory<byte> payload, CancellationToken cancellationToken) =>
     {
-        var daprJobsClientBuilder = new DaprJobsClientBuilder();
-        var daprJobsClient = daprJobsClientBuilder.Build();
+        app.Logger.LogInformation("Received job {JobName}", jobName);
+        var text = Encoding.UTF8.GetString(payload.Span);
+        await HandleJobAsync(jobName, text, cancellationToken);
+    },
+    timeout: TimeSpan.FromSeconds(30));
 
-        //Do something with the `daprJobsClient`
-    }
-}
+await app.RunAsync();
 ```
 
-## Set up a endpoint to be invoked when the job is triggered
+`HandleJobAsync` represents your application logic. The callback receives the job name and original payload
+bytes; additional services can be resolved from request DI. Its cancellation token includes the configured
+handler timeout. Handlers must observe that token themselves; a timeout does not forcibly stop arbitrary code.
+Return a `Task` for asynchronous work so the callback waits for it before acknowledging the trigger.
 
-It's easy to set up a jobs endpoint if you're at all familiar with [minimal APIs in ASP.NET Core](https://learn.microsoft.com/aspnet/core/fundamentals/minimal-apis/overview) as the syntax is the same between the two.
+For HTTP callbacks, the mapper registers `POST /job/{jobName}`. Start the application with a matching app port:
 
-Once dependency injection registration has been completed, configure the application the same way you would to handle mapping an HTTP request via the minimal API functionality in ASP.NET Core. Implemented as an extension method,
-pass the name of the job it should be responsive to and a delegate. Services can be injected into the delegate's arguments as you wish and the job payload can be accessed from the `ReadOnlyMemory<byte>` originally provided to the 
-job registration.
+```sh
+dapr run --app-id jobsapp --app-port 5000 -- dotnet run --urls http://localhost:5000
+```
 
-There are two delegates you can use here. One provides an `IServiceProvider` in case you need to inject other services into the handler:
+### gRPC callbacks
 
-```cs
-//We have this from the example above
-var builder = WebApplication.CreateBuilder(args);
+`AddDaprJobsClient` and `MapDaprScheduledJobHandler` also register the gRPC callback path. Choose it with
+`--app-protocol grpc`. For plaintext gRPC, configure a dedicated HTTP/2 listener before `builder.Build()`:
 
-builder.Services.AddDaprJobsClient();
+```csharp
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
-var app = builder.Build();
-
-//Add our endpoint registration
-app.MapDaprScheduledJob("myJob", (IServiceProvider serviceProvider, string jobName, ReadOnlyMemory<byte> jobPayload) => {
-    var logger = serviceProvider.GetService<ILogger>();
-    logger?.LogInformation("Received trigger invocation for '{jobName}'", "myJob");
-
-    //Do something...
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenLocalhost(5000, listen => listen.Protocols = HttpProtocols.Http2);
 });
-
-app.Run();
 ```
 
-The other overload of the delegate doesn't require an `IServiceProvider` if not necessary:
-
-```cs
-//We have this from the example above
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddDaprJobsClient();
-
-var app = builder.Build();
-
-//Add our endpoint registration
-app.MapDaprScheduledJob("myJob", (string jobName, ReadOnlyMemory<byte> jobPayload) => {
-    //Do something...
-});
-
-app.Run();
-```
-
-## Support cancellation tokens when processing mapped invocations
-You may want to ensure that timeouts are handled on job invocations so that they don't indefinitely hang and use system resources. When setting up the job mapping, there's an optional `TimeSpan` parameter that can be 
-provided as the last argument to specify a timeout for the request. Every time the job mapping invocation is triggered, a new `CancellationTokenSource` will be created using this timeout parameter and a `CancellationToken`
-will be created from it to put an upper bound on the processing of the request. If a timeout isn't provided, this defaults to `CancellationToken.None` and a timeout will not be automatically applied to the mapping.
-
-```cs
-//We have this from the example above
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddDaprJobsClient();
-
-var app = builder.Build();
-
-//Add our endpoint registration
-app.MapDaprScheduledJob("myJob", (string jobName, ReadOnlyMemory<byte> jobPayload) => {
-    //Do something...
-}, TimeSpan.FromSeconds(15)); //Assigns a maximum timeout of 15 seconds for handling the invocation request
-
-app.Run();
-```
+An HTTP/1-only listener, or plaintext `Http1AndHttp2` without protocol negotiation, cannot serve this gRPC
+callback. Use separate listeners if the same app must also accept HTTP/1 traffic.
 
 ## Register the job
 
-Finally, we have to register the job we want scheduled. Note that from here, all SDK methods have cancellation token support and use a default token if not otherwise set.
-
-There are three different ways to set up a job that vary based on how you want to configure the schedule. The following
-shows the different arguments available when scheduling a job:
-
-| Argument Name | Type | Description | Required |
-|---|---|---|---|
-| jobName | string | The name of the job being scheduled. | Yes |
-| schedule | DaprJobSchedule | The schedule defining when the job will be triggered. | Yes |
-| payload | ReadOnlyMemory<byte> | Job data provided to the invocation endpoint when triggered. | No |
-| startingFrom | DateTime | The point in time from which the job schedule should start. | No |
-| repeats | int | The maximum number of times the job should be triggered. | No |
-| ttl | When the job should expires and no longer trigger. | No |
-| overwrite | bool | A flag indicating whether an existing job should be overwritten when submitted or false to require that an existing job with the same name be deleted first. | No |
-| cancellationToken | CancellationToken | Used to cancel out of the operation early, e.g. because of an operation timeout. | No |
-
-### `DaprJobSchedule`
-All jobs are scheduled via the SDK using the `DaprJobSchedule` which creates an expression passed to the
-runtime to schedule jobs. There are several static methods exposed on the `DaprJobSchedule` used to faciliate
-easy registration of each of the kinds of job schedules available as follows. This separates specifying
-the job schedule itself from any additional options like repeating the operation or providing a cancellation token.
-
-### One-time job
-A one-time job is exactly that; it will run at a single point in time and will not repeat. 
-
-This approach requires that you select a job name and specify a time it should be triggered.
-
-`DaprJobSchedule.FromDateTime(DateTimeOffset scheduledTime)`
-
-One-time jobs can be scheduled from the Dapr Jobs client as in the following example:
-
-```cs
-public class MyOperation(DaprJobsClient daprJobsClient)
-{
-    public async Task ScheduleOneTimeJobAsync(CancellationToken cancellationToken)
-    {
-        var today = DateTimeOffset.UtcNow;
-        var threeDaysFromNow = today.AddDays(3);
-
-        var schedule = DaprJobSchedule.FromDateTime(threeDaysFromNow);
-        await daprJobsClient.ScheduleJobAsync("job", schedule, cancellationToken: cancellationToken);
-    }
-}
-```
-
-### Interval-based job
-An interval-based job is one that runs on a recurring loop configured as a fixed amount of time, not unlike how [reminders](https://docs.dapr.io/developing-applications/building-blocks/actors/actors-timers-reminders/#actor-reminders) work in the Actors building block today.
-
-`DaprJobSchedule.FromDuration(TimeSpan interval)`
-
-Interval-based jobs can be scheduled from the Dapr Jobs client as in the following example:
-
-```cs
-public class MyOperation(DaprJobsClient daprJobsClient)
-{
-
-    public async Task ScheduleIntervalJobAsync(CancellationToken cancellationToken)
-    {
-        var hourlyInterval = TimeSpan.FromHours(1);
-
-        //Trigger the job hourly, but a maximum of 5 times
-        var schedule = DaprJobSchedule.FromDuration(hourlyInterval);
-        await daprJobsClient.ScheduleJobAsync("job", schedule, repeats: 5, cancellationToken: cancellationToken);
-    }
-}
-```
-
-### Cron-based job
-A Cron-based job is scheduled using a Cron expression. This gives more calendar-based control over when the job is triggered as it can used calendar-based values in the expression.
-
-`DaprJobSchedule.FromCronExpression(string cronExpression)`
-
-There are two different approaches supported to scheduling a Cron-based job in the Dapr SDK.
-
-#### Provide your own Cron expression
-You can just provide your own Cron expression via a string via `DaprJobSchedule.FromExpression()`:
+Resolve `DaprJobsClient` and use `ScheduleJobAsync` for every schedule type:
 
 ```csharp
-public class MyOperation(DaprJobsClient daprJobsClient)
-{
-    public async Task ScheduleCronJobAsync(CancellationToken cancellationToken)
-    {
-        //At the top of every other hour on the fifth day of the month
-        const string cronSchedule = "0 */2 5 * *";
-        var schedule = DaprJobSchedule.FromExpression(cronSchedule);
+var jobsClient = app.Services.GetRequiredService<DaprJobsClient>();
+var schedule = DaprJobSchedule.FromDateTime(DateTimeOffset.UtcNow.AddMinutes(5));
 
-        //Don't start this until next month
-        var now = DateTime.UtcNow;
-        var oneMonthFromNow = now.AddMonths(1);
-        var firstOfNextMonth = new DateTime(oneMonthFromNow.Year, oneMonthFromNow.Month, 1, 0, 0, 0);
-
-        await daprJobsClient.ScheduleCronJobAsync("myJobName", schedule, dueTime: firstOfNextMonth, cancellationToken: cancellationToken);
-    }
-}
+await jobsClient.ScheduleJobAsync(
+    "send-receipt", schedule,
+    payload: Encoding.UTF8.GetBytes("order-42"),
+    overwrite: false,
+    cancellationToken: cancellationToken);
 ```
 
-#### Use the `CronExpressionBuilder`
-Alternatively, you can use our fluent builder to produce a valid Cron expression:
+Schedule only after the callback is ready, or use a future due time. Registering a job does not by itself
+start an application listener.
+
+| Argument | Meaning |
+| --- | --- |
+| `jobName`, `schedule` | Required name and `DaprJobSchedule`. |
+| `payload` | Optional `ReadOnlyMemory<byte>` delivered unchanged to the callback. |
+| `startingFrom` | Optional `DateTimeOffset` controlling the first due time. |
+| `repeats` | Optional repeat count. |
+| `ttl` | Optional absolute `DateTimeOffset` expiry, later than `startingFrom` when both are supplied. |
+| `overwrite` | Defaults to `false`; opt in to replacing an existing same-name registration. |
+| `failurePolicyOptions` | Drop or constant-interval retry policy for failed triggers. |
+| `cancellationToken` | Cancels waiting for the client operation; it is not the callback token. |
+
+### One-time, interval, and predefined schedules
 
 ```csharp
-public class MyOperation(DaprJobsClient daprJobsClient)
-{
-    public async Task ScheduleCronJobAsync(CancellationToken cancellationToken)
-    {
-        //At the top of every other hour on the fifth day of the month
-        var cronExpression = new CronExpressionBuilder()
-            .Every(EveryCronPeriod.Hour, 2)
-            .On(OnCronPeriod.DayOfMonth, 5)
-            .ToString();
-        var schedule = DaprJobSchedule.FromExpression(cronExpression);
+var oneTime = DaprJobSchedule.FromDateTime(DateTimeOffset.UtcNow.AddHours(1));
+var interval = DaprJobSchedule.FromDuration(TimeSpan.FromMinutes(15));
+var daily = DaprJobSchedule.Daily;
 
-        //Don't start this until next month
-        var now = DateTime.UtcNow;
-        var oneMonthFromNow = now.AddMonths(1);
-        var firstOfNextMonth = new DateTime(oneMonthFromNow.Year, oneMonthFromNow.Month, 1, 0, 0, 0);
-
-        await daprJobsClient.ScheduleCronJobAsync("myJobName", schedule, dueTime: firstOfNextMonth, cancellationToken: cancellationToken);
-    }
-}
+await jobsClient.ScheduleJobAsync("refresh-cache", interval, repeats: 5,
+    cancellationToken: cancellationToken);
 ```
+
+Predefined schedules also include `Hourly`, `Midnight`, `Weekly`, `Monthly`, and `Yearly`.
+
+### Cron-based job and time zone
+
+Use `FromExpression` for a string expression, or `FromCronExpression` for a `CronExpressionBuilder`:
+
+```csharp
+var schedule = DaprJobSchedule.FromExpression("CRON_TZ=America/New_York 0 9 * * *");
+await jobsClient.ScheduleJobAsync("morning-report", schedule,
+    cancellationToken: cancellationToken);
+```
+
+The builder also supports `WithTimeZone(string)` and `WithTimeZone(TimeZoneInfo)`. `DaprJobSchedule.TimeZone` exposes an embedded `CRON_TZ`
+identifier. Use valid IANA time-zone IDs and account for daylight-saving changes when choosing calendar schedules.
+
+### JSON and string payload helpers
+
+`ScheduleJobWithPayloadAsync` from `Dapr.Jobs.Extensions` accepts the same schedule:
+
+```csharp
+await jobsClient.ScheduleJobWithPayloadAsync(
+    "create-report", DaprJobSchedule.Daily,
+    new { AccountId = "42", Format = "pdf" },
+    cancellationToken: cancellationToken);
+```
+
+The object overload JSON-serializes with web defaults unless you pass `jsonSerializerOptions`. The string
+overload encodes UTF-8 text without JSON quoting. Deserialize callback bytes with the matching convention.
+There are no separate `ScheduleCronJobAsync` or `ScheduleOneTimeJobWithPayloadAsync` helpers in this release.
+
+## Configure trigger failure policy
+
+```csharp
+await jobsClient.ScheduleJobAsync(
+    "refresh-catalog", DaprJobSchedule.Hourly,
+    failurePolicyOptions: new JobFailurePolicyConstantOptions(TimeSpan.FromSeconds(10))
+    {
+        MaxRetries = 5
+    },
+    cancellationToken: cancellationToken);
+```
+
+`JobFailurePolicyConstantOptions` retries at the specified interval; an unset `MaxRetries` allows indefinite
+retries. `JobFailurePolicyDropOptions` drops a failed trigger. An omitted policy leaves runtime defaults in
+effect. This policy is separate from the job's recurring schedule and repeat count. Make callback side effects
+idempotent because triggers can be delivered more than once.
 
 ## Get details of already-scheduled job
-If you know the name of an already-scheduled job, you can retrieve its metadata without waiting for it to
-be triggered. The returned `DaprJobDetails` exposes a few helpful properties for consuming the information from the Dapr Jobs API:
 
-- The `Name` property holds the unique name of the job, when available from the runtime. It is populated by `GetJobAsync` and `ListJobsAsync`, but may be `null` for instances constructed manually or returned by older runtime paths.
-- If the `Schedule` property contains a Cron expression, the `IsCronExpression` property will be true and the expression will also be available in the `CronExpression` property.
-- If the `Schedule` property contains a duration value, the `IsIntervalExpression` property will instead be true and the value will be converted to a `TimeSpan` value accessible from the `Interval` property.
-
-This can be done by using the following:
-
-```cs
-public class MyOperation(DaprJobsClient daprJobsClient)
-{
-    public async Task<DaprJobDetails> GetJobDetailsAsync(string jobName, CancellationToken cancellationToken)
-    {
-        var jobDetails = await daprJobsClient.GetJobAsync(jobName, cancellationToken);
-        return jobDetails;
-    }
-}
+```csharp
+var details = await jobsClient.GetJobAsync("refresh-catalog", cancellationToken);
 ```
+
+`DaprJobDetails` exposes `Name`, `Schedule`, `DueTime`, `Ttl`, `RepeatCount`, `Payload`, `FailurePolicy`, and `Overwrite`.
+`Name` can be null for manually constructed or older-runtime results. Inspect
+`details.Schedule.ExpressionValue` and schedule classification properties such as `IsCronExpression` and
+`IsPointInTimeExpression`. The response does not expose top-level `Interval` or `CronExpression` properties.
 
 ## List all registered jobs
-To retrieve every job registered for the current application ID, call `ListJobsAsync`. It returns an
-`IReadOnlyList<DaprJobDetails>` where each entry exposes the same metadata as `GetJobAsync`, including the
-`Name`, `Schedule`, `DueTime`, `Ttl`, `RepeatCount`, `Payload`, and `FailurePolicy` properties. The list is
-empty when no jobs are registered for the app ID, and a `DaprException` is thrown if the Dapr endpoint
-indicates a failure (see the inner exception for details).
 
-```cs
-public class MyOperation(DaprJobsClient daprJobsClient)
+```csharp
+var registered = await jobsClient.ListJobsAsync(cancellationToken);
+foreach (var job in registered)
 {
-    public async Task ListRegisteredJobsAsync(CancellationToken cancellationToken)
-    {
-        var registeredJobs = await daprJobsClient.ListJobsAsync(cancellationToken);
-        foreach (var job in registeredJobs)
-        {
-            Console.WriteLine("Job '{0}' scheduled with expression '{1}'",
-                job.Name, job.Schedule.ExpressionValue);
-        }
-    }
+    Console.WriteLine($"{job.Name}: {job.Schedule.ExpressionValue}");
 }
 ```
 
-## Delete a scheduled job
-To delete a scheduled job, you'll need to know its name. From there, it's as simple as calling the `DeleteJobAsync` method on the Dapr Jobs client:
+The result is an `IReadOnlyList<DaprJobDetails>` scoped to the current app ID. An empty list normally means
+there are no jobs; also consider the release-specific cancellation behavior described below.
 
-```cs
-public class MyOperation(DaprJobsClient daprJobsClient)
-{
-    public async Task DeleteJobAsync(string jobName, CancellationToken cancellationToken)
-    {
-        await daprJobsClient.DeleteJobAsync(jobName, cancellationToken);
-    }
-}
+## Delete a scheduled job
+
+```csharp
+await jobsClient.DeleteJobAsync("refresh-catalog", cancellationToken);
 ```
 
 ## Delete multiple jobs by name prefix
-To delete several jobs at once, call `DeleteJobsByPrefixAsync` with a name prefix. Every job whose name
-begins with the supplied `namePrefix` is deleted by the Dapr runtime. The match is case-sensitive.
 
-When `namePrefix` is `null` or whitespace, the Dapr runtime interprets the request as "delete all jobs for
-this application ID" (purge-all semantics). A `DaprException` is thrown if the endpoint indicates a failure
-(see the inner exception for details).
-
-```cs
-public class MyOperation(DaprJobsClient daprJobsClient)
-{
-    public async Task DeleteJobsByPrefixAsync(CancellationToken cancellationToken)
-    {
-        //Delete every job whose name begins with "backup-"
-        await daprJobsClient.DeleteJobsByPrefixAsync("backup-", cancellationToken);
-    }
-}
+```csharp
+await jobsClient.DeleteJobsByPrefixAsync("report-", cancellationToken);
 ```
+
+The prefix match is case-sensitive. **A null, empty, or whitespace prefix deletes all jobs for this app ID.**
+Validate a user-supplied prefix before calling this operation.
 
 ## Purge all jobs
-`PurgeAllJobsAsync` is a convenience wrapper around `DeleteJobsByPrefixAsync` that passes a `null` prefix,
-which the Dapr runtime interprets as "delete all jobs for this app ID". Use it when you want to clear every
-registered job for the application in a single call.
 
-```cs
-public class MyOperation(DaprJobsClient daprJobsClient)
-{
-    public async Task PurgeAllJobsAsync(CancellationToken cancellationToken)
-    {
-        await daprJobsClient.PurgeAllJobsAsync(cancellationToken);
-    }
-}
+```csharp
+await jobsClient.PurgeAllJobsAsync(cancellationToken);
 ```
+
+This explicitly requests deletion of every job associated with the current app ID, not every job in the cluster.
+
+## Errors and cancellation
+
+Runtime failures are wrapped in `DaprException`; inspect `InnerException`. Invalid arguments can throw standard
+argument exceptions. In `1.19.0`, several Jobs methods catch caller cancellation instead of throwing
+`OperationCanceledException`: writes/deletes can return without confirmation and listing can return empty.
+`GetJobAsync` reports a missing expected result as `DaprException` after cancellation. See
+[DaprJobsClient usage]({{< ref dotnet-jobsclient-usage.md >}}) for client configuration and payload conventions.
+
+## Analyzer
+
+The `Dapr.Jobs.Analyzers` package ships diagnostic `DAPR1501` (warning, category Usage). It fires when
+`ScheduleJobAsync` is called with a literal job name and no `MapDaprScheduledJobHandler` call exists in the same
+source file, with the message "Job invocations require the MapDaprScheduledJobHandler be set and configured for
+job name '{name}' on IEndpointRouteBuilder". Add the handler mapping, or suppress the diagnostic with
+`#pragma warning disable DAPR1501` or an `.editorconfig` rule if the handler is intentionally mapped elsewhere.
