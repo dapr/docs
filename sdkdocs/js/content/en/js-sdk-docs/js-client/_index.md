@@ -140,6 +140,10 @@ Use `client.search` to manage indexes and index, retrieve, delete, and query JSO
 
 See the [Search how-to guide]({{% ref js-search-howto.md %}}) for a complete example, and [Search client usage]({{% ref js-search-client-usage.md %}}) for method signatures, query options, write acknowledgements, cancellation, and errors.
 
+### Jobs API
+
+Use `client.jobs` to schedule, retrieve, and delete jobs with JavaScript SDK **3.19.0-rc.4 or later**. See the [Jobs how-to guide]({{% ref js-jobs-howto.md %}}) and [client usage guidance]({{% ref js-jobs-client-usage.md %}}) for scheduling options, payloads, runtime compatibility, and error handling.
+
 ### Invocation API
 
 For JavaScript SDK **3.19.0-rc.4 or later**, see the [service invocation overview]({{% ref js-service-invocation %}}) for HTTP and gRPC capabilities.

@@ -10,6 +10,8 @@ description: JavaScript Server SDK for developing Dapr applications
 
 The Dapr Server will allow you to receive communication from the Dapr Sidecar and get access to its server facing features such as: Subscribing to Events, Receiving Input Bindings, and much more.
 
+With JavaScript SDK **3.19.0-rc.4 or later**, register scheduled job callbacks through `server.jobs.listen(name, callback)`. See the [Jobs how-to guide]({{% ref js-jobs-howto.md %}}) for a runnable example and the [callback usage guidance]({{% ref js-jobs-client-usage.md %}}) for acknowledgments, retries, and protocol requirements.
+
 ## Pre-requisites
 
 - [Dapr CLI]({{% ref install-dapr-cli.md %}}) installed
