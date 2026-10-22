@@ -16,6 +16,14 @@ Starting with Dapr .NET SDK v1.17.0, `Dapr.Workflow` supports pluggable serializ
 
 Serialization configuration is entirely client-side and does not require a specific Dapr runtime version.
 
+For large payloads, [workflow data references (alpha)]({{% ref dotnet-workflow-data-references.md %}}) can store
+serialized data in a binary store instead of inline in history. Offloading is separate from serializer selection
+and happens after serialization. Unlike serializer configuration alone, it requires a runtime with binary-store
+support. Registration alone preserves ordinary inline values; select `PayloadWritePreference.PreferReference` to
+enable automatic offloading. Cross-app call inputs remain inline unless the call explicitly allows references.
+Forwarding references requires compatible, payload-aware .NET destinations with access to the same referenced
+objects; other Dapr language SDKs do not presently support data references.
+
 {{% alert title="Note" color="primary" %}}
 This feature requires Dapr .NET SDK v1.17.0 or later.
 {{% /alert %}}

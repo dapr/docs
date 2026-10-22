@@ -28,7 +28,8 @@ Select your preferred language-specific Dapr SDK before proceeding with the Quic
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [Python 3.7+ installed](https://www.python.org/downloads/).
+- [Python 3.11 or later installed](https://www.python.org/downloads/).
+- [uv](https://docs.astral.sh/uv/getting-started/installation/), the Python package manager that the sample uses.
 <!-- IGNORE_LINKS --> 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
@@ -38,7 +39,7 @@ For this example, you will need:
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/configuration/python/sdk).
 
 ```bash
-git clone https://github.com/dapr/quickstarts.git
+git clone --depth 1 https://github.com/dapr/quickstarts.git
 ```
 
 Once cloned, open a new terminal and run the following command to set values for configuration items `orderId1` and `orderId2`.
@@ -58,16 +59,15 @@ cd configuration/python/sdk/order-processor
 Install the dependencies:
 
 ```bash
-pip3 install -r requirements.txt
+uv sync
 ```
 
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --resources-path ../../../components/ --app-port 6001 -- python3 app.py
+dapr run --app-id order-processor --resources-path ../../../components/ --app-port 6001 -- uv run python app.py
 ```
 
-> **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
 
 The expected output:
 
@@ -90,10 +90,9 @@ docker exec dapr_redis redis-cli MSET orderId1 "103" orderId2 "104"
 Run the `order-processor` service again:
 
 ```bash
-dapr run --app-id order-processor --resources-path ../../../components/ --app-port 6001 -- python3 app.py
+dapr run --app-id order-processor --resources-path ../../../components/ --app-port 6001 -- uv run python app.py
 ```
 
-> **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
 
 The app will return the updated configuration values:
 

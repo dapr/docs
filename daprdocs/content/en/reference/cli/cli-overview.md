@@ -83,6 +83,10 @@ You can learn more about each Dapr command from the links below.
  - [`dapr version`]({{% ref dapr-version.md %}})
  - [`dapr workflow`]({{% ref dapr-workflow.md %}})
 
+### Output streams
+
+From Dapr CLI 1.19, `dapr init`, `dapr list`, `dapr uninstall`, `dapr version` and the `dapr workflow` subcommands write error and warning messages to stderr, so `-o json` output on stdout stays parseable. Exit codes are unchanged. Update scripts that read these messages from stdout.
+
 ### Environment Variables
 
 Some Dapr flags can be set via environment variables (e.g. `DAPR_NETWORK` for the `--network` flag of the `dapr init` command). Note that specifying the flag on the command line overrides any set environment variable.

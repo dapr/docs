@@ -144,7 +144,11 @@ When Dapr invokes a service, it automatically adds the following headers to the 
 | `dapr-caller-namespace` | The namespace of the calling application | `production` |
 | `dapr-callee-app-id` | The ID of the called application | `mathService` |
 
-These headers are available in both HTTP and gRPC service invocation requests.
+These headers are available in both HTTP and gRPC service invocation requests, including calls through the gRPC proxy.
+
+From Dapr 1.19 and 1.18.6, with mTLS enabled, the called app receives `dapr-caller-app-id` and `dapr-caller-namespace` only from its own sidecar. The sidecar sets them from the caller's mTLS identity and removes any value the calling app set, so the called app can rely on them to identify the caller.
+
+From Dapr 1.19 and 1.18.6, a method name that contains `%2F`, `%5C` or `%2E` (in any letter case), or a literal `\`, is rejected before the access control check, because the app could decode it into a path that the [access control policy]({{% ref invoke-allowlist %}}) does not allow. This applies to the HTTP and gRPC APIs, calls between sidecars, proxied gRPC calls and actor method invocation.
 
 #### Non-Dapr Endpoint Example
 
