@@ -41,7 +41,7 @@ All Dapr SDKs use a standard JSON convention by default. If you change the seria
 ## Default JSON serialization
 
 By default, the .NET SDK uses `System.Text.Json` with `JsonSerializerDefaults.Web` (see the
-[`JsonSerializerDefaults.Web` reference](https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializerdefaults?view=net-10.0)).
+[`JsonSerializerDefaults.Web` reference](https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializerdefaults)).
 This means:
 
 - Property names are case-insensitive.
@@ -58,21 +58,30 @@ To override the default JSON settings, register the workflow client using the wo
 builder.Services
     .AddDaprWorkflowBuilder(options =>
     {
-        // Explicit registration is operation - the source generator discovers types automatically
+        // Explicit registration is optional.
         options.RegisterWorkflow<MyWorkflow>();
         options.RegisterActivity<MyActivity>();
     })
     .WithJsonSerializer(new JsonSerializerOptions { PropertyNamingPolicy = null });
 ```
 
-All `DaprWorkflowClient` instances resolved from DI will use the provided `JsonSerializerOptions` for workflow and activity payloads.
+The DI-registered client and worker use these settings for payloads. Independently constructed clients must use
+compatible settings too. Serializer instances are shared, so custom implementations must be safe for concurrent use.
 
 ## Custom serialization providers
 
-Custom serializers must implement the `IWorkflowSerializer` interface. The following example shows a
-MessagePack-based implementation that encodes data as Base64 strings for transport:
+In SDK 1.19.0, serializers implement `IDaprSerializer` from `Dapr.Common.Serialization`.
+`IWorkflowSerializer` from `Dapr.Workflow.Serialization` extends that shared interface and remains supported,
+including by the factory-based registration overload. Registering an `IWorkflowSerializer` directly in DI is
+marked `[Obsolete]` and will be removed in the SDK release coinciding with Dapr v1.20; prefer implementing
+`IDaprSerializer` for new code. Implement all four methods, including `Serialize<T>`.
+The following example shows a MessagePack-based implementation that encodes data as Base64 strings for transport.
+It also requires the `MessagePack` NuGet package; choose serialization options compatible with your DTO contracts:
 
 ```csharp
+using Dapr.Workflow.Serialization;
+using MessagePack;
+
 public sealed class MessagePackWorkflowSerializer : IWorkflowSerializer
 {
     private readonly MessagePackSerializerOptions _options;
@@ -81,6 +90,8 @@ public sealed class MessagePackWorkflowSerializer : IWorkflowSerializer
     {
         _options = options;
     }
+
+    public string Serialize<T>(T value) => Serialize(value, typeof(T));
 
     /// <inheritdoc/>
     public string Serialize(object? value, Type? inputType = null)
@@ -143,7 +154,7 @@ Register the serializer with the workflow builder:
 builder.Services
     .AddDaprWorkflowBuilder(options =>
     {
-        // Explicit registration is operation - the source generator discovers types automatically
+        // Explicit registration is optional.
         options.RegisterWorkflow<MyWorkflow>();
         options.RegisterActivity<MyActivity>();
     })
@@ -156,7 +167,7 @@ If you need DI-provided configuration, use the overload that receives an `IServi
 builder.Services
     .AddDaprWorkflowBuilder(options =>
     {
-        // Explicit registration is operation - the source generator discovers types automatically
+        // Explicit registration is optional.
         options.RegisterWorkflow<MyWorkflow>();
         options.RegisterActivity<MyActivity>();
     })
@@ -169,3 +180,9 @@ builder.Services
         return new MessagePackWorkflowSerializer(options);
     });
 ```
+
+## Next steps
+
+- [Workflow client registration]({{% ref dotnet-workflowclient-usage.md %}})
+- [Workflow data references]({{% ref dotnet-workflow-data-references.md %}})
+- [Workflow versioning]({{% ref dotnet-workflow-versioning.md %}})

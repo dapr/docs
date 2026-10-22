@@ -70,7 +70,14 @@ var widget = await client.GetStateAsync<Widget>("statestore", "my-widget",
     cancellationToken: cts.Token);
 ```
 
-When canceled, an `OperationCanceledException` is thrown.
+{{% alert title="Cancellation behavior in SDK 1.19.0" color="warning" %}}
+This release catches caller-initiated cancellation in the state gRPC client. Single reads can return default
+values, bulk/query reads can return empty results, conditional writes/deletes can return `false`, and other
+writes can complete without confirming a remote change. These outcomes are not sufficient evidence that a
+key is absent, an ETag conflicted, or a write succeeded. Check the caller's token after an operation if you need
+to distinguish cancellation, and reconcile uncertain writes with the store. Cancellation never guarantees
+rollback of a request already accepted by the runtime.
+{{% /alert %}}
 
 ## Dependency injection registration
 
@@ -156,7 +163,8 @@ builder.Services.AddDaprStateManagementClient((sp, clientBuilder) =>
 
 ### TrySaveStateAsync / TryDeleteStateAsync
 
-Both return `bool` — `true` if the operation succeeded, `false` if the ETag did not match (indicating a concurrent modification).
+Both return `bool` — `true` if the operation succeeded, `false` on an ETag conflict. In `1.19.0`,
+caller cancellation can also return `false`; check cancellation before treating it as a concurrency conflict.
 
 ### QueryStateAsync
 
@@ -176,6 +184,10 @@ Each `StateQueryItem<TValue>` contains:
 | `Data` | `TValue?` | The deserialized value |
 | `ETag` | `string?` | The ETag for the item |
 | `Error` | `string?` | An error message if the item could not be retrieved, or `null` on success |
+
+Although `StateQueryItem<TValue>` has an `Error` property, the `1.19.0` client throws `DaprException`
+when the runtime returns per-item query errors, rather than returning a successful response containing those
+failed items. Do not rely on partial results being returned in that case.
 
 ## StateOptions
 
@@ -198,7 +210,9 @@ await client.SaveStateAsync("statestore", "my-widget", widget, stateOptions: opt
 
 ## Error handling
 
-Methods on `DaprStateManagementClient` will throw a `DaprException` if an issue is encountered when communicating with the Dapr sidecar. In case of illegal argument values, the appropriate standard exception will be thrown (e.g. `ArgumentNullException` or `ArgumentException`) with the name of the offending argument. When an operation is canceled via a `CancellationToken`, an `OperationCanceledException` will be thrown.
+Methods on `DaprStateManagementClient` throw `DaprException` for runtime failures. Invalid argument values
+raise standard exceptions such as `ArgumentNullException` or `ArgumentException`. Caller cancellation has
+the release-specific behavior described above.
 
 The most common cases of failure will be related to:
 
@@ -219,3 +233,30 @@ the following:
 - The default JSON serialization settings (`JsonSerializerDefaults.Web`) are identical, so data written by `DaprClient` is fully compatible with `DaprStateManagementClient` and vice versa.
 - The new package additionally provides `IDaprStateStoreClient` and the `[StateStore]` source generator for strongly-typed, store-scoped access. This reduces boilerplate and eliminating store name strings at call sites.
 - `DaprStateManagementClient` is registered independently from `DaprClient`. Both can coexist in the same application during a gradual migration.
+
+### APIs that remain on DaprClient
+
+The dedicated client's public surface is typed state access. It does not expose these `DaprClient` helpers:
+
+| Legacy method | Purpose |
+| --- | --- |
+| `SaveByteStateAsync`, `TrySaveByteStateAsync` | Save already-encoded bytes, optionally conditional on an ETag. |
+| `GetByteStateAsync`, `GetByteStateAndETagAsync` | Retrieve raw state bytes, optionally with an ETag. |
+| Non-generic `GetBulkStateAsync` | Retrieve bulk entries without deserializing values to an application type. |
+| `GetStateEntryAsync<T>` | Return a `StateEntry<T>` tracking value, key/store, and ETag for save/delete helper operations. |
+
+Use `DaprClient` where these APIs are needed; do not assume substituting `byte[]` into a JSON generic
+method preserves raw bytes. JSON serialization encodes a byte array rather than bypassing serialization.
+For large files and chunked streaming, use the separate [binary store]({{< ref dotnet-binarystore >}}) building
+block instead of buffering file content in state.
+
+```csharp
+await legacyClient.SaveByteStateAsync("statestore", "encoded-record", encodedBytes,
+    cancellationToken: cancellationToken);
+var (bytes, etag) = await legacyClient.GetByteStateAndETagAsync(
+    "statestore", "encoded-record", cancellationToken: cancellationToken);
+```
+
+The two client families also use types in different namespaces. Dedicated state operations use
+`Dapr.StateManagement` option/operation models; older APIs use their `Dapr.Client` counterparts.
+Check types as well as method names when migrating, and qualify overlapping names when using both.

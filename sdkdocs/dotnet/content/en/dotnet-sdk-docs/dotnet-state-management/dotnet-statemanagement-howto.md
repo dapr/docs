@@ -23,11 +23,18 @@ In the .NET example project:
 - [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/)
 - [Initialized Dapr environment](https://docs.dapr.io/getting-started/install-dapr-selfhost)
 - [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0),
-  [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0), or
-  [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0) installed
+  [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0),
+  [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0), or
+  [.NET 11](https://dotnet.microsoft.com/download/dotnet/11.0) installed
 - [Dapr.StateManagement](https://www.nuget.org/packages/Dapr.StateManagement) NuGet package installed to your project
 
 ## Set up the environment
+
+{{% alert title=".NET framework support" color="warning" %}}
+Be advised that .NET 8 and .NET 9 reach end of support in November 2026. Support for both will be dropped
+in Dapr v1.20; only .NET 10 and .NET 11 will be supported through the end of 2027.
+{{% /alert %}}
+
 Clone the [.NET SDK repo](https://github.com/dapr/dotnet-sdk).
 
 ```sh
@@ -57,6 +64,10 @@ dapr run --app-id statemanagement-example --dapr-grpc-port 50001 -- dotnet run
 > Dapr listens for gRPC requests at `http://localhost:50001`.
 
 ## Register the client
+
+These examples target `Dapr.StateManagement` `1.19.0` or later. Import `Dapr.StateManagement`,
+`Dapr.StateManagement.Extensions`, and `System.Text.Json` for the client, registration, and serialization.
+State option and operation models are in `Dapr.StateManagement`.
 
 The `DaprStateManagementClient` is registered through the `AddDaprStateManagementClient()` extension method on `IServiceCollection`. This returns an `IDaprStateManagementBuilder` that can be used to further register source-generated typed state store clients.
 
@@ -225,6 +236,23 @@ await client.ExecuteStateTransactionAsync("statestore", new List<StateTransactio
 });
 ```
 
+Upserts use serialized bytes in `StateTransactionRequest`, rather than the generic save method's automatic
+object serialization. Use matching serializer settings:
+
+```csharp
+var data = JsonSerializer.SerializeToUtf8Bytes(
+    new Widget("small", "blue"), new JsonSerializerOptions(JsonSerializerDefaults.Web));
+
+await client.ExecuteStateTransactionAsync("statestore", new List<StateTransactionRequest>
+{
+    new("widget-c", data, StateOperationType.Upsert),
+    new("widget-d", null, StateOperationType.Delete)
+});
+```
+
+`StateTransactionRequest` can carry per-operation ETags, options, and metadata. Request-level metadata is
+passed separately to `ExecuteStateTransactionAsync`. A bulk save is not a substitute for an atomic transaction.
+
 ## Query state
 
 If the underlying state store supports queries, you can use `QueryStateAsync` with a JSON query expression:
@@ -233,10 +261,10 @@ If the underlying state store supports queries, you can use `QueryStateAsync` wi
 var query = """
 {
     "filter": {
-        "EQ": { "value.Color": "blue" }
+        "EQ": { "color": "blue" }
     },
     "sort": [
-        { "key": "value.Size", "order": "ASC" }
+        { "key": "size", "order": "ASC" }
     ]
 }
 """;
@@ -249,7 +277,11 @@ foreach (var item in response.Results)
 }
 ```
 
-> Query support depends on the state store component. Refer to the [Dapr state store query API documentation](https://docs.dapr.io/developing-applications/building-blocks/state-management/howto-state-query-api/) for details. Do note that this functionality is not expected to receive any additional implementation support and is thus effectively deprecated.
+> Query support depends on the state store component. Refer to the [Dapr state store query API documentation](https://docs.dapr.io/developing-applications/building-blocks/state-management/howto-state-query-api/) for query syntax and limitations. Follow `response.Token` in the next query's pagination fields when paging; do not assume all results fit in one response.
+
+Query fields refer to the stored JSON document. The example uses the client's default web JSON settings,
+which serialize `Widget.Color` and `Widget.Size` as `color` and `size`; adapt the query to your serializer and
+component's indexing requirements.
 
 ## Pass metadata to requests
 
