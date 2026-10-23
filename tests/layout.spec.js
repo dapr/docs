@@ -63,13 +63,39 @@ test.describe('layout invariants', () => {
 
         // ── No horizontal overflow ──────────────────────────────────────────
         // A page wider than its viewport means something is clipped or the
-        // reader has to pan sideways to read a line of prose.
-        const scrollWidth = await page.evaluate(
-          () => document.documentElement.scrollWidth,
-        );
+        // reader has to pan sideways to read a line of prose. Report which
+        // elements stick out, not just by how much: a bare "3px too wide" sends
+        // the next person hunting through the whole DOM by hand.
+        const overflow = await page.evaluate((vw) => {
+          const offenders = [];
+          for (const el of document.querySelectorAll('*')) {
+            const r = el.getBoundingClientRect();
+            if (r.width === 0 && r.height === 0) continue;
+            if (Math.round(r.right) <= vw + 1) continue;
+            const path = [];
+            for (let n = el; n && n !== document.body; n = n.parentElement) {
+              path.unshift(
+                n.tagName.toLowerCase() +
+                  (n.id ? `#${n.id}` : '') +
+                  (typeof n.className === 'string' && n.className.trim()
+                    ? `.${n.className.trim().split(/\s+/).slice(0, 2).join('.')}`
+                    : ''),
+              );
+            }
+            offenders.push(
+              `${path.slice(-3).join(' > ')} [right=${Math.round(r.right)} w=${Math.round(r.width)}]`,
+            );
+          }
+          return {
+            scrollWidth: document.documentElement.scrollWidth,
+            offenders: offenders.slice(0, 8),
+          };
+        }, width);
+
         expect(
-          scrollWidth,
-          `document is ${scrollWidth - width}px wider than the ${width}px viewport`,
+          overflow.scrollWidth,
+          `document is ${overflow.scrollWidth - width}px wider than the ${width}px viewport.\n` +
+            `Overflowing elements:\n  ${overflow.offenders.join('\n  ') || '(none found — likely an ancestor with a fixed min-width)'}`,
         ).toBeLessThanOrEqual(width + 1);
 
         // ── Main content starts within the first screen ─────────────────────
