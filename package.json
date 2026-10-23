@@ -32,9 +32,12 @@
     "test": "npm run check:links",
     "update:dep": "npm install --save-dev autoprefixer@latest postcss-cli@latest",
     "update:hugo": "npm install --save-dev --save-exact hugo-extended@latest",
-    "update:pkgs": "npx npm-check-updates -u"
+    "update:pkgs": "npx npm-check-updates -u",
+    "test:layout": "playwright test",
+    "test:layout:ui": "playwright test --ui"
   },
   "devDependencies": {
+    "@playwright/test": "1.56.1",
     "autoprefixer": "^10.4.21",
     "cross-env": "^7.0.3",
     "hugo-extended": "0.147.8",

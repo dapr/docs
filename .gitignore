@@ -16,3 +16,9 @@ daprdocs/content/en/.DS_Store
 daprdocs/resources/.DS_Store
 daprdocs/static/.DS_Store
 daprdocs/static/presentations/.DS_Store
+
+# Playwright layout tests
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
