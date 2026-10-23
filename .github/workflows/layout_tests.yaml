@@ -30,6 +30,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
+          # Full history, matching the deploy workflow. hugo.yaml sets
+          # enableGitInfo, so with the default shallow clone every page's
+          # "Last modified" resolves to the single commit available - on a PR
+          # that is the synthetic merge commit, whose subject is two 40-char
+          # SHAs. The pages then differ from what actually ships.
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4

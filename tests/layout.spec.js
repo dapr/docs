@@ -224,6 +224,48 @@ test.describe('mobile menu', () => {
   }
 });
 
+test.describe('page meta', () => {
+  // Docsy renders "Last modified <date>: <commit subject> (<hash>)" from
+  // .GitInfo, so this text is whatever happens to be in git history. A subject
+  // containing a token with no break opportunity — a 40-char SHA, a long
+  // branch name, a bare URL — used to push the whole document wider than the
+  // viewport, forcing horizontal panning on every page of the site.
+  //
+  // The pathological subject is injected rather than waited for, so the test
+  // asserts the layout's tolerance instead of depending on what the repo's
+  // most recent commit happens to say.
+  for (const width of [320, 360]) {
+    test(`@ ${width}px: an unbreakable commit subject does not widen the page`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 780 });
+      await page.goto('/getting-started/', { waitUntil: 'domcontentloaded' });
+
+      const lastmod = page.locator('.td-page-meta__lastmod a');
+      await expect(lastmod, 'page-meta lastmod link is missing').toHaveCount(1);
+
+      // The shape a pull_request checkout produces for its merge commit. The
+      // 40-char SHA is the realistic worst case: it is the longest token with
+      // no break opportunity at all, where a long branch name would still
+      // break at its slashes and hyphens. At ~348px it overflows a 320px
+      // viewport but fits a 360px one, so the 320px case is the one that
+      // actually guards the fix; 360px is kept to pin that boundary.
+      await lastmod.evaluate((a) => {
+        a.textContent =
+          'Merge 20ea23b1f0a1b2c3d4e5f60718293a4b5c6d7e8f into 3fcd982834a5b6c7d8e9f0a1b2c3d4e5f6071829 (20ea23b1f)';
+      });
+
+      const scrollWidth = await page.evaluate(
+        () => document.documentElement.scrollWidth,
+      );
+      expect(
+        scrollWidth,
+        `a long unbreakable commit subject widened the document to ${scrollWidth}px at ${width}px`,
+      ).toBeLessThanOrEqual(width + 1);
+    });
+  }
+});
+
 test.describe('search availability', () => {
   test('mobile search mount is present below lg and absent above it', async ({ page }) => {
     const displayOf = (selector) =>
