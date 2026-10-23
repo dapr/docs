@@ -46,6 +46,10 @@ Any create, update, or deletion of these component types is ignored by the sidec
 - [Actor State Stores]({{% ref "state_api.md#configuring-state-store-for-actors" %}})
 - [Workflow Backends]({{% ref "workflow-architecture.md#workflow-backend" %}})
 
+### Referenced secrets
+
+Hot reloading also detects changes to the secrets a component references with `secretKeyRef`, not only changes to the manifest. On each reconcile the sidecar re-resolves the reference and, if the value changed, closes and re-initializes the component with the new value within 60 seconds, without a pod restart. This applies to every secret store. Read [How-To: Reference secrets in components]({{% ref "component-secrets.md#updating-referenced-secrets" %}}) for more details.
+
 ## Further reading
 - [Components concept]({{% ref components-concept.md %}})
 - [Reference secrets in component definitions]({{% ref component-secrets.md %}})
