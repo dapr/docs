@@ -1,11 +1,13 @@
 {{/* Project override of Docsy v0.12.0 layouts/_partials/navbar.html — reason: inline logo SVG, announcement-banner include, theme toggle. Reconcile against upstream on Docsy upgrade. */}}
 {{ $cover := .HasShortcode "blocks/cover" }}
 {{ partial "announcement-banner.html" . }}
-<nav class="js-navbar-scroll navbar navbar-expand navbar-dark {{ if $cover}} td-navbar-cover {{ end }}flex-column flex-md-row td-navbar">
+<nav class="js-navbar-scroll navbar navbar-expand navbar-dark {{ if $cover}} td-navbar-cover {{ end }}flex-md-row td-navbar">
         <a class="navbar-brand" href="{{ .Site.Home.RelPermalink }}">
 		<span class="navbar-logo">{{ if .Site.Params.ui.navbar_logo }}<span class="navbar-logo--light">{{ with resources.Get "icons/logo-blue.svg" }}{{ ( . | minify).Content | safeHTML }}{{ end }}</span><span class="navbar-logo--dark">{{ with resources.Get "icons/logo.svg" }}{{ ( . | minify).Content | safeHTML }}{{ end }}</span>{{ end }}</span><span class="font-weight-bold">{{ .Site.Title }}</span>
 	</a>
-	<div class="td-navbar-nav-scroll ml-md-auto" id="main_navbar">
+	{{/* Below lg these links are surfaced inside the hamburger menu instead (see
+	     home.sidebarnav.html), keeping the mobile navbar to a single row. */}}
+	<div class="td-navbar-nav-scroll ml-md-auto d-none d-lg-block" id="main_navbar">
 		<ul class="navbar-nav mt-2 mt-lg-0">
 			{{ $p := . }}
 			{{ range .Site.Menus.main }}

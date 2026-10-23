@@ -89,6 +89,27 @@
         border-right: none;
         border-bottom: 1px solid var(--d-border);
     }
+    // Docsy makes the inner wrapper a sticky, full-viewport-height column from
+    // md (>=768px) — right for the two-column layout at lg, but in the stacked
+    // band it leaves a screen-tall box holding only the collapsed menu bar,
+    // pushing the content a full viewport down (invisible on landscape phones
+    // and small tablets). Let it size to its contents instead.
+    .td-sidebar__inner {
+        position: static;
+        height: auto;
+    }
+    // With sidebar search disabled the strip holds only the hamburger, but
+    // Docsy's desktop spacing (1rem form padding + 1rem toggle margin) wrapped
+    // that 20px glyph in 64px of blank space — a ~100px empty band above the
+    // content on every phone. Tighten it to a menu bar.
+    .td-sidebar__search {
+        padding: .25rem 0;
+    }
+    .td-sidebar__toggle {
+        // Keep a comfortable tap target without the vertical bulk.
+        margin: .25rem 1rem;
+        padding: .5rem !important;
+    }
 }
 
 // The hamburger toggle (button.td-sidebar__toggle.fas.fa-bars). Force the Font
@@ -103,4 +124,25 @@
 .td-sidebar__toggle:hover,
 .td-sidebar__toggle:focus {
     color: var(--d-blue);
+}
+
+// ── Mobile hamburger menu groups ────────────────────────────────────────────
+// Below lg the menu carries three groups injected by home.sidebarnav.html: the
+// site links, the version/language dropdowns, and the doc tree. Left to
+// themselves they start at three different x offsets (29 / 21 / 37px), so pad
+// the first two out to meet the tree, and rule off the tree as its own group.
+@media (max-width: 991.98px) {
+    .dapr-mobile-nav .td-sidebar-link__section {
+        padding-left: .5rem !important;
+    }
+
+    #td-section-nav > .nav-item.dropdown {
+        padding-left: 1rem;
+    }
+
+    #td-section-nav > ul.td-sidebar-nav__section:not(.dapr-mobile-nav) {
+        margin-top: .5rem;
+        padding-top: .5rem;
+        border-top: 1px solid var(--d-border);
+    }
 }
