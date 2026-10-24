@@ -9,7 +9,7 @@ description: Get started with the Dapr Workflow building block
 {{% alert title="Note" color="primary" %}}
 Redis is currently used as the state store component for Workflows in the Quickstarts. However, Redis does not support transaction rollbacks and should not be used in production as an actor state store.
 
-To run a quickstart without Docker and Redis, use the SQLite run file that the sample provides. Each sample README has a "Run without Docker" section: [Python](https://github.com/dapr/quickstarts/tree/master/workflows/python/sdk#run-without-docker), [JavaScript](https://github.com/dapr/quickstarts/tree/master/workflows/javascript/sdk#run-without-docker), [.NET](https://github.com/dapr/quickstarts/tree/master/workflows/csharp/sdk#run-without-docker), [Java](https://github.com/dapr/quickstarts/tree/master/workflows/java/sdk#run-without-docker) and [Go](https://github.com/dapr/quickstarts/tree/master/workflows/go/sdk#run-without-docker).
+To run a quickstart without Docker and Redis, follow [How to: Run workflows locally without Docker]({{% ref howto-run-workflow-without-docker.md %}}) to start the Dapr binaries. Then use the SQLite run file that the sample provides. Each sample README has a "Run without Docker" section with the exact steps: [Python](https://github.com/dapr/quickstarts/tree/master/workflows/python/sdk#run-without-docker), [JavaScript](https://github.com/dapr/quickstarts/tree/master/workflows/javascript/sdk#run-without-docker), [.NET](https://github.com/dapr/quickstarts/tree/master/workflows/csharp/sdk#run-without-docker), [Java](https://github.com/dapr/quickstarts/tree/master/workflows/java/sdk#run-without-docker) and [Go](https://github.com/dapr/quickstarts/tree/master/workflows/go/sdk#run-without-docker).
 {{% /alert %}}
 
 Let's take a look at the Dapr [Workflow building block]({{% ref workflow-overview.md %}}). In this Quickstart, you'll create a simple console application to demonstrate Dapr's workflow programming model and the workflow management APIs.
@@ -17,7 +17,8 @@ Let's take a look at the Dapr [Workflow building block]({{% ref workflow-overvie
 In this guide, you'll:
 
 - Run the `order-processor` application.
-- Start the workflow and watch the workflow activites/tasks execute.
+- Start the workflow and watch the workflow activities/tasks execute.
+- Stop the app while the workflow waits for an approval, start the app again, and approve the order. The workflow continues from its history.
 - Review the workflow logic and the workflow activities and how they're represented in the code.
 
 <img src="/images/workflow-quickstart-overview.png" width=800 style="padding-bottom:15px;">
@@ -32,8 +33,8 @@ The workflow contains the following activities:
 
 The workflow also contains business logic:
 - The workflow will not proceed with the payment if there is insufficient inventory.
-- The workflow will call the `RequestApprovalActivity` and wait for an external approval event when the total cost of the order is greater than 5000.
-- If the order is not approved or the approval is timed out, the workflow not proceed with the payment.
+- The workflow will call the `RequestApprovalActivity` and wait for an external approval event when the total cost of the order is greater than 5000. The order in this quickstart costs 10000, so it waits for the approval.
+- If the order is not approved or the approval is timed out, the workflow does not proceed with the payment.
 
 <img src="/images/workflow-quickstart-controlflow.png" width=800 style="padding-bottom:15px;">
 
@@ -63,6 +64,7 @@ For this example, you will need:
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
+- Docker is optional. To run without Docker, follow [How to: Run workflows locally without Docker]({{% ref howto-run-workflow-without-docker.md %}}).
 
 ### Step 2: Set up the environment
 
@@ -86,34 +88,92 @@ uv sync
 
 ### Step 3: Run the order processor app
 
-In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{% ref multi-app-dapr-run %}}). From the `python/sdk` directory, run the following command:
+The order in this quickstart is 2 cars at 5000 each, a total of 10000. An order over 5000 needs approval, so the workflow waits for an approval event. In these steps, you stop the app while the workflow waits, start the app again, and then approve the order. The workflow continues from its history.
 
-```bash
-uv run dapr run -f .
-```
+1. Set an order ID. The app uses it as the workflow instance ID.
 
-This starts the `order-processor` app with unique workflow ID and runs the workflow activities.
+   Linux and macOS:
 
-Expected output:
+   ```bash
+   export ORDER_ID=order-$(date +%Y%m%d-%H%M%S)
+   ```
 
-```text
-== APP - order-processor == *** Welcome to the Dapr Workflow console app sample!
-== APP - order-processor == *** Using this app, you can place orders that start workflows.
-== APP - order-processor == item: InventoryItem(item_name=Paperclip, per_item_cost=5, quantity=100)
-== APP - order-processor == item: InventoryItem(item_name=Cars, per_item_cost=5000, quantity=10)
-== APP - order-processor == item: InventoryItem(item_name=Computers, per_item_cost=500, quantity=100)
-== APP - order-processor == ==========Begin the purchase of item:==========
-== APP - order-processor == Starting order workflow, purchasing 1 of cars
-== APP - order-processor == Received order 0a8c4d9b59094191bf77e111c38a5e55 for 1 cars at $5000 !
-== APP - order-processor == Verifying inventory for order 0a8c4d9b59094191bf77e111c38a5e55 of 1 cars
-== APP - order-processor == There are 10 Cars available for purchase
-== APP - order-processor == Processing payment: 0a8c4d9b59094191bf77e111c38a5e55 for 1 cars at 5000 USD
-== APP - order-processor == Payment for request ID 0a8c4d9b59094191bf77e111c38a5e55 processed successfully
-== APP - order-processor == Checking inventory for order 0a8c4d9b59094191bf77e111c38a5e55 for 1 cars
-== APP - order-processor == There are now 9 cars left in stock
-== APP - order-processor == Order 0a8c4d9b59094191bf77e111c38a5e55 has completed!
-== APP - order-processor == Workflow completed! Result: {"processed": true, "__durabletask_autoobject__": true}
-```
+   Windows (PowerShell):
+
+   ```powershell
+   $env:ORDER_ID = "order-$(Get-Date -Format yyyyMMdd-HHmmss)"
+   ```
+
+1. Start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{% ref multi-app-dapr-run %}}). From the `python/sdk` directory, run the following command:
+
+   ```bash
+   uv run dapr run -f .
+   ```
+
+   The log shows the order ID, `Started order <id>.`, the activities that run before the approval, and then the request for approval.
+
+   Expected output:
+
+   ```text
+   == APP - order-processor == *** Welcome to the Dapr Workflow console app sample!
+   == APP - order-processor == *** Using this app, you can place orders that start workflows.
+   == APP - order-processor == item: InventoryItem(item_name=Paperclip, per_item_cost=5, quantity=100)
+   == APP - order-processor == item: InventoryItem(item_name=Cars, per_item_cost=5000, quantity=10)
+   == APP - order-processor == item: InventoryItem(item_name=Computers, per_item_cost=500, quantity=100)
+   == APP - order-processor == ==========Begin the purchase of item:==========
+   == APP - order-processor == Order ID: order-20261024-101500
+   == APP - order-processor == Received order order-20261024-101500 for 2 cars at $10000 !
+   == APP - order-processor == Started order order-20261024-101500.
+   == APP - order-processor == Verifying inventory for order order-20261024-101500 of 2 cars
+   == APP - order-processor == There are 10 Cars available for purchase
+   == APP - order-processor == Approval requested for order order-20261024-101500. Waiting for approval.
+   ```
+
+1. Stop the app with Ctrl+C. The workflow is not complete. Dapr keeps its state.
+
+1. Start the app again in the same terminal. `ORDER_ID` is still set.
+
+   ```bash
+   uv run dapr run -f .
+   ```
+
+   The log shows `Order <id> is already running. Waiting for it to finish.` The activities that ran before the approval do not run again.
+
+1. Open a second terminal and approve the order. Use the order ID that the app printed.
+
+   ```bash
+   dapr workflow raise-event <id>/ApprovalEvent --app-id order-processor --input '{"approved": true}'
+   ```
+
+   Expected output:
+
+   ```text
+   Workflow 'order-20261024-101500' raised event 'ApprovalEvent' successfully
+   ```
+
+1. The first terminal shows the payment, the inventory update, and the end of the workflow.
+
+   Expected output:
+
+   ```text
+   == APP - order-processor == *** Welcome to the Dapr Workflow console app sample!
+   == APP - order-processor == *** Using this app, you can place orders that start workflows.
+   == APP - order-processor == ==========Begin the purchase of item:==========
+   == APP - order-processor == Order ID: order-20261024-101500
+   == APP - order-processor == Order order-20261024-101500 is already running. Waiting for it to finish.
+   == APP - order-processor == Processing payment: order-20261024-101500 for 2 cars at 10000 USD
+   == APP - order-processor == Payment for request ID order-20261024-101500 processed successfully
+   == APP - order-processor == Checking inventory for order order-20261024-101500 for 2 cars
+   == APP - order-processor == There are now 8 cars left in stock
+   == APP - order-processor == Order order-20261024-101500 has completed!
+   == APP - order-processor == Workflow completed: COMPLETED
+   ```
+
+The activities that finished before you stopped the app did not run again. The workflow continued from its history. An activity that was in progress when you stopped the app can run again.
+
+To reject the order, raise the event with `{"approved": false}`. If no answer arrives in 10 minutes, the workflow cancels the order. If you start the app with an order ID whose workflow already ended, the app prints `Workflow completed: <status>` and exits. To place a new order, set a new `ORDER_ID`.
+
+To stop the Dapr processes that `dapr run -f .` started, press Ctrl+C or run `dapr stop -f .`.
 
 ### (Optional) Step 4: View in Zipkin
 
@@ -131,32 +191,35 @@ View the workflow trace spans in the Zipkin web UI (typically at `http://localho
 
 When you ran `dapr run -f .`:
 
-1. An OrderPayload is made containing one car.
-2. A unique order ID for the workflow is generated (in the above example, `0a8c4d9b59094191bf77e111c38a5e55`) and the workflow is scheduled.
-3. The `notify_activity` workflow activity sends a notification saying an order for one car has been received.
+1. The app makes an order for two cars with a total cost of 10000. The app writes the inventory to the state store only when the inventory is not there. A restart does not restock it.
+2. The order ID from `ORDER_ID` is the workflow instance ID. The app checks if the workflow instance exists. When it does not exist, the app schedules it. When it exists and is still running, the app waits for it. When it ended, the app prints its status and exits.
+3. The `notify_activity` workflow activity sends a notification that says the app received an order for two cars.
 4. The `verify_inventory_activity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock. The inventory is sufficient so the workflow continues.
-5. The total cost of the order is 5000, so the workflow will not call the `request_approval_activity` activity.
-6. The `process_payment_activity` workflow activity begins processing payment for order `0a8c4d9b59094191bf77e111c38a5e55` and confirms if successful.
-7. The `update_inventory_activity` workflow activity updates the inventory with the current available cars after the order has been processed.
-8. The `notify_activity` workflow activity sends a notification saying that order `0a8c4d9b59094191bf77e111c38a5e55` has completed.
-9. The workflow terminates as completed and the OrderResult is set to processed.
+5. The total cost of the order is more than 5000, so the workflow calls the `request_approval_activity` activity. Then the workflow waits for the `ApprovalEvent` event for up to 10 minutes. When the 10 minutes end, the workflow cancels the order.
+6. You stopped the app and started it again. The app found the workflow instance, and the workflow continued from its history. The activities that finished before the stop did not run again.
+7. When you raised `ApprovalEvent` with `{"approved": true}`, the `process_payment_activity` workflow activity processed the payment for the order.
+8. The `update_inventory_activity` workflow activity updated the inventory with the current available cars after the payment.
+9. The `notify_activity` workflow activity sent a notification that says the order is complete.
+10. The workflow ended as completed, and the app printed `Workflow completed: COMPLETED`.
 
 #### `order-processor/app.py`
 
 In the application's program file:
 
-- The unique workflow order ID is generated
-- The workflow is scheduled
-- The workflow status is retrieved
-- The workflow and the workflow activities it invokes are registered
+- The app reads the order ID from `ORDER_ID`, or builds it from the local time when `ORDER_ID` is not set
+- The app gets the state of the workflow instance. It schedules the workflow only when the instance does not exist. It waits for an instance that is still running
+- The app saves the inventory to the state store only when the inventory is not there
+- The app gets the workflow status when the workflow ends
+- The app registers the workflow and the workflow activities it invokes
 
 ```python
+import os
 from datetime import datetime
 from time import sleep
 
 from dapr.clients import DaprClient
 from dapr.conf import settings
-from dapr.ext.workflow import DaprWorkflowClient, WorkflowStatus
+from dapr.ext.workflow import DaprWorkflowClient
 
 from workflow import wfr, order_processing_workflow
 from model import InventoryItem, OrderPayload
@@ -188,22 +251,32 @@ class WorkflowConsoleApp:
 
         print("==========Begin the purchase of item:==========", flush=True)
         item_name = default_item_name
-        order_quantity = 1
+        order_quantity = 2
         total_cost = int(order_quantity) * baseInventory[item_name].per_item_cost
         order = OrderPayload(item_name=item_name, quantity=int(order_quantity), total_cost=total_cost)
 
-        print(f'Starting order workflow, purchasing {order_quantity} of {item_name}', flush=True)
-        instance_id = wfClient.schedule_new_workflow(
-            workflow=order_processing_workflow, input=order.to_json())
+        # The instance ID is the order ID. Set ORDER_ID to attach to an order that already exists.
+        instance_id = os.environ.get('ORDER_ID') or datetime.now().strftime('order-%Y%m%d-%H%M%S')
+        print(f'Order ID: {instance_id}', flush=True)
+
+        state = wfClient.get_workflow_state(instance_id=instance_id, fetch_payloads=False)
+        if state is None:
+            wfClient.schedule_new_workflow(
+                workflow=order_processing_workflow, input=order.to_json(), instance_id=instance_id)
+            print(f'Started order {instance_id}.', flush=True)
+        elif state.runtime_status.name in ('RUNNING', 'PENDING', 'SUSPENDED'):
+            print(f'Order {instance_id} is already running. Waiting for it to finish.', flush=True)
+        else:
+            print(f'Workflow completed: {state.runtime_status.name}', flush=True)
+            wfr.shutdown()
+            return
 
         try:
-            state = wfClient.wait_for_workflow_completion(instance_id=instance_id, timeout_in_seconds=30)
+            state = wfClient.wait_for_workflow_completion(instance_id=instance_id, timeout_in_seconds=900)
             if not state:
                 print("Workflow not found!")
-            elif state.runtime_status.name == 'COMPLETED':
-                print(f'Workflow completed! Result: {state.serialized_output}')
             else:
-                print(f'Workflow failed! Status: {state.runtime_status.name}')  # not expected
+                print(f'Workflow completed: {state.runtime_status.name}', flush=True)
         except TimeoutError:
             print('*** Workflow timed out!')
 
@@ -211,6 +284,9 @@ class WorkflowConsoleApp:
 
     def restock_inventory(self, daprClient: DaprClient, baseInventory):
         for key, item in baseInventory.items():
+            # Write the inventory only when the key is absent, so a restart does not restock.
+            if daprClient.get_state(store_name, key).data:
+                continue
             print(f'item: {item}')
             item_str = f'{{"name": "{item.item_name}", "quantity": {item.quantity},\
                           "per_item_cost": {item.per_item_cost}}}'
@@ -223,7 +299,7 @@ if __name__ == '__main__':
 
 #### `order-processor/workflow.py`
 
-In `workflow.py`, the workflow is defined as a class with all of its associated tasks (determined by workflow activities).
+In `workflow.py`, the workflow is defined as a class with all of its associated tasks (determined by workflow activities). When the total cost is more than 5000, the workflow calls the approval activity and waits for the `ApprovalEvent` event for up to 10 minutes.
 
 ```python
 from datetime import timedelta
@@ -267,8 +343,8 @@ def order_processing_workflow(ctx: DaprWorkflowContext, order_payload_str: str):
     
     if order_payload["total_cost"] > 5000:
         yield ctx.call_activity(request_approval_activity, input=order_payload)
-        approval_task = ctx.wait_for_external_event("approval_event")
-        timeout_event = ctx.create_timer(timedelta(seconds=30))
+        approval_task = ctx.wait_for_external_event("ApprovalEvent")
+        timeout_event = ctx.create_timer(timedelta(minutes=10))
         winner = yield when_any([approval_task, timeout_event])
         if winner == timeout_event:
             yield ctx.call_activity(notify_activity, 
@@ -276,7 +352,10 @@ def order_processing_workflow(ctx: DaprWorkflowContext, order_payload_str: str):
                                                        +' has been cancelled due to approval timeout.'))
             return OrderResult(processed=False)
         approval_result = yield approval_task
-        if approval_result == False:
+        # The Dapr CLI can deliver the payload as a JSON string that holds the object.
+        while isinstance(approval_result, str):
+            approval_result = json.loads(approval_result)
+        if not approval_result.get('approved'):
             yield ctx.call_activity(notify_activity, input=Notification(
                 message=f'Order {order_id} was not approved'))
             return OrderResult(processed=False)    
@@ -362,7 +441,7 @@ def request_approval_activity(ctx: WorkflowActivityContext,
     """Defines Request Approval Activity. This is used by the workflow to request approval
     for payment of an order. This activity is used only if the order total cost is greater than
     a particular threshold"""
-    print(f'Requesting approval for payment of {input["total_cost"]} USD for {input["quantity"]} {input["item_name"]}', flush=True)
+    print(f'Approval requested for order {ctx.workflow_id}. Waiting for approval.', flush=True)
 ```
 {{% /tab %}}
 
@@ -386,6 +465,7 @@ For this example, you will need:
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
+- Docker is optional. To run without Docker, follow [How to: Run workflows locally without Docker]({{% ref howto-run-workflow-without-docker.md %}}).
 
 ### Step 2: Set up the environment
 
@@ -410,65 +490,87 @@ npm run build
 
 ### Step 3: Run the order processor app
 
-In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{% ref multi-app-dapr-run %}}). From the `javascript/sdk` directory, run the following command:
+The order in this quickstart is 2 cars at 5000 each, a total of 10000. An order over 5000 needs approval, so the workflow waits for an approval event. In these steps, you stop the app while the workflow waits, start the app again, and then approve the order. The workflow continues from its history.
 
-```bash
-dapr run -f .
-```
+1. Set an order ID. The app uses it as the workflow instance ID.
 
-This starts the `order-processor` app with unique workflow ID and runs the workflow activities.
+   Linux and macOS:
 
-Expected output:
+   ```bash
+   export ORDER_ID=order-$(date +%Y%m%d-%H%M%S)
+   ```
 
-```log
-== APP - order-processor == 2026-10-23T23:46:11.983Z INFO [Workflow, TaskHubWorker] Connected to sidecar. Waiting for work items...
-== APP - order-processor == Workflow runtime started successfully
-== APP - order-processor == 2026-10-23T23:46:11.989Z INFO [HTTPClient, HTTPClient] Sidecar Started
-== APP - order-processor == 2026-10-23T23:46:11.991Z INFO [Workflow, TaskHubClient] Starting new orderProcessingWorkflow instance with ID = 5c26fcd3-f05e-4dc1-9a15-11eeb5445236
-== APP - order-processor == 2026-10-23T23:46:12.005Z INFO [Workflow, TaskHubWorker] Received "Orchestrator Request" work item with instance id '5c26fcd3-f05e-4dc1-9a15-11eeb5445236'
-== APP - order-processor == 2026-10-23T23:46:12.008Z INFO [Workflow, OrchestrationExecutor] 5c26fcd3-f05e-4dc1-9a15-11eeb5445236: Processing 2 new history event(s)
-== APP - order-processor == 2026-10-23T23:46:12.008Z INFO [Workflow, orderProcessingWorkflow, 5c26fcd3-f05e-4dc1-9a15-11eeb5445236] Processing order 5c26fcd3-f05e-4dc1-9a15-11eeb5445236...
-== APP - order-processor == 2026-10-23T23:46:12.008Z INFO [Workflow, OrchestrationExecutor] 5c26fcd3-f05e-4dc1-9a15-11eeb5445236: Waiting for 1 task(s) and 0 event(s) to complete...
-== APP - order-processor == 2026-10-23T23:46:12.008Z INFO [Workflow, OrchestrationExecutor] 5c26fcd3-f05e-4dc1-9a15-11eeb5445236: Returning 1 action(s)
-== APP - order-processor == 2026-10-23T23:46:12.013Z INFO [Workflow, TaskHubWorker] Received "Activity Request" work item
-== APP - order-processor == Received order 5c26fcd3-f05e-4dc1-9a15-11eeb5445236 for 1 car at a total cost of 5000
-== APP - order-processor == Workflow scheduled with ID: 5c26fcd3-f05e-4dc1-9a15-11eeb5445236
-== APP - order-processor == 2026-10-23T23:46:12.017Z INFO [Workflow, TaskHubWorker] Received "Orchestrator Request" work item with instance id '5c26fcd3-f05e-4dc1-9a15-11eeb5445236'
-== APP - order-processor == 2026-10-23T23:46:12.017Z INFO [Workflow, OrchestrationExecutor] 5c26fcd3-f05e-4dc1-9a15-11eeb5445236: Processing 2 new history event(s)
-== APP - order-processor == 2026-10-23T23:46:12.018Z INFO [Workflow, OrchestrationExecutor] 5c26fcd3-f05e-4dc1-9a15-11eeb5445236: Waiting for 1 task(s) and 0 event(s) to complete...
-== APP - order-processor == 2026-10-23T23:46:12.018Z INFO [Workflow, OrchestrationExecutor] 5c26fcd3-f05e-4dc1-9a15-11eeb5445236: Returning 1 action(s)
-== APP - order-processor == Workflow started with the expected order
-== APP - order-processor == 2026-10-23T23:46:12.019Z INFO [Workflow, TaskHubClient] Waiting 60 seconds for instance 5c26fcd3-f05e-4dc1-9a15-11eeb5445236 to complete...
-== APP - order-processor == 2026-10-23T23:46:12.021Z INFO [Workflow, TaskHubWorker] Received "Activity Request" work item
-== APP - order-processor == Verifying inventory for 5c26fcd3-f05e-4dc1-9a15-11eeb5445236 of 1 car
-== APP - order-processor == There are 10 car in stock
-== APP - order-processor == 2026-10-23T23:46:12.025Z INFO [Workflow, TaskHubWorker] Received "Orchestrator Request" work item with instance id '5c26fcd3-f05e-4dc1-9a15-11eeb5445236'
-== APP - order-processor == 2026-10-23T23:46:12.025Z INFO [Workflow, OrchestrationExecutor] 5c26fcd3-f05e-4dc1-9a15-11eeb5445236: Processing 2 new history event(s)
-== APP - order-processor == 2026-10-23T23:46:12.025Z INFO [Workflow, OrchestrationExecutor] 5c26fcd3-f05e-4dc1-9a15-11eeb5445236: Waiting for 1 task(s) and 0 event(s) to complete...
-== APP - order-processor == 2026-10-23T23:46:12.025Z INFO [Workflow, OrchestrationExecutor] 5c26fcd3-f05e-4dc1-9a15-11eeb5445236: Returning 1 action(s)
-== APP - order-processor == 2026-10-23T23:46:12.028Z INFO [Workflow, TaskHubWorker] Received "Activity Request" work item
-== APP - order-processor == Payment of 5000 for 1 car processed successfully
-== APP - order-processor == 2026-10-23T23:46:12.033Z INFO [Workflow, TaskHubWorker] Received "Orchestrator Request" work item with instance id '5c26fcd3-f05e-4dc1-9a15-11eeb5445236'
-== APP - order-processor == 2026-10-23T23:46:12.033Z INFO [Workflow, OrchestrationExecutor] 5c26fcd3-f05e-4dc1-9a15-11eeb5445236: Processing 2 new history event(s)
-== APP - order-processor == 2026-10-23T23:46:12.033Z INFO [Workflow, OrchestrationExecutor] 5c26fcd3-f05e-4dc1-9a15-11eeb5445236: Waiting for 1 task(s) and 0 event(s) to complete...
-== APP - order-processor == 2026-10-23T23:46:12.033Z INFO [Workflow, OrchestrationExecutor] 5c26fcd3-f05e-4dc1-9a15-11eeb5445236: Returning 1 action(s)
-== APP - order-processor == 2026-10-23T23:46:12.036Z INFO [Workflow, TaskHubWorker] Received "Activity Request" work item
-== APP - order-processor == Inventory updated for 5c26fcd3-f05e-4dc1-9a15-11eeb5445236, there are now 9 car in stock
-== APP - order-processor == 2026-10-23T23:46:12.040Z INFO [Workflow, TaskHubWorker] Received "Orchestrator Request" work item with instance id '5c26fcd3-f05e-4dc1-9a15-11eeb5445236'
-== APP - order-processor == 2026-10-23T23:46:12.041Z INFO [Workflow, OrchestrationExecutor] 5c26fcd3-f05e-4dc1-9a15-11eeb5445236: Processing 2 new history event(s)
-== APP - order-processor == 2026-10-23T23:46:12.041Z INFO [Workflow, OrchestrationExecutor] 5c26fcd3-f05e-4dc1-9a15-11eeb5445236: Waiting for 1 task(s) and 0 event(s) to complete...
-== APP - order-processor == 2026-10-23T23:46:12.041Z INFO [Workflow, OrchestrationExecutor] 5c26fcd3-f05e-4dc1-9a15-11eeb5445236: Returning 1 action(s)
-== APP - order-processor == 2026-10-23T23:46:12.047Z INFO [Workflow, TaskHubWorker] Received "Activity Request" work item
-== APP - order-processor == Order 5c26fcd3-f05e-4dc1-9a15-11eeb5445236 processed successfully!
-== APP - order-processor == 2026-10-23T23:46:12.052Z INFO [Workflow, TaskHubWorker] Received "Orchestrator Request" work item with instance id '5c26fcd3-f05e-4dc1-9a15-11eeb5445236'
-== APP - order-processor == 2026-10-23T23:46:12.052Z INFO [Workflow, OrchestrationExecutor] 5c26fcd3-f05e-4dc1-9a15-11eeb5445236: Processing 2 new history event(s)
-== APP - order-processor == 2026-10-23T23:46:12.052Z INFO [Workflow, orderProcessingWorkflow, 5c26fcd3-f05e-4dc1-9a15-11eeb5445236] Order 5c26fcd3-f05e-4dc1-9a15-11eeb5445236 has completed
-== APP - order-processor == 2026-10-23T23:46:12.052Z INFO [Workflow, OrchestrationExecutor] 5c26fcd3-f05e-4dc1-9a15-11eeb5445236: Orchestration completed with status COMPLETED
-== APP - order-processor == 2026-10-23T23:46:12.052Z INFO [Workflow, OrchestrationExecutor] 5c26fcd3-f05e-4dc1-9a15-11eeb5445236: Returning 1 action(s)
-== APP - order-processor == 2026-10-23T23:46:12.053Z INFO [Workflow, TaskHubClient] Instance 5c26fcd3-f05e-4dc1-9a15-11eeb5445236 completed
-== APP - order-processor == Workflow Status: COMPLETED
-== APP - order-processor == Workflow result: {"processed":true}
-```
+   Windows (PowerShell):
+
+   ```powershell
+   $env:ORDER_ID = "order-$(Get-Date -Format yyyyMMdd-HHmmss)"
+   ```
+
+1. Start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{% ref multi-app-dapr-run %}}). From the `javascript/sdk` directory, run the following command:
+
+   ```bash
+   dapr run -f .
+   ```
+
+   The log shows the order ID, `Started order <id>.`, the activities that run before the approval, and then the request for approval.
+
+   Expected output:
+
+   ```text
+   == APP - order-processor == Workflow runtime started successfully
+   == APP - order-processor == Order ID: order-20261024-101500
+   == APP - order-processor == Started order order-20261024-101500.
+   == APP - order-processor == Received order order-20261024-101500 for 2 car at a total cost of 10000
+   == APP - order-processor == Verifying inventory for order-20261024-101500 of 2 car
+   == APP - order-processor == There are 10 car in stock
+   == APP - order-processor == Approval requested for order order-20261024-101500. Waiting for approval.
+   ```
+
+   The SDK also prints log lines between these lines. This page leaves them out.
+
+1. Stop the app with Ctrl+C. The workflow is not complete. Dapr keeps its state.
+
+1. Start the app again in the same terminal. `ORDER_ID` is still set.
+
+   ```bash
+   dapr run -f .
+   ```
+
+   The log shows `Order <id> is already running. Waiting for it to finish.` The activities that ran before the approval do not run again.
+
+1. Open a second terminal and approve the order. Use the order ID that the app printed.
+
+   ```bash
+   dapr workflow raise-event <id>/ApprovalEvent --app-id order-processor --input '{"approved": true}'
+   ```
+
+   Expected output:
+
+   ```text
+   Workflow 'order-20261024-101500' raised event 'ApprovalEvent' successfully
+   ```
+
+1. The first terminal shows the payment, the inventory update, and the end of the workflow.
+
+   Expected output:
+
+   ```text
+   == APP - order-processor == Workflow runtime started successfully
+   == APP - order-processor == Order ID: order-20261024-101500
+   == APP - order-processor == Order order-20261024-101500 is already running. Waiting for it to finish.
+   == APP - order-processor == Payment of 10000 for 2 car processed successfully
+   == APP - order-processor == Inventory updated for order-20261024-101500, there are now 8 car in stock
+   == APP - order-processor == Order order-20261024-101500 processed successfully!
+   == APP - order-processor == Workflow completed: COMPLETED
+   ```
+
+   The SDK also prints log lines between these lines. This page leaves them out.
+
+The activities that finished before you stopped the app did not run again. The workflow continued from its history. An activity that was in progress when you stopped the app can run again.
+
+To reject the order, raise the event with `{"approved": false}`. If no answer arrives in 10 minutes, the workflow cancels the order. If you start the app with an order ID whose workflow already ended, the app prints `Workflow completed: <status>` and exits. To place a new order, set a new `ORDER_ID`.
+
+To stop the Dapr processes that `dapr run -f .` started, press Ctrl+C or run `dapr stop -f .`.
 
 ### (Optional) Step 4: View in Zipkin
 
@@ -486,15 +588,16 @@ View the workflow trace spans in the Zipkin web UI (typically at `http://localho
 
 When you ran `dapr run -f .`:
 
-1. A unique order ID for the workflow is generated (in the above example, `5c26fcd3-f05e-4dc1-9a15-11eeb5445236`) and the workflow is scheduled.
-2. The `notifyActivity` workflow activity sends a notification saying an order for 1 car has been received.
-3. The `verifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock.
-4. Your workflow starts and the app confirms that the workflow has the expected order.
-5. The total cost of the order is 5000, so the workflow will not call the `requestApprovalActivity` activity.
-6. The `processPaymentActivity` workflow activity begins processing payment for order `5c26fcd3-f05e-4dc1-9a15-11eeb5445236` and confirms if successful.
-7. The `updateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
-8. The `notifyActivity` workflow activity sends a notification saying that order `5c26fcd3-f05e-4dc1-9a15-11eeb5445236` has completed and processed.
-9. The workflow terminates as completed and processed.
+1. The app makes an order for two cars with a total cost of 10000. The app writes the inventory to the state store only when the inventory is not there. A restart does not restock it.
+2. The order ID from `ORDER_ID` is the workflow instance ID. The app checks if the workflow instance exists. When it does not exist, the app schedules it. When it exists and is still running, the app waits for it. When it ended, the app prints its status and exits.
+3. The `notifyActivity` workflow activity sends a notification that says the app received an order for two cars.
+4. The `verifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock. The inventory is sufficient so the workflow continues.
+5. The total cost of the order is more than 5000, so the workflow calls the `requestApprovalActivity` activity. Then the workflow waits for the `ApprovalEvent` event for up to 10 minutes. When the 10 minutes end, the workflow cancels the order.
+6. You stopped the app and started it again. The app found the workflow instance, and the workflow continued from its history. The activities that finished before the stop did not run again.
+7. When you raised `ApprovalEvent` with `{"approved": true}`, the `processPaymentActivity` workflow activity processed the payment for the order.
+8. The `updateInventoryActivity` workflow activity updated the inventory with the current available cars after the payment.
+9. The `notifyActivity` workflow activity sent a notification that says the order is complete.
+10. The workflow ended as completed, and the app printed `Workflow completed: COMPLETED`.
 
 #### `order-processor/app.ts`
 
@@ -502,21 +605,33 @@ In the application file:
 
 - The workflow runtime is created with the workflow and the workflow activities it invokes registered
 - The workflow runtime is started
-- The `processOrder` function runs the order
-- The workflow runtime and the clients are stopped when the order is done
+- The `runOrder` function starts the order, or attaches to it, and waits for it to end
+- Ctrl+C stops the wait, and the workflow keeps its state in Dapr
+- The workflow runtime and the clients are stopped when the app ends
 
 ```typescript
 import { DaprWorkflowClient } from "@dapr/dapr";
-import { createWorkflowRuntime, processOrder } from "./orderProcessor";
+import { createWorkflowRuntime, runOrder } from "./orderProcessor";
 import { daprClient } from "./orderProcessingWorkflow";
 
 async function start() {
   const workflowWorker = createWorkflowRuntime();
   const workflowClient = new DaprWorkflowClient();
+  const stopWaiting = new AbortController();
+  // Ctrl+C stops the wait. The workflow keeps its state in Dapr.
+  const onSignal = () => stopWaiting.abort();
+  process.once("SIGINT", onSignal);
+  process.once("SIGTERM", onSignal);
   try {
     await workflowWorker.start();
     console.log("Workflow runtime started successfully");
-    await processOrder(workflowClient);
+    await runOrder(workflowClient, stopWaiting.signal);
+  } catch (error) {
+    // Ctrl+C also stops the sidecar, so the wait can end with a gRPC "canceled" error (code 1) before the signal arrives.
+    const canceled = (error as { code?: number }).code === 1;
+    if (!stopWaiting.signal.aborted && !canceled) {
+      throw error;
+    }
   } finally {
     await workflowWorker.stop();
     await workflowClient.stop();
@@ -535,9 +650,10 @@ start().catch((error) => {
 In `orderProcessor.ts`:
 
 - The workflow and the workflow activities it invokes are registered
-- The inventory is saved to the state store
-- The unique workflow order ID is generated and the workflow is scheduled
-- The app waits for the workflow to start and to complete, and then retrieves the workflow status and the result
+- The app reads the order ID from `ORDER_ID`, or builds it from the local time when `ORDER_ID` is not set
+- The app saves the inventory to the state store only when the inventory is not there
+- The app gets the state of the workflow instance. It schedules the workflow only when the instance does not exist. It waits for an instance that is still running
+- The app waits for the workflow to end, and then prints the workflow status
 
 ```typescript
 import { DaprWorkflowClient, WorkflowRuntime, WorkflowRuntimeStatus } from "@dapr/dapr";
@@ -552,6 +668,48 @@ export function createWorkflowRuntime(): WorkflowRuntime {
     .registerActivity(requestApprovalActivity)
     .registerActivity(processPaymentActivity)
     .registerActivity(updateInventoryActivity);
+}
+
+const ORDER_ITEM = "car";
+const TERMINAL_WAIT_SECONDS = 15 * 60;
+const IN_PROGRESS = [WorkflowRuntimeStatus.RUNNING, WorkflowRuntimeStatus.PENDING, WorkflowRuntimeStatus.SUSPENDED];
+
+function defaultOrderId(): string {
+  const d = new Date();
+  const p = (n: number) => String(n).padStart(2, "0");
+  return `order-${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
+}
+
+// Starts the order, or attaches to it when the order id already has an instance, and waits for it to end.
+export async function runOrder(workflowClient: DaprWorkflowClient, signal?: AbortSignal): Promise<void> {
+  const orderId = process.env.ORDER_ID || defaultOrderId();
+  console.log(`Order ID: ${orderId}`);
+
+  // Seed the inventory only when it is absent, so a restart does not restock.
+  const stock = await daprClient.state.get(storeName, ORDER_ITEM);
+  if (stock == null || stock === "") {
+    const inventory = new InventoryItem(ORDER_ITEM, 5000, 10);
+    await daprClient.state.save(storeName, [{ key: inventory.itemName, value: inventory }]);
+  }
+
+  const existing = await workflowClient.getWorkflowState(orderId, false);
+  if (existing && !IN_PROGRESS.includes(existing.runtimeStatus)) {
+    console.log(`Workflow completed: ${WorkflowRuntimeStatus[existing.runtimeStatus]}`);
+    return;
+  }
+  if (existing) {
+    console.log(`Order ${orderId} is already running. Waiting for it to finish.`);
+  } else {
+    // 2 cars at 5000 each: the total is over 5000, so the order waits for approval.
+    await workflowClient.scheduleNewWorkflow(orderProcessingWorkflow, new OrderPayload(ORDER_ITEM, 10000, 2), orderId);
+    console.log(`Started order ${orderId}.`);
+  }
+
+  const completed = await workflowClient.waitForWorkflowCompletion(orderId, true, TERMINAL_WAIT_SECONDS, signal);
+  if (!completed) {
+    throw new Error(`Order ${orderId} did not finish within ${TERMINAL_WAIT_SECONDS} seconds`);
+  }
+  console.log(`Workflow completed: ${WorkflowRuntimeStatus[completed.runtimeStatus]}`);
 }
 
 export async function processOrder(workflowClient: DaprWorkflowClient): Promise<string> {
@@ -590,13 +748,13 @@ export async function processOrder(workflowClient: DaprWorkflowClient): Promise<
 
 #### `order-processor/orderProcessingWorkflow.ts`
 
-In `orderProcessingWorkflow.ts`, the workflow is defined as a class with all of its associated tasks (determined by workflow activities).
+In `orderProcessingWorkflow.ts`, the workflow is defined as a class with all of its associated tasks (determined by workflow activities). When the total cost is more than 5000, the workflow calls the approval activity and waits for the `ApprovalEvent` event for up to 10 minutes.
 
 ```typescript
-import { Task, WorkflowActivityContext, WorkflowContext, DaprClient } from "@dapr/dapr";
-import { ApprovalResponse, InventoryItem, InventoryRequest, InventoryResult, OrderNotification, OrderPayload, OrderPaymentRequest, OrderResult } from "./model";
+import { Task, WorkflowActivityContext, WorkflowContext, DaprClient, LogLevel } from "@dapr/dapr";
+import { ApprovalRequest, ApprovalResponse, InventoryItem, InventoryRequest, InventoryResult, OrderNotification, OrderPayload, OrderPaymentRequest, OrderResult } from "./model";
 
-export const daprClient = new DaprClient();
+export const daprClient = new DaprClient({ logger: { level: LogLevel.Error } });
 export const storeName = "statestore";
 
 async function getInventory(itemName: string): Promise<InventoryItem | undefined> {
@@ -626,8 +784,8 @@ export const verifyInventoryActivity = async (_: WorkflowActivityContext, reques
   return new InventoryResult(inventory.quantity >= request.quantity, inventory);
 };
 
-export const requestApprovalActivity = async (_: WorkflowActivityContext, order: OrderPayload) => {
-  console.log(`Requesting approval for ${order.quantity} ${order.itemName} at a total cost of ${order.totalCost}`);
+export const requestApprovalActivity = async (_: WorkflowActivityContext, request: ApprovalRequest) => {
+  console.log(`Approval requested for order ${request.orderId}. Waiting for approval.`);
 };
 
 export const processPaymentActivity = async (_: WorkflowActivityContext, request: OrderPaymentRequest) => {
@@ -649,7 +807,6 @@ export function* orderProcessingWorkflow(
   order: OrderPayload,
 ): Generator<Task<unknown>, OrderResult, unknown> {
   const orderId = ctx.getWorkflowInstanceId();
-  ctx.logger.info(`Processing order ${orderId}...`);
 
   yield ctx.callActivity(notifyActivity, {
     message: `Received order ${orderId} for ${order.quantity} ${order.itemName} at a total cost of ${order.totalCost}`,
@@ -665,10 +822,13 @@ export function* orderProcessingWorkflow(
   }
 
   if (order.totalCost > 5000) {
-    yield ctx.callActivity(requestApprovalActivity, order);
-    const approvalTask = ctx.waitForExternalEvent<ApprovalResponse>("ApprovalEvent", { timeoutInSeconds: 30 });
+    yield ctx.callActivity(requestApprovalActivity, { orderId, order });
+    const approvalTask = ctx.waitForExternalEvent<ApprovalResponse>("ApprovalEvent", { timeoutInSeconds: 600 });
     yield approvalTask;
-    if (!approvalTask.getResult().isApproved) {
+    // The Dapr CLI sends the --input value as a JSON string, so accept a string or an object.
+    const reply = approvalTask.getResult();
+    const approval = typeof reply === "string" ? JSON.parse(reply) as ApprovalResponse : reply;
+    if (!approval?.approved) {
       yield ctx.callActivity(notifyActivity, { message: `Order ${orderId} was not approved` });
       return new OrderResult(false);
     }
@@ -691,7 +851,6 @@ export function* orderProcessingWorkflow(
   }
 
   yield ctx.callActivity(notifyActivity, { message: `Order ${orderId} processed successfully!` });
-  ctx.logger.info(`Order ${orderId} has completed`);
   return new OrderResult(true);
 }
 ```
@@ -717,6 +876,7 @@ For this example, you will need:
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
+- Docker is optional. To run without Docker, follow [How to: Run workflows locally without Docker]({{% ref howto-run-workflow-without-docker.md %}}).
 - [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) installed. The sample uses a source generator that needs the compiler in the .NET 10 SDK. Earlier SDKs fail to build the sample.
 - [.NET 8 runtime](https://dotnet.microsoft.com/download/dotnet/8.0) installed. The sample targets `net8.0`, so it needs this runtime to run.
 
@@ -749,68 +909,102 @@ cd ..
 
 ### Step 3: Run the order processor app
 
-In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{% ref multi-app-dapr-run %}}). From the `csharp/sdk` directory, run the following command:
+The order in this quickstart is 2 cars at 5000 each, a total of 10000. An order over 5000 needs approval, so the workflow waits for an approval event. In these steps, you stop the app while the workflow waits, start the app again, and then approve the order. The workflow continues from its history.
 
-```bash
-dapr run -f .
-```
+1. Set an order ID. The app uses it as the workflow instance ID.
 
-This starts the `order-processor` app with unique workflow ID and runs the workflow activities.
+   Linux and macOS:
 
-Expected output:
+   ```bash
+   export ORDER_ID=order-$(date +%Y%m%d-%H%M%S)
+   ```
 
-```text
-== APP - order-processor == info: Microsoft.Hosting.Lifetime[0]
-== APP - order-processor ==       Application started. Press Ctrl+C to shut down.
-== APP - order-processor == info: Dapr.Workflow.Worker.WorkflowWorker[1748650618]
-== APP - order-processor ==       Starting Dapr Workflow Worker
-== APP - order-processor == info: Microsoft.Hosting.Lifetime[0]
-== APP - order-processor ==       Hosting environment: Production
-== APP - order-processor == info: Microsoft.Hosting.Lifetime[0]
-== APP - order-processor ==       Content root path: /work/quickstarts/workflows/csharp/sdk/order-processor
-== APP - order-processor == info: Dapr.Workflow.Worker.Grpc.GrpcProtocolHandler[154403261]
-== APP - order-processor ==       Starting gRPC bidirectional stream with Dapr sidecar
-== APP - order-processor == info: Dapr.Workflow.Worker.Grpc.GrpcProtocolHandler[406645761]
-== APP - order-processor ==       Established gRPC bidirectional stream with Dapr sidecar
-== APP - order-processor == Starting workflow 87743053 purchasing 1 Cars
-== APP - order-processor == info: Dapr.Workflow.Client.WorkflowGrpcClient[430660008]
-== APP - order-processor ==       Scheduled workflow 'OrderProcessingWorkflow' with instance ID '87743053'
-== APP - order-processor == info: WorkflowConsoleApp.Activities.NotifyActivity[1985924262]
-== APP - order-processor ==       Presenting notification Notification { Message = Received order 87743053 for 1 Cars at $5000 }
-== APP - order-processor == Your workflow has started. Here is the status of the workflow: Running
-== APP - order-processor == info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[2013970020]
-== APP - order-processor ==       Received request ID '87743053' for 1 Cars at $5000
-== APP - order-processor == info: WorkflowConsoleApp.Activities.VerifyInventoryActivity[1478802116]
-== APP - order-processor ==       Reserving inventory for order request ID '87743053' of 1 Cars
-== APP - order-processor == info: WorkflowConsoleApp.Activities.VerifyInventoryActivity[1130866279]
-== APP - order-processor ==       There are: 10 Cars available for purchase
-== APP - order-processor == info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[1162731597]
-== APP - order-processor ==       Checked inventory for request ID 'InventoryRequest { RequestId = 87743053, ItemName = Cars, Quantity = 1 }'
-== APP - order-processor == info: WorkflowConsoleApp.Activities.ProcessPaymentActivity[340284070]
-== APP - order-processor ==       Processing payment: request ID '87743053' for 1 Cars at $5000
-== APP - order-processor == info: WorkflowConsoleApp.Activities.ProcessPaymentActivity[1851315765]
-== APP - order-processor ==       Payment for request ID '87743053' processed successfully
-== APP - order-processor == info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[340284070]
-== APP - order-processor ==       Processed payment request as there's sufficient inventory to proceed: PaymentRequest { RequestId = 87743053, ItemBeingPurchased = Cars, Amount = 1, Currency = 5000 }
-== APP - order-processor == info: WorkflowConsoleApp.Activities.UpdateInventoryActivity[2144991393]
-== APP - order-processor ==       Checking inventory for request ID '87743053' for 1 Cars
-== APP - order-processor == info: WorkflowConsoleApp.Activities.UpdateInventoryActivity[1901852920]
-== APP - order-processor ==       There are now 9 Cars left in stock
-== APP - order-processor == info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[96138418]
-== APP - order-processor ==       Updating available inventory for PaymentRequest { RequestId = 87743053, ItemBeingPurchased = Cars, Amount = 1, Currency = 5000 }
-== APP - order-processor == info: WorkflowConsoleApp.Activities.NotifyActivity[1985924262]
-== APP - order-processor ==       Presenting notification Notification { Message = Order 87743053 has completed! }
-== APP - order-processor == info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[510392223]
-== APP - order-processor ==       Order 87743053 has completed
-== APP - order-processor == info: Dapr.Workflow.Worker.WorkflowWorker[1120267106]
-== APP - order-processor ==       Workflow execution completed: Name='OrderProcessingWorkflow', InstanceId='87743053'
-== APP - order-processor == Workflow Status: Completed
-== APP - order-processor == info: Grpc.Net.Client.Internal.GrpcCall[3]
-== APP - order-processor ==       Call failed with gRPC error status. Status code: 'Cancelled', Message: 'Call canceled by the client.'.
-== APP - order-processor ==       System.OperationCanceledException: The operation was canceled.
-== APP - order-processor == info: Dapr.Workflow.Worker.Grpc.GrpcProtocolHandler[1917588177]
-== APP - order-processor ==       Workflow worker gRPC stream canceled during shutdown (expected)
-```
+   Windows (PowerShell):
+
+   ```powershell
+   $env:ORDER_ID = "order-$(Get-Date -Format yyyyMMdd-HHmmss)"
+   ```
+
+1. Start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{% ref multi-app-dapr-run %}}). From the `csharp/sdk` directory, run the following command:
+
+   ```bash
+   dapr run -f .
+   ```
+
+   The log shows the order ID, `Started order <id>.`, the activities that run before the approval, and then the request for approval.
+
+   Expected output:
+
+   ```text
+   == APP - order-processor == Order ID: order-20261024-101500
+   == APP - order-processor == Started order order-20261024-101500.
+   == APP - order-processor == info: WorkflowConsoleApp.Activities.NotifyActivity[1985924262]
+   == APP - order-processor ==       Presenting notification Notification { Message = Received order order-20261024-101500 for 2 Cars at $10000 }
+   == APP - order-processor == info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[2013970020]
+   == APP - order-processor ==       Received request ID 'order-20261024-101500' for 2 Cars at $10000
+   == APP - order-processor == info: WorkflowConsoleApp.Activities.VerifyInventoryActivity[1478802116]
+   == APP - order-processor ==       Reserving inventory for order request ID 'order-20261024-101500' of 2 Cars
+   == APP - order-processor == info: WorkflowConsoleApp.Activities.VerifyInventoryActivity[1130866279]
+   == APP - order-processor ==       There are: 10 Cars available for purchase
+   == APP - order-processor == info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[1162731597]
+   == APP - order-processor ==       Checked inventory for request ID 'InventoryRequest { RequestId = order-20261024-101500, ItemName = Cars, Quantity = 2 }'
+   == APP - order-processor == info: WorkflowConsoleApp.Activities.RequestApprovalActivity[1622798141]
+   == APP - order-processor ==       Approval requested for order order-20261024-101500. Waiting for approval.
+   ```
+
+1. Stop the app with Ctrl+C. The workflow is not complete. Dapr keeps its state.
+
+1. Start the app again in the same terminal. `ORDER_ID` is still set.
+
+   ```bash
+   dapr run -f .
+   ```
+
+   The log shows `Order <id> is already running. Waiting for it to finish.` The activities that ran before the approval do not run again.
+
+1. Open a second terminal and approve the order. Use the order ID that the app printed.
+
+   ```bash
+   dapr workflow raise-event <id>/ApprovalEvent --app-id order-processor --input '{"approved": true}'
+   ```
+
+   Expected output:
+
+   ```text
+   Workflow 'order-20261024-101500' raised event 'ApprovalEvent' successfully
+   ```
+
+1. The first terminal shows the payment, the inventory update, and the end of the workflow.
+
+   Expected output:
+
+   ```text
+   == APP - order-processor == Order ID: order-20261024-101500
+   == APP - order-processor == Order order-20261024-101500 is already running. Waiting for it to finish.
+   == APP - order-processor == info: WorkflowConsoleApp.Activities.ProcessPaymentActivity[340284070]
+   == APP - order-processor ==       Processing payment: request ID 'order-20261024-101500' for 2 Cars at $10000
+   == APP - order-processor == info: WorkflowConsoleApp.Activities.ProcessPaymentActivity[1851315765]
+   == APP - order-processor ==       Payment for request ID 'order-20261024-101500' processed successfully
+   == APP - order-processor == info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[340284070]
+   == APP - order-processor ==       Processed payment request as there's sufficient inventory to proceed: PaymentRequest { RequestId = order-20261024-101500, ItemBeingPurchased = Cars, Amount = 2, Currency = 10000 }
+   == APP - order-processor == info: WorkflowConsoleApp.Activities.UpdateInventoryActivity[2144991393]
+   == APP - order-processor ==       Checking inventory for request ID 'order-20261024-101500' for 2 Cars
+   == APP - order-processor == info: WorkflowConsoleApp.Activities.UpdateInventoryActivity[1901852920]
+   == APP - order-processor ==       There are now 8 Cars left in stock
+   == APP - order-processor == info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[96138418]
+   == APP - order-processor ==       Updating available inventory for PaymentRequest { RequestId = order-20261024-101500, ItemBeingPurchased = Cars, Amount = 2, Currency = 10000 }
+   == APP - order-processor == info: WorkflowConsoleApp.Activities.NotifyActivity[1985924262]
+   == APP - order-processor ==       Presenting notification Notification { Message = Order order-20261024-101500 has completed! }
+   == APP - order-processor == info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[510392223]
+   == APP - order-processor ==       Order order-20261024-101500 has completed
+   == APP - order-processor == Workflow completed: COMPLETED
+   ```
+
+The activities that finished before you stopped the app did not run again. The workflow continued from its history. An activity that was in progress when you stopped the app can run again.
+
+To reject the order, raise the event with `{"approved": false}`. If no answer arrives in 10 minutes, the workflow cancels the order. If you start the app with an order ID whose workflow already ended, the app prints `Workflow completed: <status>` and exits. To place a new order, set a new `ORDER_ID`.
+
+To stop the Dapr processes that `dapr run -f .` started, press Ctrl+C or run `dapr stop -f .`.
 
 ### (Optional) Step 4: View in Zipkin
 
@@ -828,24 +1022,25 @@ View the workflow trace spans in the Zipkin web UI (typically at `http://localho
 
 When you ran `dapr run -f .`:
 
-1. An OrderPayload is made containing one car.
-2. A unique order ID for the workflow is generated (in the above example, `87743053`) and the workflow is scheduled.
-3. The `NotifyActivity` workflow activity sends a notification saying an order for one car has been received.
+1. The app makes an order for two cars with a total cost of 10000. The app writes the inventory to the state store only when the inventory is not there. A restart does not restock it.
+2. The order ID from `ORDER_ID` is the workflow instance ID. The app checks if the workflow instance exists. When it does not exist, the app schedules it. When it exists and is still running, the app waits for it. When it ended, the app prints its status and exits.
+3. The `NotifyActivity` workflow activity sends a notification that says the app received an order for two cars.
 4. The `VerifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock. The inventory is sufficient so the workflow continues.
-5. The total cost of the order is 5000, so the workflow will not call the `RequestApprovalActivity` activity.
-6. The `ProcessPaymentActivity` workflow activity begins processing payment for order `87743053` and confirms if successful.
-7. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
-8. The `NotifyActivity` workflow activity sends a notification saying that order `87743053` has completed.
-9. The workflow terminates as completed and the OrderResult is set to processed.
+5. The total cost of the order is more than 5000, so the workflow calls the `RequestApprovalActivity` activity. Then the workflow waits for the `ApprovalEvent` event for up to 10 minutes. When the 10 minutes end, the workflow cancels the order.
+6. You stopped the app and started it again. The app found the workflow instance, and the workflow continued from its history. The activities that finished before the stop did not run again.
+7. When you raised `ApprovalEvent` with `{"approved": true}`, the `ProcessPaymentActivity` workflow activity processed the payment for the order.
+8. The `UpdateInventoryActivity` workflow activity updated the inventory with the current available cars after the payment.
+9. The `NotifyActivity` workflow activity sent a notification that says the order is complete.
+10. The workflow ended as completed, and the app printed `Workflow completed: COMPLETED`.
 
 #### `order-processor/Program.cs`
 
 In the application's program file:
 
-- The unique workflow order ID is generated
-- The inventory is saved to the state store through the `IInventoryStore` client
-- The workflow is scheduled
-- The workflow status is retrieved
+- The app reads the order ID from `ORDER_ID`, or builds it from the local time when `ORDER_ID` is not set
+- The app saves the inventory to the state store through the `IInventoryStore` client, only when the inventory is not there
+- The app gets the state of the workflow instance. It schedules the workflow only when the instance does not exist. It waits for an instance that is still running
+- The app gets the workflow status when the workflow ends
 
 The program file does not register the workflow or its activities. The source generator in the .NET 10 SDK registers them when the app builds.
 
@@ -853,63 +1048,109 @@ The program file does not register the workflow or its activities. The source ge
 using Dapr.StateManagement.Extensions;
 using Dapr.Workflow;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using WorkflowConsoleApp.Models;
 using WorkflowConsoleApp.Models.State;
 using WorkflowConsoleApp.Workflows;
 
 // The workflow host is a background service that connects to the sidecar over gRPC
-using var host = Host.CreateDefaultBuilder(args).ConfigureServices(services =>
-{
-    services.AddDaprStateManagementClient()
-        .WithInventoryStore();
-    services.AddDaprWorkflow();
-}).Build();
+using var host = Host.CreateDefaultBuilder(args)
+    .ConfigureLogging(logging => logging
+        // Keep the console to the order lines: hide the SDK, HTTP client and gRPC client info lines
+        .AddFilter("System.Net.Http.HttpClient", LogLevel.Warning)
+        .AddFilter("Grpc.Net.Client", LogLevel.Critical)
+        .AddFilter("Dapr.Workflow", LogLevel.Warning)
+        // Ctrl+C closes the sidecar connection, and the worker logs that as an error with a stack trace
+        .AddFilter("Dapr.Workflow.Worker", LogLevel.Critical)
+        .AddFilter("Microsoft.Hosting.Lifetime", LogLevel.Warning))
+    .ConfigureServices(services =>
+    {
+        services.AddDaprStateManagementClient()
+            .WithInventoryStore();
+        services.AddDaprWorkflow();
+    }).Build();
 
 // Start the app - this is the point where we connect to the Dapr sidecar
 host.Start();
 
+// Ctrl+C cancels this token, so the app stops while it waits for the workflow
+var stopping = host.Services.GetRequiredService<IHostApplicationLifetime>().ApplicationStopping;
 var workflowClient = host.Services.GetRequiredService<DaprWorkflowClient>();
 
-// Generate a unique ID for the workflow
-var orderId = Guid.NewGuid().ToString()[..8];
+// The workflow instance ID is the order ID. Set ORDER_ID to use the same instance again after a restart
+var orderId = Environment.GetEnvironmentVariable("ORDER_ID");
+if (string.IsNullOrWhiteSpace(orderId))
+{
+    orderId = $"order-{DateTime.Now:yyyyMMdd-HHmmss}";
+}
+
 const string itemToPurchase = "Cars";
-const int amountToPurchase = 1;
+const int amountToPurchase = 2;
+const double pricePerItem = 5000;
 
-// Populate the store with items
-var stateStore = host.Services.GetRequiredService<IInventoryStore>();
-await stateStore.SaveStateAsync(itemToPurchase, new OrderPayload(Name: itemToPurchase, TotalCost: 50000, Quantity: 10));
+Console.WriteLine($"Order ID: {orderId}");
 
-// Construct the order
-var orderInfo = new OrderPayload(itemToPurchase, 5000, amountToPurchase);
+try
+{
+    // Populate the store with items only when the inventory is not there yet, so a restart does not restock
+    var stateStore = host.Services.GetRequiredService<IInventoryStore>();
+    var (inventory, _) = await stateStore.GetStateAndETagAsync<OrderPayload>(itemToPurchase, cancellationToken: stopping);
+    if (inventory is null)
+    {
+        await stateStore.SaveStateAsync(itemToPurchase, new OrderPayload(Name: itemToPurchase, TotalCost: 50000, Quantity: 10), cancellationToken: stopping);
+    }
 
-// Start the workflow
-Console.WriteLine($"Starting workflow {orderId} purchasing {amountToPurchase} {itemToPurchase}");
+    // Check if the workflow instance exists already
+    var existing = await workflowClient.GetWorkflowStateAsync(orderId, getInputsAndOutputs: false, cancellation: stopping);
+    if (existing is { Exists: true })
+    {
+        if (existing.RuntimeStatus is WorkflowRuntimeStatus.Completed or WorkflowRuntimeStatus.Failed or WorkflowRuntimeStatus.Terminated)
+        {
+            // The workflow ended already, so there is nothing to wait for
+            Console.WriteLine($"Workflow completed: {existing.RuntimeStatus.ToString().ToUpperInvariant()}");
+            return;
+        }
 
-await workflowClient.ScheduleNewWorkflowAsync(
-    name: nameof(OrderProcessingWorkflow),
-    instanceId: orderId,
-    input: orderInfo);
+        Console.WriteLine($"Order {orderId} is already running. Waiting for it to finish.");
+    }
+    else
+    {
+        // Construct the order: 2 cars at 5000 each. A total over 5000 needs an approval
+        var orderInfo = new OrderPayload(itemToPurchase, pricePerItem * amountToPurchase, amountToPurchase);
 
-// Wait for the workflow to start and confirm the input
-var state = await workflowClient.WaitForWorkflowStartAsync(
-    instanceId: orderId);
+        await workflowClient.ScheduleNewWorkflowAsync(
+            name: nameof(OrderProcessingWorkflow),
+            instanceId: orderId,
+            input: orderInfo,
+            startTime: null,
+            cancellation: stopping);
 
-Console.WriteLine($"Your workflow has started. Here is the status of the workflow: {Enum.GetName(typeof(WorkflowRuntimeStatus), state.RuntimeStatus)}");
+        Console.WriteLine($"Started order {orderId}.");
+    }
 
-// Wait for the workflow to complete
-state = await workflowClient.WaitForWorkflowCompletionAsync(
-    instanceId: orderId);
+    // Wait for the workflow to finish. The approval timeout is 10 minutes, so wait longer than that
+    using var timeout = CancellationTokenSource.CreateLinkedTokenSource(stopping);
+    timeout.CancelAfter(TimeSpan.FromMinutes(15));
+    var state = await workflowClient.WaitForWorkflowCompletionAsync(
+        instanceId: orderId,
+        getInputsAndOutputs: false,
+        cancellation: timeout.Token);
 
-Console.WriteLine("Workflow Status: {0}", Enum.GetName(typeof(WorkflowRuntimeStatus), state.RuntimeStatus));
+    Console.WriteLine($"Workflow completed: {state.RuntimeStatus.ToString().ToUpperInvariant()}");
+}
+catch (OperationCanceledException)
+{
+    // Ctrl+C or the 15 minute wait ended. The workflow keeps its state in the state store
+}
 ```
 
 #### `order-processor/Workflows/OrderProcessingWorkflow.cs`
 
-In `OrderProcessingWorkflow.cs`, the workflow is defined as a class with all of its associated tasks (determined by workflow activities in separate files).
+In `OrderProcessingWorkflow.cs`, the workflow is defined as a class with all of its associated tasks (determined by workflow activities in separate files). When the total cost is more than 5000, the workflow calls the approval activity and waits for the `ApprovalEvent` event for up to 10 minutes.
 
 ```csharp
-namespace WorkflowConsoleApp.Workflows;
+﻿namespace WorkflowConsoleApp.Workflows;
 
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
@@ -952,8 +1193,8 @@ internal sealed partial class OrderProcessingWorkflow : Workflow<OrderPayload, O
 
             var approvalResponse = await context.WaitForExternalEventAsync<ApprovalResponse>(
                 eventName: "ApprovalEvent",
-                timeout: TimeSpan.FromSeconds(30));
-            if (!approvalResponse.IsApproved)
+                timeout: TimeSpan.FromMinutes(10));
+            if (!approvalResponse.Approved)
             {
                 await context.CallActivityAsync(nameof(NotifyActivity),
                     new Notification($"Order {orderId} was not approved"));
@@ -1059,6 +1300,7 @@ For this example, you will need:
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
+- Docker is optional. To run without Docker, follow [How to: Run workflows locally without Docker]({{% ref howto-run-workflow-without-docker.md %}}).
 
 ### Step 2: Set up the environment
 
@@ -1088,29 +1330,92 @@ cd ..
 
 ### Step 3: Run the order processor app
 
-In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{% ref multi-app-dapr-run %}}). From the `java/sdk` directory, run the following command:
+The order in this quickstart is 2 cars at 5000 each, a total of 10000. An order over 5000 needs approval, so the workflow waits for an approval event. In these steps, you stop the app while the workflow waits, start the app again, and then approve the order. The workflow continues from its history.
 
-```bash
-dapr run -f .
-```
+1. Set an order ID. The app uses it as the workflow instance ID.
 
-This starts the `order-processor` app with unique workflow ID and runs the workflow activities.
+   Linux and macOS:
 
-Expected output:
+   ```bash
+   export ORDER_ID=order-$(date +%Y%m%d-%H%M%S)
+   ```
 
-```text
-== APP - order-processor == *** Welcome to the Dapr Workflow console app sample!
-== APP - order-processor == *** Using this app, you can place orders that start workflows.
-== APP - order-processor == Start workflow runtime
-== APP - order-processor == ==========Begin the purchase of item:==========
-== APP - order-processor == Starting order workflow, purchasing 1 of cars
-== APP - order-processor == Scheduled new workflow instance of OrderProcessingWorkflow with instance ID: b2b99d81-30ec-4673-80ae-6b2609172837
-== APP - order-processor == Workflow instance b2b99d81-30ec-4673-80ae-6b2609172837 started
-== APP - order-processor == there are now 9 cars left in stock
-== APP - order-processor == Workflow instance completed, out is: {"processed":true}
-```
+   Windows (PowerShell):
 
-The Dapr Java SDK also writes log lines between these lines. The lines that you see depend on the logging setup of the app.
+   ```powershell
+   $env:ORDER_ID = "order-$(Get-Date -Format yyyyMMdd-HHmmss)"
+   ```
+
+1. Start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{% ref multi-app-dapr-run %}}). From the `java/sdk` directory, run the following command:
+
+   ```bash
+   dapr run -f .
+   ```
+
+   The log shows the order ID, `Started order <id>.`, the activities that run before the approval, and then the request for approval.
+
+   Expected output:
+
+   ```text
+   == APP - order-processor == *** Welcome to the Dapr Workflow console app sample!
+   == APP - order-processor == *** Using this app, you can place orders that start workflows.
+   == APP - order-processor == Order ID: order-20261024-101500
+   == APP - order-processor == Start workflow runtime
+   == APP - order-processor == Started order order-20261024-101500.
+   == APP - order-processor == [pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.NotifyActivity - Received Order: OrderPayload [itemName=cars, totalCost=10000, quantity=2]
+   == APP - order-processor == [pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.VerifyInventoryActivity - Verifying inventory for order 'order-20261024-101500' of 2 cars
+   == APP - order-processor == [pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.VerifyInventoryActivity - There are 10 cars available for purchase
+   == APP - order-processor == [pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.VerifyInventoryActivity - Verified inventory for order 'order-20261024-101500' of 2 cars
+   == APP - order-processor == [pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.RequestApprovalActivity - Requesting approval for order: order-20261024-101500
+   == APP - order-processor == Approval requested for order order-20261024-101500. Waiting for approval.
+   ```
+
+1. Stop the app with Ctrl+C. The workflow is not complete. Dapr keeps its state.
+
+1. Start the app again in the same terminal. `ORDER_ID` is still set.
+
+   ```bash
+   dapr run -f .
+   ```
+
+   The log shows `Order <id> is already running. Waiting for it to finish.` The activities that ran before the approval do not run again.
+
+1. Open a second terminal and approve the order. Use the order ID that the app printed.
+
+   ```bash
+   dapr workflow raise-event <id>/ApprovalEvent --app-id order-processor --input '{"approved": true}'
+   ```
+
+   Expected output:
+
+   ```text
+   Workflow 'order-20261024-101500' raised event 'ApprovalEvent' successfully
+   ```
+
+1. The first terminal shows the payment, the inventory update, and the end of the workflow.
+
+   Expected output:
+
+   ```text
+   == APP - order-processor == *** Welcome to the Dapr Workflow console app sample!
+   == APP - order-processor == *** Using this app, you can place orders that start workflows.
+   == APP - order-processor == Order ID: order-20261024-101500
+   == APP - order-processor == Start workflow runtime
+   == APP - order-processor == Order order-20261024-101500 is already running. Waiting for it to finish.
+   == APP - order-processor == [pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity - Processing payment: order-20261024-101500 for 2 cars at $10000
+   == APP - order-processor == [pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity - Payment for request ID 'order-20261024-101500' processed successfully
+   == APP - order-processor == [pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity - Updating inventory for order 'order-20261024-101500' of 2 cars
+   == APP - order-processor == [pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity - Updated inventory for order 'order-20261024-101500': there are now 8 cars left in stock
+   == APP - order-processor == there are now 8 cars left in stock
+   == APP - order-processor == [pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.NotifyActivity - Order completed! : order-20261024-101500
+   == APP - order-processor == Workflow completed: COMPLETED
+   ```
+
+The activities that finished before you stopped the app did not run again. The workflow continued from its history. An activity that was in progress when you stopped the app can run again.
+
+To reject the order, raise the event with `{"approved": false}`. If no answer arrives in 10 minutes, the workflow cancels the order. If you start the app with an order ID whose workflow already ended, the app prints `Workflow completed: <status>` and exits. To place a new order, set a new `ORDER_ID`.
+
+To stop the Dapr processes that `dapr run -f .` started, press Ctrl+C or run `dapr stop -f .`.
 
 ### (Optional) Step 4: View in Zipkin
 
@@ -1128,23 +1433,25 @@ View the workflow trace spans in the Zipkin web UI (typically at `http://localho
 
 When you ran `dapr run -f .`:
 
-1. An OrderPayload is made containing one car.
-2. A unique order ID for the workflow is generated (in the above example, `b2b99d81-30ec-4673-80ae-6b2609172837`) and the workflow is scheduled.
-3. The `NotifyActivity` workflow activity sends a notification saying an order for one car has been received.
-4. The `VertifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock. The inventory is sufficient so the workflow continues.
-5. The total cost of the order is 5000, so the workflow will not call the `RequestApprovalActivity` activity.
-6. The `ProcessPaymentActivity` workflow activity begins processing payment for order `b2b99d81-30ec-4673-80ae-6b2609172837` and confirms if successful.
-7. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
-8. The `NotifyActivity` workflow activity sends a notification saying that order `b2b99d81-30ec-4673-80ae-6b2609172837` has completed.
-9. The workflow terminates as completed and the orderResult is set to processed.
+1. The app makes an order for two cars with a total cost of 10000. The app writes the inventory to the state store only when the inventory is not there. A restart does not restock it.
+2. The order ID from `ORDER_ID` is the workflow instance ID. The app checks if the workflow instance exists. When it does not exist, the app schedules it. When it exists and is still running, the app waits for it. When it ended, the app prints its status and exits.
+3. The `NotifyActivity` workflow activity sends a notification that says the app received an order for two cars.
+4. The `VerifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock. The inventory is sufficient so the workflow continues.
+5. The total cost of the order is more than 5000, so the workflow calls the `RequestApprovalActivity` activity. Then the workflow waits for the `ApprovalEvent` event for up to 10 minutes. When the 10 minutes end, the workflow cancels the order.
+6. You stopped the app and started it again. The app found the workflow instance, and the workflow continued from its history. The activities that finished before the stop did not run again.
+7. When you raised `ApprovalEvent` with `{"approved": true}`, the `ProcessPaymentActivity` workflow activity processed the payment for the order.
+8. The `UpdateInventoryActivity` workflow activity updated the inventory with the current available cars after the payment.
+9. The `NotifyActivity` workflow activity sent a notification that says the order is complete.
+10. The workflow ended as completed, and the app printed `Workflow completed: COMPLETED`.
 
 #### `order-processor/WorkflowConsoleApp.java` 
 
 In the application's program file:
-- The unique workflow order ID is generated
-- The workflow is scheduled
-- The workflow status is retrieved
-- The workflow and the workflow activities it invokes are registered
+- The app reads the order ID from `ORDER_ID`, or builds it from the local time when `ORDER_ID` is not set
+- The app gets the state of the workflow instance. It schedules the workflow only when the instance does not exist. It waits for an instance that is still running
+- The app saves the inventory to the state store only when the inventory is not there
+- The app gets the workflow status when the workflow ends
+- The app registers the workflow and the workflow activities it invokes
 
 ```java
 /*
@@ -1163,10 +1470,14 @@ In the application's program file:
 package io.dapr.quickstarts.workflows;
 
 import java.time.Duration;
-import java.util.concurrent.TimeoutException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
+import io.dapr.client.domain.State;
 import io.dapr.quickstarts.workflows.activities.NotifyActivity;
 import io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity;
 import io.dapr.quickstarts.workflows.activities.RequestApprovalActivity;
@@ -1182,6 +1493,12 @@ import io.dapr.workflows.runtime.WorkflowRuntimeBuilder;
 public class WorkflowConsoleApp {
 
   private static final String STATE_STORE_NAME = "statestore";
+  private static final String ITEM_NAME = "cars";
+  private static final int PER_ITEM_COST = 5000;
+  private static final int ORDER_QUANTITY = 2;
+
+  // Keep a reference so the log level stays set.
+  private static final Logger DURABLE_TASK_LOGGER = Logger.getLogger("io.dapr.durabletask");
 
   /**
    * The main method of this console app.
@@ -1190,8 +1507,18 @@ public class WorkflowConsoleApp {
    * @throws Exception An Exception.
    */
   public static void main(String[] args) throws Exception {
+    // Hide the internal SDK messages. Keep the warnings.
+    DURABLE_TASK_LOGGER.setLevel(Level.WARNING);
+
     System.out.println("*** Welcome to the Dapr Workflow console app sample!");
     System.out.println("*** Using this app, you can place orders that start workflows.");
+
+    String orderId = System.getenv("ORDER_ID");
+    if (orderId == null || orderId.isBlank()) {
+      orderId = "order-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"));
+    }
+    System.out.println("Order ID: " + orderId);
+
     // Wait for the sidecar to become available
     Thread.sleep(5 * 1000);
 
@@ -1208,86 +1535,65 @@ public class WorkflowConsoleApp {
     System.out.println("Start workflow runtime");
     runtime.start(false);
 
-    InventoryItem inventory = prepareInventoryAndOrder();
+    restockInventoryIfAbsent();
 
     DaprWorkflowClient workflowClient = new DaprWorkflowClient();
     try (workflowClient) {
-      executeWorkflow(workflowClient, inventory);
+      executeWorkflow(workflowClient, orderId);
+    }
+    System.exit(0);
+  }
+
+  private static void executeWorkflow(DaprWorkflowClient workflowClient, String orderId) throws Exception {
+    // Look for an instance with this ID. A restart finds the instance that the first run started.
+    // A missing instance comes back as a status with an empty name.
+    WorkflowInstanceStatus existing = workflowClient.getInstanceState(orderId, false);
+    if (existing == null || existing.getName() == null || existing.getName().isEmpty()) {
+      OrderPayload order = new OrderPayload();
+      order.setItemName(ITEM_NAME);
+      order.setQuantity(ORDER_QUANTITY);
+      order.setTotalCost(ORDER_QUANTITY * PER_ITEM_COST);
+      workflowClient.scheduleNewWorkflow(OrderProcessingWorkflow.class, order, orderId);
+      System.out.printf("Started order %s.%n", orderId);
+    } else if (existing.isCompleted()) {
+      System.out.printf("Workflow completed: %s%n", existing.getRuntimeStatus().name());
+      return;
+    } else {
+      System.out.printf("Order %s is already running. Waiting for it to finish.%n", orderId);
+    }
+
+    WorkflowInstanceStatus status = workflowClient.waitForInstanceCompletion(orderId, Duration.ofMinutes(15), true);
+    if (status != null) {
+      System.out.printf("Workflow completed: %s%n", status.getRuntimeStatus().name());
+    } else {
+      System.out.printf("Order %s not found%n", orderId);
     }
   }
 
-  private static void executeWorkflow(DaprWorkflowClient workflowClient, InventoryItem inventory) {
-    System.out.println("==========Begin the purchase of item:==========");
-    String itemName = inventory.getName();
-    int orderQuantity = inventory.getQuantity();
-    int totalCost = orderQuantity * inventory.getPerItemCost();
-    OrderPayload order = new OrderPayload();
-    order.setItemName(itemName);
-    order.setQuantity(orderQuantity);
-    order.setTotalCost(totalCost);
-    System.out.println("Starting order workflow, purchasing " + orderQuantity + " of " + itemName);
-
-    String instanceId = workflowClient.scheduleNewWorkflow(OrderProcessingWorkflow.class, order);
-    System.out.printf("Scheduled new workflow instance of OrderProcessingWorkflow with instance ID: %s%n",
-        instanceId);
-
-    try {
-      workflowClient.waitForInstanceStart(instanceId, Duration.ofSeconds(10), false);
-      System.out.printf("Workflow instance %s started%n", instanceId);
-    } catch (TimeoutException e) {
-      System.out.printf("Workflow instance %s did not start within 10 seconds%n", instanceId);
+  private static void restockInventoryIfAbsent() {
+    DaprClient daprClient = new DaprClientBuilder().build();
+    // Write the inventory only when it is not there yet, so a restart does not restock.
+    State<InventoryItem> current = daprClient.getState(STATE_STORE_NAME, ITEM_NAME, InventoryItem.class).block();
+    if (current != null && current.getValue() != null) {
       return;
     }
-
-    try {
-      WorkflowInstanceStatus workflowStatus = workflowClient.waitForInstanceCompletion(instanceId,
-          Duration.ofSeconds(30),
-          true);
-      if (workflowStatus != null) {
-        System.out.printf("Workflow instance completed, out is: %s%n",
-            workflowStatus.getSerializedOutput());
-      } else {
-        System.out.printf("Workflow instance %s not found%n", instanceId);
-      }
-    } catch (TimeoutException e) {
-      System.out.printf("Workflow instance %s did not complete within 30 seconds%n", instanceId);
-    }
-
-  }
-
-  private static InventoryItem prepareInventoryAndOrder() {
-    // prepare 10 cars in inventory
     InventoryItem inventory = new InventoryItem();
-    inventory.setName("cars");
-    inventory.setPerItemCost(5000);
+    inventory.setName(ITEM_NAME);
+    inventory.setPerItemCost(PER_ITEM_COST);
     inventory.setQuantity(10);
-    DaprClient daprClient = new DaprClientBuilder().build();
-    restockInventory(daprClient, inventory);
-
-    // prepare order for 1 car
-    InventoryItem order = new InventoryItem();
-    order.setName("cars");
-    order.setPerItemCost(5000);
-    order.setQuantity(1);
-    return order;
-  }
-
-  private static void restockInventory(DaprClient daprClient, InventoryItem inventory) {
-    String key = inventory.getName();
-    daprClient.saveState(STATE_STORE_NAME, key, inventory).block();
+    daprClient.saveState(STATE_STORE_NAME, ITEM_NAME, inventory).block();
   }
 }
 ```
 
 #### `OrderProcessingWorkflow.java`
 
-In `OrderProcessingWorkflow.java`, the workflow is defined as a class with all of its associated tasks (determined by workflow activities).
+In `OrderProcessingWorkflow.java`, the workflow is defined as a class with all of its associated tasks (determined by workflow activities). When the total cost is more than 5000, the workflow calls the approval activity and waits for the `ApprovalEvent` event for up to 10 minutes.
 
 ```java
 package io.dapr.quickstarts.workflows;
 
 import java.time.Duration;
-import org.slf4j.Logger;
 
 import io.dapr.quickstarts.workflows.activities.NotifyActivity;
 import io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity;
@@ -1309,14 +1615,9 @@ public class OrderProcessingWorkflow implements Workflow {
   @Override
   public WorkflowStub create() {
     return ctx -> {
-      Logger logger = ctx.getLogger();
       String orderId = ctx.getInstanceId();
-      logger.info("Starting Workflow: " + ctx.getName());
-      logger.info("Instance ID(order ID): " + orderId);
-      logger.info("Current Orchestration Time: " + ctx.getCurrentInstant());
 
       OrderPayload order = ctx.getInput(OrderPayload.class);
-      logger.info("Received Order: " + order.toString());
       OrderResult orderResult = new OrderResult();
       orderResult.setProcessed(false);
 
@@ -1344,10 +1645,10 @@ public class OrderProcessingWorkflow implements Workflow {
 
       // Require orders over a certain threshold to be approved
       if (order.getTotalCost() > 5000) {
-        ctx.callActivity(RequestApprovalActivity.class.getName(), order).await();
+        ctx.callActivity(RequestApprovalActivity.class.getName(), orderId).await();
 
-        ApprovalResponse approvalResponse = ctx.waitForExternalEvent("approvalEvent",
-          Duration.ofSeconds(30), ApprovalResponse.class).await();
+        ApprovalResponse approvalResponse = ctx.waitForExternalEvent("ApprovalEvent",
+          Duration.ofMinutes(10), ApprovalResponse.class).await();
         if (!approvalResponse.isApproved()) {
           notification.setMessage("Order " + order.getItemName() + " was not approved.");
           ctx.callActivity(NotifyActivity.class.getName(), notification).await();
@@ -1433,6 +1734,7 @@ For this example, you will need:
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
+- Docker is optional. To run without Docker, follow [How to: Run workflows locally without Docker]({{% ref howto-run-workflow-without-docker.md %}}).
 
 ### Step 2: Set up the environment
 
@@ -1450,42 +1752,92 @@ cd quickstarts/workflows/go/sdk
 
 ### Step 3: Run the order processor app
 
-In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{% ref multi-app-dapr-run %}}). From the `go/sdk` directory, run the following command:
+The order in this quickstart is 2 cars at 5000 each, a total of 10000. An order over 5000 needs approval, so the workflow waits for an approval event. In these steps, you stop the app while the workflow waits, start the app again, and then approve the order. The workflow continues from its history.
 
-```bash
-dapr run -f .
-```
+1. Set an order ID. The app uses it as the workflow instance ID.
 
-This starts the `order-processor` app with unique workflow ID and runs the workflow activities.
+   Linux and macOS:
 
-Expected output:
+   ```bash
+   export ORDER_ID=order-$(date +%Y%m%d-%H%M%S)
+   ```
 
-```text
-== APP - order-processor == *** Welcome to the Dapr Workflow console app sample!
-== APP - order-processor == *** Using this app, you can place orders that start workflows.
-== APP - order-processor == dapr client initializing for: 127.0.0.1:35291
-== APP - order-processor == INFO: 2026/10/24 00:00:58 connecting work item listener stream
-== APP - order-processor == adding base stock item: paperclip
-== APP - order-processor == INFO: 2026/10/24 00:00:58 starting background processor
-== APP - order-processor == adding base stock item: cars
-== APP - order-processor == adding base stock item: computers
-== APP - order-processor == ==========Begin the purchase of item:==========
-== APP - order-processor == NotifyActivity: Received order 3d5e681c-aff3-4f1a-860a-a9976ec96a81 for 1 cars - $5000
-== APP - order-processor == VerifyInventoryActivity: Verifying inventory for order 3d5e681c-aff3-4f1a-860a-a9976ec96a81 of 1 cars
-== APP - order-processor == VerifyInventoryActivity: There are 10 cars available for purchase
-== APP - order-processor == ProcessPaymentActivity: 3d5e681c-aff3-4f1a-860a-a9976ec96a81 for 1 - cars (5000USD)
-== APP - order-processor == UpdateInventoryActivity: Checking Inventory for order 3d5e681c-aff3-4f1a-860a-a9976ec96a81 for 1 * cars
-== APP - order-processor == UpdateInventoryActivity: There are now 9 cars left in stock
-== APP - order-processor == NotifyActivity: Order 3d5e681c-aff3-4f1a-860a-a9976ec96a81 has completed!
-== APP - order-processor == workflow status: COMPLETED
-== APP - order-processor == Purchase of item is complete
-```
+   Windows (PowerShell):
 
-Stop the Dapr workflow with `CTRL+C` or:
+   ```powershell
+   $env:ORDER_ID = "order-$(Get-Date -Format yyyyMMdd-HHmmss)"
+   ```
 
-```bash
-dapr stop -f .
-```
+1. Start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{% ref multi-app-dapr-run %}}). From the `go/sdk` directory, run the following command:
+
+   ```bash
+   dapr run -f .
+   ```
+
+   The log shows the order ID, `Started order <id>.`, the activities that run before the approval, and then the request for approval.
+
+   Expected output:
+
+   ```text
+   == APP - order-processor == *** Welcome to the Dapr Workflow console app sample!
+   == APP - order-processor == *** Using this app, you can place orders that start workflows.
+   == APP - order-processor == dapr client initializing for: 127.0.0.1:36315
+   == APP - order-processor == adding base stock item: paperclip
+   == APP - order-processor == adding base stock item: cars
+   == APP - order-processor == adding base stock item: computers
+   == APP - order-processor == Order ID: order-20261024-101500
+   == APP - order-processor == NotifyActivity: Received order order-20261024-101500 for 2 cars - $10000
+   == APP - order-processor == Started order order-20261024-101500.
+   == APP - order-processor == VerifyInventoryActivity: Verifying inventory for order order-20261024-101500 of 2 cars
+   == APP - order-processor == VerifyInventoryActivity: There are 10 cars available for purchase
+   == APP - order-processor == Approval requested for order order-20261024-101500. Waiting for approval.
+   ```
+
+1. Stop the app with Ctrl+C. The workflow is not complete. Dapr keeps its state.
+
+1. Start the app again in the same terminal. `ORDER_ID` is still set.
+
+   ```bash
+   dapr run -f .
+   ```
+
+   The log shows `Order <id> is already running. Waiting for it to finish.` The activities that ran before the approval do not run again.
+
+1. Open a second terminal and approve the order. Use the order ID that the app printed.
+
+   ```bash
+   dapr workflow raise-event <id>/ApprovalEvent --app-id order-processor --input '{"approved": true}'
+   ```
+
+   Expected output:
+
+   ```text
+   Workflow 'order-20261024-101500' raised event 'ApprovalEvent' successfully
+   ```
+
+1. The first terminal shows the payment, the inventory update, and the end of the workflow.
+
+   Expected output:
+
+   ```text
+   == APP - order-processor == *** Welcome to the Dapr Workflow console app sample!
+   == APP - order-processor == *** Using this app, you can place orders that start workflows.
+   == APP - order-processor == dapr client initializing for: 127.0.0.1:40473
+   == APP - order-processor == Order ID: order-20261024-101500
+   == APP - order-processor == Order order-20261024-101500 is already running. Waiting for it to finish.
+   == APP - order-processor == NotifyActivity: Payment for order order-20261024-101500 has been approved!
+   == APP - order-processor == ProcessPaymentActivity: order-20261024-101500 for 2 - cars (10000USD)
+   == APP - order-processor == UpdateInventoryActivity: Checking Inventory for order order-20261024-101500 for 2 * cars
+   == APP - order-processor == UpdateInventoryActivity: There are now 8 cars left in stock
+   == APP - order-processor == NotifyActivity: Order order-20261024-101500 has completed!
+   == APP - order-processor == Workflow completed: COMPLETED
+   ```
+
+The activities that finished before you stopped the app did not run again. The workflow continued from its history. An activity that was in progress when you stopped the app can run again.
+
+To reject the order, raise the event with `{"approved": false}`. If no answer arrives in 10 minutes, the workflow cancels the order. If you start the app with an order ID whose workflow already ended, the app prints `Workflow completed: <status>` and exits. To place a new order, set a new `ORDER_ID`.
+
+To stop the Dapr processes that `dapr run -f .` started, press Ctrl+C or run `dapr stop -f .`.
 
 ### (Optional) Step 4: View in Zipkin
 
@@ -1501,26 +1853,28 @@ View the workflow trace spans in the Zipkin web UI (typically at `http://localho
 
 ### What happened?
 
-When you ran `dapr run`:
+When you ran `dapr run -f .`:
 
-1. An OrderPayload is made containing one car.
-2. A unique order ID for the workflow is generated (in the above example, `3d5e681c-aff3-4f1a-860a-a9976ec96a81`) and the workflow is scheduled.
-3. The `NotifyActivity` workflow activity sends a notification saying an order for one car has been received.
-4. The `VerifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock.
-5. The total cost of the order is 5000, so the workflow will not call the `RequestApprovalActivity` activity.
-6. The `ProcessPaymentActivity` workflow activity begins processing payment for order `3d5e681c-aff3-4f1a-860a-a9976ec96a81` and confirms if successful.
-7. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
-8. The `NotifyActivity` workflow activity sends a notification saying that order `3d5e681c-aff3-4f1a-860a-a9976ec96a81` has completed.
-9. The workflow terminates as completed and the OrderResult is set to processed.
+1. The app makes an order for two cars with a total cost of 10000. The app writes the inventory to the state store only when the inventory is not there. A restart does not restock it.
+2. The order ID from `ORDER_ID` is the workflow instance ID. The app checks if the workflow instance exists. When it does not exist, the app schedules it. When it exists and is still running, the app waits for it. When it ended, the app prints its status and exits.
+3. The `NotifyActivity` workflow activity sends a notification that says the app received an order for two cars.
+4. The `VerifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock. The inventory is sufficient so the workflow continues.
+5. The total cost of the order is more than 5000, so the workflow calls the `RequestApprovalActivity` activity. Then the workflow waits for the `ApprovalEvent` event for up to 10 minutes. When the 10 minutes end, the workflow cancels the order.
+6. You stopped the app and started it again. The app found the workflow instance, and the workflow continued from its history. The activities that finished before the stop did not run again.
+7. When you raised `ApprovalEvent` with `{"approved": true}`, the `ProcessPaymentActivity` workflow activity processed the payment for the order.
+8. The `UpdateInventoryActivity` workflow activity updated the inventory with the current available cars after the payment.
+9. The `NotifyActivity` workflow activity sent a notification that says the order is complete.
+10. The workflow ended as completed, and the app printed `Workflow completed: COMPLETED`.
 
 #### `order-processor/main.go`
 
 In the application's program file:
 
-- The unique workflow order ID is generated
-- The workflow is scheduled
-- The workflow status is retrieved
-- The workflow and the workflow activities it invokes are registered
+- The app reads the order ID from `ORDER_ID`, or builds it from the local time when `ORDER_ID` is not set
+- The app gets the state of the workflow instance. It schedules the workflow only when the instance does not exist. It waits for an instance that is still running
+- The app saves the inventory to the state store only when the inventory is not there
+- The app gets the workflow status when the workflow ends
+- The app registers the workflow and the workflow activities it invokes
 
 ```go
 package main
@@ -1528,11 +1882,13 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
+	"os"
 	"time"
 
-
+	"github.com/dapr/durabletask-go/api"
 	"github.com/dapr/durabletask-go/workflow"
 	"github.com/dapr/go-sdk/client"
 )
@@ -1543,6 +1899,18 @@ var (
 	workflowName      = "OrderProcessingWorkflow"
 	defaultItemName   = "cars"
 )
+
+// quietLogger hides the informational lines of the workflow SDK. It prints warnings and errors.
+type quietLogger struct{}
+
+func (quietLogger) Debug(v ...any)            {}
+func (quietLogger) Debugf(string, ...any)     {}
+func (quietLogger) Info(v ...any)             {}
+func (quietLogger) Infof(string, ...any)      {}
+func (quietLogger) Warn(v ...any)             { log.Print(v...) }
+func (quietLogger) Warnf(f string, v ...any)  { log.Printf(f, v...) }
+func (quietLogger) Error(v ...any)            { log.Print(v...) }
+func (quietLogger) Errorf(f string, v ...any) { log.Printf(f, v...) }
 
 func main() {
 	fmt.Println("*** Welcome to the Dapr Workflow console app sample!")
@@ -1569,19 +1937,16 @@ func main() {
 		log.Fatal(err)
 	}
 
-	wfClient, err := client.NewWorkflowClient()
+	dclient, err := client.NewClient()
 	if err != nil {
-		log.Fatalf("failed to initialise workflow client: %v", err)
+		log.Fatal(err)
 	}
+	wfClient := workflow.NewClientWithLogger(dclient.GrpcClientConn(), quietLogger{})
 
 	if err := wfClient.StartWorker(context.Background(), r); err != nil {
 		log.Fatal(err)
 	}
 
-	dclient, err := client.NewClient()
-	if err != nil {
-		log.Fatal(err)
-	}
 	inventory := []InventoryItem{
 		{ItemName: "paperclip", PerItemCost: 5, Quantity: 100},
 		{ItemName: "cars", PerItemCost: 5000, Quantity: 10},
@@ -1591,43 +1956,60 @@ func main() {
 		log.Fatalf("failed to restock: %v", err)
 	}
 
-	fmt.Println("==========Begin the purchase of item:==========")
+	// The order id comes from ORDER_ID. Run the app again with the same id to attach to the same order.
+	orderID := os.Getenv("ORDER_ID")
+	if orderID == "" {
+		orderID = "order-" + time.Now().Format("20060102-150405")
+	}
+	fmt.Printf("Order ID: %s\n", orderID)
 
-	itemName := defaultItemName
-	orderQuantity := 1
-
-	totalCost := inventory[1].PerItemCost * orderQuantity
-
+	// Two cars at 5000 each: the total is over 5000, so the workflow waits for approval.
+	orderQuantity := 2
 	orderPayload := OrderPayload{
-		ItemName:  itemName,
+		ItemName:  defaultItemName,
 		Quantity:  orderQuantity,
-		TotalCost: totalCost,
+		TotalCost: inventory[1].PerItemCost * orderQuantity,
 	}
 
-	id, err := wfClient.ScheduleWorkflow(context.Background(), workflowName, workflow.WithInput(orderPayload))
-	if err != nil {
-		log.Fatalf("failed to start workflow: %v", err)
+	ctx := context.Background()
+	meta, err := wfClient.FetchWorkflowMetadata(ctx, orderID)
+	switch {
+	case err == nil:
+		switch meta.String() {
+		case "RUNNING", "PENDING", "SUSPENDED":
+			fmt.Printf("Order %s is already running. Waiting for it to finish.\n", orderID)
+		default:
+			fmt.Printf("Workflow completed: %s\n", meta.String())
+			return
+		}
+	case errors.Is(err, api.ErrInstanceNotFound):
+		if _, err := wfClient.ScheduleWorkflow(ctx, workflowName, workflow.WithInstanceID(orderID), workflow.WithInput(orderPayload)); err != nil {
+			log.Fatalf("failed to start workflow: %v", err)
+		}
+		fmt.Printf("Started order %s.\n", orderID)
+	default:
+		log.Fatalf("failed to get workflow: %v", err)
 	}
 
-	waitCtx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	waitCtx, cancel := context.WithTimeout(ctx, 20*time.Minute)
 	defer cancel()
-	_, err = wfClient.WaitForWorkflowCompletion(waitCtx, id)
+	respFetch, err := wfClient.WaitForWorkflowCompletion(waitCtx, orderID)
 	if err != nil {
 		log.Fatalf("failed to wait for workflow: %v", err)
 	}
 
-	respFetch, err := wfClient.FetchWorkflowMetadata(context.Background(), id, workflow.WithFetchPayloads(true))
-	if err != nil {
-		log.Fatalf("failed to get workflow: %v", err)
-	}
-
-	fmt.Printf("workflow status: %v\n", respFetch.String())
-
-	fmt.Println("Purchase of item is complete")
+	fmt.Printf("Workflow completed: %s\n", respFetch.String())
 }
 
 func restockInventory(daprClient client.Client, inventory []InventoryItem) error {
 	for _, item := range inventory {
+		existing, err := daprClient.GetState(context.Background(), stateStoreName, item.ItemName, nil)
+		if err != nil {
+			return err
+		}
+		if existing != nil && len(existing.Value) > 0 {
+			continue
+		}
 		itemSerialized, err := json.Marshal(item)
 		if err != nil {
 			return err
@@ -1643,6 +2025,7 @@ func restockInventory(daprClient client.Client, inventory []InventoryItem) error
 
 #### `order-processor/workflow.go`
 
+In `workflow.go`, the workflow and its workflow activities are defined. When the total cost is more than 5000, the workflow calls the approval activity and waits for the `ApprovalEvent` event for up to 10 minutes.
 
 ```go
 package main
@@ -1650,6 +2033,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"time"
@@ -1658,48 +2042,6 @@ import (
 	"github.com/dapr/go-sdk/client"
 )
 
-type OrderPayload struct {
-	ItemName  string `json:"item_name"`
-	TotalCost int    `json:"total_cost"`
-	Quantity  int    `json:"quantity"`
-}
-
-type OrderResult struct {
-	Processed bool `json:"processed"`
-}
-
-type InventoryItem struct {
-	ItemName    string `json:"item_name"`
-	PerItemCost int    `json:"per_item_cost"`
-	Quantity    int    `json:"quantity"`
-}
-
-type InventoryRequest struct {
-	RequestID string `json:"request_id"`
-	ItemName  string `json:"item_name"`
-	Quantity  int    `json:"quantity"`
-}
-
-type InventoryResult struct {
-	Success       bool          `json:"success"`
-	InventoryItem InventoryItem `json:"inventory_item"`
-}
-
-type PaymentRequest struct {
-	RequestID          string `json:"request_id"`
-	ItemBeingPurchased string `json:"item_being_purchased"`
-	Amount             int    `json:"amount"`
-	Quantity           int    `json:"quantity"`
-}
-
-type ApprovalRequired struct {
-	Approval bool `json:"approval"`
-}
-
-type Notification struct {
-	Message string `json:"message"`
-}
-
 // OrderProcessingWorkflow is the main workflow for orchestrating activities in the order process.
 func OrderProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 	orderID := ctx.ID()
@@ -1707,6 +2049,7 @@ func OrderProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 	if err := ctx.GetInput(&orderPayload); err != nil {
 		return nil, err
 	}
+
 	err := ctx.CallActivity(NotifyActivity, workflow.WithActivityInput(Notification{
 		Message: fmt.Sprintf("Received order %s for %d %s - $%d", orderID, orderPayload.Quantity, orderPayload.ItemName, orderPayload.TotalCost),
 	})).Await(nil)
@@ -1730,22 +2073,34 @@ func OrderProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 	}
 
 	if orderPayload.TotalCost > 5000 {
-		var approvalRequired ApprovalRequired
-		if err := ctx.CallActivity(RequestApprovalActivity, workflow.WithActivityInput(orderPayload)).Await(&approvalRequired); err != nil {
+		if err := ctx.CallActivity(RequestApprovalActivity, workflow.WithActivityInput(ApprovalRequest{
+			RequestID: orderID,
+			Quantity:  orderPayload.Quantity,
+			ItemName:  orderPayload.ItemName,
+			TotalCost: orderPayload.TotalCost,
+		})).Await(nil); err != nil {
 			return OrderResult{Processed: false}, err
 		}
-		if err := ctx.WaitForExternalEvent("manager_approval", time.Second*200).Await(nil); err != nil {
-			return OrderResult{Processed: false}, err
-		}
-		// TODO: Confirm timeout flow - this will be in the form of an error.
-		if approvalRequired.Approval {
-			if err := ctx.CallActivity(NotifyActivity, workflow.WithActivityInput(Notification{Message: fmt.Sprintf("Payment for order %s has been approved!", orderID)})).Await(nil); err != nil {
-				log.Printf("failed to notify of a successful order: %v\n", err)
+		var rawApproval json.RawMessage
+		if err := ctx.WaitForExternalEvent("ApprovalEvent", 10*time.Minute).Await(&rawApproval); err != nil {
+			if errors.Is(err, workflow.ErrTaskCanceled) {
+				if nerr := ctx.CallActivity(NotifyActivity, workflow.WithActivityInput(Notification{Message: fmt.Sprintf("Order %s was cancelled: no approval within 10 minutes", orderID)})).Await(nil); nerr != nil {
+					return OrderResult{Processed: false}, nerr
+				}
 			}
-		} else {
+			return OrderResult{Processed: false}, err
+		}
+		approval, err := parseApproval(rawApproval)
+		if err != nil {
+			return OrderResult{Processed: false}, err
+		}
+		if !approval.Approved {
 			if err := ctx.CallActivity(NotifyActivity, workflow.WithActivityInput(Notification{Message: fmt.Sprintf("Payment for order %s has been rejected!", orderID)})).Await(nil); err != nil {
-				log.Printf("failed to notify of an unsuccessful order :%v\n", err)
+				return OrderResult{Processed: false}, err
 			}
+			return OrderResult{Processed: false}, nil
+		}
+		if err := ctx.CallActivity(NotifyActivity, workflow.WithActivityInput(Notification{Message: fmt.Sprintf("Payment for order %s has been approved!", orderID)})).Await(nil); err != nil {
 			return OrderResult{Processed: false}, err
 		}
 	}
@@ -1756,9 +2111,7 @@ func OrderProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 		Quantity:           orderPayload.Quantity,
 	})).Await(nil)
 	if err != nil {
-		if err := ctx.CallActivity(NotifyActivity, workflow.WithActivityInput(Notification{Message: fmt.Sprintf("Order %s failed!", orderID)})).Await(nil); err != nil {
-			log.Printf("failed to notify of a failed order: %v", err)
-		}
+		_ = ctx.CallActivity(NotifyActivity, workflow.WithActivityInput(Notification{Message: fmt.Sprintf("Order %s failed!", orderID)})).Await(nil)
 		return OrderResult{Processed: false}, err
 	}
 
@@ -1769,16 +2122,26 @@ func OrderProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 		Quantity:           orderPayload.Quantity,
 	})).Await(nil)
 	if err != nil {
-		if err := ctx.CallActivity(NotifyActivity, workflow.WithActivityInput(Notification{Message: fmt.Sprintf("Order %s failed!", orderID)})).Await(nil); err != nil {
-			log.Printf("failed to notify of a failed order: %v", err)
-		}
+		_ = ctx.CallActivity(NotifyActivity, workflow.WithActivityInput(Notification{Message: fmt.Sprintf("Order %s failed!", orderID)})).Await(nil)
 		return OrderResult{Processed: false}, err
 	}
 
-	if err := ctx.CallActivity(NotifyActivity, workflow.WithActivityInput(Notification{Message: fmt.Sprintf("Order %s has completed!", orderID)})).Await(nil); err != nil {
-		log.Printf("failed to notify of a successful order: %v", err)
+	_ = ctx.CallActivity(NotifyActivity, workflow.WithActivityInput(Notification{Message: fmt.Sprintf("Order %s has completed!", orderID)})).Await(nil)
+	return OrderResult{Processed: true}, nil
+}
+
+// parseApproval reads the payload of ApprovalEvent. The Dapr CLI sends the --input text as a JSON string,
+// so the payload can be the object {"approved": true} or a string that holds that object.
+func parseApproval(raw json.RawMessage) (ApprovalResponse, error) {
+	var approval ApprovalResponse
+	var text string
+	if err := json.Unmarshal(raw, &text); err == nil {
+		raw = json.RawMessage(text)
 	}
-	return OrderResult{Processed: true}, err
+	if err := json.Unmarshal(raw, &approval); err != nil {
+		return approval, fmt.Errorf("invalid approval payload %s: %w", string(raw), err)
+	}
+	return approval, nil
 }
 
 // NotifyActivity outputs a notification message
@@ -1867,14 +2230,14 @@ func UpdateInventoryActivity(ctx workflow.ActivityContext) (any, error) {
 	return InventoryResult{Success: true, InventoryItem: result}, nil
 }
 
-// RequestApprovalActivity requests approval for the order
+// RequestApprovalActivity requests approval for the order. The workflow then waits for ApprovalEvent.
 func RequestApprovalActivity(ctx workflow.ActivityContext) (any, error) {
-	var input OrderPayload
+	var input ApprovalRequest
 	if err := ctx.GetInput(&input); err != nil {
 		return nil, err
 	}
-	fmt.Printf("RequestApprovalActivity: Requesting approval for payment of %dUSD for %d %s\n", input.TotalCost, input.Quantity, input.ItemName)
-	return ApprovalRequired{Approval: true}, nil
+	fmt.Printf("Approval requested for order %s. Waiting for approval.\n", input.RequestID)
+	return nil, nil
 }
 ```
 
@@ -1900,8 +2263,8 @@ dapr workflow list --app-id order-processor -o wide
 You should see output like:
 
 ```
-NAMESPACE  APP ID           NAME                     INSTANCE ID  CREATED               LAST UPDATE           STATUS
-default    order-processor  OrderProcessingWorkflow  e4d3807c     2025-11-07T12:29:37Z  2025-11-07T12:29:52Z  COMPLETED
+NAMESPACE  APP ID           NAME                     INSTANCE ID            CREATED               LAST UPDATE           STATUS
+default    order-processor  OrderProcessingWorkflow  order-20261024-101500  2025-11-07T12:29:37Z  2025-11-07T12:29:52Z  COMPLETED
 ```
 
 ### Check Workflow History
@@ -1909,7 +2272,7 @@ default    order-processor  OrderProcessingWorkflow  e4d3807c     2025-11-07T12:
 View the detailed execution history of your workflow:
 
 ```bash
-dapr workflow history e4d3807c --app-id order-processor
+dapr workflow history order-20261024-101500 --app-id order-processor
 ```
 
 You should see output like:
@@ -1941,24 +2304,26 @@ ExecutionCompleted   -                        5        517.1µs   COMPLETED  exe
 #### Raise an External Event
 
 If your workflow is waiting for an [external event]({{% ref "workflow-patterns.md#external-system-interaction" %}}), you can raise one.
-It takes a single argument in the format of `<instance-id>/<event-name>`. The event name must be the name that the workflow code waits for. The JavaScript and .NET samples wait for `ApprovalEvent`, the Python sample for `approval_event`, the Java sample for `approvalEvent` and the Go sample for `manager_approval`. The order in this quickstart costs 5000, so the workflow does not wait for an approval event in a default run.
+It takes a single argument in the format of `<instance-id>/<event-name>`. The event name must be the name that the workflow code waits for. All the quickstart samples wait for `ApprovalEvent`. The order in this quickstart costs 10000, so the workflow waits for an approval event.
+
+In the examples below, replace `order-20261024-101500` with the order ID that your app printed.
 
 ```bash
-dapr workflow raise-event e4d3807c/ApprovalEvent \
+dapr workflow raise-event order-20261024-101500/ApprovalEvent \
   --app-id order-processor \
-  --input '{"paymentId": "pay-123", "amount": 100.00}'
+  --input '{"approved": true}'
 ```
 
 #### Suspend and Resume
 
 ```bash
 # Suspend a workflow
-dapr workflow suspend e4d3807c \
+dapr workflow suspend order-20261024-101500 \
   --app-id order-processor \
   --reason "Waiting for inventory"
 
 # Resume when ready
-dapr workflow resume e4d3807c \
+dapr workflow resume order-20261024-101500 \
   --app-id order-processor \
   --reason "Inventory received"
 ```
@@ -1978,7 +2343,7 @@ failed to purge orchestration state: rpc error: code = FailedPrecondition desc =
 
 ```bash
 # Purge a specific workflow
-dapr workflow purge e4d3807c --app-id order-processor
+dapr workflow purge order-20261024-101500 --app-id order-processor
 
 # Or purge all completed workflows
 dapr workflow purge --app-id order-processor --all
@@ -2002,6 +2367,5 @@ Join our [Discord Server](https://diagrid.ws/dapr-discord) and share your though
 - Set up Dapr Workflow with any programming language using [HTTP instead of an SDK]({{% ref howto-manage-workflow.md %}})
 - Walk through a more in-depth [.NET SDK example workflow](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
 - Learn more about [Workflow as a Dapr building block]({{% ref workflow-overview %}})
-```
 
 {{< button text="Explore the workflow tutorials  >>" link="https://github.com/dapr/quickstarts/tree/master/tutorials/workflow" >}}
