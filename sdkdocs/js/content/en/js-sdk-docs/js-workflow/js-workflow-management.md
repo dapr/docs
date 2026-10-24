@@ -7,7 +7,7 @@ description: Schedule, inspect, control, list, and rerun workflow instances with
 ---
 
 Use `DaprWorkflowClient` from application or administrative code, not inside a workflow generator.
-This guide targets `@dapr/dapr` **3.19.0-rc.4 or later** and runtime **1.19 or later**.
+This guide targets `@dapr/dapr` **3.19.0 or later** and runtime **1.19 or later**.
 
 ```javascript
 import { DaprWorkflowClient, WorkflowRuntimeStatus } from "@dapr/dapr";

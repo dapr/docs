@@ -10,7 +10,7 @@ Workflow code must reproduce the task sequence recorded in history when replayin
 Changing activity order, adding durable tasks, or changing branches without a migration strategy can cause
 nondeterministic replay failures.
 
-With `@dapr/dapr` **3.19.0-rc.4 or later**, use `ctx.isPatched(patchName)` for named code changes.
+With `@dapr/dapr` **3.19.0 or later**, use `ctx.isPatched(patchName)` for named code changes.
 Patch evaluation is validated by the Dapr runtime; the examples in this documentation use runtime **1.19 or later**.
 See [Workflow versioning]({{% ref workflow-versioning.md %}}) for the runtime-level concepts.
 

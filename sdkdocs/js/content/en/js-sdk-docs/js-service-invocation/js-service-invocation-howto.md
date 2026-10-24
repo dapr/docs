@@ -6,7 +6,7 @@ weight: 10
 description: "Invoke application methods with HTTP or gRPC clients, headers, and query parameters"
 ---
 
-`DaprClient.invoker.invoke()` sends a request through the caller's sidecar to a target application. These examples use **`@dapr/dapr` 3.19.0-rc.4 or later**. Follow the [receiving invocations guide]({{% ref js-service-invocation-server.md %}}) to start the `invocation-service` target used below.
+`DaprClient.invoker.invoke()` sends a request through the caller's sidecar to a target application. These examples use `@dapr/dapr` 3.19.0 or later. Follow the [receiving invocations guide]({{% ref js-service-invocation-server.md %}}) to start the `invocation-service` target used below.
 
 ## Invoke an application over HTTP
 

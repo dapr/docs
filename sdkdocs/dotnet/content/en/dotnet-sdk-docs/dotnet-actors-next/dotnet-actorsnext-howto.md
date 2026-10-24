@@ -457,6 +457,54 @@ Timer and reminder callbacks arrive over the same actor event stream as normal i
 
 Timer and reminder callbacks are independent actor turns, not reentrant continuations of the registering turn. They wait for an in-flight turn on the same actor to finish. Canceling a registration does not undo a callback that has already been admitted for execution, so a callback already in progress may still finish.
 
+### Inspect and manage registrations
+
+SDK `1.19.0` or later also exposes timer/reminder inspection and reminder bulk cancellation:
+
+```csharp
+var timer = await timers.GetAsync("Cart", Id, "refresh-prices-periodic", ct);
+var actorTimers = await timers.ListAsync("Cart", Id, ct);
+
+var reminder = await reminders.GetAsync("Cart", Id, nameof(AbandonCart), ct);
+var actorReminders = await reminders.ListAsync("Cart", Id, ct);
+var remindersForType = await reminders.ListAsync("Cart", cancellationToken: ct);
+```
+
+`GetAsync` returns null when the registration does not exist. List operations return named registration
+records. Timers are host-local: inspect them through the sidecar hosting that actor, not an arbitrary
+sidecar in the cluster. Reminder listing can be scoped to an actor ID or to the whole actor type.
+
+To cancel all reminders for one actor:
+
+```csharp
+await reminders.CancelAllAsync("Cart", Id, ct);
+```
+
+Omitting `actorId` cancels reminders for **every actor of the given type**. Use that broader operation only
+when intentionally managing the whole type.
+
+### Reminder failure policy
+
+Supply `failurePolicy` when registering a reminder to override the runtime default for failed ticks:
+
+```csharp
+await reminders.ScheduleAsync(
+    "Cart", Id, nameof(AbandonCart),
+    dueTime: TimeSpan.FromMinutes(30),
+    period: TimeSpan.Zero,
+    arguments: Array.Empty<byte>(),
+    overwrite: true,
+    failurePolicy: new ActorReminderFailurePolicy.Constant(TimeSpan.FromSeconds(10))
+    {
+        MaxRetries = 5
+    },
+    cancellationToken: ct);
+```
+
+`ActorReminderFailurePolicy.Drop` drops a failed tick. `Constant` retries at the specified interval; an
+unset `MaxRetries` permits indefinite retries. This affects failed reminder delivery, not timer durability,
+the recurring period, or the actor's own application retry logic.
+
 ## Saving actor state
 
 Actor state uses an activation-scoped write-behind cache. In the common case, mutate state through `.Value` or `SetAsync`, return from the actor method, and let the runtime save pending changes at the end of the turn:
@@ -494,9 +542,9 @@ An invoke can be redelivered. If the runtime delivered a call but did not receiv
 
 Your actor methods must therefore be safe to run more than once, including their state mutations. Incrementing a counter or appending an item is not automatically idempotent merely because it uses actor `State`; a retry against committed state can apply the mutation again. Use naturally idempotent updates or persist a stable request identity and its result with the state change so duplicates can be recognized. External side effects (publishing an event, calling another actor, charging a card) also require an idempotency strategy. A lost response does not imply rollback.
 
-A reminder re-fires until it is acked. A durable reminder that comes due is redelivered every second, indefinitely, until the turn that handles it commits. Two conclusions follow from this:
-1) Reminder handlers must be idempotent, because you will see the same reminder more than once under any failure or delay. 
-2) A reminder handler that reliably throws produces a one-second retry loop for that actor, so treat a consistently failing reminder as something to surface and fix, not to swallow.
+A reminder can be redelivered until it is acknowledged, subject to its runtime failure policy. A configured
+constant policy changes the retry interval/limit, while a drop policy can stop retries for that tick.
+Reminder handlers must therefore be idempotent, and repeated failures must be surfaced rather than swallowed.
 
 {{% alert title="The practical rule" color="primary" %}}
 Design every actor method, reminder, and subscription handler to be safe to run more than once. Both state changes and external side effects need idempotency. Treat a missing response as an uncertain outcome, not evidence that the operation never ran or that its state changes were rolled back.

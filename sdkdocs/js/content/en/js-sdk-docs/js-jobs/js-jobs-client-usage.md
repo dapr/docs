@@ -6,7 +6,7 @@ weight: 59000
 description: Configure the JavaScript Jobs client and understand scheduling options, payloads, failure policies, and errors
 ---
 
-Jobs is part of `DaprClient` and `DaprServer` in **`@dapr/dapr` 3.19.0-rc.4 or later**. Use `client.jobs` to manage scheduled jobs and `server.jobs` to register callbacks. The [how-to guide]({{% ref js-jobs-howto.md %}}) contains a complete runnable application.
+Jobs is part of `DaprClient` and `DaprServer` in **`@dapr/dapr` 3.19.0 or later**. Use `client.jobs` to manage scheduled jobs and `server.jobs` to register callbacks. The [how-to guide]({{% ref js-jobs-howto.md %}}) contains a complete runnable application.
 
 ## Client configuration and lifetime
 
@@ -62,7 +62,7 @@ Prereleases after 1.18 and the `edge` runtime identifier select the stable API. 
 
 The SDK caches successful API selection per client. Metadata lookup failures, missing or unrecognized versions, and unsupported runtime versions reject the operation rather than guessing an API. A subsequent call can retry a failed metadata lookup. A Jobs request that fails is not automatically replayed against a different API version.
 
-The SDK package version and runtime version are separate requirements: using SDK 3.19.0-rc.4 does not require runtime 1.19 merely to use Jobs.
+The SDK package version and runtime version are separate requirements: using SDK 3.19.0 does not require runtime 1.19 merely to use Jobs.
 
 ## Scheduling options
 

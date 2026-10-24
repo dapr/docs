@@ -13,7 +13,7 @@ Use `client.conversation.converse(request)` to send role-based messages to a con
 - [Dapr CLI]({{% ref install-dapr-cli.md %}})
 - An initialized [Dapr environment]({{% ref install-dapr-selfhost.md %}}) with **Dapr runtime 1.16 or later**
 - [Node.js](https://nodejs.org/) 18 or later
-- The [`@dapr/dapr`](https://www.npmjs.com/package/@dapr/dapr) package, **version 3.19.0-rc.4 or later**
+- The [`@dapr/dapr`](https://www.npmjs.com/package/@dapr/dapr) package, **version 3.19.0 or later**
 
 ## Installation
 
@@ -21,7 +21,7 @@ In your application directory, initialize an npm project if you do not already h
 
 ```sh
 npm init -y
-npm install @dapr/dapr@3.19.0-rc.4
+npm install @dapr/dapr@3.19.0
 ```
 
 The examples use JavaScript ES modules and run as `.mjs` files without a TypeScript compiler. The same APIs are available in TypeScript, with request and response types exported from `@dapr/dapr`.

@@ -31,7 +31,7 @@ The Dapr .NET SDK originally distributed messaging capabilities across multiple 
 3. **Source generators eliminate reflection**: The `Dapr.Messaging.Generators` source generator inspects `[DaprTopic]` handlers at compile time and emits typed dispatchers, subscriber registries, and dependency injection wiring. No runtime reflection or runtime code generation is performed on the invocation path.
 4. **AOT and trimming considerations**: Handler discovery and dispatch registration are generated at compile time, but the current generated subscriber dispatchers use runtime `System.Text.Json` metadata. Native AOT and trimming scenarios require explicit validation with the target SDK version.
 5. **Roslyn analyzers and diagnostics**: The SDK includes compile-time analyzers (`DAPR1610`–`DAPR1617`) that catch misconfigurations directly in your IDE as you write code:
-   - **`DAPR1610` (Error)**: Conflicting delivery modes on the same topic.
+   - **`DAPR1610` (Warning)**: Conflicting delivery modes on the same topic.
    - **`DAPR1611` (Error)**: `[DaprTopic]` class not implementing `ITopicHandler<TMessage>`.
    - **`DAPR1612` (Warning)**: Unregistered message type in Native AOT compilation.
    - **`DAPR1613` (Warning)**: Missing `app.MapDaprMessaging()` for programmatic subscriptions (with CodeFix).

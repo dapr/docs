@@ -12,7 +12,7 @@ that perform I/O or other work outside the deterministic workflow.
 
 ## Prerequisites
 
-- Node.js 18 or later and `@dapr/dapr` **3.19.0-rc.4 or later**.
+- Node.js 18 or later and `@dapr/dapr` **3.19.0 or later**.
 - An initialized [self-hosted Dapr environment]({{% ref install-dapr-selfhost.md %}}) with runtime **1.19 or later**.
 - Workflow infrastructure: an actor state store, placement, and scheduler. The default `dapr init` environment
   provides these for local development.
@@ -23,7 +23,7 @@ Install the package in your application directory:
 
 ```sh
 npm init -y
-npm install @dapr/dapr@3.19.0-rc.4
+npm install @dapr/dapr@3.19.0
 ```
 
 Save this complete example as `app.mjs`. It uses JavaScript ES modules; the same APIs are available in TypeScript.

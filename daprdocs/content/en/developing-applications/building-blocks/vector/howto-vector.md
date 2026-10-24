@@ -19,7 +19,7 @@ Let's get started using the [vector API]({{% ref vector-overview %}}). In this g
 - Run several queries in one batch.
 - Retrieve and delete records by ID.
 
-The examples in this guide call the Dapr HTTP API with `curl` and use 4-dimensional vectors to keep them readable. In a real application, vectors come from an embedding model and typically have hundreds or thousands of dimensions. The HTTP API uses the [JSON mapping of the protobuf messages](https://protobuf.dev/programming-guides/json/): field names are camelCase, 64-bit integers are strings, and bytes are base64-encoded. Responses include fields set to their zero value and omit optional fields that aren't set. Dapr SDK support for the vector API is not yet available.
+The examples in this guide call the Dapr HTTP API with `curl` and use 4-dimensional vectors to keep them readable. In a real application, vectors come from an embedding model and typically have hundreds or thousands of dimensions. The HTTP API uses the [JSON mapping of the protobuf messages](https://protobuf.dev/programming-guides/json/): field names are camelCase, 64-bit integers are strings, and bytes are base64-encoded. Responses include fields set to their zero value and omit optional fields that aren't set. For .NET examples using typed payloads, metadata filters, and batch queries, see the [Vector .NET SDK guide]({{% ref dotnet-vector-howto.md %}}), targeting SDK 1.19.0 or later.
 
 ## Pre-requisites
 

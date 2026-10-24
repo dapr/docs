@@ -10,6 +10,11 @@ Testing is the headline capability of `Dapr.Actors.Next`. The hard parts of acto
 
 This page covers what is available at development time, how to write tests with xUnit v3, how to add Coyote for deeper exploration, and how to run integration tests against a real sidecar.
 
+{{% alert title=".NET framework support" color="warning" %}}
+Be advised that .NET 8 and .NET 9 reach end of support in November 2026. Support for both will be dropped
+in Dapr v1.20; only .NET 10 and .NET 11 will be supported through the end of 2027.
+{{% /alert %}}
+
 {{% alert title="Package" color="primary" %}}
 The in-memory runtime is in the `Dapr.Actors.Next.Testing` namespace. It is one of the packages that make up the `Dapr.Actors.Next` meta-package, and it is also published to NuGet on its own, so you install it directly into your test project rather than pulling the full meta-package there. It drives your real actors through the same generated dispatchers used in production, so there are no test-only actor implementations.
 {{% /alert %}}

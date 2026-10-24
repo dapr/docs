@@ -6,7 +6,7 @@ weight: 10000
 description: Create an actor contract, host a stateful actor, and call it from a Node.js client
 ---
 
-This guide creates a counter actor whose state survives deactivation. The host and client share a TypeScript contract and use `@dapr/dapr` **3.19.0-rc.4 or later**.
+This guide creates a counter actor whose state survives deactivation. The host and client share a TypeScript contract and use `@dapr/dapr` 3.19.0 or later.
 
 ## Prerequisites
 
@@ -19,11 +19,11 @@ In an empty directory, initialize a Node.js project and install the SDK and Type
 
 ```shell
 npm init -y
-npm install @dapr/dapr@3.19.0-rc.4
+npm install @dapr/dapr@3.19.0
 npm install --save-dev typescript tsx @types/node
 ```
 
-The command pins the prerelease used by this guide. You can instead select a later published package version explicitly.
+The command pins the 3.19.0 release used by this guide. You can instead select a later published package version explicitly.
 
 Create `tsconfig.json`:
 

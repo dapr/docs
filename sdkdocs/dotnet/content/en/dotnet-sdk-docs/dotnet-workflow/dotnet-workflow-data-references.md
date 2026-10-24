@@ -23,7 +23,7 @@ Cross-app activity and workflow call inputs are **inline by default**. When usin
 applications, register `WithBinaryStorePayloads(...)` on every participating .NET application (with access to the
 same binary store) to preserve compatibility across return values, propagated history, and forwarded references—and
 **never unregister it** once enabled. The [JavaScript SDK]({{% ref js-workflow-data-references.md %}}) also
-supports the version-1 reference envelope from `@dapr/dapr` 3.19.0-rc.4, with compatible serialization and
+supports the version-1 reference envelope from `@dapr/dapr` 3.19.0, with compatible serialization and
 storage access, but does not implement payload-stage reversal. Do not assume other SDKs support this scheme. See
 [Cross-app input handling](#cross-app-input-handling) for requirements and limits.
 {{% /alert %}}
@@ -419,7 +419,7 @@ var length = await context.CallActivityAsync<int>(
 Opt out per call with `AllowPayloadReferences: true` only when all of the following hold:
 
 1. The destination supports the version-1 envelope with compatible payload contracts and serialization settings.
-   The JavaScript SDK supports unstaged references from `@dapr/dapr` 3.19.0-rc.4; it does not implement
+   The JavaScript SDK supports unstaged references from `@dapr/dapr` 3.19.0; it does not implement
    payload-stage reversal. Do not assume other language SDKs support this scheme.
 2. The destination registers `WithBinaryStorePayloads(...)` in .NET, or a
    [payload resolver in JavaScript]({{% ref js-workflow-data-references.md %}}#register-a-resolver-on-clients-and-workers)
@@ -475,7 +475,7 @@ Event APIs do not expose `TargetAppId` or `AllowPayloadReferences` and instead f
 
 | Event path | Outgoing policy |
 | --- | --- |
-| `context.SendEvent` | Uses the workflow host's `WritePreference`. The target instance is in the current app; local events are not forced inline. (Note: Dapr `1.19.0-rc.3` rejects workflow-originated `EventSent` messages regardless of payload representation.) |
+| `context.SendEvent` | Uses the workflow host's `WritePreference`. The target instance is in the current app; local events are not forced inline. |
 | Client `RaiseEventAsync` | Uses the publishing client's configured `WritePreference`. The destination is determined by the sidecar endpoint configured for that client. |
 
 Under `PreferReference`, automatic event offloading is controlled by `PayloadKind.ExternalEvent` in `OffloadSites`

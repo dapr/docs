@@ -6,7 +6,7 @@ weight: 3300
 description: "Subscribe without an application server using gRPC streaming, with cancellation, acknowledgements, and failure supervision"
 ---
 
-Use `DaprClient.pubsub.subscribeStream()` to open a bidirectional gRPC stream from your application to the sidecar with **`@dapr/dapr` 3.19.0-rc.4 or later**. It does not require `DaprServer`, an application callback port, or subscription discovery.
+Use `DaprClient.pubsub.subscribeStream()` to open a bidirectional gRPC stream from your application to the sidecar with `@dapr/dapr` 3.19.0 or later. It does not require `DaprServer`, an application callback port, or subscription discovery.
 
 Complete the [pub/sub prerequisites]({{% ref js-pubsub %}}) first. Streaming uses `SubscribeTopicEventsAlpha1`, an alpha gRPC API; your Dapr runtime must implement it. HTTP clients reject this operation with `HTTPNotSupportedError`. Streaming subscriptions do not support routing rules or bulk subscription options.
 

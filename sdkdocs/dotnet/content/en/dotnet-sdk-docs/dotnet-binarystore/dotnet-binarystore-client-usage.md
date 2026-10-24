@@ -6,6 +6,21 @@ weight: 53100
 description: Essential guidance for configuring and using DaprBinaryStoreClient
 ---
 
+The operations on this page target SDK `1.19.0`. Use that release or later with
+Dapr runtime 1.19 or later.
+
+## Operation surface
+
+| Operation | API |
+| --- | --- |
+| Upload | `SetBinaryFileAsync` with a `Stream` or `ReadOnlyMemory<byte>`, optionally overwriting an existing file. |
+| Download | `GetBinaryFileChunksAsync`, `GetBinaryFileAsync` into a destination stream, or `GetBinaryFileBytesAsync` to buffer the complete file. |
+| Delete | `DeleteBinaryFileAsync`. |
+| Store-bound access | `[BinaryStore]` on a partial `IDaprBinaryStoreClient` interface and the generated `With...` DI registration. |
+
+This SDK release does not expose list-files, file metadata, conditional/ETag writes, or range-read methods.
+Binary store files are not state entries; state transactions and state query APIs do not apply to them.
+
 ## Client lifetime
 
 `DaprBinaryStoreClient` uses network resources and implements `IDisposable`. Reuse a long-lived client rather than creating one for each operation. The dependency injection registration uses `ServiceLifetime.Singleton` by default; use the optional `lifetime` argument to select another lifetime when needed.
@@ -55,6 +70,11 @@ The builder also supports `UseHttpEndpoint`, `UseDaprApiToken`, `UseGrpcChannelO
 Use the `Stream` overload of `SetBinaryFileAsync` and `GetBinaryFileAsync` for large files. Uploads use a 32 KiB chunk size by default; specify `chunkSize` on upload to tune this, and ensure it is greater than zero. `GetBinaryFileChunksAsync` returns an asynchronous sequence of chunks chosen by the runtime.
 
 The `ReadOnlyMemory<byte>` overload of `SetBinaryFileAsync` and `GetBinaryFileBytesAsync` are convenient for small files already held in memory. `GetBinaryFileBytesAsync` buffers the complete download in a byte array.
+
+The caller owns the streams. Downloads write at the destination's current position and do not rewind or
+truncate it; uploads read at the source's current position. Chunk enumeration is lazy, and runtime errors
+can be thrown during enumeration. A failed download can leave partial bytes in the destination, which your
+application must not treat as a complete file.
 
 ## Cancellation
 

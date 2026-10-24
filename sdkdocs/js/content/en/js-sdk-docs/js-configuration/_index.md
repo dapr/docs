@@ -8,7 +8,7 @@ description: Read application configuration and subscribe to changes with the Da
 
 Use `DaprClient.configuration` to retrieve application configuration from a configured store and subscribe to changes. You can read selected keys or all keys, watch selected keys or the whole store, and pass store-specific request metadata.
 
-These guides target **`@dapr/dapr` 3.19.0-rc.4 or later**. Configuration operations in the JavaScript SDK require **gRPC**; the HTTP client throws `HTTPNotSupportedError` for both reads and subscriptions, even though the Dapr runtime exposes an HTTP Configuration API.
+These guides target `@dapr/dapr` 3.19.0 or later. Configuration operations in the JavaScript SDK require **gRPC**; the HTTP client throws `HTTPNotSupportedError` for both reads and subscriptions, even though the Dapr runtime exposes an HTTP Configuration API.
 
 The client reads and watches configuration; it does not create, update, or delete configuration items. Make those changes directly in the backing store using its own tools or API. This building block manages application settings, not the Dapr runtime's `Configuration` resource.
 

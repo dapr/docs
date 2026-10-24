@@ -6,7 +6,7 @@ weight: 50000
 description: Schedule actor callbacks, inspect reminders, and safely remove reminders in bulk
 ---
 
-Timers schedule work during an actor's activation. Reminders are durable and can reactivate an actor after deactivation or failover. Dapr runs the scheduling; the SDK registers callbacks and dispatches them to your actor. These examples target `@dapr/dapr` **3.19.0-rc.4 or later**.
+Timers schedule work during an actor's activation. Reminders are durable and can reactivate an actor after deactivation or failover. Dapr runs the scheduling; the SDK registers callbacks and dispatches them to your actor. These examples target `@dapr/dapr` 3.19.0 or later.
 
 See [actor timers and reminders]({{% ref actors-timers-reminders.md %}}) for runtime scheduling and retry semantics. Modern Dapr runtimes persist reminders in the Scheduler service, not in the actor's in-memory fields.
 
@@ -172,7 +172,7 @@ Keep the type import at module scope. `NamedActorReminderType` contains `name`, 
 
 | Operation | Runtime requirement |
 |-----------|---------------------|
-| HTTP listing with an exact actor ID | Dapr 1.19+, including 1.19.0-rc.4 |
+| HTTP listing with an exact actor ID | Dapr 1.19+ |
 | gRPC listing with an exact actor ID | Dapr 1.17+ |
 | gRPC listing without an actor ID, across the actor type | Dapr 1.17+ |
 
@@ -193,7 +193,7 @@ await actors.unregisterActorReminder("ScheduledActor", actorId, "follow-up");
 await actors.unregisterActorTimer("ScheduledActor", actorId, "heartbeat");
 ```
 
-Bulk reminder deletion requires **gRPC and Dapr 1.17 or later**. For example, configure a separate administrative client:
+Bulk reminder deletion requires gRPC and Dapr 1.17 or later. For example, configure a separate administrative client:
 
 ```typescript
 import { CommunicationProtocolEnum } from "@dapr/dapr";

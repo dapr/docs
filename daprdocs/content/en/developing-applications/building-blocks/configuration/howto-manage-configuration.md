@@ -181,7 +181,7 @@ func main() {
 
 {{% tab "JavaScript" %}}
 
-These examples target `@dapr/dapr` **3.19.0-rc.4 or later**. See the [JavaScript configuration guide]({{% ref js-configuration-howto.md %}}) for installation and a complete runnable example.
+These examples target `@dapr/dapr` **3.19.0 or later**. See the [JavaScript configuration guide]({{% ref js-configuration-howto.md %}}) for installation and a complete runnable example.
 
 ```js
 import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr";
