@@ -1996,9 +1996,10 @@ Join our [Discord Server](https://diagrid.ws/dapr-discord) and share your though
 
 ## Next steps
 
+- Run the [workflow tutorials](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow) in the Quickstarts repo (Python, .NET and Java). They show task chaining, fan-out/fan-in, child workflows, monitor, external system interaction, resiliency and compensation, versioning, workflow management and history propagation
 - Set up Dapr Workflow with any programming language using [HTTP instead of an SDK]({{% ref howto-manage-workflow.md %}})
 - Walk through a more in-depth [.NET SDK example workflow](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
 - Learn more about [Workflow as a Dapr building block]({{% ref workflow-overview %}})
 ```
 
-{{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}
+{{< button text="Explore the workflow tutorials  >>" link="https://github.com/dapr/quickstarts/tree/master/tutorials/workflow" >}}
