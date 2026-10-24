@@ -67,7 +67,24 @@ def error_handler(ctx, error):
     # Add logic here to undo partial changes (e.g., release inventory)
 ```
 
-> **Note** Workflow retry policies will be available in a future version of the Python SDK.
+To retry an activity that fails, create a `RetryPolicy` and pass it in the `retry_policy` argument of `call_activity`. The Dapr runtime runs the activity again after the retry interval, up to the maximum number of attempts.
+
+```python
+from datetime import timedelta
+import dapr.ext.workflow as wf
+
+
+def task_chain_workflow(ctx: wf.DaprWorkflowContext, wf_input: int):
+    retry_policy = wf.RetryPolicy(
+        max_number_of_attempts=3,
+        first_retry_interval=timedelta(seconds=2),
+        backoff_coefficient=2.0,
+        max_retry_interval=timedelta(seconds=30),
+    )
+    result1 = yield ctx.call_activity(step1, input=wf_input, retry_policy=retry_policy)
+    result2 = yield ctx.call_activity(step2, input=result1, retry_policy=retry_policy)
+    return [result1, result2]
+```
 
 {{% /tab %}}
 
