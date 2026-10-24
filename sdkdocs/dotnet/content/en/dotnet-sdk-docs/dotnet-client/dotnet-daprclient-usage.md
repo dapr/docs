@@ -68,7 +68,7 @@ A `DaprClient` can be configured by invoking methods on `DaprClientBuilder` clas
 
 ```C#
 var daprClient = new DaprClientBuilder()
-    .UseJsonSerializerSettings( ... ) // Configure JSON serializer
+    .UseJsonSerializationOptions(new JsonSerializerOptions(JsonSerializerDefaults.Web))
     .Build();
 ```
 
@@ -133,7 +133,7 @@ Dapr's use of `CancellationToken` for cancellation relies on the configuration o
 
 ```C#
 var daprClient = new DaprClientBuilder()
-    .UseGrpcChannelOptions(new GrpcChannelOptions { ... ThrowOperationCanceledOnCancellation = true })
+    .UseGrpcChannelOptions(new GrpcChannelOptions { ThrowOperationCanceledOnCancellation = true })
     .Build();
 ```
 
@@ -141,7 +141,8 @@ var daprClient = new DaprClientBuilder()
 
 The APIs on DaprClient that perform asynchronous operations accept an optional `CancellationToken` parameter. This follows a standard .NET idiom for cancellable operations. Note that when cancellation occurs, there is no guarantee that the remote endpoint stops processing the request, only that the client has stopped waiting for completion.
 
-When an operation is cancelled, it will throw an `OperationCancelledException`.
+When an operation is canceled, it can throw an `OperationCanceledException`. A canceled request does not imply
+that a remote write or external side effect was rolled back.
 
 ## Understanding DaprClient JSON serialization
 
@@ -151,7 +152,7 @@ It is worth reading the [System.Text.Json documentation](https://docs.microsoft.
 
 `DaprClient` is configured to use a serializer options object configured from [JsonSerializerDefaults.Web](https://docs.microsoft.com/dotnet/api/system.text.json.jsonserializerdefaults?view=net-5.0). This means that `DaprClient` will use `camelCase` for property names, allow reading quoted numbers (`"10.99"`), and will bind properties case-insensitively. These are the same settings used with ASP.NET Core and the `System.Text.Json.Http` APIs, and are designed to follow interoperable web conventions.
 
-`System.Text.Json` as of .NET 5.0 does not have good support for all of F# language features built-in. If you are using F# you may want to use one of the converter packages that add support for F#'s features such as [FSharp.SystemTextJson](https://github.com/Tarmil/FSharp.SystemTextJson).
+`System.Text.Json` does not have built-in support for all F# language features. If you are using F# you may want to use one of the converter packages that add support for F#'s features such as [FSharp.SystemTextJson](https://github.com/Tarmil/FSharp.SystemTextJson).
 
 ### Simple guidance for JSON serialization
 

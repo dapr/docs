@@ -6,7 +6,7 @@ weight: 54100
 description: Guidance for configuration reads, metadata, subscriptions, client lifetime, and error handling in JavaScript
 ---
 
-Configuration is available through `DaprClient.configuration`. This guide targets **`@dapr/dapr` 3.19.0-rc.4 or later**. The implementation details and limitations below were verified against `3.19.0-rc.4` and `3.19.0-rc.5`.
+Configuration is available through `DaprClient.configuration`. This guide targets `@dapr/dapr` 3.19.0 or later and describes the implementation details and limitations to account for when using this release.
 
 ## Client lifetime and configuration
 
@@ -128,7 +128,7 @@ The configuration methods do not accept an `AbortSignal` or a per-call timeout o
 Await reads and subscription creation at your application's error boundary. A failed `get` rejects, for example when the component is missing, the store cannot be reached, or the sidecar returns an error. gRPC runtime errors use the Connect transport's error codes rather than HTTP status codes. Calling configuration methods on an HTTP client rejects with `HTTPNotSupportedError`.
 
 {{% alert title="Subscription error limitations" color="warning" %}}
-In `3.19.0-rc.4` and `3.19.0-rc.5`, unexpected errors while consuming the background subscription stream are caught without being logged or propagated. This includes a callback rejection, which exits the consumption loop. A `try/catch` around `await subscribe...` cannot observe those later failures. The implementation does not automatically reconnect or resubscribe when the stream ends.
+In `3.19.0`, unexpected errors while consuming the background subscription stream are caught without being logged or propagated. This includes a callback rejection, which exits the consumption loop. A `try/catch` around `await subscribe...` cannot observe those later failures. The implementation does not automatically reconnect or resubscribe when the stream ends.
 {{% /alert %}}
 
 Report callback errors within the callback itself. For applications that require fresh settings, add independent freshness checks or periodic reads and an application-level recovery policy; do not treat possession of a subscription handle, or a lack of updates, as proof that the watch is healthy. If you recreate subscriptions, stop the previous handles and reconcile current values.

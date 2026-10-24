@@ -13,16 +13,16 @@ This guide uses `DaprClient.secret` to retrieve a single secret and all accessib
 - [Dapr CLI]({{% ref install-dapr-cli.md %}})
 - An initialized [Dapr environment]({{% ref install-dapr-selfhost.md %}})
 - [Node.js](https://nodejs.org/) 18 or later
-- The [`@dapr/dapr`](https://www.npmjs.com/package/@dapr/dapr) package, **version 3.19.0-rc.4 or later**
+- The [`@dapr/dapr`](https://www.npmjs.com/package/@dapr/dapr) package, version 3.19.0 or later
 
 In your application directory, initialize an npm project if needed and install the SDK:
 
 ```sh
 npm init -y
-npm install @dapr/dapr@3.19.0-rc.4
+npm install @dapr/dapr@3.19.0
 ```
 
-The explicit prerelease version ensures that npm installs the version used in this guide rather than an older stable release. You can substitute a later version.
+The explicit version ensures that npm installs the 3.19.0 release used in this guide. You can substitute a later version.
 
 ## Configure a local secret store
 
@@ -156,7 +156,7 @@ Bulk retrieval is not an array or a paginated iterator. It loads the full respon
 Configure `CommunicationProtocolEnum.GRPC` and the sidecar's gRPC port, `"50001"`, instead of HTTP and `"3500"`. The same `get` and `getBulk` methods are available.
 
 {{% alert title="Multi-valued single-secret limitation" color="warning" %}}
-In SDK 3.19.0-rc.4, gRPC `get` returns only the first entry from the runtime's secret data map. It never returns both database fields in this example, so changing only the protocol causes the database validation to fail. Keep HTTP for individual multi-valued secrets. gRPC `getBulk` preserves all nested values, but retrieves all accessible secrets rather than just one.
+In SDK 3.19.0, gRPC `get` returns only the first entry from the runtime's secret data map. It never returns both database fields in this example, so changing only the protocol causes the database validation to fail. Keep HTTP for individual multi-valued secrets. gRPC `getBulk` preserves all nested values, but retrieves all accessible secrets rather than just one.
 {{% /alert %}}
 
 ## Pass store-specific metadata over HTTP
@@ -179,4 +179,4 @@ const secret = await client.secret.get(
 
 This snippet assumes an existing HTTP `client` and a separately configured AWS component; it is not needed for the local file example. Supported metadata depends on the [secret store component]({{% ref supported-secret-stores %}}). For example, Kubernetes supports `metadata.namespace`, while some cloud stores support version selection.
 
-The gRPC implementation ignores this argument in SDK 3.19.0-rc.4. `getBulk` has no metadata argument with either protocol. See the [client usage guidance]({{% ref js-secrets-client-usage.md %}}) for the complete API surface and error behavior.
+The gRPC implementation ignores this argument in SDK 3.19.0. `getBulk` has no metadata argument with either protocol. See the [client usage guidance]({{% ref js-secrets-client-usage.md %}}) for the complete API surface and error behavior.

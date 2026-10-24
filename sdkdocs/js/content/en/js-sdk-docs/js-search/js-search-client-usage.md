@@ -6,7 +6,7 @@ weight: 53100
 description: Essential guidance for configuring and using the JavaScript Search client
 ---
 
-Search is available through `DaprClient.search` in JavaScript SDK **3.19.0-rc.5 or later** and requires **Dapr runtime 1.19 or later**. HTTP and gRPC use the alpha Search API and expose the same methods and JavaScript result shapes.
+Search is available through `DaprClient.search` in JavaScript SDK 3.19.0 or later and requires Dapr runtime 1.19 or later. HTTP and gRPC use the alpha Search API and expose the same methods and JavaScript result shapes.
 
 ## Client lifetime and configuration
 

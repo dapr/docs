@@ -13,16 +13,16 @@ lock API. It can be registered alongside a `DaprClient` and other Dapr clients w
 
 It maintains access to networking resources in the form of TCP sockets used to communicate with the Dapr sidecar runtime.
 
-For best performance, it is recommended that you utilize the dependency injection container mechanisms provided with the 
+For best performance, it is recommended that you utilize the dependency injection container mechanisms provided with the
 `Dapr.DistributedLock` package to provide easy access to an injected instance throughout your application. These injected
 instances are thread-safe and intended to be used across different types within your application. Registration via
 dependency injection can utilize values from an `IConfiguration` or other injected services in a way that's impractical
 when creating the client from scratch in each of your classes.
 
-If you do opt to manually create a `DaprDistributedLockClient` instance, it is recommended that you use the `DaprDistributedLockBuilder`
-to create the client. This will ensure that the client is properly configured to communicate with the Dapr sidecar runtime.
+If you manually create a `DaprDistributedLockClient`, use `DaprDistributedLockBuilder`.
 
-Avoid creating a `DaprDistributedLockClient` for each operation.
+Avoid creating a `DaprDistributedLockClient` for each operation. See
+[acquisition, release, and status handling]({{< ref dotnet-distributedlock-howto.md >}}) for the supported operations.
 
 ## Configuring a `DaprDistributedLockClient` via `DaprDistributedLockBuilder`
 
@@ -61,7 +61,7 @@ to configure these options yourself, make sure to enable the [ThrowOperationCanc
 
 ```cs
 var daprDistributedLockClient = new DaprDistributedLockBuilder()
-    .UseGrpcChannelOptions(new GrpcChannelOptions { ... ThrowOperationCanceledOnCancellation = true })
+    .UseGrpcChannelOptions(new GrpcChannelOptions { ThrowOperationCanceledOnCancellation = true })
     .Build();
 ```
 
@@ -71,7 +71,8 @@ The APIs on `DaprDistributedLockClient` perform asynchronous operations and acce
 follows a standard .NET practice for cancellable operations. Note that when cancellation occurs, there is no guarantee that
 the remote endpoint stops processing the request, only that the client has stopped waiting for completion.
 
-When an operation is cancelled, it will throw an `OperationCancelledException`.
+Cancellation can surface as `OperationCanceledException` or a `DaprException` wrapping a gRPC cancellation,
+depending on the channel configuration. Inspect the inner exception rather than treating cancellation as a lock conflict.
 
 ## Configuring `DaprDistributedLockClient` via dependency injection
 

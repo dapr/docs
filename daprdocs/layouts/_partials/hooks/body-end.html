@@ -24,6 +24,17 @@
     apiKey: '{{ .apiKey }}',
     indexName: '{{ .indexName }}',
   });
+  // The navbar search is d-none d-lg-block, so below lg it is absent entirely.
+  // The mobile menu bar carries its own mount point; docsearch() binds a single
+  // container per call, hence the second init.
+  if (document.querySelector('#docsearch-mobile')) {
+    docsearch({
+      container: '#docsearch-mobile',
+      appId: '{{ .appId }}',
+      apiKey: '{{ .apiKey }}',
+      indexName: '{{ .indexName }}',
+    });
+  }
 </script>
 
 {{ end }}

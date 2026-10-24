@@ -6,7 +6,7 @@ weight: 30
 description: "Configure clients, serialization, authentication, and failure handling for JavaScript service invocation"
 ---
 
-This guidance applies to **`@dapr/dapr` 3.19.0-rc.4 or later**. See [calling services]({{% ref js-service-invocation-howto.md %}}) and [receiving invocations]({{% ref js-service-invocation-server.md %}}) for complete application examples.
+This guidance applies to `@dapr/dapr` 3.19.0 or later. See [calling services]({{% ref js-service-invocation-howto.md %}}) and [receiving invocations]({{% ref js-service-invocation-server.md %}}) for complete application examples.
 
 ## Client lifetime
 

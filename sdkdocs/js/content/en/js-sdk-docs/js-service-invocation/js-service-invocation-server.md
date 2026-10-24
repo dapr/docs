@@ -6,7 +6,7 @@ weight: 20
 description: "Register HTTP or gRPC invocation handlers and understand callback requests and responses"
 ---
 
-Use `DaprServer.invoker.listen(methodName, callback, options?)` to register an invocation handler. These examples use **`@dapr/dapr` 3.19.0-rc.4 or later**.
+Use `DaprServer.invoker.listen(methodName, callback, options?)` to register an invocation handler. These examples use `@dapr/dapr` 3.19.0 or later.
 
 ## Start an HTTP service
 

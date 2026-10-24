@@ -274,3 +274,13 @@
     .td-home .td-content > h1:not(:empty) { padding: 2rem 1.25rem; font-size: 2rem; }
     .td-home .td-content > h1:not(:empty)::after { width: 64px; height: 64px; }
 }
+
+// ── Page meta: "Last modified <date>: <commit subject> (<hash>)" ────────────
+// Docsy renders this from .GitInfo (enableGitInfo). The commit subject is
+// arbitrary text and can contain tokens with no break opportunity - a 40-char
+// SHA, a long branch name, a bare URL - which then push the whole document
+// wider than a phone viewport and force horizontal panning on every page.
+// Allow breaks inside such tokens; ordinary subjects still wrap at spaces.
+.td-page-meta__lastmod {
+    overflow-wrap: anywhere;
+}

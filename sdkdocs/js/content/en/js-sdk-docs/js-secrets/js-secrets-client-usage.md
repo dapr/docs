@@ -6,7 +6,7 @@ weight: 52900
 description: Configure the JavaScript secrets client and understand metadata, response shapes, protocol differences, and errors
 ---
 
-Secrets are available through `DaprClient.secret`; there is no separate secrets client package or builder. This guidance targets **`@dapr/dapr` 3.19.0-rc.4 or later**.
+Secrets are available through `DaprClient.secret`; there is no separate secrets client package or builder. This guidance targets `@dapr/dapr` 3.19.0 or later.
 
 ## Client lifetime and configuration
 
@@ -42,14 +42,14 @@ getBulk(secretStoreName: string): Promise<object>;
 
 Call these as `client.secret.get(...)` and `client.secret.getBulk(...)`.
 
-| Capability | HTTP | gRPC in 3.19.0-rc.4 |
+| Capability | HTTP | gRPC in 3.19.0 |
 |------------|------|--------------------|
 | Retrieve a single secret | Returns the full data map | Returns only the first key-value pair, or `{}` for an empty data map |
 | Per-request metadata on `get` | Query string with `metadata.`-prefixed keys | Argument is accepted but ignored |
 | Bulk retrieval | Nested secret data maps | Nested secret data maps, preserving all values |
 | Per-request metadata on `getBulk` | Not exposed | Not exposed |
 
-These limitations are present in both the [3.19.0-rc.4 HTTP implementation](https://github.com/dapr/js-sdk/blob/v3.19.0-rc.4/src/implementation/Client/HTTPClient/secret.ts) and [gRPC implementation](https://github.com/dapr/js-sdk/blob/v3.19.0-rc.4/src/implementation/Client/GRPCClient/secret.ts), and remain in the latest source reviewed for this guide. Check the implementation and release notes when upgrading.
+These limitations are present in both the [3.19.0 HTTP implementation](https://github.com/dapr/js-sdk/blob/v3.19.0/src/implementation/Client/HTTPClient/secret.ts) and [gRPC implementation](https://github.com/dapr/js-sdk/blob/v3.19.0/src/implementation/Client/GRPCClient/secret.ts), and remain in the latest source reviewed for this guide. Check the implementation and release notes when upgrading.
 
 The SDK does not expose secret writes, deletes, subscriptions, typed secret generation, or automatic secret refresh. Manage secret creation and rotation in the underlying provider. If your application caches retrieved values, it must decide when to fetch them again.
 

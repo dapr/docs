@@ -19,7 +19,7 @@ automatic offloading, explicit references, a streaming example, and a benchmark 
 this SDK integration are alpha. Cross-app call inputs are inline by default; explicitly allowing references requires
 compatible, payload-aware destinations with access to the same referenced objects. The
 [JavaScript SDK]({{% ref js-workflow-data-references.md %}}) also supports the version-1 envelope from
-`@dapr/dapr` 3.19.0-rc.4 with compatible serialization and no payload-stage reversal.
+`@dapr/dapr` 3.19.0 with compatible serialization and no payload-stage reversal.
 Do not assume other language SDKs support data references.
 
 ## Next steps

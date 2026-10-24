@@ -165,10 +165,10 @@ with DaprClient() as d:
 <!-- JavaScript -->
 {{% tab "JavaScript" %}}
 
-Use `@dapr/dapr` **3.19.0-rc.4 or later** with Dapr runtime **1.16 or later**. Save this example as `app.mjs` after installing the package:
+Use `@dapr/dapr` **3.19.0 or later** with Dapr runtime **1.16 or later**. Save this example as `app.mjs` after installing the package:
 
 ```sh
-npm install @dapr/dapr@3.19.0-rc.4
+npm install @dapr/dapr@3.19.0
 ```
 
 ```javascript

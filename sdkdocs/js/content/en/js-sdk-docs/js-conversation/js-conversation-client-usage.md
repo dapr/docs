@@ -12,7 +12,7 @@ description: Configure conversation requests, message history, structured output
 converse(request: ConversationRequestAlpha2): Promise<ConversationResponseAlpha2>;
 ```
 
-Import these types, and the other `Conversation*` types used below, from `@dapr/dapr`. This guidance targets **3.19.0-rc.4 or later**.
+Import these types, and the other `Conversation*` types used below, from `@dapr/dapr`. This guidance targets **3.19.0 or later**.
 
 ## Runtime and provider support
 

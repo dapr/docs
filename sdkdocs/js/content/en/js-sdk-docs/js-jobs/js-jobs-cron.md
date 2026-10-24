@@ -6,7 +6,7 @@ weight: 52000
 description: Use raw cron expressions, descriptors, time zones, and CronExpressionBuilder to schedule Dapr Jobs
 ---
 
-Use a cron schedule for calendar-based jobs, such as a report at 09:30 every weekday. The JavaScript SDK accepts a raw schedule string or a `CronExpressionBuilder` directly in `JobOptions.schedule`. These examples target **`@dapr/dapr` 3.19.0-rc.4 or later**.
+Use a cron schedule for calendar-based jobs, such as a report at 09:30 every weekday. The JavaScript SDK accepts a raw schedule string or a `CronExpressionBuilder` directly in `JobOptions.schedule`. These examples target **`@dapr/dapr` 3.19.0 or later**.
 
 ## Provide a schedule string
 

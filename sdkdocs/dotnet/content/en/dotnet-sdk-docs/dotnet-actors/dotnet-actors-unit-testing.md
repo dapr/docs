@@ -12,11 +12,16 @@ This guide covers practical patterns for testing actors without a running Dapr s
 
 ## Prerequisites
 
-- .NET 6+ project with [Dapr.Actors](https://www.nuget.org/packages/Dapr.Actors) package
+- .NET 8, .NET 9, .NET 10, or .NET 11 project with [Dapr.Actors](https://www.nuget.org/packages/Dapr.Actors) package
 - A test framework: [xUnit](https://xunit.net/), [NUnit](https://nunit.org/), or [MSTest](https://learn.microsoft.com/dotnet/core/testing/)
 - (Optional) A mocking library: [Moq](https://github.com/devlooped/moq), [NSubstitute](https://nsubstitute.github.io/), or [FakeItEasy](https://fakeiteasy.github.io/)
 
 ## Testable API surface
+
+{{% alert title=".NET framework support" color="warning" %}}
+Be advised that .NET 8 and .NET 9 reach end of support in November 2026. Support for both will be dropped
+in Dapr v1.20; only .NET 10 and .NET 11 will be supported through the end of 2027.
+{{% /alert %}}
 
 An actor class inherits from `Actor` (namespace `Dapr.Actors.Runtime`). Key members available for testing:
 

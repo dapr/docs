@@ -6,7 +6,7 @@ weight: 20000
 description: Register actor types, use lifecycle hooks, and configure the JavaScript actor host
 ---
 
-JavaScript actors derive from `AbstractActor`. The SDK constructs an instance with a `DaprClient` and an `ActorId` when Dapr activates it. See the [how-to guide]({{% ref js-actors-howto.md %}}) for a complete application using `@dapr/dapr` **3.19.0-rc.4 or later**.
+JavaScript actors derive from `AbstractActor`. The SDK constructs an instance with a `DaprClient` and an `ActorId` when Dapr activates it. See the [how-to guide]({{% ref js-actors-howto.md %}}) for a complete application using `@dapr/dapr` 3.19.0 or later.
 
 ## Actor construction and identity
 

@@ -17,10 +17,15 @@ Use the `Dapr.BinaryStore` package to store and retrieve files using a Dapr bina
 
 - [Dapr CLI]({{% ref install-dapr-cli.md %}})
 - An initialized [Dapr environment]({{% ref install-dapr-selfhost.md %}})
-- [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0), [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0), or [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0)
+- [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0), [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0), [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0), or [.NET 11](https://dotnet.microsoft.com/download/dotnet/11.0)
 - Dapr runtime 1.19 or later
 - The [Dapr.BinaryStore](https://www.nuget.org/packages/Dapr.BinaryStore) NuGet package
 - A [binary store]({{% ref "developing-applications/building-blocks/binarystore/_index.md" %}}) component configured in Dapr
+
+{{% alert title=".NET framework support" color="warning" %}}
+Be advised that .NET 8 and .NET 9 reach end of support in November 2026. Support for both will be dropped
+in Dapr v1.20; only .NET 10 and .NET 11 will be supported through the end of 2027.
+{{% /alert %}}
 
 Install the package in your project:
 
