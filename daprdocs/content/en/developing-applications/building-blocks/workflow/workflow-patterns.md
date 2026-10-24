@@ -1424,6 +1424,192 @@ External events don't have to be directly triggered by humans. They can also be 
 
 To run this pattern, try the external system interaction tutorial in [Python](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/python/external-system-interaction), [.NET](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/csharp/external-system-interaction) or [Java](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/java/external-system-interactions).
 
+## Child workflows
+
+A child workflow is a workflow that another workflow, the parent, starts. The child has its own instance ID and history. The parent can start one child workflow or many, and it waits for the child workflows to complete before it continues. Use child workflows to split a large workflow into smaller workflows, or to spread the work of a workflow with many tasks across several workflows. For the details, see [child workflows]({{% ref "workflow-features-concepts.md#child-workflows" %}}).
+
+In the following example, the parent workflow starts one child workflow for each item of its input. All the child workflows run at the same time. The parent workflow waits for all of them and returns their results. Each child workflow calls two activities in sequence.
+
+{{< tabpane text=true >}}
+
+{{% tab "Python" %}}
+
+```python
+@wf_runtime.workflow(name='parent_workflow')
+def parent_workflow(ctx: wf.DaprWorkflowContext, items: List[str]):
+    
+    child_wf_tasks = [
+        ctx.call_child_workflow(child_workflow, input=item) for item in items
+    ]
+    wf_result = yield wf.when_all(child_wf_tasks)
+
+    return wf_result
+
+@wf_runtime.workflow(name='child_workflow')
+def child_workflow(ctx: wf.DaprWorkflowContext, wf_input: str):
+    result1 = yield ctx.call_activity(activity1, input=wf_input)
+    wf_result = yield ctx.call_activity(activity2, input=result1)
+    return wf_result
+```
+
+{{% /tab %}}
+
+{{% tab "JavaScript" %}}
+
+```typescript
+export function* parentWorkflow(ctx: WorkflowContext, items: string[]): Generator<Task<any>, string[], any> {
+  const childWorkflowTasks = items.map((item) => ctx.callChildWorkflow(childWorkflow, item));
+  const result: string[] = yield ctx.whenAll(childWorkflowTasks);
+  return result;
+}
+
+/*
+ * The child workflow is a basic task-chaining workflow: the result of `activity1` is the input of `activity2`.
+ * Dapr uses the function name as the workflow name.
+ */
+export function* childWorkflow(ctx: WorkflowContext, input: string): Generator<Task<any>, string, any> {
+  const result1: string = yield ctx.callActivity(activity1, input);
+  const result2: string = yield ctx.callActivity(activity2, result1);
+  return result2;
+}
+```
+
+{{% /tab %}}
+
+{{% tab ".NET" %}}
+
+```csharp
+internal sealed class ParentWorkflow : Workflow<string[], string[]>
+{
+    public override async Task<string[]> RunAsync(WorkflowContext context, string[] input)
+    {
+         List<Task<string>> childWorkflowTasks = [];
+         childWorkflowTasks.AddRange(input.Select(item =>
+	         context.CallChildWorkflowAsync<string>(nameof(ChildWorkflow), item)));
+
+         var allChildWorkflowResults = await Task.WhenAll(childWorkflowTasks);
+        return allChildWorkflowResults;
+    }
+}
+
+internal sealed class ChildWorkflow : Workflow<string, string>
+{
+    public override async Task<string> RunAsync(WorkflowContext context, string input)
+    {
+        var result1 = await context.CallActivityAsync<string>(
+            nameof(Activity1),
+            input);
+        var childWorkflowResult = await context.CallActivityAsync<string>(
+            nameof(Activity2),
+            result1);
+
+        return childWorkflowResult;
+    }
+}
+```
+
+{{% /tab %}}
+
+{{% tab "Java" %}}
+
+```java
+@Component
+public class ParentWorkflow implements Workflow {
+  @Override
+  public WorkflowStub create() {
+    return ctx -> {
+      ctx.getLogger().info("Starting Workflow: {}", ctx.getName());
+
+      List<String> inputs = ctx.getInput(List.class);
+
+      List<Task<String>> tasks = inputs.stream()
+              .map(input -> ctx.callChildWorkflow(ChildWorkflow.class.getName(), input, String.class))
+              .collect(Collectors.toList());
+
+      // Fan-out & fan-in to get the all the child workflow results.
+      List<String> allChildWorkflowsResults = ctx.allOf(tasks).await();
+
+      ctx.complete(allChildWorkflowsResults);
+    };
+  }
+}
+
+@Component
+public class ChildWorkflow implements Workflow {
+  @Override
+  public WorkflowStub create() {
+    return ctx -> {
+      ctx.getLogger().info("Starting Workflow: {}", ctx.getName());
+
+      var input = ctx.getInput(String.class);
+
+      String result1 = ctx.callActivity(Activity1.class.getName(), input, String.class).await();
+      String childWorkflowResults = ctx.callActivity(Activity2.class.getName(), result1, String.class).await();
+
+      ctx.complete(childWorkflowResults);
+    };
+  }
+}
+```
+
+{{% /tab %}}
+
+{{% tab "Go" %}}
+
+```go
+func ParentWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+	var items []string
+	if err := ctx.GetInput(&items); err != nil {
+		return nil, err
+	}
+
+	// Schedule all the child workflows first, so they run at the same time.
+	tasks := make([]workflow.Task, 0, len(items))
+	for _, item := range items {
+		tasks = append(tasks, ctx.CallChildWorkflow(ChildWorkflow, workflow.WithChildWorkflowInput(item)))
+	}
+
+	// Then wait for each of them to complete.
+	results := make([]string, 0, len(items))
+	for _, task := range tasks {
+		var result string
+		if err := task.Await(&result); err != nil {
+			return nil, err
+		}
+		results = append(results, result)
+	}
+
+	return results, nil
+}
+
+// ChildWorkflow calls two activities in sequence. The output of the first
+// activity is the input of the second one.
+func ChildWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+	var input string
+	if err := ctx.GetInput(&input); err != nil {
+		return nil, err
+	}
+
+	var result1 string
+	if err := ctx.CallActivity(Activity1, workflow.WithActivityInput(input)).Await(&result1); err != nil {
+		return nil, err
+	}
+
+	var result2 string
+	if err := ctx.CallActivity(Activity2, workflow.WithActivityInput(result1)).Await(&result2); err != nil {
+		return nil, err
+	}
+
+	return result2, nil
+}
+```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
+
+To run this pattern, try the child workflows tutorial in [Python](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/python/child-workflows), [JavaScript](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/javascript/child-workflows), [.NET](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/csharp/child-workflows), [Java](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/java/child-workflows) or [Go](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/go/child-workflows).
+
 ## Compensation
 
 The compensation pattern (also known as the saga pattern) provides a mechanism for rolling back or undoing operations that have already been executed when a workflow fails partway through. This pattern is particularly important for long-running workflows that span multiple microservices where traditional database transactions are not feasible.
@@ -1461,7 +1647,135 @@ The following diagram illustrates this flow.
 
 <img src="/images/workflow-overview/workflows-compensation.png" width=600 alt="Diagram showing how the compensation pattern."/>
 
+The Java tab shows the e-commerce example. The other tabs show the workflow of the resiliency and compensation tutorial. If the division activity fails after its retries, the workflow runs the plus-one activity. This activity undoes the minus-one activity.
+
 {{< tabpane text=true >}}
+
+{{% tab "Python" %}}
+
+```python
+@wf_runtime.workflow(name='resiliency_and_compensation_workflow')
+def resiliency_and_compensation_workflow(ctx: wf.DaprWorkflowContext, wf_input: int):
+    default_retry_policy = wf.RetryPolicy(max_number_of_attempts=3, first_retry_interval=timedelta(seconds=2))
+
+    result1 = yield ctx.call_activity(minus_one, input=wf_input, retry_policy=default_retry_policy)
+    wf_result = None
+
+    try:
+        wf_result = yield ctx.call_activity(division, input=result1, retry_policy=default_retry_policy)
+    except Exception as e:
+        """
+        Something went wrong in the division activity which is not recoverable.
+        Perform a compensation action for the minus_one activity to revert any
+        changes made in that activity.
+        """
+        if type(e).__name__ == 'TaskFailedError':
+            wf_result = yield ctx.call_activity(plus_one, input=result1)
+
+            """
+            A custom status message can be set on the workflow instance.
+            This can be used to clarify anything that happened during the workflow execution.
+            """
+            ctx.set_custom_status("Compensated minus_one activity with plus_one activity.")
+
+    return wf_result
+```
+
+{{% /tab %}}
+
+{{% tab "JavaScript" %}}
+
+```typescript
+const defaultRetryPolicy: RetryPolicy = {
+  maxNumberOfAttempts: 3,
+  firstRetryInterval: 2,
+};
+
+/*
+ * This workflow retries the `division` activity when it fails. If all attempts fail,
+ * it runs the compensation activity `plusOne` to revert the change made by `minusOne`.
+ *
+ * Workflow code must be deterministic. Any non-deterministic behavior should be written inside activities.
+ */
+export function* resiliencyAndCompensationWorkflow(ctx: WorkflowContext, input: number): Generator<Task<unknown>, number | undefined, any> {
+  const result1: number = yield ctx.callActivity(minusOne, input, { retryPolicy: defaultRetryPolicy });
+  let result: number | undefined;
+
+  try {
+    result = yield ctx.callActivity(division, result1, { retryPolicy: defaultRetryPolicy });
+  } catch (error) {
+    /*
+     * Something went wrong in the division activity, and the retries did not fix it.
+     * Perform a compensation action for the minusOne activity to revert any
+     * changes made in that activity.
+     */
+    result = yield ctx.callActivity(plusOne, result1);
+
+    /*
+     * A custom status message can be set on the workflow instance.
+     * This can be used to clarify anything that happened during the workflow execution.
+     */
+    ctx.setCustomStatus("Compensated minusOne activity with plusOne activity.");
+  }
+
+  return result;
+}
+```
+
+{{% /tab %}}
+
+{{% tab ".NET" %}}
+
+```csharp
+internal sealed class ResiliencyAndCompensationWorkflow : Workflow<int, int?>
+{
+    public override async Task<int?> RunAsync(WorkflowContext context, int input)
+    {
+         // This creates a retry policy that retries activities up to 3 times with an initial delay of 2 seconds.
+         var defaultActivityRetryOptions = new WorkflowTaskOptions
+         {
+            RetryPolicy = new WorkflowRetryPolicy(
+                maxNumberOfAttempts: 3,
+                firstRetryInterval: TimeSpan.FromSeconds(2)),
+         };
+        
+        var result1 = await context.CallActivityAsync<int>(
+            nameof(MinusOne),
+            input,
+            defaultActivityRetryOptions);
+
+        int? workflowResult = null;
+        try
+        {
+            workflowResult = await context.CallActivityAsync<int>(
+                nameof(Division),
+                result1,
+                defaultActivityRetryOptions);
+        }
+        catch (WorkflowTaskFailedException ex)
+        {
+            // Something went wrong in the Division activity which is not recoverable.
+            // Perform a compensation action for the MinusOne activity to revert any
+            // changes made in that activity.
+            if (ex.FailureDetails.IsCausedBy<OverflowException>())
+            {
+                workflowResult = await context.CallActivityAsync<int>(
+                    nameof(PlusOne),
+                    result1,
+                    defaultActivityRetryOptions);
+
+                // A custom status message can be set on the workflow instance.
+                // This can be used to clarify anything that happened during the workflow execution.
+                context.SetCustomStatus("Compensated MinusOne activity with PlusOne activity.");
+            }
+        }
+
+        return workflowResult;
+    }
+}
+```
+
+{{% /tab %}}
 
 {{% tab "Java" %}}
 
@@ -1616,6 +1930,51 @@ class SendConfirmationActivity implements WorkflowActivity {
 
 {{% /tab %}}
 
+{{% tab "Go" %}}
+
+```go
+func ResiliencyAndCompensationWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+	var input int
+	if err := ctx.GetInput(&input); err != nil {
+		return nil, err
+	}
+
+	// The retry policy applies to the activities that use it: three attempts
+	// in total, with 2 seconds before the first retry.
+	defaultRetryPolicy := &workflow.RetryPolicy{
+		MaxAttempts:          3,
+		InitialRetryInterval: 2 * time.Second,
+	}
+
+	var result1 int
+	if err := ctx.CallActivity(MinusOne, workflow.WithActivityInput(input),
+		workflow.WithActivityRetryPolicy(defaultRetryPolicy)).Await(&result1); err != nil {
+		return nil, err
+	}
+
+	var result int
+	err := ctx.CallActivity(Division, workflow.WithActivityInput(result1),
+		workflow.WithActivityRetryPolicy(defaultRetryPolicy)).Await(&result)
+	if err != nil {
+		// Something went wrong in the Division activity which is not
+		// recoverable. Perform a compensation action for the MinusOne
+		// activity to revert any changes made in that activity.
+		if err := ctx.CallActivity(PlusOne, workflow.WithActivityInput(result1)).Await(&result); err != nil {
+			return nil, err
+		}
+
+		// A custom status message can be set on the workflow instance.
+		// This can be used to clarify anything that happened during the
+		// workflow execution.
+		ctx.SetCustomStatus("Compensated minus_one activity with plus_one activity.")
+	}
+
+	return result, nil
+}
+```
+
+{{% /tab %}}
+
 {{< /tabpane >}}
 
 The key benefits of using Dapr Workflow's compensation pattern include:
@@ -1627,7 +1986,7 @@ The key benefits of using Dapr Workflow's compensation pattern include:
 
 The compensation pattern ensures that your distributed workflows can maintain consistency and recover gracefully from failures, making it an essential tool for building reliable microservice architectures.
 
-To run this pattern, try the resiliency and compensation tutorial, which also shows retry policies, in [Python](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/python/resiliency-and-compensation), [.NET](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/csharp/resiliency-and-compensation) or [Java](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/java/resiliency-and-compensation).
+To run this pattern, try the resiliency and compensation tutorial, which also shows retry policies, in [Python](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/python/resiliency-and-compensation), [JavaScript](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/javascript/resiliency-and-compensation), [.NET](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/csharp/resiliency-and-compensation), [Java](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/java/resiliency-and-compensation) or [Go](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/go/resiliency-and-compensation).
 
 ## Next steps
 
