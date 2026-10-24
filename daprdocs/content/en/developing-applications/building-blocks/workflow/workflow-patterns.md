@@ -310,6 +310,8 @@ Behind the scenes, the Dapr Workflow runtime:
 - Enables error handling to be expressed naturally in your target programming language, allowing you to implement compensation logic easily.
 - Provides built-in retry configuration primitives to simplify the process of configuring complex retry policies for individual steps in the workflow.
 
+To run this pattern, try the task chaining tutorial in [Python](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/python/task-chaining), [.NET](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/csharp/task-chaining) or [Java](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/java/task-chaining).
+
 ## Fan-out/fan-in
 
 In the fan-out/fan-in design pattern, you execute multiple tasks simultaneously across potentially multiple workers, wait for them to finish, and perform some aggregation on the result.
@@ -666,6 +668,8 @@ await context.CallActivityAsync("PostResults", sum);
 
 Limiting the degree of concurrency in this way can be useful for limiting contention against shared resources. For example, if the activities need to call into external resources that have their own concurrency limits, like a databases or external APIs, it can be useful to ensure that no more than a specified number of activities call that resource concurrently.
 
+To run this pattern, try the fan-out/fan-in tutorial in [Python](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/python/fan-out-fan-in), [.NET](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/csharp/fan-out-fan-in) or [Java](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/java/fan-out-fan-in).
+
 ## Async HTTP APIs
 
 Asynchronous HTTP APIs are typically implemented using the [Asynchronous Request-Reply pattern](https://learn.microsoft.com/azure/architecture/patterns/async-request-reply). Implementing this pattern traditionally involves the following:
@@ -738,6 +742,8 @@ If the workflow has completed, the status might look as follows.
 ```
 
 As you can see from the previous example, the runtime status of the workflow is now `COMPLETED`, which means the client can stop polling for updates.
+
+To run this pattern, try the workflow management tutorial, which starts a workflow and reads its status, in [Python](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/python/workflow-management), [.NET](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/csharp/workflow-management) or [Java](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/java/workflow-management).
 
 ## Monitor
 
@@ -974,6 +980,8 @@ A workflow implementing the monitor pattern can loop forever or it can terminate
 {{% alert title="Note" color="primary" %}}
 This pattern can also be expressed using actors and reminders. The difference is that this workflow is expressed as a single function with inputs and state stored in local variables. Workflows can also execute a sequence of actions with stronger reliability guarantees, if necessary.
 {{% /alert %}}
+
+To run this pattern, try the monitor pattern tutorial in [Python](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/python/monitor-pattern), [.NET](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/csharp/monitor-pattern) or [Java](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/java/monitor-pattern).
 
 ## External system interaction
 
@@ -1414,6 +1422,8 @@ func raiseEvent() {
 
 External events don't have to be directly triggered by humans. They can also be triggered by other systems. For example, a workflow may need to pause and wait for a payment to be received. In this case, a payment system might publish an event to a pub/sub topic on receipt of a payment, and a listener on that topic can raise an event to the workflow using the raise event workflow API.
 
+To run this pattern, try the external system interaction tutorial in [Python](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/python/external-system-interaction), [.NET](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/csharp/external-system-interaction) or [Java](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/java/external-system-interactions).
+
 ## Compensation
 
 The compensation pattern (also known as the saga pattern) provides a mechanism for rolling back or undoing operations that have already been executed when a workflow fails partway through. This pattern is particularly important for long-running workflows that span multiple microservices where traditional database transactions are not feasible.
@@ -1617,6 +1627,8 @@ The key benefits of using Dapr Workflow's compensation pattern include:
 
 The compensation pattern ensures that your distributed workflows can maintain consistency and recover gracefully from failures, making it an essential tool for building reliable microservice architectures.
 
+To run this pattern, try the resiliency and compensation tutorial, which also shows retry policies, in [Python](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/python/resiliency-and-compensation), [.NET](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/csharp/resiliency-and-compensation) or [Java](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/java/resiliency-and-compensation).
+
 ## Next steps
 
 {{< button text="Workflow architecture >>" page="workflow-architecture.md" >}}
@@ -1626,6 +1638,7 @@ The compensation pattern ensures that your distributed workflows can maintain co
 - [Try out Dapr Workflows using the quickstart]({{% ref workflow-quickstart.md %}})
 - [Workflow overview]({{% ref workflow-overview.md %}})
 - [Workflow API reference]({{% ref workflow_api.md %}})
+- Run the [workflow tutorials](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow) in the Quickstarts repo, which have a runnable sample for each pattern on this page
 - Try out the following examples:
    - [Python](https://github.com/dapr/python-sdk/tree/main/examples/workflow)
    - [JavaScript](https://github.com/dapr/js-sdk/tree/main/examples/workflow)

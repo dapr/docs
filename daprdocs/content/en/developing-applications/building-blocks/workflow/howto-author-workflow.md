@@ -1411,12 +1411,13 @@ dapr workflow rerun <failed-instance-id> --app-id workflow-app --input '<new-inp
 
 ## Next steps
 
-Now that you've authored a workflow, learn how to manage it.
+Now that you've authored a workflow, learn how to manage it. To run a sample for each workflow pattern, see the [workflow tutorials](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow) in the Quickstarts repo.
 
 {{< button text="Manage workflows >>" page="howto-manage-workflow.md" >}}
 
 ## Related links
 - [Workflow overview]({{% ref workflow-overview.md %}})
+- [Workflow tutorials](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow) in the Quickstarts repo
 - Try out the full SDK examples:
   - [Python example](https://github.com/dapr/python-sdk/tree/main/examples/workflow)
   - [JavaScript example](https://github.com/dapr/js-sdk/tree/main/examples/workflow)

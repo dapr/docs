@@ -138,7 +138,8 @@ Want to put workflows to the test? Walk through the following quickstart and tut
 
 | Quickstart/tutorial | Description |
 | ------------------- | ----------- |
-| [Workflow quickstart]({{% ref workflow-quickstart.md %}}) | Run a workflow application with four workflow activities to see Dapr Workflow in action  |
+| [Workflow quickstart]({{% ref workflow-quickstart.md %}}) | Run a workflow application with five workflow activities to see Dapr Workflow in action  |
+| [Workflow tutorials](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow) | Run a sample for each workflow pattern in Python, .NET or Java. The samples cover task chaining, fan-out/fan-in, child workflows, monitor, external system interaction, resiliency and compensation, versioning, workflow management and history propagation. Go has the history propagation tutorial. |
 | [Workflow Python SDK example](https://github.com/dapr/python-sdk/tree/main/examples/workflow) | Learn how to create a Dapr Workflow and invoke it using the Python `dapr.ext.workflow` package. |
 | [Workflow JavaScript SDK example](https://github.com/dapr/js-sdk/tree/main/examples/workflow) | Learn how to create a Dapr Workflow and invoke it using the JavaScript SDK. |
 | [Workflow .NET SDK example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow) | Learn how to create a Dapr Workflow and invoke it using ASP.NET Core web APIs. |
@@ -216,6 +217,7 @@ Watch [this video for an overview on Dapr Workflow](https://youtu.be/s1p9MNl4VGo
 ## Related links
 
 - [Workflow API reference]({{% ref workflow_api.md %}})
+- [Run the workflow tutorials](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow) in the Quickstarts repo
 - Try out the full SDK examples:
   - [Python example](https://github.com/dapr/python-sdk/tree/main/examples/workflow)
   - [JavaScript example](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
