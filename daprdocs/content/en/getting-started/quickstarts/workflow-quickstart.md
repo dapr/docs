@@ -139,10 +139,10 @@ The order in this quickstart is 2 cars at 5000 each, a total of 10000. An order 
 
    The log shows `Order <id> is already running. Waiting for it to finish.` The activities that ran before the approval do not run again.
 
-1. Open a second terminal and approve the order. Use the order ID that the app printed.
+1. Open a second terminal. Set `ORDER_ID` to the order ID that the app printed (`export ORDER_ID=<id>`, or `$env:ORDER_ID = "<id>"` in PowerShell). Then approve the order:
 
    ```bash
-   dapr workflow raise-event <id>/ApprovalEvent --app-id order-processor --input '{"approved": true}'
+   dapr workflow raise-event $ORDER_ID/ApprovalEvent --app-id order-processor --input '{"approved": true}'
    ```
 
    Expected output:
@@ -538,10 +538,10 @@ The order in this quickstart is 2 cars at 5000 each, a total of 10000. An order 
 
    The log shows `Order <id> is already running. Waiting for it to finish.` The activities that ran before the approval do not run again.
 
-1. Open a second terminal and approve the order. Use the order ID that the app printed.
+1. Open a second terminal. Set `ORDER_ID` to the order ID that the app printed (`export ORDER_ID=<id>`, or `$env:ORDER_ID = "<id>"` in PowerShell). Then approve the order:
 
    ```bash
-   dapr workflow raise-event <id>/ApprovalEvent --app-id order-processor --input '{"approved": true}'
+   dapr workflow raise-event $ORDER_ID/ApprovalEvent --app-id order-processor --input '{"approved": true}'
    ```
 
    Expected output:
@@ -962,10 +962,10 @@ The order in this quickstart is 2 cars at 5000 each, a total of 10000. An order 
 
    The log shows `Order <id> is already running. Waiting for it to finish.` The activities that ran before the approval do not run again.
 
-1. Open a second terminal and approve the order. Use the order ID that the app printed.
+1. Open a second terminal. Set `ORDER_ID` to the order ID that the app printed (`export ORDER_ID=<id>`, or `$env:ORDER_ID = "<id>"` in PowerShell). Then approve the order:
 
    ```bash
-   dapr workflow raise-event <id>/ApprovalEvent --app-id order-processor --input '{"approved": true}'
+   dapr workflow raise-event $ORDER_ID/ApprovalEvent --app-id order-processor --input '{"approved": true}'
    ```
 
    Expected output:
@@ -1380,10 +1380,10 @@ The order in this quickstart is 2 cars at 5000 each, a total of 10000. An order 
 
    The log shows `Order <id> is already running. Waiting for it to finish.` The activities that ran before the approval do not run again.
 
-1. Open a second terminal and approve the order. Use the order ID that the app printed.
+1. Open a second terminal. Set `ORDER_ID` to the order ID that the app printed (`export ORDER_ID=<id>`, or `$env:ORDER_ID = "<id>"` in PowerShell). Then approve the order:
 
    ```bash
-   dapr workflow raise-event <id>/ApprovalEvent --app-id order-processor --input '{"approved": true}'
+   dapr workflow raise-event $ORDER_ID/ApprovalEvent --app-id order-processor --input '{"approved": true}'
    ```
 
    Expected output:
@@ -1803,10 +1803,10 @@ The order in this quickstart is 2 cars at 5000 each, a total of 10000. An order 
 
    The log shows `Order <id> is already running. Waiting for it to finish.` The activities that ran before the approval do not run again.
 
-1. Open a second terminal and approve the order. Use the order ID that the app printed.
+1. Open a second terminal. Set `ORDER_ID` to the order ID that the app printed (`export ORDER_ID=<id>`, or `$env:ORDER_ID = "<id>"` in PowerShell). Then approve the order:
 
    ```bash
-   dapr workflow raise-event <id>/ApprovalEvent --app-id order-processor --input '{"approved": true}'
+   dapr workflow raise-event $ORDER_ID/ApprovalEvent --app-id order-processor --input '{"approved": true}'
    ```
 
    Expected output:
