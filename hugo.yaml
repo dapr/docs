@@ -125,12 +125,15 @@ params:
     enabled: true
     rotate_interval: 6000   # ms between auto-advances; 0 disables auto-rotate
     items:
-      - text: "Need enterprise support for Dapr?"
-        link: "https://www.diagrid.io/"
-        link_text: "Contact Diagrid"
-      - text: "Read how Dapr is used for workflow orchestration and AI agent development in 2026."
-        link: "https://www.diagrid.io/reports-and-ebooks/state-of-dapr-2026"
-        link_text: "Download the State of Dapr Report"
+      - text: "Get expert Dapr guidance and unlimited email support for your team, starting at $99/month."
+        link: "https://www.diagrid.io/dapr-support"
+        link_text: "Buy Dapr Support Pro"
+      - text: "See your local Dapr apps and workflows in real time, for free."
+        link: "https://docs.diagrid.io/develop/local-development/dev-dashboard/"
+        link_text: "Download the Dapr Dev Dashboard"
+      - text: "Automate Dapr operations on Kubernetes, for free."
+        link: "https://docs.diagrid.io/dapr-open-source/dapr-ops-dashboard/"
+        link_text: "Try the Dapr Ops Dashboard"
   taxonomy:
     # set taxonomyCloud = [] to hide taxonomy clouds
     taxonomyCloud: [tags, categories]

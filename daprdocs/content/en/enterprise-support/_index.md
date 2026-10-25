@@ -10,9 +10,9 @@ For organizations running Dapr in production that need enterprise-grade support,
 
 ## Dapr open source support
 
-Diagrid provides 24/7 [enterprise support]({{< ref dapr-support.md >}}) for open source Dapr, with a guaranteed one-hour response time for critical production issues. Support is offered across three tiers (Standard, Select, and Premium) with varying response times, security patching commitments, architecture reviews, and training sessions tailored to your organization's needs, across all cloud platforms.
+Diagrid provides [Dapr Support](https://www.diagrid.io/dapr-support) for open source Dapr, on any cloud, in two plans. Dapr Support Pro offers cost-efficient support for teams in development for $99/month, with unlimited email tickets and US and EU business-hours coverage. Enterprise Dapr Support offers 24x7 support for mission-critical production, with a one-hour response time for critical issues and custom pricing for your deployment.
 
-{{< button text="Learn more about Dapr Enterprise Support" page="dapr-support.md" >}}
+{{< button text="Learn more about Dapr Support" link="https://www.diagrid.io/dapr-support" >}}
 
 ## Diagrid Catalyst
 
