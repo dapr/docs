@@ -22,3 +22,6 @@ daprdocs/static/presentations/.DS_Store
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Superpowers SDD scratch workspace
+/.superpowers/
