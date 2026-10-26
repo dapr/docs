@@ -157,7 +157,7 @@ test('panel is dashed, rounded r=10, unfilled; box defaults to 194x30', () => {
   assert.equal(p.attrs.rx, 10);
   assert.equal(p.attrs.fill, 'none');
   assert.ok(p.attrs['stroke-dasharray']);
-  const [r] = find(S.box({ x: 0, y: 0 }), (x) => x.tag === 'rect');
+  const [r] = find(S.box({ x: 0, y: 0, label: 'A' }), (x) => x.tag === 'rect');
   assert.equal(r.attrs.width, 194);
   assert.equal(r.attrs.height, 30);
 });
@@ -214,4 +214,63 @@ test('builders accept frozen arguments', () => {
   const o = Object.freeze({ x: 10, y: 10, r: 40 });
   assert.doesNotThrow(() => S.hex(o));
   assert.doesNotThrow(() => S.daprApp(o));
+});
+
+test('teal and mint lines need a label: arrow and panel always throw', () => {
+  for (const c of [C.teal, C.mint]) {
+    assert.throws(() => S.arrow({ from: [0, 0], to: [50, 0], color: c }));
+    assert.throws(() => S.panel({ x: 0, y: 0, w: 5, h: 5, stroke: c }));
+  }
+});
+
+test('teal and mint outlines throw without a label, including an empty one', () => {
+  const at = { x: 50, y: 50 };
+  for (const c of [C.teal, C.mint]) {
+    const builders = {
+      hex: (label) => S.hex({ ...at, stroke: c, label }),
+      box: (label) => S.box({ ...at, stroke: c, label }),
+      node: (label) => S.node({ ...at, stroke: c, label }),
+      cylinder: (label) => S.cylinder({ x: 50, top: 40, bottom: 80, stroke: c, label }),
+      envelope: (label) => S.envelope({ ...at, color: c, label }),
+      broker: (label) => S.broker({ ...at, stroke: c, label }),
+      lockBox: (label) => S.lockBox({ ...at, stroke: c, label }),
+      person: (label) => S.person({ ...at, stroke: c, label }),
+      secureLock: (label) => S.secureLock({ ...at, stroke: c, label }),
+      tile: (label) => S.tile({ ...at, color: c, label }),
+    };
+    for (const [name, b] of Object.entries(builders)) {
+      assert.throws(() => b(''), undefined, `${name} empty label`);
+      if (name !== 'hex') assert.throws(() => b(undefined), undefined, `${name} no label`); // hex defaults to 'App'
+      assert.doesNotThrow(() => b('Named'), `${name} labelled`);
+    }
+  }
+});
+
+test('hex with the teal app colour needs a name; empty string counts as none', () => {
+  assert.throws(() => S.hex({ x: 0, y: 0, stroke: APP[2].stroke, label: '' }));
+  assert.doesNotThrow(() => S.hex({ x: 0, y: 0, stroke: APP[2].stroke }));
+  assert.doesNotThrow(() => S.hex({ x: 0, y: 0, stroke: APP[0].stroke, label: '' }));
+});
+
+test('arrow throws on an unrecognised or incomplete descriptor', () => {
+  const ok = { x: 200, y: 0, r: 10 };
+  const bads = [{ x: 0, y: 0, radius: 20 }, { x: 0, y: 0 }, { x: 0, y: 0, w: 20 }, { x: 0, y: 0, h: 20 }, { y: 0, r: 5 }, { x: 0, y: 0, r: NaN }, [0], null];
+  for (const bad of bads) {
+    assert.throws(() => S.arrow({ from: bad, to: ok }), undefined, JSON.stringify(bad));
+    assert.throws(() => S.arrow({ from: ok, to: bad }), undefined, JSON.stringify(bad));
+  }
+});
+
+test('the hex arrow descriptor agrees with the polygon hex() draws for the same r', () => {
+  const r = 37;
+  const cx = 120;
+  const cy = 90;
+  const drawn = polyPts(S.hex({ x: cx, y: cy, r }));
+  const desc = { x: cx, y: cy, r, hex: true };
+  const line = (to) => find(S.arrow({ from: desc, to, gap: 0 }), (x) => x.tag === 'line')[0].attrs;
+  // straight down hits the bottom vertex, straight right hits the flat right side
+  assert.equal(+line([cx, cy + 300]).y1, drawn[3][1]);
+  assert.equal(+line([cx + 300, cy]).x1, drawn[1][0]);
+  assert.equal(+line([cx, cy - 300]).y1, drawn[0][1]);
+  assert.equal(+line([cx - 300, cy]).x1, drawn[4][0]);
 });

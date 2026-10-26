@@ -25,6 +25,14 @@ function assertInk(color, what) {
   }
 }
 
+// Teal and mint outlines are only allowed when the shape also carries a text label
+// (an empty string is no label). Throws otherwise.
+function assertStroke(stroke, name, what) {
+  if ((stroke === C.teal || stroke === C.mint) && !(typeof name === 'string' ? name.trim() : name)) {
+    throw new Error(`${what}: a teal or mint outline needs a text label (fails contrast on white)`);
+  }
+}
+
 const outline = (stroke, extra = {}) => ({
   stroke,
   'stroke-width': OUTLINE,
@@ -80,6 +88,7 @@ export function hexPoints(x, y, r) {
 export function hex({
   x, y, r = 42.5, stroke = APP[0].stroke, fill = APP[0].fill, label: name = 'App', size, labelDx = 0,
 }) {
+  assertStroke(stroke, name, 'hex()');
   const poly = el('polygon', { points: hexPoints(x, y, r), ...tint(fill), ...outline(stroke) });
   const s = size ?? Math.max(MIN_LABEL, +(r / 3).toFixed(2));
   return el('g', { class: 'd-hex' }, [
@@ -111,6 +120,7 @@ export function daprApp({ x, y, r = 42.5, stroke, fill, label: name, size, label
 
 // A workflow activity. Teal outline is fine here: the box always has its label.
 export function box({ x, y, w = 194, h = 30, label: name = '', stroke = C.teal, fill = C.tealFill, size = 11 }) {
+  assertStroke(stroke, name, 'box()');
   return el('g', { class: 'd-box' }, [
     el('rect', { x: n(x - w / 2), y: n(y - h / 2), width: w, height: h, rx: 6, ...tint(fill), ...outline(stroke) }),
     name ? label({ x, y, text: name, size }) : null,
@@ -119,6 +129,7 @@ export function box({ x, y, w = 194, h = 30, label: name = '', stroke = C.teal, 
 
 // A workflow start or end. Label sits under the circle unless labelDy says otherwise.
 export function node({ x, y, r = 16, stroke = C.navy, fill = C.bg, label: name = '', labelDy }) {
+  assertStroke(stroke, name, 'node()');
   return el('g', { class: 'd-node' }, [
     el('circle', { cx: n(x), cy: n(y), r, fill, ...outline(stroke) }),
     name ? label({ x, y: y + (labelDy ?? r + 14), text: name }) : null,
@@ -131,6 +142,7 @@ export function node({ x, y, r = 16, stroke = C.navy, fill = C.bg, label: name =
 export function cylinder({
   x, top, bottom, rx = 24, ry = 8, stroke = C.navy, fill = APP[1].fill, label: name = '', labelDy,
 }) {
+  assertStroke(stroke, name, 'cylinder()');
   const l = x - rx;
   const rgt = x + rx;
   const body = `M${n(l)},${n(top)} L${n(l)},${n(bottom)} A${rx},${ry} 0 0 0 ${n(rgt)},${n(bottom)} L${n(rgt)},${n(top)}`;
@@ -157,6 +169,7 @@ function envelopeShape(x, y, w, stroke, fill) {
 }
 
 export function envelope({ x, y, w = 35, color = C.navy, stroke, fill = APP[0].fill, label: name = '', labelDy }) {
+  assertStroke(stroke ?? color, name, 'envelope()');
   const h = w * 0.7;
   return el('g', { class: 'd-envelope' }, [
     ...envelopeShape(x, y, w, stroke ?? color, fill),
@@ -166,6 +179,7 @@ export function envelope({ x, y, w = 35, color = C.navy, stroke, fill = APP[0].f
 
 // Two stacked envelopes. The back one peeks out up and to the right.
 export function broker({ x, y, w = 46, label: name = '', labelDy, stroke = C.navy, fill = APP[0].fill }) {
+  assertStroke(stroke, name, 'broker()');
   const h = w * 0.7;
   const off = w * 0.14;
   return el('g', { class: 'd-broker' }, [
@@ -191,6 +205,7 @@ function padlock(x, y, s, color) {
 // A secret store. Navy outline with a teal tint: a bare teal outline would have
 // no label to carry it in light mode.
 export function lockBox({ x, y, size = 44, stroke = C.navy, fill = C.tealFill, label: name = '', labelDy }) {
+  assertStroke(stroke, name, 'lockBox()');
   return el('g', { class: 'd-lock-box' }, [
     el('rect', { x: n(x - size / 2), y: n(y - size / 2), width: size, height: size, rx: 8, ...tint(fill), ...outline(stroke) }),
     ...padlock(x, y, size, C.navy),
@@ -199,6 +214,7 @@ export function lockBox({ x, y, size = 44, stroke = C.navy, fill = C.tealFill, l
 }
 
 export function person({ x, y, size = 40, stroke = C.navy, fill = APP[0].fill, label: name = '', labelDy }) {
+  assertStroke(stroke, name, 'person()');
   const s = size;
   const hr = s * 0.2;
   const hy = y - s * 0.22;
@@ -213,6 +229,7 @@ export function person({ x, y, size = 40, stroke = C.navy, fill = APP[0].fill, l
 
 // Secure communication: padlock inside a shield.
 export function secureLock({ x, y, size = 44, stroke = C.blue, label: name = '', labelDy }) {
+  assertStroke(stroke, name, 'secureLock()');
   const w = size * 0.8;
   const t = y - size / 2;
   const b = y + size / 2;
@@ -228,6 +245,7 @@ export function secureLock({ x, y, size = 44, stroke = C.blue, label: name = '',
 
 // x, y is the TOP-LEFT corner (a region is placed by its extent).
 export function panel({ x, y, w, h, stroke = C.caption, r = 10 }) {
+  assertInk(stroke, 'panel()'); // a dashed grouping line carries no label of its own
   return el('rect', {
     class: 'd-panel', x: n(x), y: n(y), width: n(w), height: n(h), rx: r, fill: 'none',
     ...outline(stroke, { 'stroke-dasharray': '6 5' }),
@@ -252,6 +270,7 @@ export function tile({
   inline = false, tag = '', labelSize = 11.5,
 }) {
   if (filled) assertInk(color, 'tile() filled');
+  assertStroke(color, name, 'tile()');
   const ink = filled ? C.bg : C.body;
   const place = (cx, cy) => (typeof icon === 'function' ? icon(cx, cy) : icon);
   const parts = [
@@ -270,12 +289,19 @@ export function tile({
 
 // ---------------------------------------------------------------------- arrows
 
+const fin = (v) => typeof v === 'number' && Number.isFinite(v);
+
 // Distance from a shape's centre to its edge along unit direction (ux, uy).
+// Throws on an unrecognised or incomplete descriptor rather than guessing.
 function edgeDistance(s, ux, uy) {
-  if (s.w !== undefined && s.h !== undefined) {
+  if (s.w !== undefined || s.h !== undefined) {
+    if (!fin(s.w) || !fin(s.h)) throw new Error(`arrow(): rect descriptor needs numeric w and h, got ${JSON.stringify(s)}`);
     const tx = Math.abs(ux) < 1e-9 ? Infinity : s.w / 2 / Math.abs(ux);
     const ty = Math.abs(uy) < 1e-9 ? Infinity : s.h / 2 / Math.abs(uy);
     return Math.min(tx, ty);
+  }
+  if (!fin(s.r)) {
+    throw new Error(`arrow(): descriptor needs r (circle, hex) or w and h (rect), got ${JSON.stringify(s)}`);
   }
   if (s.hex) {
     // pointy-top hexagon: three slabs, inradius r * cos30
@@ -286,15 +312,25 @@ function edgeDistance(s, ux, uy) {
     }
     return (s.r * COS30) / m;
   }
-  return s.r ?? 0;
+  return s.r;
 }
 
-const centre = (p) => (Array.isArray(p) ? { x: p[0], y: p[1] } : p);
+function centre(p) {
+  if (Array.isArray(p)) {
+    if (p.length !== 2 || !fin(p[0]) || !fin(p[1])) throw new Error(`arrow(): point must be [x, y], got ${JSON.stringify(p)}`);
+    return { x: p[0], y: p[1] };
+  }
+  if (p === null || typeof p !== 'object' || !fin(p.x) || !fin(p.y)) {
+    throw new Error(`arrow(): descriptor needs numeric x and y, got ${JSON.stringify(p)}`);
+  }
+  return p;
+}
 
 // from / to: a point [x, y] (used as is), a circle { x, y, r }, a hexagon
 // { x, y, r, hex: true } or a rectangle { x, y, w, h }. The line runs between
 // the shapes' EDGES, `gap` px clear of each. head: open 8px chevron at `to`.
 export function arrow({ from, to, head = true, color = C.navy, gap = 2 }) {
+  assertInk(color, 'arrow()'); // an arrow has no label of its own
   const a = centre(from);
   const b = centre(to);
   const dx = b.x - a.x;
