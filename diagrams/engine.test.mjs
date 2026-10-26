@@ -25,7 +25,7 @@ test('svg() sets role=img and aria-labelledby matching the title and desc ids', 
   assert.match(out, /role="img"/);
   assert.match(out, new RegExp(`aria-labelledby="${tid} ${did}"`));
   assert.match(out, /viewBox="0 0 100 50"/);
-  assert.equal(tid, 'publish-subscribe-title');
+  assert.match(tid, /^publish-subscribe-[0-9a-f]{6}-title$/);
   assert.throws(() => svg({ width: 1, height: 1, title: 'T' }));
   assert.throws(() => svg({ width: 1, height: 1, desc: 'D' }));
 });
@@ -40,4 +40,34 @@ test('APP has 4 entries in sky, blue, teal, orange order', () => {
   assert.ok(Object.isFrozen(APP));
   assert.deepEqual(APP.map((a) => a.stroke), ['var(--d-sky)', 'var(--d-blue)', 'var(--d-teal)', 'var(--d-orange)']);
   for (const a of APP) assert.match(a.fill, /^var\(--d-[a-z-]+-fill\)$/);
+});
+
+const ids = (o) => [...o.matchAll(/ id="([^"]+)"/g)].map((m) => m[1]);
+const mk = (title, extra = {}) => svg({ width: 1, height: 1, title, desc: 'D', ...extra });
+
+test('titles that slug alike produce different ids', () => {
+  const a = ids(mk('Pub/Sub'));
+  const b = ids(mk('Pub Sub'));
+  assert.equal(a.length, 2);
+  for (const i of a) assert.ok(!b.includes(i));
+});
+
+test('explicit id disambiguates identical title and desc', () => {
+  const a = ids(mk('Same', { id: 'one' }));
+  const b = ids(mk('Same', { id: 'two' }));
+  assert.deepEqual(a, ['one-title', 'one-desc']);
+  for (const i of a) assert.ok(!b.includes(i));
+});
+
+test('ids are valid NCNames even when the title starts with a digit or symbol', () => {
+  for (const t of ['3 apps', '!!!', '--x', 'ünï']) {
+    for (const i of ids(mk(t))) assert.match(i, /^[A-Za-z][A-Za-z0-9-]*$/);
+  }
+  assert.match(ids(mk('x', { id: '9lives' }))[0], /^d-9lives-title$/);
+});
+
+test('re-rendering the same scene is byte-identical regardless of prior renders', () => {
+  const first = mk('Repeat');
+  mk('Other'); mk('Another');
+  assert.equal(mk('Repeat'), first);
 });
