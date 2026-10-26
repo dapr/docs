@@ -71,3 +71,7 @@ test('re-rendering the same scene is byte-identical regardless of prior renders'
   mk('Other'); mk('Another');
   assert.equal(mk('Repeat'), first);
 });
+
+test('default ids are pinned to an exact value (hash input must not change)', () => {
+  assert.deepEqual(ids(mk('Pub/Sub')), ['pub-sub-b06c76-title', 'pub-sub-b06c76-desc']);
+});
