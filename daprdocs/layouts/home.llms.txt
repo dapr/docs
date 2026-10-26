@@ -4,28 +4,23 @@
   an H1, a one-sentence summary, then H2 sections with one line for each page.
 
   Order: the Dapr Workflow section first (all its pages, by weight), then
-  related workflow pages in other sections, then the main top-level sections
-  with their direct child pages only. This keeps the file short.
+  related workflow pages in other sections, then each top-level section (by
+  weight, as in the sidebar) with its direct child pages only. This keeps the
+  file short.
 
-  Each line is "- [Title](absolute URL): description". The URL is .Site.BaseURL
-  joined with the page's .RelPermalink, so a PR preview build with -b <url>
-  points at the preview host. The description is the page's front matter
-  "description".
+  Each line is "- [Title](.Permalink): description". The description is the
+  page's front matter "description". A page with "is_preview: true" in its
+  front matter gets "(preview feature)".
 
-  To add a page or a section, add its path to $related or $sections below.
-  A path that does not resolve prints a build warning and is skipped.
+  The related workflow pages are the paths in $related, then the top workflow
+  page of each SDK: an SDK page whose path contains "workflow" and whose
+  parent's path does not. To add a page, add its path to $related. A path
+  that does not resolve fails the build.
 
   Only the English site gets content. The other languages render an empty
   template, and Hugo does not publish an empty file.
 */ -}}
 {{- if eq site.Language.Lang "en" -}}
-{{- $base := strings.TrimSuffix "/" site.BaseURL -}}
-{{- /* Pages that document a preview feature. Their line gets "(preview feature)".
-  A page with "is_preview: true" in its front matter also gets the label. */ -}}
-{{- $preview := slice
-  "/developing-applications/building-blocks/workflow/workflow-fast-path"
-  "/developing-applications/building-blocks/workflow/workflow-history-signing"
--}}
 {{- $workflow := "/developing-applications/building-blocks/workflow" -}}
 {{- $related := slice
   "/getting-started/quickstarts/workflow-quickstart"
@@ -33,60 +28,56 @@
   "/reference/cli/dapr-workflow"
   "/operations/security/workflow-access-policy"
   "/reference/resource-specs/workflow-access-policy-schema"
-  "/developing-applications/sdks/dotnet/dotnet-workflow"
-  "/developing-applications/sdks/java/java-workflow"
-  "/developing-applications/sdks/js/js-workflow"
-  "/developing-applications/sdks/python/python-sdk-extensions/python-workflow-ext"
   "/contributing/protocol-reference/workflow-protocol"
 -}}
-{{- $sections := slice
-  "/concepts"
-  "/getting-started"
-  "/developing-applications"
-  "/operations"
-  "/reference"
-  "/contributing"
--}}
+{{- $sdkPages := slice -}}
+{{- $sdkCandidates := where site.Pages "Path" "like" `^/developing-applications/sdks/.+workflow` -}}
+{{- range sort (where $sdkCandidates "Params.toc_hide" "!=" true) "Path" -}}
+{{- if not (strings.Contains .Parent.Path "workflow") -}}
+{{- $sdkPages = $sdkPages | append . -}}
+{{- end -}}
+{{- end -}}
+{{- if not $sdkPages -}}
+{{- errorf "llms.txt: no SDK workflow pages found under /developing-applications/sdks" -}}
+{{- end -}}
 # Dapr
 
 > Dapr is the durable execution engine for workflows and AI agents, and a CNCF distributed application runtime.
 {{ with site.GetPage $workflow }}
 ## Dapr Workflow (durable execution)
 
-{{ template "llms-line" (dict "p" . "base" $base "preview" $preview) }}
+{{ template "llms-line" . }}
 {{- range (where .Pages "Params.toc_hide" "!=" true).ByWeight }}
-{{ template "llms-line" (dict "p" . "base" $base "preview" $preview) }}
+{{ template "llms-line" . }}
 {{- end }}
 {{ else }}
-{{- warnf "llms.txt: workflow section %q not found" $workflow -}}
+{{- errorf "llms.txt: workflow section %q not found" $workflow -}}
 {{ end }}
 ## Dapr Workflow: quickstart, API, CLI and SDKs
 {{ range $related }}
 {{- with site.GetPage . }}
-{{ template "llms-line" (dict "p" . "base" $base "preview" $preview) }}
+{{ template "llms-line" . }}
 {{- else }}
-{{- warnf "llms.txt: page %q not found" . }}
+{{- errorf "llms.txt: page %q not found" . }}
 {{- end }}
 {{- end }}
-{{ range $sections }}
-{{- with site.GetPage . }}
+{{- range $sdkPages }}
+{{ template "llms-line" . }}
+{{- end }}
+{{ range (where site.Home.Sections "Params.toc_hide" "!=" true).ByWeight }}
 ## {{ .LinkTitle }}
 
-{{ template "llms-line" (dict "p" . "base" $base "preview" $preview) }}
+{{ template "llms-line" . }}
 {{- range (where .Pages "Params.toc_hide" "!=" true).ByWeight }}
-{{ template "llms-line" (dict "p" . "base" $base "preview" $preview) }}
+{{ template "llms-line" . }}
 {{- end }}
-{{ else }}
-{{- warnf "llms.txt: section %q not found" . }}
-{{- end }}
-{{- end }}
+{{ end }}
 {{- end -}}
 
 {{- define "llms-line" -}}
-{{- $p := .p -}}
-{{- $desc := $p.Description | plainify | replaceRE `\s+` " " | strings.TrimSpace -}}
-{{- if or $p.Params.is_preview (in .preview $p.Path) -}}
+{{- $desc := .Description | plainify | replaceRE `\s+` " " | strings.TrimSpace -}}
+{{- if .Params.is_preview -}}
   {{- $desc = cond (eq $desc "") "Preview feature." (printf "%s (preview feature)" (strings.TrimSuffix "." $desc)) -}}
 {{- end -}}
-- [{{ $p.Title }}]({{ .base }}{{ $p.RelPermalink }}){{ with $desc }}: {{ . }}{{ end }}
+- [{{ .Title }}]({{ .Permalink }}){{ with $desc }}: {{ . }}{{ end }}
 {{- end -}}
