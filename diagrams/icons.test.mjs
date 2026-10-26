@@ -19,7 +19,12 @@ const render = (name, svg, args = {}) => serialize(icon({ name, x: 100, y: 100, 
 const SINGLE = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z"/></svg>';
 const FULL = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#ff0000" d="M0 0h24v24H0z"/></svg>';
 const ids = (s) => [...s.matchAll(/\sid="([^"]*)"/g)].map((m) => m[1]);
-const classes = (s) => [...s.matchAll(/\sclass="([^"]*)"/g)].flatMap((m) => m[1].split(/\s+/)).filter((c) => !c.startsWith('d-'));
+// Classes that came from the vendored file. The two wrappers icon() adds are removed by their exact
+// markup (not by a name shape), so a source class called d-* stays visible to the prefix tests.
+const classes = (s) =>
+  [...s.replaceAll('<g class="d-icon-group">', '').replaceAll('<g class="d-icon" data-mark=', '<g data-mark=').matchAll(/\sclass="([^"]*)"/g)]
+    .flatMap((m) => m[1].split(/\s+/))
+    .filter(Boolean);
 
 test('icon throws a named error when the mark file does not exist', () => {
   assert.throws(() => icon({ name: 'no-such-mark', x: 0, y: 0 }), (e) => {
@@ -118,9 +123,33 @@ test('icon rejects a mark containing <script>, an event handler, or an external 
   assert.doesNotThrow(() => render('okref', '<svg viewBox="0 0 1 1"><defs><path id="p" d="M0 0"/></defs><use href="#p"/></svg>'));
   // Every vendored file passes the same check.
   for (const name of listMarks()) {
-    if (name.startsWith('logo')) continue;
     assert.doesNotThrow(() => serialize(icon({ name, x: 0, y: 0 })), name);
   }
+});
+
+test('a fragment href with surrounding whitespace is prefixed, not passed through dangling', () => {
+  const out = render('wshref', '<svg viewBox="0 0 10 10"><defs><path id="p" d="M0 0h5v5z"/></defs><use href=" #p "/></svg>');
+  assert.match(out, /<use href="#ic-wshref-100-100-p"\/>/);
+  assert.ok(ids(out).includes('ic-wshref-100-100-p'));
+  // And whitespace cannot smuggle an external target past the screen.
+  assert.throws(() => render('wshref2', '<svg viewBox="0 0 10 10"><use href=" https://evil.example/a.svg#p"/></svg>'), IconError);
+});
+
+test('only allowlisted elements pass the screen (handler, animateColor, a, image, text, switch, ...)', () => {
+  for (const tag of ['handler', 'animateColor', 'a', 'image', 'text', 'switch', 'mask', 'filter', 'feImage', 'animate', 'set', 'script', 'foreignObject', 'listener']) {
+    assert.throws(() => render(`el-${tag.toLowerCase()}`, `<svg viewBox="0 0 1 1"><${tag}/></svg>`), (e) => e instanceof IconError && /not an allowed element/.test(e.message), tag);
+  }
+  // Case matters: SVG element names are case-sensitive.
+  assert.throws(() => render('el-case', '<svg viewBox="0 0 1 1"><LINEARGRADIENT/></svg>'), IconError);
+  for (const tag of ['path', 'g', 'rect', 'polygon', 'circle', 'defs']) {
+    assert.doesNotThrow(() => render(`ok-${tag}`, `<svg viewBox="0 0 1 1"><${tag}/></svg>`), tag);
+  }
+});
+
+test('a source class named d-* is prefixed like any other and cannot hide from the prefix check', () => {
+  const out = render('dclass', '<svg viewBox="0 0 1 1"><style>.d-icon{fill:red}</style><path class="d-icon d-x" d="M0 0"/></svg>');
+  assert.deepEqual(classes(out), ['ic-dclass-100-100-d-icon', 'ic-dclass-100-100-d-x']);
+  assert.match(out, /\.ic-dclass-100-100-d-icon\{/);
 });
 
 test('a <style> block that would restyle the page is refused', () => {

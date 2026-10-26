@@ -90,10 +90,18 @@ function parseXml(src, name) {
 
 // ------------------------------------------------------------ security check
 
-const FORBIDDEN_TAGS = new Set([
-  'script', 'foreignobject', 'iframe', 'embed', 'object', 'audio', 'video',
-  'animate', 'animatetransform', 'animatemotion', 'set',
+// Allowlist, not denylist: only the elements the vendored marks use (plus inert
+// plain geometry and <use>, which can only point at a same-document fragment).
+// Anything else, including every animation, script, handler and embedding element,
+// is refused, which closes the whole class (<handler>, <animateColor>, ...).
+// Names are matched case-sensitively, as SVG does. dc:* / rdf:* are the metadata
+// elements Commons files carry; they are dropped before output.
+const ALLOWED_TAGS = new Set([
+  'svg', 'g', 'defs', 'path', 'polygon', 'rect', 'circle', 'ellipse', 'line', 'polyline',
+  'linearGradient', 'radialGradient', 'stop', 'clipPath', 'style', 'title', 'desc',
+  'metadata', 'use',
 ]);
+const allowedTag = (t) => ALLOWED_TAGS.has(t) || /^(dc|rdf):[A-Za-z]+$/.test(t);
 
 function walk(node, fn) {
   fn(node);
@@ -115,8 +123,8 @@ function assertSafe(root, name) {
     }
   };
   walk(root, (n) => {
-    const tag = n.tag.toLowerCase().replace(/^[^:]*:/, '');
-    if (FORBIDDEN_TAGS.has(tag)) fail(`contains <${n.tag}>`);
+    const tag = n.tag;
+    if (!allowedTag(tag)) fail(`contains <${n.tag}>, which is not an allowed element`);
     for (const [k, v] of Object.entries(n.attrs)) {
       const key = k.toLowerCase();
       if (/^on/.test(key)) fail(`has the event handler attribute ${k}`);
@@ -159,7 +167,8 @@ function prefixTree(root, prefix, name) {
     v
       .replace(/url\(\s*(['"]?)#([^)'"]+)\1\s*\)/g, (m, q, id) => (ids.has(id) ? `url(#${prefix}${id})` : m))
   ;
-  const href = (v) => v.replace(/^#(.+)$/, (m, id) => (ids.has(id) ? `#${prefix}${id}` : m));
+  // Trim first: assertSafe approved the trimmed value, so the rewrite must inspect and emit that same value.
+  const href = (v) => v.trim().replace(/^#(.+)$/, (m, id) => (ids.has(id) ? `#${prefix}${id}` : m));
   walk(root, (n) => {
     for (const [k, v] of Object.entries(n.attrs)) {
       if (k === 'id') n.attrs[k] = `${prefix}${v}`;
@@ -189,7 +198,7 @@ function clean(node) {
   const children = [];
   for (const c of node.children) {
     if (c.text !== undefined) {
-      if (node.tag === 'style' || c.text.trim() !== '') children.push(text(node.tag === 'style' ? c.text : c.text));
+      if (node.tag === 'style' || c.text.trim() !== '') children.push(text(c.text));
     } else if (!DROP_TAGS.has(c.tag) && !c.tag.includes(':')) {
       children.push(clean(c));
     }
