@@ -114,7 +114,7 @@ By default, Dapr processes write logs to stdout. Starting with Dapr v1.19, the D
 | Flag | Description |
 |------|-------------|
 | `--log-outputs` | Comma-separated list of log destinations. Each entry is `stdout`, `stderr` or a file path. Default is `stdout`. |
-| `--log-file` | Path to a file where logs are written. If you also set `--log-outputs`, the two lists are merged. |
+| `--log-file` | Path to one file where logs are written. If you also set `--log-outputs`, Dapr adds this path to the destinations in that list. If you set only `--log-file`, logs go to the file and not to stdout. To also write to stdout, add `stdout` to `--log-outputs`. |
 | `--log-file-max-size` | Maximum size in megabytes of a log file before it is rotated. |
 | `--log-file-max-backups` | Maximum number of rotated log files to keep. `0` keeps all rotated files. |
 | `--log-file-max-age` | Maximum number of days to keep rotated log files. `0` keeps them regardless of age. |
