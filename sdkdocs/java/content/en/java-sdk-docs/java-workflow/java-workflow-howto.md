@@ -16,7 +16,7 @@ This example uses the default configuration from `dapr init` in [self-hosted mod
 ## Prerequisites
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- Java JDK 11 (or greater):
+- Java JDK 17 (or greater):
   - [Oracle JDK](https://www.oracle.com/java/technologies/downloads), or
   - OpenJDK
 - [Apache Maven](https://maven.apache.org/install.html), version 3.x.
@@ -283,6 +283,19 @@ public class TaskExecutionKeyActivity implements WorkflowActivity {
 }
 ```
 
+### Stateful workflow history
+
+From Dapr 1.19, the workflow worker keeps the history of each workflow instance in memory, so the Dapr sidecar sends only the new events on each turn. This is on by default. To turn it off, for example when worker memory is limited, call `withStatefulHistoryDisabled(true)` on the `WorkflowRuntimeBuilder`:
+
+```java
+WorkflowRuntime runtime = new WorkflowRuntimeBuilder()
+    .registerWorkflow(DemoWorkflow.class)
+    .withStatefulHistoryDisabled(true)
+    .build();
+```
+
+The builder also has `withHistoryCacheTtl`, `withHistoryCacheMaxInstances` and `withHistoryCacheMaxBytes` methods to tune the history cache. Learn more in [Stateful workflow client]({{% ref workflow-stateful-client.md %}}).
+
 ### Handling duplicate workflow instance IDs
 
 From Dapr 1.19, `DaprWorkflowClient.scheduleNewWorkflow` throws `WorkflowInstanceAlreadyExistsException` when the runtime rejects an instance ID because a workflow instance with that ID already exists.
@@ -304,3 +317,35 @@ try {
   System.out.printf("Workflow instance already exists: %s%n", e.getInstanceId());
 }
 ```
+
+### List, inspect and rerun workflow instances
+
+From Dapr 1.19, `DaprWorkflowClient` can list the workflow instance IDs of the app, read the history of an instance, and rerun a finished instance from one of its history events. Use them to find instances without storing their IDs yourself, to see where a failed instance stopped, and to retry it from that step with a new input instead of from the start.
+
+```java
+// List the first page of instance IDs, up to 100 per page.
+// Pass page.getContinuationToken() to listInstanceIds to read the next page.
+WorkflowInstancePage page = client.listInstanceIds(null, 100);
+for (String id : page.getInstanceIds()) {
+  System.out.println(id);
+}
+
+// Read the full history of an instance
+List<WorkflowHistoryEvent> history = client.getInstanceHistory(instanceId);
+for (WorkflowHistoryEvent event : history) {
+  System.out.printf("eventId=%d type=%s%n", event.getEventId(), event.getEventType());
+}
+
+// Rerun from the first scheduled activity, with a new input
+int eventId = history.stream()
+    .filter(event -> event.getEventType() == WorkflowHistoryEventType.TASK_SCHEDULED)
+    .mapToInt(WorkflowHistoryEvent::getEventId)
+    .findFirst()
+    .orElseThrow();
+String newInstanceId = client.rerunWorkflowFromEvent(instanceId, eventId,
+    new RerunWorkflowFromEventOptions().setInput("new input").setOverwriteInput(true));
+```
+
+`rerunWorkflowFromEvent` creates a new workflow instance, returns its ID, and leaves the source instance unchanged. The source instance must be in a terminal state and must not be a child workflow. The event must be the scheduling of an activity, the creation of a timer or the creation of a child workflow. To replace the input, call `setOverwriteInput(true)` together with `setInput`. To choose the ID of the new instance, call `setNewInstanceId`.
+
+For a runnable version, see the [workflow management example](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows/management).

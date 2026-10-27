@@ -10,13 +10,20 @@ Testing is the headline capability of `Dapr.Actors.Next`. The hard parts of acto
 
 This page covers what is available at development time, how to write tests with xUnit v3, how to add Coyote for deeper exploration, and how to run integration tests against a real sidecar.
 
+{{% alert title=".NET framework support" color="warning" %}}
+Be advised that .NET 8 and .NET 9 reach end of support in November 2026. Support for both will be dropped
+in Dapr v1.20; only .NET 10 and .NET 11 will be supported through the end of 2027.
+{{% /alert %}}
+
 {{% alert title="Package" color="primary" %}}
 The in-memory runtime is in the `Dapr.Actors.Next.Testing` namespace. It is one of the packages that make up the `Dapr.Actors.Next` meta-package, and it is also published to NuGet on its own, so you install it directly into your test project rather than pulling the full meta-package there. It drives your real actors through the same generated dispatchers used in production, so there are no test-only actor implementations.
 {{% /alert %}}
 
 ## What is available at development time
 
-`ActorTestRuntime` gives you a controlled scheduler that explores the ordering of whole turns across actor ids, and reentrancy within a single call chain, deterministically and reproducibly from a seed, with strategies that include a seeded random walk and a priority-based strategy. Turns for a single actor id never overlap; the runtime holds the actor lock and delivers at most one non-reentrant callback per id at a time, so the scheduler explores the order in which whole turns run, never a point inside a turn. It gives you virtual time through `TimeProvider`, so timers and reminders come due only when you advance the clock and run as their own turns in a deterministic order relative to other turns. It gives you fault injection for state writes, state migration, and actor invocation, transient or permanent, covered in [Fault injection](#fault-injection). It gives you introspection, including an actor's current state (and, for state machines, its current `TState` and `Data`) and a transcript of the explored ordering for replay. For state-machine actors, it adds structural analysis to detect unreachable states, dead ends, and entry/exit defects, covered in [Structural analysis for state machines](#structural-analysis-for-state-machines).
+`ActorTestRuntime` gives you a controlled scheduler that explores the ordering of whole turns across actor ids, and reentrancy within a single call chain, from a seed, with strategies that include a seeded random walk and a priority-based strategy. Independent turns for a single actor id never overlap; the runtime holds the actor lock and delivers at most one non-reentrant callback per id at a time. `StepAsync` starts one runnable turn; `RunToIdle` drives scheduled work until no runnable or in-flight turns remain.
+
+The runtime also provides virtual time through `TimeProvider`, production in-process timer/reminder adapters, and introspection of persisted state and the scheduling transcript. [Remote-call simulation](#testing-reentrancy-across-a-remote-boundary) checks call chains without ambient execution-context propagation. [State-write pauses](#pause-a-state-write-and-race-deactivation) let you hold a turn at a known persistence boundary while testing competing work. [Fault injection](#fault-injection) covers state writes, migration, and invocation; callback-stream faults additionally require a decorated transport and a running stream manager. For state-machine actors, [structural analysis](#structural-analysis-for-state-machines) detects defects in the transition table.
 
 None of this requires a sidecar, a state store, or Docker.
 
@@ -35,7 +42,7 @@ The Dapr .NET SDK tests with xUnit v3, and these examples assume it. Add the Dap
 </ItemGroup>
 ```
 
-Create a runtime, create an actor proxy, drive it, and assert. The `[Fact]` and `Assert` surface is the same as earlier xUnit versions.
+Create a runtime with your application's actor and dependency registrations, create an actor proxy, drive the scheduler, and assert. The examples assume the illustrated actor contracts and implementations are discoverable by `AddDaprActors`; include any dependencies they require in the service configuration. The `[Fact]` and `Assert` surface is the same as earlier xUnit versions.
 
 ### A basic test
 
@@ -45,15 +52,21 @@ public class CartActorTests
     [Fact]
     public async Task Adding_an_item_updates_the_summary()
     {
-        await using var rt = new ActorTestRuntime();
+        await using var rt = new ActorTestRuntime(services => services.AddDaprActors());
         var cart = rt.CreateActor<ICartActor>(ActorId.Create("u1"), "CartActor");
 
-        await cart.AddItem(new CartItem("sku-1", qty: 2));
+        var add = cart.AddItem(new CartItem("sku-1", 2));
+        await rt.RunToIdle();
+        await add;
 
-        Assert.Equal(1, (await cart.GetSummary()).ItemCount);
+        var summary = cart.GetSummary();
+        await rt.RunToIdle();
+        Assert.Equal(1, (await summary).ItemCount);
     }
 }
 ```
+
+Start each call before advancing the scheduler, and await its result afterward. Awaiting a queued call before `RunToIdle` can leave the test waiting indefinitely. Use `StepAsync` instead when a test intentionally pauses a turn: `RunToIdle` cannot finish while that turn remains paused.
 
 {{% alert title="CreateActor always takes the actor type name" color="primary" %}}
 `CreateActor<TActor>(actorId, actorType)` requires the actor type name; there is no overload that infers it from `TActor`. Pass the name the actor is hosted under: its `[DaprActor]` name (or the type-name fallback), or the alias you registered it with (see [registering an actor under a custom name]({{< ref "dotnet-actorsnext-howto.md#registering-an-actor-under-a-custom-name" >}})). Requiring the name also removes any ambiguity when one interface backs several actor types.
@@ -79,81 +92,148 @@ Configure services on the runtime the same way you would in your host. Test doub
 await using var rt = new ActorTestRuntime(services =>
 {
     services.AddSingleton<IPricingClient>(new FakePricingClient(total: 42m));
+    services.AddDaprActors();
 });
 
 var cart = rt.CreateActor<ICartActor>(ActorId.Create("u1"), "CartActor");
-Assert.Equal(42m, (await cart.GetSummary()).Total);
+var summary = cart.GetSummary();
+await rt.RunToIdle();
+Assert.Equal(42m, (await summary).Total);
 ```
 
 ### Timers and reminders with virtual time
 
-Advance the clock to fire a timer or reminder; nothing fires until you do.
+The runtime injects `CoreActorTimerScheduler` and `CoreActorReminderScheduler`, the production **in-process** adapters, backed by `rt.Time`. Run the turn that registers a timer or reminder, advance the clock to admit due callbacks, and then drive their mailbox turns:
 
 ```csharp
 [Fact]
 public async Task Abandoned_cart_reminder_fires_after_thirty_minutes()
 {
-    await using var rt = new ActorTestRuntime();
+    await using var rt = new ActorTestRuntime(services => services.AddDaprActors());
     var cart = rt.CreateActor<ICartActor>(ActorId.Create("u1"), "CartActor");
 
-    await cart.AddItem(new CartItem("sku-1", 1));
-    rt.Time.Advance(TimeSpan.FromMinutes(30));    // fires the abandon-cart reminder
-    await rt.RunToIdle();
-
-    Assert.True((await cart.GetSummary()).IsAbandoned);
-}
-```
-
-### Fault injection and recovery
-
-```csharp
-[Fact]
-public async Task State_write_failure_does_not_corrupt_or_double_apply()
-{
-    await using var rt = new ActorTestRuntime();
-    var cart = rt.CreateActor<ICartActor>(ActorId.Create("u1"), "CartActor");
-
-    rt.Faults.FailNextStateWrite<CartState>();    // first end-of-turn save fails
     var add = cart.AddItem(new CartItem("sku-1", 1));
     await rt.RunToIdle();
     await add;
 
-    Assert.Equal(1, (await cart.GetSummary()).ItemCount);   // exactly once
+    rt.Time.Advance(TimeSpan.FromMinutes(30));    // admits the registered abandon-cart reminder
+    await rt.RunToIdle();
+
+    var summary = cart.GetSummary();
+    await rt.RunToIdle();
+    Assert.True((await summary).IsAbandoned);
 }
 ```
 
+The example assumes `AddItem` registers the reminder. Callbacks are independent turns, not reentrant continuations of the turn that registered them. The adapters suppress execution-context capture, so a timer or reminder does not inherit that turn's call chain.
+
+Test replacement and cancellation by registering the same timer or reminder name again, canceling it, and advancing time. Cancellation prevents future callback admission; a callback already admitted may still complete. `VirtualActorTimeProvider` implements `TimeProvider.CreateTimer`, including change, disposal, and execution-context capture; its direct `ScheduleTimer` and `ScheduleReminder` helpers remain available. Calls to `Time.Advance` must not overlap or recurse.
+
+The provider visits each due time in order, breaking ties by registration order, and invokes timer callbacks synchronously outside its registration lock. Those callbacks can change or cancel timers. If a timer callback throws, advancement stops at that due time. Actor callback admission is separate from executing the queued actor turn, which still requires the controlled scheduler.
+
+Virtual time does not advance a real sidecar's clock or reproduce durable scheduler delivery. Keep those checks in integration tests.
+
+### State-write failure
+
+A state-write fault fails the matching persistence attempt; it does not automatically retry the invocation. Inspect persisted state with `StateOf` rather than issuing a read turn that could flush dirty cached state:
+
+```csharp
+[Fact]
+public async Task State_write_failure_is_reported_before_persistence()
+{
+    await using var rt = new ActorTestRuntime(services => services.AddDaprActors());
+    var cart = rt.CreateActor<ICartActor>(ActorId.Create("u1"), "CartActor");
+
+    rt.Faults.FailNextStateWrite<CartState>(stateName: "cart");
+    var add = cart.AddItem(new CartItem("sku-1", 1));
+    await rt.RunToIdle();
+    await Assert.ThrowsAsync<ActorInjectedTransientException>(() => add);
+
+    Assert.Null(rt.StateOf(cart).Get<CartState>("cart"));
+}
+```
+
+This checks a previously unpersisted `"cart"` entry. It does not assert rollback of actor fields or cached mutations, or of writes that already succeeded. Test recovery explicitly according to your application's retry and idempotency policy.
+
 ### Turn ordering: a reminder runs after the in-flight turn, not during it
 
-Turns for a single actor id never overlap. A method call is one turn and a reminder is another; if a reminder becomes due while a method turn is in progress, it waits for that turn to finish and then runs as its own turn. The scheduler explores the order in which whole turns run, never a point inside a turn. The test below pins that guarantee: a reminder that comes due during a method turn runs only after that turn commits, and observes its committed state.
+Independent turns for a single actor id never overlap. A method call is one turn and a reminder is another; if a reminder becomes due while a method turn is in progress, it waits for that turn to finish and then runs as its own turn. Use a state-write pause to ensure the method is actually in flight before advancing time, rather than relying on how quickly an asynchronous call starts. This example assumes `AddItem` registers the abandon-cart reminder:
 
 ```csharp
 [Fact]
 public async Task Reminder_due_during_a_turn_runs_after_it_and_sees_committed_state()
 {
-    await using var rt = new ActorTestRuntime();
+    await using var rt = new ActorTestRuntime(services => services.AddDaprActors());
     var cart = rt.CreateActor<ICartActor>(ActorId.Create("u1"), "CartActor");
+    using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+    using var pause = rt.Faults.PauseNextStateWrite<CartState>(stateName: "cart");
 
-    // Start a method turn, and make a reminder come due before that turn completes.
     var add = cart.AddItem(new CartItem("sku-1", 1));
-    rt.Time.Advance(TimeSpan.FromMinutes(30));   // the reminder is now due, but AddItem owns the turn
-    await rt.RunToIdle();
+    await rt.StepAsync(timeout.Token);
+    await pause.Reached.WaitAsync(timeout.Token);
+    try
+    {
+        rt.Time.Advance(TimeSpan.FromMinutes(30));
+        Assert.False(await rt.StepAsync(timeout.Token));   // this actor is still occupied
+        Assert.Null(rt.StateOf(cart).Get<CartState>("cart"));
+    }
+    finally
+    {
+        pause.Release();
+    }
+
+    await rt.RunToIdle(timeout.Token);
     await add;
 
-    // AddItem ran to completion first; the reminder turn ran next and saw the committed item.
-    Assert.Equal(1, (await cart.GetSummary()).ItemCount);
+    var summary = cart.GetSummary();
+    await rt.RunToIdle(timeout.Token);
+    var result = await summary;
+    Assert.Equal(1, result.ItemCount);
+    Assert.True(result.IsAbandoned);
 }
 ```
 
-The only thing that ever re-enters a turn already in progress is a reentrant call, a deliberate continuation of the same call chain identified by the `dapr-reentrant-id` header and bounded by `DaprActorsOptions.MaxReentrantDepth`, not an independent turn racing the first.
+Only an invocation in the active, matching call chain can be admitted as reentrant, subject to `EnableReentrancy` and `MaxReentrantDepth`. The canonical header is `Dapr-Reentrancy-Id`. The SDK also accepts the legacy `dapr-reentrant-id` and `x-dapr-reentrant-id` aliases case-insensitively, preferring the canonical name.
 
 A legitimate race does exist, but it is a race over the order of two whole turns, not two turns overlapping. In the auction (see [State machine actors]({{< ref dotnet-actorsnext-statemachine.md >}})), a late bid and the close-timer firing are two separate turns whose arrival order is not fixed, so the scheduler explores which turn runs first. Each still runs to completion on its own; the test asserts the outcome is correct whichever order they run in.
+
+### Testing reentrancy across a remote boundary
+
+Set `ActorTestRuntimeOptions.SimulateRemoteCalls` to remove the caller's ambient `ExecutionContext` from invocations through the test invocation client while preserving propagated headers. This exercises self-calls and A-to-B-to-A callbacks without relying on `AsyncLocal` state surviving a transport boundary:
+
+```csharp
+await using var rt = new ActorTestRuntime(
+    services => services.AddDaprActors(options =>
+    {
+        options.EnableReentrancy = true;
+        options.MaxReentrantDepth = 4;
+    }),
+    new ActorTestRuntimeOptions { SimulateRemoteCalls = true });
+
+var call = rt.InvokeAsync("CartActor", ActorId.Create("u1"), "Checkout");
+using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+await rt.RunToIdle(timeout.Token);
+await call;
+```
+
+Here `Checkout` is your actor operation that awaits nested actor calls. Alternatively, select only the next matching invocation through that client:
+
+```csharp
+rt.Faults.SimulateNextRemoteInvocation(actorType: "Inventory", methodName: "Reserve");
+```
+
+Unmatched invocations do not consume this one-shot control. Simulation still uses in-memory serialization and dispatch; it does not test network routing, placement, authentication, or the real wire protocol.
+
+Set reentrancy options explicitly when comparing in-memory and sidecar behavior. The SDK enforces an explicit `EnableReentrancy = false` and the maximum depth; per-type settings override application settings. When unset, the in-process runtime retains its historical local-reentrancy behavior, while Dapr separately enforces the advertised configuration.
+
+Await nested calls. Reentrant admission does not make actor fields or cached state safe for arbitrary parallel branches or fire-and-forget work. A scheduler seed reproduces its ordering decisions, not every thread-pool interleaving introduced by remote-call simulation; use explicit pauses to pin boundaries and Coyote where deeper exploration is needed.
 
 ### Reproducing a failure from a seed
 
 When a scheduled exploration finds a failing ordering, it reports the seed. Pin the seed to replay it exactly.
 
 ```csharp
-await using var rt = new ActorTestRuntime(options: new ActorTestRuntimeOptions
+await using var rt = new ActorTestRuntime(services => services.AddDaprActors(), options: new ActorTestRuntimeOptions
 {
     // Replay the exact ordering by re-seeding the scheduler the failing run reported.
     Scheduler = new PriorityActorScheduler(seed: 1234567),
@@ -187,33 +267,99 @@ public async Task Concurrent_bids_never_lose_the_high_bid()
 
 ## Fault injection
 
-`rt.Faults` injects failures so you can test recovery paths deterministically rather than hoping to observe them. A fault is scheduled against the next matching operation, or the next few, transient or permanent, and is explored alongside scheduling, so a fault that lands during a particular ordering is reproducible from the run's seed.
+`rt.Faults` queues controls for the next matching operation. Every `FailNext...` control is **one-shot**, including when `transient: false` is passed. `transient: true` (the default) selects `ActorInjectedTransientException`; `false` selects `ActorInjectedPermanentException`. It changes the exception classification, not how many operations fail. Queue another fault for each additional failure you want to exercise. Nonmatching operations do not consume a fault.
 
-State writes:
+| Control | Boundary and filters |
+| --- | --- |
+| `FailNextStateWrite<TState>()` | Before persisting a value of that type, including an explicit save or end-of-turn save. Optional `stateName:` limits it to one entry. |
+| `FailNextMigration<TState>()` | Before a migrating read targeting that type. Optional `stateName:`. |
+| `FailNextUpcastHop<TFrom, TTo>()` | Before a specific migration hop. Optional `stateName:`. |
+| `FailNextInvocation()` | Before dispatch at the test invocation boundary. Optional `actorType:` and `methodName:`. |
+| `PauseNextStateWrite<TState>()` | Pauses before persistence and returns an `ActorFaultPause`. Optional `stateName:`. |
+| `SimulateNextRemoteInvocation()` | Removes ambient execution context from the next matching invocation through the test invocation client, preserving headers. Optional `actorType:` and `methodName:`. |
+| `FailNextStreamRead()` | After receiving an inbound frame but before delivering it to the runtime. Optional frame `kind:`; requires a decorated callback transport. |
+| `FailNextStreamWrite()` | Before forwarding an outbound frame. Optional frame `kind:`; requires a decorated callback transport. |
 
-- `Faults.FailNextStateWrite<TState>()` fails the next end-of-turn save of that state type. It is transient by default (it clears after one attempt); pass `transient: false` to keep failing, and `stateName:` to scope the fault to a single named entry.
+Fault injection does not install an automatic invocation retry policy. Assert the failed attempt, then explicitly exercise recovery or redelivery. A state-write failure and a response lost **after** a successful commit are different scenarios: neither provides a general rollback or exactly-once guarantee. See [delivery guarantees]({{< ref "dotnet-actorsnext-howto.md#delivery-guarantees-you-must-design-for" >}}) and [state migration]({{< ref dotnet-actorsnext-statemigration.md >}}).
 
-State migration:
+### Pause a state write and race deactivation
 
-- `Faults.FailNextMigration<TState>()` fails the next migrating read that folds to `TState`, and `Faults.FailNextUpcastHop<TFrom, TTo>()` fails a specific hop in the chain, so the fold's failure paths are unit-testable (see [State migration]({{< ref dotnet-actorsnext-statemigration.md >}})). Both take `transient:` and `stateName:`.
-
-Actor invocation:
-
-- `Faults.FailNextInvocation()` fails the next actor invocation, so you can test how a caller handles a downstream failure. Scope it with `actorType:` and `methodName:`, and use `transient:` to control whether it clears after one attempt.
-
-For example, a transient store failure that clears on retry, asserted to apply exactly once:
+`PauseNextStateWrite<TState>` stops the next matching write immediately before persistence. Start the call, use `StepAsync` to let it reach the boundary, and await `ActorFaultPause.Reached` before introducing competing work:
 
 ```csharp
-await using var rt = new ActorTestRuntime();
-var cart = rt.CreateActor<ICartActor>(ActorId.Create("u1"), "CartActor");
+await using var rt = new ActorTestRuntime(services => services.AddDaprActors());
+var id = ActorId.Create("u1");
+var cart = rt.CreateActor<ICartActor>(id, "CartActor");
+using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+using var pause = rt.Faults.PauseNextStateWrite<CartState>(stateName: "cart");
 
-rt.Faults.FailNextStateWrite<CartState>();    // transient by default: the first save fails, the retry succeeds
 var add = cart.AddItem(new CartItem("sku-1", 1));
-await rt.RunToIdle();
-await add;
+await rt.StepAsync(timeout.Token);
+await pause.Reached.WaitAsync(timeout.Token);
 
-Assert.Equal(1, (await cart.GetSummary()).ItemCount);
+var deactivate = rt.DeactivateAsync("CartActor", id);
+try
+{
+    Assert.False(deactivate.IsCompleted);
+    Assert.False(await rt.StepAsync(timeout.Token));
+}
+finally
+{
+    pause.Release();
+}
+
+await rt.RunToIdle(timeout.Token);
+await Task.WhenAll(add, deactivate);
+Assert.Single(rt.StateOf(cart).Get<CartState>("cart")!.Items);
 ```
+
+External deactivation is queued behind active work, so drive the scheduler before awaiting it. A deactivation requested by the active call chain is deferred until the turn and its admitted children finish. The activation is not disposed while that work is still using it.
+
+`Release()` allows the write to continue; calling it before the boundary is reached is safe. Disposing the pause also releases it. A paused write honors its own cancellation token. Canceling `RunToIdle` cancels the scheduler wait, not an already-running turn; always release the pause during cleanup. You can also advance virtual time while paused to test callback ordering, or run a call to another actor to verify independent progress.
+
+### Inject callback-stream failures
+
+These controls target the actor-hosting `SubscribeActorEvents` stream, not a pub/sub subscription stream. `ActorTestRuntime` does not open that transport. Run a `SubscribeActorEventsStreamManager` over a fake transport for a protocol-level unit test, or use a real actor host for an integration test, and decorate its transport with `FaultInjectingActorEventsTransport`.
+
+Register the decorator **after** actor services in the test host:
+
+```csharp
+using Dapr.Actors.Next.Core.State;
+using Dapr.Actors.Next.Core.Transport;
+using Dapr.Actors.Next.Testing;
+using Microsoft.Extensions.DependencyInjection;
+
+services.AddSingleton<ActorFaults>();
+services.AddSingleton<IActorStateFaultInjector>(
+    sp => sp.GetRequiredService<ActorFaults>());
+services.AddSingleton<ISubscribeActorEventsTransport>(sp =>
+    new FaultInjectingActorEventsTransport(
+        createTransport(sp),
+        sp.GetRequiredService<ActorFaults>()));
+```
+
+`createTransport` is your existing factory for the underlying fake transport or `DaprActorEventsTransport`; preserve its endpoint and API-token configuration. Do not resolve `ISubscribeActorEventsTransport` inside that factory, which would recursively resolve the decorator. The `IActorStateFaultInjector` registration is needed only if this host also uses state-write or migration faults.
+
+Resolve the same `ActorFaults` instance from the test host and arm a fault before sending the request under test:
+
+```csharp
+var faults = host.Services.GetRequiredService<ActorFaults>();
+faults.FailNextStreamRead(kind: SubscribeActorEventsFrameKind.Invoke);
+```
+
+In a separate scenario, fail the response instead:
+
+```csharp
+faults.FailNextStreamWrite(kind: SubscribeActorEventsFrameKind.Invoke);
+```
+
+A read fault consumes the selected inbound frame without dispatching it. A write fault prevents the selected response from being forwarded; for a successful invoke response, actor state has already committed. Omitting `kind` selects the next frame in that direction, which may be the initial registration frame rather than an invoke. Both controls leave nonmatching frames untouched and throw the selected injected exception once.
+
+Assert reconnection, re-advertisement of the actor type, and subsequent progress. Allow for the stream manager's five-second reconnect delay; a fake-transport test can drive its injected `TimeProvider`, while `rt.Time` does not control a real host automatically. The decorator does not redeliver a request for you. Explicitly resend it in a fake-transport test or exercise your configured retry path with a real sidecar, and assert that an idempotent operation does not duplicate state changes or external effects after response loss.
+
+The stream reader continues admitting callbacks while earlier calls are suspended, so nested callbacks are not blocked behind a fixed worker limit. Outstanding calls still consume memory proportional to admitted load. Disconnects cancel accepted work; actor code must honor cancellation, and code that ignores it may outlive the failed stream.
+
+The SDK's [testing guide](https://github.com/dapr/dotnet-sdk/blob/ae6002f82c5bd7e9c4af5589d04cf2f535b786c6/src/Dapr.Actors.Next.Testing/README.md) describes regression coverage in `RuntimeConcurrencyTests`, `TimerConcurrencyTests`, `StreamConcurrencyTests`, `ActorStreamFaultTests`, `VirtualTimerConcurrencyTests`, and `RealSidecarConcurrencyTests`.
 
 ## Structural analysis for state machines
 

@@ -16,7 +16,7 @@ For detailed information on mTLS, read the [security concepts section]({{% ref "
 
 Starting with Dapr **1.18**, Sentry generates workload identity keys using **Ed25519** instead of ECDSA P-256. On a normal install or upgrade this is transparent — no configuration change is needed.
 
-For a full explanation of what changed, why, and the compatibility matrix (including FIPS requirements and the 1.17.7 downgrade floor), see [Workload identity key algorithm]({{% ref "security-concept.md#workload-identity-key-algorithm" %}}) in the security concepts page.
+For a full explanation of what changed, why, and the compatibility matrix (including FIPS requirements and the 1.17.7 downgrade floor, which also applies to 1.19), see [Workload identity key algorithm]({{% ref "security-concept.md#workload-identity-key-algorithm" %}}) in the security concepts page.
 
 {{% alert title="Bringing your own CA" color="primary" %}}
 When you supply your own root and issuer certificates, Sentry signs workload CSRs using the algorithm of the **issuer key you provide**, not Ed25519. If your CA key is RSA or ECDSA, workload certs will be signed with that algorithm. This is the recommended path for FIPS-compliant environments.
@@ -24,7 +24,7 @@ When you supply your own root and issuer certificates, Sentry signs workload CSR
 
 ## Container image references in workload certificates (Kubernetes, Dapr 1.19+) {#container-image-references}
 
-On Kubernetes, Sentry embeds the requesting pod's container image references (the daprd sidecar image and all application container images, with best effort resolved digests) into every workload certificate as a non-critical X.509 extension under OID `1.3.6.1.4.1.57683.100.1`. The data comes from the pod object Sentry reads from the Kubernetes API server, not from the workload, so it cannot be forged by the certificate requestor.
+On Kubernetes, Sentry embeds the requesting pod's container image references (the daprd sidecar image and all application container images, with best effort resolved digests) into every workload certificate as a non-critical X.509 extension under OID `1.3.6.1.4.1.57683.100.1`. The data comes from the pod object Sentry reads from its pod cache or the Kubernetes API server, not from the workload, so it cannot be forged by the certificate requestor.
 
 No configuration is needed: the extension is always present in certificates issued via the Kubernetes validator. Certificates issued in self-hosted mode (insecure validator) or via the JWKS validator omit the extension. Existing consumers are unaffected because the extension is non-critical.
 

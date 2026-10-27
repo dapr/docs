@@ -162,6 +162,50 @@ with DaprClient() as d:
 
 {{% /tab %}}
 
+<!-- JavaScript -->
+{{% tab "JavaScript" %}}
+
+Use `@dapr/dapr` **3.19.0 or later** with Dapr runtime **1.16 or later**. Save this example as `app.mjs` after installing the package:
+
+```sh
+npm install @dapr/dapr@3.19.0
+```
+
+```javascript
+import { DaprClient } from "@dapr/dapr";
+
+const client = new DaprClient({ daprHost: "127.0.0.1", daprPort: "3500" });
+try {
+  const response = await client.conversation.converse({
+    name: "echo",
+    inputs: [
+      {
+        messages: [
+          {
+            ofUser: {
+              content: [{ text: "Please write a witty haiku about Dapr." }],
+            },
+          },
+        ],
+      },
+    ],
+  });
+  for (const output of response.outputs) {
+    for (const choice of output.choices) {
+      if (choice.message) {
+        console.log("conversation output:", choice.message.content);
+      }
+    }
+  }
+} finally {
+  await client.stop();
+}
+```
+
+The JavaScript SDK uses the Alpha2 message and response format. See the [JavaScript Conversation guides]({{% ref js-conversation %}}) for tool calling and advanced options.
+
+{{% /tab %}}
+
 
  <!-- Go -->
 {{% tab "Go" %}}
@@ -251,6 +295,14 @@ Start the connection using the `dapr run` command. For example, for this scenari
 
 {{< tabpane text=true >}}
 
+{{% tab "JavaScript" %}}
+
+```sh
+dapr run --app-id conversation --dapr-http-port 3500 --dapr-grpc-port 50001 --resources-path ./config -- node app.mjs
+```
+
+{{% /tab %}}
+
  <!-- .NET -->
 {{% tab ".NET" %}}
 
@@ -330,6 +382,12 @@ Try out the conversation API using the full examples provided in the supported S
 
 
 {{< tabpane text=true >}}
+
+{{% tab "JavaScript" %}}
+
+Follow the [JavaScript conversation setup guide]({{% ref js-conversation-howto.md %}}) or the [complete tool-calling example]({{% ref js-conversation-tools-howto.md %}}).
+
+{{% /tab %}}
 
  <!-- .NET -->
 {{% tab ".NET" %}}

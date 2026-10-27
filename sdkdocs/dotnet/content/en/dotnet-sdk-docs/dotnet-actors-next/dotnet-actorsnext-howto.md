@@ -213,9 +213,13 @@ builder.Services.AddDaprActors(options =>
 
 The idle timeout, draining settings, and reentrancy settings are advertised to the Dapr sidecar for the registered actor type. `DisableStateMigration` is applied locally by the SDK when that actor's state is persisted and is not advertised to the sidecar. The complete runnable version is in `examples/Actor.Next/07-PerTypeOptions`.
 
+The SDK also enforces `EnableReentrancy` and `MaxReentrantDepth` when admitting a matching call chain locally, using per-type values before application-wide values. Configure these explicitly to match your application's call graph.
+
 {{% alert title="There is no lifetime parameter" color="primary" %}}
 `AddDaprActors` does not accept a `ServiceLifetime`. An actor's lifetime is its activation, which the runtime owns: it is keyed by id, spans many turns, and ends on deactivation. That is not a DI lifetime, so it is not configurable. The actor instance is constructed per activation in a dedicated DI scope, cached across turns, and disposed together with its scope on deactivation. Your actor's dependencies keep whatever lifetimes you registered them with.
 {{% /alert %}}
+
+Deactivation is serialized with actor work: an external request waits behind active work, while one requested by the active call chain is deferred until the turn and its admitted reentrant children finish. The activation and its scope are not disposed underneath an in-flight turn.
 
 ### Controlling automatic registration
 
@@ -451,7 +455,55 @@ await reminders.CancelAsync("Cart", Id, nameof(AbandonCart), ct);
 
 Timer and reminder callbacks arrive over the same actor event stream as normal invokes. The SDK acks the callback only after the actor turn commits and pending state has been saved. For one-shot timers, a successful ack includes `cancel: true` so the runtime does not fire the timer again. Periodic timers and reminders continue according to their registration until canceled, expired by TTL, or replaced. If the handler throws or the stream drops before the ack reaches the runtime, the runtime can redeliver the callback. Keep handlers idempotent, especially when they perform external side effects.
 
-See [Testing]({{< ref dotnet-actorsnext-testing.md >}}) for advancing virtual time to fire timers and reminders in tests. In the in-memory test runtime, `IActorTimerScheduler` and `IActorReminderScheduler` are backed by the virtual time provider, so actor code that schedules either through DI can be tested without a sidecar.
+Timer and reminder callbacks are independent actor turns, not reentrant continuations of the registering turn. They wait for an in-flight turn on the same actor to finish. Canceling a registration does not undo a callback that has already been admitted for execution, so a callback already in progress may still finish.
+
+### Inspect and manage registrations
+
+SDK `1.19.0` or later also exposes timer/reminder inspection and reminder bulk cancellation:
+
+```csharp
+var timer = await timers.GetAsync("Cart", Id, "refresh-prices-periodic", ct);
+var actorTimers = await timers.ListAsync("Cart", Id, ct);
+
+var reminder = await reminders.GetAsync("Cart", Id, nameof(AbandonCart), ct);
+var actorReminders = await reminders.ListAsync("Cart", Id, ct);
+var remindersForType = await reminders.ListAsync("Cart", cancellationToken: ct);
+```
+
+`GetAsync` returns null when the registration does not exist. List operations return named registration
+records. Timers are host-local: inspect them through the sidecar hosting that actor, not an arbitrary
+sidecar in the cluster. Reminder listing can be scoped to an actor ID or to the whole actor type.
+
+To cancel all reminders for one actor:
+
+```csharp
+await reminders.CancelAllAsync("Cart", Id, ct);
+```
+
+Omitting `actorId` cancels reminders for **every actor of the given type**. Use that broader operation only
+when intentionally managing the whole type.
+
+### Reminder failure policy
+
+Supply `failurePolicy` when registering a reminder to override the runtime default for failed ticks:
+
+```csharp
+await reminders.ScheduleAsync(
+    "Cart", Id, nameof(AbandonCart),
+    dueTime: TimeSpan.FromMinutes(30),
+    period: TimeSpan.Zero,
+    arguments: Array.Empty<byte>(),
+    overwrite: true,
+    failurePolicy: new ActorReminderFailurePolicy.Constant(TimeSpan.FromSeconds(10))
+    {
+        MaxRetries = 5
+    },
+    cancellationToken: ct);
+```
+
+`ActorReminderFailurePolicy.Drop` drops a failed tick. `Constant` retries at the specified interval; an
+unset `MaxRetries` permits indefinite retries. This affects failed reminder delivery, not timer durability,
+the recurring period, or the actor's own application retry logic.
 
 ## Saving actor state
 
@@ -486,14 +538,16 @@ After `SaveStateAsync` succeeds, the saved cache entries are marked clean. The e
 
 Actor callbacks are at-least-once, and this shapes how you write actor methods. It is worth understanding before you build anything non-trivial, because it is the assumption most likely to be wrong if you carry a mental model of a method that runs exactly once.
 
-An invoke can be redelivered. If the runtime delivered a call but did not receive the response (for example the stream dropped mid-turn), it treats the call as failed and retries it. Because pending actor state is saved at the end of the turn and the response is sent after that save, a retry can re-execute a turn against state the previous attempt already committed. Your actor methods must therefore be safe to run more than once. A method that only reads and mutates actor `State` is naturally safe, because a re-run lands on the same state. A method that also performs an external side effect (publishing an event, calling another actor, charging a card) is exposed, and that side effect must be made idempotent, for example by keying it on a stable request identity or by making the downstream operation naturally idempotent.
+An invoke can be redelivered. If the runtime delivered a call but did not receive the response (for example the stream dropped after commit), the caller can observe a failure even though the state change succeeded. Depending on the configured retry policy, the invocation may run again. Pending actor state is saved before the response is sent, and those steps are not atomic.
 
-A reminder re-fires until it is acked. A durable reminder that comes due is redelivered every second, indefinitely, until the turn that handles it commits. Two conclusions follow from this:
-1) Reminder handlers must be idempotent, because you will see the same reminder more than once under any failure or delay. 
-2) A reminder handler that reliably throws produces a one-second retry loop for that actor, so treat a consistently failing reminder as something to surface and fix, not to swallow.
+Your actor methods must therefore be safe to run more than once, including their state mutations. Incrementing a counter or appending an item is not automatically idempotent merely because it uses actor `State`; a retry against committed state can apply the mutation again. Use naturally idempotent updates or persist a stable request identity and its result with the state change so duplicates can be recognized. External side effects (publishing an event, calling another actor, charging a card) also require an idempotency strategy. A lost response does not imply rollback.
+
+A reminder can be redelivered until it is acknowledged, subject to its runtime failure policy. A configured
+constant policy changes the retry interval/limit, while a drop policy can stop retries for that tick.
+Reminder handlers must therefore be idempotent, and repeated failures must be surfaced rather than swallowed.
 
 {{% alert title="The practical rule" color="primary" %}}
-Design every actor method, reminder, and subscription handler to be safe to run more than once. Turn-local state changes are safe automatically; external side effects are not, and are your responsibility to make idempotent. The [test runtime]({{< ref "dotnet-actorsnext-testing.md#fault-injection" >}}) can inject the stream drops and redeliveries that trigger these paths, so you can prove your handlers are re-run-safe in a unit test rather than discovering it in production.
+Design every actor method, reminder, and subscription handler to be safe to run more than once. Both state changes and external side effects need idempotency. Treat a missing response as an uncertain outcome, not evidence that the operation never ran or that its state changes were rolled back.
 {{% /alert %}}
 
 ## Call an actor
@@ -557,10 +611,12 @@ Three things are true of a call made from inside a turn, and two are easy to mis
 - The call is at-least-once, like any invoke. If your turn is redelivered (see [delivery guarantees](#delivery-guarantees-you-must-design-for)), the outbound call runs again, so the target must be idempotent or the call must be safe to repeat.
 - Reentrancy is handled for you when it is enabled. Actor authors do not manually supply reentrancy headers. When reentrancy is enabled for the actor runtime, `Dapr.Actors.Next` automatically propagates the call-chain metadata across actor calls made during an actor turn, so a chain that re-enters an actor already in the chain (A calls B, B calls back into A) is recognized as reentrant rather than blocking on the lock the first turn still holds.
 
-{{% alert title="Reentrancy is automatic, but must be enabled" color="primary" %}}
-The SDK propagates the call-chain metadata for you, but it does not enable reentrancy on its own: the runtime has to allow reentrant delivery in the first place. Turn it on in options with `DaprActorsOptions.EnableReentrancy`, and bound the depth with `DaprActorsOptions.MaxReentrantDepth` so a chain that would exceed the configured depth is stopped rather than recursing without limit. With reentrancy disabled, a call that loops back into an actor already in the chain is not treated as reentrant and will block on the lock the first turn still holds, so enable it deliberately when your call graphs are re-entrant, and leave it off when they are acyclic.
+{{% alert title="Configure reentrancy explicitly" color="primary" %}}
+Set `DaprActorsOptions.EnableReentrancy` and bound the depth with `DaprActorsOptions.MaxReentrantDepth`. Per-type settings override application settings. The SDK admits a reentrant invocation only when it matches the occupied actor's active call chain; it rejects such admission with `ActorInvocationException` when reentrancy is explicitly disabled or the depth limit would be exceeded. Dapr separately controls reentrant delivery according to the advertised actor configuration, so do not rely on a cyclic call graph progressing when it is disabled.
 
-In the in-memory test runtime this works without any sidecar configuration, because the SDK runtime owns the scheduling decision itself; you can exercise reentrant call chains in a unit test directly.
+The canonical propagated header is `Dapr-Reentrancy-Id`. The SDK accepts it case-insensitively, also recognizes `dapr-reentrant-id` and `x-dapr-reentrant-id`, and prefers the canonical name if multiple aliases are present. For custom invocation infrastructure, `ActorHeaders.WithCurrentReentrancy(headers)` captures the active chain without mutating the supplied collection; explicit call-chain headers take precedence over ambient context. Normal actor proxy calls handle this for you.
+
+Await nested actor calls rather than launching parallel or fire-and-forget branches over mutable actor state. Reentrant admission is not a general thread-safety guarantee.
 {{% /alert %}}
 
 ### Call an actor in another Dapr app

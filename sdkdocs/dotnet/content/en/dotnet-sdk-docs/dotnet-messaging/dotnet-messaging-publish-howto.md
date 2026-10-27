@@ -12,16 +12,21 @@ This guide demonstrates how to publish events to Dapr pub/sub topics using the m
 
 - [Dapr CLI]({{< ref install-dapr-cli.md >}}) installed
 - Initialized [Dapr environment]({{< ref install-dapr-selfhost.md >}})
-- [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0), [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0), or [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0) installed
+- [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0), [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0), [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0), or [.NET 11](https://dotnet.microsoft.com/download/dotnet/11.0) installed
 - `Dapr.Messaging` package installed:
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="Dapr.Messaging" Version="..." />
+  <PackageReference Include="Dapr.Messaging" Version="1.19.0" />
 </ItemGroup>
 ```
 
 ## Register the publishing client in `Program.cs`
+
+{{% alert title=".NET framework support" color="warning" %}}
+Be advised that .NET 8 and .NET 9 reach end of support in November 2026. Support for both will be dropped
+in Dapr v1.20; only .NET 10 and .NET 11 will be supported through the end of 2027.
+{{% /alert %}}
 
 Register Dapr messaging services and the pub/sub client using dependency injection:
 
@@ -88,6 +93,14 @@ var options = new PublishOptions
 
 await pubsub.PublishEventAsync("pubsub", "orders", order, options, cancellationToken);
 ```
+
+`PublishOptions` also exposes `Source` (`Uri`), `ContentType`, `TraceParent`, and `TraceState`. Component
+metadata and CloudEvent overrides are different concepts: use metadata such as `ttlInSeconds` only with
+components that support it. Byte publishing and bulk publishing also accept `PublishOptions`.
+
+Setting a content type does not change how a typed object is serialized. Use `PublishByteEventAsync` when
+you already have encoded bytes. A successful publish confirms acceptance by the runtime/component, not
+successful processing by every subscriber.
 
 ### 3. Publish strongly-typed CloudEvents
 

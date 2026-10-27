@@ -181,32 +181,40 @@ func main() {
 
 {{% tab "JavaScript" %}}
 
+These examples target `@dapr/dapr` **3.19.0 or later**. See the [JavaScript configuration guide]({{% ref js-configuration-howto.md %}}) for installation and a complete runnable example.
+
 ```js
 import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr";
 
-// JS SDK does not support Configuration API over HTTP protocol yet
+// Configuration operations in the JavaScript SDK require gRPC.
 const protocol = CommunicationProtocolEnum.GRPC;
 const host = process.env.DAPR_HOST ?? "localhost";
-const port = process.env.DAPR_GRPC_PORT ?? 3500;
+const port = process.env.DAPR_GRPC_PORT ?? "50001";
 
 const DAPR_CONFIGURATION_STORE = "configstore";
 const CONFIGURATION_ITEMS = ["orderId1", "orderId2"];
 
 async function main() {
-  const client = new DaprClient(host, port, protocol);
+  const client = new DaprClient({
+    daprHost: host,
+    daprPort: port,
+    communicationProtocol: protocol,
+  });
   // Get config items from the config store
   try {
     const config = await client.configuration.get(DAPR_CONFIGURATION_STORE, CONFIGURATION_ITEMS);
     Object.keys(config.items).forEach((key) => {
       console.log("Configuration for " + key + ":", JSON.stringify(config.items[key]));
     });
-  } catch (error) {
-    console.log("Could not get config item, err:" + error);
-    process.exit(1);
+  } finally {
+    await client.stop();
   }
 }
 
-main().catch((e) => console.error(e));
+main().catch((e) => {
+  console.error(e);
+  process.exitCode = 1;
+});
 ```
 
 {{% /tab %}}
@@ -455,46 +463,53 @@ dapr run --app-id orderprocessing -- go run main.go
 
 {{% tab "JavaScript" %}}
 
+The JavaScript SDK receives updates on a client-side gRPC stream; no application callback route is needed. See [client usage guidance]({{% ref js-configuration-client-usage.md %}}) for subscription readiness and error-handling limitations.
+
 ```js
 import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr";
 
-// JS SDK does not support Configuration API over HTTP protocol yet
+// Configuration operations in the JavaScript SDK require gRPC.
 const protocol = CommunicationProtocolEnum.GRPC;
 const host = process.env.DAPR_HOST ?? "localhost";
-const port = process.env.DAPR_GRPC_PORT ?? 3500;
+const port = process.env.DAPR_GRPC_PORT ?? "50001";
 
 const DAPR_CONFIGURATION_STORE = "configstore";
 const CONFIGURATION_ITEMS = ["orderId1", "orderId2"];
 
 async function main() {
-  const client = new DaprClient(host, port, protocol);
+  const client = new DaprClient({
+    daprHost: host,
+    daprPort: port,
+    communicationProtocol: protocol,
+  });
   // Subscribe to config updates
   try {
     const stream = await client.configuration.subscribeWithKeys(
       DAPR_CONFIGURATION_STORE,
       CONFIGURATION_ITEMS,
-      (config) => {
+      async (config) => {
         console.log("Configuration update", JSON.stringify(config.items));
       }
     );
-    // Unsubscribe to config updates and exit app after 20 seconds
-    setTimeout(() => {
-      stream.stop();
-      console.log("App unsubscribed to config changes");
-      process.exit(0);
-    }, 20000);
-  } catch (error) {
-    console.log("Error subscribing to config updates, err:" + error);
-    process.exit(1);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 20000));
+    } finally {
+      await stream.stop();
+    }
+  } finally {
+    await client.stop();
   }
 }
-main().catch((e) => console.error(e));
+main().catch((e) => {
+  console.error(e);
+  process.exitCode = 1;
+});
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch both a Dapr sidecar and the subscriber application:
+Save the code as `index.mjs`, then run the following command to launch both a Dapr sidecar and the subscriber application:
 
 ```bash
-dapr run --app-id orderprocessing --app-protocol grpc --dapr-grpc-port 3500 -- node index.js
+dapr run --app-id orderprocessing --dapr-grpc-port 50001 -- node index.mjs
 ```
 
 {{% /tab %}}
@@ -613,39 +628,47 @@ func main() {
 ```js
 import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr";
 
-// JS SDK does not support Configuration API over HTTP protocol yet
+// Configuration operations in the JavaScript SDK require gRPC.
 const protocol = CommunicationProtocolEnum.GRPC;
 const host = process.env.DAPR_HOST ?? "localhost";
-const port = process.env.DAPR_GRPC_PORT ?? 3500;
+const port = process.env.DAPR_GRPC_PORT ?? "50001";
 
 const DAPR_CONFIGURATION_STORE = "configstore";
 const CONFIGURATION_ITEMS = ["orderId1", "orderId2"];
 
 async function main() {
-  const client = new DaprClient(host, port, protocol);
+  const client = new DaprClient({
+    daprHost: host,
+    daprPort: port,
+    communicationProtocol: protocol,
+  });
 
   try {
     const stream = await client.configuration.subscribeWithKeys(
       DAPR_CONFIGURATION_STORE,
       CONFIGURATION_ITEMS,
-      (config) => {
+      async (config) => {
         console.log("Configuration update", JSON.stringify(config.items));
       }
     );
-    setTimeout(() => {
-      // Unsubscribe to config updates
-      stream.stop();
-      console.log("App unsubscribed to config changes");
-      process.exit(0);
-    }, 20000);
-  } catch (error) {
-    console.log("Error subscribing to config updates, err:" + error);
-    process.exit(1);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 20000));
+    } finally {
+      await stream.stop();
+    }
+  } finally {
+    await client.stop();
   }
 }
 
-main().catch((e) => console.error(e));
+main().catch((e) => {
+  console.error(e);
+  process.exitCode = 1;
+});
 ```
+
+The handle's `stop()` cancels the local stream and attempts to unsubscribe using the runtime subscription ID if one has arrived. Cleanup is best-effort; see [subscription cleanup limitations]({{% ref "js-configuration-client-usage.md#stop-a-subscription" %}}).
+
 {{% /tab %}}
 
 {{% tab "HTTP API (BASH)" %}}

@@ -20,14 +20,25 @@ In the .NET example project:
 - The [`IMyVaultSecrets.cs`](https://github.com/dapr/dotnet-sdk/tree/master/examples/SecretManagement/SecretManagementSample/IMyVaultSecrets.cs) file demonstrates the typed secret store interface.
 
 ## Prerequisites
+
+These examples target SDK `1.19.0` or later. This is a read API: there are no SDK operations to create,
+rotate, update, delete, or watch secrets in a Dapr secret store.
+
 - [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/)
 - [Initialized Dapr environment](https://docs.dapr.io/getting-started/install-dapr-selfhost)
 - [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0),
-  [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0), or
-  [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0) installed
+  [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0),
+  [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0), or
+  [.NET 11](https://dotnet.microsoft.com/download/dotnet/11.0) installed
 - [Dapr.SecretsManagement](https://www.nuget.org/packages/Dapr.SecretsManagement) NuGet package installed to your project
 
 ## Set up the environment
+
+{{% alert title=".NET framework support" color="warning" %}}
+Be advised that .NET 8 and .NET 9 reach end of support in November 2026. Support for both will be dropped
+in Dapr v1.20; only .NET 10 and .NET 11 will be supported through the end of 2027.
+{{% /alert %}}
+
 Clone the [.NET SDK repo](https://github.com/dapr/dotnet-sdk).
 
 ```sh
@@ -67,6 +78,8 @@ builder.Services.AddDaprSecretsManagementClient();
 
 var app = builder.Build();
 ```
+
+Import `Dapr.SecretsManagement` for the client and `Dapr.SecretsManagement.Extensions` for registration.
 
 It's possible that you may want to provide some configuration options to the client that should be present with each call to the sidecar, such as a Dapr API token or a non-standard HTTP or gRPC endpoint. This is possible through use of an overload of the registration method that allows configuration of a `DaprSecretsManagementClientBuilder` instance:
 
@@ -259,7 +272,7 @@ Once registered, inject your interface anywhere via standard dependency injectio
 app.MapGet("/do-something", (IMyVaultSecrets secrets, IOtherSvc svc) =>
 {
     var svcInstance = svc.Build(secrets.ApiKey);
-    return svcInstnce.DoSomething();
+    return svcInstance.DoSomething();
 });
 ```
 
@@ -267,15 +280,9 @@ app.MapGet("/do-something", (IMyVaultSecrets secrets, IOtherSvc svc) =>
 
 ### Unit testing with the direct API
 
-`DaprSecretsManagementClient` is an abstract class that provides a natural seam for mocking. You can mock it directly
-in your unit tests:
-
-```cs
-var mockClient = new Mock<DaprSecretsManagementClient>();
-mockClient
-    .Setup(c => c.GetSecretAsync("my-vault", "db-password", null, It.IsAny<CancellationToken>()))
-    .ReturnsAsync(new Dictionary<string, string> { { "db-password", "s3cr3t" } });
-```
+`DaprSecretsManagementClient` is abstract, but has no parameterless constructor. Supply its gRPC client and HTTP
+client constructor dependencies when creating a test double. Alternatively, isolate direct access behind an
+application-owned interface. The generated property interface below is a simpler seam for most consumer tests.
 
 ### Unit testing with the source generator
 
