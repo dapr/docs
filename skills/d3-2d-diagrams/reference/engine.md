@@ -1,107 +1,104 @@
-# diagrams.js engine reference
+# Engine reference
 
-Everything below lives in `themes/bigspring/assets/js/diagrams.js`.
-Coordinates are in the scene's canvas, its svg's viewBox: 600×480 for a value
-prop, 1200×624 for the APIs overview.
+The engine is `diagrams/engine.mjs`, the shape builders are
+`diagrams/shapes.mjs` and the brand-mark loader is `diagrams/icons.mjs`.
+Coordinates are in the scene's canvas, set by its `width` and `height`.
+
+Every builder takes a single options object and returns a plain node, so a
+scene is an array of nodes rather than a sequence of side effects. Builders are
+pure: the same input always gives byte-identical output.
+
+## Engine
+
+| Export | Returns |
+| --- | --- |
+| `el(tag, attrs, children)` | a node; children may be nodes or strings |
+| `text(content)` | a text node, escaped on serialize |
+| `serialize(node)` | a string; attributes keep insertion order, so output is deterministic |
+| `svg({ width, height, title, desc, id, children })` | a complete document with `<title>` and `<desc>` wired to `role="img"` and `aria-labelledby` |
+| `C` | the color tokens, every one a `var(--d-*)` string |
+| `APP` | four `{ stroke, fill }` pairs for app hexagons, in order |
 
 ## Shape builders
 
-Every builder takes a parent D3 selection and returns a selection (a `<g>`),
-except `arrow`, which returns a grow function. Set a selection's `opacity` in
-`frame(t)` to fade it.
-
 | Builder | Options | Draws |
 | --- | --- | --- |
-| `group(parent)` | none | an empty `<g>`, for moving or fading things together |
-| `label(parent, x, y, text, o)` | `size` (11), `weight` (600), `color` (black), `halo`, `anchor` ('middle', or 'start' to start at x) | text; `\n` starts a second line. Returns the `<text>` |
-| `hex(parent, o)` | `x, y, r` (42.5), `stroke, fill`, `label` ('App'), `size`, `labelDx` | a pointy-top app hexagon with its name |
-| `badge(parent, o)` | `x, y, r` (19) | the small Dapr hexagon with the logo |
-| `daprApp(parent, o)` | `x, y, r, stroke, fill, badgeLeft` | an app with its Dapr badge, bottom right (or bottom left) |
-| `box(parent, o)` | `x, y, w, h, label` | a workflow activity (teal rectangle) |
-| `node(parent, o)` | `x, y, r, stroke, label, labelDy` | a workflow start or end (circle) |
-| `cylinder(parent, o)` | `x, top, bottom, rx` (24), `ry` (8) | a database, with its hidden back rim dashed |
-| `envelope(parent, o)` | `x, y, w` (35), `color, stroke, fill, label, labelDy` | a message |
-| `broker(parent, o)` | `x, y, w` (46), `label, labelDy` | a message broker (two stacked envelopes) |
-| `lockBox(parent, o)` | `x, y, size` | a secret store (padlock in a teal square) |
-| `person(parent, o)` | `x, y, size` | a person, for an external system |
-| `secureLock(parent, o)` | `x, y, size, label, labelDy` | secure service communication (padlock and shield) |
-| `retry(parent, o)` | `x, y, r` (13) | a resiliency policy (circling arrows and "Resiliency") |
-| `failure(parent, o)` | `x, y, r` (9) | a failed call (cross in a circle) |
-| `icon(parent, o)` | `name, x, y, size, color, label, labelDy, labelSize` (13) | an icon or brand mark from `assets/images/icons/<name>.svg`, with an optional label under it. `color` fills single-color marks, and colors Fluent icons, which use `currentColor` |
-| `panel(parent, o)` | `x, y, w, h, stroke, r` (10) | a dashed, rounded area grouping part of a diagram |
-| `pill(parent, o)` | `x, y, w, h, text, color, filled, size` (15) | a rounded caption tag: outlined on white, or filled with white text |
-| `tile(parent, o)` | `x, y, icon, label, color, filled, w` and `h` (or `size`, 99), `inline`, `tag`, `labelSize` (11.5) | a card with an icon over a one- or two-line label, or with `inline: true` beside a one-line label; filled cards invert to white. `tag` puts a small word, such as 'alpha', in the top right corner |
+| `group(children)` | an array, or `{ children }` | a `<g>`, for positioning or grouping |
+| `slots(x0, x1, n)` | — | `n` evenly spaced centers across the span (returns numbers, not a node) |
+| `label(o)` | `x, y, text, size` (11), `weight` (600), `color` (`C.body`), `halo`, `anchor` | text; `\n` starts a second line, vertically centered |
+| `hex(o)` | `x, y, r` (42.5), `stroke, fill, label, size, labelDx` | a pointy-top app hexagon with its name |
+| `hexPoints(x, y, r)` | — | the six points, for an arrow descriptor |
+| `badge(o)` | `x, y, r` (19), `mark` | the small Dapr hexagon with the logo |
+| `daprApp(o)` | `x, y, r, stroke, fill, label, size, labelDx, badgeLeft, mark` | an app with its Dapr badge, bottom right or bottom left |
+| `box(o)` | `x, y, w` (194), `h` (30), `label, stroke, fill, size` | a workflow activity rectangle |
+| `node(o)` | `x, y, r` (16), `stroke, fill, label, labelDy` | a workflow start or end circle |
+| `cylinder(o)` | `x, top, bottom, rx` (24), `ry` (8) | a database, with its hidden back rim dashed |
+| `envelope(o)` | `x, y, w` (35), `color, stroke, fill, label, labelDy` | a message |
+| `broker(o)` | `x, y, w` (46), `label, labelDy, stroke, fill` | a message broker, two stacked envelopes |
+| `lockBox(o)` | `x, y, size` (44), `stroke, fill, label, labelDy` | a secret store, padlock in a square |
+| `person(o)` | `x, y, size` (40), `stroke, fill, label, labelDy` | a person, for an external system |
+| `secureLock(o)` | `x, y, size` (44), `stroke, label, labelDy` | secure service communication, padlock and shield |
+| `panel(o)` | `x, y, w, h, stroke` (`C.caption`), `r` (10) | a dashed, rounded area grouping part of a diagram. `x, y` is the top-left corner |
+| `pill(o)` | `x, y, w, h` (26), `text, color, filled, size` (15) | a rounded caption tag, outlined or filled |
+| `tile(o)` | `x, y, icon, label, color, filled, size` (99), `w, h, inline, inlinePad` (26), `inlineGap` (24), `tag, labelSize` | a card with an icon over a label, or beside it with `inline: true`. `tag` puts a small word such as `alpha` in the corner |
+| `arrow(o)` | `from, to, head` (true), `color` (`C.navy`), `gap` (2) | a static arrow with an open head, stopping at each shape's edge |
+| `OUTLINE` | — | the shared outline width, 2.2 |
 
-### Arrows
+`arrow`'s `from` and `to` take either a point `[x, y]` or a shape descriptor
+such as `{ x, y, r, hex: true }`, so the arrow and the shape cannot drift apart.
 
-```js
-var grow = arrow(parent, [x1, y1], [x2, y2], { head: false }); // head defaults to true
-grow(p, o);        // draw it at fraction p (0..1) of its length, at opacity o (default 1)
-grow.paint(color); // recolor the line and head
-grow.head(o);      // fade the head alone
-```
+## Brand marks and icons
 
-An arrow fades in over the first 60% of its growth, so call `grow(step(...))`
-and the head never pops in. A plain connecting line is an arrow with
-`{ head: false }`.
-
-## Timing and color helpers
-
-| Helper | Returns |
+| Export | Returns |
 | --- | --- |
-| `step(t, a, b)` | progress from 0 to 1 between `a` and `b` seconds, eased in and out, clamped |
-| `inOut(u)` | the cubic ease used by `step` |
-| `mix(colorA, colorB, u)` | the `#RRGGBB` color a fraction `u` of the way from A to B |
+| `icon(o)` | `name, x, y, size` (32), `w, h, color, label, labelDy, labelSize` (13), `scope, dir`. `x, y` is the box center; the mark is scaled to fit and keeps its aspect ratio. `color` tints single-color marks only |
+| `plate(o)` | `x, y, w, h, fill` (`C.plate`) | the neutral backing that keeps a full-color mark legible on both grounds. `x, y` is the center |
+| `brand(o)` | `name, x, y, w, h, content, plate, dx, inside, insideDx, insideSize, plateH, pad` | a brand mark on its plate, with an optional name set beside it inside the plate |
+| `listMarks(dir)` | every `.svg` in the icons directory, as mark names |
+| `parseMark(svgText, { name, prefix })` | the parsed mark, for tooling |
+| `setIconScope(scope)` | sets the id scope; the exporter calls this around `build()` |
+| `PLATE_H`, `PLATE_PAD` | the shared plate height and padding |
+| `IconError` | thrown for a missing mark, a bad name, or a file that fails the screen |
+
+`icon()` scopes its ids to the scene automatically, so two diagrams on one page
+cannot collide. Pass `scope` only to override that.
 
 ## Colors
 
-`C` holds every named color (`navy`, `teal`, `tealFill`, `mint`, `orange`,
-`orangeFill`, `red`, `blue`, `lavender`, `grey`, `caption`, `rabbit`, `redis`,
-`black`, `bg`). `APP[0]` to `APP[3]` are the app hexagon colors, each
-`{ stroke, fill }`: light blue, dark blue, teal, orange. Take them in that order.
+`C` holds `navy`, `blue`, `orange`, `teal`, `tealFill`, `mint`, `red`,
+`lavender`, `grey`, `caption`, `body`, `bg`, `plate`, `plateInk`, `markPlate`
+and `kubernetes`. `APP[0]` to `APP[3]` are the app hexagon colors, each
+`{ stroke, fill }`, in order: sky, blue, teal, orange.
+
+Every one is a `var(--d-*)` string. Never put a hex value in a scene; add a
+token to `_tokens.scss`, in both themes, instead.
 
 ## A scene
 
 ```js
-myscene: {
-  T: 10,        // loop length, seconds
-  still: 8,     // the complete diagram: reduced motion and the fallback show this
-  build: function (root) {
-    var d = group(root);
-    var app = daprApp(d, { x: 150, y: 200, stroke: APP[0].stroke, fill: APP[0].fill });
-    var call = arrow(d, [195, 200], [300, 200]);
-    var db = cylinder(d, { x: 340, top: 185, bottom: 225 });
+import { C, APP } from '../engine.mjs';
+import { arrow, cylinder, daprApp, label } from '../shapes.mjs';
 
-    return function (t) {
-      var out = 1 - step(t, 9, 9.5);          // everything fades out to end the loop
-      app.attr('opacity', step(t, 0.3, 0.7) * out);
-      call(step(t, 1, 1.4), out);
-      db.attr('opacity', step(t, 1.4, 1.8) * out);
-    };
-  }
-}
+export default {
+  width: 600,
+  height: 480,
+  title: 'An app stores state through Dapr',
+  desc: 'An application calls Dapr, which writes to a state store.',
+
+  build() {
+    return [
+      daprApp({ x: 150, y: 200, stroke: APP[0].stroke, fill: APP[0].fill }),
+      arrow({ from: { x: 150, y: 200, r: 42.5, hex: true }, to: [300, 200] }),
+      cylinder({ x: 340, top: 185, bottom: 225 }),
+      label({ x: 340, y: 250, text: 'State store' }),
+    ];
+  },
+};
 ```
 
-A scene that is only ever shown as a still leaves out `T`, and its frame can
-ignore `t`:
+`build()` returns an array; nested arrays and `null` entries are fine, so
+`.map()` over a list and a conditional both work without ceremony.
 
-```js
-mystill: {
-  still: 0,
-  build: function (root) {
-    var d = group(root);
-    daprApp(d, { x: 150, y: 200, stroke: APP[0].stroke, fill: APP[0].fill });
-    arrow(d, [195, 200], [300, 200]);
-    cylinder(d, { x: 340, top: 185, bottom: 225 });
-    return function () {};   // nothing changes
-  }
-}
-```
-
-Set `diagramstatic: true` on its item in `data/homepage.yml`. Any animated scene
-can be shown as a still the same way: the diagram then draws `still` once.
-
-The playback code at the bottom of the file mounts every
-`.value-prop-diagram[data-scene]` and removes the static fallback once the scene
-draws. For an animated diagram it handles the pause button, reduced motion and
-offscreen pausing. For a still (`data-static`) it draws `still` once and stops.
+The exporter validates the scene before writing: the name, a non-empty `title`
+and `desc`, positive dimensions, that `build()` returns an array, and that no
+two elements share an id.

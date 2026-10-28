@@ -34,7 +34,7 @@
     "update:hugo": "npm install --save-dev --save-exact hugo-extended@latest",
     "update:pkgs": "npx npm-check-updates -u",
     "export:diagrams": "node diagrams/export.mjs",
-    "test:diagrams": "node --test \"diagrams/**/*.test.mjs\"",
+    "test:diagrams": "node --test \"diagrams/**/*.test.mjs\" \"skills/**/*.test.mjs\"",
     "test:layout": "playwright test",
     "test:layout:ui": "playwright test --ui"
   },

@@ -25,3 +25,6 @@ daprdocs/static/presentations/.DS_Store
 
 # Superpowers SDD scratch workspace
 /.superpowers/
+
+# Local diagram renders (skills/d3-2d-diagrams/scripts/render-scene.mjs)
+.diagram-renders/
