@@ -46,6 +46,19 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Both of these are seconds of pure Node and need no browser, so they run
+      # before the Chromium install: a stale SVG or a broken builder fails the
+      # job in under a minute instead of after the browser download.
+
+      # The committed SVG and its scene source can drift silently - that is the
+      # one failure the whole generated-diagram approach has to rule out, so a
+      # fresh render has to match byte for byte.
+      - name: Check diagrams are up to date
+        run: npm run export:diagrams -- --check
+
+      - name: Run diagram unit tests
+        run: npm run test:diagrams
+
       # Only Chromium is needed; the invariants are layout-engine level and the
       # other browsers would triple install time for no extra signal.
       - name: Install Playwright Chromium
