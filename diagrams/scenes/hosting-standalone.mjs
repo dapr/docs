@@ -33,7 +33,9 @@ const H = 720;
 
 // ---- the containers dapr init runs, in a dashed Docker Desktop region ----
 const BOX = { x: 20, y: 34, w: 258, h: 560 };
-const CONTAINER_X = 132;
+// Centred in the region, derived from it: the vertical centring below already
+// comes from BOX, and a hand-typed x drifts the moment the region moves.
+const CONTAINER_X = BOX.x + BOX.w / 2;
 const CONTAINER_R = 44;
 const CONTAINER_PITCH = 128;
 const CONTAINER_LABEL_DY = CONTAINER_R + 18; // the name, below its hexagon
