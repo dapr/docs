@@ -23,9 +23,8 @@
 //     and it would be worse in dark mode. The sky accent stays in the glyph and
 //     the card outline, which is where it carries no reading load.
 
-import { C } from '../engine.mjs';
-import { slots, tile } from '../shapes.mjs';
-import { icon } from '../icons.mjs';
+import { slots } from '../shapes.mjs';
+import { apiTile } from '../apis.mjs';
 
 const W = 1200;
 const H = 672;
@@ -42,25 +41,29 @@ const GLYPH = 40;
 const TITLE = 16;
 const DESC = 13;
 
-// [glyph, title, description, alpha]. The description lines are broken by hand:
+// [api key, description]. The mark, the name and the alpha tag come from the
+// catalogue in ../apis.mjs, so this page and the overview cannot disagree
+// about what an API is called or which glyph stands for it.
+//
+// The description lines are broken by hand:
 // the card is 217 wide, which is about 26 characters at 13px, and where a line
 // breaks is a layout decision rather than something to compute at render time.
 const BLOCKS = [
-  ['flowchart', 'Workflows', 'Automate and orchestrate\ntasks within your\napplication'],
-  ['mail-copy', 'Publish & subscribe', 'Secure, scalable messaging\nbetween services'],
-  ['arrow-step-in-right', 'Service invocation', 'Perform direct, secure\nservice-to-service\nmethod calls'],
-  ['database', 'State management', 'Create long running,\nstateless and stateful\nservices'],
-  ['people-team', 'Actors', 'Encapsulate code and data\nin reusable actor objects'],
-  ['clock', 'Jobs', 'Scheduled tasks to run\nat specified intervals\nor times'],
-  ['settings-cog-multiple', 'Configuration', 'Access application\nconfiguration and be\nnotified of updates'],
-  ['key', 'Secrets', 'Securely access secrets\nfrom your application'],
-  ['plug-disconnected', 'Bindings', 'Input and output bindings\nto external resources,\nincluding databases\nand queues'],
-  ['lock-closed-key', 'Cryptography', 'Perform operations for\nencrypting and\ndecrypting data', 'alpha'],
-  ['table-lock', 'Distributed lock', 'Mutually exclusive access\nto shared resources', 'alpha'],
-  ['chat', 'Conversation', 'Converse between different\nlarge language models', 'alpha'],
-  ['cloud-archive', 'Binary Store', 'Store, retrieve and delete\nbinary files using\npluggable components', 'alpha'],
-  ['document-search', 'Search', 'Index, retrieve and query\nJSON documents in\nfull-text search engines', 'alpha'],
-  ['data-scatter', 'Vector', 'Store vectors and run\nsimilarity queries against\nvector databases', 'alpha'],
+  ['workflows', 'Automate and orchestrate\ntasks within your\napplication'],
+  ['pubsub', 'Secure, scalable messaging\nbetween services'],
+  ['service-invocation', 'Perform direct, secure\nservice-to-service\nmethod calls'],
+  ['state', 'Create long running,\nstateless and stateful\nservices'],
+  ['actors', 'Encapsulate code and data\nin reusable actor objects'],
+  ['jobs', 'Scheduled tasks to run\nat specified intervals\nor times'],
+  ['configuration', 'Access application\nconfiguration and be\nnotified of updates'],
+  ['secrets', 'Securely access secrets\nfrom your application'],
+  ['bindings', 'Input and output bindings\nto external resources,\nincluding databases\nand queues'],
+  ['cryptography', 'Perform operations for\nencrypting and\ndecrypting data'],
+  ['distributed-lock', 'Mutually exclusive access\nto shared resources'],
+  ['conversation', 'Converse between different\nlarge language models'],
+  ['binary-store', 'Store, retrieve and delete\nbinary files using\npluggable components'],
+  ['search', 'Index, retrieve and query\nJSON documents in\nfull-text search engines'],
+  ['vector', 'Store vectors and run\nsimilarity queries against\nvector databases'],
 ];
 
 export default {
@@ -73,20 +76,18 @@ export default {
   build() {
     const colX = slots(PX, W - PX, COLS);
 
-    return BLOCKS.map(([mark, name, desc, tag], i) => {
+    return BLOCKS.map(([key, desc], i) => {
       const row = Math.floor(i / COLS);
-      return tile({
+      return apiTile({
+        key,
+        glyph: GLYPH,
         x: colX[i % COLS],
         y: GRID_TOP + row * (CARD_H + GAP) + CARD_H / 2,
         w: CARD_W,
         h: CARD_H,
-        color: C.blue,
-        icon: (cx, cy) => icon({ name: `fluent-${mark}`, x: cx, y: cy, size: GLYPH, color: C.blue }),
-        label: name,
         labelSize: TITLE,
         desc,
         descSize: DESC,
-        tag: tag ?? '',
       });
     });
   },

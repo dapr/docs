@@ -25,8 +25,9 @@
 //     makes them read as prose.
 
 import { APP, C, el } from '../engine.mjs';
-import { OUTLINE, arrow, group, hex, hexHalfWidth, hexPoints, label, panel, pill, tile } from '../shapes.mjs';
+import { OUTLINE, arrow, group, hex, hexHalfWidth, hexPoints, label, panel, pill } from '../shapes.mjs';
 import { icon } from '../icons.mjs';
+import { apiTile } from '../apis.mjs';
 
 const W = 1200;
 const H = 720;
@@ -70,22 +71,18 @@ const SIDE_Y = 398;
 
 // ---- the components it uses ----
 const CARD_X = 1104;
-const CARD_W = 104; // square, as the other capability grids are
-const CARD_H = 104;
-const CARD_TOP = 78;
-const CARD_PITCH = 118;
+const CARD_W = 112; // the overview's card, as every API block is
+const CARD_H = 112;
+const CARD_TOP = 108;
+const CARD_PITCH = 126;
 const BUS_X = 960; // the vertical line the component arrows leave from
 
-const COMPONENTS = [
-  ['mail-copy', 'Publish &\nsubscribe'],
-  ['flowchart', 'Workflows'],
-  ['database', 'State\nmanagement'],
-  ['settings-cog-multiple', 'Configuration'],
-  ['key', 'Secrets'],
-];
+// Named from the catalogue in ../apis.mjs, in this scene's own order: the
+// mark and the name are the same here as on the overview, by construction.
+const COMPONENTS = ['pubsub', 'workflows', 'state', 'configuration', 'secrets'];
 
 // ---- where it all runs ----
-const PLATFORM = { x: 170, y: 640, w: 900, h: 46 };
+const PLATFORM = { x: 120, y: 640, w: 900, h: 46 };
 
 export default {
   width: W,
@@ -182,22 +179,19 @@ export default {
       arrow({ from: [BUS_X, SIDE_Y], to: { x: SIDE_X, y: SIDE_Y, r: SIDE_R, hex: true } }),
       label({ x: (BUS_X + SIDE_X + SIDE_R) / 2, y: SIDE_Y - 22, text: 'Use components', size: 14 }),
 
-      COMPONENTS.map(([mark, name], i) => {
+      COMPONENTS.map((key, i) => {
         const y = CARD_TOP + i * CARD_PITCH;
         return group([
           arrow({ from: [BUS_X, y], to: { x: CARD_X, y, w: CARD_W, h: CARD_H } }),
-          tile({
+          apiTile({
+            key,
+            wrap: true,
+            glyph: 44,
             x: CARD_X,
             y,
             w: CARD_W,
             h: CARD_H,
-            color: C.blue,
-            icon: (cx, cy) => icon({ name: `fluent-${mark}`, x: cx, y: cy, size: 32, color: C.blue }),
-            label: name,
             labelSize: 14,
-            // Glyph and name are centred in the square as one group, so a
-            // two-line name does not drag the pair up the card.
-            glyphSize: 32,
           }),
         ]);
       }),

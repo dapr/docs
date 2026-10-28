@@ -29,11 +29,12 @@
 //     to run.
 
 import { APP, C, el } from '../engine.mjs';
-import { OUTLINE, arrow, group, hex, hexHalfWidth, hexPoints, label, panel, pill, tile } from '../shapes.mjs';
+import { OUTLINE, arrow, group, hex, hexHalfWidth, hexPoints, label, panel, pill } from '../shapes.mjs';
 import { icon } from '../icons.mjs';
+import { apiTile } from '../apis.mjs';
 
 const W = 1200;
-const H = 720;
+const H = 760;
 
 const TEXT = 13; // one size for every label and description
 const EDGE = 24; // the least space between anything and a dashed border
@@ -93,20 +94,16 @@ const APPS = [
 // building blocks, so they must not be a different size here.
 const COMP_BUS_X = 960;
 const CARD_X = 1104;
-const CARD = 96;
-const CARD_TOP = 60;
-const CARD_PITCH = 118;
+const CARD = 112;
+const CARD_TOP = 85;
+const CARD_PITCH = 126;
 
-const COMPONENTS = [
-  ['mail-copy', 'Publish &\nsubscribe'],
-  ['flowchart', 'Workflows'],
-  ['database', 'State\nmanagement'],
-  ['settings-cog-multiple', 'Configuration'],
-  ['key', 'Secrets'],
-];
+// Named from the catalogue in ../apis.mjs, in this scene's own order: the
+// mark and the name are the same here as on the overview, by construction.
+const COMPONENTS = ['pubsub', 'workflows', 'state', 'configuration', 'secrets'];
 
 // ---- the certificate store, which is not a building block ----
-const CERT_Y = 612;
+const CERT_Y = 688;
 
 export default {
   width: W,
@@ -212,20 +209,19 @@ export default {
       }),
       label({ x: COMP_BUS_X - 6, y: SIDE_Y - 20, text: 'Use components', size: TEXT, anchor: 'end' }),
 
-      COMPONENTS.map(([mark, name], i) => {
+      COMPONENTS.map((key, i) => {
         const y = CARD_TOP + i * CARD_PITCH;
         return group([
           arrow({ from: [COMP_BUS_X, y], to: { x: CARD_X, y, w: CARD, h: CARD } }),
-          tile({
+          apiTile({
+            key,
+            wrap: true,
+            glyph: 44,
             x: CARD_X,
             y,
             w: CARD,
             h: CARD,
-            color: C.blue,
-            icon: (cx, cy) => icon({ name: `fluent-${mark}`, x: cx, y: cy, size: 28, color: C.blue }),
-            label: name,
             labelSize: TEXT,
-            glyphSize: 28,
           }),
         ]);
       }),

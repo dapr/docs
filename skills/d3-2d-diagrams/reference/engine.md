@@ -64,6 +64,28 @@ such as `{ x, y, r, hex: true }`, so the arrow and the shape cannot drift apart.
 `icon()` scopes its ids to the scene automatically, so two diagrams on one page
 cannot collide. Pass `scope` only to override that.
 
+## The Dapr API catalogue
+
+`diagrams/apis.mjs` holds one definition per Dapr API and per cross-cutting
+concern, so no scene declares a mark or a name of its own.
+
+| Export | Returns |
+| --- | --- |
+| `APIS` | the sixteen APIs, in the website's order |
+| `CROSS_CUTTING` | observability, security, resiliency |
+| `api(key)` | one entry; throws on a key that is not in the catalogue |
+| `apiTile(o)` | `key, glyph` (30), `filled, wrap`, plus any `tile()` option | the block: rounded square, mark, name, and `alpha` where it applies |
+
+Each entry is `{ key, mark, name, wrap, tag }`. `name` is the one-line form and
+`wrap` the agreed two-line break for a narrow tile; `tag` is `alpha` or empty.
+
+```js
+import { APIS, apiTile } from '../apis.mjs';
+
+APIS.map((a, i) => apiTile({ key: a.key, wrap: true, x: slot[i], y: 100, w: 112, h: 118 }));
+apiTile({ key: 'secrets', x: 300, y: 100, w: 96, h: 96, glyph: 28, glyphSize: 28 });
+```
+
 ## Colors
 
 `C` holds `navy`, `blue`, `orange`, `teal`, `tealFill`, `mint`, `red`,

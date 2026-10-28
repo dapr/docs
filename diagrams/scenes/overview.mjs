@@ -38,8 +38,9 @@
 // Teal and mint are unused: both fail contrast on the light ground.
 
 import { C, APP, el } from '../engine.mjs';
-import { OUTLINE, arrow, group, hex, hexPoints, label, panel, pill, slots, tile } from '../shapes.mjs';
+import { OUTLINE, arrow, group, hex, hexPoints, label, panel, pill, slots } from '../shapes.mjs';
 import { brand, icon, plate } from '../icons.mjs';
+import { APIS, CROSS_CUTTING, apiTile } from '../apis.mjs';
 
 const W = 1512;
 const H = 779;
@@ -97,34 +98,10 @@ const LANGUAGES = [
   { name: 'rust', w: 54, h: 54, content: 54 },
 ];
 
-// The sixteen APIs, two rows of eight, in the website's set and order: the six
-// alpha ones are tagged and grouped at the end of the second row. The tag set
-// is operations/support/alpha-beta-apis.md. Glyphs are the website's choices.
-const APIS = [
-  ['flowchart', 'Workflows'],
-  ['mail-copy', 'Publish &\nsubscribe'],
-  ['arrow-step-in-right', 'Service\ninvocation'],
-  ['database', 'State\nmanagement'],
-  ['people-team', 'Actors'],
-  ['clock', 'Jobs'],
-  ['settings-cog-multiple', 'Configuration'],
-  ['key', 'Secrets'],
-  ['plug-disconnected', 'Bindings'],
-  ['arrow-move', 'Middleware'],
-  ['lock-closed-key', 'Cryptography', 'alpha'],
-  ['table-lock', 'Distributed\nlock', 'alpha'],
-  ['chat', 'Conversation', 'alpha'],
-  ['cloud-archive', 'Binary Store', 'alpha'],
-  ['document-search', 'Search', 'alpha'],
-  ['data-scatter', 'Vector', 'alpha'],
-];
-
-const CROSS_CUTTING = [
-  ['heart-pulse', 'Observability'],
-  ['shield-lock', 'Security'],
-  ['arrow-clockwise', 'Resiliency'],
-];
-
+// The sixteen APIs and the three cross-cutting concerns come from
+// ../apis.mjs, in its order, which is the website's. Two rows of eight here;
+// the six alpha ones fall at the end of the second row because that is where
+// the catalogue puts them.
 // The cloud marks, exactly as dapr.io places them: no plates, left to right,
 // each at the website's own x. Azure and Kubernetes have no wordmark in their
 // file, so each gets a name beside it; AWS and Google Cloud carry theirs.
@@ -238,34 +215,31 @@ export default {
         size: 17,
         color: C.caption,
       }),
-      APIS.map(([mark, name, tag], i) =>
-        tile({
+      APIS.map((a, i) =>
+        apiTile({
+          key: a.key,
+          wrap: true,
+          glyph: TILE_GLYPH,
           x: apiX[i % 8],
           y: i < 8 ? ROW1 : ROW2,
           w: TILE_W,
           h: TILE_H,
-          icon: (cx, cy) => icon({ name: `fluent-${mark}`, x: cx, y: cy, size: TILE_GLYPH, color: C.blue }),
-          label: name,
           labelSize: TILE_LABEL,
-          tag,
-          color: C.blue,
         }),
       ),
-      CROSS_CUTTING.map(([mark, name], i) =>
-        tile({
+      CROSS_CUTTING.map((a, i) =>
+        apiTile({
+          key: a.key,
           x: CROSS_X,
           y: CROSS_TOP + i * (CROSS_H + 12),
           w: CROSS_W,
           h: CROSS_H,
-          icon: (cx, cy) => icon({ name: `fluent-${mark}`, x: cx, y: cy, size: 30, color: C.bg }),
-          label: name,
           // Same size as the API tiles beside them: these are peers, not a
           // secondary note, so they are not set smaller.
           labelSize: TILE_LABEL,
           inline: true,
           inlinePad: 34,
           filled: true,
-          color: C.blue,
         }),
       ),
 

@@ -28,8 +28,9 @@
 //     other scenes draw a mark that has no wordmark of its own.
 
 import { APP, C, el } from '../engine.mjs';
-import { OUTLINE, arrow, group, hex, hexHalfWidth, hexPoints, label, panel, pill, slots, tile } from '../shapes.mjs';
+import { OUTLINE, arrow, group, hex, hexHalfWidth, hexPoints, label, panel, pill } from '../shapes.mjs';
 import { icon, plate } from '../icons.mjs';
+import { apiTile } from '../apis.mjs';
 
 const W = 1200;
 const H = 740;
@@ -129,18 +130,14 @@ const CLOUD_LEFT = CLOUDS.reduce(
 
 // ---- the components it uses ----
 const CARD_X = 1104;
-const CARD = 96;
-const CARD_TOP = 70;
-const CARD_PITCH = 118;
+const CARD = 112;
+const CARD_TOP = 118;
+const CARD_PITCH = 126;
 const COMP_BUS_X = 988;
 
-const COMPONENTS = [
-  ['mail-copy', 'Publish &\nsubscribe'],
-  ['flowchart', 'Workflows'],
-  ['database', 'State\nmanagement'],
-  ['settings-cog-multiple', 'Configuration'],
-  ['key', 'Secrets'],
-];
+// Named from the catalogue in ../apis.mjs, in this scene's own order: the
+// mark and the name are the same here as on the overview, by construction.
+const COMPONENTS = ['pubsub', 'workflows', 'state', 'configuration', 'secrets'];
 
 export default {
   width: W,
@@ -264,20 +261,19 @@ export default {
       arrow({ from: { x: SIDE_X, y: SIDE_Y, r: SIDE_R, hex: true }, to: [COMP_BUS_X, SIDE_Y] }),
       label({ x: (SIDE_X + COMP_BUS_X) / 2 + 60, y: SIDE_Y - 20, text: 'Use components', size: TEXT }),
 
-      COMPONENTS.map(([mark, name], i) => {
+      COMPONENTS.map((key, i) => {
         const y = CARD_TOP + i * CARD_PITCH;
         return group([
           arrow({ from: [COMP_BUS_X, y], to: { x: CARD_X, y, w: CARD, h: CARD } }),
-          tile({
+          apiTile({
+            key,
+            wrap: true,
+            glyph: 44,
             x: CARD_X,
             y,
             w: CARD,
             h: CARD,
-            color: C.blue,
-            icon: (cx, cy) => icon({ name: `fluent-${mark}`, x: cx, y: cy, size: 28, color: C.blue }),
-            label: name,
             labelSize: TEXT,
-            glyphSize: 28,
           }),
         ]);
       }),

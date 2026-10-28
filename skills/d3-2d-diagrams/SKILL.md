@@ -28,6 +28,7 @@ button and no reduced-motion path.
 | Element tree, serializer, color tokens | `diagrams/engine.mjs`: `el`, `text`, `serialize`, `svg`, and the `C` and `APP` colors |
 | Shape builders | `diagrams/shapes.mjs`: hexagons, arrows, cylinders, panels, tiles and the rest |
 | Brand marks and icons | `diagrams/icons.mjs`: reads a vendored SVG, screens it, prefixes its ids, returns nodes |
+| The Dapr API catalogue | `diagrams/apis.mjs`: one definition per API and cross-cutting concern, and `apiTile()`, which draws the block |
 | One scene per diagram | `diagrams/scenes/<name>.mjs`, registered in `diagrams/scenes/index.mjs` |
 | Exporter | `diagrams/export.mjs`, run as `npm run export:diagrams` |
 | Generated SVGs, committed | `daprdocs/assets/diagrams/<name>.svg` |
@@ -154,6 +155,33 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
   as an app and its sidecar, have to visibly overlap. Shapes that merely touch
   read as a rendering error. Check the centre distance against the sum of the
   radii rather than trusting the picture in your head.
+
+### Dapr API blocks
+
+A Dapr API is always drawn the same way: a rounded square, its Fluent mark,
+its name in blue, and `alpha` in the corner where that applies. That drawing
+is `apiTile()` and the definitions behind it are `diagrams/apis.mjs`.
+
+- **Never re-declare a mark or a name in a scene.** Name the API and let the
+  catalogue supply both: `apiTile({ key: 'pubsub', x, y, w, h })`. A scene that
+  writes `['mail-copy', 'Publish & subscribe']` for itself has made a private
+  copy that nothing keeps in step with the others.
+- **An unknown key throws.** A typo that fell through would draw a tile with no
+  mark and the word `undefined` on it, which no layout test can see.
+- **Two forms of each name are kept, and both are in the catalogue.** `name` is
+  the one-line form; `wrap: true` asks for the agreed two-line break for a
+  narrow tile. Where a name breaks is a decision made once, not per call, and a
+  test asserts the two forms are the same words.
+- **The `alpha` tag comes from the catalogue,** so no scene can ship an alpha
+  API untagged, or tag one that has gone stable. Changing an API's status is a
+  change in one file.
+- **Adding an API is a change to the catalogue, once.** Scenes that show the
+  whole set pick it up; scenes that show a handful name the handful.
+- **`glyph` is the drawn size of the mark** and is separate from `tile()`'s own
+  `glyphSize`, which asks for the mark and the name to be centred as one group.
+  A square tile with a two-line name wants both; a wide one wants only `glyph`.
+- **Descriptions stay in the scene.** They are broken to a particular card
+  width, so they are layout, not identity.
 
 ### Grouping and centering
 
@@ -509,6 +537,12 @@ before the next one starts. Report visual choices as proposals, not decisions.
   shared 2.2 whatever its `size`, so beside a glyph it looks light. Where they
   must match, use the Fluent mark instead of the hand-drawn shape; they then
   match by construction rather than by a number someone tuned.
+- **A definition copied into a scene drifts, and nothing tells you.** The
+  overview drew sixteen API tiles while the building-blocks page listed
+  fifteen - the same set, two different lengths - because each scene carried
+  its own copy of the list. Every test passed: each scene was internally
+  consistent, and no test compared two scenes. Shared facts belong in one
+  module that the scenes name, not in a literal each scene repeats.
 - **A mark's viewBox is not its content.** Several vendored files leave slack
   (`go.svg` draws 24x9 inside a 24x24 box), and `icon()` fits the viewBox, not
   the ink, so two marks given the same size can come out at very different
