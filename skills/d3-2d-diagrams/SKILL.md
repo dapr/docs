@@ -103,8 +103,13 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
 
 ### Labels
 
-- **Font:** labels inherit the page's font (Noto Sans), so never set
-  `font-family` in a scene.
+- **Font:** labels inherit the page's font, so never set `font-family` in a
+  scene. The one exception is a **terminal command, a path or other code**,
+  which takes `mono: true` on `label()` or `richLabel()`. That sets
+  `var(--font-mono)`, the same variable the page's `code` and `pre` elements
+  use, so the diagram borrows the site's code font rather than introducing one.
+  A command set in the body font reads as prose. Never write a literal font
+  stack: an inlined SVG can see the page's CSS variables, so use them.
 - **Sizes:** use `label()`. 11 units at weight 600 by default; app names at
   about a third of the hexagon's radius; section captions in `C.caption`. Use
   `\n` for a second line, which `label()` centers vertically for you.

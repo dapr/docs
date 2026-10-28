@@ -21,9 +21,9 @@
 //     freely licensed Zipkin mark could be found in Simple Icons or on
 //     Wikimedia Commons, and the skill's rule is to name a platform in text
 //     rather than substitute a lookalike. Redis keeps its official mark.
-//   - the commands are set in bold body text rather than monospace, because a
-//     scene never sets a font-family: labels inherit the page's font so they
-//     need no web font of their own.
+//   - the two commands are set in the page's own monospace font, the one its
+//     code and pre elements use. They are things you type, and the body font
+//     makes them read as prose.
 
 import { APP, C, el } from '../engine.mjs';
 import { OUTLINE, arrow, group, hex, hexHalfWidth, hexPoints, label, panel, pill, tile } from '../shapes.mjs';
@@ -100,7 +100,7 @@ export default {
       // pill() takes x as the CENTRE, like every other builder.
       pill({ x: BOX.x + 110, y: BOX.y, w: 186, h: 34, text: 'Docker Desktop', color: C.navy }),
 
-      label({ x: APP_X, y: 92, text: 'dapr init', size: 22, weight: 700, color: C.navy }),
+      label({ x: APP_X, y: 92, text: 'dapr init', size: 22, weight: 700, color: C.navy, mono: true }),
 
       CONTAINERS.map(([mark, name, why], i) => {
         const y = CONTAINER_TOP + i * CONTAINER_PITCH;
@@ -158,7 +158,7 @@ export default {
         }),
         icon({ name: 'logo-blue', x: SIDE_X, y: SIDE_Y, w: 64, h: 64 }),
       ]),
-      label({ x: APP_X, y: 505, text: 'dapr run [flags]', size: 22, weight: 700, color: C.navy }),
+      label({ x: APP_X, y: 505, text: 'dapr run [flags]', size: 22, weight: 700, color: C.navy, mono: true }),
 
       // One line down the left, with the sidecar feeding it. It runs at the
       // sidecar's height, which is below the app hexagon, so the arrow into the

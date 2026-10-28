@@ -25,9 +25,10 @@ pure: the same input always gives byte-identical output.
 | --- | --- | --- |
 | `group(children)` | an array, or `{ children }` | a `<g>`, for positioning or grouping |
 | `slots(x0, x1, n)` | — | `n` evenly spaced centers across the span (returns numbers, not a node) |
-| `label(o)` | `x, y, text, size` (11), `weight` (600), `color` (`C.body`), `halo`, `anchor` | text; `\n` starts a second line, vertically centered |
+| `label(o)` | `x, y, text, size` (11), `weight` (600), `color` (`C.body`), `halo`, `anchor`, `mono` | text; `\n` starts a second line, vertically centered. `mono: true` sets the page's code font, for a command or a path |
 | `hex(o)` | `x, y, r` (42.5), `stroke, fill, label, size, labelDx` | a pointy-top app hexagon with its name |
 | `hexPoints(x, y, r)` | — | the six points, for an arrow descriptor |
+| `hexHalfWidth(r)` | — | half a pointy-top hexagon's width, for aligning one shape to another's edge |
 | `badge(o)` | `x, y, r` (19), `mark` | the small Dapr hexagon with the logo |
 | `daprApp(o)` | `x, y, r, stroke, fill, label, size, labelDx, badgeLeft, mark` | an app with its Dapr badge, bottom right or bottom left |
 | `box(o)` | `x, y, w` (194), `h` (30), `label, stroke, fill, size` | a workflow activity rectangle |
@@ -40,7 +41,7 @@ pure: the same input always gives byte-identical output.
 | `secureLock(o)` | `x, y, size` (44), `stroke, label, labelDy` | secure service communication, padlock and shield |
 | `panel(o)` | `x, y, w, h, stroke` (`C.caption`), `r` (10) | a dashed, rounded area grouping part of a diagram. `x, y` is the top-left corner |
 | `pill(o)` | `x, y, w, h` (26), `text, color, filled, size` (15) | a rounded caption tag, outlined or filled |
-| `tile(o)` | `x, y, icon, label, color, filled, size` (99), `w, h, inline, inlinePad` (26), `inlineGap` (24), `tag, labelSize` | a card with an icon over a label, or beside it with `inline: true`. `tag` puts a small word such as `alpha` in the corner |
+| `tile(o)` | `x, y, icon, label, color, filled, size` (99), `w, h, inline, inlinePad` (26), `inlineGap` (24), `tag, labelSize, glyphSize, glyphGap, glyphDy, nameDy, desc, descSize` | a card with an icon over a label, or beside it with `inline: true`. `tag` puts a small word such as `alpha` in the corner |
 | `arrow(o)` | `from, to, head` (true), `color` (`C.navy`), `gap` (2) | a static arrow with an open head, stopping at each shape's edge |
 | `OUTLINE` | — | the shared outline width, 2.2 |
 

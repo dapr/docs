@@ -60,8 +60,14 @@ export function group(arg = {}) {
 
 // y is the vertical centre of the whole text block, so labels centre on shapes
 // without dominant-baseline (which renderers disagree on).
+// `mono: true` is the ONE font-family a scene may set, and it is the page's
+// own, not a new one: var(--font-mono) is what code, pre, kbd and samp use.
+// A terminal command set in the body font reads as prose.
+export const MONO = 'var(--font-mono)';
+
 export function label({
   x, y, text: content, size = 11, weight = 600, color = C.body, halo = false, anchor = 'middle',
+  mono = false,
 }) {
   if (size < MIN_LABEL) throw new RangeError(`label(): size ${size} is below ${MIN_LABEL}px`);
   assertInk(color, 'label()');
@@ -73,7 +79,15 @@ export function label({
       ? [text(lines[0])]
       : lines.map((l, i) => el('tspan', i === 0 ? { x: n(x) } : { x: n(x), dy: n(lh) }, [text(l)]));
   const mk = (attrs) =>
-    el('text', { x: n(x), y: n(y0), 'text-anchor': anchor, 'font-size': size, 'font-weight': weight, ...attrs }, kids);
+    el('text', {
+      x: n(x),
+      y: n(y0),
+      'text-anchor': anchor,
+      'font-size': size,
+      'font-weight': weight,
+      ...(mono ? { 'font-family': MONO } : {}),
+      ...attrs,
+    }, kids);
   const fill = mk({ fill: color });
   if (!halo) return fill;
   const under = mk({
@@ -87,7 +101,7 @@ export function label({
 // <text>, so nothing has to be positioned by hand: measuring text would need
 // font metrics the exporter does not have.
 export function richLabel({
-  x, y, parts, size = 13, weight = 400, color = C.body, anchor = 'start',
+  x, y, parts, size = 13, weight = 400, color = C.body, anchor = 'start', mono = false,
 }) {
   if (size < MIN_LABEL) throw new RangeError(`richLabel(): size ${size} is below ${MIN_LABEL}px`);
   assertInk(color, 'richLabel()');
@@ -107,6 +121,7 @@ export function richLabel({
     'text-anchor': anchor,
     'font-size': size,
     'font-weight': weight,
+    ...(mono ? { 'font-family': MONO } : {}),
     fill: color,
   }, kids);
 }
