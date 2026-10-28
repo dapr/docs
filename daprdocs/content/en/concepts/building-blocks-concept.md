@@ -16,7 +16,7 @@ The diagram below shows how building blocks expose a public API that is called f
 
 Dapr provides the following building blocks:
 
-<img src="/images/building_blocks.png" width=1200>
+{{< diagram building-blocks >}}
 
 | Building Block | Endpoint | Description |
 |----------------|----------|-------------|

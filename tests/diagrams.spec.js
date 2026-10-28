@@ -71,6 +71,66 @@ const SCENES = [
       'Vector',
     ],
   },
+  {
+    // One scene, two pages. Both rows are needed: the call-site guard matches on
+    name: 'building-blocks',
+    page: '/overview/',
+    labels: [
+      'Workflows',
+      'Publish & subscribe',
+      'Service invocation',
+      'State management',
+      'Actors',
+      'Jobs',
+      'Configuration',
+      'Secrets',
+      'Bindings',
+      'Cryptography',
+      'Distributed lock',
+      'Conversation',
+      'Binary Store',
+      'Search',
+      'Vector',
+    ],
+    alpha: [
+      'Cryptography',
+      'Distributed lock',
+      'Conversation',
+      'Binary Store',
+      'Search',
+      'Vector',
+    ],
+  },
+  {
+    // name AND page, so a scene shown twice must be listed twice.
+    name: 'building-blocks',
+    page: '/concepts/building-blocks-concept/',
+    labels: [
+      'Workflows',
+      'Publish & subscribe',
+      'Service invocation',
+      'State management',
+      'Actors',
+      'Jobs',
+      'Configuration',
+      'Secrets',
+      'Bindings',
+      'Cryptography',
+      'Distributed lock',
+      'Conversation',
+      'Binary Store',
+      'Search',
+      'Vector',
+    ],
+    alpha: [
+      'Cryptography',
+      'Distributed lock',
+      'Conversation',
+      'Binary Store',
+      'Search',
+      'Vector',
+    ],
+  },
 ];
 
 // Phone widths. 320 is the narrowest viewport still worth supporting, 360 and
@@ -129,7 +189,7 @@ function readPaint(page, name) {
 }
 
 for (const scene of SCENES) {
-  test.describe(scene.name, () => {
+  test.describe(`${scene.name} on ${scene.page}`, () => {
     test(`${scene.name} renders an inline svg with a title and desc`, async ({ page }) => {
       await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
 
@@ -170,10 +230,11 @@ for (const scene of SCENES) {
         await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
         // A tile's tag and its label are two <text> nodes in the same .d-tile
         // group, so read each tile whole and keep the ones carrying "alpha".
+        // A card's description is excluded: it is prose, not the tile's name.
         const tagged = await page.$$eval(`${sel(scene.name)} svg .d-tile`, (tiles) =>
           tiles
             .map((t) => {
-              const texts = [...t.querySelectorAll('text')].map((n) => {
+              const texts = [...t.querySelectorAll('text')].filter((n) => !n.closest('.d-tile-desc')).map((n) => {
                 const spans = n.querySelectorAll('tspan');
                 const parts = spans.length ? [...spans].map((s) => s.textContent) : [n.textContent];
                 return parts.join(' ').replace(/\s+/g, ' ').trim();
@@ -371,7 +432,7 @@ test('every .dapr-diagram on a visited page is listed in SCENES', async ({ page 
 // forced-colors block - and why it needs a test, as a named Review Focus item.
 test.describe('high contrast', () => {
   for (const scene of SCENES) {
-    test(`${scene.name} stays visible in forced-colors mode`, async ({ page }) => {
+    test(`${scene.name} on ${scene.page} stays visible in forced-colors mode`, async ({ page }) => {
       // emulateMedia, not test.use({ forcedColors }): the fixture form did not
       // make the media query match in this Chromium, so the test silently
       // measured the ordinary light theme instead of high contrast.

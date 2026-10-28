@@ -283,6 +283,7 @@ export function pill({ x, y, w, h = 26, text: content, color = C.navy, filled = 
 export function tile({
   x, y, icon = null, label: name = '', color = C.navy, filled = false, size = 99, w = size, h = size,
   inline = false, tag = '', labelSize = 11.5, inlinePad = 26, inlineGap = 24,
+  desc = '', descSize = 13, iconDy = 48, titleDy = 96, descDy = 124,
 }) {
   if (filled) assertInk(color, 'tile() filled');
   assertStroke(color, name, 'tile()');
@@ -291,7 +292,28 @@ export function tile({
   const parts = [
     el('rect', { x: n(x - w / 2), y: n(y - h / 2), width: n(w), height: n(h), rx: 10, fill: filled ? color : C.bg, ...outline(color) }),
   ];
-  if (inline) {
+  if (desc) {
+    // A capability card: glyph, title, then a paragraph. Laid out from the top
+    // edge rather than by proportion, so a card with a three-line description
+    // and one with a two-line description still line their glyphs and titles up.
+    // `desc` is split on newlines and never wrapped for you: where the lines
+    // break is a layout decision, and auto-wrapping would make the output
+    // depend on font metrics the exporter cannot see.
+    const top = y - h / 2;
+    const lines = String(desc).split('\n').length;
+    parts.push(place(x, top + iconDy));
+    parts.push(label({ x, y: top + titleDy, text: name, size: labelSize, weight: 700, color: ink }));
+    // Wrapped so the description is distinguishable from the title: a test
+    // that wants a card's name must not get its paragraph as well.
+    parts.push(el('g', { class: 'd-tile-desc' }, [label({
+      x,
+      y: top + descDy + ((lines - 1) * descSize * 1.2) / 2,
+      text: desc,
+      size: descSize,
+      weight: 400,
+      color: ink,
+    })]));
+  } else if (inline) {
     // inlinePad is the icon CENTRE's inset from the left edge, so the visible gap
     // is inlinePad minus half the glyph: raise it when a glyph grows, or it
     // creeps towards the edge.

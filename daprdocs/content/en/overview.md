@@ -36,7 +36,7 @@ This enables you to build microservice applications that can run on the cloud an
 
 ## Microservice building blocks for cloud and edge
 
-<img src="/images/building_blocks.png" width=1200 style="padding-bottom:15px;">
+{{< diagram building-blocks >}}
 
 Dapr provides distributed system building blocks for you to build microservice applications in a standard way and to deploy to any environment.
 

@@ -55,6 +55,17 @@ try {
     if ((await figure.count()) === 0) {
       throw new Error(`no diagram "${name}" on ${pagePath} - check the scene name and that the page calls the shortcode`);
     }
+    // A cookie banner or any other fixed overlay paints over the figure and
+    // ends up in the screenshot, hiding exactly the bottom row you wanted to
+    // check. Take them out of the picture first.
+    await page.evaluate(() => {
+      for (const node of document.querySelectorAll('body *')) {
+        if (getComputedStyle(node).position === 'fixed') {
+          node.style.setProperty('display', 'none', 'important');
+        }
+      }
+    });
+
     await figure.scrollIntoViewIfNeeded();
 
     const file = join(outDir, `${name}-${theme}.png`);
