@@ -31,17 +31,19 @@ const SCENES = [
       'HTTP/gRPC',
       'Building block APIs',
       'Workflows',
-      'Service invocation',
       'Publish & subscribe',
+      'Service invocation',
       'State management',
-      'Bindings',
       'Actors',
-      'Secrets',
-      'Configuration',
-      'Distributed lock',
-      'Cryptography',
       'Jobs',
+      'Configuration',
+      'Secrets',
+      'Bindings',
+      'Middleware',
+      'Cryptography',
+      'Distributed lock',
       'Conversation',
+      'Binary Store',
       'Search',
       'Vector',
       'Cross-cutting APIs',
@@ -54,6 +56,16 @@ const SCENES = [
       'Databases',
       'Message brokers',
       'Services',
+    ],
+    // Tiles that must carry the "alpha" tag, and the only ones that may.
+    // Source: daprdocs/content/en/operations/support/alpha-beta-apis.md.
+    alpha: [
+      'Cryptography',
+      'Distributed lock',
+      'Conversation',
+      'Binary Store',
+      'Search',
+      'Vector',
     ],
   },
 ];
@@ -132,6 +144,28 @@ for (const scene of SCENES) {
         expect(drawn, `missing label "${label}"`).toContain(label);
       }
     });
+
+    if (scene.alpha) {
+      test(`${scene.name} tags exactly the alpha APIs`, async ({ page }) => {
+        await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+        // A tile's tag and its label are two <text> nodes in the same .d-tile
+        // group, so read each tile whole and keep the ones carrying "alpha".
+        const tagged = await page.$$eval(`${sel(scene.name)} svg .d-tile`, (tiles) =>
+          tiles
+            .map((t) => {
+              const texts = [...t.querySelectorAll('text')].map((n) => {
+                const spans = n.querySelectorAll('tspan');
+                const parts = spans.length ? [...spans].map((s) => s.textContent) : [n.textContent];
+                return parts.join(' ').replace(/\s+/g, ' ').trim();
+              });
+              return { texts, isAlpha: texts.includes('alpha') };
+            })
+            .filter((t) => t.isAlpha)
+            .map((t) => t.texts.filter((x) => x !== 'alpha').join(' ')),
+        );
+        expect(tagged.sort()).toEqual([...scene.alpha].sort());
+      });
+    }
 
     test(`${scene.name} draws no text below 11px`, async ({ page }) => {
       await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
