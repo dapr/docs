@@ -88,7 +88,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | deletedWhenUnused  | N        | Whether or not the queue should be configured to [auto-delete](https://www.rabbitmq.com/queues.html) Defaults to `"true"`                                                                                                                                                                                                               | `"true"`, `"false"`
 | autoAck  | N        | Whether or not the queue consumer should [auto-ack](https://www.rabbitmq.com/confirms.html) messages. Defaults to `"false"`                                                                                                                                                                                                             | `"true"`, `"false"`
 | deliveryMode  | N        | Persistence mode when publishing messages. Defaults to `"0"`. RabbitMQ treats `"2"` as persistent, all other numbers as non-persistent                                                                                                                                                                                                  | `"0"`, `"2"`
-| requeueInFailure  | N        | Whether or not to requeue when sending a [negative acknowledgement](https://www.rabbitmq.com/nack.html) in case of a failure. Defaults to `"false"`                                                                                                                                                                                     | `"true"`, `"false"`
+| requeueInFailure  | N        | Whether or not to requeue a message whose handler failed. When `"true"`, the message is requeued with [`basic.reject`](https://www.rabbitmq.com/docs/nack), which RabbitMQ counts as a failed delivery (see [Delivery limit and poison messages](#delivery-limit-and-poison-messages)). When `"false"`, it is negatively acknowledged without requeue and dead-lettered if dead lettering is configured, otherwise dropped. Defaults to `"false"`                                                                                                                                                                                     | `"true"`, `"false"`
 | prefetchCount  | N        | Number of messages to [prefetch](https://www.rabbitmq.com/consumer-prefetch.html). Consider changing this to a non-zero value for production environments. Defaults to `"0"`, which means that all available messages will be pre-fetched.                                                                                              | `"2"`
 | publisherConfirm  | N        | If enabled, client waits for [publisher confirms](https://www.rabbitmq.com/confirms.html#publisher-confirms) after publishing a message. Defaults to `"false"`                                                                                                                                                                          | `"true"`, `"false"`
 | reconnectWait  | N        | How long to wait (in seconds) before reconnecting if a connection failure occurs                                                                                                                                                                                                                                                        | `"0"`
@@ -590,6 +590,16 @@ spec:
   metadata:
     queueType: quorum
 ```
+
+### Delivery limit and poison messages
+
+Quorum queues limit how often a message can fail before RabbitMQ dead-letters it, or drops it if the queue has no dead-letter exchange. The limit is set with the `delivery-limit` [policy](https://www.rabbitmq.com/docs/policies) or the `x-delivery-limit` queue argument. See [poison message handling](https://www.rabbitmq.com/docs/quorum-queues#poison-message-handling) in the RabbitMQ documentation for the default value and how to change it.
+
+With `requeueInFailure: "true"`, Dapr requeues a message whose handler failed with `basic.reject`, which counts against the limit. A message that keeps failing is therefore dead-lettered after `delivery-limit` attempts instead of being redelivered forever. Configure a dead-letter exchange for quorum queues so these messages are not lost.
+
+{{% alert title="Note" color="primary" %}}
+Since RabbitMQ 4.3, only failed deliveries count against the limit; `basic.nack` with requeue does not. Dapr versions before 1.20 requeued with `basic.nack`, so on RabbitMQ 4.3 and later the limit did not apply to them and a poison message was redelivered indefinitely. See [When is delivery count incremented?](https://www.rabbitmq.com/docs/quorum-queues#when-is-delivery-count-incremented).
+{{% /alert %}}
 
 ## Time-to-live
 
