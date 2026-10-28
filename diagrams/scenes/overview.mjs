@@ -44,6 +44,7 @@
 import { C, APP, el } from '../engine.mjs';
 import { arrow, group, hex, hexPoints, label, panel, pill, region, slots } from '../shapes.mjs';
 import { brand, icon, markHex, plate } from '../icons.mjs';
+import { CLOUDS, CLOUD_TEXT_DX, LANGUAGES, LANG_PLATE_H, cloudMark } from '../brands.mjs';
 import { APIS, CROSS_CUTTING, apiTile } from '../apis.mjs';
 
 const W = 1512;
@@ -84,47 +85,21 @@ const WEB_S = PW / 1158;
 const webX = (x) => PX + (x - 23) * WEB_S;
 const INFRA_Y = B3.y + (59 / 102) * B3.h;
 
-// The language and runtime marks, in the website's order. C++ is deliberately
-// absent on the maintainer's instruction; cpp.svg stays vendored for a later
-// scene. No mark carries a text label: each is a wordmark or a logo readers
-// know, and Rust's gear was the last caption, removed on the maintainer's call.
-// Go and PHP are the full-colour Commons files dapr.io vendors, so they are wide
-// wordmarks rather than the square single-colour glyphs they replaced.
-const LANG_PLATE_H = 80;
-const LANGUAGES = [
-  { name: 'nodejs', w: 81, h: 50, content: 81 },
-  { name: 'python', w: 148, h: 44, content: 135 },
-  { name: 'dotnet', w: 54, h: 54, content: 54 },
-  { name: 'go', w: 112, h: 42, content: 112 },
-  { name: 'java', w: 34, h: 62, content: 33 },
-  { name: 'php', w: 104, h: 56, content: 104 },
-  { name: 'rust', w: 54, h: 54, content: 54 },
-];
+// The language marks and the cloud marks come from ../brands.mjs, in
+// dapr.io's order. They were defined here first; the service mesh scene needs
+// the same two rows, and the copy it started from had already drifted to six
+// languages in a different order. Rust's gear was the last language caption,
+// removed on the maintainer's call. LANG_PLATE_H is 80 here rather than
+// brands.mjs's 80 at scale 1 because this band is drawn at scale 1.
 
 // The sixteen APIs and the three cross-cutting concerns come from
 // ../apis.mjs, in its order, which is the website's. Two rows of eight here;
 // the six alpha ones fall at the end of the second row because that is where
 // the catalogue puts them.
-// The cloud marks, exactly as dapr.io places them: no plates, left to right,
-// each at the website's own x. Azure and Kubernetes have no wordmark in their
-// file, so each gets a name beside it; AWS and Google Cloud carry theirs.
-// Kubernetes is the single-colour wheel tinted its own brand blue, which is why
-// C.kubernetes exists: it is the mark's colour, not a theme colour.
-const CLOUDS = [
-  { name: 'azure', x: 62, size: 30, text: 'Azure', textX: 83 },
-  { name: 'aws', x: 172, w: 50, h: 30, backed: true },
-  { name: 'google-cloud', x: 302, w: 156, h: 24, backed: true },
-  { name: 'kubernetes', x: 412, size: 30, color: C.kubernetes, text: 'Kubernetes', textX: 433 },
-];
-const CLOUD_LABEL = 15;
-// AWS and Google Cloud are wordmarks set in near-black and mid-grey, and their
-// owners' terms forbid recolouring them, so on the dark ground they get the
-// light backing these logos are designed to sit on. C.markPlate is transparent
-// in light mode, so band three stays pixel-identical to dapr.io there. Azure
-// and Kubernetes need no backing: one is a blue gradient, the other is tinted
-// brand blue, and both carry their name as ordinary theme-coloured text.
-const MARK_PLATE_H = 56;
-const MARK_PLATE_PAD = 16;
+// Where dapr.io puts each cloud mark, left to right, in the website's own x.
+// Each one's name starts CLOUD_TEXT_DX further right, which is what the
+// website's own pairs of x values differ by.
+const CLOUD_X = [62, 172, 302, 412];
 
 // What Dapr runs on and talks to that has no logo of its own: the same Fluent
 // glyphs dapr.io uses, with the label inline beside them. No plate. A plate is
@@ -245,35 +220,9 @@ export default {
         text: 'Host on & integrate with any cloud or edge infrastructure',
         color: C.navy,
       }),
-      CLOUDS.map((m) =>
-        group([
-          m.backed
-            ? plate({
-              x: webX(m.x),
-              y: INFRA_Y,
-              w: m.w * WEB_S + MARK_PLATE_PAD,
-              h: MARK_PLATE_H,
-              fill: C.markPlate,
-            })
-            : null,
-          icon({
-            name: m.name,
-            x: webX(m.x),
-            y: INFRA_Y,
-            ...(m.size ? { size: m.size * WEB_S } : { w: m.w * WEB_S, h: m.h * WEB_S }),
-            ...(m.color ? { color: m.color } : {}),
-          }),
-          m.text
-            ? label({
-              x: webX(m.textX),
-              y: INFRA_Y,
-              text: m.text,
-              size: CLOUD_LABEL * WEB_S,
-              anchor: 'start',
-            })
-            : null,
-        ]),
-      ),
+      CLOUDS.map((m, i) => cloudMark({
+        mark: m, x: webX(CLOUD_X[i]), y: INFRA_Y, k: WEB_S, textDx: CLOUD_TEXT_DX * WEB_S,
+      })),
       INFRA.map(([mark, name, glyphX, textX]) =>
         group([
           icon({ name: `fluent-${mark}`, x: webX(glyphX), y: INFRA_Y, size: 30 * WEB_S, color: C.blue }),

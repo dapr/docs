@@ -10,6 +10,8 @@ import hostingStandalone from './hosting-standalone.mjs';
 import hostingVms from './hosting-vms.mjs';
 import overview from './overview.mjs';
 import sidecarApis from './sidecar-apis.mjs';
+import schedulerArchitecture from './scheduler-architecture.mjs';
+import serviceMesh from './service-mesh.mjs';
 import sidecarModel from './sidecar-model.mjs';
 
 export const scenes = {
@@ -22,5 +24,7 @@ export const scenes = {
   'hosting-vms': hostingVms,
   overview,
   'sidecar-apis': sidecarApis,
+  'scheduler-architecture': schedulerArchitecture,
+  'service-mesh': serviceMesh,
   'sidecar-model': sidecarModel,
 };

@@ -23,10 +23,10 @@
 // it was drawn - are filled in from reference/components-reference/supported-*.
 //
 // Where this departs from the source image, and why:
-//   - the app hexagon was GREEN. The palette has no green; the app takes
-//     APP[0], as everywhere else, and appSidecar() draws the pair the way the
-//     hosting diagrams draw it, rather than the small docked badge this scene
-//     used to carry.
+//   - the app hexagon is APP[0], the solid Dapr green, as everywhere else -
+//     which is the colour the source used too - and appSidecar() draws the
+//     pair the way the hosting diagrams draw it, rather than the small docked
+//     badge this scene used to carry.
 //   - the names under each mark are gone, so the marks have to carry
 //     themselves: each is sized by its DRAWN box rather than its viewBox
 //     (fit: 'ink'), or a wordmark five units tall in a box thirty-three wide

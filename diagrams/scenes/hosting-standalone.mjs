@@ -11,8 +11,8 @@
 // scheduling. All four are current, so the source's four containers stand.
 //
 // Where this departs from the source image, and why:
-//   - the application hexagon was green, a colour this diagram set does not
-//     have. One app takes APP[0].
+//   - the application hexagon is green, as the source drew it: APP[0] is that
+//     green, drawn solid with dark ink on it. One app takes APP[0].
 //   - the component names were "Publish / Subscribe", "Workflow", "State
 //     Management" and "External Configuration". They are now the names these
 //     docs use everywhere else, which is what the building-blocks table and

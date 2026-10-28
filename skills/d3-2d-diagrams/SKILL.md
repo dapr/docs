@@ -294,6 +294,16 @@ cannot disagree with itself on another page.
   allowed BECAUSE the component scales as a whole: the mark, the offsets and
   the type all move together, so it is the same drawing bigger. What is not
   allowed is changing one of them by hand. Say in the scene why it differs.
+- **When a NEIGHBOUR sets the radius, the name is chosen, not derived.** The
+  Scheduler on `scheduler-architecture` is as big as the sidecar beside it,
+  because one of two shapes that call each other drawn smaller reads as the
+  lesser of them. That radius is three times `SERVICE_R`, and a name derived
+  from it comes out at 23 in a scene whose body type is 13 - the names stop
+  being names and become the subject. `serviceHex()` takes a `size` for this,
+  and the rule that comes with it is the point: every name under a hexagon in
+  that scene takes the SAME chosen size, so the exception is one decision in
+  one place rather than the drift the module exists to prevent. A scene that
+  passes `size` says in a comment which neighbour set the radius.
 - **ONE line weight for everything in a diagram, outlines included.** An
   arrow, a bus, a dashed border, a hexagon's outline and a card's outline all
   take `lineWidth()`. Deriving a border from its own SHAPE was tried and is

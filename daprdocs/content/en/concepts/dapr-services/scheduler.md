@@ -19,7 +19,7 @@ When the Scheduler serves [actor placement](#serving-actor-placement), one repli
 
 The diagram below shows how the Scheduler service is used via the jobs API when called from your application. All the jobs that are tracked by the Scheduler service are stored in the Etcd database.
 
-<img src="/images/scheduler/scheduler-architecture.png" alt="Diagram showing the Scheduler control plane service and the jobs API">
+{{< diagram scheduler-architecture >}}
 
 By default, Etcd is embedded in the Scheduler service, which means that the Scheduler service runs its own instance of Etcd.
 See [Scheduler service flags]({{% ref "#flag-tuning" %}}) for more information on how to configure the Scheduler service.

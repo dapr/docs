@@ -69,3 +69,11 @@ test('the name scales with the hexagon: the pair is one component', () => {
 test('a hexagon too small to carry a legible name is refused', () => {
   assert.throws(() => serviceHex({ key: 'sentry', x: 0, y: 0, r: 20 }), /below the 10px floor/);
 });
+
+test('serviceHex takes an explicit name size, and still holds the floor', () => {
+  // For a hexagon sized to match a neighbour rather than to its own role.
+  const node = serviceHex({ key: 'scheduler', x: 0, y: 0, r: 60, size: 17 });
+  const name = find(node, (x) => x.tag === 'text' && find(x, (c) => c.content === 'Scheduler').length)[0];
+  assert.equal(name.attrs['font-size'], 17, 'the given size, not the one derived from r');
+  assert.throws(() => serviceHex({ key: 'scheduler', x: 0, y: 0, r: 60, size: 9 }), /floor/);
+});

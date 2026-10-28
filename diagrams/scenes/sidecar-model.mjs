@@ -12,8 +12,9 @@
 //     POST /v1.0/workflows/<component>/<workflow>/start, so the version
 //     prefix was simply out of date. The other four calls were checked against
 //     their own reference pages and are unchanged.
-//   - the application hexagon was green, which is not a colour this diagram
-//     set has. One app takes APP[0], as everywhere else.
+//   - the application hexagon is green, as the source drew it: APP[0] is that
+//     green, drawn solid with dark ink on it, and every scene's first app
+//     takes it.
 //
 // Where this departs from the source image, and why:
 //   - the building block in each URL is ORANGE and the method is blue, which

@@ -103,6 +103,11 @@ export const C = Object.freeze({
   plate: 'var(--d-diagram-plate)',
   plateInk: 'var(--d-diagram-ink)',
   tealFill: 'var(--d-teal-fill)',
+  // The tints that go with C.blue and C.navy, named after the colour they
+  // belong to rather than after their token - C.blue IS --d-sky and C.navy IS
+  // --d-blue, and a scene picking a fill should not have to know that.
+  blueFill: 'var(--d-sky-fill)',
+  navyFill: 'var(--d-blue-fill)',
 });
 
 // The FIRST app in a diagram is Dapr's green, drawn solid with dark ink on it,

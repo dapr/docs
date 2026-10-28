@@ -67,9 +67,20 @@ export function service(key) {
 // One service. `r` is the only size: the hexagon, the mark, the offsets and
 // the name all follow from it. `role` draws the second line, for a diagram
 // with room under the name.
-export function serviceHex({ key, x, y, r = SERVICE_R, role = false, wrap = false }) {
+//
+// `size` overrides the derived name, and exists for one case: a scene that
+// sizes the hexagon to match a NEIGHBOUR rather than to its own role. The
+// Scheduler drawn beside a sidecar is as big as the sidecar, which is three
+// times the reference radius, and a name derived from that would be twice the
+// scene's body type. A scene that passes it owes a comment saying which
+// neighbour set the radius - and passes the same size to that neighbour's
+// name, or it has just reintroduced the drift this module exists to stop.
+export function serviceHex({ key, x, y, r = SERVICE_R, role = false, wrap = false, size: given }) {
   const s = service(key);
-  const size = serviceLabel(r);
+  const size = given ?? serviceLabel(r);
+  if (size < MIN_LABEL) {
+    throw new Error(`serviceHex(): a ${size}px name is below the ${MIN_LABEL}px floor.`);
+  }
   return group([
     markHex({ x, y, r, mark: 'logo-blue' }),
     label({ x, y: y + r * NAME_DY, text: s.name, size }),

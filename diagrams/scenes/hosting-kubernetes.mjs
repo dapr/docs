@@ -19,8 +19,8 @@
 // read than the sentence that already says it, so it is left to the table.
 //
 // Where this departs from the source image, and why:
-//   - the application hexagon was green, a colour this diagram set does not
-//     have. One app takes APP[0].
+//   - the application hexagon is green, as the source drew it: APP[0] is that
+//     green, drawn solid with dark ink on it. One app takes APP[0].
 //   - the component names are the ones these docs use everywhere else, as in
 //     the other scenes: Publish & subscribe, Workflows, State management,
 //     Configuration, Secrets.

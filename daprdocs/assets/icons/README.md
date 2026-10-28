@@ -246,3 +246,4 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+| `etcd.svg` | etcd logo, no wordmark | [CNCF artwork](https://github.com/cncf/artwork/blob/main/projects/etcd/icon/color/etcd-icon-color.svg), downloaded from https://raw.githubusercontent.com/cncf/artwork/main/projects/etcd/icon/color/etcd-icon-color.svg | CNCF project logos may be used under the [Linux Foundation trademark usage guidelines](https://www.linuxfoundation.org/legal/trademark-usage). etcd is a trademark of The Linux Foundation. | full | `67535552e993` |
