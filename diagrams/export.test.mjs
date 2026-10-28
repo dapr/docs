@@ -109,9 +109,29 @@ test(
   withDir((d) => {
     writeFileSync(join(d, 'gone.svg'), '<svg/>\n');
     writeFileSync(join(d, 'keep.txt'), 'x');
-    run({ scenes: fixtures(), outDir: d });
+    const r = run({ scenes: fixtures(), outDir: d });
+    assert.deepEqual(r.removed, ['gone.svg'], 'deletions are reported');
     assert.deepEqual(readdirSync(d).sort(), ['alpha.svg', 'beta.svg', 'keep.txt']);
     assert.equal(run({ scenes: fixtures(), outDir: d, check: true }).ok, true);
+  }),
+);
+
+test(
+  'export refuses to delete committed svgs when the registry is empty',
+  withDir((d) => {
+    run({ scenes: fixtures(), outDir: d });
+    const before = snapshot(d);
+    const r = run({ scenes: {}, outDir: d });
+    assert.equal(r.ok, false);
+    assert.match(r.problems.join('\n'), /registry is empty but 2 svgs exist/);
+    assert.deepEqual(snapshot(d), before);
+    // an empty registry over an empty directory is fine
+    const e = tmp();
+    try {
+      assert.equal(run({ scenes: {}, outDir: e }).ok, true);
+    } finally {
+      rmSync(e, { recursive: true, force: true });
+    }
   }),
 );
 
@@ -138,4 +158,9 @@ test('other malformed scenes fail with a named reason', () => {
   assert.throws(() => renderScene('x', scene({ build: () => 'nope' })), /must return an array/);
   assert.throws(() => renderScene('Bad Name', scene()), /name must match/);
   assert.throws(() => renderScene('../x', scene()), /name must match/);
+  // these slug to the same svg id as 'a-b' / 'a', which would collide
+  assert.throws(() => renderScene('a--b', scene()), /name must match/);
+  assert.throws(() => renderScene('a-', scene()), /name must match/);
+  assert.throws(() => renderScene('-a', scene()), /name must match/);
+  assert.doesNotThrow(() => renderScene('a-b', scene()));
 });

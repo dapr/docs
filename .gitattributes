@@ -3,3 +3,5 @@
 *.{bat,[bB][aA][tT]} text eol=crlf
 # Vendored brand marks must stay byte-for-byte as published (licence terms forbid modification).
 daprdocs/assets/icons/*.svg -text
+# Generated diagrams are compared byte-for-byte by --check, so a CRLF checkout on Windows must not alter them.
+daprdocs/assets/diagrams/*.svg text eol=lf

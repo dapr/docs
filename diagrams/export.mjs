@@ -9,7 +9,8 @@ import { svg } from './engine.mjs';
 const here = dirname(fileURLToPath(import.meta.url));
 export const OUT_DIR = join(here, '..', 'daprdocs', 'assets', 'diagrams');
 
-const NAME = /^[a-z0-9][a-z0-9-]*$/;
+// No doubled or trailing hyphens: those slug to the same svg id as their tidy twin.
+const NAME = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const blank = (v) => typeof v !== 'string' || !v.trim();
 
 // Render one scene to the exact file content (LF, trailing newline).
@@ -19,7 +20,7 @@ export function renderScene(name, scene) {
   const fail = (m) => {
     throw new Error(`scene "${name}": ${m}`);
   };
-  if (!NAME.test(name)) fail('name must match /^[a-z0-9][a-z0-9-]*$/');
+  if (!NAME.test(name)) fail(`name must match ${NAME}`);
   if (!scene || typeof scene !== 'object') fail('scene must be an object');
   if (blank(scene.title)) fail('title is required (non-empty string)');
   if (blank(scene.desc)) fail('desc is required (non-empty string)');
@@ -40,7 +41,7 @@ export function renderScene(name, scene) {
   return out.endsWith('\n') ? out : `${out}\n`;
 }
 
-// Returns { ok, problems[], written[] }. Renders everything before touching
+// Returns { ok, problems[], written[], removed[] } (removed = orphans deleted). Renders everything before touching
 // disk, so a bad scene leaves the output directory untouched.
 export function run({ scenes, outDir = OUT_DIR, check = false } = {}) {
   const problems = [];
@@ -52,7 +53,7 @@ export function run({ scenes, outDir = OUT_DIR, check = false } = {}) {
       problems.push(e.message);
     }
   }
-  if (problems.length) return { ok: false, problems, written: [] };
+  if (problems.length) return { ok: false, problems, written: [], removed: [] };
 
   const existing = existsSync(outDir) ? readdirSync(outDir).filter((f) => f.endsWith('.svg')) : [];
   const orphans = existing.filter((f) => !rendered.has(f.slice(0, -4)));
@@ -65,7 +66,13 @@ export function run({ scenes, outDir = OUT_DIR, check = false } = {}) {
       else if (readFileSync(file, 'utf8') !== content) problems.push(`${name}.svg: differs from a fresh render ${fix}`);
     }
     for (const f of orphans) problems.push(`${f}: no matching scene ${fix}`);
-    return { ok: problems.length === 0, problems, written: [] };
+    return { ok: problems.length === 0, problems, written: [], removed: [] };
+  }
+
+  // An emptied registry (typo, bad merge) must not silently wipe every committed diagram.
+  if (rendered.size === 0 && orphans.length) {
+    problems.push(`registry is empty but ${orphans.length} svgs exist in ${outDir}; refusing to delete them`);
+    return { ok: false, problems, written: [], removed: [] };
   }
 
   mkdirSync(outDir, { recursive: true });
@@ -75,18 +82,19 @@ export function run({ scenes, outDir = OUT_DIR, check = false } = {}) {
     written.push(`${name}.svg`);
   }
   for (const f of orphans) unlinkSync(join(outDir, f));
-  return { ok: true, problems: [], written };
+  return { ok: true, problems: [], written, removed: orphans };
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const { scenes } = await import('./scenes/index.mjs');
   const check = process.argv.includes('--check');
-  const { ok, problems, written } = run({ scenes, check });
+  const { ok, problems, written, removed } = run({ scenes, check });
   if (!ok) {
     console.error(check ? 'Diagram check failed:' : 'Diagram export failed:');
     for (const p of problems) console.error(`  ${p}`);
     process.exitCode = 1;
   } else {
+    for (const f of removed) console.log(`Removed orphan: ${f}`);
     console.log(check ? `Diagrams up to date (${Object.keys(scenes).length}).` : `Exported ${written.length} diagram(s).`);
   }
 }
