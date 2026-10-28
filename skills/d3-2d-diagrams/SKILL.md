@@ -234,8 +234,17 @@ note in this skill came from a number that disagreed with how it looked.
   `C.markPlate`, which is transparent in light mode and a light plate in dark.
   The light rendering is then unchanged and the mark stays legible on the dark
   ground. A mark that is already a light or saturated color needs no backing.
+- **Some projects publish their logo as a raster inside an svg wrapper.**
+  Zipkin's is one: every variant in its own repository is a base64 PNG in an
+  `<image>`. Use it anyway when it is the official mark, but know the cost: it
+  does not scale crisply like the vector marks, and it adds its whole payload
+  to the generated file, which is tens of kilobytes. Check it has an alpha
+  channel rather than a baked-in background, or it will show as a rectangle in
+  one of the two themes. A raster is never tinted: it carries its own colours.
 - **Every file is screened on load:** no `<script>`, no event handlers, no
-  external `href`, and only an allowlist of elements. Metadata namespaces
+  external `href`, and only an allowlist of elements. The single exception is
+  an `<image>` carrying a base64 image payload, which cannot run or fetch
+  anything; a data URI anywhere else, or of any other type, is still refused. Metadata namespaces
   (`cc:`, `dc:`, `rdf:`) are tolerated because `<metadata>` is dropped whole.
 - **Missing files:** if the user names no source and no official file can be
   found, ask before using a substitute.

@@ -108,7 +108,11 @@ test('icon rejects a mark containing <script>, an event handler, or an external 
     hrefHttp: '<svg viewBox="0 0 1 1"><image href="http://evil.example/p.png"/></svg>',
     hrefRelative: '<svg viewBox="0 0 1 1"><use href="other.svg#x"/></svg>',
     hrefJs: '<svg viewBox="0 0 1 1"><a href="javascript:alert(1)"><path d="M0 0"/></a></svg>',
-    hrefData: '<svg viewBox="0 0 1 1"><image href="data:image/png;base64,AAAA"/></svg>',
+    // The inline-image exception is for <image> only, and for image payloads only.
+    hrefDataOnUse: '<svg viewBox="0 0 1 1"><use href="data:image/png;base64,AAAA"/></svg>',
+    hrefDataSvg: '<svg viewBox="0 0 1 1"><image href="data:image/svg+xml;base64,AAAA"/></svg>',
+    hrefDataHtml: '<svg viewBox="0 0 1 1"><image href="data:text/html;base64,AAAA"/></svg>',
+    attrDataOnImage: '<svg viewBox="0 0 1 1"><image href="#a" fill="data:image/png;base64,AAAA"/></svg>',
     foreignObject: '<svg viewBox="0 0 1 1"><foreignObject><div>x</div></foreignObject></svg>',
     cssUrl: '<svg viewBox="0 0 1 1"><style>.a{fill:url(https://evil.example/x)}</style><path class="a" d="M0 0"/></svg>',
     attrUrl: '<svg viewBox="0 0 1 1"><path fill="url(http://evil.example/x)" d="M0 0"/></svg>',
@@ -173,8 +177,8 @@ test('external targets are still refused in every spelling the normaliser accept
   assert.throws(() => render('sp-dup2', '<svg viewBox="0 0 10 10"><use href="#a" xlink:href="#b"/></svg>'), /both href and xlink:href/);
 });
 
-test('only allowlisted elements pass the screen (handler, animateColor, a, image, text, switch, ...)', () => {
-  for (const tag of ['handler', 'animateColor', 'a', 'image', 'text', 'switch', 'mask', 'filter', 'feImage', 'animate', 'set', 'script', 'foreignObject', 'listener']) {
+test('only allowlisted elements pass the screen (handler, animateColor, a, text, switch, ...)', () => {
+  for (const tag of ['handler', 'animateColor', 'a', 'text', 'switch', 'mask', 'filter', 'feImage', 'animate', 'set', 'script', 'foreignObject', 'listener']) {
     assert.throws(() => render(`el-${tag.toLowerCase()}`, `<svg viewBox="0 0 1 1"><${tag}/></svg>`), (e) => e instanceof IconError && /not an allowed element/.test(e.message), tag);
   }
   // Case matters: SVG element names are case-sensitive.
@@ -182,6 +186,24 @@ test('only allowlisted elements pass the screen (handler, animateColor, a, image
   for (const tag of ['path', 'g', 'rect', 'polygon', 'circle', 'defs']) {
     assert.doesNotThrow(() => render(`ok-${tag}`, `<svg viewBox="0 0 1 1"><${tag}/></svg>`), tag);
   }
+});
+
+test('<image> is allowed, but only carrying an inline image payload', () => {
+  // Some projects publish their logo as a raster inside an svg wrapper. That
+  // payload cannot run or fetch anything, so it is the one data URI allowed -
+  // and only on <image>, and only for an image type. The rejection cases above
+  // pin every way of widening that further.
+  const png = 'data:image/png;base64,iVBORw0KGgo=';
+  assert.doesNotThrow(() =>
+    render('raster', `<svg viewBox="0 0 2 2"><image width="2" height="2" href="${png}"/></svg>`));
+  assert.match(
+    render('raster2', `<svg viewBox="0 0 2 2"><image width="2" height="2" xlink:href="${png}"/></svg>`),
+    /href="data:image\/png;base64,/,
+    'xlink:href is rewritten to href and the payload survives',
+  );
+  // A raster carries its own colour, so it must never be treated as tintable.
+  const out = render('raster3', `<svg viewBox="0 0 2 2"><image width="2" height="2" href="${png}"/></svg>`, { color: C.red });
+  assert.ok(!out.includes('var(--d-red)'), 'a raster mark must not be tinted');
 });
 
 test('a source class named d-* is prefixed like any other and cannot hide from the prefix check', () => {

@@ -139,7 +139,7 @@ function parseXml(src, name) {
 const ALLOWED_TAGS = new Set([
   'svg', 'g', 'defs', 'path', 'polygon', 'rect', 'circle', 'ellipse', 'line', 'polyline',
   'linearGradient', 'radialGradient', 'stop', 'clipPath', 'style', 'title', 'desc',
-  'metadata', 'use',
+  'metadata', 'use', 'image',
 ]);
 // Creative Commons, Dublin Core and RDF elements appear inside <metadata> in
 // files exported by Inkscape (php.svg is one). clean() drops <metadata> whole,
@@ -160,7 +160,12 @@ function assertSafe(root, name) {
   const fail = (why) => {
     throw new IconError(`mark "${name}" rejected: ${why}`);
   };
-  const checkValue = (v, where) => {
+  // Some official logos ship as a raster inside an svg wrapper. That payload is
+  // inert - it cannot run or fetch anything - so <image> may carry a base64
+  // image data URI and nothing else may carry a data URI at all.
+  const INLINE_IMAGE = /^data:image\/(png|jpeg|gif|webp);base64,[A-Za-z0-9+/=\s]+$/i;
+  const checkValue = (v, where, allowInlineImage = false) => {
+    if (allowInlineImage && INLINE_IMAGE.test(v.trim())) return;
     if (/javascript:|vbscript:|data:|expression\s*\(|@import/i.test(v)) fail(`${where} contains a script, data or import reference`);
     for (const u of v.matchAll(/url\(\s*(['"]?)([^)'"]*)\1\s*\)/gi)) {
       if (!u[2].trim().startsWith('#')) fail(`${where} references an external url(${u[2]})`);
@@ -172,10 +177,12 @@ function assertSafe(root, name) {
     for (const [k, v] of Object.entries(n.attrs)) {
       const key = k.toLowerCase();
       if (/^on/.test(key)) fail(`has the event handler attribute ${k}`);
-      if (key === 'href' || key.endsWith(':href')) {
-        if (!v.trim().startsWith('#')) fail(`has an external ${k}="${v}"`);
+      const isHref = key === 'href' || key.endsWith(':href');
+      const inlineImageOk = isHref && tag === 'image';
+      if (isHref && !(inlineImageOk && INLINE_IMAGE.test(v.trim())) && !v.trim().startsWith('#')) {
+        fail(`has an external ${k}="${v.slice(0, 60)}"`);
       }
-      checkValue(v, `attribute ${k}`);
+      checkValue(v, `attribute ${k}`, inlineImageOk);
     }
     if (tag === 'style') {
       for (const c of n.children) if (c.text !== undefined) checkValue(c.text, '<style>');
@@ -271,6 +278,9 @@ function hasOwnColour(root) {
     if (!NO_PAINT.test(v.trim())) found = true;
   };
   walk(root, (n) => {
+    // An embedded raster carries its own colours by definition, and nothing a
+    // tint could set would reach its pixels.
+    if (n.tag === 'image') found = true;
     for (const [k, v] of Object.entries(n.attrs)) {
       if (k === 'fill' || k === 'stroke' || k === 'stop-color' || k === 'flood-color') paint(v);
       if (k === 'style') for (const d of v.matchAll(/(?:^|;)\s*(fill|stroke|stop-color|flood-color)\s*:\s*([^;]+)/g)) paint(d[2]);

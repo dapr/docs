@@ -17,10 +17,9 @@
 //     Management" and "External Configuration". They are now the names these
 //     docs use everywhere else, which is what the building-blocks table and
 //     the other two diagrams on overview.md say.
-//   - Zipkin is drawn as a tracing glyph with its name, not its logo. No
-//     freely licensed Zipkin mark could be found in Simple Icons or on
-//     Wikimedia Commons, and the skill's rule is to name a platform in text
-//     rather than substitute a lookalike. Redis keeps its official mark.
+//   - Zipkin's mark is the project's own, from the Apache-2.0 openzipkin site
+//     repo. It is the one logo here that is a raster inside an svg wrapper
+//     rather than vector art, which is how the project publishes it.
 //   - the two commands are set in the page's own monospace font, the one its
 //     code and pre elements use. They are things you type, and the body font
 //     makes them read as prose.
@@ -51,7 +50,7 @@ const CONTAINERS = [
   ['logo-blue', 'Scheduler', 'Schedule jobs to run\nat specified intervals'],
   ['logo-blue', 'Placement', 'Create mapping table of\nactor instances and pods'],
   ['redis', 'Redis', 'State management and\npub/sub messaging'],
-  ['fluent-heart-pulse', 'Zipkin', 'Send distributed\ntracing'],
+  ['zipkin', 'Zipkin', 'Send distributed\ntracing'],
 ];
 
 const WHY_X = 310; // where each container's reason starts
