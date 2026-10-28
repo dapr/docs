@@ -94,6 +94,7 @@ export const C = Object.freeze({
   body: 'var(--d-body)',
   bg: 'var(--d-ground)',
   plate: 'var(--d-diagram-plate)',
+  plateInk: 'var(--d-diagram-ink)',
   tealFill: 'var(--d-teal-fill)',
 });
 

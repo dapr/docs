@@ -30,6 +30,9 @@
   --d-grey:        #303030;
   --d-caption:     #747474;
   --d-diagram-plate: #ffffff;
+  /* Ink for anything drawn ON a plate. The plate is near-white in BOTH themes,
+     so its ink must not follow --d-body, which inverts. */
+  --d-diagram-ink:   #1c2330;
 }
 [data-bs-theme="dark"] {
   --d-blue:   #6f9fe8;
@@ -61,4 +64,5 @@
   --d-grey:        #c4c9d4;
   --d-caption:     #9aa3b2;
   --d-diagram-plate: #e8ebf1;
+  --d-diagram-ink:   #1c2330;
 }
