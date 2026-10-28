@@ -15,7 +15,7 @@ As a CNCF distributed application runtime, Dapr is portable and event-driven, ma
 
 ## Any language, any framework, anywhere
 
-<img src="/images/overview.png" width=1200 style="padding-bottom:15px;">
+{{< diagram overview >}}
 
 With the current wave of cloud adoption, web + database application architectures (such as classic 3-tier designs) are trending more toward microservice application architectures, which are inherently distributed. You shouldn't have to become a distributed systems expert just to create microservices applications.
 
