@@ -49,12 +49,14 @@ test('hex draws a pointy-top hexagon with 6 points at radius r', () => {
   assert.equal(poly.attrs['stroke-width'], 2.2);
 });
 
-test('hex defaults to APP[0] colours and a label of a third of r, never under 11', () => {
+test('hex defaults to APP[0] colours and a label of a third of r, never under the floor', () => {
   const g = S.hex({ x: 0, y: 0 });
   const [t] = find(g, (x) => x.tag === 'text');
   assert.equal(find(g, (x) => x.tag === 'polygon')[0].attrs.stroke, APP[0].stroke);
   assert.equal(+t.attrs['font-size'], 14.17);
-  assert.equal(+find(S.hex({ x: 0, y: 0, r: 32 }), (x) => x.tag === 'text')[0].attrs['font-size'], 11);
+  // A third of r while that clears the floor, and the floor below it.
+  assert.equal(+find(S.hex({ x: 0, y: 0, r: 36 }), (x) => x.tag === 'text')[0].attrs['font-size'], 12);
+  assert.equal(+find(S.hex({ x: 0, y: 0, r: 24 }), (x) => x.tag === 'text')[0].attrs['font-size'], S.MIN_LABEL);
   assert.ok(Math.abs(Math.hypot(polyPts(g)[0][0], polyPts(g)[0][1]) - 42.5) < 0.02);
 });
 
@@ -88,7 +90,7 @@ test('label with halo:true emits a stroked copy beneath the fill', () => {
 });
 
 test('label defaults to 11px / 600 / body, refuses under 11px and teal or mint text', () => {
-  assert.throws(() => S.label({ x: 0, y: 0, text: 'x', size: 10 }), RangeError);
+  assert.throws(() => S.label({ x: 0, y: 0, text: 'x', size: 9 }), RangeError);
   assert.throws(() => S.label({ x: 0, y: 0, text: 'x', color: C.teal }));
   assert.throws(() => S.label({ x: 0, y: 0, text: 'x', color: C.mint }));
   const t = S.label({ x: 0, y: 0, text: 'x' });

@@ -20,7 +20,7 @@
 // refused rather than quietly made illegible.
 
 import { C } from './engine.mjs';
-import { group, label } from './shapes.mjs';
+import { MIN_LABEL, group, label } from './shapes.mjs';
 import { markHex } from './icons.mjs';
 
 // The reference radius: the control plane hexagons on the Kubernetes diagram.
@@ -32,7 +32,6 @@ export const ROLE_DY = 2.4;
 
 // The name's size, as a multiple of the radius.
 export const SERVICE_LABEL = 13 / 34;
-const MIN_LABEL = 11;
 
 // The size a name takes beside a hexagon of this radius. Exported because a
 // neighbour that is NOT a Dapr service - Consul, Redis, Zipkin - has to set
@@ -40,7 +39,7 @@ const MIN_LABEL = 11;
 export function serviceLabel(r) {
   const size = +(r * SERVICE_LABEL).toFixed(2);
   if (size < MIN_LABEL) {
-    throw new Error(`serviceLabel(): radius ${r} gives a ${size}px name, below the 11px floor. Draw the hexagon larger.`);
+    throw new Error(`serviceLabel(): radius ${r} gives a ${size}px name, below the ${MIN_LABEL}px floor. Draw the hexagon larger.`);
   }
   return size;
 }

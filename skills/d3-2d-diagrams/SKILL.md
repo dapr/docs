@@ -117,8 +117,16 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
   about a third of the hexagon's radius; section captions in `C.caption`. Use
   `\n` for a second line, which `label()` centers vertically for you.
 - **Text over a line** gets `halo: true` so the line does not run through it.
-- **Never below 11 units,** which the builders enforce. See the canvas-relative
-  note above before choosing a size on a wide canvas.
+- **Never below `MIN_LABEL`, which is 10 units.** It is declared once, in
+  `diagrams/shapes.mjs`, and every builder that derives a size imports it
+  rather than carrying its own copy - three of them did carry copies, which is
+  how a floor ends up being three different numbers. `label()` throws below it,
+  and `cardSizes()` and `serviceLabel()` REFUSE a component drawn too small to
+  carry a legible name rather than clamping it: a clamped name is a drawing
+  that silently stops scaling, while a refusal says the shape has to be bigger.
+  Lowering the floor is a change in one place; raising it will fail the scenes
+  that no longer fit. See the canvas-relative note above before choosing a size
+  on a wide canvas.
 - **One constant for every label and description in a scene.** A description
   set a point smaller than the name above it does not read as quieter, it reads
   as a different class of thing. One `TEXT` constant also stops the two drifting

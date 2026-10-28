@@ -13,7 +13,10 @@ export const OUTLINE = 2.2;
 export const ARROW_W = 2;
 export const HEAD = 8;
 export const FILL_OPACITY = 0.6;
-export const MIN_LABEL = 11;
+// The smallest type anywhere in the set. Every builder that derives a size
+// checks against THIS constant rather than carrying its own copy, so the
+// floor can only ever be in one place.
+export const MIN_LABEL = 10;
 const HIDDEN = { 'stroke-dasharray': '3 3', 'stroke-opacity': 0.35 };
 
 const n = (v) => String(+Number(v).toFixed(2));
@@ -331,10 +334,15 @@ export function pill({ x, y, w, h = 26, text: content, color = C.navy, filled = 
 
 // `icon` is a Node, or a function (cx, cy) => Node when it needs its position.
 // The icon builder arrives in Task 4.
+// The tag's centre, below the card's top edge. A tag is 11px, so its band runs
+// TAG_DY +/- 5.5 from the top. It used to be 16, which put the band into the
+// glyph on a small card.
+const TAG_DY = 12;
+
 export function tile({
   x, y, icon = null, label: name = '', color = C.navy, filled = false, size = 99, w = size, h = size,
   inline = false, tag = '', labelSize = 11.5, inlinePad = 26, inlineGap = 24,
-  desc = '', descSize = 13, iconDy = 48, titleDy = 96, descDy = 124,
+  desc = '', descSize = 13, iconDy = 48, titleDy = 96, descDy = 124, tagPush = 0,
   // Plain tiles place the glyph and name by proportion, which is fine until the
   // tile is square and the name runs to two lines. Give glyphSize and the two
   // are treated as ONE group and centred in the tile together, which is what
@@ -378,6 +386,12 @@ export function tile({
   } else {
     let gDy = glyphDy;
     let nDy = nameDy;
+    // A small card has to drop its glyph as well to clear the tag. This is the
+    // scene's call, not the card's: pushing only the TAGGED cards would leave
+    // their glyphs sitting lower than their untagged neighbours in the same
+    // row, which is worse than the problem it fixes. A scene uses it where its
+    // rows are all tagged or all not.
+    const push = tag && glyphDy === null ? tagPush : 0;
     if (glyphSize !== null && (gDy === null || nDy === null)) {
       // Stack glyph over name, then centre the stack. The name block's height
       // is what makes a two-line card differ from a one-line one.
@@ -386,10 +400,14 @@ export function tile({
       if (gDy === null) gDy = top + glyphSize / 2;
       if (nDy === null) nDy = top + glyphSize + glyphGap + nameH / 2;
     }
-    parts.push(place(x, y + (gDy ?? -h * 0.15)));
+    parts.push(place(x, y + push + (gDy ?? -h * 0.15)));
     parts.push(label({ x, y: y + (nDy ?? h * 0.3), text: name, size: labelSize, color: ink }));
   }
-  if (tag) parts.push(label({ x: x + w / 2 - 8, y: y - h / 2 + 16, text: tag, size: 11, anchor: 'end', color: ink }));
+  // The tag sits in the top-right corner, and the glyph below it drops out of
+  // its way. Before this the tag was placed at a FIXED inset while the glyph
+  // was placed at a PROPORTION of the height, so the two converged as the card
+  // got smaller: they grazed on a 118 card and overlapped by 7 units on an 88.
+  if (tag) parts.push(label({ x: x + w / 2 - 8, y: y - h / 2 + TAG_DY, text: tag, size: 11, anchor: 'end', color: ink }));
   return el('g', { class: 'd-tile' }, parts);
 }
 

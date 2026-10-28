@@ -3,8 +3,9 @@
 // happens to the in-memory copy (ids and classes prefixed, outer <svg> replaced
 // by a positioned <g>). Pure: identical input gives byte-identical output.
 
-import { readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { join } from 'node:path';
 import { el, text, C } from './engine.mjs';
 import { label as drawLabel, group, hexPoints, OUTLINE } from './shapes.mjs';
 
@@ -363,20 +364,41 @@ export function listMarks(dir = ICONS_DIR) {
     .sort();
 }
 
+// The measured drawn box, read once. A mark with no entry is a mark that has
+// not been measured since it was added, which is a mistake rather than a
+// reason to silently fall back to its viewBox.
+let inkTable = null;
+function inkBox(name) {
+  if (inkTable === null) {
+    const file = join(ICONS_DIR, 'ink.json');
+    inkTable = existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : {};
+  }
+  const box = inkTable[name];
+  if (!box) throw new IconError(`mark "${name}": no entry in ink.json; run npm run measure:ink`);
+  return box;
+}
+
 // x, y are the CENTRE of the box, like every other builder. `size` makes a square
 // box; give `w` and `h` for a wide mark. The mark is scaled to fit the box and
 // keeps its aspect ratio, centred in it. `color` tints single-colour marks only.
 // `label` is optional; with none, nothing but the mark is drawn. `scope` is for
 // pages that hold several diagrams: pass the diagram id so two diagrams that draw
 // the same mark at the same spot still get distinct ids.
-export function icon({ name, x, y, size = 32, w, h, color = C.body, label, labelDy, labelSize = 13, scope, dir = ICONS_DIR }) {
+export function icon({ name, x, y, size = 32, w, h, color = C.body, label, labelDy, labelSize = 13, scope, dir = ICONS_DIR, fit = 'box' }) {
   const src = readMark(name, dir);
   const boxW = w ?? size;
   const boxH = h ?? size;
   const sc = scope === undefined ? currentScope : scope;
   const prefix = `ic-${sc ? `${sc}-` : ''}${name}-${num(x)}-${num(y)}-`;
   const mark = parseMark(src, { name, prefix });
-  const [vx, vy, vw, vh] = mark.viewBox;
+  // `fit: 'ink'` sizes the mark by what it DRAWS rather than by its viewBox.
+  // The two differ a lot: go.svg draws 24x9 in a 24x24 box and the Google
+  // Cloud wordmark is 5 units tall in a box 33 wide, so marks given the same
+  // size come out at very different weights. That is tolerable in a row where
+  // each mark carries its name and hopeless in a column where none do. The
+  // drawn box cannot be computed from path data without a renderer, so it is
+  // measured into ink.json by `npm run measure:ink`.
+  const [vx, vy, vw, vh] = fit === 'ink' ? inkBox(name) : mark.viewBox;
   const s = Math.min(boxW / vw, boxH / vh);
   const tx = x - (vw * s) / 2 - vx * s;
   const ty = y - (vh * s) / 2 - vy * s;

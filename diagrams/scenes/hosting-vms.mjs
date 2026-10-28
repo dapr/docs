@@ -32,6 +32,7 @@ import { APP, C, el } from '../engine.mjs';
 import { OUTLINE, arrow, group, hex, hexHalfWidth, hexPoints, label, panel, pill } from '../shapes.mjs';
 import { MARK_IN_HEX, icon, markHex } from '../icons.mjs';
 import { apiTile } from '../apis.mjs';
+import { appSidecar, sidecarAt, sidecarDx } from '../app.mjs';
 import { NAME_DY, SERVICE_R, serviceHex, serviceLabel } from '../services.mjs';
 
 const W = 1200;
@@ -75,18 +76,15 @@ const ROWS = [
 // ---- the apps, on the first and last machine ----
 const APP_Y = 130;
 const APP_R = 40;
-const SIDE_R = 30;
-const SIDE_DX = hexHalfWidth(SIDE_R);
-const SIDE_DY = 50; // the sidecar line clears the app hexagon above it
+const APP_SIZE = 15;
 // The SIDECAR is centred on the machine's service column, not the app-and-
 // sidecar group on the machine. That is what lets the connector down to Consul
 // be vertical and land on the hexagon's apex; centring the group instead puts
-// the sidecar 17 units off the column and the arrow leans visibly over the
-// short drop. The app hangs to its left and the pair is still well inside the
-// machine.
-const sideX = (i) => vmCentre(i);
-const appX = (i) => sideX(i) - SIDE_DX;
-const SIDE_Y = APP_Y + SIDE_DY;
+// the sidecar off the column and the arrow leans visibly over the short drop.
+// appSidecar() hangs the sidecar off the app's right side, so the app is that
+// far to the left of the column.
+const appX = (i) => vmCentre(i) - sidecarDx(APP_R);
+const sideOf = (i) => sidecarAt({ x: appX(i), y: APP_Y, r: APP_R, size: APP_SIZE });
 
 const APPS = [
   { vm: 0, name: 'App A', app: APP[0] },
@@ -156,28 +154,21 @@ export default {
 
       // ---- the applications ------------------------------------------------
       APPS.map(({ vm, name, app }) => {
-        const ax = appX(vm);
-        const sx = sideX(vm);
+        const side = sideOf(vm);
         return group([
-          hex({ x: ax, y: APP_Y, r: APP_R, label: name, size: 15, stroke: app.stroke, fill: app.fill }),
-          group([
-            markHex({ x: sx, y: SIDE_Y, r: SIDE_R, mark: 'logo-blue' }),
-          ]),
+          appSidecar({ x: appX(vm), y: APP_Y, r: APP_R, label: name, size: APP_SIZE, stroke: app.stroke, fill: app.fill }),
           // Down onto the first service in this machine's column. Both ends
           // are shapes, so the arrow stops at each edge rather than at a
           // coordinate that happens to be near one.
-          arrow({
-            from: { x: sx, y: SIDE_Y, r: SIDE_R, hex: true },
-            to: { x: vmCentre(vm), y: ROW_TOP, r: HEX_R, hex: true },
-          }),
+          arrow({ from: side, to: { x: vmCentre(vm), y: ROW_TOP, r: HEX_R, hex: true } }),
         ]);
       }),
 
       // The two sidecars call each other, which is the whole point of running
       // them on separate machines, so that line carries a head at each end.
       ...(() => {
-        const a = { x: sideX(0), y: SIDE_Y, r: SIDE_R, hex: true };
-        const b = { x: sideX(VM_COUNT - 1), y: SIDE_Y, r: SIDE_R, hex: true };
+        const a = sideOf(0);
+        const b = sideOf(VM_COUNT - 1);
         return [arrow({ from: a, to: b }), arrow({ from: b, to: a })];
       })(),
 
@@ -189,10 +180,10 @@ export default {
         'stroke-width': 2,
       }),
       arrow({
-        from: { x: sideX(VM_COUNT - 1), y: SIDE_Y, r: SIDE_R, hex: true },
-        to: [COMP_BUS_X, SIDE_Y],
+        from: sideOf(VM_COUNT - 1),
+        to: [COMP_BUS_X, sideOf(VM_COUNT - 1).y],
       }),
-      label({ x: COMP_BUS_X - 6, y: SIDE_Y - 20, text: 'Use components', size: TEXT, anchor: 'end' }),
+      label({ x: COMP_BUS_X - 6, y: sideOf(VM_COUNT - 1).y - 20, text: 'Use components', size: TEXT, anchor: 'end' }),
 
       COMPONENTS.map((key, i) => {
         const y = CARD_TOP + i * CARD_PITCH;

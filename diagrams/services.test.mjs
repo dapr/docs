@@ -67,5 +67,5 @@ test('the name scales with the hexagon: the pair is one component', () => {
 });
 
 test('a hexagon too small to carry a legible name is refused', () => {
-  assert.throws(() => serviceHex({ key: 'sentry', x: 0, y: 0, r: 20 }), /below the 11px floor/);
+  assert.throws(() => serviceHex({ key: 'sentry', x: 0, y: 0, r: 20 }), /below the 10px floor/);
 });

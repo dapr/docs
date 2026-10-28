@@ -74,7 +74,7 @@ and a name - and owns the two things a caller must not vary.
 | Export | Returns |
 | --- | --- |
 | `card(o)` | `mark, name, w, h, inline, color, filled, tag`, plus any `tile()` option | the card, with the mark and the name sized from it |
-| `cardSizes(o)` | `{ glyph, label }` for a card of these dimensions; throws below the 11px floor |
+| `cardSizes(o)` | `{ glyph, label }` for a card of these dimensions; throws below the 10px floor |
 | `CARD_W`, `CARD_GLYPH` | the reference card's width, 112, and the mark as a fraction of the card's short side |
 | `STACKED_LABEL`, `INLINE_LABEL` | the name as a fraction of the short side, for the two forms |
 
@@ -116,7 +116,7 @@ scheduler, sentry, operator, injector - and draws it.
 | `SERVICES` | the five, in that order; each `{ key, name, role, wrap }` |
 | `service(key)` | one entry; throws on anything else, Consul included |
 | `serviceHex(o)` | `key, x, y, r` (`SERVICE_R`), `role, wrap` | a Dapr hexagon with the service's name under it, and its role under that when `role` is set. `r` is the only size: the name is derived from it |
-| `serviceLabel(r)` | the name size for that radius, for a neighbour that is not a Dapr service; throws below 11px |
+| `serviceLabel(r)` | the name size for that radius, for a neighbour that is not a Dapr service; throws below 10px |
 | `SERVICE_LABEL` | the name's size as a multiple of `r` |
 | `SERVICE_R` | the reference radius, 34 |
 | `NAME_DY`, `ROLE_DY` | the name's and role's offsets, as multiples of `r` |

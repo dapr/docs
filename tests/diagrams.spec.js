@@ -261,6 +261,25 @@ const SCENES = [
     page: '/concepts/building-blocks-concept/',
     labels: ['Your code', 'API', 'HTTP or gRPC', 'Building block', 'Component'],
   },
+  {
+    name: 'components-concept',
+    page: '/concepts/components-concept/',
+    labels: [
+      'App',
+      'State management',
+      'Publish & subscribe',
+      'Bindings',
+      'Secrets',
+      'Configuration',
+      'Distributed lock',
+      'Cryptography',
+      'Conversation',
+      'Middleware',
+      'Binary Store',
+      'Search',
+      'Vector',
+    ],
+  },
 ];
 
 // Phone widths. 320 is the narrowest viewport still worth supporting, 360 and
@@ -394,16 +413,22 @@ for (const scene of SCENES) {
     // _diagrams.scss sets `svg { width: 100% }`, so the rendered size is
     // size x columnWidth / viewBoxWidth: on a 1512-wide canvas a 12-unit label
     // lands near 6-7 CSS px in a typical Docsy column. The floor is therefore
-    // canvas-relative, and the same "11" is four times more readable on a
+    // canvas-relative, and the same floor is four times more readable on a
     // 600-wide canvas than on a 1512-wide one. Whether the house style should
     // express this as a ratio instead is an open question for the skill text.
-    test(`${scene.name} draws no text below 11 user units`, async ({ page }) => {
+    // The number itself is MIN_LABEL, imported rather than repeated, so this
+    // test cannot disagree with the builders about where the floor is.
+    test(`${scene.name} draws no text below the label floor`, async ({ page }) => {
+      // Imported, not repeated: this spec is CommonJS and the builders are
+      // ESM, so the constant comes in dynamically rather than as a literal
+      // that could drift from the one the builders enforce.
+      const { MIN_LABEL } = await import('../diagrams/shapes.mjs');
       await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
       const sizes = await page.$$eval(`${sel(scene.name)} svg text`, (nodes) =>
         nodes.map((n) => parseFloat(getComputedStyle(n).fontSize)),
       );
       expect(sizes.length).toBeGreaterThan(0);
-      expect(Math.min(...sizes)).toBeGreaterThanOrEqual(11);
+      expect(Math.min(...sizes)).toBeGreaterThanOrEqual(MIN_LABEL);
     });
 
     // A label wider than the card it sits in is a real defect that every other

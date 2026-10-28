@@ -28,6 +28,7 @@ import { APP, C, el } from '../engine.mjs';
 import { OUTLINE, arrow, group, hex, hexHalfWidth, hexPoints, label, panel, pill } from '../shapes.mjs';
 import { MARK_IN_HEX, icon, markHex } from '../icons.mjs';
 import { apiTile } from '../apis.mjs';
+import { appSidecar, sidecarAt } from '../app.mjs';
 import { NAME_DY, serviceHex, serviceLabel } from '../services.mjs';
 
 const W = 1200;
@@ -71,11 +72,11 @@ const LEFT_BUS_X = 520; // the vertical line the container arrows leave from
 const APP_X = 740;
 const APP_Y = 320;
 const APP_R = 66;
-const SIDE_R = 48;
+
 // The sidecar's LEFTMOST point sits on the app's LOWEST point, so the two
 // hexagons interlock at a definite place rather than at one that looked right.
-const SIDE_X = APP_X + hexHalfWidth(SIDE_R);
-const SIDE_Y = 398;
+const APP_SIZE = 18;
+const SIDE = sidecarAt({ x: APP_X, y: APP_Y, r: APP_R, size: APP_SIZE });
 
 // ---- the components it uses ----
 const CARD_X = 1104;
@@ -133,16 +134,7 @@ export default {
       // ---- the app and its sidecar ---------------------------------------
       // The sidecar overlaps the app, as in the source: one process beside the
       // other, not a separate box somewhere else on the machine.
-      hex({
-        x: APP_X,
-        y: APP_Y,
-        r: APP_R,
-        label: 'App',
-        size: 18,
-        stroke: APP[0].stroke,
-        fill: APP[0].fill,
-      }),
-      markHex({ x: SIDE_X, y: SIDE_Y, r: SIDE_R, mark: 'logo-blue' }),
+      appSidecar({ x: APP_X, y: APP_Y, r: APP_R, label: 'App', size: APP_SIZE, stroke: APP[0].stroke, fill: APP[0].fill }),
       label({ x: APP_X, y: 505, text: 'dapr run [flags]', size: 22, weight: 700, color: C.navy, mono: true }),
 
       // One line down the left, with the sidecar feeding it. It runs at the
@@ -154,7 +146,7 @@ export default {
         stroke: C.navy,
         'stroke-width': 2,
       }),
-      arrow({ from: { x: SIDE_X, y: SIDE_Y, r: SIDE_R, hex: true }, to: [LEFT_BUS_X, SIDE_Y] }),
+      arrow({ from: SIDE, to: [LEFT_BUS_X, SIDE.y] }),
 
       // ---- the components it uses ----------------------------------------
       el('polyline', {
@@ -163,8 +155,8 @@ export default {
         stroke: C.navy,
         'stroke-width': 2,
       }),
-      arrow({ from: [BUS_X, SIDE_Y], to: { x: SIDE_X, y: SIDE_Y, r: SIDE_R, hex: true } }),
-      label({ x: (BUS_X + SIDE_X + SIDE_R) / 2, y: SIDE_Y - 22, text: 'Use components', size: 14 }),
+      arrow({ from: [BUS_X, SIDE.y], to: SIDE }),
+      label({ x: (BUS_X + SIDE.x + SIDE.r) / 2, y: SIDE.y - 22, text: 'Use components', size: 14 }),
 
       COMPONENTS.map((key, i) => {
         const y = CARD_TOP + i * CARD_PITCH;

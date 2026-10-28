@@ -22,17 +22,13 @@
 // height is what the type has to fit.
 
 import { C } from './engine.mjs';
-import { tile } from './shapes.mjs';
+import { MIN_LABEL, tile } from './shapes.mjs';
 import { icon } from './icons.mjs';
 
 export const CARD_W = 112; // the reference card
 export const CARD_GLYPH = 44 / CARD_W;
 export const STACKED_LABEL = 14 / CARD_W;
 export const INLINE_LABEL = 14 / 76;
-
-// Below this a name is not worth drawing, so a card too small to carry one is
-// refused rather than quietly made illegible.
-export const MIN_LABEL = 11;
 
 // The mark and name sizes for a card of these dimensions.
 export function cardSizes({ w = CARD_W, h = w, inline = false } = {}) {

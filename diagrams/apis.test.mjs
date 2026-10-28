@@ -93,5 +93,5 @@ test('the name scales with the card too: a smaller block is not a smaller box wi
 });
 
 test('a block too small to carry a legible name is refused, not shrunk silently', () => {
-  assert.throws(() => apiTile({ key: 'secrets', x: 0, y: 0, w: 60, h: 60 }), /below the 11px floor/);
+  assert.throws(() => apiTile({ key: 'secrets', x: 0, y: 0, w: 60, h: 60 }), /below the 10px floor/);
 });

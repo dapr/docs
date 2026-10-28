@@ -4,6 +4,7 @@
 import agentsOverview from './agents-overview.mjs';
 import buildingBlocks from './building-blocks.mjs';
 import buildingBlocksConcept from './building-blocks-concept.mjs';
+import componentsConcept from './components-concept.mjs';
 import hostingKubernetes from './hosting-kubernetes.mjs';
 import hostingStandalone from './hosting-standalone.mjs';
 import hostingVms from './hosting-vms.mjs';
@@ -14,6 +15,7 @@ export const scenes = {
   'agents-overview': agentsOverview,
   'building-blocks': buildingBlocks,
   'building-blocks-concept': buildingBlocksConcept,
+  'components-concept': componentsConcept,
   'hosting-kubernetes': hostingKubernetes,
   'hosting-standalone': hostingStandalone,
   'hosting-vms': hostingVms,

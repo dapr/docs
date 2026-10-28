@@ -31,6 +31,7 @@ import { APP, C, el } from '../engine.mjs';
 import { OUTLINE, arrow, group, hex, hexHalfWidth, hexPoints, label, panel, pill } from '../shapes.mjs';
 import { icon, markHex, plate } from '../icons.mjs';
 import { serviceHex } from '../services.mjs';
+import { appSidecar, sidecarAt } from '../app.mjs';
 import { apiTile } from '../apis.mjs';
 
 const W = 1200;
@@ -82,19 +83,16 @@ const WHY_Y = 264; // between the pods and the bus
 // centre; the two offsets below carry that difference.
 const APP_POD = 200;
 const APP_R = 54;
-const SIDE_R = 40;
-const SIDE_DX = hexHalfWidth(SIDE_R); // the sidecar's left point on the app's lowest
-const SIDE_DY = 66;
-const GROUP_L = hexHalfWidth(APP_R);
-const GROUP_R = SIDE_DX + hexHalfWidth(SIDE_R);
-const GROUP_T = APP_R;
-const GROUP_B = SIDE_DY + SIDE_R;
+const APP_SIZE = 16;
 const POD_CX = 470;
 const POD_CY = 440;
-const APP_X = POD_CX - (GROUP_R - GROUP_L) / 2;
-const APP_Y = POD_CY - (GROUP_B - GROUP_T) / 2;
-const SIDE_X = APP_X + SIDE_DX;
-const SIDE_Y = APP_Y + SIDE_DY;
+// The pair is centred in its pod: appSidecar() hangs the sidecar off the app's
+// right side and below its name, so the group reaches further right and lower
+// than the app hexagon alone, and the app is offset by half of each.
+const PAIR = sidecarAt({ x: 0, y: 0, r: APP_R, size: APP_SIZE });
+const APP_X = POD_CX - (PAIR.x + PAIR.r - hexHalfWidth(APP_R)) / 2;
+const APP_Y = POD_CY - (PAIR.y + PAIR.r - APP_R) / 2;
+const SIDE = sidecarAt({ x: APP_X, y: APP_Y, r: APP_R, size: APP_SIZE });
 
 const BUS_Y = 316;
 const DROP_X = POD_CX - APP_POD / 2 - 22; // left of the pod, clear of the app hexagon
@@ -102,7 +100,7 @@ const DROP_X = POD_CX - APP_POD / 2 - 22; // left of the pod, clear of the app h
 // ---- the kubelet probe ----
 // Below the drop line's lowest point, so the probe arrow crosses nothing.
 const KUBELET_X = 190;
-const KUBELET_Y = SIDE_Y; // on the sidecar's line, so the two share one
+const KUBELET_Y = SIDE.y; // on the sidecar's line, so the two share one
 const KUBELET_LINE_X = KUBELET_X + 90; // clear of the word "Kubelet"
 
 // ---- where it runs ----
@@ -182,7 +180,7 @@ export default {
         'stroke-width': 2,
       }),
       el('polyline', {
-        points: `${DROP_X} ${BUS_Y} ${DROP_X} ${SIDE_Y}`,
+        points: `${DROP_X} ${BUS_Y} ${DROP_X} ${SIDE.y}`,
         fill: 'none',
         stroke: C.navy,
         'stroke-width': 2,
@@ -192,8 +190,7 @@ export default {
       // ---- the application pod -------------------------------------------
       panel({ x: POD_CX - APP_POD / 2, y: POD_CY - APP_POD / 2, w: APP_POD, h: APP_POD, stroke: C.blue, r: 8 }),
       pill({ x: POD_CX - APP_POD / 2 + 36, y: POD_CY - APP_POD / 2, w: 56, h: 26, text: 'Pod', color: C.navy, size: TEXT }),
-      hex({ x: APP_X, y: APP_Y, r: APP_R, label: 'App', size: 16, stroke: APP[0].stroke, fill: APP[0].fill }),
-      markHex({ x: SIDE_X, y: SIDE_Y, r: SIDE_R, mark: 'logo-blue' }),
+      appSidecar({ x: APP_X, y: APP_Y, r: APP_R, label: 'App', size: APP_SIZE, stroke: APP[0].stroke, fill: APP[0].fill }),
 
       // ---- the kubelet and the sidecar share one line --------------------
       // The probe goes one way and the health answer the other, so the single
@@ -202,8 +199,8 @@ export default {
       // sidecar's own height.
       icon({ name: 'kubernetes', x: KUBELET_X, y: KUBELET_Y, size: 26, color: C.kubernetes }),
       label({ x: KUBELET_X + 20, y: KUBELET_Y, text: 'Kubelet', size: TEXT + 1, anchor: 'start' }),
-      arrow({ from: [KUBELET_LINE_X, KUBELET_Y], to: { x: SIDE_X, y: SIDE_Y, r: SIDE_R, hex: true } }),
-      arrow({ from: { x: SIDE_X, y: SIDE_Y, r: SIDE_R, hex: true }, to: [KUBELET_LINE_X, KUBELET_Y] }),
+      arrow({ from: [KUBELET_LINE_X, KUBELET_Y], to: SIDE }),
+      arrow({ from: SIDE, to: [KUBELET_LINE_X, KUBELET_Y] }),
       label({
         x: KUBELET_X - 30,
         y: KUBELET_Y + 44,
@@ -242,8 +239,8 @@ export default {
         stroke: C.navy,
         'stroke-width': 2,
       }),
-      arrow({ from: { x: SIDE_X, y: SIDE_Y, r: SIDE_R, hex: true }, to: [COMP_BUS_X, SIDE_Y] }),
-      label({ x: (SIDE_X + COMP_BUS_X) / 2 + 60, y: SIDE_Y - 20, text: 'Use components', size: TEXT }),
+      arrow({ from: SIDE, to: [COMP_BUS_X, SIDE.y] }),
+      label({ x: (SIDE.x + COMP_BUS_X) / 2 + 60, y: SIDE.y - 20, text: 'Use components', size: TEXT }),
 
       COMPONENTS.map((key, i) => {
         const y = CARD_TOP + i * CARD_PITCH;
