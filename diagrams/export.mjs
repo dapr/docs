@@ -38,7 +38,13 @@ export function renderScene(name, scene) {
     id: name,
     children,
   });
-  return out.endsWith('\n') ? out : `${out}\n`;
+  // Some vendored marks carry CR inside their path data (java.svg has CR CR LF),
+  // and .gitattributes pins these files to eol=lf, so git rewrites those bytes on
+  // commit and a fresh clone would never match a fresh render. Normalise here
+  // instead. CR, LF and tab are all just whitespace wherever they appear in these
+  // documents, so no renderer sees a difference.
+  const lf = out.replace(/\r\n?/g, '\n');
+  return lf.endsWith('\n') ? lf : `${lf}\n`;
 }
 
 // Returns { ok, problems[], written[], removed[] } (removed = orphans deleted). Renders everything before touching

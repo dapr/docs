@@ -164,3 +164,14 @@ test('other malformed scenes fail with a named reason', () => {
   assert.throws(() => renderScene('-a', scene()), /name must match/);
   assert.doesNotThrow(() => renderScene('a-b', scene()));
 });
+
+test('the rendered file holds no CR, so git eol=lf cannot change it', () => {
+  // A vendored mark can carry CR inside its path data; .gitattributes pins the
+  // generated svgs to eol=lf, so any CR that survived here would be rewritten on
+  // commit and --check would fail on every fresh clone.
+  const withCr = scene({
+    build: () => [el('path', { d: 'M0,0\r\n\tL10,10\rZ' }), el('text', { x: 1, y: 2 }, [text('a\r\nb')])],
+  });
+  const out = renderScene('cr-test', withCr);
+  assert.equal(out.includes('\r'), false);
+});
