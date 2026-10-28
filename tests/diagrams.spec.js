@@ -191,6 +191,30 @@ const SCENES = [
       'Windows, macOS, Linux or ARM: a local dev machine or virtual machine',
     ],
   },
+  {
+    name: 'hosting-kubernetes',
+    page: '/overview/',
+    labels: [
+      'Pod',
+      'App',
+      'Placement',
+      'Injector',
+      'Sentry',
+      'Operator',
+      'Scheduler',
+      'Kubelet',
+      'Host on any cloud or edge infrastructure',
+      'Azure',
+      'Alibaba Cloud',
+      'Kubernetes',
+      'Use components',
+      'Publish & subscribe',
+      'Workflows',
+      'State management',
+      'Configuration',
+      'Secrets',
+    ],
+  },
 ];
 
 // Phone widths. 320 is the narrowest viewport still worth supporting, 360 and

@@ -108,7 +108,7 @@ The `dapr-sentry` service is a certificate authority that enables mutual TLS bet
 
 Deploying and running a Dapr-enabled application into your Kubernetes cluster is as simple as adding a few annotations to the deployment schemes. Visit the [Dapr on Kubernetes docs]({{% ref kubernetes %}}).
 
-<img src="/images/overview-kubernetes.png" width=1200 alt="Architecture diagram of Dapr in Kubernetes mode">
+{{< diagram hosting-kubernetes >}}
 
 ### Clusters of physical or virtual machines
 
