@@ -4,6 +4,7 @@
 import buildingBlocks from './building-blocks.mjs';
 import hostingKubernetes from './hosting-kubernetes.mjs';
 import hostingStandalone from './hosting-standalone.mjs';
+import hostingVms from './hosting-vms.mjs';
 import overview from './overview.mjs';
 import sidecarModel from './sidecar-model.mjs';
 
@@ -11,6 +12,7 @@ export const scenes = {
   'building-blocks': buildingBlocks,
   'hosting-kubernetes': hostingKubernetes,
   'hosting-standalone': hostingStandalone,
+  'hosting-vms': hostingVms,
   overview,
   'sidecar-model': sidecarModel,
 };

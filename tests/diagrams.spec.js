@@ -215,6 +215,28 @@ const SCENES = [
       'Secrets',
     ],
   },
+  {
+    name: 'hosting-vms',
+    page: '/overview/',
+    labels: [
+      'VM1',
+      'VM2',
+      'VM3',
+      'App A',
+      'App B',
+      'Consul',
+      'Placement',
+      'Scheduler',
+      'Sentry',
+      'Use components',
+      'Cert store for all machines',
+      'Publish & subscribe',
+      'Workflows',
+      'State management',
+      'Configuration',
+      'Secrets',
+    ],
+  },
 ];
 
 // Phone widths. 320 is the narrowest viewport still worth supporting, 360 and
@@ -358,6 +380,33 @@ for (const scene of SCENES) {
       );
       expect(sizes.length).toBeGreaterThan(0);
       expect(Math.min(...sizes)).toBeGreaterThanOrEqual(11);
+    });
+
+    // A label wider than the card it sits in is a real defect that every other
+    // check here misses: the scene still resolves, still fits the viewBox and
+    // still shows every expected label. Only its own box is too small.
+    test(`${scene.name} keeps every tile label inside its tile`, async ({ page }) => {
+      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      const overflowing = await page.$$eval(`${sel(scene.name)} svg .d-tile`, (tiles) =>
+        tiles
+          .map((t) => {
+            const rect = t.querySelector('rect');
+            const texts = [...t.querySelectorAll('text')];
+            if (!rect || !texts.length) return null;
+            const r = rect.getBoundingClientRect();
+            const worst = texts
+              .map((n) => {
+                const b = n.getBoundingClientRect();
+                return Math.max(r.left - b.left, b.right - r.right, r.top - b.top, b.bottom - r.bottom);
+              })
+              .reduce((a, b) => Math.max(a, b), -Infinity);
+            return worst > 0
+              ? { label: texts.map((n) => n.textContent).join(' ').trim(), over: Math.round(worst) }
+              : null;
+          })
+          .filter(Boolean),
+      );
+      expect(overflowing, 'tile labels wider or taller than their tile').toEqual([]);
     });
 
     test(`${scene.name} has no element outside its viewBox`, async ({ page }) => {
