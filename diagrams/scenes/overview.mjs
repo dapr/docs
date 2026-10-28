@@ -16,6 +16,8 @@
 //     only place in this repository using the longer name.
 //   - band panels are neutral, not teal/blue/navy. A grouping line carries no
 //     meaning, and panel() refuses teal outright.
+//   - "Azure" is set beside its cube inside the plate, in C.plateInk, so the
+//     infrastructure row carries no stray caption under one card.
 //
 // Colour system, reused by every later scene:
 //   neutral dashed panel  = a band
@@ -29,20 +31,7 @@
 // Teal and mint are unused: both fail contrast on the light ground.
 
 import { C, APP, el } from '../engine.mjs';
-import {
-  OUTLINE,
-  arrow,
-  box,
-  broker,
-  cylinder,
-  group,
-  hex,
-  hexPoints,
-  label,
-  panel,
-  pill,
-  tile,
-} from '../shapes.mjs';
+import { OUTLINE, arrow, group, hex, hexPoints, label, panel, pill, tile } from '../shapes.mjs';
 import { icon, plate } from '../icons.mjs';
 
 const W = 1512;
@@ -57,7 +46,7 @@ const PW = W - 2 * PX;
 // Band 1: languages. Band 2: Dapr. Band 3: infrastructure.
 const B1 = { y: 30, h: 168 };
 const B2 = { y: 242, h: 352 };
-const B3 = { y: 640, h: 126 };
+const B3 = { y: 652, h: 114 };
 
 const LANG_Y = 114; // centre line of the language marks and the App hexagon
 const HUB_X = 138; // centre of the App / Dapr hexagon column
@@ -76,9 +65,9 @@ const CROSS_W = 160;
 const CROSS_H = 76;
 const CROSS_TOP = 339; // centre of the first of the three; pitch CROSS_H + 12
 
-const INFRA_Y = 690; // centre line of the infrastructure row
-const INFRA_LABEL = 740; // baseline row for its one line labels
-const INFRA_LABEL2 = 748; // the same optical line for a two line label
+const INFRA_Y = 709; // centre line of the infrastructure row
+const INFRA_GLYPH_DX = -58; // glyph centre, left of its slot centre
+const INFRA_TEXT_DX = -32; // where its label starts, as dapr.io lays them out
 
 const PLATE_H = 68; // one plate height for every marked logo
 const PLATE_PAD = 28; // horizontal padding around the mark inside its plate
@@ -95,10 +84,18 @@ function slots(x0, x1, n) {
 // marks are plated too, so the row does not go ragged in dark mode, and they
 // are tinted C.plateInk rather than C.body: the plate is near-white in BOTH
 // themes, so an ink that inverts with the page would vanish on it.
-function brand({ name, x, y, w, h, content }) {
+// `inside` sets a name beside the mark WITHIN the plate, for a file that has no
+// wordmark of its own; `dx` shifts the mark to make room. Not to be confused
+// with a scene label placed under the plate, which is ordinary C.body text.
+function brand({ name, x, y, w, h, content, plate: pw, dx = 0, inside, insideDx = 0 }) {
   return group([
-    plate({ x, y, w: content + PLATE_PAD, h: PLATE_H }),
-    icon({ name, x, y, w, h, color: C.plateInk, scope: SCOPE }),
+    plate({ x, y, w: pw ?? content + PLATE_PAD, h: PLATE_H }),
+    icon({ name, x: x + dx, y, w, h, color: C.plateInk, scope: SCOPE }),
+    // Text that sits ON a plate takes C.plateInk, never C.body: the plate is
+    // near-white in both themes and C.body inverts.
+    inside
+      ? label({ x: x + insideDx, y, text: inside, size: 15, anchor: 'start', color: C.plateInk })
+      : null,
   ]);
 }
 
@@ -150,11 +147,24 @@ const CROSS_CUTTING = [
   ['arrow-clockwise', 'Resiliency'],
 ];
 
+// Vendored cloud marks, each on its plate. Azure's file is the cube with no
+// wordmark, so its name is set beside it inside the plate.
 const CLOUDS = [
-  { name: 'azure', w: 49, h: 49, content: 45, label: 'Azure' },
+  { name: 'azure', w: 49, h: 49, content: 45, plate: 127, dx: -30, inside: 'Azure', insideDx: -2 },
   { name: 'aws', w: 68, h: 41, content: 67 },
   { name: 'google-cloud', w: 131, h: 21, content: 128 },
   { name: 'kubernetes', w: 132, h: 24, content: 130 },
+];
+
+// What Dapr runs on and talks to that has no logo of its own: the same Fluent
+// glyphs dapr.io uses, with the label inline beside them. No plate. A plate is
+// for a vendored brand mark that must keep its own colours; these are drawn in
+// a theme colour and follow the page.
+const INFRA = [
+  ['server', 'Virtual or\nphysical machines'],
+  ['database', 'Databases'],
+  ['mail-copy', 'Message brokers'],
+  ['plug-disconnected', 'Services'],
 ];
 
 export default {
@@ -234,7 +244,7 @@ export default {
       label({
         x: (apiX[0] + apiX[7]) / 2,
         y: CAPTION_Y,
-        text: 'Building block APIs',
+        text: 'Dapr APIs',
         size: 13,
         color: C.caption,
       }),
@@ -287,47 +297,19 @@ export default {
         text: 'Host on & integrate with any cloud or edge infrastructure',
         color: C.navy,
       }),
-      CLOUDS.map((m, i) =>
+      CLOUDS.map((m, i) => brand({ ...m, x: infraX[i], y: INFRA_Y })),
+      INFRA.map(([mark, name], i) =>
         group([
-          brand({ ...m, x: infraX[i], y: INFRA_Y }),
-          m.label ? label({ x: infraX[i], y: INFRA_LABEL, text: m.label, size: 13 }) : null,
+          glyph(mark, infraX[i + 4] + INFRA_GLYPH_DX, INFRA_Y, 36, C.blue),
+          label({
+            x: infraX[i + 4] + INFRA_TEXT_DX,
+            y: INFRA_Y,
+            text: name,
+            size: 13,
+            anchor: 'start',
+          }),
         ]),
       ),
-      // Virtual or physical machines: two stacked units.
-      group([
-        box({ x: infraX[4], y: INFRA_Y - 12, w: 54, h: 20, stroke: C.navy, fill: APP[1].fill }),
-        box({ x: infraX[4], y: INFRA_Y + 12, w: 54, h: 20, stroke: C.navy, fill: APP[1].fill }),
-        label({
-          x: infraX[4],
-          y: INFRA_LABEL2,
-          text: 'Virtual or\nphysical machines',
-          size: 13,
-        }),
-      ]),
-      cylinder({
-        x: infraX[5],
-        top: INFRA_Y - 20,
-        bottom: INFRA_Y + 18,
-        rx: 22,
-        ry: 8,
-        stroke: C.navy,
-        fill: APP[1].fill,
-        label: 'Databases',
-        labelDy: INFRA_LABEL - (INFRA_Y - 20),
-      }),
-      broker({
-        x: infraX[6],
-        y: INFRA_Y - 2,
-        w: 46,
-        stroke: C.navy,
-        fill: APP[0].fill,
-        label: 'Message brokers',
-        labelDy: INFRA_LABEL - (INFRA_Y - 2),
-      }),
-      group([
-        hex({ x: infraX[7], y: INFRA_Y - 2, r: 26, label: '' }),
-        label({ x: infraX[7], y: INFRA_LABEL, text: 'Services', size: 13 }),
-      ]),
     ];
   },
 };

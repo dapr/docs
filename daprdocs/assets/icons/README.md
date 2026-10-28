@@ -89,10 +89,10 @@ asset terms. The full notice is under [LICENSES](#licenses).
 | `fluent-heart-pulse.svg` | Observability | https://api.iconify.design/fluent/heart-pulse-24-regular.svg | MIT (Microsoft) | single | `8a33d2f3a7f9` |
 | `fluent-shield-lock.svg` | Security | https://api.iconify.design/fluent/shield-lock-24-regular.svg | MIT (Microsoft) | single | `8b4ee87169d3` |
 | `fluent-arrow-clockwise.svg` | Resiliency | https://api.iconify.design/fluent/arrow-clockwise-24-regular.svg | MIT (Microsoft) | single | `5dcc08ab343d` |
+| `fluent-server.svg` | Virtual or physical machines | https://api.iconify.design/fluent/server-24-regular.svg | MIT (Microsoft) | single | `2db217b22228` |
 
-`dapr/website` also vendors `fluent-server.svg`, which its `apis` scene uses for
-"virtual or physical machines". This repository draws that with the shape
-vocabulary instead, so the file is not vendored here.
+All twenty glyphs `dapr/website` vendors are here, drawn the same way its `apis`
+scene draws them.
 
 ## Notes
 
@@ -175,7 +175,7 @@ limitations under the License.
 
 Source: https://github.com/microsoft/fluentui-system-icons/blob/main/LICENSE
 
-The files are unmodified. This notice covers all nineteen `fluent-*.svg` files.
+The files are unmodified. This notice covers all twenty `fluent-*.svg` files.
 
 ```
 MIT License

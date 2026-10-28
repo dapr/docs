@@ -29,7 +29,7 @@ const SCENES = [
       'App',
       'Rust',
       'HTTP/gRPC',
-      'Building block APIs',
+      'Dapr APIs',
       'Workflows',
       'Publish & subscribe',
       'Service invocation',
@@ -92,18 +92,28 @@ function readLabels(page, name) {
   );
 }
 
-/** Computed paint of the three things every scene has: a panel, a box, a label. */
+/**
+ * Every resolved paint in the scene, plus the two a scene always has: the panel
+ * stroke and the first label's fill. Scene-agnostic on purpose, so a scene that
+ * happens not to use a given builder does not silently skip the check.
+ */
 function readPaint(page, name) {
   return page.evaluate((root) => {
     const svg = document.querySelector(`${root} svg`);
+    const all = [];
+    for (const el of svg.querySelectorAll('*')) {
+      const cs = getComputedStyle(el);
+      all.push(`${cs.fill}|${cs.stroke}`);
+    }
     const pick = (q, prop) => {
       const el = svg.querySelector(q);
       return el ? getComputedStyle(el)[prop] : null;
     };
     return {
       panelStroke: pick('.d-panel', 'stroke'),
-      boxFill: pick('.d-box rect', 'fill'),
       textFill: pick('text', 'fill'),
+      fingerprint: all.join(';'),
+      unresolved: all.filter((v) => v.includes('var(') || v.includes('||')),
     };
   }, sel(name));
 }
@@ -203,13 +213,19 @@ for (const scene of SCENES) {
       await page.evaluate(() => document.documentElement.setAttribute('data-bs-theme', 'dark'));
       const dark = await readPaint(page, scene.name);
 
-      for (const [key, value] of Object.entries(light)) {
-        // A var() that does not resolve leaves the paint empty or as the literal
-        // text, which is exactly the failure this catches.
-        expect(value, `${key} did not resolve`).toMatch(/^rgba?\(/);
+      // A var() that does not resolve survives as the literal text, which is
+      // exactly the failure this catches.
+      expect(light.unresolved, 'unresolved paint in light').toEqual([]);
+      expect(dark.unresolved, 'unresolved paint in dark').toEqual([]);
+
+      for (const key of ['panelStroke', 'textFill']) {
+        expect(light[key], `${key} did not resolve`).toMatch(/^rgba?\(/);
         expect(dark[key], `${key} did not resolve in dark`).toMatch(/^rgba?\(/);
-        expect(dark[key], `${key} is the same in both themes`).not.toBe(value);
+        expect(dark[key], `${key} is the same in both themes`).not.toBe(light[key]);
       }
+      expect(dark.fingerprint, 'the scene paints identically in both themes').not.toBe(
+        light.fingerprint,
+      );
     });
 
     for (const width of PHONE_WIDTHS) {
