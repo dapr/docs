@@ -203,6 +203,11 @@ instead of the group it belongs to. Three rules cover it.
   const APP_Y = BOX_CY - (GROUP_B - GROUP_T) / 2;
   ```
 
+- **Centring and alignment can conflict, and over a SHORT run alignment wins.**
+  A shape centred in its container may sit a little off the column it connects
+  to; a lean of fifteen units is invisible over a long arrow and obvious over a
+  short one. When the connector is short, align the shape to what it points at
+  and let the group sit slightly off centre, which nobody reads as a mistake.
 - **Align shapes to each other by a named feature, not by eye.** "The sidecar's
   leftmost point sits on the app's lowest point" is a position you can compute
   and check; "a bit to the left" is not. `hexHalfWidth(r)` gives a pointy-top
@@ -531,6 +536,11 @@ before the next one starts. Report visual choices as proposals, not decisions.
   their names BEFORE the pass count, so the last two lines of a failing run are
   a test name and "N passed", which looks green. Grep for `failed` or the cross
   mark instead.
+- **A label wider than its own card passes every other check.** The scene
+  resolves, fits its viewBox, shows every expected label and holds its colours
+  in both themes; only the box is too small. `tests/diagrams.spec.js` compares
+  each tile's label against its tile in both axes, so a card that is too small
+  for its name now fails rather than shipping.
 - **`getBBox()` on a transformed element returns its LOCAL box, not where it
   sits on the page.** Every inlined mark is in a translated and scaled `<g>`,
   so sweeping a scene with `getBBox` mixes placed coordinates with local ones
@@ -538,6 +548,11 @@ before the next one starts. Report visual choices as proposals, not decisions.
   own container. Measure untransformed elements (a `<rect>`, a `<text>`, a
   `<polygon>` you placed yourself) with `getBBox`, and anything transformed
   with `getBoundingClientRect`.
+- **A NEW svg needs the dev server restarted.** Hugo's watcher picks up
+  CHANGES to an asset it already knows, but a file created after the server
+  started is invisible to `resources.Get`, so the shortcode errors and the page
+  returns 500 while the file sits on disk. The first export of a new scene is
+  therefore always a restart. Changing an existing scene is not.
 - **A measurement that comes back unchanged after a change usually means the
   change did not land.** Check that the export actually succeeded before
   concluding a layout fix had no effect: a failed export leaves the previously
