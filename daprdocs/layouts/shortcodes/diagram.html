@@ -1,0 +1,23 @@
+{{- /*
+  {{< diagram overview >}}
+
+  Inlines daprdocs/assets/diagrams/<name>.svg, which `npm run export:diagrams`
+  generates from diagrams/scenes/<name>.mjs. Inlined rather than linked so the
+  var(--d-*) colours inside it resolve against the page's theme tokens and
+  follow the dark-mode toggle with no JavaScript.
+
+  A missing or misspelled name fails the build instead of rendering nothing.
+*/ -}}
+{{- $name := or (.Get 0) (.Get "name") -}}
+{{- with $name -}}
+  {{- $path := printf "diagrams/%s.svg" . -}}
+  {{- with resources.Get $path -}}
+    <figure class="dapr-diagram" data-diagram="{{ $name }}">
+      {{- .Content | safeHTML -}}
+    </figure>
+  {{- else -}}
+    {{- errorf "diagram shortcode: no diagram at assets/%s - run `npm run export:diagrams` or check the scene name (called from %s)" $path $.Position -}}
+  {{- end -}}
+{{- else -}}
+  {{- errorf "diagram shortcode: a scene name is required, as in {{< diagram overview >}} (called from %s)" .Position -}}
+{{- end -}}

@@ -1,0 +1,39 @@
+//
+// diagrams
+//
+// Figures emitted by the {{< diagram >}} shortcode. The SVG is inlined, so its
+// var(--d-*) strokes and fills resolve against the tokens in _tokens.scss and
+// re-theme instantly when the dark-mode toggle flips data-bs-theme.
+//
+
+.dapr-diagram {
+  margin: 0 0 1.5rem;
+
+  // The scene carries a viewBox and no width/height, so it scales to the
+  // column and never renders larger than the content area (decision 12).
+  svg {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+// Windows high contrast and friends drop author colours. Redraw the diagram in
+// the system's own ink so it survives, and leave the vendored brand marks
+// (.d-icon and its children) to the UA, which keeps their shapes readable.
+@media (forced-colors: active) {
+  .dapr-diagram svg {
+    color: CanvasText;
+
+    text {
+      fill: currentColor;
+      stroke: none;
+    }
+
+    :is(rect, circle, ellipse, line, polyline, polygon, path):not(.d-icon *) {
+      fill: Canvas;
+      stroke: currentColor;
+    }
+  }
+}
