@@ -113,6 +113,13 @@ export function richLabel({
 
 // ----------------------------------------------------------------- hex family
 
+// Half the width of a pointy-top hexagon of radius r. Its leftmost point is at
+// x - hexHalfWidth(r) and its lowest at x, which is what you need to line one
+// shape up against another's edge rather than guessing.
+export function hexHalfWidth(r) {
+  return (Math.sqrt(3) / 2) * r;
+}
+
 export function hexPoints(x, y, r) {
   const pts = [];
   for (let k = 0; k < 6; k++) {
@@ -313,6 +320,11 @@ export function tile({
   x, y, icon = null, label: name = '', color = C.navy, filled = false, size = 99, w = size, h = size,
   inline = false, tag = '', labelSize = 11.5, inlinePad = 26, inlineGap = 24,
   desc = '', descSize = 13, iconDy = 48, titleDy = 96, descDy = 124,
+  // Plain tiles place the glyph and name by proportion, which is fine until the
+  // tile is square and the name runs to two lines. Give glyphSize and the two
+  // are treated as ONE group and centred in the tile together, which is what
+  // reads as deliberate; glyphDy/nameDy override either half outright.
+  glyphSize = null, glyphGap = 10, glyphDy = null, nameDy = null,
 }) {
   if (filled) assertInk(color, 'tile() filled');
   assertStroke(color, name, 'tile()');
@@ -349,8 +361,18 @@ export function tile({
     parts.push(place(x - w / 2 + inlinePad, y));
     parts.push(label({ x: x - w / 2 + inlinePad + inlineGap, y, text: name, size: labelSize, anchor: 'start', color: ink }));
   } else {
-    parts.push(place(x, y - h * 0.15));
-    parts.push(label({ x, y: y + h * 0.3, text: name, size: labelSize, color: ink }));
+    let gDy = glyphDy;
+    let nDy = nameDy;
+    if (glyphSize !== null && (gDy === null || nDy === null)) {
+      // Stack glyph over name, then centre the stack. The name block's height
+      // is what makes a two-line card differ from a one-line one.
+      const nameH = String(name).split('\n').length * labelSize * 1.2;
+      const top = -(glyphSize + glyphGap + nameH) / 2;
+      if (gDy === null) gDy = top + glyphSize / 2;
+      if (nDy === null) nDy = top + glyphSize + glyphGap + nameH / 2;
+    }
+    parts.push(place(x, y + (gDy ?? -h * 0.15)));
+    parts.push(label({ x, y: y + (nDy ?? h * 0.3), text: name, size: labelSize, color: ink }));
   }
   if (tag) parts.push(label({ x: x + w / 2 - 8, y: y - h / 2 + 16, text: tag, size: 11, anchor: 'end', color: ink }));
   return el('g', { class: 'd-tile' }, parts);

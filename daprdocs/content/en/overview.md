@@ -88,7 +88,7 @@ In [self-hosted mode]({{% ref self-hosted-overview %}}), Dapr runs as a separate
 
 You can use the [Dapr CLI](https://github.com/dapr/cli#launch-dapr-and-your-app) to run a Dapr-enabled application on your local machine. In the following diagram, Dapr's local development environment gets configured with the CLI `init` command. Try this out with the [getting started samples]({{% ref getting-started %}}).
 
-<img src="/images/overview-standalone.png" width=1200 alt="Architecture diagram of Dapr in self-hosted mode">
+{{< diagram hosting-standalone >}}
 
 ### Kubernetes
 

@@ -125,6 +125,72 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
   a label.
 - **Even rows:** `slots(x0, x1, n)` gives evenly spaced centers, so the gaps at
   each end match the gaps between items.
+- **A mark inside a shape is centered in it, both ways,** whenever the mark
+  carries no label of its own. Its name goes outside the shape, below it, in
+  ordinary body ink: a name sitting on the shape's outline reads as a mistake,
+  and a name outside a plate is not on the plate, so it does not take plate ink.
+- **Capability cards are square,** like the other capability grids. A square
+  card with a two-line name needs `glyphDy` and `nameDy` set explicitly: the
+  proportional default puts the second line on the bottom edge. Leave about
+  twice as much room under the last line as the line is tall.
+- **Overlap means overlap.** Two shapes drawn as one thing beside another, such
+  as an app and its sidecar, have to visibly overlap. Shapes that merely touch
+  read as a rendering error. Check the centre distance against the sum of the
+  radii rather than trusting the picture in your head.
+
+### Grouping and centering
+
+Most "that looks slightly off" notes are one mistake: a part was positioned
+instead of the group it belongs to. Three rules cover it.
+
+- **Center the group, not the parts.** A glyph with a name under it is one
+  thing. Measure the stack (glyph height, the gap, and the name block's height,
+  which depends on how many lines it has) and center that total in the shape.
+  Placing the glyph and the name each at its own offset means a two-line name
+  drags the pair up the card and a one-line name leaves it sitting low, and no
+  single pair of offsets fixes both. `tile()` does this for you when given
+  `glyphSize`.
+- **Center a repeated group in its region by computing its extent,** from the
+  first shape's top edge to the last label's descender, rather than choosing a
+  starting y that looks about right. Derive the start from the region's center
+  and the group's height, so it stays centered when the region, the spacing or
+  the number of items changes:
+
+  ```js
+  const GROUP_H = (count - 1) * PITCH + R + LABEL_DY + 4;
+  const TOP = REGION.y + REGION.h / 2 - GROUP_H / 2 + R;
+  ```
+
+- **Align shapes to each other by a named feature, not by eye.** "The sidecar's
+  leftmost point sits on the app's lowest point" is a position you can compute
+  and check; "a bit to the left" is not. `hexHalfWidth(r)` gives a pointy-top
+  hexagon's half width, so its leftmost point is `x - hexHalfWidth(r)` and its
+  lowest is `x`.
+
+**Measure the result.** After any of these, read the numbers back out of the
+rendered page with `getBBox` - group center against region center, label bottom
+against shape bottom - rather than deciding from the picture. Every spacing
+note in this skill came from a number that disagreed with how it looked.
+
+### Laying out connections
+
+- **Collect parallel connections onto one bus.** Several arrows that run from
+  one place to a column of things should leave a single vertical line rather
+  than fanning out from their source. Put that line close to the column it
+  serves, so the horizontal runs stay short and the middle of the canvas stays
+  open.
+- **Keep a central element equidistant from the buses on either side.** If a
+  hexagon sits between a left-hand bus and a right-hand one, the two gaps
+  should match; an element closer to one side reads as drift rather than
+  design.
+- **An arrow ends on something.** An arrow drawn to a bare coordinate ends in
+  empty space and looks broken. Give it a shape descriptor or a bus, and check
+  it does not cut through whatever sits between its ends - move the endpoint
+  below a shape rather than through it.
+- **A label on an arrow rides above the line,** not beside it, when the arrow
+  is long enough to carry text over it.
+- **Two dashed regions need a clear gap between them.** Edges that nearly touch
+  read as a mistake. Leave several times the dash pitch.
 - **Do not hand-draw a company's logo or product mark.** Use its official file;
   see the next section.
 - **Generic icons** (a key, a clock, a database) come from
@@ -348,6 +414,11 @@ before the next one starts. Report visual choices as proposals, not decisions.
   assert that `matchMedia('(forced-colors: active)').matches` is true.
 - **`icon()` without a `label`** draws only the mark. A missing one must never
   render the word "undefined".
+- **Every builder takes `x, y` as the shape's CENTRE,** except `panel()`, which
+  takes its top-left corner because a region is placed by its extent. Passing a
+  left edge to `pill()` hangs the caption off the side of the canvas; the
+  viewBox test catches it, and it is the one geometry mistake the suite can
+  see for you.
 - **Generated SVGs are pinned to LF** in `.gitattributes`. A vendored mark that
   contains CR would otherwise be rewritten on commit, so a fresh clone would
   never match a fresh render. The exporter normalizes CR before writing and

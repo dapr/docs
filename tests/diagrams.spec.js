@@ -170,6 +170,27 @@ const SCENES = [
       'http://localhost:3500/v1.0/workflows/dapr/businessprocess/start',
     ],
   },
+  {
+    name: 'hosting-standalone',
+    page: '/overview/',
+    labels: [
+      'Docker Desktop',
+      'dapr init',
+      'dapr run [flags]',
+      'Scheduler',
+      'Placement',
+      'Redis',
+      'Zipkin',
+      'App',
+      'Use components',
+      'Publish & subscribe',
+      'Workflows',
+      'State management',
+      'Configuration',
+      'Secrets',
+      'Windows, macOS, Linux or ARM: a local dev machine or virtual machine',
+    ],
+  },
 ];
 
 // Phone widths. 320 is the narrowest viewport still worth supporting, 360 and
