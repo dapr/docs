@@ -116,6 +116,16 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
 - **Text over a line** gets `halo: true` so the line does not run through it.
 - **Never below 11 units,** which the builders enforce. See the canvas-relative
   note above before choosing a size on a wide canvas.
+- **One constant for every label and description in a scene.** A description
+  set a point smaller than the name above it does not read as quieter, it reads
+  as a different class of thing. One `TEXT` constant also stops the two drifting
+  apart later. Reach for a second size only when something genuinely is a
+  different class, such as a section caption.
+- **A label anchored `start` beside a repeated element overflows at the END of
+  the row.** Each one extends to the right of its own anchor, so the last is the
+  only one that can cross the container's border. Stop the ROW short of the
+  border rather than shrinking the text: shrinking fixes one label and leaves
+  the next author to rediscover it.
 
 ### Shapes and arrows
 
@@ -155,6 +165,21 @@ instead of the group it belongs to. Three rules cover it.
   drags the pair up the card and a one-line name leaves it sitting low, and no
   single pair of offsets fixes both. `tile()` does this for you when given
   `glyphSize`.
+- **Center a region, and a ROW of regions, in its container.** Derive the
+  position from the container's centre and the group's own width; never type a
+  left margin and hope the right one matches. A row of five boxes is one group
+  whose width is `n * BOX + (n - 1) * GAP`:
+
+  ```js
+  const ROW_W = n * BOX_W + (n - 1) * GAP;
+  const X0 = BOX.x + (BOX.w - ROW_W) / 2 + BOX_W / 2;   // first box's CENTRE
+  ```
+
+  Then read the two margins back off the rendered page and check they match.
+- **After centring, re-check whatever extends beyond the group's own boxes.**
+  Labels anchored `start` beside each item stick out to the right of it, so
+  centring the boxes can push the last label through the container's border.
+  The boxes being centred and the contents fitting are two different checks.
 - **Center a repeated group in its region by computing its extent,** from the
   first shape's top edge to the last label's descender, rather than choosing a
   starting y that looks about right. Derive the start from the region's center
@@ -164,6 +189,18 @@ instead of the group it belongs to. Three rules cover it.
   ```js
   const GROUP_H = (count - 1) * PITCH + R + LABEL_DY + 4;
   const TOP = REGION.y + REGION.h / 2 - GROUP_H / 2 + R;
+  ```
+
+- **When a group is asymmetric, derive its anchor from its own extent.** Two
+  overlapping hexagons, one down and to the right of the other, have a group
+  centre that is NOT either hexagon's centre. Measure the group's left, right,
+  top and bottom from the shapes' own radii, then place the anchor shape from
+  the container's centre and that asymmetry, instead of nudging both shapes
+  until the gaps look even:
+
+  ```js
+  const APP_X = BOX_CX - (GROUP_R - GROUP_L) / 2;
+  const APP_Y = BOX_CY - (GROUP_B - GROUP_T) / 2;
   ```
 
 - **Align shapes to each other by a named feature, not by eye.** "The sidecar's
@@ -194,8 +231,47 @@ note in this skill came from a number that disagreed with how it looked.
   below a shape rather than through it.
 - **A label on an arrow rides above the line,** not beside it, when the arrow
   is long enough to carry text over it.
+- **Two things that talk to each other both ways share ONE line with a head at
+  each end,** not two lines side by side. Draw the same arrow twice, once in
+  each direction; the line is drawn over itself and only the heads differ. Put
+  the two shapes at the same height so that line is straight, and let anything
+  else that joins them, such as a bus dropping in, land on the same line rather
+  than running a second one beside it.
 - **Two dashed regions need a clear gap between them.** Edges that nearly touch
   read as a mistake. Leave several times the dash pitch.
+- **A caption and the things it captions need a drawn relationship.** A heading
+  floating above a row of marks is just a heading near some marks. Put both
+  inside one dashed region with the caption on its border, as the overview
+  scene's bands do.
+- **An annotation with nothing attached to it reads as lost.** If a thing acts
+  on something in the diagram, draw the arrow. Route it clear of what is
+  already there: below the lowest point of a drop line, not across it.
+- **Equal spacing is `slots()` when the items are the same width.** Anything
+  you space by typing coordinates will be unequal the first time the count
+  changes.
+- **When the items differ in width, equal spacing means equal GAPS, not equal
+  centres.** `slots()` spaces centres, so a narrow item in a row of wide ones
+  gets a hole beside it. Give each item the width it VISIBLY draws, then share
+  the leftover space out as equal gaps:
+
+  ```js
+  const GAP = (BAND.w - 2 * EDGE - items.reduce((a, m) => a + m.span, 0)) / (items.length - 1);
+  ```
+
+  Two things make `span` easy to get wrong. A mark plus a name beside it is one
+  item, so its span is mark plus gap plus the name's width - and the exporter
+  has no font metrics, so measure the name once on the rendered page and write
+  the number down. And padding that is invisible in one theme, such as a
+  plate behind a wordmark, is NOT part of the span; counting it widens the gaps
+  around exactly those items. Measure the gaps afterwards and check they match.
+- **A repeated element's box must be NARROWER than its pitch,** or adjacent
+  boxes touch. Name the margin you want from a border once, as a constant, and
+  derive positions from it rather than repeating the number:
+
+  ```js
+  const EDGE = 24;                                  // least space to any border
+  const POD_Y = REGION.y + EDGE + POD_H / 2;
+  ```
 - **Do not hand-draw a company's logo or product mark.** Use its official file;
   see the next section.
 - **Generic icons** (a key, a clock, a database) come from
@@ -361,8 +437,20 @@ Match on the image's `src` string rather than a line number: line numbers drift.
 else uses it, including the `translations/docs-zh` submodule and any external
 page that may hotlink it.
 
+**Swap only the pages the plan names.** A shared image does NOT imply a shared
+scene: several in-scope images are also used by pages outside this conversion,
+and those pages keep their PNG until someone decides otherwise. Converting one
+of them is a scope decision, not a tidy-up. `tests/images-still-resolve.spec.js`
+fails when an out-of-scope page stops showing its image, which is how you find
+out you have done it.
+
 Above the scene, write a comment saying what it shows and recording any place
 it deliberately departs from its source, with the reason.
+
+Before rendering, read back through **Grouping and centering** and **Laying out
+connections** against what you have just drawn. Those rules exist because every
+one of them was a review note on an earlier scene, and they are cheaper to apply
+now than to be told about twice.
 
 ### 4. Render it and look at it
 
@@ -439,3 +527,18 @@ before the next one starts. Report visual choices as proposals, not decisions.
   comparing.
 - **The shortcode validates the scene name** against the same rule the exporter
   enforces. Both sides of that contract must agree.
+- **Do not read a Playwright run with `tail`.** It prints the failures and
+  their names BEFORE the pass count, so the last two lines of a failing run are
+  a test name and "N passed", which looks green. Grep for `failed` or the cross
+  mark instead.
+- **`getBBox()` on a transformed element returns its LOCAL box, not where it
+  sits on the page.** Every inlined mark is in a translated and scaled `<g>`,
+  so sweeping a scene with `getBBox` mixes placed coordinates with local ones
+  and produces nonsense: negative margins, contents apparently outside their
+  own container. Measure untransformed elements (a `<rect>`, a `<text>`, a
+  `<polygon>` you placed yourself) with `getBBox`, and anything transformed
+  with `getBoundingClientRect`.
+- **A measurement that comes back unchanged after a change usually means the
+  change did not land.** Check that the export actually succeeded before
+  concluding a layout fix had no effect: a failed export leaves the previously
+  committed SVG in place, and the page keeps serving it.
