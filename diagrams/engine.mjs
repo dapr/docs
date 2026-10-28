@@ -91,6 +91,11 @@ export const C = Object.freeze({
   lavender: 'var(--d-lavender)',
   grey: 'var(--d-grey)',
   caption: 'var(--d-caption)',
+  // A vendor's own brand colour, for tinting a single-colour brand mark. Not a
+  // theme colour: it is the same in light and dark, because the mark is.
+  kubernetes: 'var(--d-brand-kubernetes)',
+  // Shows only in dark: see --d-mark-plate.
+  markPlate: 'var(--d-mark-plate)',
   body: 'var(--d-body)',
   bg: 'var(--d-ground)',
   plate: 'var(--d-diagram-plate)',

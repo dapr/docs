@@ -211,8 +211,10 @@ test('a single-color mark is filled with the color argument; a full-color mark i
 
   // Real marks: Simple Icons marks carry no colour, Commons logos carry their own.
   const tinted = (n) => serialize(icon({ name: n, x: 0, y: 0, color: C.navy })).includes('fill="var(--d-blue)"');
-  for (const n of ['go', 'cpp', 'php', 'rust']) assert.ok(tinted(n), `${n} should be single-colour`);
-  for (const n of ['nodejs', 'python', 'dotnet', 'java', 'azure', 'aws', 'google-cloud', 'kubernetes']) {
+  for (const n of ['cpp', 'rust', 'kubernetes']) assert.ok(tinted(n), `${n} should be single-colour`);
+  // go and php moved from Simple Icons to the full-colour Commons files dapr.io
+  // vendors, so they now keep their own blue and purple.
+  for (const n of ['nodejs', 'python', 'dotnet', 'go', 'java', 'php', 'azure', 'aws', 'google-cloud']) {
     assert.ok(!tinted(n), `${n} should be full-colour`);
   }
   // Root-level paint (dotnet: fill="none" on <svg>) is carried to the wrapper so the mark renders as authored.
@@ -259,8 +261,9 @@ test('wide marks keep their aspect ratio when given w and h', () => {
   const s = Number(gc.match(/scale\(([\d.]+)\)/)[1]);
   assert.ok(Math.abs(181 * s - 100) < 0.01);
   assert.ok(Math.abs(28 * s - 15.47) < 0.01);
-  // size alone is a square box.
-  const sq = serialize(icon({ name: 'go', x: 0, y: 0, size: 24 }));
+  // size alone is a square box. rust is still a 24x24 Simple Icons glyph; go is
+  // not, since it became the wide full-colour Commons wordmark.
+  const sq = serialize(icon({ name: 'rust', x: 0, y: 0, size: 24 }));
   assert.match(sq, /scale\(1\)/);
 });
 

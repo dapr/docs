@@ -31,7 +31,6 @@ const SCENES = [
     labels: [
       'Use any language or runtime',
       'App',
-      'Rust',
       'HTTP/gRPC',
       'Dapr APIs',
       'Workflows',

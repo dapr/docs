@@ -216,11 +216,18 @@ test('builders accept frozen arguments', () => {
   assert.doesNotThrow(() => S.daprApp(o));
 });
 
-test('teal and mint lines need a label: arrow and panel always throw', () => {
+test('teal and mint arrows always throw; panel takes teal but never mint', () => {
   for (const c of [C.teal, C.mint]) {
     assert.throws(() => S.arrow({ from: [0, 0], to: [50, 0], color: c }));
-    assert.throws(() => S.panel({ x: 0, y: 0, w: 5, h: 5, stroke: c }));
   }
+  // A dashed grouping border is decorative and its contents are each labelled,
+  // so panel() is the one exception to the teal rule, matching how dapr.io's
+  // `apis` scene bands its three groups. Mint stays out: 1.41:1 is not a line.
+  assert.match(
+    serialize(S.panel({ x: 0, y: 0, w: 5, h: 5, stroke: C.teal })),
+    /stroke="var\(--d-teal\)"/,
+  );
+  assert.throws(() => S.panel({ x: 0, y: 0, w: 5, h: 5, stroke: C.mint }), /mint/);
 });
 
 test('teal and mint outlines throw without a label, including an empty one', () => {

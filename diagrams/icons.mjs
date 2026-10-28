@@ -141,7 +141,11 @@ const ALLOWED_TAGS = new Set([
   'linearGradient', 'radialGradient', 'stop', 'clipPath', 'style', 'title', 'desc',
   'metadata', 'use',
 ]);
-const allowedTag = (t) => ALLOWED_TAGS.has(t) || /^(dc|rdf):[A-Za-z]+$/.test(t);
+// Creative Commons, Dublin Core and RDF elements appear inside <metadata> in
+// files exported by Inkscape (php.svg is one). clean() drops <metadata> whole,
+// so none of this reaches the output; rejecting the file over it would only
+// push us to a worse copy of the same mark.
+const allowedTag = (t) => ALLOWED_TAGS.has(t) || /^(cc|dc|rdf):[A-Za-z]+$/.test(t);
 
 function walk(node, fn) {
   fn(node);
@@ -397,20 +401,20 @@ export const PLATE_PAD = 28;
 // `inside` sets a name beside the mark WITHIN the plate, for a file that has no
 // wordmark of its own; `dx` shifts the mark to make room. Not to be confused
 // with a scene label placed under the plate, which is ordinary C.body text.
-export function brand({ name, x, y, w, h, content, plate: pw, dx = 0, inside, insideDx = 0, plateH = PLATE_H, pad = PLATE_PAD }) {
+export function brand({ name, x, y, w, h, content, plate: pw, dx = 0, inside, insideDx = 0, insideSize = 15, plateH = PLATE_H, pad = PLATE_PAD }) {
   return group([
     plate({ x, y, w: pw ?? content + pad, h: plateH }),
     icon({ name, x: x + dx, y, w, h, color: C.plateInk }),
     // Text that sits ON a plate takes C.plateInk, never C.body.
     inside
-      ? drawLabel({ x: x + insideDx, y, text: inside, size: 15, anchor: 'start', color: C.plateInk })
+      ? drawLabel({ x: x + insideDx, y, text: inside, size: insideSize, anchor: 'start', color: C.plateInk })
       : null,
   ]);
 }
 
 // Neutral backing for full-colour marks, so they stay legible on both ground
 // colours (--d-diagram-plate is near-white in both themes). x, y = CENTRE.
-export function plate({ x, y, w, h }) {
+export function plate({ x, y, w, h, fill = C.plate }) {
   return el('rect', {
     class: 'd-plate',
     x: num(x - w / 2),
@@ -418,6 +422,6 @@ export function plate({ x, y, w, h }) {
     width: num(w),
     height: num(h),
     rx: 8,
-    fill: C.plate,
+    fill,
   });
 }

@@ -8,16 +8,23 @@
 // proportions are scaled to fit it.
 //
 // Where this scene departs from the website, and why:
-//   - the three filled tiles are navy, not sky. Sky fill under C.bg text
-//     measures 2.56:1; the website has no dark mode and never had to check.
+//   - the three filled tiles are sky, matching the website, on the maintainer's
+//     explicit call after the alternative was put to them. Measured here so the
+//     cost is on the record rather than rediscovered: sky fill under C.bg text
+//     is 2.56:1 in LIGHT mode, below the 4.5:1 text threshold. Dark mode is
+//     unaffected, because C.bg there is the near-black ground. Navy measured
+//     12.7:1 light and 7.2:1 dark if this is ever reversed.
 //   - every language mark sits on a plate, single colour ones included, so the
 //     row reads as one set on the dark ground as well as the light one.
 //   - "Configuration", not "External Configuration": the replaced PNG was the
 //     only place in this repository using the longer name.
-//   - band panels are neutral, not teal/blue/navy. A grouping line carries no
-//     meaning, and panel() refuses teal outright.
-//   - "Azure" is set beside its cube inside the plate, in C.plateInk, so the
-//     infrastructure row carries no stray caption under one card.
+//   - band panels are teal / sky / navy, matching the website band for band.
+//     panel() allows teal only because a dashed grouping border is decorative;
+//     light teal is 2.90:1, just under the 3:1 non-text threshold.
+//   - band three is the website's own layout, item for item: no plates, the
+//     website's x for every mark, its Kubernetes helm tinted brand blue with
+//     the name beside it, and its sizes scaled by WEB_S. The language row in
+//     band one still uses plates, where they earn their keep in dark mode.
 //
 // Colour system, reused by every later scene:
 //   neutral dashed panel  = a band
@@ -26,13 +33,13 @@
 //   sky hexagon           = an application or a service
 //   navy hexagon + plate  = Dapr itself, holding the Dapr wordmark
 //   sky tile              = an API building block
-//   navy filled tile      = something Dapr gives every API
+//   sky filled tile       = something Dapr gives every API
 //   navy glyphs           = infrastructure Dapr integrates with
 // Teal and mint are unused: both fail contrast on the light ground.
 
 import { C, APP, el } from '../engine.mjs';
 import { OUTLINE, arrow, group, hex, hexPoints, label, panel, pill, slots, tile } from '../shapes.mjs';
-import { PLATE_H, brand, icon } from '../icons.mjs';
+import { brand, icon, plate } from '../icons.mjs';
 
 const W = 1512;
 const H = 779;
@@ -42,11 +49,12 @@ const PX = 16;
 const PW = W - 2 * PX;
 
 // Band 1: languages. Band 2: Dapr. Band 3: infrastructure.
-const B1 = { y: 30, h: 168 };
+const B1 = { y: 30, h: 152 }; // 119 website units scaled by WEB_S, so the band
+                              // reads the same height as dapr.io's at any width
 const B2 = { y: 242, h: 352 };
 const B3 = { y: 652, h: 114 };
 
-const LANG_Y = 114; // centre line of the language marks and the App hexagon
+const LANG_Y = B1.y + B1.h / 2; // centre line of the language marks and the App hexagon
 const HUB_X = 138; // centre of the App / Dapr hexagon column
 const HUB_Y = 427; // centre of the Dapr hexagon
 
@@ -55,29 +63,38 @@ const ROW1 = 360;
 const ROW2 = 494;
 const TILE_W = 112;
 const TILE_H = 118;
-const TILE_LABEL = 12;
-const TILE_GLYPH = 34;
+const TILE_LABEL = 14;
+const TILE_GLYPH = 44;
 
 const CROSS_X = 1358;
 const CROSS_W = 160;
 const CROSS_H = 76;
 const CROSS_TOP = 339; // centre of the first of the three; pitch CROSS_H + 12
 
-const INFRA_Y = 709; // centre line of the infrastructure row
-const INFRA_GLYPH_DX = -58; // glyph centre, left of its slot centre
-const INFRA_TEXT_DX = -32; // where its label starts, as dapr.io lays them out
+// Band 3 reproduces dapr.io's `apis` scene item for item. Its panel spans 1158
+// units from x=23 where ours spans PW from PX, so every x and every size in the
+// band is the website's own number put through webX()/WEB_S rather than being
+// re-laid-out here. The row sits at the same fraction of the band height (59 of
+// 102 in the website), which is slightly below centre.
+const WEB_S = PW / 1158;
+const webX = (x) => PX + (x - 23) * WEB_S;
+const INFRA_Y = B3.y + (59 / 102) * B3.h;
 
 // The language and runtime marks, in the website's order. C++ is deliberately
 // absent on the maintainer's instruction; cpp.svg stays vendored for a later
-// scene. Only Rust needs a text label: its mark is the gear, with no wordmark.
+// scene. No mark carries a text label: each is a wordmark or a logo readers
+// know, and Rust's gear was the last caption, removed on the maintainer's call.
+// Go and PHP are the full-colour Commons files dapr.io vendors, so they are wide
+// wordmarks rather than the square single-colour glyphs they replaced.
+const LANG_PLATE_H = 80;
 const LANGUAGES = [
-  { name: 'nodejs', w: 66, h: 41, content: 66 },
-  { name: 'python', w: 121, h: 36, content: 111 },
-  { name: 'dotnet', w: 44, h: 44, content: 44 },
-  { name: 'go', w: 64, h: 64, content: 64 },
-  { name: 'java', w: 28, h: 51, content: 27 },
-  { name: 'php', w: 50, h: 50, content: 50 },
-  { name: 'rust', w: 44, h: 44, content: 44, label: 'Rust' },
+  { name: 'nodejs', w: 81, h: 50, content: 81 },
+  { name: 'python', w: 148, h: 44, content: 135 },
+  { name: 'dotnet', w: 54, h: 54, content: 54 },
+  { name: 'go', w: 112, h: 42, content: 112 },
+  { name: 'java', w: 34, h: 62, content: 33 },
+  { name: 'php', w: 104, h: 56, content: 104 },
+  { name: 'rust', w: 54, h: 54, content: 54 },
 ];
 
 // The sixteen APIs, two rows of eight, in the website's set and order: the six
@@ -108,25 +125,38 @@ const CROSS_CUTTING = [
   ['arrow-clockwise', 'Resiliency'],
 ];
 
-// Vendored cloud marks, each on its plate. Azure's file is the cube with no
-// wordmark, so its name is set beside it inside the plate.
+// The cloud marks, exactly as dapr.io places them: no plates, left to right,
+// each at the website's own x. Azure and Kubernetes have no wordmark in their
+// file, so each gets a name beside it; AWS and Google Cloud carry theirs.
+// Kubernetes is the single-colour wheel tinted its own brand blue, which is why
+// C.kubernetes exists: it is the mark's colour, not a theme colour.
 const CLOUDS = [
-  { name: 'azure', w: 49, h: 49, content: 45, plate: 127, dx: -30, inside: 'Azure', insideDx: -2 },
-  { name: 'aws', w: 68, h: 41, content: 67 },
-  { name: 'google-cloud', w: 131, h: 21, content: 128 },
-  { name: 'kubernetes', w: 132, h: 24, content: 130 },
+  { name: 'azure', x: 62, size: 30, text: 'Azure', textX: 83 },
+  { name: 'aws', x: 172, w: 50, h: 30, backed: true },
+  { name: 'google-cloud', x: 302, w: 156, h: 24, backed: true },
+  { name: 'kubernetes', x: 412, size: 30, color: C.kubernetes, text: 'Kubernetes', textX: 433 },
 ];
+const CLOUD_LABEL = 15;
+// AWS and Google Cloud are wordmarks set in near-black and mid-grey, and their
+// owners' terms forbid recolouring them, so on the dark ground they get the
+// light backing these logos are designed to sit on. C.markPlate is transparent
+// in light mode, so band three stays pixel-identical to dapr.io there. Azure
+// and Kubernetes need no backing: one is a blue gradient, the other is tinted
+// brand blue, and both carry their name as ordinary theme-coloured text.
+const MARK_PLATE_H = 56;
+const MARK_PLATE_PAD = 16;
 
 // What Dapr runs on and talks to that has no logo of its own: the same Fluent
 // glyphs dapr.io uses, with the label inline beside them. No plate. A plate is
 // for a vendored brand mark that must keep its own colours; these are drawn in
 // a theme colour and follow the page.
 const INFRA = [
-  ['server', 'Virtual or\nphysical machines'],
-  ['database', 'Databases'],
-  ['mail-copy', 'Message brokers'],
-  ['plug-disconnected', 'Services'],
+  ['server', 'Virtual or\nphysical machines', 560, 582],
+  ['database', 'Databases', 755, 777],
+  ['mail-copy', 'Message brokers', 890, 912],
+  ['plug-disconnected', 'Services', 1062, 1084],
 ];
+const INFRA_LABEL = 13.5;
 
 export default {
   width: W,
@@ -138,11 +168,10 @@ export default {
   build() {
     const langX = slots(254, 1470, LANGUAGES.length);
     const apiX = Array.from({ length: 8 }, (_, i) => 312 + i * 126);
-    const infraX = slots(26, 1470, 8);
 
     return [
       // ---- band 1: any language or runtime -------------------------------
-      panel({ x: PX, y: B1.y, w: PW, h: B1.h }),
+      panel({ x: PX, y: B1.y, w: PW, h: B1.h, stroke: C.teal }),
       pill({
         x: 1300,
         y: B1.y,
@@ -160,14 +189,7 @@ export default {
         stroke: APP[0].stroke,
         fill: APP[0].fill,
       }),
-      LANGUAGES.map((m, i) =>
-        group([
-          brand({ ...m, x: langX[i], y: LANG_Y }),
-          m.label
-            ? label({ x: langX[i], y: LANG_Y + PLATE_H / 2 + 14, text: m.label, size: 13 })
-            : null,
-        ]),
-      ),
+      LANGUAGES.map((m, i) => brand({ ...m, x: langX[i], y: LANG_Y, plateH: LANG_PLATE_H })),
 
       // ---- the application reaches Dapr over HTTP or gRPC ----------------
       arrow({
@@ -180,7 +202,7 @@ export default {
       }),
 
       // ---- band 2: Dapr and its APIs -------------------------------------
-      panel({ x: PX, y: B2.y, w: PW, h: B2.h }),
+      panel({ x: PX, y: B2.y, w: PW, h: B2.h, stroke: C.blue }),
       group([
         // The Dapr wordmark paints its own navy, so the hexagon doubles as its
         // plate rather than carrying a rectangular one inside it.
@@ -206,14 +228,14 @@ export default {
         x: (apiX[0] + apiX[7]) / 2,
         y: CAPTION_Y,
         text: 'Dapr APIs',
-        size: 13,
+        size: 17,
         color: C.caption,
       }),
       label({
         x: CROSS_X,
         y: CAPTION_Y,
         text: 'Cross-cutting APIs',
-        size: 13,
+        size: 17,
         color: C.caption,
       }),
       APIS.map(([mark, name, tag], i) =>
@@ -237,10 +259,13 @@ export default {
           h: CROSS_H,
           icon: (cx, cy) => icon({ name: `fluent-${mark}`, x: cx, y: cy, size: 30, color: C.bg }),
           label: name,
-          labelSize: 13,
+          // Same size as the API tiles beside them: these are peers, not a
+          // secondary note, so they are not set smaller.
+          labelSize: TILE_LABEL,
           inline: true,
+          inlinePad: 34,
           filled: true,
-          color: C.navy,
+          color: C.blue,
         }),
       ),
 
@@ -249,7 +274,7 @@ export default {
       arrow({ from: [HUB_X + 12, B3.y - 4], to: [HUB_X + 12, B2.y + B2.h + 4] }),
 
       // ---- band 3: cloud and edge infrastructure -------------------------
-      panel({ x: PX, y: B3.y, w: PW, h: B3.h }),
+      panel({ x: PX, y: B3.y, w: PW, h: B3.h, stroke: C.navy }),
       pill({
         x: 1140,
         y: B3.y,
@@ -258,15 +283,43 @@ export default {
         text: 'Host on & integrate with any cloud or edge infrastructure',
         color: C.navy,
       }),
-      CLOUDS.map((m, i) => brand({ ...m, x: infraX[i], y: INFRA_Y })),
-      INFRA.map(([mark, name], i) =>
+      CLOUDS.map((m) =>
         group([
-          icon({ name: `fluent-${mark}`, x: infraX[i + 4] + INFRA_GLYPH_DX, y: INFRA_Y, size: 36, color: C.blue }),
+          m.backed
+            ? plate({
+              x: webX(m.x),
+              y: INFRA_Y,
+              w: m.w * WEB_S + MARK_PLATE_PAD,
+              h: MARK_PLATE_H,
+              fill: C.markPlate,
+            })
+            : null,
+          icon({
+            name: m.name,
+            x: webX(m.x),
+            y: INFRA_Y,
+            ...(m.size ? { size: m.size * WEB_S } : { w: m.w * WEB_S, h: m.h * WEB_S }),
+            ...(m.color ? { color: m.color } : {}),
+          }),
+          m.text
+            ? label({
+              x: webX(m.textX),
+              y: INFRA_Y,
+              text: m.text,
+              size: CLOUD_LABEL * WEB_S,
+              anchor: 'start',
+            })
+            : null,
+        ]),
+      ),
+      INFRA.map(([mark, name, glyphX, textX]) =>
+        group([
+          icon({ name: `fluent-${mark}`, x: webX(glyphX), y: INFRA_Y, size: 30 * WEB_S, color: C.blue }),
           label({
-            x: infraX[i + 4] + INFRA_TEXT_DX,
+            x: webX(textX),
             y: INFRA_Y,
             text: name,
-            size: 13,
+            size: INFRA_LABEL * WEB_S,
             anchor: 'start',
           }),
         ]),
