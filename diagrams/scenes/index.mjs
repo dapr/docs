@@ -3,6 +3,7 @@
 // Scenes are added here as they are written.
 import agentsOverview from './agents-overview.mjs';
 import buildingBlocks from './building-blocks.mjs';
+import buildingBlocksConcept from './building-blocks-concept.mjs';
 import hostingKubernetes from './hosting-kubernetes.mjs';
 import hostingStandalone from './hosting-standalone.mjs';
 import hostingVms from './hosting-vms.mjs';
@@ -12,6 +13,7 @@ import sidecarModel from './sidecar-model.mjs';
 export const scenes = {
   'agents-overview': agentsOverview,
   'building-blocks': buildingBlocks,
+  'building-blocks-concept': buildingBlocksConcept,
   'hosting-kubernetes': hostingKubernetes,
   'hosting-standalone': hostingStandalone,
   'hosting-vms': hostingVms,

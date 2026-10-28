@@ -581,6 +581,13 @@ before the next one starts. Report visual choices as proposals, not decisions.
   whenever the first is overridden: refuse, do not guess. Both directories are
   siblings in the test, never nested, or a directory snapshot reads one as a
   file in the other.
+- **Shrinking the canvas and a shape together changes nothing you can see.**
+  The inlined SVG scales to the content column, so only RATIOS inside the scene
+  are visible: halve every number and the page looks identical. When a shape is
+  too big next to another, change the two sizes against each other and check
+  the ratio of their rendered widths, not their coordinates. Name the shape
+  everything else is sized against, and say in the scene what the ratio is, or
+  the next edit drifts it back.
 - **A measurement that comes back unchanged after a change usually means the
   change did not land.** Check that the export actually succeeded before
   concluding a layout fix had no effect: a failed export leaves the previously

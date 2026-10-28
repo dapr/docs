@@ -256,6 +256,11 @@ const SCENES = [
       'Security',
     ],
   },
+  {
+    name: 'building-blocks-concept',
+    page: '/concepts/building-blocks-concept/',
+    labels: ['Your code', 'API', 'HTTP or gRPC', 'Building block', 'Component'],
+  },
 ];
 
 // Phone widths. 320 is the narrowest viewport still worth supporting, 360 and
