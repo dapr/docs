@@ -20,6 +20,13 @@
   {{- with resources.Get $path -}}
     <figure class="dapr-diagram" data-diagram="{{ $name }}">
       {{- .Content | safeHTML -}}
+      {{- /* The inlined svg paints in var(--d-*) and only resolves on this
+             page, so both actions point at the standalone copy under
+             static/diagrams/, which has the light values baked in. */ -}}
+      <div class="dapr-diagram-actions">
+        <a class="dapr-diagram-action" href="/diagrams/{{ $name }}.svg" download="{{ $name }}.svg">Download SVG</a>
+        <button class="dapr-diagram-action" type="button" data-diagram-copy="/diagrams/{{ $name }}.svg">Copy SVG</button>
+      </div>
     </figure>
   {{- else -}}
     {{- errorf "diagram shortcode: no diagram at assets/%s - run `npm run export:diagrams` or check the scene name (called from %s)" $path $.Position -}}

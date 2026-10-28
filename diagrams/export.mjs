@@ -9,6 +9,42 @@ import { setIconScope } from './icons.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 export const OUT_DIR = join(here, '..', 'daprdocs', 'assets', 'diagrams');
+// A second copy of every scene, for the download and copy buttons. The inlined
+// svg paints in var(--d-*), which only resolves on a page that defines those
+// tokens: saved or pasted anywhere else it comes out black or blank. This copy
+// has the LIGHT values substituted in, so it is a picture that works on its
+// own. It cannot follow the theme - a file has to pick one - and light is the
+// one a reader is most likely to paste into.
+export const STANDALONE_DIR = join(here, '..', 'daprdocs', 'static', 'diagrams');
+const TOKENS = join(here, '..', 'daprdocs', 'assets', 'scss', '_tokens.scss');
+
+// The :root values, which is the light theme. Read from the stylesheet so the
+// two cannot drift: a token renamed there must be renamed here or the
+// substitution below fails loudly rather than leaving a var() in the file.
+function lightTokens() {
+  const scss = readFileSync(TOKENS, 'utf8');
+  const root = scss.slice(0, scss.indexOf('[data-bs-theme="dark"]'));
+  const out = new Map();
+  for (const m of root.matchAll(/^\s*(--d-[a-z-]+)\s*:\s*([^;]+);/gm)) out.set(m[1], m[2].trim());
+  return out;
+}
+
+// Replace every var(--d-*) with its light value. Throws on a token the
+// stylesheet does not define, because a silently unresolved one is exactly the
+// broken file this exists to prevent.
+export function standalone(svgText, tokens = lightTokens()) {
+  const missing = new Set();
+  const out = svgText.replace(/var\((--d-[a-z-]+)\)/g, (whole, token) => {
+    const value = tokens.get(token);
+    if (value === undefined) {
+      missing.add(token);
+      return whole;
+    }
+    return value;
+  });
+  if (missing.size) throw new Error(`standalone svg: no light value for ${[...missing].join(', ')}`);
+  return out;
+}
 
 // No doubled or trailing hyphens: those slug to the same svg id as their tidy twin.
 const NAME = /^[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -90,7 +126,16 @@ export function renderScene(name, scene) {
 
 // Returns { ok, problems[], written[], removed[] } (removed = orphans deleted). Renders everything before touching
 // disk, so a bad scene leaves the output directory untouched.
-export function run({ scenes, outDir = OUT_DIR, check = false } = {}) {
+export function run({ scenes, outDir = OUT_DIR, standaloneDir, check = false } = {}) {
+  // A caller that redirects outDir - every test does - must redirect the
+  // standalone directory too, or it writes to and DELETES FROM the real one.
+  // Defaulting it silently is how the test suite once emptied static/diagrams.
+  if (standaloneDir === undefined) {
+    if (outDir !== OUT_DIR) {
+      throw new Error('run(): pass standaloneDir whenever you pass outDir, or the real one is used');
+    }
+    standaloneDir = STANDALONE_DIR;
+  }
   const problems = [];
   const rendered = new Map();
   for (const [name, scene] of Object.entries(scenes)) {
@@ -102,8 +147,22 @@ export function run({ scenes, outDir = OUT_DIR, check = false } = {}) {
   }
   if (problems.length) return { ok: false, problems, written: [], removed: [] };
 
+  // The standalone copies are rendered from the same strings, so the two can
+  // never disagree about what the scene draws - only about how it is coloured.
+  const flat = new Map();
+  try {
+    const tokens = lightTokens();
+    for (const [name, content] of rendered) flat.set(name, standalone(content, tokens));
+  } catch (e) {
+    return { ok: false, problems: [e.message], written: [], removed: [] };
+  }
+
   const existing = existsSync(outDir) ? readdirSync(outDir).filter((f) => f.endsWith('.svg')) : [];
   const orphans = existing.filter((f) => !rendered.has(f.slice(0, -4)));
+  const flatExisting = existsSync(standaloneDir)
+    ? readdirSync(standaloneDir).filter((f) => f.endsWith('.svg'))
+    : [];
+  const flatOrphans = flatExisting.filter((f) => !flat.has(f.slice(0, -4)));
 
   if (check) {
     const fix = '(run npm run export:diagrams)';
@@ -113,6 +172,14 @@ export function run({ scenes, outDir = OUT_DIR, check = false } = {}) {
       else if (readFileSync(file, 'utf8') !== content) problems.push(`${name}.svg: differs from a fresh render ${fix}`);
     }
     for (const f of orphans) problems.push(`${f}: no matching scene ${fix}`);
+    for (const [name, content] of flat) {
+      const file = join(standaloneDir, `${name}.svg`);
+      if (!existsSync(file)) problems.push(`static/diagrams/${name}.svg: missing ${fix}`);
+      else if (readFileSync(file, 'utf8') !== content) {
+        problems.push(`static/diagrams/${name}.svg: differs from a fresh render ${fix}`);
+      }
+    }
+    for (const f of flatOrphans) problems.push(`static/diagrams/${f}: no matching scene ${fix}`);
     return { ok: problems.length === 0, problems, written: [], removed: [] };
   }
 
@@ -123,13 +190,19 @@ export function run({ scenes, outDir = OUT_DIR, check = false } = {}) {
   }
 
   mkdirSync(outDir, { recursive: true });
+  mkdirSync(standaloneDir, { recursive: true });
   const written = [];
   for (const [name, content] of rendered) {
     writeFileSync(join(outDir, `${name}.svg`), Buffer.from(content, 'utf8'));
     written.push(`${name}.svg`);
   }
+  for (const [name, content] of flat) {
+    writeFileSync(join(standaloneDir, `${name}.svg`), Buffer.from(content, 'utf8'));
+    written.push(`static/diagrams/${name}.svg`);
+  }
   for (const f of orphans) unlinkSync(join(outDir, f));
-  return { ok: true, problems: [], written, removed: orphans };
+  for (const f of flatOrphans) unlinkSync(join(standaloneDir, f));
+  return { ok: true, problems: [], written, removed: [...orphans, ...flatOrphans] };
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

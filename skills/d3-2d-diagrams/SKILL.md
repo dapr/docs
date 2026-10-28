@@ -31,7 +31,9 @@ button and no reduced-motion path.
 | One scene per diagram | `diagrams/scenes/<name>.mjs`, registered in `diagrams/scenes/index.mjs` |
 | Exporter | `diagrams/export.mjs`, run as `npm run export:diagrams` |
 | Generated SVGs, committed | `daprdocs/assets/diagrams/<name>.svg` |
+| Standalone SVGs, for download and copy | `daprdocs/static/diagrams/<name>.svg`, written by the same export |
 | Shortcode | `daprdocs/layouts/shortcodes/diagram.html` |
+| Download and copy buttons | `daprdocs/assets/js/diagram-actions.js`, loaded per page by `_partials/hooks/body-end.html` |
 | Figure styles | `daprdocs/assets/scss/_diagrams.scss` |
 | Color tokens | `daprdocs/assets/scss/_tokens.scss`, light and `[data-bs-theme="dark"]` |
 | Vendored marks | `daprdocs/assets/icons/<name>.svg`, with sources and terms in `daprdocs/assets/icons/README.md` |
@@ -553,6 +555,22 @@ before the next one starts. Report visual choices as proposals, not decisions.
   started is invisible to `resources.Get`, so the shortcode errors and the page
   returns 500 while the file sits on disk. The first export of a new scene is
   therefore always a restart. Changing an existing scene is not.
+- **An inlined SVG is not portable.** Every colour in a scene is a
+  `var(--d-*)`, which resolves against the PAGE. The same markup saved to a
+  file or pasted into another tool has nothing to resolve against and paints
+  black on black. Anything offered for download or copy is therefore a
+  separate, standalone export with the light values substituted in; the
+  exporter reads them out of `_tokens.scss` and fails loudly on a token it
+  cannot find, so a new token can never ship a half-resolved file. The rendered
+  suite asserts the served file starts with `<svg` and contains no `var(`.
+- **An output directory that defaults is an output directory a test will
+  delete.** The exporter removes files in its output directory that no scene
+  claims. A test that redirects one output directory and lets a second default
+  points the cleanup pass at the REAL one and empties it — a green run that
+  silently destroys committed files. Make the second argument required
+  whenever the first is overridden: refuse, do not guess. Both directories are
+  siblings in the test, never nested, or a directory snapshot reads one as a
+  file in the other.
 - **A measurement that comes back unchanged after a change usually means the
   change did not land.** Check that the export actually succeeded before
   concluding a layout fix had no effect: a failed export leaves the previously

@@ -17,6 +17,11 @@ const scene = (over = {}) => ({
 // alpha and beta deliberately share title and desc.
 const fixtures = () => ({ alpha: scene(), beta: scene() });
 const tmp = () => mkdtempSync(join(tmpdir(), 'diagrams-'));
+// The standalone copies for a given output directory. Derived from it, so a
+// write and a later --check in the same test agree, and never the real one:
+// run() refuses a redirected outDir without this. A SIBLING of the output
+// directory, not a child, or the directory snapshots below read it as a file.
+const flat = (dir) => `${dir}-standalone`;
 const snapshot = (dir) =>
   existsSync(dir) ? Object.fromEntries(readdirSync(dir).sort().map((f) => [f, readFileSync(join(dir, f), 'utf8')])) : null;
 const withDir = (fn) => () => {
@@ -36,9 +41,9 @@ test('exporting twice produces byte-identical output', () => {
   const a = tmp();
   const b = tmp();
   try {
-    run({ scenes: fixtures(), outDir: a });
-    run({ scenes: fixtures(), outDir: b });
-    run({ scenes: fixtures(), outDir: b });
+    run({ scenes: fixtures(), outDir: a, standaloneDir: flat(a) });
+    run({ scenes: fixtures(), outDir: b, standaloneDir: flat(b) });
+    run({ scenes: fixtures(), outDir: b, standaloneDir: flat(b) });
     const sa = snapshot(a);
     assert.deepEqual(Object.keys(sa), ['alpha.svg', 'beta.svg']);
     assert.deepEqual(snapshot(b), sa);
@@ -51,7 +56,7 @@ test('exporting twice produces byte-identical output', () => {
 test(
   'output is LF with one trailing newline, and ids come from the scene name',
   withDir((d) => {
-    run({ scenes: fixtures(), outDir: d });
+    run({ scenes: fixtures(), outDir: d, standaloneDir: flat(d) });
     const raw = readFileSync(join(d, 'alpha.svg'));
     assert.ok(!raw.includes(0x0d), 'no CR bytes');
     const s = raw.toString('utf8');
@@ -65,8 +70,8 @@ test(
 test(
   '--check exits 0 when committed files match',
   withDir((d) => {
-    run({ scenes: fixtures(), outDir: d });
-    const r = run({ scenes: fixtures(), outDir: d, check: true });
+    run({ scenes: fixtures(), outDir: d, standaloneDir: flat(d) });
+    const r = run({ scenes: fixtures(), outDir: d, standaloneDir: flat(d), check: true });
     assert.equal(r.ok, true);
     assert.deepEqual(r.problems, []);
   }),
@@ -75,10 +80,10 @@ test(
 test(
   '--check exits 1 and names the file when one differs, is missing or is orphaned',
   withDir((d) => {
-    run({ scenes: fixtures(), outDir: d });
+    run({ scenes: fixtures(), outDir: d, standaloneDir: flat(d) });
     writeFileSync(join(d, 'alpha.svg'), 'tampered\n');
     writeFileSync(join(d, 'gone.svg'), '<svg/>\n');
-    const r = run({ scenes: { ...fixtures(), gamma: scene() }, outDir: d, check: true });
+    const r = run({ scenes: { ...fixtures(), gamma: scene() }, outDir: d, standaloneDir: flat(d), check: true });
     assert.equal(r.ok, false);
     const msg = r.problems.join('\n');
     assert.match(msg, /alpha\.svg: differs/);
@@ -91,15 +96,15 @@ test(
 test(
   '--check does not write to disk',
   withDir((d) => {
-    run({ scenes: fixtures(), outDir: d });
+    run({ scenes: fixtures(), outDir: d, standaloneDir: flat(d) });
     writeFileSync(join(d, 'alpha.svg'), 'tampered\n');
     writeFileSync(join(d, 'gone.svg'), '<svg/>\n');
     const before = snapshot(d);
-    run({ scenes: { ...fixtures(), gamma: scene() }, outDir: d, check: true });
+    run({ scenes: { ...fixtures(), gamma: scene() }, outDir: d, standaloneDir: flat(d), check: true });
     assert.deepEqual(snapshot(d), before, 'no file created, changed or deleted');
     // a directory that does not exist must not be created either
     const nowhere = join(d, 'nested', 'out');
-    assert.equal(run({ scenes: fixtures(), outDir: nowhere, check: true }).ok, false);
+    assert.equal(run({ scenes: fixtures(), outDir: nowhere, standaloneDir: flat(nowhere), check: true }).ok, false);
     assert.equal(existsSync(join(d, 'nested')), false);
   }),
 );
@@ -109,26 +114,26 @@ test(
   withDir((d) => {
     writeFileSync(join(d, 'gone.svg'), '<svg/>\n');
     writeFileSync(join(d, 'keep.txt'), 'x');
-    const r = run({ scenes: fixtures(), outDir: d });
+    const r = run({ scenes: fixtures(), outDir: d, standaloneDir: flat(d) });
     assert.deepEqual(r.removed, ['gone.svg'], 'deletions are reported');
     assert.deepEqual(readdirSync(d).sort(), ['alpha.svg', 'beta.svg', 'keep.txt']);
-    assert.equal(run({ scenes: fixtures(), outDir: d, check: true }).ok, true);
+    assert.equal(run({ scenes: fixtures(), outDir: d, standaloneDir: flat(d), check: true }).ok, true);
   }),
 );
 
 test(
   'export refuses to delete committed svgs when the registry is empty',
   withDir((d) => {
-    run({ scenes: fixtures(), outDir: d });
+    run({ scenes: fixtures(), outDir: d, standaloneDir: flat(d) });
     const before = snapshot(d);
-    const r = run({ scenes: {}, outDir: d });
+    const r = run({ scenes: {}, outDir: d, standaloneDir: flat(d) });
     assert.equal(r.ok, false);
     assert.match(r.problems.join('\n'), /registry is empty but 2 svgs exist/);
     assert.deepEqual(snapshot(d), before);
     // an empty registry over an empty directory is fine
     const e = tmp();
     try {
-      assert.equal(run({ scenes: {}, outDir: e }).ok, true);
+      assert.equal(run({ scenes: {}, outDir: e, standaloneDir: flat(e) }).ok, true);
     } finally {
       rmSync(e, { recursive: true, force: true });
     }
@@ -141,11 +146,11 @@ for (const field of ['title', 'desc']) {
       `a scene with ${label} ${field} fails the export and writes nothing`,
       withDir((d) => {
         const bad = scene({ [field]: value });
-        const r = run({ scenes: { ...fixtures(), bad }, outDir: d });
+        const r = run({ scenes: { ...fixtures(), bad }, outDir: d, standaloneDir: flat(d) });
         assert.equal(r.ok, false);
         assert.match(r.problems.join('\n'), new RegExp(`scene "bad": ${field} is required`));
         assert.deepEqual(readdirSync(d), [], 'valid scenes are not written either');
-        assert.equal(run({ scenes: { bad }, outDir: d, check: true }).ok, false);
+        assert.equal(run({ scenes: { bad }, outDir: d, standaloneDir: flat(d), check: true }).ok, false);
       }),
     );
   }
@@ -201,6 +206,7 @@ test('an error thrown inside build() names the scene', () => {
 });
 
 test('run() reports the scene name when build() throws', () => {
+  const here = tmp();
   const { ok, problems } = run({
     scenes: {
       beta: scene({
@@ -209,7 +215,7 @@ test('run() reports the scene name when build() throws', () => {
         },
       }),
     },
-    outDir: tmp(),
+    outDir: here, standaloneDir: flat(here),
   });
   assert.equal(ok, false);
   assert.match(problems.join('\n'), /scene "beta".*kaboom/s);

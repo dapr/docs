@@ -409,6 +409,25 @@ for (const scene of SCENES) {
       expect(overflowing, 'tile labels wider or taller than their tile').toEqual([]);
     });
 
+    // The point of the standalone copy: a file that still looks like the
+    // diagram once it is away from this page's tokens. Without this the
+    // download and copy buttons hand over something that paints black.
+    test(`${scene.name} offers a standalone svg that resolves on its own`, async ({ page }) => {
+      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+
+      const href = await page.locator(`${sel(scene.name)} a[download]`).getAttribute('href');
+      expect(href).toBe(`/diagrams/${scene.name}.svg`);
+
+      const res = await page.request.get(href);
+      expect(res.status(), `${href} did not serve`).toBe(200);
+      const body = await res.text();
+      expect(body.startsWith('<svg')).toBe(true);
+      expect(
+        body.match(/\bvar\(--d-[a-z-]+\)/g) ?? [],
+        'the standalone copy still refers to page tokens, so it will not paint elsewhere',
+      ).toEqual([]);
+    });
+
     test(`${scene.name} has no element outside its viewBox`, async ({ page }) => {
       await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
       const { bbox, view } = await page.evaluate((root) => {
@@ -479,10 +498,14 @@ for (const scene of SCENES) {
       });
     }
 
-    test(`${scene.name} ships no diagram JavaScript`, async ({ page }) => {
+    test(`${scene.name} runs no engine in the browser`, async ({ page }) => {
       await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
 
-      // Decision 3: the SVG is the artifact, the browser never runs the engine.
+      // Decision 3 stands where it matters: the SVG is the artifact and the
+      // browser never runs the engine that drew it. What the page MAY now
+      // ship is the copy button's script, which only fetches a file and
+      // writes it to the clipboard - it draws nothing, and the diagram is
+      // complete without it. The figure itself still carries no script.
       await expect(page.locator(`${sel(scene.name)} script`)).toHaveCount(0);
 
       const handlers = await page.evaluate((root) => {
@@ -497,7 +520,12 @@ for (const scene of SCENES) {
       expect(handlers).toEqual([]);
 
       const srcs = await page.$$eval('script[src]', (nodes) => nodes.map((n) => n.getAttribute('src')));
-      expect(srcs.filter((s) => /diagram|\bd3\b/i.test(s))).toEqual([]);
+      // diagram-actions.js is the ONE allowed diagram script, allowed by name
+      // so a second one cannot arrive unnoticed.
+      const engines = srcs.filter(
+        (s) => /diagram|\bd3\b/i.test(s) && !/diagram-actions(\.[a-f0-9]+)?\.js$/.test(s),
+      );
+      expect(engines, 'a diagram script other than the copy button').toEqual([]);
     });
   });
 }
