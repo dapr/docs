@@ -48,6 +48,52 @@ Add a row here for every file you add. `diagrams/icons.test.mjs` fails if a
 `logo.png` is the raster Dapr logo from the same source and is not used by the
 diagrams.
 
+## Fluent UI System Icons
+
+The glyphs inside the API tiles, one per Dapr API. The homepage diagrams on
+dapr.io draw this same set in its `apis` scene, and the homepage's API cards use
+it too, so these files are copied byte for byte from
+[`dapr/website`](https://github.com/dapr/website) at
+`assets/images/icons/fluent-*.svg`, where they were fetched from the
+[Iconify API](https://api.iconify.design) as `/fluent/<name>-24-regular.svg`
+(the 24px regular weight). Upstream is
+[microsoft/fluentui-system-icons](https://github.com/microsoft/fluentui-system-icons).
+
+Every one is a single `<path fill="currentColor">` on a 24x24 viewBox, so
+`icons.mjs` treats them as single-colour marks and `icon({ color })` tints them.
+They need no plate.
+
+**Licence for every row below:** MIT, Copyright (c) 2020 Microsoft Corporation,
+as [`LICENSE`](https://github.com/microsoft/fluentui-system-icons/blob/main/LICENSE)
+records it, read on 2026-10-28. The repository states no additional trademark or
+asset terms. The full notice is under [LICENSES](#licenses).
+
+| File | Glyph | Source | Licence | Colour | SHA-256 |
+| --- | --- | --- | --- | --- | --- |
+| `fluent-flowchart.svg` | Workflows | https://api.iconify.design/fluent/flowchart-24-regular.svg | MIT (Microsoft) | single | `e177454a2ae2` |
+| `fluent-mail-copy.svg` | Publish and subscribe, message brokers | https://api.iconify.design/fluent/mail-copy-24-regular.svg | MIT (Microsoft) | single | `d15c9c38de81` |
+| `fluent-arrow-step-in-right.svg` | Service invocation | https://api.iconify.design/fluent/arrow-step-in-right-24-regular.svg | MIT (Microsoft) | single | `d3c871a61861` |
+| `fluent-database.svg` | State management | https://api.iconify.design/fluent/database-24-regular.svg | MIT (Microsoft) | single | `19fb77317c94` |
+| `fluent-people-team.svg` | Actors | https://api.iconify.design/fluent/people-team-24-regular.svg | MIT (Microsoft) | single | `502a8aed9372` |
+| `fluent-clock.svg` | Jobs | https://api.iconify.design/fluent/clock-24-regular.svg | MIT (Microsoft) | single | `1d0f36f0cb12` |
+| `fluent-settings-cog-multiple.svg` | Configuration | https://api.iconify.design/fluent/settings-cog-multiple-24-regular.svg | MIT (Microsoft) | single | `00a4721ba568` |
+| `fluent-key.svg` | Secrets | https://api.iconify.design/fluent/key-24-regular.svg | MIT (Microsoft) | single | `4b0ae6a0e982` |
+| `fluent-plug-disconnected.svg` | Bindings, services | https://api.iconify.design/fluent/plug-disconnected-24-regular.svg | MIT (Microsoft) | single | `2ccb5e4c3f74` |
+| `fluent-arrow-move.svg` | Middleware | https://api.iconify.design/fluent/arrow-move-24-regular.svg | MIT (Microsoft) | single | `51ed8d2bdc98` |
+| `fluent-lock-closed-key.svg` | Cryptography | https://api.iconify.design/fluent/lock-closed-key-24-regular.svg | MIT (Microsoft) | single | `628b92240ab7` |
+| `fluent-table-lock.svg` | Distributed lock | https://api.iconify.design/fluent/table-lock-24-regular.svg | MIT (Microsoft) | single | `a7c0fd03ca91` |
+| `fluent-chat.svg` | Conversation | https://api.iconify.design/fluent/chat-24-regular.svg | MIT (Microsoft) | single | `781b8555615e` |
+| `fluent-cloud-archive.svg` | Binary Store | https://api.iconify.design/fluent/cloud-archive-24-regular.svg | MIT (Microsoft) | single | `7f275c14d54a` |
+| `fluent-document-search.svg` | Search | https://api.iconify.design/fluent/document-search-24-regular.svg | MIT (Microsoft) | single | `b393ca9a0cc8` |
+| `fluent-data-scatter.svg` | Vector | https://api.iconify.design/fluent/data-scatter-24-regular.svg | MIT (Microsoft) | single | `be7c7ccb0239` |
+| `fluent-heart-pulse.svg` | Observability | https://api.iconify.design/fluent/heart-pulse-24-regular.svg | MIT (Microsoft) | single | `8a33d2f3a7f9` |
+| `fluent-shield-lock.svg` | Security | https://api.iconify.design/fluent/shield-lock-24-regular.svg | MIT (Microsoft) | single | `8b4ee87169d3` |
+| `fluent-arrow-clockwise.svg` | Resiliency | https://api.iconify.design/fluent/arrow-clockwise-24-regular.svg | MIT (Microsoft) | single | `5dcc08ab343d` |
+
+`dapr/website` also vendors `fluent-server.svg`, which its `apis` scene uses for
+"virtual or physical machines". This repository draws that with the shape
+vocabulary instead, so the file is not vendored here.
+
 ## Notes
 
 - **Google Cloud and yellow.** The official Google Cloud logo contains Google yellow
@@ -68,7 +114,7 @@ diagrams.
 
 ## LICENSES
 
-Notice text for the two files whose licence requires it to travel with the
+Notice text for the files whose licence requires it to travel with the
 redistributed file. The notices are as the Commons file pages record them (the
 `{{MIT|Ryan Dahl}}` and `{{Apache|Amazon Web Services}}` templates, read on
 2026-10-26). Commons records no copyright year for either file, so none is
@@ -123,4 +169,34 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+```
+
+### `fluent-*.svg`: MIT License
+
+Source: https://github.com/microsoft/fluentui-system-icons/blob/main/LICENSE
+
+The files are unmodified. This notice covers all nineteen `fluent-*.svg` files.
+
+```
+MIT License
+
+Copyright (c) 2020 Microsoft Corporation
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
