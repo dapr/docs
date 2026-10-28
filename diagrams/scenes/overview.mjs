@@ -31,13 +31,11 @@
 // Teal and mint are unused: both fail contrast on the light ground.
 
 import { C, APP, el } from '../engine.mjs';
-import { OUTLINE, arrow, group, hex, hexPoints, label, panel, pill, tile } from '../shapes.mjs';
-import { icon, plate } from '../icons.mjs';
+import { OUTLINE, arrow, group, hex, hexPoints, label, panel, pill, slots, tile } from '../shapes.mjs';
+import { PLATE_H, brand, icon } from '../icons.mjs';
 
 const W = 1512;
 const H = 779;
-
-const SCOPE = 'overview';
 
 // Panels span the full canvas width, inset by the same margin.
 const PX = 16;
@@ -68,43 +66,6 @@ const CROSS_TOP = 339; // centre of the first of the three; pitch CROSS_H + 12
 const INFRA_Y = 709; // centre line of the infrastructure row
 const INFRA_GLYPH_DX = -58; // glyph centre, left of its slot centre
 const INFRA_TEXT_DX = -32; // where its label starts, as dapr.io lays them out
-
-const PLATE_H = 68; // one plate height for every marked logo
-const PLATE_PAD = 28; // horizontal padding around the mark inside its plate
-
-// Evenly spaced centres for `n` slots across [x0, x1].
-function slots(x0, x1, n) {
-  const pitch = (x1 - x0) / n;
-  return Array.from({ length: n }, (_, i) => x0 + pitch * (i + 0.5));
-}
-
-// A brand mark on its neutral plate. `w` and `h` are the box the mark is fitted
-// into; `content` is how wide it actually draws inside that box, which is what
-// the plate is sized around (several marks have slack viewBoxes). Single colour
-// marks are plated too, so the row does not go ragged in dark mode, and they
-// are tinted C.plateInk rather than C.body: the plate is near-white in BOTH
-// themes, so an ink that inverts with the page would vanish on it.
-// `inside` sets a name beside the mark WITHIN the plate, for a file that has no
-// wordmark of its own; `dx` shifts the mark to make room. Not to be confused
-// with a scene label placed under the plate, which is ordinary C.body text.
-function brand({ name, x, y, w, h, content, plate: pw, dx = 0, inside, insideDx = 0 }) {
-  return group([
-    plate({ x, y, w: pw ?? content + PLATE_PAD, h: PLATE_H }),
-    icon({ name, x: x + dx, y, w, h, color: C.plateInk, scope: SCOPE }),
-    // Text that sits ON a plate takes C.plateInk, never C.body: the plate is
-    // near-white in both themes and C.body inverts.
-    inside
-      ? label({ x: x + insideDx, y, text: inside, size: 15, anchor: 'start', color: C.plateInk })
-      : null,
-  ]);
-}
-
-// A Fluent glyph. Its path paints `currentColor`, which beats the fill that
-// icon() puts on the wrapping group, so the colour is set here as well, on an
-// outer group, where currentColor can resolve to it.
-function glyph(name, x, y, size, color) {
-  return el('g', { color }, [icon({ name: `fluent-${name}`, x, y, size, color, scope: SCOPE })]);
-}
 
 // The language and runtime marks, in the website's order. C++ is deliberately
 // absent on the maintainer's instruction; cpp.svg stays vendored for a later
@@ -230,7 +191,7 @@ export default {
           'stroke-width': OUTLINE,
           'stroke-linejoin': 'round',
         }),
-        icon({ name: 'logo-blue', x: HUB_X, y: HUB_Y, w: 132, h: 132, scope: SCOPE }),
+        icon({ name: 'logo-blue', x: HUB_X, y: HUB_Y, w: 132, h: 132 }),
       ]),
       pill({
         x: HUB_X,
@@ -261,7 +222,7 @@ export default {
           y: i < 8 ? ROW1 : ROW2,
           w: TILE_W,
           h: TILE_H,
-          icon: (cx, cy) => glyph(mark, cx, cy, TILE_GLYPH, C.blue),
+          icon: (cx, cy) => icon({ name: `fluent-${mark}`, x: cx, y: cy, size: TILE_GLYPH, color: C.blue }),
           label: name,
           labelSize: TILE_LABEL,
           tag,
@@ -274,7 +235,7 @@ export default {
           y: CROSS_TOP + i * (CROSS_H + 12),
           w: CROSS_W,
           h: CROSS_H,
-          icon: (cx, cy) => glyph(mark, cx, cy, 30, C.bg),
+          icon: (cx, cy) => icon({ name: `fluent-${mark}`, x: cx, y: cy, size: 30, color: C.bg }),
           label: name,
           labelSize: 13,
           inline: true,
@@ -300,7 +261,7 @@ export default {
       CLOUDS.map((m, i) => brand({ ...m, x: infraX[i], y: INFRA_Y })),
       INFRA.map(([mark, name], i) =>
         group([
-          glyph(mark, infraX[i + 4] + INFRA_GLYPH_DX, INFRA_Y, 36, C.blue),
+          icon({ name: `fluent-${mark}`, x: infraX[i + 4] + INFRA_GLYPH_DX, y: INFRA_Y, size: 36, color: C.blue }),
           label({
             x: infraX[i + 4] + INFRA_TEXT_DX,
             y: INFRA_Y,

@@ -200,7 +200,7 @@ test('a <style> block that would restyle the page is refused', () => {
 
 test('a single-color mark is filled with the color argument; a full-color mark is left untouched', () => {
   const single = render('single', SINGLE, { color: C.red });
-  assert.match(single, /<g class="d-icon" data-mark="single" transform="[^"]+" fill="var\(--d-red\)">/);
+  assert.match(single, /<g class="d-icon" data-mark="single" transform="[^"]+" fill="var\(--d-red\)"/);
   const dflt = render('single', SINGLE);
   assert.match(dflt, /fill="var\(--d-body\)"/, 'defaults to body ink');
 
@@ -303,4 +303,52 @@ test('plate is a centred rect in the neutral plate colour', () => {
 
 test('parseMark is exported for tooling and reports the mark name in errors', () => {
   assert.throws(() => parseMark('<svg viewBox="0 0 1 1"><script/></svg>', { name: 'evil', prefix: 'p-' }), /mark "evil" rejected/);
+});
+
+// --------------------------------------------------- review fix pass: ids, colour, scope
+
+test('a mark carrying the same id twice emits distinct ids', () => {
+  // Sketch exports do this: logo-blue.svg has three <rect id="Rectangle-4">.
+  // Prefixing alone keeps the collision, which is invalid HTML once inlined.
+  const out = render(
+    'sketchy',
+    '<svg viewBox="0 0 24 24"><rect id="Rectangle-4" width="1" height="1"/><rect id="Rectangle-4" width="2" height="2"/><rect id="Rectangle-4" width="3" height="3"/></svg>',
+  );
+  const ids = [...out.matchAll(/id="([^"]+)"/g)].map((m) => m[1]);
+  assert.equal(ids.length, 3);
+  assert.equal(new Set(ids).size, 3, `ids collided: ${ids.join(', ')}`);
+});
+
+test('a reference to a duplicated id still resolves to the first occurrence', () => {
+  const out = render(
+    'sketchy2',
+    '<svg viewBox="0 0 24 24"><rect id="dup" width="1" height="1"/><rect id="dup" width="2" height="2"/><use href="#dup"/></svg>',
+  );
+  const first = out.match(/id="([^"]+)"/)[1];
+  assert.match(out, new RegExp(`href="#${first}"`));
+});
+
+test('a single-colour mark sets color as well as fill so currentColor resolves', () => {
+  // Fluent glyphs paint fill="currentColor", which beats the fill on the wrapper.
+  // Without `color` the glyph silently renders in the page's text colour.
+  const out = render(
+    'fluent-ish',
+    '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M0 0h24v24H0z"/></svg>',
+    { color: C.blue },
+  );
+  assert.ok(out.includes(`color="${C.blue}"`), `no color= on the wrapper: ${out}`);
+  assert.ok(out.includes(`fill="${C.blue}"`), `no fill= on the wrapper: ${out}`);
+});
+
+test('scope defaults to the current scene so two diagrams on one page cannot collide', async () => {
+  const { setIconScope } = await import('./icons.mjs');
+  const mark = '<svg viewBox="0 0 24 24"><rect id="r" width="1" height="1"/></svg>';
+  setIconScope('scene-one');
+  const one = render('scoped', mark);
+  setIconScope('scene-two');
+  const two = render('scoped', mark);
+  setIconScope('');
+  assert.match(one, /id="ic-scene-one-scoped-/);
+  assert.match(two, /id="ic-scene-two-scoped-/);
+  assert.notEqual(one, two);
 });

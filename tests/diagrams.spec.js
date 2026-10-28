@@ -13,6 +13,10 @@
 // a diagram that no row covers, so no diagram can ship untested.
 
 const { test, expect } = require('@playwright/test');
+const fs = require('fs');
+const path = require('path');
+
+const REPO_ROOT = path.resolve(__dirname, '..');
 
 /**
  * name   the scene, i.e. assets/diagrams/<name>.svg and the figure's data-diagram
@@ -109,9 +113,16 @@ function readPaint(page, name) {
       const el = svg.querySelector(q);
       return el ? getComputedStyle(el)[prop] : null;
     };
+    // A scene need not use panel(), and its first <text> may be plate ink, which
+    // is the same colour in both themes by design. Pick what exists, and prefer
+    // a text node that is not sitting on a plate; the fingerprint below carries
+    // the real signal and does not care about scene shape.
+    const offPlate = [...svg.querySelectorAll('text')].find(
+      (t) => !t.closest('.d-icon-group') && !t.previousElementSibling?.classList?.contains('d-plate'),
+    );
     return {
       panelStroke: pick('.d-panel', 'stroke'),
-      textFill: pick('text', 'fill'),
+      textFill: offPlate ? getComputedStyle(offPlate).fill : pick('text', 'fill'),
       fingerprint: all.join(';'),
       unresolved: all.filter((v) => v.includes('var(') || v.includes('||')),
     };
@@ -177,7 +188,14 @@ for (const scene of SCENES) {
       });
     }
 
-    test(`${scene.name} draws no text below 11px`, async ({ page }) => {
+    // NOTE: this measures USER UNITS inside the viewBox, not what a reader sees.
+    // _diagrams.scss sets `svg { width: 100% }`, so the rendered size is
+    // size x columnWidth / viewBoxWidth: on a 1512-wide canvas a 12-unit label
+    // lands near 6-7 CSS px in a typical Docsy column. The floor is therefore
+    // canvas-relative, and the same "11" is four times more readable on a
+    // 600-wide canvas than on a 1512-wide one. Whether the house style should
+    // express this as a ratio instead is an open question for the skill text.
+    test(`${scene.name} draws no text below 11 user units`, async ({ page }) => {
       await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
       const sizes = await page.$$eval(`${sel(scene.name)} svg text`, (nodes) =>
         nodes.map((n) => parseFloat(getComputedStyle(n).fontSize)),
@@ -218,7 +236,11 @@ for (const scene of SCENES) {
       expect(light.unresolved, 'unresolved paint in light').toEqual([]);
       expect(dark.unresolved, 'unresolved paint in dark').toEqual([]);
 
+      // Only assert on what this scene actually draws: a missing .d-panel is a
+      // legitimate scene shape, not a regression. The fingerprint below is the
+      // assertion that every scene must pass.
       for (const key of ['panelStroke', 'textFill']) {
+        if (light[key] === null && dark[key] === null) continue;
         expect(light[key], `${key} did not resolve`).toMatch(/^rgba?\(/);
         expect(dark[key], `${key} did not resolve in dark`).toMatch(/^rgba?\(/);
         expect(dark[key], `${key} is the same in both themes`).not.toBe(light[key]);
@@ -275,16 +297,107 @@ for (const scene of SCENES) {
   });
 }
 
+// Where the call sites actually are, read from the repo rather than from SCENES.
+// Building the page list out of SCENES (as this guard used to) can only ever see
+// pages that already have a row, so the failure it exists to prevent - a scene
+// shipped on a page nobody listed - was invisible to it.
+const CONTENT_DIR = path.join(REPO_ROOT, 'daprdocs', 'content', 'en');
+
+function markdownFiles(dir) {
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+    const full = path.join(dir, e.name);
+    if (e.isDirectory()) return markdownFiles(full);
+    return e.isFile() && e.name.endsWith('.md') ? [full] : [];
+  });
+}
+
+// content/en/overview.md -> /overview/ ; .../_index.md -> that directory's url
+function urlFor(file) {
+  const rel = path.relative(CONTENT_DIR, file).split(path.sep).join('/');
+  const stem = rel.replace(/\.md$/, '').replace(/(^|\/)_index$/, '');
+  return `/${stem}${stem.endsWith('/') || stem === '' ? '' : '/'}`;
+}
+
+function diagramCallSites() {
+  const calls = [];
+  for (const file of markdownFiles(CONTENT_DIR)) {
+    const body = fs.readFileSync(file, 'utf8');
+    for (const m of body.matchAll(/\{\{<\s*diagram\s+([^\s>]+)/g)) {
+      calls.push({ name: m[1].replace(/^["']|["']$/g, ''), page: urlFor(file) });
+    }
+  }
+  return calls;
+}
+
+test('every exported diagram has a row in SCENES', () => {
+  // The exporter writes one svg per registered scene and deletes orphans, so
+  // the directory listing is the registry.
+  const exported = fs
+    .readdirSync(path.join(REPO_ROOT, 'daprdocs', 'assets', 'diagrams'))
+    .filter((f) => f.endsWith('.svg'))
+    .map((f) => f.slice(0, -4));
+  const known = SCENES.map((s) => s.name);
+  expect(
+    exported.filter((n) => !known.includes(n)),
+    'exported but untested - add a SCENES row',
+  ).toEqual([]);
+});
+
+test('every {{< diagram >}} call site in the content is listed in SCENES', () => {
+  const rows = SCENES.map((s) => `${s.name} ${s.page}`);
+  const missing = diagramCallSites()
+    .filter(({ name, page }) => !rows.includes(`${name} ${page}`))
+    .map(({ name, page }) => `${name} on ${page}`);
+  expect(missing, 'diagram call sites with no matching SCENES row').toEqual([]);
+});
+
 test('every .dapr-diagram on a visited page is listed in SCENES', async ({ page }) => {
   const known = SCENES.map((s) => s.name);
-  for (const path of new Set(SCENES.map((s) => s.page))) {
-    await page.goto(path, { waitUntil: 'domcontentloaded' });
+  const pages = new Set([...SCENES.map((s) => s.page), ...diagramCallSites().map((c) => c.page)]);
+  for (const url of pages) {
+    await page.goto(url, { waitUntil: 'domcontentloaded' });
     const found = await page.$$eval('.dapr-diagram', (nodes) =>
       nodes.map((n) => n.dataset.diagram ?? '(no data-diagram)'),
     );
-    expect(found.length).toBeGreaterThan(0);
+    expect(found.length, `${url} renders no diagram`).toBeGreaterThan(0);
     for (const name of found) {
-      expect(known, `${path} renders diagram "${name}", which has no row in SCENES`).toContain(name);
+      expect(known, `${url} renders diagram "${name}", which has no row in SCENES`).toContain(name);
     }
+  }
+});
+
+
+// Windows high contrast drops author colours entirely. A diagram that depends on
+// var(--d-*) can collapse to invisible there, which is why _diagrams.scss has a
+// forced-colors block - and why it needs a test, as a named Review Focus item.
+test.describe('high contrast', () => {
+  for (const scene of SCENES) {
+    test(`${scene.name} stays visible in forced-colors mode`, async ({ page }) => {
+      // emulateMedia, not test.use({ forcedColors }): the fixture form did not
+      // make the media query match in this Chromium, so the test silently
+      // measured the ordinary light theme instead of high contrast.
+      await page.emulateMedia({ forcedColors: 'active' });
+      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      expect(
+        await page.evaluate(() => matchMedia('(forced-colors: active)').matches),
+        'forced-colors emulation did not take effect; this test would prove nothing',
+      ).toBe(true);
+      const paints = await page.evaluate((root) => {
+        const svg = document.querySelector(`${root} svg`);
+        const text = [...svg.querySelectorAll('text')].map((n) => getComputedStyle(n).fill);
+        const strokes = [...svg.querySelectorAll('path, rect, polygon, polyline, line')]
+          .filter((n) => !n.closest('.d-icon'))
+          .map((n) => getComputedStyle(n).stroke);
+        return { text, strokes };
+      }, sel(scene.name));
+
+      // Nothing may still be asking for a custom property the UA has dropped.
+      expect(paints.text.filter((v) => v.includes('var(')), 'unresolved text fill').toEqual([]);
+      expect(paints.strokes.filter((v) => v.includes('var(')), 'unresolved stroke').toEqual([]);
+      expect(paints.text.length, 'no text found').toBeGreaterThan(0);
+      // And text must not be painted in the window background colour.
+      const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+      expect(paints.text.filter((v) => v === bg), 'text painted in the page background').toEqual([]);
+    });
   }
 });

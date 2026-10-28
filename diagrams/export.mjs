@@ -5,6 +5,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, unlinkSync, writeFile
 import { join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { svg } from './engine.mjs';
+import { setIconScope } from './icons.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 export const OUT_DIR = join(here, '..', 'daprdocs', 'assets', 'diagrams');
@@ -12,6 +13,32 @@ export const OUT_DIR = join(here, '..', 'daprdocs', 'assets', 'diagrams');
 // No doubled or trailing hyphens: those slug to the same svg id as their tidy twin.
 const NAME = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const blank = (v) => typeof v !== 'string' || !v.trim();
+
+// The first id drawn twice anywhere in a scene, or null. Ids reach the page
+// verbatim once the shortcode inlines the svg, so a collision here is invalid
+// HTML on a real docs page - and it is not otherwise detectable, because every
+// guard upstream of this one looks at a single mark rather than a whole scene.
+function duplicateIds(nodes) {
+  const seen = new Set();
+  const visit = (n) => {
+    if (!n || typeof n !== 'object' || n.text !== undefined) return null;
+    const id = n.attrs && n.attrs.id;
+    if (id !== undefined) {
+      if (seen.has(id)) return id;
+      seen.add(id);
+    }
+    for (const c of n.children ?? []) {
+      const hit = visit(c);
+      if (hit) return hit;
+    }
+    return null;
+  };
+  for (const n of nodes) {
+    const hit = visit(n);
+    if (hit) return hit;
+  }
+  return null;
+}
 
 // Render one scene to the exact file content (LF, trailing newline).
 // The scene name is passed as svg()'s id so accessible-name ids are unique
@@ -28,8 +55,22 @@ export function renderScene(name, scene) {
     if (!Number.isFinite(scene[k]) || scene[k] <= 0) fail(`${k} must be a positive number`);
   }
   if (typeof scene.build !== 'function') fail('build() is required');
-  const children = scene.build();
+  // Scope icon ids to this scene for the duration of the build, so two diagrams
+  // on one page cannot emit the same ids, and so no scene has to remember to.
+  let children;
+  setIconScope(name);
+  try {
+    children = scene.build();
+  } catch (e) {
+    // A bare "no mark named ..." tells an operator with 24 scenes nothing about
+    // which one failed, and build() is where most failures happen.
+    fail(e && e.message ? e.message : String(e));
+  } finally {
+    setIconScope('');
+  }
   if (!Array.isArray(children)) fail('build() must return an array of nodes');
+  const dup = duplicateIds(children);
+  if (dup) fail(`duplicate id "${dup}" - two elements cannot share one id once the svg is inlined into a page`);
   const out = svg({
     width: scene.width,
     height: scene.height,

@@ -6,9 +6,18 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { el, text, C } from './engine.mjs';
-import { label as drawLabel } from './shapes.mjs';
+import { label as drawLabel, group } from './shapes.mjs';
 
 export const ICONS_DIR = fileURLToPath(new URL('../daprdocs/assets/icons/', import.meta.url));
+
+// The scene currently being rendered. The exporter sets this around build() so
+// icon() can scope its ids without every call site remembering to: two diagrams
+// on one page that draw the same mark at the same point would otherwise emit the
+// same ids. Pass `scope` explicitly to override it.
+let currentScope = '';
+export function setIconScope(scope = '') {
+  currentScope = typeof scope === 'string' ? scope : '';
+}
 
 export class IconError extends Error {
   constructor(message) {
@@ -200,9 +209,21 @@ function prefixTree(root, prefix, name) {
   ;
   // Trim first: assertSafe approved the trimmed value, so the rewrite must inspect and emit that same value.
   const href = (v) => v.replace(/^#(.+)$/, (m, id) => (ids.has(id) ? `#${prefix}${id}` : m));
+  // Sketch exports repeat an id (logo-blue.svg carries three <rect id="Rectangle-4">),
+  // and prefixing alone preserves the collision, which is invalid HTML once the
+  // mark is inlined into a page. Give each repeat its own suffix. References are
+  // NOT redirected: `url(#x)` and `href="#x"` keep resolving to the first
+  // occurrence, which is what a browser does with duplicate ids anyway.
+  const used = new Set();
+  const uniq = (v) => {
+    let out = `${prefix}${v}`;
+    for (let i = 2; used.has(out); i += 1) out = `${prefix}${v}-${i}`;
+    used.add(out);
+    return out;
+  };
   walk(root, (n) => {
     for (const [k, v] of Object.entries(n.attrs)) {
-      if (k === 'id') n.attrs[k] = `${prefix}${v}`;
+      if (k === 'id') n.attrs[k] = uniq(v);
       else if (k === 'class') n.attrs[k] = v.split(/\s+/).filter(Boolean).map((c) => `${prefix}${c}`).join(' ');
       else if (k === 'href' || k === 'xlink:href') n.attrs[k] = href(v);
       else n.attrs[k] = refs(v);
@@ -334,11 +355,12 @@ export function listMarks(dir = ICONS_DIR) {
 // `label` is optional; with none, nothing but the mark is drawn. `scope` is for
 // pages that hold several diagrams: pass the diagram id so two diagrams that draw
 // the same mark at the same spot still get distinct ids.
-export function icon({ name, x, y, size = 32, w, h, color = C.body, label, labelDy, labelSize = 13, scope = '', dir = ICONS_DIR }) {
+export function icon({ name, x, y, size = 32, w, h, color = C.body, label, labelDy, labelSize = 13, scope, dir = ICONS_DIR }) {
   const src = readMark(name, dir);
   const boxW = w ?? size;
   const boxH = h ?? size;
-  const prefix = `ic-${scope ? `${scope}-` : ''}${name}-${num(x)}-${num(y)}-`;
+  const sc = scope === undefined ? currentScope : scope;
+  const prefix = `ic-${sc ? `${sc}-` : ''}${name}-${num(x)}-${num(y)}-`;
   const mark = parseMark(src, { name, prefix });
   const [vx, vy, vw, vh] = mark.viewBox;
   const s = Math.min(boxW / vw, boxH / vh);
@@ -346,12 +368,44 @@ export function icon({ name, x, y, size = 32, w, h, color = C.body, label, label
   const ty = y - (vh * s) / 2 - vy * s;
   const attrs = { class: 'd-icon', 'data-mark': name, transform: `translate(${num(tx)} ${num(ty)}) scale(${num(s)})` };
   if (mark.full) Object.assign(attrs, mark.inherited);
-  else attrs.fill = color;
+  else {
+    // `color` as well as `fill`: a glyph whose path paints `fill="currentColor"`
+    // (every Fluent mark does) overrides the wrapper's fill, so without this it
+    // renders in the page's inherited text colour instead of the token asked for.
+    attrs.fill = color;
+    attrs.color = color;
+  }
   const parts = [el('g', attrs, mark.children)];
   if (typeof label === 'string' && label.trim() !== '') {
     parts.push(drawLabel({ x, y: y + (labelDy ?? boxH / 2 + 14), text: label, size: labelSize }));
   }
   return el('g', { class: 'd-icon-group' }, parts);
+}
+
+// One plate height for every marked logo, and the horizontal padding around the
+// mark inside it. Exported so a scene can lay out around a plate it did not draw.
+export const PLATE_H = 68;
+export const PLATE_PAD = 28;
+
+// A brand mark on its neutral plate. `w` and `h` are the box the mark is fitted
+// into; `content` is how wide it actually draws inside that box, which is what
+// the plate is sized around (several marks have slack viewBoxes, so the box and
+// the ink are different widths). Single-colour marks are plated too, so a row
+// does not go ragged in dark mode, and they are tinted C.plateInk rather than
+// C.body: the plate is near-white in BOTH themes, so an ink that inverts with
+// the page would vanish on it.
+// `inside` sets a name beside the mark WITHIN the plate, for a file that has no
+// wordmark of its own; `dx` shifts the mark to make room. Not to be confused
+// with a scene label placed under the plate, which is ordinary C.body text.
+export function brand({ name, x, y, w, h, content, plate: pw, dx = 0, inside, insideDx = 0, plateH = PLATE_H, pad = PLATE_PAD }) {
+  return group([
+    plate({ x, y, w: pw ?? content + pad, h: plateH }),
+    icon({ name, x: x + dx, y, w, h, color: C.plateInk }),
+    // Text that sits ON a plate takes C.plateInk, never C.body.
+    inside
+      ? drawLabel({ x: x + insideDx, y, text: inside, size: 15, anchor: 'start', color: C.plateInk })
+      : null,
+  ]);
 }
 
 // Neutral backing for full-colour marks, so they stay legible on both ground

@@ -44,6 +44,14 @@ const tint = (fill) => ({ fill, 'fill-opacity': FILL_OPACITY });
 
 // ---------------------------------------------------------------- group, label
 
+// Evenly spaced centres for `n` slots across [x0, x1]: the standard way to lay
+// out a row of marks, tiles or boxes so the gaps at each end match the gaps
+// between items.
+export function slots(x0, x1, n) {
+  const pitch = (x1 - x0) / n;
+  return Array.from({ length: n }, (_, i) => x0 + pitch * (i + 0.5));
+}
+
 export function group(arg = {}) {
   const o = Array.isArray(arg) ? { children: arg } : arg;
   const { children = [], ...attrs } = o;

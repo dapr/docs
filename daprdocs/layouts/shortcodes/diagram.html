@@ -10,6 +10,12 @@
 */ -}}
 {{- $name := or (.Get 0) (.Get "name") -}}
 {{- with $name -}}
+  {{- /* Same rule the exporter enforces on a scene name (diagrams/export.mjs).
+         Without it the argument is interpolated straight into a resource path,
+         so a typo can reach for any asset and inline it through safeHTML. */ -}}
+  {{- if not (findRE `^[a-z0-9]+(-[a-z0-9]+)*$` . ) -}}
+    {{- errorf "diagram shortcode: %q is not a scene name - lowercase letters, digits and single hyphens only (called from %s)" . $.Position -}}
+  {{- end -}}
   {{- $path := printf "diagrams/%s.svg" . -}}
   {{- with resources.Get $path -}}
     <figure class="dapr-diagram" data-diagram="{{ $name }}">

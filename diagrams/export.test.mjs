@@ -175,3 +175,42 @@ test('the rendered file holds no CR, so git eol=lf cannot change it', () => {
   const out = renderScene('cr-test', withCr);
   assert.equal(out.includes('\r'), false);
 });
+
+// --------------------------------------------------- review fix pass: ids and errors
+
+test('renderScene fails when two elements in a scene share an id', () => {
+  const dup = scene({
+    build: () => [el('rect', { id: 'thing' }), el('g', {}, [el('circle', { id: 'thing' })])],
+  });
+  assert.throws(() => renderScene('alpha', dup), /scene "alpha".*duplicate id.*thing/s);
+});
+
+test('renderScene allows a scene whose ids are all distinct', () => {
+  const ok = scene({ build: () => [el('rect', { id: 'a' }), el('circle', { id: 'b' })] });
+  assert.match(renderScene('alpha', ok), /id="a"/);
+});
+
+test('an error thrown inside build() names the scene', () => {
+  const boom = scene({
+    build: () => {
+      throw new Error('no mark named "fluent-nope"');
+    },
+  });
+  // Without the scene name an operator with 24 scenes cannot tell which one failed.
+  assert.throws(() => renderScene('hosting-vms', boom), /scene "hosting-vms".*fluent-nope/s);
+});
+
+test('run() reports the scene name when build() throws', () => {
+  const { ok, problems } = run({
+    scenes: {
+      beta: scene({
+        build: () => {
+          throw new Error('kaboom');
+        },
+      }),
+    },
+    outDir: tmp(),
+  });
+  assert.equal(ok, false);
+  assert.match(problems.join('\n'), /scene "beta".*kaboom/s);
+});

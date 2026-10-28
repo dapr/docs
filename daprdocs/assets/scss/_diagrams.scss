@@ -31,9 +31,15 @@
       stroke: none;
     }
 
+    // Open geometry - a cylinder's back rim, an envelope flap, an arrow head -
+    // is drawn with fill="none". Filling it would close the implied path and
+    // paint a Canvas-coloured region over whatever sits beneath it.
     :is(rect, circle, ellipse, line, polyline, polygon, path):not(.d-icon *) {
-      fill: Canvas;
       stroke: currentColor;
+    }
+
+    :is(rect, circle, ellipse, polygon, path):not(.d-icon *):not([fill='none']) {
+      fill: Canvas;
     }
   }
 }
