@@ -70,6 +70,13 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
 - **Never a literal hex in a scene.** A color that is not yet a token gets one,
   in both themes. The only hex values in a diagram are the ones inside a
   vendored brand mark, which is left untouched.
+- **A token name is lowercase letters and hyphens, with no digits.** The tests
+  match `--d-[a-z-]+`, so `--d-brand-k8s` fails three of them at once, in ways
+  that look unrelated to the token. Spell the word out.
+- **A vendor's own color is still a token,** and it is the same value in both
+  themes, because the mark is. `--d-brand-kubernetes` exists so the helm can be
+  tinted its own blue without a hex in the scene. The brand-mark exemption
+  covers color *inside* a vendored file, not a tint the diagram applies.
 - **App hexagons take `APP` in order:** sky, blue, teal, orange, each with a
   light fill. With more than four apps, color by role, so apps of one kind
   share a color.
@@ -211,6 +218,31 @@ silently, and do not quietly change the content set to match a source image.
 5. **Keep shared helpers out of the scene.** If a helper is not specific to one
    diagram, it belongs in `shapes.mjs` or `icons.mjs`. The next scene author
    will otherwise import from your scene or copy it.
+6. **Derive constants from each other instead of repeating a number.** A row's
+   centre line comes from its band (`const LANG_Y = B1.y + B1.h / 2`), and one
+   label-size constant drives every tile that should match. A hard-coded centre
+   silently stops being the centre the first time the band changes, and two
+   sizes that are meant to be equal drift the first time one of them moves.
+
+#### Matching an existing diagram
+
+When a diagram already exists somewhere and this one should look like it, read
+**its source**, not a screenshot of it. Two things fall out of that which
+eyeballing will not give you:
+
+- **Carry its numbers, scaled.** Put its coordinates and sizes through one
+  factor (`const S = ourPanelWidth / theirPanelWidth`) and a helper that maps
+  its x into ours, rather than re-laying the scene out by eye. The mapping then
+  reads in the source instead of being baked into constants nobody can check.
+  A reference's positions are often hand-placed and unevenly spaced, which no
+  amount of nudging an even layout will ever reproduce.
+- **The vertical may not scale with the horizontal.** If our canvas keeps a
+  different aspect from the reference, scaling every band by the same factor
+  will push content outside the viewBox. Scale what reads as proportion, such
+  as a band's height against the canvas width, and hand-fit the rest.
+
+A reference is not automatically right. Measure contrast on anything you copy,
+and keep a departure only with its reason written next to it in the scene.
 
 ### 3. Build the scene
 
@@ -287,6 +319,11 @@ before the next one starts. Report visual choices as proposals, not decisions.
 
 - **A green suite is not a correct diagram.** Structural tests are necessary
   and not sufficient. Render and look.
+- **Check that a label still fits by measuring it,** not by looking at it. Run
+  `getBBox` over every tile's rect and its text in the browser and compare the
+  edges. Raising a label size or a glyph size is exactly the change that pushes
+  text past its tile, and `inlinePad` is the icon centre's inset, so a glyph
+  that grows eats the gap it was given.
 - **A mark's viewBox is not its content.** Several vendored files leave slack
   (`go.svg` draws 24x9 inside a 24x24 box), and `icon()` fits the viewBox, not
   the ink, so two marks given the same size can come out at very different
