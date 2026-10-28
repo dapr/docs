@@ -499,6 +499,16 @@ before the next one starts. Report visual choices as proposals, not decisions.
   edges. Raising a label size or a glyph size is exactly the change that pushes
   text past its tile, and `inlinePad` is the icon centre's inset, so a glyph
   that grows eats the gap it was given.
+- **Equal ink weight means equal `size`.** `icon()` fits a 24-unit viewBox by
+  scaling it `size / 24`, and a Fluent glyph's stroke is part of that drawing,
+  so the stroke scales with it: a mark at 52 and one at 64 beside it differ in
+  weight by a quarter, which reads as one of them being wrong. Give every mark
+  that stands alone in a scene ONE size and every mark inside a card ANOTHER,
+  named as constants, rather than sizing each by eye. A shape builder that
+  draws its own outline is a third weight again - `person()` draws at the
+  shared 2.2 whatever its `size`, so beside a glyph it looks light. Where they
+  must match, use the Fluent mark instead of the hand-drawn shape; they then
+  match by construction rather than by a number someone tuned.
 - **A mark's viewBox is not its content.** Several vendored files leave slack
   (`go.svg` draws 24x9 inside a 24x24 box), and `icon()` fits the viewBox, not
   the ink, so two marks given the same size can come out at very different

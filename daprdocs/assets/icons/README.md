@@ -100,6 +100,13 @@ asset terms. The full notice is under [LICENSES](#licenses).
 | `fluent-shield-lock.svg` | Security | https://api.iconify.design/fluent/shield-lock-24-regular.svg | MIT (Microsoft) | single | `8b4ee87169d3` |
 | `fluent-arrow-clockwise.svg` | Resiliency | https://api.iconify.design/fluent/arrow-clockwise-24-regular.svg | MIT (Microsoft) | single | `5dcc08ab343d` |
 | `fluent-server.svg` | Virtual or physical machines | https://api.iconify.design/fluent/server-24-regular.svg | MIT (Microsoft) | single | `2db217b22228` |
+| `fluent-bot.svg` | Dapr Agents, an agent | https://api.iconify.design/fluent/bot-24-regular.svg | MIT (Microsoft) | single | `15c87ff547ac` |
+| `fluent-brain-circuit.svg` | Agent memory | https://api.iconify.design/fluent/brain-circuit-24-regular.svg | MIT (Microsoft) | single | `e01c660ea2e4` |
+| `fluent-wrench.svg` | Agent tools | https://api.iconify.design/fluent/wrench-24-regular.svg | MIT (Microsoft) | single | `581101cec7e8` |
+| `fluent-plug-connected.svg` | MCP support | https://api.iconify.design/fluent/plug-connected-24-regular.svg | MIT (Microsoft) | single | `5553d13feac3` |
+| `fluent-globe.svg` | The outside world | https://api.iconify.design/fluent/globe-24-regular.svg | MIT (Microsoft) | single | `51abf879e675` |
+| `fluent-person.svg` | A user | https://api.iconify.design/fluent/person-24-regular.svg | MIT (Microsoft) | single | `5af0de736bfa` |
+| `fluent-text-bullet-list-square.svg` | Planning | https://api.iconify.design/fluent/text-bullet-list-square-24-regular.svg | MIT (Microsoft) | single | `20b6cff9ef5f` |
 | `zipkin.svg` | Zipkin symbol, no wordmark | [openzipkin/openzipkin.github.io](https://github.com/openzipkin/openzipkin.github.io/blob/master/public/img/logo_svg/zipkin_symbol.svg), downloaded from https://raw.githubusercontent.com/openzipkin/openzipkin.github.io/master/public/img/logo_svg/zipkin_symbol.svg | Apache-2.0 (the repository's licence). Zipkin is a trademark of the OpenZipkin project. | full (a raster PNG inside an svg wrapper, which is how the project publishes it) | `c3b9961675dd` |
 
 All twenty glyphs `dapr/website` vendors are here, drawn the same way its `apis`

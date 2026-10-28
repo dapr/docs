@@ -237,6 +237,25 @@ const SCENES = [
       'Secrets',
     ],
   },
+  {
+    name: 'agents-overview',
+    page: '/overview/',
+    labels: [
+      'User',
+      'Interaction',
+      'Dapr Agents',
+      'Planning',
+      'Memory',
+      'Tools',
+      'MCP support',
+      'Delegate tasks',
+      'Outside world',
+      'Built on Dapr',
+      'Durable execution',
+      'Observability',
+      'Security',
+    ],
+  },
 ];
 
 // Phone widths. 320 is the narrowest viewport still worth supporting, 360 and

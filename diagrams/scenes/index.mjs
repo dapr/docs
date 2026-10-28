@@ -1,6 +1,7 @@
 // Registry of diagram scenes: { '<name>': sceneModuleDefaultExport }.
 // <name> becomes daprdocs/assets/diagrams/<name>.svg and the svg() id base.
 // Scenes are added here as they are written.
+import agentsOverview from './agents-overview.mjs';
 import buildingBlocks from './building-blocks.mjs';
 import hostingKubernetes from './hosting-kubernetes.mjs';
 import hostingStandalone from './hosting-standalone.mjs';
@@ -9,6 +10,7 @@ import overview from './overview.mjs';
 import sidecarModel from './sidecar-model.mjs';
 
 export const scenes = {
+  'agents-overview': agentsOverview,
   'building-blocks': buildingBlocks,
   'hosting-kubernetes': hostingKubernetes,
   'hosting-standalone': hostingStandalone,
