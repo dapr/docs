@@ -22,7 +22,11 @@ concurrency:
 jobs:
   layout-tests:
     name: Layout tests
-    runs-on: ubuntu-latest
+    # Pinned, not ubuntu-latest: the runner moved to Ubuntu 26.04, which
+    # Playwright 1.56.1 has no browser build for, so `playwright install`
+    # fails before any test runs ("Playwright does not support chromium on
+    # ubuntu26.04-x64"). Drop the pin once Playwright supports it.
+    runs-on: ubuntu-24.04
     env:
       NODE_VER: 22.x
     steps:
