@@ -237,6 +237,8 @@ When you read these gauges, keep in mind:
 - Each Scheduler replica reports only the jobs it owns. Sum the values across all Scheduler replicas to get the total for an app.
 - The counts are held in memory. After a Scheduler restarts or its replicas rebalance jobs, `dapr_scheduler_undeliverable_jobs` can read `0` until overdue jobs trigger again. Don't scale an app to zero replicas only because a gauge reads `0`.
 
+For a full example that scrapes these gauges with Prometheus and scales an app with KEDA, see [Autoscale a workflow or jobs app with Scheduler metrics]({{% ref "autoscale-keda.md#autoscale-a-workflow-or-jobs-app-with-scheduler-metrics" %}}).
+
 ## Serving actor placement
 
 The Scheduler can serve actor placement itself, so the standalone Placement service is not required to run.
