@@ -6,7 +6,7 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { el, text, C } from './engine.mjs';
-import { label as drawLabel, group } from './shapes.mjs';
+import { label as drawLabel, group, hexPoints, OUTLINE } from './shapes.mjs';
 
 export const ICONS_DIR = fileURLToPath(new URL('../daprdocs/assets/icons/', import.meta.url));
 
@@ -434,4 +434,43 @@ export function plate({ x, y, w, h, fill = C.plate }) {
     rx: 8,
     fill,
   });
+}
+
+// The Dapr wordmark's width as a multiple of the hexagon's radius. One number,
+// so the logo is the same weight inside every Dapr hexagon in the set: eight of
+// these were built by hand before this existed and the ratio had drifted from
+// 1.27 to 1.50, which reads as the logo being bigger on some pages than others.
+export const DAPR_MARK = 4 / 3;
+
+// Any other mark in a hexagon - Consul, Redis, Zipkin - as a multiple of the
+// radius. The wordmark is wide and short, so it takes more; a squarer mark
+// takes less. Both scale with the hexagon, so a column of them keeps its
+// family whatever size the scene draws them at.
+export const MARK_IN_HEX = 0.8;
+
+// A hexagon with a brand mark centred in it: a Dapr service, a sidecar, or a
+// container running something else. The mark carries no name of its own, so it
+// is centred both ways and the scene puts the name outside, below.
+//
+// The Dapr wordmark paints its own navy, so a hexagon carrying it is FILLED to
+// act as its plate - without that it is navy on the dark ground and all but
+// disappears. A tinted mark follows the theme and needs no plate.
+//
+// The outline is the LIGHT blue, never navy: a Dapr hexagon is the same shape
+// in the same colour wherever it appears, and navy is for the marks and arrows
+// around it. Two scenes drew theirs in navy before this was one definition.
+export function markHex({ x, y, r, mark, size, stroke = C.blue, fill, color }) {
+  const dapr = mark === 'logo-blue';
+  if (!dapr && size === undefined) throw new Error(`markHex(): "${mark}" needs a size; only the Dapr wordmark has a default`);
+  const w = size ?? r * DAPR_MARK;
+  return el('g', { class: 'd-mark-hex' }, [
+    el('polygon', {
+      points: hexPoints(x, y, r),
+      fill: fill ?? (dapr ? C.plate : C.bg),
+      stroke,
+      'stroke-width': OUTLINE,
+      'stroke-linejoin': 'round',
+    }),
+    icon({ name: mark, x, y, w, h: w, ...(color ? { color } : {}) }),
+  ]);
 }

@@ -156,6 +156,99 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
   read as a rendering error. Check the centre distance against the sum of the
   radii rather than trusting the picture in your head.
 
+### Compose, do not re-create
+
+A scene is assembled from parts that already exist. Before drawing anything,
+open the scenes that are already in `diagrams/scenes/` and look for what this
+one needs: most of it is there, and a part that is reused is a part that
+cannot disagree with itself on another page.
+
+- **Survey first.** `grep` the scenes for the thing you are about to draw - a
+  Dapr hexagon, a dashed region with a caption, a column of cards off a bus, a
+  row of cloud marks. Reuse what fits. Re-creating it is how two pages end up
+  drawing the same object two ways.
+- **A motif used twice is a builder.** The second time you need something, do
+  not copy the first one: extract it, give it a test, and put both call sites
+  on it. A copy is a thing that drifts; the drift is invisible because every
+  test still passes.
+- **A builder owns its drawing.** Share the DECISIONS, not just the shape:
+  if a caller can still pass something that changes the layout, nothing has
+  been made consistent. `apiTile()` drops `glyphSize`, `glyphDy` and `nameDy`
+  before they reach `tile()` for exactly this reason.
+- **A component takes ONE size and derives the rest.** The same part appears
+  large in a sparse diagram and small in a dense one, and that is fine - but
+  it must be the same drawing at two sizes, not two drawings. Express every
+  offset inside the component as a multiple of its one dimension, name those
+  ratios as exported constants, and let the scene choose only the dimension.
+  `serviceHex()` takes `r`; the name sits at `r * NAME_DY` and the role at
+  `r * ROLE_DY`, so the five services are the same component at three sizes
+  across three diagrams. `apiTile()` takes the card's size and the mark
+  follows at `TILE_GLYPH` of it. A test asserts that halving the one dimension
+  halves everything derived from it.
+- **Derive from the side that constrains the part, not the first one to hand.**
+  `apiTile()` takes its glyph from the card's SHORT side: the cross-cutting
+  blocks on the overview are 160 by 76, with the mark beside the name rather
+  than above it, and a glyph taken from the width would be twice the height of
+  the card holding it.
+- **Resizing is then one number.** When a column has to fit a space - clearing
+  a band below it, say - change the component's one dimension and the pitch
+  around it. Nothing inside needs touching, and nothing can be left behind at
+  the old size.
+- **A shape and its name are ONE component, so the name scales with it.** This
+  holds whether the name sits inside the shape or under it: a hexagon with
+  "Sentry" beneath it is not a hexagon that happens to have a caption nearby,
+  it is the service, and shrinking the shape while leaving the type behind
+  gives a smaller drawing with the old name crowding it. Derive the size from
+  the same dimension as everything else.
+- **Near-equal is a default, not a law.** A component may be drawn larger
+  where the diagram around it is larger - the self-hosted containers stand
+  beside 104 cards and read as minor at the reference radius, so they are
+  drawn at 44 and their names come out at 16.8 against 13 elsewhere. That is
+  allowed BECAUSE the component scales as a whole: the mark, the offsets and
+  the type all move together, so it is the same drawing bigger. What is not
+  allowed is changing one of them by hand. Say in the scene why it differs.
+- **Then keep the dimension itself close across diagrams.** Once type is
+  derived, a component drawn at r = 30 on one page and r = 44 on another has
+  names at 11.5 and 16.8 - correct by the ratio and wrong on the page, because
+  the same object now reads as two sizes. The point of deriving is that
+  choosing near-equal dimensions gives near-equal outlines AND near-equal
+  type for free, so pick radii near the reference rather than per scene.
+  These three diagrams run 58.9, 58.9 and 62.4 units wide with names at 13, 13
+  and 13.76.
+- **A component too small to carry a legible name is refused.** The floor is
+  11px. Clamping silently would ship an unreadable label; throwing says the
+  block has to be drawn larger. Note that this makes "half the size" an
+  invalid test case for a small component - scale UP to prove the ratio.
+- **A text baseline does not scale in the same ratio as the shape** around it,
+  because it carries a type term. When testing that a component scales,
+  compare how far an offset MOVED, not where the baseline landed.
+- **A part that sits beside a component copies its offsets.** The Consul
+  hexagon on the VM diagram is not a Dapr service, but its name uses the same
+  `NAME_DY`, or the four names in a column would not line up.
+- **One exception, named, beats a free option.** Where a scene genuinely must
+  differ, let it pass the one value and say in a comment why - the overview's
+  hub is matched to a drawing published elsewhere, so it sets its own mark
+  size and nothing else does.
+- **What there is to compose from today:**
+
+  | Part | Where | Used by |
+  | --- | --- | --- |
+  | A card: a box with a mark and a name | `card()` in `diagrams/cards.mjs` | every card in the set, through `apiTile()` or directly |
+  | A Dapr API block | `apiTile()` in `diagrams/apis.mjs` | overview, building-blocks, all three hosting scenes |
+  | A hexagon with a mark in it | `markHex()` in `diagrams/icons.mjs` | sidecar-model, overview, all three hosting scenes |
+  | A Dapr control plane service | `serviceHex()` in `diagrams/services.mjs` | all three hosting scenes |
+  | An app, with or without its sidecar badge | `hex()`, `daprApp()`, `badge()` | overview, sidecar-model, hosting, agents |
+  | A dashed region with a caption on its border | `panel()` + `pill()` | overview's bands, the pods, the VMs, Docker Desktop, agents |
+  | A column of cards fed by one vertical bus | `el('polyline')` + `arrow()` per card | standalone, kubernetes, vms, agents |
+  | Evenly spaced centres | `slots()` | overview, building-blocks, agents |
+  | A brand mark on a plate, with its name beside it | `brand()`, `plate()` | overview, hosting-kubernetes |
+
+  The bus-and-column row is four copies of the same twelve lines. It is the
+  next thing that should become a builder; it has not yet because the four
+  differ in where the bus starts and what feeds it, and a builder that takes
+  six options to cover four callers is not yet worth writing. Extract it when
+  the fifth one needs it.
+
 ### Dapr API blocks
 
 A Dapr API is always drawn the same way: a rounded square, its Fluent mark,
@@ -387,6 +480,14 @@ List any discrepancy you find and put it to the maintainers. Do not resolve it
 silently, and do not quietly change the content set to match a source image.
 
 ### 2. Turn the source into a layout
+
+Start by shopping, not drawing. List what the diagram needs, then find each
+item in the scenes that already exist and in the builder tables in
+[reference/engine.md](reference/engine.md). Anything already drawn somewhere
+is reused as it is; anything you would be drawing for the second time in the
+set becomes a builder before you use it. Only what is genuinely new to this
+diagram is designed from scratch.
+
 
 1. **Components:** list every one the source names: apps, Dapr, brokers,
    stores, external systems, people, workflow steps.

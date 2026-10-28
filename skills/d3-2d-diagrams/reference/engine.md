@@ -53,6 +53,8 @@ such as `{ x, y, r, hex: true }`, so the arrow and the shape cannot drift apart.
 | Export | Returns |
 | --- | --- |
 | `icon(o)` | `name, x, y, size` (32), `w, h, color, label, labelDy, labelSize` (13), `scope, dir`. `x, y` is the box center; the mark is scaled to fit and keeps its aspect ratio. `color` tints single-color marks only |
+| `markHex(o)` | `x, y, r, mark, size, stroke` (`C.blue`), `fill, color` | a hexagon with a mark centred in it: a Dapr service, a sidecar, a container. The Dapr wordmark gets a plate fill and `DAPR_MARK` of the radius; any other mark needs a `size` |
+| `DAPR_MARK` | the wordmark's width as a multiple of the hexagon's radius, 4/3 |
 | `plate(o)` | `x, y, w, h, fill` (`C.plate`) | the neutral backing that keeps a full-color mark legible on both grounds. `x, y` is the center |
 | `brand(o)` | `name, x, y, w, h, content, plate, dx, inside, insideDx, insideSize, plateH, pad` | a brand mark on its plate, with an optional name set beside it inside the plate |
 | `listMarks(dir)` | every `.svg` in the icons directory, as mark names |
@@ -64,6 +66,22 @@ such as `{ x, y, r, hex: true }`, so the arrow and the shape cannot drift apart.
 `icon()` scopes its ids to the scene automatically, so two diagrams on one page
 cannot collide. Pass `scope` only to override that.
 
+## Cards
+
+`diagrams/cards.mjs` draws every card in the set - a rounded box with a mark
+and a name - and owns the two things a caller must not vary.
+
+| Export | Returns |
+| --- | --- |
+| `card(o)` | `mark, name, w, h, inline, color, filled, tag`, plus any `tile()` option | the card, with the mark and the name sized from it |
+| `cardSizes(o)` | `{ glyph, label }` for a card of these dimensions; throws below the 11px floor |
+| `CARD_W`, `CARD_GLYPH` | the reference card's width, 112, and the mark as a fraction of the card's short side |
+| `STACKED_LABEL`, `INLINE_LABEL` | the name as a fraction of the short side, for the two forms |
+
+The placement is fixed: `glyphSize`, `glyphDy` and `nameDy` are dropped before
+`tile()` sees them, because passing the first of those switches `tile()` to its
+other layout rule and the same card then sits differently on two pages.
+
 ## The Dapr API catalogue
 
 `diagrams/apis.mjs` holds one definition per Dapr API and per cross-cutting
@@ -74,7 +92,9 @@ concern, so no scene declares a mark or a name of its own.
 | `APIS` | the sixteen APIs, in the website's order |
 | `CROSS_CUTTING` | observability, security, resiliency |
 | `api(key)` | one entry; throws on a key that is not in the catalogue |
-| `apiTile(o)` | `key, glyph` (30), `filled, wrap`, plus any `tile()` option | the block: rounded square, mark, name, and `alpha` where it applies |
+| `apiTile(o)` | `key, filled, wrap, glyph`, plus any `tile()` option | the block: rounded square, mark, name, and `alpha` where it applies. The mark is `TILE_GLYPH` of the card's short side unless `glyph` says otherwise |
+| `TILE_W`, `TILE_GLYPH` | the reference card's width, 112, and the mark as a fraction of the card's short side |
+| `TILE_LABEL`, `INLINE_LABEL` | the name as a fraction of the card's short side, for the stacked and the inline form. The name is derived, not passed; a card too small for an 11px name throws |
 
 Each entry is `{ key, mark, name, wrap, tag }`. `name` is the one-line form and
 `wrap` the agreed two-line break for a narrow tile; `tag` is `alpha` or empty.
@@ -84,6 +104,31 @@ import { APIS, apiTile } from '../apis.mjs';
 
 APIS.map((a, i) => apiTile({ key: a.key, wrap: true, x: slot[i], y: 100, w: 112, h: 118 }));
 apiTile({ key: 'secrets', x: 300, y: 100, w: 96, h: 96, glyph: 28, glyphSize: 28 });
+```
+
+## The Dapr control plane services
+
+`diagrams/services.mjs` holds one definition per service - placement,
+scheduler, sentry, operator, injector - and draws it.
+
+| Export | Returns |
+| --- | --- |
+| `SERVICES` | the five, in that order; each `{ key, name, role, wrap }` |
+| `service(key)` | one entry; throws on anything else, Consul included |
+| `serviceHex(o)` | `key, x, y, r` (`SERVICE_R`), `role, wrap` | a Dapr hexagon with the service's name under it, and its role under that when `role` is set. `r` is the only size: the name is derived from it |
+| `serviceLabel(r)` | the name size for that radius, for a neighbour that is not a Dapr service; throws below 11px |
+| `SERVICE_LABEL` | the name's size as a multiple of `r` |
+| `SERVICE_R` | the reference radius, 34 |
+| `NAME_DY`, `ROLE_DY` | the name's and role's offsets, as multiples of `r` |
+
+`r` is the only size a scene chooses: every offset AND the name's size are
+derived from it, so the same service is one drawing whether it is drawn large
+or small. Keep `r` near `SERVICE_R` across diagrams and the services come out
+near-equal everywhere.
+
+```js
+serviceHex({ key: 'sentry', x: 300, y: 120, r: 34, role: true, wrap: true });
+serviceHex({ key: 'placement', x: 100, y: 400, r: 30 }); // smaller, same drawing, smaller name
 ```
 
 ## Colors

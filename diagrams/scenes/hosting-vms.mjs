@@ -30,8 +30,9 @@
 
 import { APP, C, el } from '../engine.mjs';
 import { OUTLINE, arrow, group, hex, hexHalfWidth, hexPoints, label, panel, pill } from '../shapes.mjs';
-import { icon } from '../icons.mjs';
+import { MARK_IN_HEX, icon, markHex } from '../icons.mjs';
 import { apiTile } from '../apis.mjs';
+import { NAME_DY, SERVICE_R, serviceHex, serviceLabel } from '../services.mjs';
 
 const W = 1200;
 const H = 760;
@@ -53,19 +54,22 @@ const vmCentre = (i) => VM_X0 + i * (VM_W + VM_GAP) + VM_W / 2;
 const vmRight = VM_X0 + (VM_COUNT - 1) * (VM_W + VM_GAP) + VM_W;
 
 // ---- the four stacked services, the same on every machine ----
-const HEX_R = 30;
+const HEX_R = SERVICE_R;
 const ROW_TOP = 282; // room for the sidecar's connector above the first row
 const ROW_PITCH = 100;
-const NAME_DY = HEX_R + 18;
 
 // [mark, name, what the row is for]. The description carries both halves of
 // what the source said twice: what the service does, and what the machines use
 // each other for.
-const SERVICES = [
-  ['consul', 'Consul', 'DNS name resolution,\nif you choose Consul\nover mDNS'],
-  ['logo-blue', 'Placement', 'Create the mapping table\nof actor instances'],
-  ['logo-blue', 'Scheduler', 'Schedule jobs at specified\nintervals, for the Jobs and\nWorkflow APIs and reminders'],
-  ['logo-blue', 'Sentry', 'Assign SPIFFE identity\nand manage mTLS'],
+// Each row is one service across all three machines, described once in the
+// gutter beside it. The three Dapr services name a key in ../services.mjs
+// and are drawn by serviceHex at this diagram's radius; Consul is not a
+// Dapr service, so it carries its own mark and name.
+const ROWS = [
+  { mark: 'consul', name: 'Consul', gutter: 'DNS name resolution,\nif you choose Consul\nover mDNS' },
+  { key: 'placement', gutter: 'Create the mapping table\nof actor instances' },
+  { key: 'scheduler', gutter: 'Schedule jobs at specified\nintervals, for the Jobs and\nWorkflow APIs and reminders' },
+  { key: 'sentry', gutter: 'Assign SPIFFE identity\nand manage mTLS' },
 ];
 
 // ---- the apps, on the first and last machine ----
@@ -124,11 +128,10 @@ export default {
       }),
 
       // ---- the four services, joined across every machine ------------------
-      SERVICES.map(([mark, name, role], row) => {
-        const y = ROW_TOP + row * ROW_PITCH;
-        const dapr = mark === 'logo-blue';
+      ROWS.map((row, i0) => {
+        const y = ROW_TOP + i0 * ROW_PITCH;
         return group([
-          label({ x: GUTTER_R, y, text: role, size: TEXT, anchor: 'end', color: C.caption }),
+          label({ x: GUTTER_R, y, text: row.gutter, size: TEXT, anchor: 'end', color: C.caption }),
           // Between each adjacent pair, one line with a head at each end: the
           // machines keep each other in step, so neither direction is the
           // subordinate one.
@@ -139,25 +142,14 @@ export default {
           }),
           Array.from({ length: VM_COUNT }, (_, i) => {
             const cx = vmCentre(i);
-            return group([
-              // The mark carries no name of its own, so it is centred in the
-              // hexagon and the name sits below it, clear of the outline.
-              el('polygon', {
-                points: hexPoints(cx, y, HEX_R),
-                fill: dapr ? C.plate : C.bg,
-                stroke: dapr ? C.blue : C.navy,
-                'stroke-width': OUTLINE,
-                'stroke-linejoin': 'round',
-              }),
-              icon({
-                name: mark,
-                x: cx,
-                y,
-                ...(dapr ? { w: 40, h: 40 } : { size: 26 }),
-                ...(dapr ? {} : { color: C.navy }),
-              }),
-              label({ x: cx, y: y + NAME_DY, text: name, size: TEXT }),
-            ]);
+            // Consul takes the same name offset as the Dapr services, from
+            // the same ratio, so all four names in a column line up.
+            return row.key
+              ? serviceHex({ key: row.key, x: cx, y, r: HEX_R })
+              : group([
+                markHex({ x: cx, y, r: HEX_R, mark: row.mark, size: HEX_R * MARK_IN_HEX, stroke: C.navy, color: C.navy }),
+                label({ x: cx, y: y + HEX_R * NAME_DY, text: row.name, size: serviceLabel(HEX_R) }),
+              ]);
           }),
         ]);
       }),
@@ -169,14 +161,7 @@ export default {
         return group([
           hex({ x: ax, y: APP_Y, r: APP_R, label: name, size: 15, stroke: app.stroke, fill: app.fill }),
           group([
-            el('polygon', {
-              points: hexPoints(sx, SIDE_Y, SIDE_R),
-              fill: C.plate,
-              stroke: C.blue,
-              'stroke-width': OUTLINE,
-              'stroke-linejoin': 'round',
-            }),
-            icon({ name: 'logo-blue', x: sx, y: SIDE_Y, w: 38, h: 38 }),
+            markHex({ x: sx, y: SIDE_Y, r: SIDE_R, mark: 'logo-blue' }),
           ]),
           // Down onto the first service in this machine's column. Both ends
           // are shapes, so the arrow stops at each edge rather than at a
@@ -216,12 +201,10 @@ export default {
           apiTile({
             key,
             wrap: true,
-            glyph: 44,
             x: CARD_X,
             y,
             w: CARD,
             h: CARD,
-            labelSize: TEXT,
           }),
         ]);
       }),

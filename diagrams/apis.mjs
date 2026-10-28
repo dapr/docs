@@ -17,9 +17,17 @@
 // per call is a line break that differs per page, and the test asserts the two
 // forms are the same words.
 
-import { C } from './engine.mjs';
-import { tile } from './shapes.mjs';
-import { icon } from './icons.mjs';
+import { card } from './cards.mjs';
+
+// The card itself - the placement, and the mark and name sizes derived from
+// it - lives in ./cards.mjs, because a Dapr API block and a Dapr Agents
+// capability are the same drawing with different content. This module is the
+// content: which APIs there are, what each is called, and which mark stands
+// for it.
+//
+// These are re-exported so a scene that reasons about block sizes has one
+// place to read them from.
+export { CARD_W as TILE_W, CARD_GLYPH as TILE_GLYPH, STACKED_LABEL as TILE_LABEL, INLINE_LABEL } from './cards.mjs';
 
 const entry = (key, mark, name, wrap = name, tag = '') => ({ key, mark, name, wrap, tag });
 
@@ -62,27 +70,8 @@ export function api(key) {
   return found;
 }
 
-// The block itself.
-//
-// apiTile owns WHERE the mark and the name sit, and a caller cannot change it.
-// tile() has two placement rules and picking between them per scene is what
-// made the same block look different on two pages: passing its `glyphSize`
-// switches from "fixed fractions of the tile" to "stack the two and centre the
-// stack", which moves the name a tenth of a tile up AND moves the mark
-// depending on how many lines the name runs to, so a column of blocks loses
-// its mark alignment. The overview is the reference, so its rule is the one,
-// and `glyphSize`, `glyphDy` and `nameDy` are dropped before they reach tile().
-//
-// `glyph` is the drawn size of the mark, which is a size, not a placement.
-export function apiTile({ key, glyph = 30, filled = false, wrap = false, ...rest }) {
+// The block itself: the catalogue's mark, name and tag, drawn as a card.
+export function apiTile({ key, wrap = false, ...rest }) {
   const a = api(key);
-  const { glyphSize, glyphDy, nameDy, ...pass } = rest;
-  return tile({
-    icon: (cx, cy) => icon({ name: `fluent-${a.mark}`, x: cx, y: cy, size: glyph, color: filled ? C.bg : C.blue }),
-    label: wrap ? a.wrap : a.name,
-    tag: a.tag,
-    color: C.blue,
-    filled,
-    ...pass,
-  });
+  return card({ mark: `fluent-${a.mark}`, name: wrap ? a.wrap : a.name, tag: a.tag, ...rest });
 }

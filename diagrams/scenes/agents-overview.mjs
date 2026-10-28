@@ -38,10 +38,11 @@
 //     rather than any other agent framework.
 
 import { C, el } from '../engine.mjs';
-import { arrow, group, label, panel, pill, slots, tile } from '../shapes.mjs';
+import { arrow, group, label, panel, pill, slots } from '../shapes.mjs';
 import { icon } from '../icons.mjs';
+import { card } from '../cards.mjs';
 
-const W = 1040;
+const W = 940;
 const H = 660;
 
 const TEXT = 15; // one size for every card name and band name
@@ -49,8 +50,10 @@ const EDGE = 24; // the least space between anything and a dashed border
 
 // icon() fits a mark's 24-unit viewBox by scaling it size/24, so two marks
 // drawn at the same size carry the same ink weight and two drawn at different
-// sizes do not. The scene therefore has exactly two: MARK for the three large
-// standalone marks, and GLYPH for the ones inside a card or the band.
+// sizes do not. The scene sets MARK for the three large standalone marks and
+// GLYPH for the ones in the band; the marks inside CARDS are not set here at
+// all - card() derives those from the card, so they cannot drift from the
+// blocks on the other diagrams.
 const MARK = 60;
 const GLYPH = 30;
 
@@ -62,9 +65,9 @@ const AGENT_SIZE = 160;
 const BUS_X = 520;
 
 // ---- the capabilities, one column -----------------------------------------
-const CARD_X = 710;
-const CARD_W = 280;
-const CARD_H = 72;
+const CARD_X = 665;
+const CARD_W = 190;
+const CARD_H = 76; // the same card as the overview's cross-cutting blocks
 const CARD_TOP = 70;
 const CARD_PITCH = 96;
 const cardY = (i) => CARD_TOP + i * CARD_PITCH;
@@ -87,11 +90,11 @@ const AGENT_Y = cardY(TOOLS_ROW);
 
 // ---- the outside world ----------------------------------------------------
 // In its own column, clear of the cards, so its name has room underneath.
-const GLOBE_X = 945;
+const GLOBE_X = 855;
 
 // ---- what the framework is built on ---------------------------------------
 const BAND_X = 170; // starts right of the user: the user is not part of Dapr
-const BAND_R = 870; // stops left of the outside world, which is not either
+const BAND_R = 790; // stops left of the outside world, which is not either
 const BAND_Y = 530;
 const BAND_H = 90;
 
@@ -133,18 +136,7 @@ export default {
       label({ x: USER_X, y: AGENT_Y + MARK / 2 + 20, text: 'User', size: TEXT }),
 
       // ---- Dapr Agents ----------------------------------------------------
-      tile({
-        x: AGENT_X,
-        y: AGENT_Y,
-        w: AGENT_SIZE,
-        h: AGENT_SIZE,
-        color: C.blue,
-        icon: (cx, cy) => icon({ name: 'fluent-bot', x: cx, y: cy, size: MARK, color: C.blue }),
-        label: 'Dapr Agents',
-        labelSize: 17,
-        glyphSize: MARK,
-        glyphGap: 16,
-      }),
+      card({ x: AGENT_X, y: AGENT_Y, w: AGENT_SIZE, h: AGENT_SIZE, mark: 'fluent-bot', name: 'Dapr Agents' }),
 
       // The user asks and the agent answers, so one line with a head at each
       // end rather than two lines side by side.
@@ -176,18 +168,16 @@ export default {
         const y = cardY(i);
         return group([
           arrow({ from: [BUS_X, y], to: { x: CARD_X, y, w: CARD_W, h: CARD_H } }),
-          tile({
+          card({
             x: CARD_X,
             y,
             w: CARD_W,
             h: CARD_H,
-            color: C.blue,
+            mark: `fluent-${mark}`,
+            name,
             inline: true,
             inlinePad: 34,
             inlineGap: 30,
-            icon: (cx, cy) => icon({ name: `fluent-${mark}`, x: cx, y: cy, size: GLYPH, color: C.blue }),
-            label: name,
-            labelSize: TEXT,
           }),
         ]);
       }),

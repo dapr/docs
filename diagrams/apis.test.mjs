@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { C } from './engine.mjs';
-import { APIS, CROSS_CUTTING, api, apiTile } from './apis.mjs';
+import { APIS, CROSS_CUTTING, INLINE_LABEL, TILE_GLYPH, TILE_LABEL, TILE_W, api, apiTile } from './apis.mjs';
 
 const find = (node, pred, out = []) => {
   if (!node || typeof node !== 'object') return out;
@@ -67,4 +67,31 @@ test('a filled block takes the tile ink for its mark, not blue on blue', () => {
   const node = apiTile({ key: 'observability', x: 0, y: 0, w: 160, h: 76, filled: true, inline: true });
   const mark = find(node, (n) => n.attrs?.['data-mark'])[0];
   assert.equal(mark.attrs.fill, C.bg);
+});
+
+test('a block scales from its width: the glyph follows, it is not passed too', () => {
+  const markOf = (w) => {
+    const n = apiTile({ key: 'secrets', x: 0, y: 0, w, h: w });
+    const g = find(n, (x) => x.attrs?.['data-mark'])[0];
+    return +g.attrs.transform.match(/scale\(([0-9.]+)\)/)[1];
+  };
+  // Twice the card is twice the glyph, so a small block and a large one are
+  // the same drawing at two sizes. Scaled UP, because scaling this one down by
+  // half would take its name under the legibility floor and be refused.
+  assert.ok(Math.abs(markOf(TILE_W * 2) / markOf(TILE_W) - 2) < 0.01);
+  // And the reference card still draws the glyph it always drew.
+  assert.equal(+(TILE_W * TILE_GLYPH).toFixed(2), 44);
+});
+
+test('the name scales with the card too: a smaller block is not a smaller box with the same type', () => {
+  const sizeOf = (o) => +find(apiTile({ key: 'secrets', x: 0, y: 0, ...o }), (x) => x.tag === 'text')[0].attrs['font-size'];
+  assert.equal(sizeOf({ w: TILE_W, h: TILE_W }), 14);
+  assert.equal(sizeOf({ w: TILE_W * 2, h: TILE_W * 2 }), +(TILE_W * 2 * TILE_LABEL).toFixed(2));
+  // The inline block carries its name BESIDE the mark, so it is its own form
+  // with its own ratio: 160 by 76 has always set its name at 14.
+  assert.equal(sizeOf({ w: 160, h: 76, inline: true }), +(76 * INLINE_LABEL).toFixed(2));
+});
+
+test('a block too small to carry a legible name is refused, not shrunk silently', () => {
+  assert.throws(() => apiTile({ key: 'secrets', x: 0, y: 0, w: 60, h: 60 }), /below the 11px floor/);
 });

@@ -25,7 +25,7 @@
 
 import { APP, C, el } from '../engine.mjs';
 import { OUTLINE, arrow, group, hex, hexPoints, label, richLabel } from '../shapes.mjs';
-import { icon } from '../icons.mjs';
+import { icon, markHex } from '../icons.mjs';
 
 const W = 900;
 const H = 494;
@@ -79,16 +79,7 @@ export default {
       // The Dapr wordmark paints its own navy, so the hexagon doubles as its
       // plate rather than carrying a rectangular one inside it. Without that
       // fill the wordmark is navy on the dark ground and all but disappears.
-      group([
-        el('polygon', {
-          points: hexPoints(DAPR_X, HEX_Y, HEX_R),
-          fill: C.plate,
-          stroke: C.navy,
-          'stroke-width': OUTLINE,
-          'stroke-linejoin': 'round',
-        }),
-        icon({ name: 'logo-blue', x: DAPR_X, y: HEX_Y, w: 84, h: 84 }),
-      ]),
+      markHex({ x: DAPR_X, y: HEX_Y, r: HEX_R, mark: 'logo-blue' }),
       label({ x: DAPR_X, y: CAPTION_Y, text: 'Dapr sidecar', size: 17 }),
 
       // ---- the API between them ------------------------------------------

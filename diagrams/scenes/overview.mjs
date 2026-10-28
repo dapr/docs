@@ -39,7 +39,7 @@
 
 import { C, APP, el } from '../engine.mjs';
 import { OUTLINE, arrow, group, hex, hexPoints, label, panel, pill, slots } from '../shapes.mjs';
-import { brand, icon, plate } from '../icons.mjs';
+import { brand, icon, markHex, plate } from '../icons.mjs';
 import { APIS, CROSS_CUTTING, apiTile } from '../apis.mjs';
 
 const W = 1512;
@@ -64,7 +64,6 @@ const ROW1 = 360;
 const ROW2 = 494;
 const TILE_W = 112;
 const TILE_H = 118;
-const TILE_LABEL = 14;
 const TILE_GLYPH = 44;
 
 const CROSS_X = 1358;
@@ -183,14 +182,10 @@ export default {
       group([
         // The Dapr wordmark paints its own navy, so the hexagon doubles as its
         // plate rather than carrying a rectangular one inside it.
-        el('polygon', {
-          points: hexPoints(HUB_X, HUB_Y, 88),
-          fill: C.plate,
-          stroke: C.navy,
-          'stroke-width': OUTLINE,
-          'stroke-linejoin': 'round',
-        }),
-        icon({ name: 'logo-blue', x: HUB_X, y: HUB_Y, w: 132, h: 132 }),
+        // The one Dapr hexagon that does not take DAPR_MARK: this hub is
+        // matched to the same drawing on dapr.io, where the wordmark fills
+        // more of the shape than it does on a sidecar.
+        markHex({ x: HUB_X, y: HUB_Y, r: 88, mark: 'logo-blue', size: 132 }),
       ]),
       pill({
         x: HUB_X,
@@ -219,12 +214,10 @@ export default {
         apiTile({
           key: a.key,
           wrap: true,
-          glyph: TILE_GLYPH,
           x: apiX[i % 8],
           y: i < 8 ? ROW1 : ROW2,
           w: TILE_W,
           h: TILE_H,
-          labelSize: TILE_LABEL,
         }),
       ),
       CROSS_CUTTING.map((a, i) =>
@@ -236,7 +229,6 @@ export default {
           h: CROSS_H,
           // Same size as the API tiles beside them: these are peers, not a
           // secondary note, so they are not set smaller.
-          labelSize: TILE_LABEL,
           inline: true,
           inlinePad: 34,
           filled: true,

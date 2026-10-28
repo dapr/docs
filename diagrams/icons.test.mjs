@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { serialize, C } from './engine.mjs';
-import { icon, plate, listMarks, parseMark, IconError, ICONS_DIR } from './icons.mjs';
+import { icon, plate, markHex, DAPR_MARK, listMarks, parseMark, IconError, ICONS_DIR } from './icons.mjs';
 
 const OVERVIEW = ['nodejs', 'python', 'dotnet', 'go', 'java', 'cpp', 'php', 'rust', 'azure', 'aws', 'google-cloud', 'kubernetes'];
 
@@ -376,4 +376,28 @@ test('scope defaults to the current scene so two diagrams on one page cannot col
   assert.match(one, /id="ic-scene-one-scoped-/);
   assert.match(two, /id="ic-scene-two-scoped-/);
   assert.notEqual(one, two);
+});
+
+const walk = (node, pred, out = []) => {
+  if (!node || typeof node !== 'object') return out;
+  if (Array.isArray(node)) { for (const k of node) walk(k, pred, out); return out; }
+  if (pred(node)) out.push(node);
+  for (const k of node.children ?? []) walk(k, pred, out);
+  return out;
+};
+
+test('markHex() centres a mark in a hexagon and sizes the Dapr wordmark from r', () => {
+  const dapr = markHex({ x: 0, y: 0, r: 30, mark: 'logo-blue' });
+  const poly = walk(dapr, (n) => n.tag === 'polygon')[0];
+  assert.equal(poly.attrs.fill, C.plate, 'the wordmark paints its own navy, so the hexagon is its plate');
+  assert.equal(poly.attrs.stroke, C.blue);
+  // One ratio, so the logo is the same weight inside every Dapr hexagon.
+  const mark = walk(dapr, (n) => n.attrs?.['data-mark'])[0];
+  assert.equal(mark.attrs['data-mark'], 'logo-blue');
+  assert.equal(DAPR_MARK, 4 / 3);
+
+  // A tinted mark needs no plate and its size is the scene's to choose.
+  const other = markHex({ x: 0, y: 0, r: 30, mark: 'redis', size: 26, stroke: C.navy, color: C.navy });
+  assert.equal(walk(other, (n) => n.tag === 'polygon')[0].attrs.fill, C.bg);
+  assert.throws(() => markHex({ x: 0, y: 0, r: 30, mark: 'redis' }), /needs a size/);
 });

@@ -29,7 +29,8 @@
 
 import { APP, C, el } from '../engine.mjs';
 import { OUTLINE, arrow, group, hex, hexHalfWidth, hexPoints, label, panel, pill } from '../shapes.mjs';
-import { icon, plate } from '../icons.mjs';
+import { icon, markHex, plate } from '../icons.mjs';
+import { serviceHex } from '../services.mjs';
 import { apiTile } from '../apis.mjs';
 
 const W = 1200;
@@ -59,13 +60,16 @@ const CP_HEX_DY = -30; // the hexagon, and the mark centred in it
 const CP_NAME_DY = 18; // the name, below the hexagon
 const CP_ROLE_DY = 52;
 
-// [name, what it does, the reason the sidecar talks to it]
+// [service key, the reason the sidecar talks to it]. The name and the role
+// come from the catalogue in ../services.mjs, and serviceHex() places them
+// from the radius, so these five are the same drawing as the ones on the
+// self-hosted and the VM diagrams, at this diagram's size.
 const CONTROL_PLANE = [
-  ['Placement', 'Actor partition\nplacement', 'Map actor\ninstances to pods,\nfor actors only'],
-  ['Injector', 'Dapr runtime\ninjector', 'Inject the sidecar\ninto annotated\npods'],
-  ['Sentry', 'Certificate\nauthority', 'Manage mTLS,\nassign SPIFFE\nidentity'],
-  ['Operator', 'Component\nupdates', 'Manage components\nand service\nendpoints'],
-  ['Scheduler', 'Distributed job\nscheduling', 'Schedule jobs for\nthe Jobs and\nWorkflow APIs'],
+  ['placement', 'Map actor\ninstances to pods,\nfor actors only'],
+  ['injector', 'Inject the sidecar\ninto annotated\npods'],
+  ['sentry', 'Manage mTLS,\nassign SPIFFE\nidentity'],
+  ['operator', 'Manage components\nand service\nendpoints'],
+  ['scheduler', 'Schedule jobs for\nthe Jobs and\nWorkflow APIs'],
 ];
 
 const WHY_DX = 10; // the reason sits beside its arrow, never on it
@@ -153,23 +157,12 @@ export default {
       panel({ x: CLUSTER.x, y: CLUSTER.y, w: CLUSTER.w, h: CLUSTER.h, stroke: C.navy }),
 
       // ---- control plane --------------------------------------------------
-      CONTROL_PLANE.map(([name, role, why], i) => {
+      CONTROL_PLANE.map(([key, why], i) => {
         const x = podX[i];
         return group([
           panel({ x: x - POD_W / 2, y: POD_Y - POD_H / 2, w: POD_W, h: POD_H, stroke: C.blue, r: 8 }),
           pill({ x: x - POD_W / 2 + 36, y: POD_Y - POD_H / 2, w: 56, h: 26, text: 'Pod', color: C.navy, size: TEXT }),
-          // The mark carries no name of its own, so it is centred in the
-          // hexagon and the name sits below it, clear of the outline.
-          el('polygon', {
-            points: hexPoints(x, POD_Y + CP_HEX_DY, CP_HEX_R),
-            fill: C.plate,
-            stroke: C.blue,
-            'stroke-width': OUTLINE,
-            'stroke-linejoin': 'round',
-          }),
-          icon({ name: 'logo-blue', x, y: POD_Y + CP_HEX_DY, w: 44, h: 44 }),
-          label({ x, y: POD_Y + CP_NAME_DY, text: name, size: TEXT }),
-          label({ x, y: POD_Y + CP_ROLE_DY, text: role, size: TEXT, color: C.caption }),
+          serviceHex({ key, x, y: POD_Y + CP_HEX_DY, r: CP_HEX_R, role: true, wrap: true }),
           // Up to the service, because it is the sidecar that calls it. The
           // reason rides BESIDE the arrow: a vertical arrow through centred
           // text cuts the text in half.
@@ -200,16 +193,7 @@ export default {
       panel({ x: POD_CX - APP_POD / 2, y: POD_CY - APP_POD / 2, w: APP_POD, h: APP_POD, stroke: C.blue, r: 8 }),
       pill({ x: POD_CX - APP_POD / 2 + 36, y: POD_CY - APP_POD / 2, w: 56, h: 26, text: 'Pod', color: C.navy, size: TEXT }),
       hex({ x: APP_X, y: APP_Y, r: APP_R, label: 'App', size: 16, stroke: APP[0].stroke, fill: APP[0].fill }),
-      group([
-        el('polygon', {
-          points: hexPoints(SIDE_X, SIDE_Y, SIDE_R),
-          fill: C.plate,
-          stroke: C.blue,
-          'stroke-width': OUTLINE,
-          'stroke-linejoin': 'round',
-        }),
-        icon({ name: 'logo-blue', x: SIDE_X, y: SIDE_Y, w: 52, h: 52 }),
-      ]),
+      markHex({ x: SIDE_X, y: SIDE_Y, r: SIDE_R, mark: 'logo-blue' }),
 
       // ---- the kubelet and the sidecar share one line --------------------
       // The probe goes one way and the health answer the other, so the single
@@ -268,12 +252,10 @@ export default {
           apiTile({
             key,
             wrap: true,
-            glyph: 44,
             x: CARD_X,
             y,
             w: CARD,
             h: CARD,
-            labelSize: TEXT,
           }),
         ]);
       }),

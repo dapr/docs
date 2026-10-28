@@ -26,8 +26,9 @@
 
 import { APP, C, el } from '../engine.mjs';
 import { OUTLINE, arrow, group, hex, hexHalfWidth, hexPoints, label, panel, pill } from '../shapes.mjs';
-import { icon } from '../icons.mjs';
+import { MARK_IN_HEX, icon, markHex } from '../icons.mjs';
 import { apiTile } from '../apis.mjs';
+import { NAME_DY, serviceHex, serviceLabel } from '../services.mjs';
 
 const W = 1200;
 const H = 720;
@@ -37,23 +38,30 @@ const BOX = { x: 20, y: 34, w: 258, h: 560 };
 // Centred in the region, derived from it: the vertical centring below already
 // comes from BOX, and a hand-typed x drifts the moment the region moves.
 const CONTAINER_X = BOX.x + BOX.w / 2;
+// Larger than the reference radius, deliberately: this column stands beside
+// 104 cards, and at the reference size the hexagons read as minor next to
+// them. The component scales as a whole - mark, name offset and name size
+// all follow - so these are the same drawing as the Kubernetes ones, just
+// bigger. The cost is that a service's name is 16.8 here against 13 there.
 const CONTAINER_R = 44;
 const CONTAINER_PITCH = 128;
-const CONTAINER_LABEL_DY = CONTAINER_R + 18; // the name, below its hexagon
 // The four hexagons and their names are one group, centred in the region
 // rather than started at a y that happened to look right. The group runs from
 // the first hexagon's top to the last name's descender.
 const CONTAINER_COUNT = 4;
 const CONTAINER_GROUP_H =
-  (CONTAINER_COUNT - 1) * CONTAINER_PITCH + CONTAINER_R + CONTAINER_LABEL_DY + 4;
+  (CONTAINER_COUNT - 1) * CONTAINER_PITCH + CONTAINER_R + CONTAINER_R * NAME_DY + 4;
 const CONTAINER_TOP = BOX.y + BOX.h / 2 - CONTAINER_GROUP_H / 2 + CONTAINER_R;
 
 // [mark, name, what the sidecar uses it for]
+// The two Dapr services name a key in ../services.mjs and are drawn by
+// serviceHex at this diagram's radius; Redis and Zipkin are not Dapr
+// services, so they carry their own mark and name at the same offset.
 const CONTAINERS = [
-  ['logo-blue', 'Scheduler', 'Schedule jobs to run\nat specified intervals'],
-  ['logo-blue', 'Placement', 'Create mapping table of\nactor instances and pods'],
-  ['redis', 'Redis', 'State management and\npub/sub messaging'],
-  ['zipkin', 'Zipkin', 'Send distributed\ntracing'],
+  { key: 'scheduler', why: 'Schedule jobs to run\nat specified intervals' },
+  { key: 'placement', why: 'Create mapping table of\nactor instances and pods' },
+  { mark: 'redis', name: 'Redis', why: 'State management and\npub/sub messaging' },
+  { mark: 'zipkin', name: 'Zipkin', why: 'Send distributed\ntracing' },
 ];
 
 const WHY_X = 310; // where each container's reason starts
@@ -71,10 +79,13 @@ const SIDE_Y = 398;
 
 // ---- the components it uses ----
 const CARD_X = 1104;
-const CARD_W = 112; // the overview's card, as every API block is
-const CARD_H = 112;
-const CARD_TOP = 108;
-const CARD_PITCH = 126;
+// The overview's card, scaled down: this column has to clear the platform
+// band below it, and apiTile derives the glyph from the card, so one number
+// resizes the whole block rather than the box and its mark separately.
+const CARD_W = 104;
+const CARD_H = 104;
+const CARD_TOP = 78;
+const CARD_PITCH = 118;
 const BUS_X = 960; // the vertical line the component arrows leave from
 
 // Named from the catalogue in ../apis.mjs, in this scene's own order: the
@@ -82,7 +93,7 @@ const BUS_X = 960; // the vertical line the component arrows leave from
 const COMPONENTS = ['pubsub', 'workflows', 'state', 'configuration', 'secrets'];
 
 // ---- where it all runs ----
-const PLATFORM = { x: 120, y: 640, w: 900, h: 46 };
+const PLATFORM = { x: 170, y: 640, w: 900, h: 46 };
 
 export default {
   width: W,
@@ -100,37 +111,22 @@ export default {
 
       label({ x: APP_X, y: 92, text: 'dapr init', size: 22, weight: 700, color: C.navy, mono: true }),
 
-      CONTAINERS.map(([mark, name, why], i) => {
+      CONTAINERS.map((container, i) => {
         const y = CONTAINER_TOP + i * CONTAINER_PITCH;
-        const dapr = mark === 'logo-blue';
         return group([
-          // A hexagon per container. The Dapr services carry the wordmark, so
-          // their hexagon is filled to act as its plate; the others are tinted
-          // marks that follow the theme and need none.
-          el('polygon', {
-            points: hexPoints(CONTAINER_X, y, CONTAINER_R),
-            fill: dapr ? C.plate : C.bg,
-            stroke: C.blue,
-            'stroke-width': OUTLINE,
-            'stroke-linejoin': 'round',
-          }),
-          // The mark carries no label of its own, so it is centred in the
-          // hexagon both ways. The name sits outside, below.
-          icon({
-            name: mark,
-            x: CONTAINER_X,
-            y,
-            ...(dapr ? { w: 58, h: 58 } : { size: 34 }),
-            ...(dapr ? {} : { color: C.navy }),
-          }),
-          // The name sits BELOW the hexagon, clear of its outline, so it is
-          // ordinary body ink rather than plate ink even for the two that are
-          // plated.
-          label({ x: CONTAINER_X, y: y + CONTAINER_LABEL_DY, text: name, size: 14 }),
+          // A hexagon per container, the name below it at the shared offset so
+          // all four line up whether or not they are Dapr services.
+          container.key
+            ? serviceHex({ key: container.key, x: CONTAINER_X, y, r: CONTAINER_R })
+            : group([
+              markHex({ x: CONTAINER_X, y, r: CONTAINER_R, mark: container.mark, size: CONTAINER_R * MARK_IN_HEX, color: C.navy }),
+              label({ x: CONTAINER_X, y: y + CONTAINER_R * NAME_DY, text: container.name, size: serviceLabel(CONTAINER_R) }),
+            ]),
+
           // The sidecar reaches each container off one vertical bus, and the
           // reason rides above its arrow rather than beside it.
           arrow({ from: [LEFT_BUS_X, y], to: [CONTAINER_X + CONTAINER_R + 6, y] }),
-          label({ x: WHY_X, y: y - 24, text: why, size: 14, anchor: 'start' }),
+          label({ x: WHY_X, y: y - 24, text: container.why, size: 14, anchor: 'start' }),
         ]);
       }),
 
@@ -146,16 +142,7 @@ export default {
         stroke: APP[0].stroke,
         fill: APP[0].fill,
       }),
-      group([
-        el('polygon', {
-          points: hexPoints(SIDE_X, SIDE_Y, SIDE_R),
-          fill: C.plate,
-          stroke: C.blue,
-          'stroke-width': OUTLINE,
-          'stroke-linejoin': 'round',
-        }),
-        icon({ name: 'logo-blue', x: SIDE_X, y: SIDE_Y, w: 64, h: 64 }),
-      ]),
+      markHex({ x: SIDE_X, y: SIDE_Y, r: SIDE_R, mark: 'logo-blue' }),
       label({ x: APP_X, y: 505, text: 'dapr run [flags]', size: 22, weight: 700, color: C.navy, mono: true }),
 
       // One line down the left, with the sidecar feeding it. It runs at the
@@ -186,12 +173,10 @@ export default {
           apiTile({
             key,
             wrap: true,
-            glyph: 44,
             x: CARD_X,
             y,
             w: CARD_W,
             h: CARD_H,
-            labelSize: 14,
           }),
         ]);
       }),
