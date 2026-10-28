@@ -135,6 +135,44 @@ test('a fragment href with surrounding whitespace is prefixed, not passed throug
   assert.throws(() => render('wshref2', '<svg viewBox="0 0 10 10"><use href=" https://evil.example/a.svg#p"/></svg>'), IconError);
 });
 
+// The screen and the rewrite must read the same normalised value. Each row is a spelling the
+// screen accepts; the emitted markup must be fully prefixed (never a dangling "#p").
+const SPELLINGS = [
+  ['upper-case HREF', '<use HREF="#p"/>', '<use href="#PFXp"/>'],
+  ['mixed-case Href', '<use Href="#p"/>', '<use href="#PFXp"/>'],
+  ['upper-case xlink:HREF', '<use xlink:HREF="#p"/>', '<use href="#PFXp"/>'],
+  ['leading space inside url quotes', '<path fill="url(\' #p\')" d="M0 0"/>', '<path fill="url(#PFXp)" d="M0 0"/>'],
+  ['trailing space inside url()', '<path fill="url(#p )" d="M0 0"/>', '<path fill="url(#PFXp)" d="M0 0"/>'],
+  ['spaces both sides, double quotes', '<path fill=\'url( " #p " )\' d="M0 0"/>', '<path fill="url(#PFXp)" d="M0 0"/>'],
+  ['upper-case URL()', '<path fill="URL(#p)" d="M0 0"/>', '<path fill="url(#PFXp)" d="M0 0"/>'],
+  ['url() in a style attribute', '<path style="fill:url( #p )" d="M0 0"/>', '<path style="fill:url(#PFXp)" d="M0 0"/>'],
+  ['upper-case ID on the target', '<use href="#q"/>', '<use href="#PFXq"/>', '<path ID="q" d="M0 0"/>'],
+  ['upper-case CLASS', '<path CLASS="a b" d="M0 0"/>', '<path class="PFXa PFXb" d="M0 0"/>'],
+];
+SPELLINGS.forEach(([what, body, want, extra = ''], n) => {
+  const mark = `sp${n}`;
+  const pfx = `ic-${mark}-100-100-`;
+  const expected = want.replaceAll('PFX', pfx);
+  test(`screen and rewrite agree: ${what}`, () => {
+    const out = render(mark, `<svg viewBox="0 0 10 10"><defs><path id="p" d="M0 0h5v5z"/>${extra}</defs>${body}</svg>`);
+    assert.ok(out.includes(expected), `expected ${expected} in ${out}`);
+    // Nothing unprefixed may remain: every id and every reference carries the prefix.
+    for (const i of ids(out)) assert.ok(i.startsWith(pfx), `unprefixed id ${i}`);
+    for (const m of out.matchAll(/url\(#([^)]*)\)/g)) assert.ok(m[1].startsWith(pfx), `dangling url(#${m[1]})`);
+    for (const m of out.matchAll(/href="#([^"]*)"/g)) assert.ok(m[1].startsWith(pfx), `dangling href #${m[1]}`);
+    assert.ok(!/ (HREF|ID|CLASS|Href)=/.test(out), 'case-variant attribute name survived');
+  });
+});
+
+test('external targets are still refused in every spelling the normaliser accepts', () => {
+  [].concat(['<use HREF="https://evil.example/a.svg#p"/>', '<use HREF=" //evil.example/a.svg#p"/>', '<path fill="url( \' https://evil.example/x\' )" d="M0 0"/>', '<path fill="URL(http://evil.example/x)" d="M0 0"/>', '<path STYLE="fill:url(https://evil.example/x)" d="M0 0"/>']).forEach((body, i) => {
+    assert.throws(() => render(`sp-bad${i}`, `<svg viewBox="0 0 10 10">${body}</svg>`), IconError, body);
+  });
+  // Two spellings of one attribute are ambiguous and refused.
+  assert.throws(() => render('sp-dup', '<svg viewBox="0 0 10 10"><use href="#a" HREF="#b"/></svg>'), /twice/);
+  assert.throws(() => render('sp-dup2', '<svg viewBox="0 0 10 10"><use href="#a" xlink:href="#b"/></svg>'), /both href and xlink:href/);
+});
+
 test('only allowlisted elements pass the screen (handler, animateColor, a, image, text, switch, ...)', () => {
   for (const tag of ['handler', 'animateColor', 'a', 'image', 'text', 'switch', 'mask', 'filter', 'feImage', 'animate', 'set', 'script', 'foreignObject', 'listener']) {
     assert.throws(() => render(`el-${tag.toLowerCase()}`, `<svg viewBox="0 0 1 1"><${tag}/></svg>`), (e) => e instanceof IconError && /not an allowed element/.test(e.message), tag);

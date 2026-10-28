@@ -35,6 +35,35 @@ function decode(s, name) {
   });
 }
 
+// ---- Normalisation. The screen (assertSafe), the rewrite (prefixTree) and the output (clean)
+// must all see the SAME text, or a value the screen approves is not recognised by the rewrite
+// and comes out as a silently dangling reference. So values are normalised once, here, at parse
+// time, and every later stage reads the normalised tree.
+
+// Attribute names that matter to the screen, the rewrite or the colour detection. SVG itself
+// is case-sensitive, but an HTML parser lowercases attribute names on inline SVG, so HREF, ID
+// or CLASS would reach the page as href, id and class. They are lowercased here; two spellings
+// of one name on one element are refused.
+const CANON_ATTRS = new Set(['id', 'class', 'href', 'xlink:href', 'style', 'fill', 'stroke', 'stop-color', 'flood-color']);
+
+// url( ' #p ' ), URL(#p ) and url("#p") all become url(#p): CSS function names are
+// case-insensitive, whitespace and quotes inside the parentheses are insignificant.
+const normaliseUrls = (v) => v.replace(/url\(\s*(['"]?)\s*([^)'"]*?)\s*\1\s*\)/gi, (m, q, inner) => `url(${inner})`);
+
+function canonAttrs(raw, tag, name) {
+  const attrs = {};
+  for (const [k, v] of Object.entries(raw)) {
+    const lower = k.toLowerCase();
+    const key = CANON_ATTRS.has(lower) ? lower : k;
+    if (key in attrs) throw new IconError(`mark "${name}": <${tag}> has the attribute ${key} twice (case-insensitively)`);
+    let val = normaliseUrls(v);
+    if (key === 'href' || key === 'xlink:href' || key === 'id') val = val.trim();
+    attrs[key] = val;
+  }
+  if ('href' in attrs && 'xlink:href' in attrs) throw new IconError(`mark "${name}": <${tag}> has both href and xlink:href`);
+  return attrs;
+}
+
 // Minimal well-formed-XML reader: elements, attributes, text, CDATA. Comments,
 // processing instructions and the DOCTYPE are dropped (a DOCTYPE with an
 // internal subset or an ENTITY is rejected). Returns the root element.
@@ -57,7 +86,8 @@ function parseXml(src, name) {
   let m;
   const pushText = (t) => {
     if (t === '') return;
-    stack[stack.length - 1].children.push({ text: t });
+    const top = stack[stack.length - 1];
+    top.children.push({ text: top.tag === 'style' ? normaliseUrls(t) : t });
   };
   while ((m = tagRe.exec(s))) {
     const gap = s.slice(last, m.index);
@@ -76,6 +106,7 @@ function parseXml(src, name) {
       while ((a = attrRe.exec(m[4]))) {
         node.attrs[a[1]] = decode(a[2] ?? a[3], name);
       }
+      node.attrs = canonAttrs(node.attrs, node.tag, name);
       stack[stack.length - 1].children.push(node);
       if (m[5] !== '/') stack.push(node);
     }
@@ -168,7 +199,7 @@ function prefixTree(root, prefix, name) {
       .replace(/url\(\s*(['"]?)#([^)'"]+)\1\s*\)/g, (m, q, id) => (ids.has(id) ? `url(#${prefix}${id})` : m))
   ;
   // Trim first: assertSafe approved the trimmed value, so the rewrite must inspect and emit that same value.
-  const href = (v) => v.trim().replace(/^#(.+)$/, (m, id) => (ids.has(id) ? `#${prefix}${id}` : m));
+  const href = (v) => v.replace(/^#(.+)$/, (m, id) => (ids.has(id) ? `#${prefix}${id}` : m));
   walk(root, (n) => {
     for (const [k, v] of Object.entries(n.attrs)) {
       if (k === 'id') n.attrs[k] = `${prefix}${v}`;
