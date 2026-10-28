@@ -206,6 +206,37 @@ curl -s http://localhost:2379/metrics
 
 Fine tune the embedded etcd to your needs by [reviewing and configuring the Scheduler's etcd flags as needed](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md#dapr-scheduler-options).
 
+## Scaling metrics
+
+From Dapr 1.20, the Scheduler serves two gauges on the `/metrics/scaling` path of its metrics server (port `9090` by default). An autoscaler that scales your app's replicas can scrape this path without pulling every other Scheduler metric.
+
+| Metric | Labels | Description |
+| ------ | ------ | ----------- |
+| `dapr_scheduler_inflight_jobs` | `namespace`, `app_id` | Jobs that were triggered and are not yet answered: sent to a sidecar, or held back by a [workflow concurrency limit]({{% ref workflow-concurrency.md %}}). Use it to scale an app from one replica to many. |
+| `dapr_scheduler_undeliverable_jobs` | `namespace`, `app_id` | Jobs parked in the [staging queue](#job-failure-policy-and-staging-queue) because no connected sidecar can receive them. Use it to scale an app from zero replicas to one. |
+
+The gauges count jobs created with the [jobs API]({{% ref jobs-overview.md %}}) under the app that scheduled them, and workflow and activity jobs under the app that hosts the workflow or activity. Other actor reminders are not counted.
+
+Port forward a Scheduler instance and view the scaling metrics with the following:
+
+```shell
+curl -s http://localhost:9090/metrics/scaling
+```
+
+```text
+# HELP dapr_scheduler_inflight_jobs Jobs triggered and not yet answered: waiting in a concurrency gate, or sent to a sidecar.
+# TYPE dapr_scheduler_inflight_jobs gauge
+dapr_scheduler_inflight_jobs{app_id="order-processor",namespace="default"} 3
+# HELP dapr_scheduler_undeliverable_jobs Jobs parked because no connected sidecar hosts them.
+# TYPE dapr_scheduler_undeliverable_jobs gauge
+dapr_scheduler_undeliverable_jobs{app_id="shipping",namespace="default"} 1
+```
+
+When you read these gauges, keep in mind:
+
+- Each Scheduler replica reports only the jobs it owns. Sum the values across all Scheduler replicas to get the total for an app.
+- The counts are held in memory. After a Scheduler restarts or its replicas rebalance jobs, `dapr_scheduler_undeliverable_jobs` can read `0` until overdue jobs trigger again. Don't scale an app to zero replicas only because a gauge reads `0`.
+
 ## Serving actor placement
 
 The Scheduler can serve actor placement itself, so the standalone Placement service is not required to run.
