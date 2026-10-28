@@ -19,7 +19,7 @@ The Dapr sidecar will reach readiness state once the application is accessible o
 <img src="/images/overview-sidecar-apis.png" width=700>
 
 The sidecar APIs are called from your application over local http or gRPC endpoints. 
-<img src="/images/overview-sidecar-model.png" width=700>
+{{< diagram sidecar-model >}}
 
 ## Self-hosted with `dapr run`
 

@@ -82,6 +82,35 @@ export function label({
   return el('g', {}, [under, fill]);
 }
 
+// One line of text whose parts differ in colour or weight, for a URL or a
+// command where part of it is the point. The parts flow as <tspan>s inside one
+// <text>, so nothing has to be positioned by hand: measuring text would need
+// font metrics the exporter does not have.
+export function richLabel({
+  x, y, parts, size = 13, weight = 400, color = C.body, anchor = 'start',
+}) {
+  if (size < MIN_LABEL) throw new RangeError(`richLabel(): size ${size} is below ${MIN_LABEL}px`);
+  assertInk(color, 'richLabel()');
+  const kids = (parts ?? []).map((part) => {
+    const attrs = {};
+    if (part.color !== undefined && part.color !== color) {
+      assertInk(part.color, 'richLabel() part');
+      attrs.fill = part.color;
+    }
+    if (part.weight !== undefined && part.weight !== weight) attrs['font-weight'] = part.weight;
+    return el('tspan', attrs, [text(String(part.text))]);
+  });
+  if (!kids.length) throw new Error('richLabel(): parts is required');
+  return el('text', {
+    x: n(x),
+    y: n(y + size * 0.35),
+    'text-anchor': anchor,
+    'font-size': size,
+    'font-weight': weight,
+    fill: color,
+  }, kids);
+}
+
 // ----------------------------------------------------------------- hex family
 
 export function hexPoints(x, y, r) {

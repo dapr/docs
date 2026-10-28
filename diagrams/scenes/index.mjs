@@ -3,5 +3,6 @@
 // Scenes are added here as they are written.
 import buildingBlocks from './building-blocks.mjs';
 import overview from './overview.mjs';
+import sidecarModel from './sidecar-model.mjs';
 
-export const scenes = { 'building-blocks': buildingBlocks, overview };
+export const scenes = { 'building-blocks': buildingBlocks, overview, 'sidecar-model': sidecarModel };

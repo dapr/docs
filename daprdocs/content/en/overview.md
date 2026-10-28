@@ -74,7 +74,7 @@ Alongside its building blocks, Dapr provides cross-cutting APIs that apply acros
 
 Dapr exposes its HTTP and gRPC APIs as a sidecar architecture, either as a container or as a process, not requiring the application code to include any Dapr runtime code. This makes integration with Dapr easy from other runtimes, as well as providing separation of the application logic for improved supportability.
 
-<img src="/images/overview-sidecar-model.png" width=900>
+{{< diagram sidecar-model >}}
 
 ## Hosting environments
 

@@ -22,7 +22,8 @@ const REPO_ROOT = path.resolve(__dirname, '..');
  * name   the scene, i.e. assets/diagrams/<name>.svg and the figure's data-diagram
  * page   a page that calls `{{< diagram <name> >}}`
  * labels every text label the scene must draw, with multi-line labels written
- *        as one line (the test joins a <text>'s tspans with a space)
+ *        as one line (the test joins a label's tspan LINES with a space;
+ *        richLabel's inline runs join with nothing)
  */
 const SCENES = [
   {
@@ -131,6 +132,44 @@ const SCENES = [
       'Vector',
     ],
   },
+  {
+    // Shared with the sidecar page below; one row per page, as above.
+    name: 'sidecar-model',
+    page: '/overview/',
+    labels: [
+      'App',
+      'Application code',
+      'Dapr sidecar',
+      'Dapr API',
+      'HTTP/gRPC',
+      'POST',
+      'GET',
+      'http://localhost:3500/v1.0/invoke/cart/method/order',
+      'http://localhost:3500/v1.0/state/inventory/item50',
+      'http://localhost:3500/v1.0/publish/mybroker/order-messages',
+      'http://localhost:3500/v1.0/secrets/vault/dbaccess',
+      'http://localhost:3500/v1.0/workflows/dapr/businessprocess/start',
+    ],
+  },
+  {
+    // The URLs are single labels: richLabel joins its tspans with no space.
+    name: 'sidecar-model',
+    page: '/concepts/dapr-services/sidecar/',
+    labels: [
+      'App',
+      'Application code',
+      'Dapr sidecar',
+      'Dapr API',
+      'HTTP/gRPC',
+      'POST',
+      'GET',
+      'http://localhost:3500/v1.0/invoke/cart/method/order',
+      'http://localhost:3500/v1.0/state/inventory/item50',
+      'http://localhost:3500/v1.0/publish/mybroker/order-messages',
+      'http://localhost:3500/v1.0/secrets/vault/dbaccess',
+      'http://localhost:3500/v1.0/workflows/dapr/businessprocess/start',
+    ],
+  },
 ];
 
 // Phone widths. 320 is the narrowest viewport still worth supporting, 360 and
@@ -144,13 +183,25 @@ const EDGE_MARGIN = 10;
 
 const sel = (name) => `.dapr-diagram[data-diagram="${name}"]`;
 
-/** Collects the drawn text of every <text>, with tspan lines joined by a space. */
+/**
+ * Collects the drawn text of every <text>.
+ *
+ * A tspan is used for two different things. label() starts each LINE of a
+ * multi-line label with one, and gives it an `x`, so those join with a space
+ * and read as one sentence. richLabel() uses them for INLINE runs of a single
+ * line that differ in colour or weight, with no `x`, and those must join with
+ * nothing or a URL comes back with spaces in it.
+ */
 function readLabels(page, name) {
   return page.$$eval(`${sel(name)} svg text`, (nodes) =>
     nodes.map((n) => {
-      const spans = n.querySelectorAll('tspan');
-      const parts = spans.length ? [...spans].map((s) => s.textContent) : [n.textContent];
-      return parts.join(' ').replace(/\s+/g, ' ').trim();
+      const spans = [...n.querySelectorAll('tspan')];
+      if (!spans.length) return n.textContent.replace(/\s+/g, ' ').trim();
+      return spans
+        .map((s) => (s.hasAttribute('x') ? ` ${s.textContent}` : s.textContent))
+        .join('')
+        .replace(/\s+/g, ' ')
+        .trim();
     }),
   );
 }
