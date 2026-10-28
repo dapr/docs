@@ -6,6 +6,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { svg } from './engine.mjs';
 import { setIconScope } from './icons.mjs';
+import { setCanvasWidth } from './shapes.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 export const OUT_DIR = join(here, '..', 'daprdocs', 'assets', 'diagrams');
@@ -95,6 +96,9 @@ export function renderScene(name, scene) {
   // on one page cannot emit the same ids, and so no scene has to remember to.
   let children;
   setIconScope(name);
+  // Arrows, buses and dashed borders take their weight from the canvas, so
+  // one rendered thickness holds across diagrams of different widths.
+  setCanvasWidth(scene.width);
   try {
     children = scene.build();
   } catch (e) {
@@ -103,6 +107,7 @@ export function renderScene(name, scene) {
     fail(e && e.message ? e.message : String(e));
   } finally {
     setIconScope('');
+    setCanvasWidth(null);
   }
   if (!Array.isArray(children)) fail('build() must return an array of nodes');
   const dup = duplicateIds(children);

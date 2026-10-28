@@ -73,6 +73,6 @@ export function serviceHex({ key, x, y, r = SERVICE_R, role = false, wrap = fals
   return group([
     markHex({ x, y, r, mark: 'logo-blue' }),
     label({ x, y: y + r * NAME_DY, text: s.name, size }),
-    role ? label({ x, y: y + r * ROLE_DY, text: wrap ? s.wrap : s.role, size, color: C.caption }) : null,
+    role ? label({ x, y: y + r * ROLE_DY, text: wrap ? s.wrap : s.role, size, color: C.blue }) : null,
   ]);
 }

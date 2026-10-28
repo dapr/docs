@@ -25,7 +25,7 @@
 //     makes them read as prose.
 
 import { APP, C, el } from '../engine.mjs';
-import { OUTLINE, arrow, group, hex, hexHalfWidth, hexPoints, label, panel, pill } from '../shapes.mjs';
+import { arrow, group, hex, hexHalfWidth, hexPoints, label, panel, region, roundedPath } from '../shapes.mjs';
 import { MARK_IN_HEX, icon, markHex } from '../icons.mjs';
 import { apiTile } from '../apis.mjs';
 import { appSidecar, sidecarAt } from '../app.mjs';
@@ -88,6 +88,7 @@ const CARD_H = 104;
 const CARD_TOP = 78;
 const CARD_PITCH = 118;
 const BUS_X = 960; // the vertical line the component arrows leave from
+const BUS_R = 14; // the radius every bus turns into its outer two arrows
 
 // Named from the catalogue in ../apis.mjs, in this scene's own order: the
 // mark and the name are the same here as on the overview, by construction.
@@ -106,9 +107,8 @@ export default {
   build() {
     return [
       // ---- band: what dapr init installs ---------------------------------
-      panel({ x: BOX.x, y: BOX.y, w: BOX.w, h: BOX.h, stroke: C.navy }),
-      // pill() takes x as the CENTRE, like every other builder.
-      pill({ x: BOX.x + 110, y: BOX.y, w: 186, h: 34, text: 'Docker Desktop', color: C.navy }),
+      // region() takes captionX as the pill's CENTRE, like every other builder.
+      region({ x: BOX.x, y: BOX.y, w: BOX.w, h: BOX.h, stroke: C.navy, caption: 'Docker Desktop', captionW: 186, captionX: BOX.x + 110, captionH: 34 }),
 
       label({ x: APP_X, y: 92, text: 'dapr init', size: 22, weight: 700, color: C.navy, mono: true }),
 
@@ -126,7 +126,10 @@ export default {
 
           // The sidecar reaches each container off one vertical bus, and the
           // reason rides above its arrow rather than beside it.
-          arrow({ from: [LEFT_BUS_X, y], to: [CONTAINER_X + CONTAINER_R + 6, y] }),
+          arrow({
+            from: [i === 0 || i === CONTAINERS.length - 1 ? LEFT_BUS_X - BUS_R : LEFT_BUS_X, y],
+            to: [CONTAINER_X + CONTAINER_R + 6, y],
+          }),
           label({ x: WHY_X, y: y - 24, text: container.why, size: 14, anchor: 'start' }),
         ]);
       }),
@@ -140,20 +143,26 @@ export default {
       // One line down the left, with the sidecar feeding it. It runs at the
       // sidecar's height, which is below the app hexagon, so the arrow into the
       // sidecar does not cut through the app.
-      el('polyline', {
-        points: `${LEFT_BUS_X} ${CONTAINER_TOP} ${LEFT_BUS_X} ${CONTAINER_TOP + 3 * CONTAINER_PITCH}`,
-        fill: 'none',
-        stroke: C.navy,
-        'stroke-width': 2,
+      roundedPath({
+        points: [
+          [LEFT_BUS_X - BUS_R, CONTAINER_TOP],
+          [LEFT_BUS_X, CONTAINER_TOP],
+          [LEFT_BUS_X, CONTAINER_TOP + 3 * CONTAINER_PITCH],
+          [LEFT_BUS_X - BUS_R, CONTAINER_TOP + 3 * CONTAINER_PITCH],
+        ],
+        r: BUS_R,
       }),
       arrow({ from: SIDE, to: [LEFT_BUS_X, SIDE.y] }),
 
       // ---- the components it uses ----------------------------------------
-      el('polyline', {
-        points: `${BUS_X} ${CARD_TOP} ${BUS_X} ${CARD_TOP + 4 * CARD_PITCH}`,
-        fill: 'none',
-        stroke: C.navy,
-        'stroke-width': 2,
+      roundedPath({
+        points: [
+          [BUS_X + BUS_R, CARD_TOP],
+          [BUS_X, CARD_TOP],
+          [BUS_X, CARD_TOP + 4 * CARD_PITCH],
+          [BUS_X + BUS_R, CARD_TOP + 4 * CARD_PITCH],
+        ],
+        r: BUS_R,
       }),
       arrow({ from: [BUS_X, SIDE.y], to: SIDE }),
       label({ x: (BUS_X + SIDE.x + SIDE.r) / 2, y: SIDE.y - 22, text: 'Use components', size: 14 }),
@@ -161,7 +170,10 @@ export default {
       COMPONENTS.map((key, i) => {
         const y = CARD_TOP + i * CARD_PITCH;
         return group([
-          arrow({ from: [BUS_X, y], to: { x: CARD_X, y, w: CARD_W, h: CARD_H } }),
+          arrow({
+            from: [i === 0 || i === COMPONENTS.length - 1 ? BUS_X + BUS_R : BUS_X, y],
+            to: { x: CARD_X, y, w: CARD_W, h: CARD_H },
+          }),
           apiTile({
             key,
             wrap: true,

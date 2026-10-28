@@ -16,33 +16,37 @@
 //     set has. One app takes APP[0], as everywhere else.
 //
 // Where this departs from the source image, and why:
-//   - the highlighted part of each URL is navy, not orange, and the trailing
-//     resource names are body ink rather than light blue. Orange is 3.31:1 on
-//     the light ground and sky is 2.56:1, both under the 4.5:1 needed for text
-//     this size. Navy is 12.7:1 light and 7.2:1 dark, and the emphasis still
-//     lands on the building block, which is the thing the image was pointing
-//     at.
+//   - the building block in each URL is ORANGE and the method is blue, which
+//     is what the source image does. Neither brand colour can be used as type
+//     directly: the brand orange is 3.31:1 on white and the sky blue 2.56:1,
+//     both under the 4.5:1 text needs. C.orange and C.blue are the
+//     ink versions - darker in the light theme, the brand colour in the dark
+//     one - at 5.93:1 and 5.72:1.
 
 import { APP, C, el } from '../engine.mjs';
-import { OUTLINE, arrow, group, hex, hexPoints, label, richLabel } from '../shapes.mjs';
+import { arrow, group, hex, hexPoints, label, richLabel } from '../shapes.mjs';
 import { icon, markHex } from '../icons.mjs';
 
-const W = 900;
-const H = 494;
+// The endpoints and the pair of hexagons are centred on the same x, so the
+// list sits under the thing it explains. The canvas is held while the type
+// inside it shrinks, which is what makes the drawing render smaller - the
+// inlined svg always fills the content column, so only the ratio shows.
+const W = 730;
+const H = 364; // trimmed to the drawing: about 4.5% of air a side
 
-const HEX_Y = 95;
+const HEX_Y = 78;
 const HEX_R = 62;
-const APP_X = 306;
-const DAPR_X = 661;
+const APP_X = 188;
+const DAPR_X = 543;
 const MID_X = (APP_X + DAPR_X) / 2;
 
-const CAPTION_Y = 196;
+const CAPTION_Y = 179;
 
-const ROW_TOP = 287; // centre of the first example call
-const ROW_PITCH = 41;
-const METHOD_X = 50;
-const URL_X = 124;
-const URL_SIZE = 21;
+const ROW_TOP = 228; // the list sits close under the pair it explains // centre of the first example call
+const ROW_PITCH = 28; // scaled with the type, not left at the old 41
+const METHOD_X = 146;
+const URL_X = 194;
+const URL_SIZE = 12.6;
 
 // [method, prefix, building block, rest]. The building block is the segment the
 // diagram is pointing at, so it is the only part set apart. Every path is from
@@ -100,14 +104,14 @@ export default {
       CALLS.map(([method, prefix, block, rest], i) => {
         const y = ROW_TOP + i * ROW_PITCH;
         return group([
-          label({ x: METHOD_X, y, text: method, size: URL_SIZE, weight: 700, color: C.navy, anchor: 'start' }),
+          label({ x: METHOD_X, y, text: method, size: URL_SIZE, weight: 700, color: C.blue, anchor: 'start' }),
           richLabel({
             x: URL_X,
             y,
             size: URL_SIZE,
             parts: [
               { text: prefix },
-              { text: block, color: C.navy, weight: 700 },
+              { text: block, color: C.orange, weight: 700 },
               { text: rest },
             ],
           }),

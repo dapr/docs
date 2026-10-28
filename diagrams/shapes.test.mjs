@@ -46,7 +46,9 @@ test('hex draws a pointy-top hexagon with 6 points at radius r', () => {
   assert.deepEqual(pts[0], [100, 160]); // top vertex: pointy-top
   const [poly] = find(g, (x) => x.tag === 'polygon');
   assert.equal(poly.attrs['fill-opacity'], 0.6);
-  assert.equal(poly.attrs['stroke-width'], 2.2);
+  // Every outline in the set takes the one line weight, so a hexagon's border
+  // matches the card beside it rather than being derived from its own size.
+  assert.equal(poly.attrs['stroke-width'], S.lineWidth());
 });
 
 test('hex defaults to APP[0] colours and a label of a third of r, never under the floor', () => {
@@ -97,6 +99,87 @@ test('label defaults to 11px / 600 / body, refuses under 11px and teal or mint t
   assert.equal(t.attrs['font-size'], 11);
   assert.equal(t.attrs['font-weight'], 600);
   assert.equal(t.attrs.fill, C.body);
+});
+
+test('lineWidth() holds one RENDERED thickness whatever the canvas is', () => {
+  // The svg fills the content column, so a stroke of n units renders at
+  // n * column / canvasWidth. A single constant therefore renders thinner on a
+  // wide canvas than a narrow one; the width has to come from the canvas.
+  const at = (w) => { S.setCanvasWidth(w); return S.lineWidth(); };
+  const rendered = (w) => +((at(w) * S.LINE_COLUMN) / w).toFixed(2);
+  assert.equal(rendered(1512), S.LINE_TARGET);
+  assert.equal(rendered(740), S.LINE_TARGET);
+  assert.ok(at(1512) > at(740), 'a wider canvas needs a heavier stroke to render the same');
+  S.setCanvasWidth(null);
+});
+
+test('roundedPath() turns each corner with an arc, not a mitre', () => {
+  const node = S.roundedPath({ points: [[0, 100], [0, 0], [200, 0]], r: 10 });
+  // Straight up to 10 short of the corner, round it, then run on.
+  assert.equal(node.attrs.d, 'M0,100 L0,10 Q0,0 10,0 L200,0');
+  assert.equal(node.attrs.fill, 'none');
+});
+
+test('roundedPath() never rounds more than half a leg', () => {
+  // The vertical leg is only 12 long, so a radius of 40 would overshoot past
+  // the previous point and fold the line back on itself.
+  const node = S.roundedPath({ points: [[0, 12], [0, 0], [200, 0]], r: 40 });
+  assert.equal(node.attrs.d, 'M0,12 L0,6 Q0,0 6,0 L200,0');
+});
+
+test('region() captions a dashed area with a pill in the SAME colour', () => {
+  const node = S.region({ x: 10, y: 20, w: 300, h: 200, stroke: C.blue, caption: 'Pod', captionW: 56 });
+  const dashed = find(node, (n) => n.attrs?.class === 'd-panel')[0];
+  const pillRect = find(node, (n) => n.attrs?.class === 'd-pill')[0];
+  assert.equal(dashed.attrs.stroke, C.blue);
+  assert.equal(find(pillRect, (n) => n.tag === 'rect')[0].attrs.stroke, C.blue, 'the pill borrows the region`s colour');
+  // The caption is ordinary ink, not the region's colour: it is a name, not a
+  // part of the border.
+  assert.equal(find(pillRect, (n) => n.tag === 'text')[0].attrs.fill, C.body);
+});
+
+test('region() without a caption is just the dashed area', () => {
+  const node = S.region({ x: 0, y: 0, w: 100, h: 100, stroke: C.navy });
+  assert.equal(find(node, (n) => n.attrs?.class === 'd-pill').length, 0);
+});
+
+test('lollipop() is a hollow ball on a stalk back to what provides it', () => {
+  const node = S.lollipop({ x: 100, y: 50, to: 200 });
+  const line = find(node, (n) => n.tag === 'line')[0];
+  assert.equal(+line.attrs.x1, 100, 'the stalk starts at the ball');
+  assert.equal(+line.attrs.x2, 200, 'and ends on the provider');
+  assert.equal(+line.attrs.y1, 50);
+  const ball = find(node, (n) => n.tag === 'circle')[0];
+  assert.equal(+ball.attrs.cx, 100);
+  assert.equal(ball.attrs.fill, C.bg, 'hollow, as UML draws a lollipop');
+  assert.equal(+ball.attrs.r, S.BALL_R);
+});
+
+test('lollipop() elbows when what provides it is not level with the ball', () => {
+  const node = S.lollipop({ x: 100, y: 50, to: 400, toY: 200, elbowX: 250, elbowR: 20 });
+  assert.equal(find(node, (n) => n.tag === 'line').length, 0, 'an elbow is one run, not three lines');
+  assert.equal(find(node, (n) => n.tag === 'polyline').length, 0, 'and it turns with an arc, not a mitre');
+  const run = find(node, (n) => n.tag === 'path')[0];
+  assert.equal(run.attrs.d, 'M100,50 L230,50 Q250,50 250,70 L250,180 Q250,200 270,200 L400,200');
+  assert.equal(run.attrs.fill, 'none');
+  // The ball still sits at the end the interface is named from.
+  assert.equal(+find(node, (n) => n.tag === 'circle')[0].attrs.cy, 50);
+});
+
+test('an elbow without a turn to make is refused rather than drawn flat', () => {
+  assert.throws(() => S.lollipop({ x: 0, y: 0, to: 100, toY: 50 }), /needs elbowX/);
+});
+
+test('socket() cups the ball from the consumer`s side', () => {
+  const node = S.socket({ x: 100, y: 50, from: 20 });
+  const arc = find(node, (n) => n.tag === 'path')[0];
+  // Opens towards the provider: it runs from the ball's top to its bottom the
+  // long way round, through the point nearest the consumer.
+  assert.match(arc.attrs.d, /^M100,29 A21,21 0 0 0 100,71$/);
+  assert.equal(arc.attrs.fill, 'none');
+  const line = find(node, (n) => n.tag === 'line')[0];
+  assert.equal(+line.attrs.x1, 20, 'the stalk starts at the consumer');
+  assert.equal(+line.attrs.x2, 79, 'and ends on the arc, not on the ball');
 });
 
 test('filled pill and tile refuse teal and mint', () => {
@@ -164,11 +247,11 @@ test('panel is dashed, rounded r=10, unfilled; box defaults to 194x30', () => {
   assert.equal(r.attrs.height, 30);
 });
 
-test('outlines are 2.2px and tints 0.6 across shapes', () => {
+test('every outline takes the one line weight, and tints are 0.6', () => {
   for (const k of ['hex', 'box', 'node', 'cylinder', 'envelope', 'broker', 'lockBox', 'person', 'secureLock', 'panel']) {
     const strokes = find(samples()[k], (x) => x.attrs['stroke-width'] !== undefined && x.attrs['stroke-width'] !== 4 && x.attrs.stroke !== 'none');
     assert.ok(strokes.length > 0, k);
-    for (const s of strokes) assert.equal(s.attrs['stroke-width'], 2.2, k);
+    for (const s of strokes) assert.equal(s.attrs['stroke-width'], S.lineWidth(), k);
     for (const f of find(samples()[k], (x) => x.attrs['fill-opacity'] !== undefined)) assert.equal(f.attrs['fill-opacity'], 0.6, k);
   }
 });

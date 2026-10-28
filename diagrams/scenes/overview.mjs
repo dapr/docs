@@ -38,7 +38,7 @@
 // Teal and mint are unused: both fail contrast on the light ground.
 
 import { C, APP, el } from '../engine.mjs';
-import { OUTLINE, arrow, group, hex, hexPoints, label, panel, pill, slots } from '../shapes.mjs';
+import { arrow, group, hex, hexPoints, label, panel, pill, region, slots } from '../shapes.mjs';
 import { brand, icon, markHex, plate } from '../icons.mjs';
 import { APIS, CROSS_CUTTING, apiTile } from '../apis.mjs';
 
@@ -147,14 +147,9 @@ export default {
 
     return [
       // ---- band 1: any language or runtime -------------------------------
-      panel({ x: PX, y: B1.y, w: PW, h: B1.h, stroke: C.teal }),
-      pill({
-        x: 1300,
-        y: B1.y,
-        w: 268,
-        h: 34,
-        text: 'Use any language or runtime',
-        color: C.navy,
+      region({
+        x: PX, y: B1.y, w: PW, h: B1.h, stroke: C.teal,
+        caption: 'Use any language or runtime', captionW: 268, captionX: 1300, captionH: 34,
       }),
       hex({
         x: HUB_X,
@@ -201,14 +196,12 @@ export default {
         y: CAPTION_Y,
         text: 'Dapr APIs',
         size: 17,
-        color: C.caption,
       }),
       label({
         x: CROSS_X,
         y: CAPTION_Y,
         text: 'Cross-cutting APIs',
         size: 17,
-        color: C.caption,
       }),
       APIS.map((a, i) =>
         apiTile({

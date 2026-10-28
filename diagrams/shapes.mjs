@@ -9,8 +9,7 @@
 
 import { el, text, C, APP } from './engine.mjs';
 
-export const OUTLINE = 2.2;
-export const ARROW_W = 2;
+
 export const HEAD = 8;
 export const FILL_OPACITY = 0.6;
 // The smallest type anywhere in the set. Every builder that derives a size
@@ -38,7 +37,7 @@ function assertStroke(stroke, name, what) {
 
 const outline = (stroke, extra = {}) => ({
   stroke,
-  'stroke-width': OUTLINE,
+  'stroke-width': lineWidth(),
   'stroke-linejoin': 'round',
   'stroke-linecap': 'round',
   ...extra,
@@ -164,7 +163,7 @@ export function hex({
 // a plain solid navy hexagon.
 export function badge({ x, y, r = 19, mark = null }) {
   return el('g', { class: 'd-badge' }, [
-    el('polygon', { points: hexPoints(x, y, r), fill: C.navy, stroke: C.navy, 'stroke-width': OUTLINE, 'stroke-linejoin': 'round' }),
+    el('polygon', { points: hexPoints(x, y, r), fill: C.navy, stroke: C.navy, 'stroke-width': lineWidth(), 'stroke-linejoin': 'round' }),
     mark,
   ]);
 }
@@ -260,7 +259,7 @@ function padlock(x, y, s, color) {
   const by = y - bh / 2 + s * 0.08;
   return [
     el('path', { d: `M${n(x - sr)},${n(by)} L${n(x - sr)},${n(by - s * 0.12)} A${n(sr)},${n(sr)} 0 0 1 ${n(x + sr)},${n(by - s * 0.12)} L${n(x + sr)},${n(by)}`, fill: 'none', ...outline(color) }),
-    el('rect', { x: n(x - bw / 2), y: n(by), width: n(bw), height: n(bh), rx: 3, fill: color, stroke: color, 'stroke-width': OUTLINE, 'stroke-linejoin': 'round' }),
+    el('rect', { x: n(x - bw / 2), y: n(by), width: n(bw), height: n(bh), rx: 3, fill: color, stroke: color, 'stroke-width': lineWidth(), 'stroke-linejoin': 'round' }),
   ];
 }
 
@@ -317,8 +316,89 @@ export function panel({ x, y, w, h, stroke = C.caption, r = 10 }) {
   if (stroke === C.mint) throw new Error('panel(): mint fails contrast on white, choose another colour');
   return el('rect', {
     class: 'd-panel', x: n(x), y: n(y), width: n(w), height: n(h), rx: r, fill: 'none',
-    ...outline(stroke, { 'stroke-dasharray': '6 6' }),
+    ...outline(stroke, { 'stroke-dasharray': '6 6', 'stroke-width': lineWidth() }),
   });
+}
+
+// A dashed area with its name on the border. The pill takes the REGION's
+// colour, because the two are one object: a caption in a different colour from
+// the border it sits on reads as a separate thing that happens to overlap.
+// Drawing them together is what stops them diverging - they had, in two scenes.
+//
+// The caption itself is ordinary body ink. It is a name, not a piece of the
+// border, and tinting it with the region's colour both weakens it and, for the
+// paler strokes, takes it under the contrast a label needs.
+//
+// `captionX` defaults to CAPTION_INSET from the left edge, which is where a
+// region label belongs; pass it to centre the caption or move it along the
+// border. The inset is the pill's LEFT edge, not its centre, so a short name
+// and a long one start at the same place.
+// ONE line weight for every arrow, bus and dashed border in the set.
+//
+// It cannot be a constant. The inlined svg fills the content column, so a
+// stroke of n units renders at n * column / canvasWidth: the same 2 came out
+// at 1.05px on the 1512-wide overview and 2.34px on the 680-wide building
+// block concept. The weight is therefore derived from the canvas, which is
+// what makes the lines look the same thickness from one diagram to the next.
+//
+// LINE_COLUMN is the Docsy content column these are read in. It does not have
+// to be exact - it is the ratio between canvases that matters.
+export const LINE_COLUMN = 794;
+export const LINE_TARGET = 1.5; // rendered px
+export const LINE_MIN = 1.4;
+export const LINE_MAX = 3.2;
+
+let canvasWidth = null;
+export const setCanvasWidth = (w) => { canvasWidth = w; };
+export const lineWidth = () => {
+  if (!canvasWidth) return 2;
+  const raw = (canvasWidth / LINE_COLUMN) * LINE_TARGET;
+  return +Math.min(LINE_MAX, Math.max(LINE_MIN, raw)).toFixed(2);
+};
+
+// A connector that turns corners with an arc rather than a mitre. Each corner
+// is pulled back by `r` along both legs and bridged with a quadratic through
+// the original point, so the line still passes where the coordinates say it
+// does. A corner never eats more than half of either leg, or a short leg would
+// fold the line back on itself.
+export function roundedPath({ points, r = 10, color = C.navy, width }) {
+  const len = (from, to) => Math.hypot(to[0] - from[0], to[1] - from[1]);
+  const back = (from, to, d) => {
+    const l = len(from, to);
+    return [+(from[0] + ((to[0] - from[0]) / l) * d).toFixed(2), +(from[1] + ((to[1] - from[1]) / l) * d).toFixed(2)];
+  };
+  let d = `M${n(points[0][0])},${n(points[0][1])}`;
+  for (let i = 1; i < points.length - 1; i += 1) {
+    const corner = points[i];
+    // One pull-back for BOTH legs, or the shorter leg clamps on its own and
+    // the corner comes out lopsided.
+    const cut = Math.min(r, len(corner, points[i - 1]) / 2, len(corner, points[i + 1]) / 2);
+    const a = back(corner, points[i - 1], cut);
+    const b = back(corner, points[i + 1], cut);
+    d += ` L${n(a[0])},${n(a[1])} Q${n(corner[0])},${n(corner[1])} ${n(b[0])},${n(b[1])}`;
+  }
+  const last = points[points.length - 1];
+  d += ` L${n(last[0])},${n(last[1])}`;
+  return el('path', { class: 'd-run', d, fill: 'none', stroke: color, 'stroke-width': width ?? lineWidth(), 'stroke-linecap': 'round' });
+}
+
+export const CAPTION_INSET = 20;
+
+export function region({ x, y, w, h, stroke = C.caption, r = 10, caption = '', captionW, captionX, captionH = 26, captionSize = 15 }) {
+  return el('g', { class: 'd-region' }, [
+    panel({ x, y, w, h, stroke, r }),
+    caption
+      ? pill({
+        x: captionX ?? x + CAPTION_INSET + (captionW ?? 0) / 2,
+        y,
+        w: captionW ?? 0,
+        h: captionH,
+        text: caption,
+        color: stroke,
+        size: captionSize,
+      })
+      : null,
+  ]);
 }
 
 export function pill({ x, y, w, h = 26, text: content, color = C.navy, filled = false, size = 15 }) {
@@ -411,6 +491,53 @@ export function tile({
   return el('g', { class: 'd-tile' }, parts);
 }
 
+// ------------------------------------------------------- UML interfaces
+
+// A provided interface is a ball on a stalk; a required one is a socket that
+// cups it. Together they are an assembly connector, and the two shapes say
+// which side provides and which requires - which is why neither carries an
+// arrowhead.
+export const BALL_R = 10;
+export const SOCKET_R = 21;
+
+// The ball, and the stalk back to whatever provides the interface. `to` is an
+// x on the provider's edge; the stalk is drawn first and the ball's fill covers
+// the join, so no stub shows through the circle.
+//
+// `toY` meets the provider at a different height from the ball, which is what
+// you want when several interfaces leave one face: the balls line up with
+// their names and the stalks elbow across to the face. `elbowX` is where the
+// turn happens, and it is required rather than guessed - halfway is rarely
+// right, and a turn in the wrong place reads as a routing mistake.
+export function lollipop({ x, y, to, toY = y, elbowX, elbowR = 10, r = BALL_R, color = C.navy }) {
+  const bend = toY !== y;
+  if (bend && !fin(elbowX)) throw new Error('lollipop(): a stalk that changes height needs elbowX, the x it turns at');
+  const stalk = bend
+    ? roundedPath({
+      points: [[x, y], [elbowX, y], [elbowX, toY], [to, toY]],
+      r: elbowR,
+      color,
+    })
+    : el('line', { x1: n(x), y1: n(y), x2: n(to), y2: n(y), stroke: color, 'stroke-width': lineWidth() });
+  return el('g', { class: 'd-lollipop' }, [
+    stalk,
+    el('circle', { cx: n(x), cy: n(y), r: n(r), fill: C.bg, ...outline(color) }),
+  ]);
+}
+
+// The socket, centred on the ball it cups, and the consumer's stalk out to the
+// arc's open side rather than to the ball, so the socket is what it ends on.
+export function socket({ x, y, from, r = SOCKET_R, color = C.navy }) {
+  return el('g', { class: 'd-socket' }, [
+    el('line', { x1: n(from), y1: n(y), x2: n(x - r), y2: n(y), stroke: color, 'stroke-width': lineWidth() }),
+    el('path', {
+      d: `M${n(x)},${n(y - r)} A${n(r)},${n(r)} 0 0 0 ${n(x)},${n(y + r)}`,
+      fill: 'none',
+      ...outline(color, { 'stroke-linecap': 'round' }),
+    }),
+  ]);
+}
+
 // ---------------------------------------------------------------------- arrows
 
 const fin = (v) => typeof v === 'number' && Number.isFinite(v);
@@ -470,7 +597,7 @@ export function arrow({ from, to, head = true, color = C.navy, gap = 2 }) {
   const y1 = a.y + uy * d0;
   const x2 = b.x - ux * d1;
   const y2 = b.y - uy * d1;
-  const base = { stroke: color, 'stroke-width': ARROW_W, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', fill: 'none' };
+  const base = { stroke: color, 'stroke-width': lineWidth(), 'stroke-linecap': 'round', 'stroke-linejoin': 'round', fill: 'none' };
   const kids = [el('line', { x1: n(x1), y1: n(y1), x2: n(x2), y2: n(y2), ...base })];
   if (head) {
     const ang = Math.atan2(uy, ux);

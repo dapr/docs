@@ -39,14 +39,39 @@ pure: the same input always gives byte-identical output.
 | `lockBox(o)` | `x, y, size` (44), `stroke, fill, label, labelDy` | a secret store, padlock in a square |
 | `person(o)` | `x, y, size` (40), `stroke, fill, label, labelDy` | a person, for an external system |
 | `secureLock(o)` | `x, y, size` (44), `stroke, label, labelDy` | secure service communication, padlock and shield |
+| `region(o)` | `x, y, w, h, stroke` (`C.caption`), `r` (10), `caption, captionW, captionX, captionH` (26), `captionSize` (15) | a dashed area with its name on the border; the pill takes the region's colour and the text is body ink |
 | `panel(o)` | `x, y, w, h, stroke` (`C.caption`), `r` (10) | a dashed, rounded area grouping part of a diagram. `x, y` is the top-left corner |
 | `pill(o)` | `x, y, w, h` (26), `text, color, filled, size` (15) | a rounded caption tag, outlined or filled |
 | `tile(o)` | `x, y, icon, label, color, filled, size` (99), `w, h, inline, inlinePad` (26), `inlineGap` (24), `tag, labelSize, glyphSize, glyphGap, glyphDy, nameDy, desc, descSize` | a card with an icon over a label, or beside it with `inline: true`. `tag` puts a small word such as `alpha` in the corner |
+| `lineWidth()` | the stroke for arrows, buses and dashed borders, derived from the canvas the exporter set so every diagram renders at `LINE_TARGET` |
+| `roundedPath(o)` | `points` ([[x,y],…]), `r` (10), `color, width` (2) | a connector that turns each corner with an arc; the radius clamps to half the shortest leg |
 | `arrow(o)` | `from, to, head` (true), `color` (`C.navy`), `gap` (2) | a static arrow with an open head, stopping at each shape's edge |
-| `OUTLINE` | — | the shared outline width, 2.2 |
+| `MIN_LABEL` | — | the smallest type anywhere, 10; `label()` throws below it |
+| `richLabel(o)` | `x, y, parts, size, weight, color, anchor, mono` | one line of text whose segments take different colours or weights |
+| `MONO` | — | the page's code font, the one font-family a scene may set |
+| `BALL_R`, `SOCKET_R` | — | the UML lollipop and socket radii, 10 and 21 |
+| `CAPTION_INSET` | — | where `region()` puts its caption, 20 units in from the left |
+| `lollipop(o)` | `x, y, to, toY, elbowX, elbowR` (10), `r` (10), `color` | a UML provided interface: a hollow ball on a stalk back to the provider, elbowing at `elbowX` when `toY` differs, with the turn rounded |
+| `socket(o)` | `x, y, from, r` (21), `color` | a UML required interface: the arc that cups a ball, and the consumer's stalk out to it |
 
 `arrow`'s `from` and `to` take either a point `[x, y]` or a shape descriptor
 such as `{ x, y, r, hex: true }`, so the arrow and the shape cannot drift apart.
+
+## An app and its Dapr sidecar
+
+`diagrams/app.mjs` draws the pair that appears on every hosting diagram.
+
+| Export | Returns |
+| --- | --- |
+| `appSidecar(o)` | `x, y, r` (54), `label, size, stroke, fill` | the app hexagon with the Dapr sidecar overlapping it |
+| `sidecarAt(o)` | the sidecar as an arrow descriptor `{ x, y, r, hex }`, so a scene's arrows cannot drift from the drawing |
+| `sidecarDx(r)` | how far right of the app's centre the sidecar sits, for placing the app from a wanted sidecar position |
+| `SIDECAR_R` | the sidecar's radius as a multiple of the app's, 0.75 |
+| `SIDECAR_CLEARANCE` | how far below the app's lowest point the sidecar's centre sits, 0.15 of `r` |
+| `SIDECAR_GAP` | the floor between the app's name and the sidecar's top, 7 |
+
+`r` is the only size a scene picks. The colour and name are per call - each app
+takes its own `APP[n]` - but the sidecar is always the Dapr hexagon.
 
 ## Brand marks and icons
 
@@ -60,6 +85,8 @@ such as `{ x, y, r, hex: true }`, so the arrow and the shape cannot drift apart.
 | `listMarks(dir)` | every `.svg` in the icons directory, as mark names |
 | `parseMark(svgText, { name, prefix })` | the parsed mark, for tooling |
 | `setIconScope(scope)` | sets the id scope; the exporter calls this around `build()` |
+| `setCanvasWidth(w)` | sets the canvas `lineWidth()` derives from; the exporter calls this around `build()` |
+| `MARK_IN_HEX` | a non-Dapr mark's size inside a hexagon, 0.8 of `r` |
 | `PLATE_H`, `PLATE_PAD` | the shared plate height and padding |
 | `IconError` | thrown for a missing mark, a bad name, or a file that fails the screen |
 

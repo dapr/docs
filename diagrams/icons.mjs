@@ -7,7 +7,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 import { el, text, C } from './engine.mjs';
-import { label as drawLabel, group, hexPoints, OUTLINE } from './shapes.mjs';
+import { label as drawLabel, group, hexPoints, lineWidth } from './shapes.mjs';
 
 export const ICONS_DIR = fileURLToPath(new URL('../daprdocs/assets/icons/', import.meta.url));
 
@@ -490,7 +490,7 @@ export function markHex({ x, y, r, mark, size, stroke = C.blue, fill, color }) {
       points: hexPoints(x, y, r),
       fill: fill ?? (dapr ? C.plate : C.bg),
       stroke,
-      'stroke-width': OUTLINE,
+      'stroke-width': lineWidth(),
       'stroke-linejoin': 'round',
     }),
     icon({ name: mark, x, y, w, h: w, ...(color ? { color } : {}) }),

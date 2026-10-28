@@ -30,29 +30,29 @@
 //     source's - there is a set of building blocks, and this is one of them.
 
 import { APP, C, el } from '../engine.mjs';
-import { OUTLINE, box, hex, hexHalfWidth, label } from '../shapes.mjs';
+import { box, hex, hexHalfWidth, label, lineWidth, lollipop, socket } from '../shapes.mjs';
 
-const W = 750;
-const H = 330;
+const W = 680;
+const H = 172;
 
-const TEXT = 15;
+const TEXT = 10.5;
 
 // ---- your code ------------------------------------------------------------
-const APP_X = 110;
-const APP_R = 58; // the scene's reference size: the card is kept near 2.7x its width
-const MID_Y = 157;
+const APP_X = 156;
+const APP_R = 41; // the scene's reference size: the card is kept near 2.7x its width
+const MID_Y = 80;
 
 // ---- the building block ---------------------------------------------------
-const CARD_L = 400;
-const CARD_R = 670;
-const CARD_T = 60;
-const CARD_B = 254;
+const CARD_L = 359;
+const CARD_R = 548;
+const CARD_T = 12;
+const CARD_B = 148;
 const CARD_X = (CARD_L + CARD_R) / 2;
 
 // The set this block belongs to, drawn as the source draws it: two more cards
 // behind, offset down and right. One step is the same in both axes so the
 // stack reads as depth rather than as a drift.
-const STACK_STEP = 8;
+const STACK_STEP = 6;
 const STACK_DEPTH = 2;
 
 // ---- the API, as UML draws one --------------------------------------------
@@ -61,17 +61,18 @@ const STACK_DEPTH = 2;
 // open arc cupping the ball is on the hexagon's. UML connectors carry no
 // arrowheads: which side provides and which requires is said by the two
 // shapes, not by a head, so these are plain lines.
-const BALL_X = 320;
-const BALL_R = 10;
-const SOCKET_R = 21;
+// The ball and its socket scale with the drawing, like everything else.
+const BALL_R = 7;
+const SOCKET_R = 15;
+const BALL_X = 303;
 const APP_EDGE = APP_X + hexHalfWidth(APP_R);
 const LABEL_X = (APP_EDGE + BALL_X - SOCKET_R) / 2;
 
 // ---- the components --------------------------------------------------------
-const COMP_W = 200;
-const COMP_H = 44;
-const COMP_TOP = 146;
-const COMP_PITCH = 58;
+const COMP_W = 140;
+const COMP_H = 31;
+const COMP_TOP = 73;
+const COMP_PITCH = 41;
 const COMPONENTS = ['Component', 'Component'];
 
 export default {
@@ -93,7 +94,7 @@ export default {
           height: CARD_B - CARD_T,
           rx: 12,
           fill: C.bg,
-          ...{ stroke: C.caption, 'stroke-width': OUTLINE },
+          ...{ stroke: C.caption, 'stroke-width': lineWidth() },
         });
       }),
       el('rect', {
@@ -104,9 +105,9 @@ export default {
         rx: 12,
         fill: C.bg,
         stroke: C.navy,
-        'stroke-width': OUTLINE,
+        'stroke-width': lineWidth(),
       }),
-      label({ x: CARD_X, y: CARD_T + 32, text: 'Building block', size: 16 }),
+      label({ x: CARD_X, y: CARD_T + 22, text: 'Building block', size: 11 }),
 
       COMPONENTS.map((name, i) =>
         box({
@@ -124,39 +125,13 @@ export default {
       // ---- your code, and the interface it calls ---------------------------
       hex({ x: APP_X, y: MID_Y, r: APP_R, label: 'Your code', size: TEXT, stroke: APP[0].stroke, fill: APP[0].fill }),
 
-      // The provided interface: the block's stalk, then the ball on the end of
-      // it. The line is drawn first and the ball's fill covers where the two
-      // meet, so no stub shows through the circle.
-      el('line', {
-        x1: BALL_X, y1: MID_Y, x2: CARD_L, y2: MID_Y,
-        stroke: C.navy, 'stroke-width': 2,
-      }),
-      // The required interface: the consumer's stalk, out to the open side of
-      // the arc rather than to the ball, so the socket is what it ends on.
-      el('line', {
-        x1: APP_EDGE + 2, y1: MID_Y, x2: BALL_X - SOCKET_R, y2: MID_Y,
-        stroke: C.navy, 'stroke-width': 2,
-      }),
-      // The socket: a half circle around the ball, open towards the provider.
-      el('path', {
-        d: `M${BALL_X},${MID_Y - SOCKET_R} A${SOCKET_R},${SOCKET_R} 0 0 0 ${BALL_X},${MID_Y + SOCKET_R}`,
-        fill: 'none',
-        stroke: C.navy,
-        'stroke-width': OUTLINE,
-        'stroke-linecap': 'round',
-      }),
-      // The ball. Hollow, as UML draws a lollipop.
-      el('circle', {
-        cx: BALL_X,
-        cy: MID_Y,
-        r: BALL_R,
-        fill: C.bg,
-        stroke: C.navy,
-        'stroke-width': OUTLINE,
-      }),
+      // The socket first, then the ball over it: the ball's fill covers where
+      // the stalks meet it, so no stub shows through the circle.
+      socket({ x: BALL_X, y: MID_Y, from: APP_EDGE + 2, r: SOCKET_R }),
+      lollipop({ x: BALL_X, y: MID_Y, to: CARD_L, r: BALL_R }),
 
-      label({ x: LABEL_X, y: MID_Y - 30, text: 'API', size: TEXT }),
-      label({ x: LABEL_X, y: MID_Y + 30, text: 'HTTP or gRPC', size: TEXT }),
+      label({ x: LABEL_X, y: MID_Y - 21, text: 'API', size: TEXT }),
+      label({ x: LABEL_X, y: MID_Y + 21, text: 'HTTP or gRPC', size: TEXT }),
     ];
   },
 };

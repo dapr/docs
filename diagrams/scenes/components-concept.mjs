@@ -41,12 +41,12 @@
 //     and Sentinel. Their columns show the rest of the source's list.
 
 import { APP, C, el } from '../engine.mjs';
-import { arrow, group, hexHalfWidth, label, slots } from '../shapes.mjs';
+import { arrow, group, hexHalfWidth, label, lineWidth, roundedPath } from '../shapes.mjs';
 import { icon, plate } from '../icons.mjs';
 import { apiTile } from '../apis.mjs';
 import { appSidecar, sidecarAt, sidecarDx } from '../app.mjs';
 
-const W = 1040;
+const W = 900;
 const H = 1140;
 
 // ---- the app, and the bus its sidecar feeds ------------------------------
@@ -55,14 +55,15 @@ const APP_Y = 76;
 const BUS_Y = 185;
 // The alpha row hangs off the same bus, down a spine in the left margin: the
 // blocks on it are APIs the application calls like any other.
-const SPINE_X = 50;
+const SPINE_X = 36;
+const BUS_R = 14; // the radius every turn in the bus takes
 
 // ---- the blocks ----------------------------------------------------------
 // 88, not 96 * 0.9: at 86.4 the card's derived name falls to 10.8 and
 // cards.mjs refuses it. 88 is the smallest card that still carries an 11px
 // name, which is the floor for a label anywhere in this set.
 const CARD = 88;
-const EDGE = 81;
+const EDGE = 72;
 const CARD_Y = 266; // the stable row
 
 // ---- the component marks under each block --------------------------------
@@ -109,7 +110,13 @@ const GENERIC = new Set(['fluent-key-multiple', 'fluent-document-multiple']);
 
 // One set of column centres, shared by both rows, so the two rows are a grid
 // rather than two separate drawings. The alpha row uses the first six.
-const colX = slots(EDGE, W - EDGE, STABLE.length);
+//
+// Laid out by PITCH from a left edge rather than with slots(), which spreads
+// centres across the whole canvas and so leaves half a pitch of margin at each
+// end - 95 units here, which is not air anyone chose.
+const PITCH = CARD + 30;
+const GRID_L = EDGE + CARD / 2; // the first column's centre
+const colX = Array.from({ length: STABLE.length }, (_, i) => GRID_L + i * PITCH);
 // The SIDECAR is what calls the components, so it is what sits over the middle
 // of the row and what the line down to the bus leaves from. appSidecar() hangs
 // the sidecar off the app's right side, so the app is that far to the left.
@@ -142,19 +149,23 @@ export default {
         points: `${SIDE.x} ${SIDE.y + SIDE.r} ${SIDE.x} ${BUS_Y}`,
         fill: 'none',
         stroke: C.navy,
-        'stroke-width': 2,
+        'stroke-width': lineWidth(),
       }),
-      el('polyline', {
-        points: `${SPINE_X} ${BUS_Y} ${colX[STABLE.length - 1]} ${BUS_Y}`,
-        fill: 'none',
-        stroke: C.navy,
-        'stroke-width': 2,
-      }),
-      el('polyline', {
-        points: `${SPINE_X} ${BUS_Y} ${SPINE_X} ${ALPHA_BUS_Y} ${colX[ALPHA.length - 1]} ${ALPHA_BUS_Y}`,
-        fill: 'none',
-        stroke: C.navy,
-        'stroke-width': 2,
+      // One run: along the stable row, down the spine, along the alpha row.
+      // Drawn as a single path so both turns are rounded and the two rows are
+      // visibly the same line rather than two that happen to meet.
+      roundedPath({
+        points: [
+          // Each row's far end turns DOWN into its last block, so the run ends
+          // in a curve rather than square against the arrow that drops there.
+          [colX[STABLE.length - 1], BUS_Y + BUS_R],
+          [colX[STABLE.length - 1], BUS_Y],
+          [SPINE_X, BUS_Y],
+          [SPINE_X, ALPHA_BUS_Y],
+          [colX[ALPHA.length - 1], ALPHA_BUS_Y],
+          [colX[ALPHA.length - 1], ALPHA_BUS_Y + BUS_R],
+        ],
+        r: BUS_R,
       }),
 
       [[STABLE, CARD_Y], [ALPHA, ALPHA_CARD_Y]].map(([blocks, cardY]) =>
@@ -162,7 +173,10 @@ export default {
           const x = colX[i];
           const busY = cardY === CARD_Y ? BUS_Y : ALPHA_BUS_Y;
           return group([
-            arrow({ from: [x, busY], to: { x, y: cardY, w: CARD, h: CARD } }),
+            arrow({
+              from: [x, i === blocks.length - 1 ? busY + BUS_R : busY],
+              to: { x, y: cardY, w: CARD, h: CARD },
+            }),
             // Every block on a row here is tagged or none is, so dropping the
             // glyph on the tagged ones cannot misalign a row.
             apiTile({ key, wrap: true, x, y: cardY, w: CARD, h: CARD, tagPush: 8 }),
@@ -199,7 +213,6 @@ export default {
         y: H - 26,
         text: 'Some of the components for each building block API. See the component reference for the full list.',
         size: 13,
-        color: C.caption,
       }),
     ];
   },

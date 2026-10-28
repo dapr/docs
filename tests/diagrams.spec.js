@@ -262,6 +262,19 @@ const SCENES = [
     labels: ['Your code', 'API', 'HTTP or gRPC', 'Building block', 'Component'],
   },
   {
+    name: 'sidecar-apis',
+    page: '/concepts/dapr-services/sidecar/',
+    labels: [
+      'Building block APIs',
+      'Metadata API',
+      'Health API',
+      'HTTP or gRPC',
+      'Called from your application business logic',
+      'Discover capabilities and set attributes',
+      'Health status, readiness and liveness',
+    ],
+  },
+  {
     name: 'components-concept',
     page: '/concepts/components-concept/',
     labels: [

@@ -28,7 +28,7 @@
 //     other scenes draw a mark that has no wordmark of its own.
 
 import { APP, C, el } from '../engine.mjs';
-import { OUTLINE, arrow, group, hex, hexHalfWidth, hexPoints, label, panel, pill } from '../shapes.mjs';
+import { arrow, group, hex, hexHalfWidth, hexPoints, label, lineWidth, panel, region, roundedPath } from '../shapes.mjs';
 import { icon, markHex, plate } from '../icons.mjs';
 import { serviceHex } from '../services.mjs';
 import { appSidecar, sidecarAt } from '../app.mjs';
@@ -95,6 +95,7 @@ const APP_Y = POD_CY - (PAIR.y + PAIR.r - APP_R) / 2;
 const SIDE = sidecarAt({ x: APP_X, y: APP_Y, r: APP_R, size: APP_SIZE });
 
 const BUS_Y = 316;
+const BUS_R = 14; // the radius the bus turns up into its outer two risers
 const DROP_X = POD_CX - APP_POD / 2 - 22; // left of the pod, clear of the app hexagon
 
 // ---- the kubelet probe ----
@@ -158,13 +159,17 @@ export default {
       CONTROL_PLANE.map(([key, why], i) => {
         const x = podX[i];
         return group([
-          panel({ x: x - POD_W / 2, y: POD_Y - POD_H / 2, w: POD_W, h: POD_H, stroke: C.blue, r: 8 }),
-          pill({ x: x - POD_W / 2 + 36, y: POD_Y - POD_H / 2, w: 56, h: 26, text: 'Pod', color: C.navy, size: TEXT }),
+          region({ x: x - POD_W / 2, y: POD_Y - POD_H / 2, w: POD_W, h: POD_H, stroke: C.blue, r: 8, caption: 'Pod', captionW: 56, captionSize: TEXT }),
           serviceHex({ key, x, y: POD_Y + CP_HEX_DY, r: CP_HEX_R, role: true, wrap: true }),
           // Up to the service, because it is the sidecar that calls it. The
           // reason rides BESIDE the arrow: a vertical arrow through centred
           // text cuts the text in half.
-          arrow({ from: [x, BUS_Y], to: [x, POD_Y + POD_H / 2 + 6] }),
+          // The outer two risers are part of the bus, which turns up into them
+          // with a rounded corner, so they start above that turn.
+          arrow({
+            from: [x, i === 0 || i === CONTROL_PLANE.length - 1 ? BUS_Y - BUS_R : BUS_Y],
+            to: [x, POD_Y + POD_H / 2 + 6],
+          }),
           label({ x: x + WHY_DX, y: WHY_Y, text: why, size: TEXT, anchor: 'start' }),
         ]);
       }),
@@ -173,23 +178,25 @@ export default {
       // application pod and drops into it once, down the pod's left side and in
       // at the sidecar's own height, so no arrow cuts across the pod and
       // nothing runs down through the application hexagon.
-      el('polyline', {
-        points: `${podX[0]} ${BUS_Y} ${podX[CONTROL_PLANE.length - 1]} ${BUS_Y}`,
-        fill: 'none',
-        stroke: C.navy,
-        'stroke-width': 2,
+      roundedPath({
+        points: [
+          [podX[0], BUS_Y - BUS_R],
+          [podX[0], BUS_Y],
+          [podX[CONTROL_PLANE.length - 1], BUS_Y],
+          [podX[CONTROL_PLANE.length - 1], BUS_Y - BUS_R],
+        ],
+        r: BUS_R,
       }),
       el('polyline', {
         points: `${DROP_X} ${BUS_Y} ${DROP_X} ${SIDE.y}`,
         fill: 'none',
         stroke: C.navy,
-        'stroke-width': 2,
+        'stroke-width': lineWidth(),
       }),
 
 
       // ---- the application pod -------------------------------------------
-      panel({ x: POD_CX - APP_POD / 2, y: POD_CY - APP_POD / 2, w: APP_POD, h: APP_POD, stroke: C.blue, r: 8 }),
-      pill({ x: POD_CX - APP_POD / 2 + 36, y: POD_CY - APP_POD / 2, w: 56, h: 26, text: 'Pod', color: C.navy, size: TEXT }),
+      region({ x: POD_CX - APP_POD / 2, y: POD_CY - APP_POD / 2, w: APP_POD, h: APP_POD, stroke: C.blue, r: 8, caption: 'Pod', captionW: 56, captionSize: TEXT }),
       appSidecar({ x: APP_X, y: APP_Y, r: APP_R, label: 'App', size: APP_SIZE, stroke: APP[0].stroke, fill: APP[0].fill }),
 
       // ---- the kubelet and the sidecar share one line --------------------
@@ -210,8 +217,11 @@ export default {
       }),
 
       // ---- where it runs --------------------------------------------------
-      panel({ x: HOST.x, y: HOST.y, w: HOST.w, h: HOST.h, stroke: C.navy }),
-      pill({ x: HOST.x + HOST.w / 2, y: HOST.y, w: 400, h: 36, text: 'Host on any cloud or edge infrastructure', color: C.navy }),
+      region({
+        x: HOST.x, y: HOST.y, w: HOST.w, h: HOST.h, stroke: C.navy,
+        caption: 'Host on any cloud or edge infrastructure', captionW: 400,
+        captionX: HOST.x + HOST.w / 2, captionH: 36,
+      }),
       CLOUDS.map((m, i) => {
         const left = CLOUD_LEFT[i];
         const markW = m.size ?? m.w;
@@ -233,11 +243,16 @@ export default {
       }),
 
       // ---- the components it uses ----------------------------------------
-      el('polyline', {
-        points: `${COMP_BUS_X} ${CARD_TOP} ${COMP_BUS_X} ${CARD_TOP + 4 * CARD_PITCH}`,
-        fill: 'none',
-        stroke: C.navy,
-        'stroke-width': 2,
+      // Like the control plane bus, this one turns into its outer two arrows
+      // rather than ending in a square corner against them.
+      roundedPath({
+        points: [
+          [COMP_BUS_X + BUS_R, CARD_TOP],
+          [COMP_BUS_X, CARD_TOP],
+          [COMP_BUS_X, CARD_TOP + 4 * CARD_PITCH],
+          [COMP_BUS_X + BUS_R, CARD_TOP + 4 * CARD_PITCH],
+        ],
+        r: BUS_R,
       }),
       arrow({ from: SIDE, to: [COMP_BUS_X, SIDE.y] }),
       label({ x: (SIDE.x + COMP_BUS_X) / 2 + 60, y: SIDE.y - 20, text: 'Use components', size: TEXT }),
@@ -245,7 +260,10 @@ export default {
       COMPONENTS.map((key, i) => {
         const y = CARD_TOP + i * CARD_PITCH;
         return group([
-          arrow({ from: [COMP_BUS_X, y], to: { x: CARD_X, y, w: CARD, h: CARD } }),
+          arrow({
+            from: [i === 0 || i === COMPONENTS.length - 1 ? COMP_BUS_X + BUS_R : COMP_BUS_X, y],
+            to: { x: CARD_X, y, w: CARD, h: CARD },
+          }),
           apiTile({
             key,
             wrap: true,

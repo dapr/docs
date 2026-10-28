@@ -9,6 +9,7 @@ import hostingKubernetes from './hosting-kubernetes.mjs';
 import hostingStandalone from './hosting-standalone.mjs';
 import hostingVms from './hosting-vms.mjs';
 import overview from './overview.mjs';
+import sidecarApis from './sidecar-apis.mjs';
 import sidecarModel from './sidecar-model.mjs';
 
 export const scenes = {
@@ -20,5 +21,6 @@ export const scenes = {
   'hosting-standalone': hostingStandalone,
   'hosting-vms': hostingVms,
   overview,
+  'sidecar-apis': sidecarApis,
   'sidecar-model': sidecarModel,
 };

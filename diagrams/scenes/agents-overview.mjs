@@ -38,15 +38,15 @@
 //     rather than any other agent framework.
 
 import { C, el } from '../engine.mjs';
-import { arrow, group, label, panel, pill, slots } from '../shapes.mjs';
+import { arrow, group, label, region, roundedPath, slots } from '../shapes.mjs';
 import { icon } from '../icons.mjs';
 import { card } from '../cards.mjs';
 
-const W = 940;
-const H = 660;
+const W = 914;
+const H = 457;
 
-const TEXT = 15; // one size for every card name and band name
-const EDGE = 24; // the least space between anything and a dashed border
+const TEXT = 10.5; // one size for every card name and band name
+const EDGE = 17; // the least space between anything and a dashed border
 
 // icon() fits a mark's 24-unit viewBox by scaling it size/24, so two marks
 // drawn at the same size carry the same ink weight and two drawn at different
@@ -54,22 +54,25 @@ const EDGE = 24; // the least space between anything and a dashed border
 // GLYPH for the ones in the band; the marks inside CARDS are not set here at
 // all - card() derives those from the card, so they cannot drift from the
 // blocks on the other diagrams.
-const MARK = 60;
-const GLYPH = 30;
+const MARK = 42;
+const GLYPH = 21;
 
 // ---- the user, the agent, and the bus between the agent and its capabilities
-const USER_X = 85;
+const USER_X = 177;
 
-const AGENT_X = 330;
-const AGENT_SIZE = 160;
-const BUS_X = 520;
+const AGENT_X = 348;
+const AGENT_SIZE = 112;
+const BUS_X = 482;
+const BUS_R = 10; // the radius the bus turns into its outer two arrows
 
 // ---- the capabilities, one column -----------------------------------------
-const CARD_X = 665;
-const CARD_W = 190;
-const CARD_H = 76; // the same card as the overview's cross-cutting blocks
-const CARD_TOP = 70;
-const CARD_PITCH = 96;
+const CARD_X = 583;
+const CARD_W = 133;
+// 55, not 76 * 0.7: an inline card derives its name from its height, and at
+// 53 that falls under MIN_LABEL and cards.mjs refuses it.
+const CARD_H = 55;
+const CARD_TOP = 50;
+const CARD_PITCH = 67;
 const cardY = (i) => CARD_TOP + i * CARD_PITCH;
 
 // Tools is deliberately the middle row: it is the one capability that reaches
@@ -90,13 +93,13 @@ const AGENT_Y = cardY(TOOLS_ROW);
 
 // ---- the outside world ----------------------------------------------------
 // In its own column, clear of the cards, so its name has room underneath.
-const GLOBE_X = 855;
+const GLOBE_X = 716;
 
 // ---- what the framework is built on ---------------------------------------
-const BAND_X = 170; // starts right of the user: the user is not part of Dapr
-const BAND_R = 790; // stops left of the outside world, which is not either
-const BAND_Y = 530;
-const BAND_H = 90;
+const BAND_X = 237; // starts right of the user: the user is not part of Dapr
+const BAND_R = 670; // stops left of the outside world, which is not either
+const BAND_Y = 372;
+const BAND_H = 70;
 
 const FOUNDATIONS = [
   ['arrow-clockwise', 'Durable execution'],
@@ -116,13 +119,15 @@ export default {
       // ---- what Dapr Agents is built on ----------------------------------
       // Drawn first so the band sits behind everything, as a ground does.
       group([
-        panel({ x: BAND_X, y: BAND_Y, w: BAND_R - BAND_X, h: BAND_H, stroke: C.navy }),
-        pill({ x: (BAND_X + BAND_R) / 2, y: BAND_Y, w: 150, h: 28, text: 'Built on Dapr', size: TEXT }),
+        region({
+          x: BAND_X, y: BAND_Y, w: BAND_R - BAND_X, h: BAND_H, stroke: C.navy,
+          caption: 'Built on Dapr', captionW: 150, captionX: (BAND_X + BAND_R) / 2, captionH: 20, captionSize: TEXT,
+        }),
         slots(BAND_X + EDGE, BAND_R - EDGE, FOUNDATIONS.length).map((cx, i) => {
           const [mark, name] = FOUNDATIONS[i];
           return group([
-            icon({ name: `fluent-${mark}`, x: cx, y: BAND_Y + 32, size: GLYPH, color: C.navy }),
-            label({ x: cx, y: BAND_Y + 66, text: name, size: TEXT }),
+            icon({ name: `fluent-${mark}`, x: cx, y: BAND_Y + 28, size: GLYPH, color: C.navy }),
+            label({ x: cx, y: BAND_Y + 50, text: name, size: TEXT }),
           ]);
         }),
       ]),
@@ -133,7 +138,7 @@ export default {
       // three carry the same weight. person() draws at the shared 2.2 outline,
       // which is visibly lighter beside a glyph this size.
       icon({ name: 'fluent-person', x: USER_X, y: AGENT_Y, size: MARK, color: C.navy }),
-      label({ x: USER_X, y: AGENT_Y + MARK / 2 + 20, text: 'User', size: TEXT }),
+      label({ x: USER_X, y: AGENT_Y + MARK / 2 + 14, text: 'User', size: TEXT }),
 
       // ---- Dapr Agents ----------------------------------------------------
       card({ x: AGENT_X, y: AGENT_Y, w: AGENT_SIZE, h: AGENT_SIZE, mark: 'fluent-bot', name: 'Dapr Agents' }),
@@ -146,18 +151,21 @@ export default {
         return [arrow({ from: u, to: a }), arrow({ from: a, to: u })];
       })(),
       label({
-        x: (USER_X + AGENT_X - AGENT_SIZE / 2) / 2 + 13,
-        y: AGENT_Y - 24,
+        x: (USER_X + AGENT_X - AGENT_SIZE / 2) / 2 + 9,
+        y: AGENT_Y - 17,
         text: 'Interaction',
         size: TEXT,
       }),
 
       // ---- the capabilities, off one bus ----------------------------------
-      el('polyline', {
-        points: `${BUS_X} ${cardY(0)} ${BUS_X} ${cardY(CAPABILITIES.length - 1)}`,
-        fill: 'none',
-        stroke: C.navy,
-        'stroke-width': 2,
+      roundedPath({
+        points: [
+          [BUS_X + BUS_R, cardY(0)],
+          [BUS_X, cardY(0)],
+          [BUS_X, cardY(CAPABILITIES.length - 1)],
+          [BUS_X + BUS_R, cardY(CAPABILITIES.length - 1)],
+        ],
+        r: BUS_R,
       }),
       arrow({
         from: { x: AGENT_X, y: AGENT_Y, w: AGENT_SIZE, h: AGENT_SIZE },
@@ -167,7 +175,10 @@ export default {
       CAPABILITIES.map(([mark, name], i) => {
         const y = cardY(i);
         return group([
-          arrow({ from: [BUS_X, y], to: { x: CARD_X, y, w: CARD_W, h: CARD_H } }),
+          arrow({
+            from: [i === 0 || i === CAPABILITIES.length - 1 ? BUS_X + BUS_R : BUS_X, y],
+            to: { x: CARD_X, y, w: CARD_W, h: CARD_H },
+          }),
           card({
             x: CARD_X,
             y,
@@ -176,8 +187,8 @@ export default {
             mark: `fluent-${mark}`,
             name,
             inline: true,
-            inlinePad: 34,
-            inlineGap: 30,
+            inlinePad: 24,
+            inlineGap: 21,
           }),
         ]);
       }),
@@ -188,7 +199,7 @@ export default {
         to: { x: GLOBE_X, y: cardY(TOOLS_ROW), w: MARK, h: MARK },
       }),
       icon({ name: 'fluent-globe', x: GLOBE_X, y: cardY(TOOLS_ROW), size: MARK, color: C.navy }),
-      label({ x: GLOBE_X, y: cardY(TOOLS_ROW) + MARK / 2 + 20, text: 'Outside world', size: TEXT }),
+      label({ x: GLOBE_X, y: cardY(TOOLS_ROW) + MARK / 2 + 14, text: 'Outside world', size: TEXT }),
     ];
   },
 };

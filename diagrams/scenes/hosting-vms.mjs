@@ -29,13 +29,13 @@
 //     to run.
 
 import { APP, C, el } from '../engine.mjs';
-import { OUTLINE, arrow, group, hex, hexHalfWidth, hexPoints, label, panel, pill } from '../shapes.mjs';
+import { arrow, group, hex, hexHalfWidth, hexPoints, label, panel, region, roundedPath } from '../shapes.mjs';
 import { MARK_IN_HEX, icon, markHex } from '../icons.mjs';
 import { apiTile } from '../apis.mjs';
 import { appSidecar, sidecarAt, sidecarDx } from '../app.mjs';
 import { NAME_DY, SERVICE_R, serviceHex, serviceLabel } from '../services.mjs';
 
-const W = 1200;
+const W = 1216; // 16:9 for a slide; the content is unchanged
 const H = 760;
 
 const TEXT = 13; // one size for every label and description
@@ -95,6 +95,7 @@ const APPS = [
 // The same cards as the Kubernetes scene, at the same size: they are the same
 // building blocks, so they must not be a different size here.
 const COMP_BUS_X = 960;
+const BUS_R = 14; // the radius the bus turns into its outer two arrows
 const CARD_X = 1104;
 const CARD = 112;
 const CARD_TOP = 85;
@@ -120,8 +121,7 @@ export default {
       Array.from({ length: VM_COUNT }, (_, i) => {
         const left = VM_X0 + i * (VM_W + VM_GAP);
         return group([
-          panel({ x: left, y: VM_Y, w: VM_W, h: VM_H, stroke: C.navy, r: 10 }),
-          pill({ x: left + 54, y: VM_Y, w: 68, h: 28, text: `VM${i + 1}`, color: C.navy, size: TEXT }),
+          region({ x: left, y: VM_Y, w: VM_W, h: VM_H, stroke: C.navy, caption: `VM${i + 1}`, captionW: 68, captionX: left + 54, captionH: 28, captionSize: TEXT }),
         ]);
       }),
 
@@ -129,7 +129,7 @@ export default {
       ROWS.map((row, i0) => {
         const y = ROW_TOP + i0 * ROW_PITCH;
         return group([
-          label({ x: GUTTER_R, y, text: row.gutter, size: TEXT, anchor: 'end', color: C.caption }),
+          label({ x: GUTTER_R, y, text: row.gutter, size: TEXT, anchor: 'end', color: C.blue }),
           // Between each adjacent pair, one line with a head at each end: the
           // machines keep each other in step, so neither direction is the
           // subordinate one.
@@ -173,11 +173,14 @@ export default {
       })(),
 
       // ---- the components the sidecars use ---------------------------------
-      el('polyline', {
-        points: `${COMP_BUS_X} ${CARD_TOP} ${COMP_BUS_X} ${CARD_TOP + 4 * CARD_PITCH}`,
-        fill: 'none',
-        stroke: C.navy,
-        'stroke-width': 2,
+      roundedPath({
+        points: [
+          [COMP_BUS_X + BUS_R, CARD_TOP],
+          [COMP_BUS_X, CARD_TOP],
+          [COMP_BUS_X, CARD_TOP + 4 * CARD_PITCH],
+          [COMP_BUS_X + BUS_R, CARD_TOP + 4 * CARD_PITCH],
+        ],
+        r: BUS_R,
       }),
       arrow({
         from: sideOf(VM_COUNT - 1),
@@ -188,7 +191,10 @@ export default {
       COMPONENTS.map((key, i) => {
         const y = CARD_TOP + i * CARD_PITCH;
         return group([
-          arrow({ from: [COMP_BUS_X, y], to: { x: CARD_X, y, w: CARD, h: CARD } }),
+          arrow({
+            from: [i === 0 || i === COMPONENTS.length - 1 ? COMP_BUS_X + BUS_R : COMP_BUS_X, y],
+            to: { x: CARD_X, y, w: CARD, h: CARD },
+          }),
           apiTile({
             key,
             wrap: true,

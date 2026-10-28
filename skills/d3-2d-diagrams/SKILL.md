@@ -48,6 +48,42 @@ The engine's API is in [reference/engine.md](reference/engine.md).
 ### Canvas and style
 
 - **2D only.**
+- **A small band of air on every side, and no more.** Nothing should touch the
+  viewBox: the inlined SVG has no padding of its own, so geometry on the
+  boundary sits against the prose. Aim for 2-5% of the canvas on that axis -
+  width for left and right, height for top and bottom - and never less than
+  about 12 units, whatever the percentage says on a small canvas. The rendered
+  tests already fail anything within 10 units of the edge.
+- **Padding is also the only scale control, so expect one axis to carry it.**
+  The SVG always fills the content column, so the only thing that changes how
+  BIG a drawing renders is its ratio to the canvas: ask for a diagram at 80%
+  and what you are really asking for is 20% more canvas around it. That air
+  has to go somewhere. Put it on ONE axis - the one the drawing is widest
+  against - and trim the other back to the band. `sidecar-apis` carries 17% on
+  the left and right for exactly this reason and 5% top and bottom; what is
+  wrong is not that figure but letting BOTH axes drift, which is dead space
+  rather than scale.
+- **Landscape, and ideally 16:9.** A diagram that fits a slide frame can be
+  dropped into a deck as it is, and these diagrams get reused in talks. The
+  rule is a FLOOR on the ratio, never a band: a drawing WIDER than 16:9 loses
+  nothing, because a wide shape in a wide frame just leaves space above and
+  below, while a drawing taller than the frame has to be shrunk to fit its
+  height and arrives as a stamp. `diagrams/aspect.test.mjs` enforces the floor,
+  with 10% of slack - a frame is not a caliper.
+- **So when a layout has to give, give it WIDTH.** Portrait is the shape to
+  design away from, not a neutral alternative: a column that runs off the
+  bottom becomes two columns side by side, a stack of rows becomes a row of
+  groups, and a long list splits into two shorter ones. The content is usually
+  indifferent - it is the layout that chose to go down the page. Reach for a
+  taller canvas only when the thing being drawn is genuinely vertical, such as
+  a sequence that the reader follows top to bottom.
+- **A scene that cannot fit is an exception, named in that test with its
+  reason.** The list is the record of the exceptions and is meant to stay
+  short; it is not somewhere to park a scene that was simply never laid out
+  with the frame in mind. Before adding to it, try the cheap fixes: pad the
+  canvas on the short axis, trim dead margin on the long one, or re-pitch a
+  column. Only a diagram whose CONTENT is the wrong shape - a reference table
+  of fifteen columns, say - genuinely belongs there.
 - **Canvas size:** the `width` and `height` on the scene set the viewBox, and
   the scene's coordinates use it. Give the canvas the shape of what the diagram
   replaces, or of the space it fills. Never make it larger.
@@ -127,6 +163,31 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
   Lowering the floor is a change in one place; raising it will fail the scenes
   that no longer fit. See the canvas-relative note above before choosing a size
   on a wide canvas.
+- **A colour in the source image is not permission to use it.** Three of these
+  diagrams had a GREEN application hexagon and one had a YELLOW app; the
+  palette has neither, and yellow in particular is too light to carry an
+  outline on the light ground. Map what the source means - "this is an app",
+  "this is a second app" - onto the palette: apps take `APP[0]`, `APP[1]` and
+  so on in order. Record the swap in the scene header, because the next person
+  to compare the drawing with the old PNG will otherwise think it is a mistake.
+- **Colour carries a role, and the role holds across the set.** Blue is Dapr's
+  own - the sidecar hexagon, an API block, a Dapr service. Navy is for what is
+  NOT Dapr: the user, the outside world, the infrastructure underneath. A
+  reader who learns that on one page should not have to relearn it on the next.
+- **A description is BLUE, not a second grey.** Names take body ink; the line
+  explaining them takes `C.blue`, the same blue a Dapr hexagon is outlined in.
+  Grey under black is one colour at two strengths, and a diagram built from it
+  goes monochrome however many shapes it has. `C.caption` stays for what is
+  genuinely furniture: a dashed region's border, a section heading over a band.
+- **Use the palette; do not invent a colour to satisfy a contrast number.**
+  `C.blue` measures 2.56:1 on the light ground and `C.orange` 3.31:1, so as
+  type both are under the 4.5:1 that body copy wants. They are used anyway,
+  deliberately: the house palette is the house palette, and a near-miss
+  mixed for one diagram is a colour nothing else in the set shares. What
+  follows from that is a constraint on CONTENT, not on the palette - a line
+  in `C.blue` or `C.orange` is a second reading of something the diagram
+  already says in body ink, never the only place a fact appears. If a
+  description is the only place a fact appears, it belongs in body ink.
 - **One constant for every label and description in a scene.** A description
   set a point smaller than the name above it does not read as quieter, it reads
   as a different class of thing. One `TEXT` constant also stops the two drifting
@@ -215,6 +276,21 @@ cannot disagree with itself on another page.
   allowed BECAUSE the component scales as a whole: the mark, the offsets and
   the type all move together, so it is the same drawing bigger. What is not
   allowed is changing one of them by hand. Say in the scene why it differs.
+- **ONE line weight for everything in a diagram, outlines included.** An
+  arrow, a bus, a dashed border, a hexagon's outline and a card's outline all
+  take `lineWidth()`. Deriving a border from its own SHAPE was tried and is
+  wrong: the three shapes in the building block concept came out at 1.4, 2.75
+  and 3.6, a two-and-a-half-fold spread between things sitting next to each
+  other, because shapes in one drawing are not meant to read as different
+  weights of the same thing.
+- **The weight comes from the CANVAS, which is what makes it consistent.** The
+  inlined svg fills the content column, so a stroke of n units renders at
+  `n * column / width`: a fixed 2 came out at 1.05px on the 1512-wide overview
+  and 2.34px on the 680-wide building block concept. `lineWidth()` returns the
+  units that render at `LINE_TARGET` (1.5px) for the canvas the exporter set,
+  clamped to `LINE_MIN` 1.4 and `LINE_MAX` 3.2, so every diagram in the set
+  draws at the same apparent thickness. Scaling a diagram therefore needs no
+  thought about its lines - they follow the canvas.
 - **Then keep the dimension itself close across diagrams.** Once type is
   derived, a component drawn at r = 30 on one page and r = 44 on another has
   names at 11.5 and 16.8 - correct by the ratio and wrong on the page, because
@@ -233,6 +309,11 @@ cannot disagree with itself on another page.
 - **A part that sits beside a component copies its offsets.** The Consul
   hexagon on the VM diagram is not a Dapr service, but its name uses the same
   `NAME_DY`, or the four names in a column would not line up.
+- **A diagram that mirrors a drawing published elsewhere says so, and says
+  where it stops.** The overview follows an existing published layout band for
+  band and keeps its hub mark larger than `DAPR_MARK` would give; both are
+  deliberate and both are written into the scene. Without that note the next
+  person measures the inconsistency and "fixes" it.
 - **One exception, named, beats a free option.** Where a scene genuinely must
   differ, let it pass the one value and say in a comment why - the overview's
   hub is matched to a drawing published elsewhere, so it sets its own mark
@@ -352,6 +433,27 @@ note in this skill came from a number that disagreed with how it looked.
 
 ### Laying out connections
 
+- **One line weight for every arrow, bus and dashed border, and it is derived
+  from the CANVAS.** A constant does not work: the inlined svg fills the
+  content column, so a stroke of n units renders at `n * column / width`, and
+  the same 2 came out at 1.05px on the 1512-wide overview and 2.34px on the
+  680-wide building block concept - the thin ones looked faint and the fat
+  ones looked clumsy. `lineWidth()` returns the units that render at
+  `LINE_TARGET` (1.5px) for whatever canvas the exporter set, so the lines look
+  identical from one diagram to the next. Outlines take the same weight - see
+  the line rule above.
+- **A line turns with an ARC, never a mitre.** Use `roundedPath()` for any run
+  that changes direction: a square corner reads as two lines that happen to
+  meet, a rounded one as a single line going somewhere. 14 units is the house
+  radius for a bus and 10 for the smaller elbow on a lollipop; the builder
+  clamps to half the shortest leg, so a tight turn cannot fold back on itself.
+- **A turn means the run is ONE path, not two that touch.** This is the part
+  that is easy to get wrong: a bus drawn as a polyline with arrows standing on
+  it has no corner to round, because the corner lives in the gap between two
+  separate elements. Draw the whole run - along, around, along - as one
+  `roundedPath()`, and start the arrows that leave its ENDS beyond the radius
+  so they pick up where the curve stops. Only the joins in the MIDDLE of a run
+  are genuine T-joins, and those stay square because nothing turns there.
 - **Collect parallel connections onto one bus.** Several arrows that run from
   one place to a column of things should leave a single vertical line rather
   than fanning out from their source. Put that line close to the column it
@@ -375,6 +477,21 @@ note in this skill came from a number that disagreed with how it looked.
   than running a second one beside it.
 - **Two dashed regions need a clear gap between them.** Edges that nearly touch
   read as a mistake. Leave several times the dash pitch.
+- **A region and its caption are ONE object: use `region()`.** The pill on a
+  dashed area takes the area's own stroke, because a caption outlined in a
+  different colour from the border it sits on reads as a separate thing that
+  happens to overlap it. Drawing the two together is what stops them diverging,
+  and they had: the Kubernetes pods were dashed in blue with navy pills, and
+  the overview's first band was dashed in teal with a navy pill.
+- **The caption's TEXT is body ink, whatever colour the region is.** It is a
+  name, not a piece of the border. Tinting it with the region's colour both
+  weakens it and, for the paler strokes, takes it under the contrast a label
+  needs - teal and mint are refused as ink for exactly that reason.
+- **A diagram's own caption is body ink too** - the line under the drawing that
+  qualifies it, such as "some of the components for each block". It is the
+  quietest thing on the canvas by position, not by colour, and in the dark
+  theme body ink is the off-white, so it follows the theme without a second
+  token.
 - **A caption and the things it captions need a drawn relationship.** A heading
   floating above a row of marks is just a heading near some marks. Put both
   inside one dashed region with the caption on its border, as the overview
@@ -408,6 +525,15 @@ note in this skill came from a number that disagreed with how it looked.
   const EDGE = 24;                                  // least space to any border
   const POD_Y = REGION.y + EDGE + POD_H / 2;
   ```
+- **A row of marks is plated or it is not; never half and half.** A
+  full-colour mark needs a plate to stay legible on the dark ground, and once
+  one mark in a row has one the single-colour marks beside it need one too, or
+  the row reads as two kinds of thing. The overview plates every language mark
+  for this reason, including the ones that are a single colour.
+- **A plated mark takes PLATE ink, not body ink.** `icon()` tints a
+  single-colour mark with whatever `color` says, and body ink is near-white in
+  the dark theme - on a light plate that is invisible. `C.plateInk` exists for
+  exactly this.
 - **Do not hand-draw a company's logo or product mark.** Use its official file;
   see the next section.
 - **Generic icons** (a key, a clock, a database) come from
@@ -486,6 +612,18 @@ worse than the image it replaced.
 
 List any discrepancy you find and put it to the maintainers. Do not resolve it
 silently, and do not quietly change the content set to match a source image.
+
+- **The page's words beat the picture's.** Where a source image and the prose
+  disagree about what something is called, the prose wins and the diagram
+  follows the docs: "Configuration" not "External Configuration",
+  "Publish & subscribe" not "Publish / Subscribe". A diagram that labels an API
+  differently from the page it sits on teaches the reader a name they will not
+  find anywhere else.
+- **Say once what is true of every copy.** Where a row repeats across several
+  groups - the same four services on three machines - describe it ONCE, in a
+  gutter beside the row, rather than labelling each copy. The source for the VM
+  diagram said the same thing three times over and the repetition was most of
+  its ink.
 
 ### 2. Turn the source into a layout
 
@@ -646,6 +784,13 @@ before the next one starts. Report visual choices as proposals, not decisions.
   shared 2.2 whatever its `size`, so beside a glyph it looks light. Where they
   must match, use the Fluent mark instead of the hand-drawn shape; they then
   match by construction rather than by a number someone tuned.
+- **`slots()` decides spacing WITHIN a span, not the span itself.** It spreads
+  centres evenly across what you give it, which leaves half a pitch of margin
+  at each END. Handing it the whole canvas therefore bakes that half-pitch in
+  as padding you did not choose: the components page carried 95 units on the
+  right, and shrinking the canvas could not reduce it because the columns moved
+  in with it. Lay a grid out from a left edge by PITCH and let the margin be a
+  number you picked.
 - **A definition copied into a scene drifts, and nothing tells you.** The
   overview drew sixteen API tiles while the building-blocks page listed
   fifteen - the same set, two different lengths - because each scene carried
