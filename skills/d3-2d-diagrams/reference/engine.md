@@ -161,9 +161,15 @@ serviceHex({ key: 'placement', x: 100, y: 400, r: 30 }); // smaller, same drawin
 ## Colors
 
 `C` holds `navy`, `blue`, `orange`, `teal`, `tealFill`, `mint`, `red`,
-`lavender`, `grey`, `caption`, `body`, `bg`, `plate`, `plateInk`, `markPlate`
-and `kubernetes`. `APP[0]` to `APP[3]` are the app hexagon colors, each
-`{ stroke, fill }`, in order: sky, blue, teal, orange.
+`lavender`, `grey`, `caption`, `body`, `bg`, `plate`, `plateInk`, `markPlate`,
+`green`, `appInk` and `kubernetes`.
+
+`APP[0]` to `APP[3]` are the app hexagon colors, in order: Dapr green, sky,
+blue, teal. Each is `{ stroke, fill, ink, solid }` and every entry states all
+four, so a scene can spread one whole - `hex({ ..., ...APP[1] })` - without a
+missing property falling back to another entry's. `APP[0]` is the solid green
+app: `solid: true`, with `ink` the dark ink that sits ON the green. The rest
+are tinted and take body ink.
 
 Every one is a `var(--d-*)` string. Never put a hex value in a scene; add a
 token to `_tokens.scss`, in both themes, instead.
@@ -182,7 +188,7 @@ export default {
 
   build() {
     return [
-      daprApp({ x: 150, y: 200, stroke: APP[0].stroke, fill: APP[0].fill }),
+      daprApp({ x: 150, y: 200, ...APP[0] }),
       arrow({ from: { x: 150, y: 200, r: 42.5, hex: true }, to: [300, 200] }),
       cylinder({ x: 340, top: 185, bottom: 225 }),
       label({ x: 340, y: 250, text: 'State store' }),

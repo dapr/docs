@@ -18,9 +18,12 @@
 //     row reads as one set on the dark ground as well as the light one.
 //   - "Configuration", not "External Configuration": the replaced PNG was the
 //     only place in this repository using the longer name.
-//   - band panels are teal / sky / navy, matching the website band for band.
-//     panel() allows teal only because a dashed grouping border is decorative;
-//     light teal is 2.90:1, just under the 3:1 non-text threshold.
+//   - band panels are green / sky / navy. The language band is bordered in the
+//     SAME green the app hexagon is filled with, so the band reads as being
+//     about the thing inside it; the other two match the website band for band.
+//     A dashed grouping border is decorative, which is why panel() allows a
+//     colour this light - the green is 1.63:1 on white - and why the caption
+//     inside the pill stays body ink rather than taking the border's colour.
 //   - band three is the website's own layout, item for item: no plates, the
 //     website's x for every mark, its Kubernetes helm tinted brand blue with
 //     the name beside it, and its sizes scaled by WEB_S. The language row in
@@ -28,6 +31,7 @@
 //
 // Colour system, reused by every later scene:
 //   neutral dashed panel  = a band
+//   green dashed panel    = the band about the application itself
 //   navy outlined pill    = a band title
 //   navy filled pill      = a protocol or transport
 //   sky hexagon           = an application or a service
@@ -148,7 +152,7 @@ export default {
     return [
       // ---- band 1: any language or runtime -------------------------------
       region({
-        x: PX, y: B1.y, w: PW, h: B1.h, stroke: C.teal,
+        x: PX, y: B1.y, w: PW, h: B1.h, stroke: C.green,
         caption: 'Use any language or runtime', captionW: 268, captionX: 1300, captionH: 34,
       }),
       hex({
@@ -157,8 +161,7 @@ export default {
         r: 52,
         label: 'App',
         size: 16,
-        stroke: APP[0].stroke,
-        fill: APP[0].fill,
+        ...APP[0],
       }),
       LANGUAGES.map((m, i) => brand({ ...m, x: langX[i], y: LANG_Y, plateH: LANG_PLATE_H })),
 

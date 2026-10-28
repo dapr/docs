@@ -94,9 +94,13 @@ export default {
 
       // Over the topmost stalk, where there is clear run between the ball and
       // the hexagon, so it labels all three without sitting on any of them.
+      // Its ascender is the highest ink in the drawing, so its height is what
+      // sets the canvas's top margin: at ROW_TOP - 21 the type started 9.1
+      // units from the edge, inside the 10 the layout test holds every scene
+      // to. Lowering it by two costs nothing - the stalk is 17 units below.
       label({
         x: (BALL_X + ELBOW_X) / 2,
-        y: ROW_TOP - 21,
+        y: ROW_TOP - 19,
         text: 'HTTP or gRPC',
         size: TEXT,
       }),

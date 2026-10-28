@@ -137,7 +137,7 @@ export default {
       // ---- the app and its sidecar ---------------------------------------
       // The sidecar overlaps the app, as in the source: one process beside the
       // other, not a separate box somewhere else on the machine.
-      appSidecar({ x: APP_X, y: APP_Y, r: APP_R, label: 'App', size: APP_SIZE, stroke: APP[0].stroke, fill: APP[0].fill }),
+      appSidecar({ x: APP_X, y: APP_Y, r: APP_R, label: 'App', size: APP_SIZE, ...APP[0] }),
       label({ x: APP_X, y: 505, text: 'dapr run [flags]', size: 22, weight: 700, color: C.navy, mono: true }),
 
       // One line down the left, with the sidecar feeding it. It runs at the

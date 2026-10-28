@@ -138,7 +138,7 @@ export default {
   build() {
     return [
       // ---- the application that calls them ------------------------------
-      appSidecar({ x: APP_X, y: APP_Y, r: APP_R, label: 'App', size: APP_SIZE, stroke: APP[0].stroke, fill: APP[0].fill }),
+      appSidecar({ x: APP_X, y: APP_Y, r: APP_R, label: 'App', size: APP_SIZE, ...APP[0] }),
 
       // One bus per row rather than a line per block: the drops are all the
       // same length and the middle of the canvas stays open. The alpha row

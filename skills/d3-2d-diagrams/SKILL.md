@@ -163,13 +163,31 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
   Lowering the floor is a change in one place; raising it will fail the scenes
   that no longer fit. See the canvas-relative note above before choosing a size
   on a wide canvas.
-- **A colour in the source image is not permission to use it.** Three of these
-  diagrams had a GREEN application hexagon and one had a YELLOW app; the
-  palette has neither, and yellow in particular is too light to carry an
-  outline on the light ground. Map what the source means - "this is an app",
-  "this is a second app" - onto the palette: apps take `APP[0]`, `APP[1]` and
-  so on in order. Record the swap in the scene header, because the next person
-  to compare the drawing with the old PNG will otherwise think it is a mistake.
+- **The FIRST app in a diagram is Dapr green, solid, with dark ink on it.**
+  `APP[0]` is `--d-green` (`#0bdda3`, sampled from the source images) filled
+  SOLID, outlined in `--d-app-ink` and carrying its name in the same dark ink.
+  Both tokens are identical in the two themes, because the ink sits on the
+  green rather than on the page: dark ink measures 8.9:1 on it either way,
+  while the 0.6 tint every other shape uses would drop that to about 3.6:1 on
+  the dark ground. It is the one shape in the set that does not follow the
+  page. Apps AFTER the first take the tinted palette in order - `APP[1]` sky,
+  `APP[2]` blue, `APP[3]` teal - so a second and third app are told apart by
+  colour without competing with the first.
+- **Spread a whole palette entry; never pick properties off it.** Write
+  `hex({ x, y, label, ...APP[0] })`, not `stroke: APP[0].stroke, fill:
+  APP[0].fill`: the entry carries four properties and picking two silently
+  drops the other two. For the same reason every entry states all four, even
+  where it agrees with the builder's default - a missing property spreads as
+  `undefined`, which is exactly what makes a default parameter fire, and an
+  entry that left `ink` and `solid` out drew the second app solid with the
+  FIRST app's dark ink on it: invisible on the dark theme, where its own fill
+  is already near-black. `diagrams/engine.test.mjs` fails an incomplete entry.
+- **A colour in the source image is not otherwise permission to use it.** One
+  of these diagrams had a YELLOW app; the palette has no yellow, and it is too
+  light to carry an outline on the light ground. Map what the source MEANS -
+  "this is an app", "this is a second app" - onto the palette, and record the
+  swap in the scene header, because the next person to compare the drawing
+  with the old PNG will otherwise think it is a mistake.
 - **Colour carries a role, and the role holds across the set.** Blue is Dapr's
   own - the sidecar hexagon, an API block, a Dapr service. Navy is for what is
   NOT Dapr: the user, the outside world, the infrastructure underneath. A
@@ -699,7 +717,7 @@ export default {
 
   build() {
     return [
-      daprApp({ x: 150, y: 200, stroke: APP[0].stroke, fill: APP[0].fill }),
+      daprApp({ x: 150, y: 200, ...APP[0] }),
       arrow({ from: [195, 200], to: [300, 200] }),
       cylinder({ x: 340, top: 185, bottom: 225 }),
     ];

@@ -29,6 +29,12 @@
   --d-lavender:    #C2C0FB;
   --d-grey:        #303030;
   --d-caption:     #747474;
+  // The first application hexagon. Dapr's own green, sampled from the source
+  // images, and the ink that sits ON it. Both are the same in either theme,
+  // because the hexagon is drawn SOLID: the ink sits on the green, not on the
+  // page, so it does not change when the page does.
+  --d-green:       #0bdda3;
+  --d-app-ink:     #11161f;
   --d-diagram-plate: #ffffff;
   // Backing for a vendored brand mark that is dark-on-light and cannot be
   // recoloured (the vendors' terms forbid it). Invisible on the light ground,
@@ -69,6 +75,8 @@
   --d-lavender:    #C2C0FB;
   --d-grey:        #c4c9d4;
   --d-caption:     #9aa3b2;
+  --d-green:       #0bdda3; // the same green: the hexagon is solid in both themes
+  --d-app-ink:     #11161f;
   --d-diagram-plate: #e8ebf1;
   --d-mark-plate: var(--d-diagram-plate);
   --d-diagram-ink:   #1c2330;

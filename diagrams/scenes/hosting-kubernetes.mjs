@@ -197,7 +197,7 @@ export default {
 
       // ---- the application pod -------------------------------------------
       region({ x: POD_CX - APP_POD / 2, y: POD_CY - APP_POD / 2, w: APP_POD, h: APP_POD, stroke: C.blue, r: 8, caption: 'Pod', captionW: 56, captionSize: TEXT }),
-      appSidecar({ x: APP_X, y: APP_Y, r: APP_R, label: 'App', size: APP_SIZE, stroke: APP[0].stroke, fill: APP[0].fill }),
+      appSidecar({ x: APP_X, y: APP_Y, r: APP_R, label: 'App', size: APP_SIZE, ...APP[0] }),
 
       // ---- the kubelet and the sidecar share one line --------------------
       // The probe goes one way and the health answer the other, so the single

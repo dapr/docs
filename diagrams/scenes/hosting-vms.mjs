@@ -129,7 +129,13 @@ export default {
       ROWS.map((row, i0) => {
         const y = ROW_TOP + i0 * ROW_PITCH;
         return group([
-          label({ x: GUTTER_R, y, text: row.gutter, size: TEXT, anchor: 'end', color: C.blue }),
+          // Body ink, not the usual description blue. These four lines are the
+          // ONLY place the diagram says what each service does - nothing else
+          // in the drawing carries it - and a description that is the only
+          // place a fact appears has to be read, not glanced at. The blue is
+          // 2.56:1 on the light ground; four lines of it in a narrow gutter is
+          // where that stops being a second reading and starts being work.
+          label({ x: GUTTER_R, y, text: row.gutter, size: TEXT, anchor: 'end' }),
           // Between each adjacent pair, one line with a head at each end: the
           // machines keep each other in step, so neither direction is the
           // subordinate one.
@@ -156,7 +162,7 @@ export default {
       APPS.map(({ vm, name, app }) => {
         const side = sideOf(vm);
         return group([
-          appSidecar({ x: appX(vm), y: APP_Y, r: APP_R, label: name, size: APP_SIZE, stroke: app.stroke, fill: app.fill }),
+          appSidecar({ x: appX(vm), y: APP_Y, r: APP_R, label: name, size: APP_SIZE, ...app }),
           // Down onto the first service in this machine's column. Both ends
           // are shapes, so the arrow stops at each edge rather than at a
           // coordinate that happens to be near one.

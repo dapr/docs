@@ -91,6 +91,8 @@ export const C = Object.freeze({
   lavender: 'var(--d-lavender)',
   grey: 'var(--d-grey)',
   caption: 'var(--d-caption)',
+  green: 'var(--d-green)',
+  appInk: 'var(--d-app-ink)',
   // A vendor's own brand colour, for tinting a single-colour brand mark. Not a
   // theme colour: it is the same in light and dark, because the mark is.
   kubernetes: 'var(--d-brand-kubernetes)',
@@ -103,9 +105,21 @@ export const C = Object.freeze({
   tealFill: 'var(--d-teal-fill)',
 });
 
+// The FIRST app in a diagram is Dapr's green, drawn solid with dark ink on it,
+// which is what the source images use and what a reader recognises as "the
+// application". The ones after it take the tinted palette in order, so a second
+// and third app are told apart by colour without competing with the first.
+//
+// Every entry states all four properties, including the ones it shares with the
+// default. A scene spreads an entry - `hex({ ..., ...APP[1] })` - and a missing
+// property is `undefined`, which is exactly what makes a default parameter fire:
+// an entry that left `ink` and `solid` out drew the second app SOLID with the
+// first app's dark ink on it, which on the dark theme is near-black on
+// near-black.
+const bodyInk = 'var(--d-body)';
 export const APP = Object.freeze([
-  Object.freeze({ stroke: 'var(--d-sky)', fill: 'var(--d-sky-fill)' }),
-  Object.freeze({ stroke: 'var(--d-blue)', fill: 'var(--d-blue-fill)' }),
-  Object.freeze({ stroke: 'var(--d-teal)', fill: 'var(--d-teal-fill)' }),
-  Object.freeze({ stroke: 'var(--d-orange)', fill: 'var(--d-orange-fill)' }),
+  Object.freeze({ stroke: 'var(--d-app-ink)', fill: 'var(--d-green)', ink: 'var(--d-app-ink)', solid: true }),
+  Object.freeze({ stroke: 'var(--d-sky)', fill: 'var(--d-sky-fill)', ink: bodyInk, solid: false }),
+  Object.freeze({ stroke: 'var(--d-blue)', fill: 'var(--d-blue-fill)', ink: bodyInk, solid: false }),
+  Object.freeze({ stroke: 'var(--d-teal)', fill: 'var(--d-teal-fill)', ink: bodyInk, solid: false }),
 ]);

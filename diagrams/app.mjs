@@ -61,11 +61,14 @@ export function sidecarAt({ x, y, r = 54, size }) {
   };
 }
 
-export function appSidecar({ x, y, r = 54, label = 'App', size, stroke = APP[0].stroke, fill = APP[0].fill }) {
+export function appSidecar({
+  x, y, r = 54, label = 'App', size,
+  stroke = APP[0].stroke, fill = APP[0].fill, ink = APP[0].ink, solid = APP[0].solid,
+}) {
   const name = nameSize(r, size);
   const s = sidecarAt({ x, y, r, size });
   return group([
-    hex({ x, y, r, label, size: name, stroke, fill }),
+    hex({ x, y, r, label, size: name, stroke, fill, ink, solid }),
     markHex({ x: s.x, y: s.y, r: s.r, mark: 'logo-blue', stroke: C.blue }),
   ]);
 }

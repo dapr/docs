@@ -346,15 +346,29 @@ function readPaint(page, name) {
       const el = svg.querySelector(q);
       return el ? getComputedStyle(el)[prop] : null;
     };
-    // A scene need not use panel(), and its first <text> may be plate ink, which
-    // is the same colour in both themes by design. Pick what exists, and prefer
-    // a text node that is not sitting on a plate; the fingerprint below carries
-    // the real signal and does not care about scene shape.
+    // A scene need not use panel(), and its first <text> may be plate ink or
+    // the name on a solid app hexagon, both of which are the same colour in
+    // both themes by design - they sit on a shape, not on the page. Pick what
+    // exists, and prefer a text node that is on neither; the fingerprint below
+    // carries the real signal and does not care about scene shape.
     const offPlate = [...svg.querySelectorAll('text')].find(
-      (t) => !t.closest('.d-icon-group') && !t.previousElementSibling?.classList?.contains('d-plate'),
+      (t) => !t.closest('.d-icon-group')
+        && !t.closest('.d-hex-solid')
+        && !t.previousElementSibling?.classList?.contains('d-plate'),
     );
+    // A few tokens are the same in both themes ON PURPOSE: the app green and
+    // the ink that sits on it, the sky blue (bright enough to carry on either
+    // ground, so it never needed a second value), the near-white plate and its
+    // ink, and a vendor's own brand colour. A panel drawn in one of those is
+    // not evidence that the theme failed to apply, so look past it for one
+    // that is themed. _tokens.scss is the list this must agree with.
+    const FIXED = ['--d-green', '--d-app-ink', '--d-sky', '--d-diagram-ink', '--d-diagram-plate', '--d-brand-'];
+    const themedPanel = [...svg.querySelectorAll('.d-panel')].find(
+      (p) => !FIXED.some((t) => (p.getAttribute('stroke') ?? '').includes(t)),
+    );
+
     return {
-      panelStroke: pick('.d-panel', 'stroke'),
+      panelStroke: themedPanel ? getComputedStyle(themedPanel).stroke : pick('.d-panel', 'stroke'),
       textFill: offPlate ? getComputedStyle(offPlate).fill : pick('text', 'fill'),
       fingerprint: all.join(';'),
       unresolved: all.filter((v) => v.includes('var(') || v.includes('||')),

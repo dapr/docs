@@ -21,9 +21,12 @@ const HIDDEN = { 'stroke-dasharray': '3 3', 'stroke-opacity': 0.35 };
 const n = (v) => String(+Number(v).toFixed(2));
 const COS30 = Math.cos(Math.PI / 6);
 
+// Teal, mint and the app green are all too light to set type in: the green
+// measures 1.63:1 on the light ground. The green is a FILL - dark ink goes on
+// top of it, which is C.appInk - and this stops it being used the other way up.
 function assertInk(color, what) {
-  if (color === C.teal || color === C.mint) {
-    throw new Error(`${what}: teal and mint fail contrast on white, choose another colour`);
+  if (color === C.teal || color === C.mint || color === C.green) {
+    throw new Error(`${what}: teal, mint and green fail contrast on white, choose another colour`);
   }
 }
 
@@ -146,15 +149,21 @@ export function hexPoints(x, y, r) {
   return pts.join(' ');
 }
 
+// `solid` fills without the tint and `ink` colours the name - the pair the
+// first app needs, because its name sits on the fill rather than on the page.
 export function hex({
-  x, y, r = 42.5, stroke = APP[0].stroke, fill = APP[0].fill, label: name = 'App', size, labelDx = 0,
+  x, y, r = 42.5, stroke = APP[0].stroke, fill = APP[0].fill, ink, solid = false,
+  label: name = 'App', size, labelDx = 0,
 }) {
   assertStroke(stroke, name, 'hex()');
-  const poly = el('polygon', { points: hexPoints(x, y, r), ...tint(fill), ...outline(stroke) });
+  const poly = el('polygon', { points: hexPoints(x, y, r), ...(solid ? { fill } : tint(fill)), ...outline(stroke) });
   const s = size ?? Math.max(MIN_LABEL, +(r / 3).toFixed(2));
-  return el('g', { class: 'd-hex' }, [
+  // A solid hexagon carries its name ON the fill, so that name's colour belongs
+  // to the SHAPE and is the same in both themes - the class says so, and the
+  // theme test skips it when looking for type that should follow the page.
+  return el('g', { class: solid ? 'd-hex d-hex-solid' : 'd-hex' }, [
     poly,
-    name ? label({ x: x + labelDx, y, text: name, size: s }) : null,
+    name ? label({ x: x + labelDx, y, text: name, size: s, color: ink ?? C.body }) : null,
   ]);
 }
 

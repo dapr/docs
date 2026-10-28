@@ -51,6 +51,26 @@ test('hex draws a pointy-top hexagon with 6 points at radius r', () => {
   assert.equal(poly.attrs['stroke-width'], S.lineWidth());
 });
 
+test('the first app is the Dapr green: solid fill, dark outline, dark name', () => {
+  const g = S.hex({ x: 0, y: 0, label: 'App', ...APP[0] });
+  const poly = find(g, (x) => x.tag === 'polygon')[0];
+  assert.equal(poly.attrs.fill, C.green);
+  // Solid, not tinted: at 0.6 over the dark ground the green darkens enough
+  // that dark ink on it falls under 4.5:1.
+  assert.equal(poly.attrs['fill-opacity'], undefined);
+  assert.equal(poly.attrs.stroke, C.appInk);
+  assert.equal(find(g, (x) => x.tag === 'text')[0].attrs.fill, C.appInk);
+});
+
+test('the apps after the first keep the tinted palette and body ink', () => {
+  for (const i of [1, 2, 3]) {
+    const g = S.hex({ x: 0, y: 0, label: 'App', ...APP[i] });
+    const poly = find(g, (x) => x.tag === 'polygon')[0];
+    assert.equal(poly.attrs['fill-opacity'], S.FILL_OPACITY, `APP[${i}] is tinted`);
+    assert.equal(find(g, (x) => x.tag === 'text')[0].attrs.fill, C.body, `APP[${i}] takes body ink`);
+  }
+});
+
 test('hex defaults to APP[0] colours and a label of a third of r, never under the floor', () => {
   const g = S.hex({ x: 0, y: 0 });
   const [t] = find(g, (x) => x.tag === 'text');
@@ -339,8 +359,9 @@ test('teal and mint outlines throw without a label, including an empty one', () 
 });
 
 test('hex with the teal app colour needs a name; empty string counts as none', () => {
-  assert.throws(() => S.hex({ x: 0, y: 0, stroke: APP[2].stroke, label: '' }));
-  assert.doesNotThrow(() => S.hex({ x: 0, y: 0, stroke: APP[2].stroke }));
+  // Teal is APP[3] now that the green app leads the palette.
+  assert.throws(() => S.hex({ x: 0, y: 0, stroke: APP[3].stroke, label: '' }));
+  assert.doesNotThrow(() => S.hex({ x: 0, y: 0, stroke: APP[3].stroke }));
   assert.doesNotThrow(() => S.hex({ x: 0, y: 0, stroke: APP[0].stroke, label: '' }));
 });
 
@@ -365,4 +386,10 @@ test('the hex arrow descriptor agrees with the polygon hex() draws for the same 
   assert.equal(+line([cx + 300, cy]).x1, drawn[1][0]);
   assert.equal(+line([cx, cy - 300]).y1, drawn[0][1]);
   assert.equal(+line([cx - 300, cy]).x1, drawn[4][0]);
+});
+
+test('the app green is a fill, not an ink', () => {
+  // It is the lightest colour in the set. Dark ink goes ON it (C.appInk);
+  // setting type IN it gives 1.63:1 on the light ground.
+  assert.throws(() => S.label({ x: 0, y: 0, text: 'App', color: C.green }), /green/);
 });

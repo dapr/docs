@@ -75,8 +75,7 @@ export default {
         r: HEX_R,
         label: 'App',
         size: 16,
-        stroke: APP[0].stroke,
-        fill: APP[0].fill,
+        ...APP[0],
       }),
       label({ x: APP_X, y: CAPTION_Y, text: 'Application code', size: 17 }),
 

@@ -123,7 +123,7 @@ export default {
       ),
 
       // ---- your code, and the interface it calls ---------------------------
-      hex({ x: APP_X, y: MID_Y, r: APP_R, label: 'Your code', size: TEXT, stroke: APP[0].stroke, fill: APP[0].fill }),
+      hex({ x: APP_X, y: MID_Y, r: APP_R, label: 'Your code', size: TEXT, ...APP[0] }),
 
       // The socket first, then the ball over it: the ball's fill covers where
       // the stalks meet it, so no stub shows through the circle.

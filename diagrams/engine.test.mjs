@@ -36,10 +36,17 @@ test('C exposes only var(--d-*) strings, never a hex literal', () => {
   assert.ok(Object.isFrozen(C));
 });
 
-test('APP has 4 entries in sky, blue, teal, orange order', () => {
+test('APP leads with the green app, then sky, blue, teal in order', () => {
   assert.ok(Object.isFrozen(APP));
-  assert.deepEqual(APP.map((a) => a.stroke), ['var(--d-sky)', 'var(--d-blue)', 'var(--d-teal)', 'var(--d-orange)']);
-  for (const a of APP) assert.match(a.fill, /^var\(--d-[a-z-]+-fill\)$/);
+  assert.deepEqual(APP.map((a) => a.stroke),
+    ['var(--d-app-ink)', 'var(--d-sky)', 'var(--d-blue)', 'var(--d-teal)']);
+  // The first is solid Dapr green with its own ink; the rest are tints.
+  assert.deepEqual(APP[0], { stroke: 'var(--d-app-ink)', fill: 'var(--d-green)', ink: 'var(--d-app-ink)', solid: true });
+  for (const a of APP.slice(1)) {
+    assert.match(a.fill, /^var\(--d-[a-z-]+-fill\)$/);
+    assert.equal(a.solid, false);
+    assert.equal(a.ink, 'var(--d-body)');
+  }
 });
 
 const ids = (o) => [...o.matchAll(/ id="([^"]+)"/g)].map((m) => m[1]);
@@ -74,4 +81,12 @@ test('re-rendering the same scene is byte-identical regardless of prior renders'
 
 test('default ids are pinned to an exact value (hash input must not change)', () => {
   assert.deepEqual(ids(mk('Pub/Sub')), ['pub-sub-b06c76-title', 'pub-sub-b06c76-desc']);
+});
+
+test('every app palette entry is complete, so spreading one cannot inherit another', () => {
+  for (const [i, a] of APP.entries()) {
+    for (const k of ['stroke', 'fill', 'ink', 'solid']) {
+      assert.ok(k in a, `APP[${i}] is missing "${k}": spreading it lets a default stand in`);
+    }
+  }
 });

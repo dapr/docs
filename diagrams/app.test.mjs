@@ -4,6 +4,10 @@ import { APP, C } from './engine.mjs';
 import { hexHalfWidth } from './shapes.mjs';
 import { SIDECAR_CLEARANCE, SIDECAR_R, appSidecar, sidecarAt } from './app.mjs';
 
+// The app hexagon's class picks up a modifier when it is drawn solid, so match
+// on the class LIST rather than on the whole attribute.
+const hasClass = (n, c) => (n.attrs?.class ?? '').split(' ').includes(c);
+
 const find = (node, pred, out = []) => {
   if (!node || typeof node !== 'object') return out;
   if (Array.isArray(node)) { for (const k of node) find(k, pred, out); return out; }
@@ -38,11 +42,11 @@ test('everything scales from the app radius: one drawing at two sizes', () => {
 });
 
 test('appSidecar draws the app, its name and the Dapr hexagon', () => {
-  const node = appSidecar({ x: 100, y: 100, r: 50, label: 'App A', stroke: APP[1].stroke, fill: APP[1].fill });
+  const node = appSidecar({ x: 100, y: 100, r: 50, label: 'App A', ...APP[1] });
   // Count the two hexagons by their groups: the Dapr wordmark is itself made
   // of polygons, so counting <polygon> would count its insides too.
-  const app = find(node, (n) => n.attrs?.class === 'd-hex')[0];
-  const side = find(node, (n) => n.attrs?.class === 'd-mark-hex')[0];
+  const app = find(node, (n) => hasClass(n, 'd-hex'))[0];
+  const side = find(node, (n) => hasClass(n, 'd-mark-hex'))[0];
   assert.ok(app && side, 'the app and the sidecar');
   assert.equal(find(app, (n) => n.tag === 'polygon')[0].attrs.stroke, APP[1].stroke, 'the app takes the colour it was given');
   assert.equal(find(side, (n) => n.tag === 'polygon')[0].attrs.stroke, C.blue, 'the sidecar is always the Dapr hexagon');
@@ -53,8 +57,20 @@ test('appSidecar draws the app, its name and the Dapr hexagon', () => {
 test('the drawn sidecar sits exactly where sidecarAt says it does', () => {
   const at = sidecarAt({ x: 100, y: 100, r: 50 });
   const node = appSidecar({ x: 100, y: 100, r: 50, label: 'App' });
-  const poly = find(find(node, (n) => n.attrs?.class === 'd-mark-hex')[0], (n) => n.tag === 'polygon')[0];
+  const poly = find(find(node, (n) => hasClass(n, 'd-mark-hex'))[0], (n) => n.tag === 'polygon')[0];
   const xs = poly.attrs.points.split(' ').map((p) => +p.split(',')[0]);
   const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
   assert.ok(Math.abs(cx - at.x) < 0.5, `drawn centre ${cx} vs ${at.x}`);
+});
+
+test('a later app in the palette keeps its tint and its readable ink', () => {
+  // Spreading a palette entry must carry EVERY property the pair draws with.
+  // An entry that leaves one out lets appSidecar's own default - the first
+  // app's - stand in, and the second app comes out solid with dark ink on it:
+  // invisible on the dark theme, where its fill is already near-black.
+  const node = appSidecar({ x: 0, y: 0, r: 50, label: 'App B', ...APP[1] });
+  const poly = find(find(node, (n) => hasClass(n, 'd-hex'))[0], (n) => n.tag === 'polygon')[0];
+  assert.ok(poly.attrs['fill-opacity'], 'a later app is TINTED, not solid');
+  const name = find(node, (n) => n.tag === 'text' && find(n, (t) => t.content === 'App B').length)[0];
+  assert.equal(name.attrs.fill, C.body, 'and carries the theme`s body ink, which follows the page');
 });
