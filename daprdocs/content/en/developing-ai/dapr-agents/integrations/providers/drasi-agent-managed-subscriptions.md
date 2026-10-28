@@ -8,12 +8,7 @@ description:
 ---
 
 {{% alert title="Preview" color="warning" %}}
-This page describes an unreleased API proposed for Dapr Agents. The published
-`dapr-agents-ext-drasi==0.1.0` package does not include either
-`register_drasi_trigger()` or `drasi_subscription_lifecycle()`. The proposed core
-requirement is `dapr-agents>=1.0.7,<2.0.0`; final submission validation and the next
-extension release version are pending. Do not treat the examples below as
-released-package guidance.
+This page describes an unreleased API for Dapr Agents. The published `dapr-agents-ext-drasi==0.1.0` package does not include either `register_drasi_trigger()` or `drasi_subscription_lifecycle()`. These APIs require `dapr-agents>=1.0.7,<2.0.0`. The next extension release version has not been selected. Do not treat the examples below as released-package guidance.
 {{% /alert %}}
 
 Agent-managed subscriptions let a `DurableAgent` choose which operator-approved
@@ -253,7 +248,4 @@ scripted local model, the real router, Dapr sidecars, Redis, and native workflow
 scheduling. It injects query-result fixtures; it does not validate a PostgreSQL
 source or the Drasi query engine.
 
-A Kubernetes/PostgreSQL walkthrough is a separate planned contribution, not an
-upstream example available from this page. Review this documentation with the
-public API contribution; release installation guidance remains gated on a new
-extension release and validation of its core minimum.
+A Kubernetes/PostgreSQL walkthrough is a separate planned contribution, not an upstream example available from this page. Installation guidance for a released package will follow the next extension release.
