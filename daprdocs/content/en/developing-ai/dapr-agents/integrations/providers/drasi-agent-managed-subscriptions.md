@@ -156,14 +156,13 @@ On entry, the lifecycle:
 
 1. Validates the supported agent profile.
 2. Loads the router catalog through Dapr service invocation.
-3. Builds query-specific subscription tools.
-4. Loads and reconciles durable subscription intent.
+3. Loads saved intent and builds query-specific subscription and cleanup tools.
+4. Reconciles durable subscription intent.
 5. Starts normal agent hosting.
 6. Waits for the workflow worker to become ready.
 7. Opens the Drasi inbox last.
 
-No startup model turn is performed. An empty catalog still provides
-`list_drasi_subscriptions()`.
+No startup model turn is performed. An empty catalog still provides `list_drasi_subscriptions()` and unsubscribe-only tools for any saved subscriptions.
 
 ## Shutdown and recovery
 
@@ -177,11 +176,13 @@ incarnation, and last outcome. Reconciliation continues for unrelated queries.
 An uncertain outcome remains pending and prevents readiness until reconciled.
 Listing reports local intent and recovery guidance, not live router health.
 
-Recover unavailable intent with explicit unsubscribe, then subscribe again.
-Unsubscribe removes local intent only after the router confirms removal or
-absence. An incarnation conflict requires operator inspection and resolution of
-the conflicting router rule before retrying; it never permits silent replacement
-or blind local deletion.
+Recover unavailable intent with explicit unsubscribe; subscribe again only if the query is in the prepared catalog.
+
+If an operator removes a query from the catalog, the agent still gets an unsubscribe-only tool for its saved subscription. For example, an agent that previously monitored service errors can clean up that subscription even after the errors query is removed. It cannot start a new subscription to the retired query.
+
+Cleanup removes the agent's matching router rule if it still exists, then deletes the saved subscription. If the router confirms the rule is already absent, the saved subscription is deleted anyway. Other subscriptions are unchanged, and repeating cleanup is a successful no-op.
+
+A missing query is not the same as an unreachable router. Router failures retain state so cleanup can be retried. A conflicting subscription incarnation requires operator inspection and resolution of the conflicting rule before retrying; it never permits silent replacement or blind local deletion. The cleanup tool takes no query ID or infrastructure arguments from the model.
 
 The lifecycle is one-shot. After failure or shutdown, create fresh agent and
 lifecycle objects. If context exit reports unresolved cleanup, retain the
