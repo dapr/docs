@@ -4,6 +4,7 @@ title: "Workflow history signing"
 linkTitle: "History signing"
 weight: 9000
 description: "Cryptographic tamper detection for workflow execution histories"
+is_preview: true
 ---
 
 Dapr workflow history signing provides cryptographic tamper detection for
