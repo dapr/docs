@@ -293,6 +293,21 @@ const SCENES = [
     ],
   },
   {
+    name: 'security-end-to-end',
+    page: '/concepts/security-concept/',
+    labels: [
+      'App A',
+      'App B',
+      'API token',
+      'DAPR_API_TOKEN',
+      'APP_API_TOKEN',
+      'mTLS, on by default',
+      'Checked by the sidecar',
+      'Service access policies',
+      'Pub/sub topic access policies',
+    ],
+  },
+  {
     name: 'app-health',
     page: '/concepts/resiliency-concept/',
     labels: [

@@ -409,15 +409,17 @@ export function person({ x, y, size = 40, stroke = C.navy, fill = APP[0].fill, l
   ]);
 }
 
-// Secure communication: padlock inside a shield.
-export function secureLock({ x, y, size = 44, stroke = C.blue, label: name = '', labelDy }) {
+// Secure communication: padlock inside a shield. Sky, not an app colour: in a
+// set where the apps are told apart by colour, a green shield reads as the
+// green app's.
+export function secureLock({ x, y, size = 44, stroke = C.blue, fill = C.blueFill, label: name = '', labelDy }) {
   assertStroke(stroke, name, 'secureLock()');
   const w = size * 0.8;
   const t = y - size / 2;
   const b = y + size / 2;
   const shield = `M${n(x)},${n(t)} L${n(x + w / 2)},${n(t + size * 0.18)} L${n(x + w / 2)},${n(y + size * 0.1)} Q${n(x + w / 2)},${n(b - size * 0.12)} ${n(x)},${n(b)} Q${n(x - w / 2)},${n(b - size * 0.12)} ${n(x - w / 2)},${n(y + size * 0.1)} L${n(x - w / 2)},${n(t + size * 0.18)} Z`;
   return el('g', { class: 'd-secure-lock' }, [
-    el('path', { d: shield, ...tint(APP[0].fill), ...outline(stroke) }),
+    el('path', { d: shield, ...tint(fill), ...outline(stroke) }),
     ...padlock(x, y + size * 0.02, size * 0.9, C.navy),
     name ? label({ x, y: y + (labelDy ?? size / 2 + 14), text: name }) : null,
   ]);
