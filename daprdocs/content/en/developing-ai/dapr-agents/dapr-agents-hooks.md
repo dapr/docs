@@ -195,7 +195,7 @@ The same approval flow works for agents driven by `ClaudeAgentExecutor`. The age
 The Dapr Agents release that includes [dapr/dapr-agents#846](https://github.com/dapr/dapr-agents/pull/846) changes how approval request ids are built. Previously the id, and the `approval_response_<id>` event name the workflow waits on, came from `uuid5(instance_id:tool_call_id)`. LLMs reuse tool call ids such as `call_0` across turns, so that id could match the wrong request. The id now includes the request time, the turn and the call's position in the turn.
 
 {{% alert title="Approvers that compute the id themselves stop working" color="warning" %}}
-If your approver derives the id as `uuid5(instance_id:tool_call_id)`, its replies no longer match the request. They are logged at `WARNING` and ignored, and the request is denied when it times out or after 20 ignored replies (see below). Don't compute the id. Read it from one of these instead:
+If your approver derives the id as `uuid5(instance_id:tool_call_id)`, its replies no longer reach the request. The workflow only waits on the new id, so a reply sent to the old `approval_response_<id>` event is never consumed and nothing is logged. The request stays pending until it times out and is denied, or indefinitely if it has no timeout. If the reply carries the new event name but the old id in its body, it is logged at `WARNING` and ignored, and 20 such replies deny the request. Don't compute the id. Read it from one of these instead:
 
 - the `approval_request_id` field of the `ApprovalRequiredEvent`
 - `GET /hitl/approvals`
@@ -206,7 +206,7 @@ Send that value back as the `approval_request_id` in your response. It must matc
 
 Other changes to be aware of:
 
-- **Mismatched replies are ignored, and too many deny the request.** A reply whose `approval_request_id` does not match the request, or whose body is malformed, is logged and ignored while the wait continues. A request is denied after 20 ignored replies, even if it has no timeout.
+- **Mismatched replies are ignored, and too many deny the request.** A reply whose body `approval_request_id` does not match the event name it arrived on, or whose body is malformed, is logged at `WARNING` and ignored while the wait continues. A request is denied after 20 ignored replies, even if it has no timeout.
 - **`publish_approval_request` returns the id.** It now returns the published `approval_request_id` (`str`) instead of `None`, and raises if the event has no id. Subclasses that override it must return the id.
 - **`turn` and `call_index` are required.** `_request_approval` and `_await_approval` now take keyword-only `turn` and `call_index` arguments. Subclasses that call them must pass both.
 
