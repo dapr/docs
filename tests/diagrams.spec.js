@@ -293,6 +293,21 @@ const SCENES = [
     ],
   },
   {
+    name: 'observability-sidecar',
+    page: '/concepts/observability-concept/',
+    labels: [
+      'Your platform and tools',
+      'Kubernetes',
+      'Grafana',
+      'Fluentd',
+      'Health checks',
+      'GET http://localhost:3500/v1.0/healthz',
+      'Metrics',
+      'Prometheus endpoint on port 9090',
+      'Logs',
+    ],
+  },
+  {
     name: 'observability-tracing',
     page: '/concepts/observability-concept/',
     labels: [

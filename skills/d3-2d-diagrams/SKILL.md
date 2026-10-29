@@ -470,6 +470,39 @@ instead of the group it belongs to. Three rules cover it.
   drags the pair up the card and a one-line name leaves it sitting low, and no
   single pair of offsets fixes both. `tile()` does this for you when given
   `glyphSize`.
+- **A region's contents are centred in it on BOTH axes.** The vertical is the
+  one people remember; a card whose contents are centred top to bottom and
+  left-aligned by accident reads as unfinished. Derive both from the region
+  box, not from an inset that happened to look right.
+- **Contents that pass UNDER a caption pill centre in the space it leaves.**
+  The pill straddles the top edge, so it hangs into the region by half its
+  height; contents centred in the whole box come up against it. Centre them
+  between the pill and the far border instead, which moves them down by half
+  the intrusion and leaves the same gap above as below:
+
+  ```js
+  const PILL_BOTTOM = REGION.y + CAPTION_H / 2;
+  const Y = (PILL_BOTTOM + REGION.y + REGION.h) / 2;
+  ```
+
+  Half the intrusion is the whole nudge. Pushing further to buy a comfortable
+  gap under the pill spends it at the bottom instead, and the block then
+  reads as sitting on the floor of the card - that mistake was made here
+  first, with a hand-picked clearance of 18 that left 18 above and 11 below.
+  Nothing moves when the pill and the contents do not overlap: the metrics
+  card's mark sits to the right of its own pill, so it stays centred in the
+  card. And this is the VERTICAL axis only - sideways, a label moved off
+  centre to dodge something reads as a label that missed.
+- **A line that threads THROUGH a region does not move its contents off
+  centre.** Contents centre in the region; keeping them clear of the line is
+  the REGION's job, so widen the card until both fit rather than sliding the
+  label sideways - a label off its own centre reads as a label that missed,
+  and the next person will "fix" it. In `observability-sidecar` the logs
+  card's column runs up through its right third, past four levels centred in
+  the card with three characters to spare. The caption pill is the same
+  problem on the other axis: it sits ON the top edge, so a card centred on
+  its own line would have the two meet, and the fix there IS to move the line
+  off centre, because a pill, unlike the contents, belongs to the border.
 - **Center a region, and a ROW of regions, in its container.** Derive the
   position from the container's centre and the group's own width; never type a
   left margin and hope the right one matches. A row of five boxes is one group
@@ -670,6 +703,16 @@ note in this skill came from a number that disagreed with how it looked.
   flipping, rotating, distorting or recoloring, and the others expect the same.
   `icons.mjs` changes only its in-memory copy. `.gitattributes` marks these
   files `-text` so git does not normalize their line endings.
+- **The one edit allowed is a `<style>` block that would restyle the PAGE,**
+  and only when the file is otherwise the best mark available. `icons.mjs`
+  refuses a bare element selector, because these files are inlined into the
+  page: CNCF's `fluentd-icon-color.svg` opens with `<style>svg
+  {enable-background:...}</style>`, a dead SVG 1.1 property no browser
+  implements. Remove that element, touch nothing else, and record the edit in
+  the README with what was removed and why. What the trademark guidelines
+  protect is the artwork; dead CSS in the wrapper is not the artwork. If
+  removing it would change how the mark DRAWS, it is not this exception -
+  find another file.
 - **Record every mark** in `daprdocs/assets/icons/README.md`: the file, what it
   is, the source URL, the license, whether it is single or full color, and a
   SHA-256 prefix. The tests fail if a file there has no row. Get the file URL

@@ -46,7 +46,7 @@ You can also observe Dapr itself, by:
 - Collecting metrics on performance, throughput, and latency
 - Using health endpoints probes to indicate the Dapr sidecar health status
 
-<img src="/images/observability-sidecar.png" width=1000 alt="Dapr sidecar metrics, logs and health checks">
+{{< diagram observability-sidecar >}}
 
 ### Logging
 

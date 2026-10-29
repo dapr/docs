@@ -250,3 +250,17 @@ SOFTWARE.
 | `jaeger.svg` | Jaeger gopher icon | [CNCF artwork](https://github.com/cncf/artwork/blob/main/projects/jaeger/icon/color/jaeger-icon-color.svg), downloaded from https://raw.githubusercontent.com/cncf/artwork/main/projects/jaeger/icon/color/jaeger-icon-color.svg | CNCF project logos may be used under the [Linux Foundation trademark usage guidelines](https://www.linuxfoundation.org/legal/trademark-usage). Jaeger is a trademark of The Linux Foundation. | full | `8a0405c39367` |
 | `newrelic.svg` | New Relic symbol, no wordmark | [Simple Icons 16.36.0](https://github.com/simple-icons/simple-icons/blob/16.36.0/icons/newrelic.svg), downloaded from https://raw.githubusercontent.com/simple-icons/simple-icons/16.36.0/icons/newrelic.svg | CC0 1.0 (Simple Icons). New Relic is a trademark of New Relic, Inc. | single | `4fbf9fa18cc1` |
 | `datadog.svg` | Datadog logo with wordmark | [SVG Logos](https://github.com/gilbarbara/logos) `datadog`, downloaded from https://api.iconify.design/logos/datadog.svg | CC0 1.0 (SVG Logos). Datadog is a trademark of Datadog, Inc. | full | `00899e0647af` |
+| `prometheus.svg` | Prometheus torch icon | [CNCF artwork](https://github.com/cncf/artwork/blob/main/projects/prometheus/icon/color/prometheus-icon-color.svg), downloaded from https://raw.githubusercontent.com/cncf/artwork/main/projects/prometheus/icon/color/prometheus-icon-color.svg | CNCF project logos may be used under the [Linux Foundation trademark usage guidelines](https://www.linuxfoundation.org/legal/trademark-usage). Prometheus is a trademark of The Linux Foundation. | full | `a96d48cc7f1c` |
+| `fluentd.svg` | Fluentd mark, no wordmark | [CNCF artwork](https://github.com/cncf/artwork/blob/main/projects/fluentd/icon/color/fluentd-icon-color.svg), downloaded from https://raw.githubusercontent.com/cncf/artwork/main/projects/fluentd/icon/color/fluentd-icon-color.svg | CNCF project logos may be used under the [Linux Foundation trademark usage guidelines](https://www.linuxfoundation.org/legal/trademark-usage). Fluentd is a trademark of The Linux Foundation. | full | `290cca61a0a8` |
+| `grafana.svg` | Grafana mark, no wordmark | [SVG Logos](https://github.com/gilbarbara/logos) `grafana`, downloaded from https://api.iconify.design/logos/grafana.svg | CC0 1.0 (SVG Logos). Grafana is a trademark of Raintank, Inc. dba Grafana Labs. | full | `aae3b453f365` |
+
+### The one edited file
+
+Every mark here is the file as it was downloaded, except `fluentd.svg`. The
+CNCF original opens with `<style>svg {enable-background:new 0 0 432 432}</style>`,
+and `icons.mjs` refuses it: these files are inlined into the page, so a bare
+element selector in one would restyle the page itself. That single `<style>`
+element was removed and nothing else was touched. `enable-background` is a
+dead SVG 1.1 property that no browser implements, so the mark draws exactly
+as its author drew it - what the trademark guidelines protect is the artwork,
+and the artwork is untouched.
