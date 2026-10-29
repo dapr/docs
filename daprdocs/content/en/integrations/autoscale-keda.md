@@ -215,7 +215,7 @@ spec:
   - type: prometheus
     metadata:
       serverAddress: http://prometheus-server.monitoring.svc.cluster.local
-      query: sum(dapr_scheduler_undeliverable_jobs{namespace="default", app_id="order-processor"})
+      query: clamp_max(sum(dapr_scheduler_undeliverable_jobs{namespace="default", app_id="order-processor"}), 1)
       threshold: "1"
   - type: prometheus
     metadata:
@@ -229,11 +229,15 @@ Let's review a few values in the file above:
 | Values | Description |
 | ------ | ----------- |
 | `query` | Sums the gauge over every Scheduler replica. Each replica reports only the jobs it owns, so a query for a single replica undercounts. |
-| `threshold` (undeliverable) | Any undeliverable job starts a replica. |
+| `threshold` (undeliverable) | Any undeliverable job starts a replica. The query caps the sum at `1`, so a backlog of undeliverable jobs starts one replica rather than one per job, and the in-flight trigger decides any further scale-out. |
 | `threshold` (in flight) | The number of in-flight jobs one replica handles. KEDA adds replicas as the total grows past multiples of this value. Set it to what one replica of your app can work on at once, for example its [workflow concurrency limit]({{% ref workflow-concurrency.md %}}). |
 | `cooldownPeriod` | How long, in seconds, both gauges must read `0` before KEDA scales the app back to zero. |
 
 KEDA scales to the largest replica count either trigger asks for.
+
+{{% alert title="Workflow fast path" color="warning" %}}
+With the [`WorkflowsFastPath`]({{% ref workflow-fast-path.md %}}) preview feature enabled, the sidecar runs workflow turns and activities without per-event Scheduler jobs, so `dapr_scheduler_inflight_jobs` doesn't count that work. The app can then scale in, or to zero, while workflows are still running. Leave the fast path disabled on apps you scale with this recipe, or add a trigger on a metric that also counts work the sidecar drives itself.
+{{% /alert %}}
 
 {{% alert title="Scaling to zero" color="warning" %}}
 The Scheduler holds these counts in memory. After a Scheduler restart or a rebalance between its replicas, `dapr_scheduler_undeliverable_jobs` can read `0` until overdue jobs trigger again, so a gauge reading `0` doesn't prove no work is waiting. Keep `cooldownPeriod` long enough to cover that gap, or set `minReplicaCount: 1` if your app can't wait for the gauge to recover.
