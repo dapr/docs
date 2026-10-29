@@ -47,6 +47,11 @@ const outline = (stroke, extra = {}) => ({
 });
 const tint = (fill) => ({ fill, 'fill-opacity': FILL_OPACITY });
 
+// A name set ON a solid fill rather than on the page. It is one colour in both
+// themes - it sits on the shape, not on the ground - so the class marks it for
+// the theme test, which looks for type that SHOULD follow the page.
+const onFill = (node) => el('g', { class: 'd-on-fill' }, [node]);
+
 // ---------------------------------------------------------------- group, label
 
 // Evenly spaced centres for `n` slots across [x0, x1]: the standard way to lay
@@ -139,6 +144,18 @@ export function richLabel({
 export function hexHalfWidth(r) {
   return (Math.sqrt(3) / 2) * r;
 }
+// Half a pointy-top hexagon's width at a height dy from its centre: the full
+// half width between the two flat sides, tapering to nothing at the points.
+// This is what a label BESIDE a hexagon has to clear, and it is the number
+// people get wrong: hexHalfWidth(r) is the widest the shape ever gets, so a
+// label cleared against it clears nothing, while a sloping edge comes much
+// nearer the text at one height than at another.
+export function hexHalfWidthAt(r, dy) {
+  const d = Math.abs(dy);
+  if (d >= r) return 0;
+  const w = hexHalfWidth(r);
+  return d <= r / 2 ? w : (w * (r - d)) / (r / 2);
+}
 
 export function hexPoints(x, y, r) {
   const pts = [];
@@ -197,6 +214,44 @@ export function box({ x, y, w = 194, h = 30, label: name = '', stroke = C.teal, 
   ]);
 }
 
+// A MESSAGE BROKER: cylinder() turned on its side, two to three times as long
+// as it is across, which is what tells it from the data store above - a broker
+// is a pipe things pass THROUGH, a store is a tank they sit IN. The opening is
+// at the left end, so a reader looks down it in the direction messages travel.
+//
+// Dapr green, solid, with its name inside it in the app ink. Green is the house
+// broker colour, and it stays green however many apps a scene has - only a
+// scene with exactly ONE app passes another standard Dapr fill, because there
+// the green IS that app and nothing else would be wearing it.
+//
+// x1 and x2 are the ends of the body; the left cap bulges further left by rx
+// and the right end by rx as well, so the drawn shape is x1-rx .. x2+rx.
+export function pipe({
+  x1, x2, y, ry = 34, rx = 14, stroke = C.appInk, fill = C.green,
+  label: name = '', ink = C.appInk, size = 14,
+}) {
+  const len = x2 - x1;
+  const across = ry * 2;
+  if (len < across * 2 || len > across * 3) {
+    throw new Error(`pipe(): ${len} long and ${across} across - a broker is two to three times as long as it is across, and a standing tank is cylinder()`);
+  }
+  assertStroke(stroke, name, 'pipe()');
+  const top = y - ry;
+  const bot = y + ry;
+  // Along the top, round the right end, back along the bottom. The arc bulges
+  // RIGHT, which is the end facing away from the reader.
+  const body = `M${n(x1)},${n(top)} L${n(x2)},${n(top)} A${rx},${ry} 0 0 1 ${n(x2)},${n(bot)} L${n(x1)},${n(bot)}`;
+  return el('g', { class: 'd-pipe' }, [
+    el('path', { d: `${body} A${rx},${ry} 0 0 1 ${n(x1)},${n(top)} Z`, fill, stroke: 'none' }),
+    // The far half of the right rim, which the body hides: faint and dashed.
+    el('path', { d: `M${n(x2)},${n(top)} A${rx},${ry} 0 0 0 ${n(x2)},${n(bot)}`, fill: 'none', ...outline(stroke, HIDDEN) }),
+    el('path', { d: body, fill: 'none', ...outline(stroke) }),
+    el('ellipse', { cx: n(x1), cy: n(y), rx, ry, fill, ...outline(stroke) }),
+    // The name sits INSIDE, on the fill, so it is one colour in both themes.
+    name ? onFill(label({ x: (x1 + x2) / 2, y, text: name, size, color: ink })) : null,
+  ]);
+}
+
 // A workflow start or end. Label sits under the circle unless labelDy says otherwise.
 export function node({ x, y, r = 16, stroke = C.navy, fill = C.bg, label: name = '', labelDy }) {
   assertStroke(stroke, name, 'node()');
@@ -208,21 +263,36 @@ export function node({ x, y, r = 16, stroke = C.navy, fill = C.bg, label: name =
 
 // ------------------------------------------------------------------ data shapes
 
-// top and bottom are the y of the top and bottom ellipse centres.
+// A DATA STORE: a standing cylinder, WIDER than it is tall, in the app gold
+// with its name inside it. Wide and shallow is what tells it from pipe(), the
+// broker lying on its side, and a store drawn tall and narrow reads as one.
+//
+// top and bottom are the y of the top and bottom ellipse centres, so the drawn
+// shape runs from top-ry to bottom+ry and the name sits between them.
 export function cylinder({
-  x, top, bottom, rx = 24, ry = 8, stroke = C.navy, fill = APP[1].fill, label: name = '', labelDy,
+  x, top, bottom, rx = 54, ry = 14, stroke = C.appInk, fill = C.appGold,
+  label: name = '', ink = C.appInk, size = 14,
 }) {
+  const w = rx * 2;
+  const h = bottom - top + ry * 2;
+  if (w <= h) {
+    throw new Error(`cylinder(): ${w} wide and ${h} tall - a data store is wider than it is tall, and a broker lying on its side is pipe()`);
+  }
+  if (name && bottom - top < size * 1.6) {
+    throw new Error(`cylinder(): ${bottom - top} of body cannot carry "${name}" at ${size} - make it deeper rather than setting the name smaller`);
+  }
   assertStroke(stroke, name, 'cylinder()');
   const l = x - rx;
   const rgt = x + rx;
   const body = `M${n(l)},${n(top)} L${n(l)},${n(bottom)} A${rx},${ry} 0 0 0 ${n(rgt)},${n(bottom)} L${n(rgt)},${n(top)}`;
   return el('g', { class: 'd-cylinder' }, [
-    el('path', { d: `${body} A${rx},${ry} 0 0 0 ${n(l)},${n(top)} Z`, ...tint(fill), stroke: 'none' }),
+    el('path', { d: `${body} A${rx},${ry} 0 0 0 ${n(l)},${n(top)} Z`, fill, stroke: 'none' }),
     // hidden back rim of the base: faint and dashed
     el('path', { d: `M${n(l)},${n(bottom)} A${rx},${ry} 0 0 1 ${n(rgt)},${n(bottom)}`, fill: 'none', ...outline(stroke, HIDDEN) }),
     el('path', { d: body, fill: 'none', ...outline(stroke) }),
-    el('ellipse', { cx: n(x), cy: n(top), rx, ry, ...tint(fill), ...outline(stroke) }),
-    name ? label({ x, y: labelDy !== undefined ? top + labelDy : bottom + ry + 14, text: name }) : null,
+    el('ellipse', { cx: n(x), cy: n(top), rx, ry, fill, ...outline(stroke) }),
+    // The name sits INSIDE, on the fill, so it is one colour in both themes.
+    name ? onFill(label({ x, y: (top + bottom) / 2, text: name, size, color: ink })) : null,
   ]);
 }
 

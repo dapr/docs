@@ -36,17 +36,21 @@ test('C exposes only var(--d-*) strings, never a hex literal', () => {
   assert.ok(Object.isFrozen(C));
 });
 
-test('APP leads with the green app, then sky, blue, teal in order', () => {
+test('every app is a solid brand fill, outlined in one ink, in palette order', () => {
   assert.ok(Object.isFrozen(APP));
-  assert.deepEqual(APP.map((a) => a.stroke),
-    ['var(--d-app-ink)', 'var(--d-sky)', 'var(--d-blue)', 'var(--d-teal)']);
-  // The first is solid Dapr green with its own ink; the rest are tints.
-  assert.deepEqual(APP[0], { stroke: 'var(--d-app-ink)', fill: 'var(--d-green)', ink: 'var(--d-app-ink)', solid: true });
-  for (const a of APP.slice(1)) {
-    assert.match(a.fill, /^var\(--d-[a-z-]+-fill\)$/);
-    assert.equal(a.solid, false);
-    assert.equal(a.ink, 'var(--d-body)');
+  assert.equal(APP.length, 5, 'green, light blue, yellow, teal, dark blue');
+  assert.deepEqual(APP.map((a) => a.fill), [
+    'var(--d-green)', 'var(--d-app-sky)', 'var(--d-app-gold)', 'var(--d-app-teal)', 'var(--d-app-blue)',
+  ]);
+  for (const a of APP) {
+    assert.equal(a.stroke, 'var(--d-app-ink)', 'one outline colour for every app');
+    assert.equal(a.solid, true, 'an app fill is never tinted');
   }
+  // Stated per entry, not derived from the fill: white on the light blue and
+  // the teal is a house decision taken against the contrast numbers.
+  assert.deepEqual(APP.map((a) => a.ink), [
+    'var(--d-app-ink)', 'var(--d-app-paper)', 'var(--d-app-ink)', 'var(--d-app-paper)', 'var(--d-app-paper)',
+  ]);
 });
 
 const ids = (o) => [...o.matchAll(/ id="([^"]+)"/g)].map((m) => m[1]);

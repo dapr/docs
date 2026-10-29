@@ -35,6 +35,15 @@
   // page, so it does not change when the page does.
   --d-green:       #0bdda3;
   --d-app-ink:     #11161f;
+  // The app hexagons after the first, and the data shapes that go with them.
+  // All of them are drawn SOLID and all carry their name ON the fill, so like
+  // the green above they are the SAME in both themes: the ink sits on the
+  // colour, not on the page. --d-app-paper is that white name.
+  --d-app-sky:     #3ea9f5;
+  --d-app-gold:    #efca08;
+  --d-app-teal:    #4ea4af;
+  --d-app-blue:    #0d2192;
+  --d-app-paper:   #ffffff;
   --d-diagram-plate: #ffffff;
   // Backing for a vendored brand mark that is dark-on-light and cannot be
   // recoloured (the vendors' terms forbid it). Invisible on the light ground,
@@ -77,6 +86,12 @@
   --d-caption:     #9aa3b2;
   --d-green:       #0bdda3; // the same green: the hexagon is solid in both themes
   --d-app-ink:     #11161f;
+  // Identical to the light values, for the reason given there.
+  --d-app-sky:     #3ea9f5;
+  --d-app-gold:    #efca08;
+  --d-app-teal:    #4ea4af;
+  --d-app-blue:    #0d2192;
+  --d-app-paper:   #ffffff;
   --d-diagram-plate: #e8ebf1;
   --d-mark-plate: var(--d-diagram-plate);
   --d-diagram-ink:   #1c2330;
