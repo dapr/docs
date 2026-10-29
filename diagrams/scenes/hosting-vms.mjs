@@ -17,8 +17,9 @@
 //     as kubernetes-overview.md's table states, not merely "jobs and tasks".
 //
 // Where this departs from the source image, and why:
-//   - App B was YELLOW. The palette has no yellow: it is too light on the
-//     light ground. Two apps take APP[0] and APP[1], in order.
+//   - App B was YELLOW. The palette now HAS a yellow, but it is the third app
+//     colour, not the second: apps take the palette in order, so two apps are
+//     APP[0] and APP[1] - Dapr's green and its light blue.
 //   - the component names are the ones these docs use everywhere else, and the
 //     component cards are the same size as the Kubernetes scene's, because
 //     they are the same cards.

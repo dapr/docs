@@ -293,6 +293,23 @@ const SCENES = [
     ],
   },
   {
+    name: 'observability-tracing',
+    page: '/concepts/observability-concept/',
+    labels: [
+      'App A',
+      'App B',
+      'App C',
+      'Service invocation',
+      'Publish',
+      'Subscribe',
+      'Message broker',
+      'W3C tracing context',
+      'Backend monitoring tools',
+      'and more',
+      'Visualize',
+    ],
+  },
+  {
     name: 'service-mesh',
     page: '/concepts/faq/service-mesh/',
     labels: [
@@ -395,6 +412,7 @@ function readPaint(page, name) {
     const offPlate = [...svg.querySelectorAll('text')].find(
       (t) => !t.closest('.d-icon-group')
         && !t.closest('.d-hex-solid')
+        && !t.closest('.d-on-fill')
         && !t.previousElementSibling?.classList?.contains('d-plate'),
     );
     // A few tokens are the same in both themes ON PURPOSE: the app green and

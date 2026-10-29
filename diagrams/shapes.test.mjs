@@ -24,7 +24,7 @@ const samples = () => ({
   daprAppLeft: S.daprApp({ x: 100, y: 100, badgeLeft: true }),
   box: S.box({ x: 100, y: 100, label: 'Activity' }),
   node: S.node({ x: 100, y: 100, label: 'Start' }),
-  cylinder: S.cylinder({ x: 100, top: 80, bottom: 120, label: 'DB' }),
+  cylinder: S.cylinder({ x: 100, top: 90, bottom: 120, label: 'DB' }),
   envelope: S.envelope({ x: 100, y: 100, label: 'Msg' }),
   broker: S.broker({ x: 100, y: 100, label: 'Broker' }),
   lockBox: S.lockBox({ x: 100, y: 100, label: 'Secrets' }),
@@ -62,13 +62,17 @@ test('the first app is the Dapr green: solid fill, dark outline, dark name', () 
   assert.equal(find(g, (x) => x.tag === 'text')[0].attrs.fill, C.appInk);
 });
 
-test('the apps after the first keep the tinted palette and body ink', () => {
-  for (const i of [1, 2, 3]) {
-    const g = S.hex({ x: 0, y: 0, label: 'App', ...APP[i] });
+test('every app hexagon is solid and names itself in its own ink', () => {
+  for (const [i, entry] of APP.entries()) {
+    const g = S.hex({ x: 0, y: 0, label: 'App', ...entry });
     const poly = find(g, (x) => x.tag === 'polygon')[0];
-    assert.equal(poly.attrs['fill-opacity'], S.FILL_OPACITY, `APP[${i}] is tinted`);
-    assert.equal(find(g, (x) => x.tag === 'text')[0].attrs.fill, C.body, `APP[${i}] takes body ink`);
+    assert.equal(poly.attrs['fill-opacity'], undefined, `APP[${i}] is solid, never tinted`);
+    assert.equal(poly.attrs.fill, entry.fill, `APP[${i}] fill`);
+    assert.equal(poly.attrs.stroke, C.appInk, `APP[${i}] is outlined in the app ink`);
+    assert.equal(find(g, (x) => x.tag === 'text')[0].attrs.fill, entry.ink, `APP[${i}] names itself in its own ink`);
   }
+  // The name sits on the fill, which is what tells the theme test to skip it.
+  assert.ok(S.hex({ x: 0, y: 0, label: 'App', ...APP[1] }).attrs.class.includes('d-hex-solid'));
 });
 
 test('hex defaults to APP[0] colours and a label of a third of r, never under the floor', () => {
@@ -248,13 +252,31 @@ test('arrow throws when shapes leave no room', () => {
 });
 
 test('cylinder draws its hidden back rim faint and dashed', () => {
-  const g = S.cylinder({ x: 100, top: 80, bottom: 120 });
+  const g = S.cylinder({ x: 100, top: 90, bottom: 120 });
   const dashed = find(g, (x) => x.attrs['stroke-dasharray']);
   assert.equal(dashed.length, 1);
   assert.ok(dashed[0].attrs['stroke-opacity'] < 0.5);
   const [e] = find(g, (x) => x.tag === 'ellipse');
-  assert.equal(e.attrs.rx, 24);
-  assert.equal(e.attrs.ry, 8);
+  assert.equal(e.attrs.rx, 54);
+  assert.equal(e.attrs.ry, 14);
+});
+
+test('a data store is wider than it is tall, and carries its name inside', () => {
+  const g = S.cylinder({ x: 100, top: 90, bottom: 120, label: 'State store' });
+  const [name] = find(g, (x) => x.tag === 'text');
+  assert.equal(name.children[0].content, 'State store');
+  // label() takes the centre and drops the baseline by a third of the size,
+  // so the name sits between the two ellipse centres rather than under them.
+  assert.ok(+name.attrs.y > 90 && +name.attrs.y < 120, `inside the body: ${name.attrs.y}`);
+  assert.equal(name.attrs.fill, C.appInk, 'dark ink on the gold');
+  // Drawn tall and narrow it is a broker on its end, which pipe() draws.
+  assert.throws(() => S.cylinder({ x: 0, top: 0, bottom: 120 }), /wider than it is tall/);
+});
+
+test('a data store refuses a body too shallow to carry its name', () => {
+  // Refuse rather than shrink: a clamped name is a drawing that silently
+  // stops scaling, and the fix is a deeper store.
+  assert.throws(() => S.cylinder({ x: 0, top: 0, bottom: 8, label: 'State store' }), /cannot carry/);
 });
 
 test('panel is dashed, rounded r=10, unfilled; box defaults to 194x30', () => {
@@ -358,11 +380,13 @@ test('teal and mint outlines throw without a label, including an empty one', () 
   }
 });
 
-test('hex with the teal app colour needs a name; empty string counts as none', () => {
-  // Teal is APP[3] now that the green app leads the palette.
-  assert.throws(() => S.hex({ x: 0, y: 0, stroke: APP[3].stroke, label: '' }));
-  assert.doesNotThrow(() => S.hex({ x: 0, y: 0, stroke: APP[3].stroke }));
+test('a teal outline still needs a name, though no app is outlined in teal now', () => {
+  // Every app outlines in the app ink, so the rule now bites only where a
+  // scene reaches for C.teal itself.
+  assert.throws(() => S.hex({ x: 0, y: 0, stroke: C.teal, label: '' }));
+  assert.doesNotThrow(() => S.hex({ x: 0, y: 0, stroke: C.teal }));
   assert.doesNotThrow(() => S.hex({ x: 0, y: 0, stroke: APP[0].stroke, label: '' }));
+  for (const a of APP) assert.equal(a.stroke, C.appInk);
 });
 
 test('arrow throws on an unrecognised or incomplete descriptor', () => {
@@ -392,4 +416,41 @@ test('the app green is a fill, not an ink', () => {
   // It is the lightest colour in the set. Dark ink goes ON it (C.appInk);
   // setting type IN it gives 1.63:1 on the light ground.
   assert.throws(() => S.label({ x: 0, y: 0, text: 'App', color: C.green }), /green/);
+});
+
+test('pipe() is cylinder() on its side: a left opening and a right bulge', () => {
+  const node = S.pipe({ x1: 100, x2: 300, y: 50, ry: 40, rx: 10, label: 'Broker' });
+  const ell = find(node, (n) => n.tag === 'ellipse')[0];
+  assert.equal(+ell.attrs.cx, 100, 'the opening is at the LEFT end');
+  assert.equal(+ell.attrs.rx, 10);
+  assert.equal(+ell.attrs.ry, 40);
+  // Long and shallow, which is what tells it from a data store.
+  const body = find(node, (n) => n.tag === 'path').map((n) => n.attrs.d);
+  assert.ok(body.some((d) => d.includes('100,10') && d.includes('300,10')), `body runs along the top: ${body}`);
+  const name = find(node, (n) => n.tag === 'text')[0];
+  assert.equal(name.children[0].content, 'Broker', 'and carries its name');
+  assert.ok(Math.abs(+name.attrs.y - 50) < 10, `inside the pipe, not under it: ${name.attrs.y}`);
+  assert.equal(name.attrs.fill, C.appInk, 'dark ink on the green');
+});
+
+test('a broker is two to three times as long as it is across', () => {
+  // Shorter and it reads as a tank, which is cylinder(); longer and it reads
+  // as a line with ends rather than as a shape.
+  const across = 80;
+  assert.throws(() => S.pipe({ x1: 0, x2: across * 1.5, y: 0, ry: across / 2 }), /two to three times/);
+  assert.throws(() => S.pipe({ x1: 0, x2: across * 4, y: 0, ry: across / 2 }), /two to three times/);
+  assert.doesNotThrow(() => S.pipe({ x1: 0, x2: across * 2.5, y: 0, ry: across / 2 }));
+});
+
+test('hexHalfWidthAt() follows the hexagon from its flat side to its point', () => {
+  const r = 56;
+  const w = S.hexHalfWidth(r);
+  assert.equal(S.hexHalfWidthAt(r, 0), w, 'widest at the centre');
+  assert.equal(S.hexHalfWidthAt(r, r / 2), w, 'and still so at the end of the flat side');
+  assert.equal(S.hexHalfWidthAt(r, r), 0, 'nothing at the point');
+  assert.equal(S.hexHalfWidthAt(r, r * 2), 0, 'and nothing past it, never negative');
+  assert.equal(S.hexHalfWidthAt(r, -r / 2), S.hexHalfWidthAt(r, r / 2), 'symmetric about the centre');
+  // Halfway down the sloping edge is halfway between the flat side and the
+  // point, which is what the polygon hex() draws does.
+  assert.equal(+S.hexHalfWidthAt(r, r * 0.75).toFixed(6), +(w / 2).toFixed(6));
 });

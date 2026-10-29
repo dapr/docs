@@ -33,7 +33,7 @@ When you leverage Dapr API building blocks to perform service-to-service calls, 
 
 Dapr can be [configured to emit tracing data]({{% ref setup-tracing %}}) using the widely adopted protocols of [Open Telemetry (OTEL)](https://opentelemetry.io/) and [Zipkin](https://zipkin.io). This makes it easily integrated with multiple observability tools.
 
-<img src="/images/observability-tracing.png" width=1000 alt="Distributed tracing with Dapr">
+{{< diagram observability-tracing >}}
 
 ### Automatic tracing context generation
 

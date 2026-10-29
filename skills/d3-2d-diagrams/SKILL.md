@@ -116,13 +116,33 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
   themes, because the mark is. `--d-brand-kubernetes` exists so the helm can be
   tinted its own blue without a hex in the scene. The brand-mark exemption
   covers color *inside* a vendored file, not a tint the diagram applies.
-- **App hexagons take `APP` in order:** sky, blue, teal, orange, each with a
-  light fill. With more than four apps, color by role, so apps of one kind
-  share a color.
+- **App hexagons take `APP` in order, and every one is SOLID:** green, light
+  blue, yellow, teal, dark blue - each outlined in `C.appInk` and carrying
+  its name ON the fill, dark on the green and the yellow, white on the other
+  three. Nothing in that list is tinted, and nothing in it changes with the
+  theme: the name sits on the colour, not on the page. With more than five
+  apps, colour by ROLE, so apps of one kind share a colour.
+- **White on the light blue and on the teal is under the contrast floor, and
+  it stays.** They measure 2.56:1 and 2.63:1, where even large type wants
+  3:1. That is a house decision in favour of the brand colours, taken with
+  the numbers in hand, and `engine.mjs` says so where the ink is set. Do not
+  "fix" one diagram by inking those two differently: that makes a sixth app
+  colour nothing else in the set shares. Dark ink on either measures about
+  7:1, if the decision is ever revisited.
+- **Yellow is the third app and the data store.** It used to be barred for
+  being too light to outline on the light ground. It is in the palette now
+  because it is only ever used SOLID with dark ink on it, which measures
+  11.3:1 - the objection was to yellow as a TINT under body text.
+- **A data store is gold and a message broker is green,** both solid, both
+  outlined in `C.appInk`, both naming themselves in dark ink INSIDE the
+  shape. The one exception: in a diagram with exactly ONE app, that app is
+  the green, so the broker takes another standard Dapr fill. With two or more
+  apps the broker stays green - a reader telling three apps apart by colour
+  is not going to mistake the pipe between them for one of them, and a green
+  broker in every such diagram is worth more than a local distinction.
 - **A large Dapr hexagon** is navy with the logo inside it.
-- **Never yellow.** It is too light on the light ground.
 - **What the other colors mean:**
-  - `C.navy` for arrows, Dapr badges and databases
+  - `C.navy` for arrows and Dapr badges
   - `C.mint` for a workflow start
   - `C.orange` for a workflow end and failure marks
   - `C.red` for a failed call
@@ -153,6 +173,40 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
   about a third of the hexagon's radius; section captions in `C.caption`. Use
   `\n` for a second line, which `label()` centers vertically for you.
 - **Text over a line** gets `halo: true` so the line does not run through it.
+- **A label sits under the thing it names, centered on it.** Centered is the
+  default because it is the one position a reader never has to reason about:
+  a label belongs to whatever it is centered on, and one that drifts has
+  quietly changed what it names. A LINE's label may sit above the line
+  instead, which is often the only place it fits when the space under the
+  line is already carrying something else; either way it is centered on the
+  SPAN, so pass `label()` the midpoint of the run rather than one end plus a
+  guess.
+- **Leave about two characters of clearance to every shape NEAR the label,**
+  not just to the two the span runs between. A character of the page's font
+  advances roughly half its size, so two of them is about the label's own
+  size in units - a dozen at the default 11. The shape that crowds a label
+  is usually one the span never touches: an app hexagon whose sloping edge
+  hangs down beside the line, a card above it, a badge below. Clearing the
+  label against the shapes at the ENDS of the span is the mistake, because
+  those are the two it is furthest from.
+- **Measure that clearance against the label's BOX, not its baseline.** A
+  sloping edge is nearest the text at the TOP of the glyphs, about 0.72 of
+  the size above the baseline, and `hexHalfWidthAt(r, dy)` gives a hexagon's
+  edge at a height rather than at its widest point. `hexHalfWidth(r)` is the
+  widest the shape ever gets, so a label cleared against it has not been
+  cleared at all.
+- **When the shapes leave too little room to clear both ends, break the
+  centering, not the clearance.** Center the label in what the NEAREST edges
+  leave rather than in the span's own ends, and say in the scene why it is
+  off-center, because the next person to read the code will otherwise
+  straighten it. In `observability-tracing`, "Subscribe" centered between the
+  broker and Service C's SIDECAR ran INTO Service C's app hexagon, which
+  hangs lower and further left than the sidecar it is docked on; centered in
+  what that hexagon leaves, it clears both ends by a little over two
+  characters. If no position clears both ends, the label is in the wrong
+  place or the span is too short, and neither is fixed by shrinking the text
+  - see `MIN_LABEL` below. Half a size is an estimate and caps run wider, so
+  measure a tight fit on the rendered page before trusting it.
 - **Never below `MIN_LABEL`, which is 10 units.** It is declared once, in
   `diagrams/shapes.mjs`, and every builder that derives a size imports it
   rather than carrying its own copy - three of them did carry copies, which is
@@ -163,16 +217,17 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
   Lowering the floor is a change in one place; raising it will fail the scenes
   that no longer fit. See the canvas-relative note above before choosing a size
   on a wide canvas.
-- **The FIRST app in a diagram is Dapr green, solid, with dark ink on it.**
-  `APP[0]` is `--d-green` (`#0bdda3`, sampled from the source images) filled
-  SOLID, outlined in `--d-app-ink` and carrying its name in the same dark ink.
-  Both tokens are identical in the two themes, because the ink sits on the
-  green rather than on the page: dark ink measures 8.9:1 on it either way,
-  while the 0.6 tint every other shape uses would drop that to about 3.6:1 on
-  the dark ground. It is the one shape in the set that does not follow the
-  page. Apps AFTER the first take the tinted palette in order - `APP[1]` sky,
-  `APP[2]` blue, `APP[3]` teal - so a second and third app are told apart by
-  colour without competing with the first.
+- **Every app hexagon is a solid brand fill with its name ON it.** `APP[0]`
+  is `--d-green` (`#0bdda3`, sampled from the source images), then
+  `--d-app-sky`, `--d-app-gold`, `--d-app-teal` and `--d-app-blue`, every one
+  outlined in `--d-app-ink`. All of those tokens are identical in the two
+  themes, because the ink sits on the FILL rather than on the page: dark ink
+  measures 8.9:1 on the green either way, while the 0.6 tint other shapes use
+  would drop that to about 3.6:1 on the dark ground. These are the shapes in
+  the set that do NOT follow the theme, and `hex()` marks them `d-hex-solid`
+  so the theme test knows to look past their names. Which ink goes on which
+  fill is in the colour rules above; a name set in the wrong one is the
+  failure those rules exist to stop.
 - **Spread a whole palette entry; never pick properties off it.** Write
   `hex({ x, y, label, ...APP[0] })`, not `stroke: APP[0].stroke, fill:
   APP[0].fill`: the entry carries four properties and picking two silently
@@ -222,6 +277,16 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
 - **Apps** are pointy-top hexagons. An app that runs Dapr has the Dapr badge
   docked on it, bottom right by default and bottom left when space needs it:
   use `daprApp()`.
+- **A data store is a STANDING cylinder, wider than it is tall. A message
+  broker is one LYING on its side, two to three times as long as it is
+  across.** `cylinder()` and `pipe()` refuse the other proportions rather
+  than drawing them, because proportion is the ONLY thing that tells the two
+  apart: a store is a tank things sit IN, a broker a pipe they pass THROUGH.
+  A tall narrow "store" is a broker stood on its end, and a pipe five
+  diameters long stops reading as a shape and starts reading as a line with
+  ends on it. Both carry their name inside the shape, and `cylinder()`
+  refuses a body too shallow to hold one rather than setting the name
+  smaller - the fix is a deeper store, as with `MIN_LABEL`.
 - **Arrows** have an open 8px head and stop at the shape's edge, not its center.
   Pass a shape descriptor rather than a raw point where you can, so the arrow
   and the shape cannot drift apart.
@@ -470,6 +535,25 @@ note in this skill came from a number that disagreed with how it looked.
   `LINE_TARGET` (1.5px) for whatever canvas the exporter set, so the lines look
   identical from one diagram to the next. Outlines take the same weight - see
   the line rule above.
+- **Run lines along the AXES; a line that has to get somewhere else turns,
+  rather than cutting across.** Horizontal and vertical is the house route,
+  and an angled line is the exception that has to earn itself: it crosses
+  whatever happens to lie between its ends, it meets its shapes at an angle
+  nothing else in the set uses, and two of them at slightly different angles
+  read as a mistake rather than as a pair. Leave a shape on one of its axes,
+  run along, and turn into the target with a `roundedPath()` elbow - two
+  corners buy a route the reader can follow. A short diagonal between two
+  shapes with nothing between them and no second line beside it can stand;
+  the moment there are two of them, or one is long enough to pass something,
+  they all become elbows.
+- **Lines that arrive at the same place arrive ON the same line.** Pick the
+  trunk first - whichever source is already square to the target - and route
+  the rest onto it. In `observability-tracing` three sidecars send the
+  tracing context to one region: Service B sits above it and drops straight
+  down, and A and C come down onto a shared bus and turn into that drop with
+  two elbows each. What reaches the region is ONE line arriving once, with
+  one head, rather than three arrows converging on a box from three angles -
+  and the three carry the same thing, so one line is also the truer picture.
 - **A line turns with an ARC, never a mitre.** Use `roundedPath()` for any run
   that changes direction: a square corner reads as two lines that happen to
   meet, a rounded one as a single line going somewhere. 14 units is the house

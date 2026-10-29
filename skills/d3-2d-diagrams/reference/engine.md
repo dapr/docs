@@ -17,7 +17,7 @@ pure: the same input always gives byte-identical output.
 | `serialize(node)` | a string; attributes keep insertion order, so output is deterministic |
 | `svg({ width, height, title, desc, id, children })` | a complete document with `<title>` and `<desc>` wired to `role="img"` and `aria-labelledby` |
 | `C` | the color tokens, every one a `var(--d-*)` string |
-| `APP` | four `{ stroke, fill }` pairs for app hexagons, in order |
+| `APP` | five `{ stroke, fill, ink, solid }` entries for app hexagons, in order |
 
 ## Shape builders
 
@@ -29,11 +29,13 @@ pure: the same input always gives byte-identical output.
 | `hex(o)` | `x, y, r` (42.5), `stroke, fill, label, size, labelDx` | a pointy-top app hexagon with its name |
 | `hexPoints(x, y, r)` | — | the six points, for an arrow descriptor |
 | `hexHalfWidth(r)` | — | half a pointy-top hexagon's width, for aligning one shape to another's edge |
+| `hexHalfWidthAt(r, dy)` | — | the same at a height `dy` from the centre, for clearing a label past a sloping edge |
 | `badge(o)` | `x, y, r` (19), `mark` | the small Dapr hexagon with the logo |
 | `daprApp(o)` | `x, y, r, stroke, fill, label, size, labelDx, badgeLeft, mark` | an app with its Dapr badge, bottom right or bottom left |
 | `box(o)` | `x, y, w` (194), `h` (30), `label, stroke, fill, size` | a workflow activity rectangle |
 | `node(o)` | `x, y, r` (16), `stroke, fill, label, labelDy` | a workflow start or end circle |
-| `cylinder(o)` | `x, top, bottom, rx` (24), `ry` (8) | a database, with its hidden back rim dashed |
+| `cylinder(o)` | `x, top, bottom, rx` (54), `ry` (14), `label`, `ink`, `size` | a data store: standing, wider than tall, gold, named inside |
+| `pipe(o)` | `x1, x2, y, ry` (34), `rx` (14), `label`, `ink`, `size` | a message broker: lying down, 2-3 diameters long, green, named inside |
 | `envelope(o)` | `x, y, w` (35), `color, stroke, fill, label, labelDy` | a message |
 | `broker(o)` | `x, y, w` (46), `label, labelDy, stroke, fill` | a message broker, two stacked envelopes |
 | `lockBox(o)` | `x, y, size` (44), `stroke, fill, label, labelDy` | a secret store, padlock in a square |
@@ -162,14 +164,16 @@ serviceHex({ key: 'placement', x: 100, y: 400, r: 30 }); // smaller, same drawin
 
 `C` holds `navy`, `blue`, `orange`, `teal`, `tealFill`, `mint`, `red`,
 `lavender`, `grey`, `caption`, `body`, `bg`, `plate`, `plateInk`, `markPlate`,
-`green`, `appInk` and `kubernetes`.
+`green`, `appInk`, `kubernetes`, and the solid app fills `appSky`, `appGold`,
+`appTeal`, `appBlue` with the white `paper` that names three of them.
 
-`APP[0]` to `APP[3]` are the app hexagon colors, in order: Dapr green, sky,
-blue, teal. Each is `{ stroke, fill, ink, solid }` and every entry states all
-four, so a scene can spread one whole - `hex({ ..., ...APP[1] })` - without a
-missing property falling back to another entry's. `APP[0]` is the solid green
-app: `solid: true`, with `ink` the dark ink that sits ON the green. The rest
-are tinted and take body ink.
+`APP[0]` to `APP[4]` are the app hexagon colors, in order: Dapr green, light
+blue, yellow, teal, dark blue. Each is `{ stroke, fill, ink, solid }` and
+every entry states all four, so a scene can spread one whole - `hex({ ...,
+...APP[1] })` - without a missing property falling back to another entry's.
+Every entry is `solid: true`, outlined in `--d-app-ink`, with `ink` the
+colour its name takes ON that fill: dark on the green and the yellow, white
+(`--d-app-paper`) on the light blue, the teal and the dark blue.
 
 Every one is a `var(--d-*)` string. Never put a hex value in a scene; add a
 token to `_tokens.scss`, in both themes, instead.
@@ -190,8 +194,7 @@ export default {
     return [
       daprApp({ x: 150, y: 200, ...APP[0] }),
       arrow({ from: { x: 150, y: 200, r: 42.5, hex: true }, to: [300, 200] }),
-      cylinder({ x: 340, top: 185, bottom: 225 }),
-      label({ x: 340, y: 250, text: 'State store' }),
+      cylinder({ x: 340, top: 190, bottom: 215, label: 'State store' }),
     ];
   },
 };

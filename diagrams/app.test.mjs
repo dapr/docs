@@ -63,14 +63,16 @@ test('the drawn sidecar sits exactly where sidecarAt says it does', () => {
   assert.ok(Math.abs(cx - at.x) < 0.5, `drawn centre ${cx} vs ${at.x}`);
 });
 
-test('a later app in the palette keeps its tint and its readable ink', () => {
+test('a later app in the palette keeps its own fill and its own ink', () => {
   // Spreading a palette entry must carry EVERY property the pair draws with.
   // An entry that leaves one out lets appSidecar's own default - the first
-  // app's - stand in, and the second app comes out solid with dark ink on it:
-  // invisible on the dark theme, where its fill is already near-black.
+  // app's - stand in, and the second app comes out green with dark ink on it,
+  // which is the first app again under another name.
   const node = appSidecar({ x: 0, y: 0, r: 50, label: 'App B', ...APP[1] });
   const poly = find(find(node, (n) => hasClass(n, 'd-hex'))[0], (n) => n.tag === 'polygon')[0];
-  assert.ok(poly.attrs['fill-opacity'], 'a later app is TINTED, not solid');
+  assert.equal(poly.attrs['fill-opacity'], undefined, 'every app is solid');
+  assert.equal(poly.attrs.fill, APP[1].fill, 'the SECOND fill, not the first');
   const name = find(node, (n) => n.tag === 'text' && find(n, (t) => t.content === 'App B').length)[0];
-  assert.equal(name.attrs.fill, C.body, 'and carries the theme`s body ink, which follows the page');
+  assert.equal(name.attrs.fill, APP[1].ink, 'and the white that goes on it');
+  assert.notEqual(APP[1].ink, APP[0].ink);
 });
