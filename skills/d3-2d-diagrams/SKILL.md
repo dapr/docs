@@ -658,6 +658,15 @@ note in this skill came from a number that disagreed with how it looked.
   hexagon sits between a left-hand bus and a right-hand one, the two gaps
   should match; an element closer to one side reads as drift rather than
   design.
+- **An interface is a ball and socket, and it needs no arrowhead.** The side
+  that PROVIDES the interface gets `lollipop()`, the side that REQUIRES it
+  gets `socket()` cupping the same ball, and the notation already says which
+  way the call runs - from the socket to the ball. Draw the socket first, so
+  the ball's fill covers where the two stalks meet it. Use it wherever one
+  side exposes something the other calls - a health endpoint, an API - and
+  name the endpoint under the ball in the code font. `app-health` and
+  `sidecar-health` are the same two shapes with the ball on the other one,
+  which is the whole difference between the two pages.
 - **An arrow ends on something.** An arrow drawn to a bare coordinate ends in
   empty space and looks broken. Give it a shape descriptor or a bus, and check
   it does not cut through whatever sits between its ends - move the endpoint
