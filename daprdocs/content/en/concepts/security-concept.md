@@ -19,7 +19,7 @@ An example application is used to illustrate many of the security features avail
 
 Dapr provides end-to-end security with the service invocation API, with the ability to authenticate an application with Dapr and set endpoint access policies. This is shown in the diagram below.
 
-<img src="/images/security-end-to-end-communication.png" width=1000>
+{{< diagram security-end-to-end >}}
 
 ## Application Identity
 

@@ -140,6 +140,18 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
   apps the broker stays green - a reader telling three apps apart by colour
   is not going to mistake the pipe between them for one of them, and a green
   broker in every such diagram is worth more than a local distinction.
+- **An app colour on something that is not an app says it belongs to that
+  app.** `secureLock()` was tinted with the first app's green, so the mTLS
+  shield on `security-end-to-end` read as App A's rather than as the thing
+  between the two sidecars. It is sky now. Reach for an `APP` fill only for
+  an app.
+- **A dashed region's border is a colour that follows the theme.** The brand
+  colours - sky among them - are deliberately the same value in both, so a
+  region drawn in one does not re-theme with the page. `C.caption` is the
+  default for a grouping border and the right answer nearly always; the
+  theme test only samples the FIRST panel in a scene, so a scene whose only
+  region is sky fails it and a scene whose second region is sky does not.
+  That is the test being thin, not permission.
 - **A large Dapr hexagon** is navy with the logo inside it.
 - **What the other colors mean:**
   - `C.navy` for arrows and Dapr badges
