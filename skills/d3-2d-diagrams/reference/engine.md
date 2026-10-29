@@ -34,8 +34,9 @@ pure: the same input always gives byte-identical output.
 | `daprApp(o)` | `x, y, r, stroke, fill, label, size, labelDx, badgeLeft, mark` | an app with its Dapr badge, bottom right or bottom left |
 | `box(o)` | `x, y, w` (194), `h` (30), `label, stroke, fill, size` | a workflow activity rectangle |
 | `node(o)` | `x, y, r` (16), `stroke, fill, label, labelDy` | a workflow start or end circle |
-| `cylinder(o)` | `x, top, bottom, rx` (54), `ry` (14), `label`, `ink`, `size` | a data store: standing, wider than tall, gold, named inside |
+| `cylinder(o)` | `x, y, w` (the house form) or `x, top, bottom, rx, ry`; `label`, `ink`, `size` | a data store: standing, gold, named inside, `STORE_RATIO` wide to tall |
 | `pipe(o)` | `x1, x2, y, ry` (34), `rx` (14), `label`, `ink`, `size` | a message broker: lying down, 2-3 diameters long, green, named inside |
+| `callout(o)` | `x, y, w` (210), `h` (54), `text`, `size`, `to` | a note about the drawing: white card, black border, dashed leader to `to` |
 | `envelope(o)` | `x, y, w` (35), `color, stroke, fill, label, labelDy` | a message |
 | `broker(o)` | `x, y, w` (46), `label, labelDy, stroke, fill` | a message broker, two stacked envelopes |
 | `lockBox(o)` | `x, y, size` (44), `stroke, fill, label, labelDy` | a secret store, padlock in a square |

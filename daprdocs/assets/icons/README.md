@@ -110,6 +110,7 @@ asset terms. The full notice is under [LICENSES](#licenses).
 | `fluent-flowchart.svg` | Workflows | https://api.iconify.design/fluent/flowchart-24-regular.svg | MIT (Microsoft) | single | `e177454a2ae2` |
 | `fluent-mail-copy.svg` | Publish and subscribe, message brokers | https://api.iconify.design/fluent/mail-copy-24-regular.svg | MIT (Microsoft) | single | `d15c9c38de81` |
 | `fluent-arrow-step-in-right.svg` | Service invocation | https://api.iconify.design/fluent/arrow-step-in-right-24-regular.svg | MIT (Microsoft) | single | `d3c871a61861` |
+| `fluent-flash.svg` | A trigger: an input binding firing | https://api.iconify.design/fluent/flash-24-regular.svg | MIT (Microsoft) | single | `05900a0c16e7` |
 | `fluent-database.svg` | State management | https://api.iconify.design/fluent/database-24-regular.svg | MIT (Microsoft) | single | `19fb77317c94` |
 | `fluent-people-team.svg` | Actors | https://api.iconify.design/fluent/people-team-24-regular.svg | MIT (Microsoft) | single | `502a8aed9372` |
 | `fluent-clock.svg` | Jobs | https://api.iconify.design/fluent/clock-24-regular.svg | MIT (Microsoft) | single | `1d0f36f0cb12` |

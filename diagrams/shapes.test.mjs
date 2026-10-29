@@ -257,8 +257,22 @@ test('cylinder draws its hidden back rim faint and dashed', () => {
   assert.equal(dashed.length, 1);
   assert.ok(dashed[0].attrs['stroke-opacity'] < 0.5);
   const [e] = find(g, (x) => x.tag === 'ellipse');
-  assert.equal(e.attrs.rx, 54);
-  assert.equal(e.attrs.ry, 14);
+  assert.equal(e.attrs.rx, 66);
+  assert.equal(e.attrs.ry, 15);
+});
+
+test('a store given a width takes the house ratio from it', () => {
+  const w = 140;
+  const g = S.cylinder({ x: 200, y: 100, w, label: 'State store' });
+  const [rim] = find(g, (x) => x.tag === 'ellipse');
+  assert.equal(+rim.attrs.rx, w / 2, 'the width is the width');
+  assert.equal(+rim.attrs.ry, +(w * S.STORE_RIM).toFixed(2), 'and the rim follows it');
+  // Drawn height: between the rim centres, plus a rim at each end.
+  const top = +rim.attrs.cy;
+  const bottom = 2 * 100 - top;
+  const drawn = bottom - top + 2 * +rim.attrs.ry;
+  assert.equal(+(w / drawn).toFixed(3), S.STORE_RATIO, 'the ratio is the point of the form');
+  assert.ok(drawn < w, 'and it is still wider than it is tall');
 });
 
 test('a data store is wider than it is tall, and carries its name inside', () => {
@@ -453,4 +467,26 @@ test('hexHalfWidthAt() follows the hexagon from its flat side to its point', () 
   // Halfway down the sloping edge is halfway between the flat side and the
   // point, which is what the polygon hex() draws does.
   assert.equal(+S.hexHalfWidthAt(r, r * 0.75).toFixed(6), +(w / 2).toFixed(6));
+});
+
+test('callout() is a white card with a black border and a DASHED leader', () => {
+  const g = S.callout({ x: 200, y: 100, text: 'State management', to: [400, 200] });
+  const [card] = find(g, (n) => n.tag === 'rect');
+  assert.equal(card.attrs.fill, C.plate, 'white in both themes: it is paper over the picture');
+  assert.equal(card.attrs.stroke, C.appInk);
+  assert.equal(card.attrs['fill-opacity'], undefined, 'never tinted');
+  const [name] = find(g, (n) => n.tag === 'text');
+  assert.equal(name.attrs.fill, C.plateInk, 'ink for type on a plate, not body ink');
+  // The leader is dashed and the head is not.
+  const [line] = find(g, (n) => n.tag === 'line');
+  assert.ok(line.attrs['stroke-dasharray'], 'the leader is dashed');
+  const [head] = find(g, (n) => n.tag === 'polyline');
+  assert.equal(head.attrs['stroke-dasharray'], undefined, 'the head is solid');
+});
+
+test('a callout with no target draws no leader, and arrows are solid by default', () => {
+  const g = S.callout({ x: 0, y: 0, text: 'Note' });
+  assert.equal(find(g, (n) => n.tag === 'line').length, 0);
+  const [line] = find(S.arrow({ from: [0, 0], to: [50, 0] }), (n) => n.tag === 'line');
+  assert.equal(line.attrs['stroke-dasharray'], undefined);
 });
