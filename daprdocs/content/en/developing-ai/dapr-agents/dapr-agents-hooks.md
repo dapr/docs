@@ -190,6 +190,28 @@ The approval state is persisted to the Dapr state store under `{agent_name}:pend
 
 The same approval flow works for agents driven by `ClaudeAgentExecutor`. The agent's `before_tool_call` hooks (`hooks=Hooks(before_tool_call=[...])`) apply to its Claude runs as they are, and the run pauses on the gated tool call until a decision arrives. Setting hooks on the executor config as well is optional. See [Human approval of tool calls]({{< ref "dapr-agents-executors.md#human-approval-of-tool-calls" >}}).
 
+### Upgrading approval handling
+
+The Dapr Agents release that includes [dapr/dapr-agents#846](https://github.com/dapr/dapr-agents/pull/846) changes how approval request ids are built. Previously the id, and the `approval_response_<id>` event name the workflow waits on, came from `uuid5(instance_id:tool_call_id)`. LLMs reuse tool call ids such as `call_0` across turns, so that id could match the wrong request. The id now includes the request time, the turn and the call's position in the turn.
+
+{{% alert title="Approvers that compute the id themselves stop working" color="warning" %}}
+If your approver derives the id as `uuid5(instance_id:tool_call_id)`, its replies no longer match the request. They are logged at `WARNING` and ignored, and the request is denied when it times out or after 20 ignored replies (see below). Don't compute the id. Read it from one of these instead:
+
+- the `approval_request_id` field of the `ApprovalRequiredEvent`
+- `GET /hitl/approvals`
+- `list_pending_approvals()`
+
+Send that value back as the `approval_request_id` in your response. It must match the request the reply is for.
+{{% /alert %}}
+
+Other changes to be aware of:
+
+- **Mismatched replies are ignored, and too many deny the request.** A reply whose `approval_request_id` does not match the request, or whose body is malformed, is logged and ignored while the wait continues. A request is denied after 20 ignored replies, even if it has no timeout.
+- **`publish_approval_request` returns the id.** It now returns the published `approval_request_id` (`str`) instead of `None`, and raises if the event has no id. Subclasses that override it must return the id.
+- **`turn` and `call_index` are required.** `_request_approval` and `_await_approval` now take keyword-only `turn` and `call_index` arguments. Subclasses that call them must pass both.
+
+Requests published by an older release also listen on the previous event name, so runs that were waiting for approval at upgrade time can still be answered with the old id. Keep the window between replicas running old and new versions short for agents with pending approvals.
+
 ### Working examples
 
 The `dapr-agents` repo ships three example patterns under `examples/02-durable-agent-tool-call/`:
