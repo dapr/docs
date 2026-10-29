@@ -244,9 +244,19 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
   swap in the scene header, because the next person to compare the drawing
   with the old PNG will otherwise think it is a mistake.
 - **Colour carries a role, and the role holds across the set.** Blue is Dapr's
-  own - the sidecar hexagon, an API block, a Dapr service. Navy is for what is
-  NOT Dapr: the user, the outside world, the infrastructure underneath. A
-  reader who learns that on one page should not have to relearn it on the next.
+  own - the sidecar hexagon, an API block, a Dapr service - AND the external
+  systems Dapr connects to: the thing an output binding plugs into, the thing
+  whose event fires an input binding trigger. Both are the EDGE of the
+  picture, the points where your solution meets something else, and a reader
+  following the blue is following that edge. Navy is for what sits under the
+  picture instead: the lines themselves, the Dapr badge, the infrastructure,
+  the user. A reader who learns that on one page should not have to relearn
+  it on the next.
+- **An external system is a MARK in that blue, never a shape with a fill.**
+  It is outside the boundary, so it gets no card, no region and no colour of
+  its own - a glyph and a name in body ink, as `resiliency-policies` draws
+  the flash that triggers it and the plug it binds out to. Naming both ends
+  the same way is what says they are the same kind of thing.
 - **A description is BLUE, not a second grey.** Names take body ink; the line
   explaining them takes `C.blue`, the same blue a Dapr hexagon is outlined in.
   Grey under black is one colour at two strengths, and a diagram built from it
@@ -277,6 +287,22 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
 - **Apps** are pointy-top hexagons. An app that runs Dapr has the Dapr badge
   docked on it, bottom right by default and bottom left when space needs it:
   use `daprApp()`.
+- **An app hexagon hangs over the LEFT of its own sidecar.** The badge docks
+  bottom RIGHT, so its centre sits about a sixth of the app radius below the
+  hexagon's lowest point and well to the right of the hexagon's centre: a
+  line leaving that sidecar to the LEFT passes under the app, and the space
+  above it belongs to the app, not to the line. Two labels in
+  `resiliency-policies` were written into that space before anyone measured
+  it. Either move the shape at the other end until the label fits beside the
+  app, or set that one label under its line and say why.
+- **A data store is drawn `STORE_RATIO` wide to tall - a little wider than
+  tall, and no flatter.** Give `cylinder()` a centre and a WIDTH and it takes
+  care of the rest: the height follows the ratio and the rim follows the
+  width, so two stores of different sizes are the same shape. The `top` and
+  `bottom` form is for a store that has to fit a space it did not choose.
+  Flatter than the ratio is the mistake to avoid - the first store drawn here
+  was nearly twice as wide as it was tall, which left a body too shallow for
+  its own name and put the text across the back rim.
 - **A data store is a STANDING cylinder, wider than it is tall. A message
   broker is one LYING on its side, two to three times as long as it is
   across.** `cylinder()` and `pipe()` refuse the other proportions rather
@@ -503,6 +529,16 @@ instead of the group it belongs to. Three rules cover it.
   problem on the other axis: it sits ON the top edge, so a card centred on
   its own line would have the two meet, and the fix there IS to move the line
   off centre, because a pill, unlike the contents, belongs to the border.
+- **`slots()` spaces CENTRES, so it is for items of one size.** A row of
+  marks, tiles or hexagons that are all the same width is what it is for.
+  Three shapes of three different widths spaced by their centres overlap at
+  the wide one - a state store, a broker and a block laid out that way had
+  the first two touching. Space those by their SPANS instead, with the gap
+  that makes the two end margins match:
+
+  ```js
+  const GAP = (ROW_W - EDGE * 2 - items.reduce((a, i) => a + i.w, 0)) / (items.length - 1);
+  ```
 - **Center a region, and a ROW of regions, in its container.** Derive the
   position from the container's centre and the group's own width; never type a
   left margin and hope the right one matches. A row of five boxes is one group
@@ -568,6 +604,20 @@ note in this skill came from a number that disagreed with how it looked.
   `LINE_TARGET` (1.5px) for whatever canvas the exporter set, so the lines look
   identical from one diagram to the next. Outlines take the same weight - see
   the line rule above.
+- **A note ABOUT the drawing is a `callout()`, and it is the one thing
+  allowed to point at an angle.** A white card with a black border and a
+  dashed leader: every part of that says annotation rather than traffic, so
+  a reader never mistakes it for a call. The leader may run at any angle -
+  it POINTS rather than carries, and bending it into elbows would make it
+  read as flow, which is the opposite of what it is. Keep the card outside
+  the region it annotates and the leader clear of every shape between: a
+  leader that crosses a hexagon on its way reads as touching it. When every
+  approach to the arrow is blocked - a state store sat between the card and
+  the arrow it named from every angle - point the callout at the SHAPE that
+  call reaches instead. It names the same thing and the line is clear. It is
+  also
+  the one card that does not follow the theme, because it is paper laid over
+  the picture - white in both, with plate ink on it.
 - **Run lines along the AXES; a line that has to get somewhere else turns,
   rather than cutting across.** Horizontal and vertical is the house route,
   and an angled line is the exception that has to earn itself: it crosses
@@ -722,6 +772,11 @@ note in this skill came from a number that disagreed with how it looked.
   go-ahead, recorded in the README with the decision and who made it.
 - **Wide logos and wordmarks** keep their proportions: give `icon()` a `w` and
   `h`. A logo that carries its own name needs no text label beside it.
+- **One glyph means one thing across the set.** The README names what every
+  mark is FOR, and that column is the check before reusing one: a trigger
+  drawn with `fluent-arrow-step-in-right` was borrowing the set's service
+  invocation mark, so two unrelated ideas looked like the same idea. Vendor a
+  second glyph instead - it costs one download and a README row.
 - **A dark-on-light wordmark cannot be recolored for dark mode,** and freely
   licensed reversed variants mostly do not exist. Put it on a backing drawn in
   `C.markPlate`, which is transparent in light mode and a light plate in dark.
@@ -781,6 +836,16 @@ silently, and do not quietly change the content set to match a source image.
   its ink.
 
 ### 2. Turn the source into a layout
+
+When the diagram REPLACES one that readers already know, it is a redraw, not
+a redesign. Keep what the source shows and keep its arrangement; change what
+is wrong, what the house style draws differently, and nothing else. The
+resiliency diagram was first drawn here as three tidy rows - one per
+resiliency target - which said everything the page says and was rejected on
+sight: the source shows five applications and every call between them, and
+the SPREAD is the point. A diagram that teaches the taxonomy correctly can
+still be the wrong diagram. If a regrouping genuinely reads better, it is a
+proposal to make before drawing it, not a thing to discover at the review.
 
 Start by shopping, not drawing. List what the diagram needs, then find each
 item in the scenes that already exist and in the builder tables in

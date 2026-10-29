@@ -252,6 +252,28 @@ export function pipe({
   ]);
 }
 
+// A CALLOUT: a note ABOUT the drawing rather than a part of it. A white card
+// with a black border and black text, and a DASHED leader to whatever it is
+// about. Everything about it says "annotation": the card is the one shape
+// that does not follow the theme, because it is paper laid over the picture,
+// and the leader is the one line in the set allowed to run at an angle,
+// because it points rather than carries.
+//
+// `to` is anything arrow() accepts - a point or a shape descriptor - and the
+// leader runs from the card's edge to it.
+export function callout({
+  x, y, w = 210, h = 54, text: content = '', size = 13, to,
+  stroke = C.appInk, fill = C.plate, ink = C.plateInk,
+}) {
+  return el('g', { class: 'd-callout' }, [
+    to ? arrow({ from: { x, y, w, h }, to, color: stroke, dash: true }) : null,
+    el('rect', {
+      x: n(x - w / 2), y: n(y - h / 2), width: n(w), height: n(h), rx: 10, fill, ...outline(stroke),
+    }),
+    content ? onFill(label({ x, y, text: content, size, color: ink })) : null,
+  ]);
+}
+
 // A workflow start or end. Label sits under the circle unless labelDy says otherwise.
 export function node({ x, y, r = 16, stroke = C.navy, fill = C.bg, label: name = '', labelDy }) {
   assertStroke(stroke, name, 'node()');
@@ -263,20 +285,40 @@ export function node({ x, y, r = 16, stroke = C.navy, fill = C.bg, label: name =
 
 // ------------------------------------------------------------------ data shapes
 
-// A DATA STORE: a standing cylinder, WIDER than it is tall, in the app gold
-// with its name inside it. Wide and shallow is what tells it from pipe(), the
+// A DATA STORE: a standing cylinder, wider than it is tall, in the app gold
+// with its name inside it. Wider than tall is what tells it from pipe(), the
 // broker lying on its side, and a store drawn tall and narrow reads as one.
 //
-// top and bottom are the y of the top and bottom ellipse centres, so the drawn
-// shape runs from top-ry to bottom+ry and the name sits between them.
+// STORE_RATIO is the house proportion, width to height: a little wider than
+// tall, which leaves a body deep enough to set the name in. Flatter than this
+// and the name crowds the two rims; the first store drawn here was almost
+// twice as wide as it was tall and the name sat across the back rim.
+//
+// Two call forms. The house one is a centre and a WIDTH - `{ x, y, w }` - and
+// everything else follows the ratio, so every store in the set has the same
+// proportions whatever its size. `{ x, top, bottom }`, the y of the two
+// ellipse centres, is there for a store that has to fit a given space.
+export const STORE_RATIO = 1.2;
+export const STORE_RIM = 0.115;      // the rim depth, as a fraction of the width
+
 export function cylinder({
-  x, top, bottom, rx = 54, ry = 14, stroke = C.appInk, fill = C.appGold,
+  x, y, w, top, bottom, rx, ry, stroke = C.appInk, fill = C.appGold,
   label: name = '', ink = C.appInk, size = 14,
 }) {
-  const w = rx * 2;
-  const h = bottom - top + ry * 2;
-  if (w <= h) {
-    throw new Error(`cylinder(): ${w} wide and ${h} tall - a data store is wider than it is tall, and a broker lying on its side is pipe()`);
+  if (w !== undefined) {
+    if (!fin(y)) throw new Error('cylinder(): the { x, y, w } form needs y, the centre');
+    ry = ry ?? +(w * STORE_RIM).toFixed(2);
+    rx = w / 2;
+    const h = w / STORE_RATIO;
+    top = +(y - h / 2 + ry).toFixed(2);
+    bottom = +(y + h / 2 - ry).toFixed(2);
+  }
+  rx = rx ?? 66;
+  ry = ry ?? 15;
+  const drawnW = rx * 2;
+  const drawnH = bottom - top + ry * 2;
+  if (drawnW <= drawnH) {
+    throw new Error(`cylinder(): ${drawnW} wide and ${drawnH} tall - a data store is wider than it is tall, and a broker lying on its side is pipe()`);
   }
   if (name && bottom - top < size * 1.6) {
     throw new Error(`cylinder(): ${bottom - top} of body cannot carry "${name}" at ${size} - make it deeper rather than setting the name smaller`);
@@ -659,7 +701,9 @@ function centre(p) {
 // from / to: a point [x, y] (used as is), a circle { x, y, r }, a hexagon
 // { x, y, r, hex: true } or a rectangle { x, y, w, h }. The line runs between
 // the shapes' EDGES, `gap` px clear of each. head: open 8px chevron at `to`.
-export function arrow({ from, to, head = true, color = C.navy, gap = 2 }) {
+// `dash`: the LINE is dashed, the head is not. A dashed line says the thing
+// it draws is not traffic - a leader from a callout to what it names.
+export function arrow({ from, to, head = true, color = C.navy, gap = 2, dash = false }) {
   assertInk(color, 'arrow()'); // an arrow has no label of its own
   const a = centre(from);
   const b = centre(to);
@@ -677,7 +721,7 @@ export function arrow({ from, to, head = true, color = C.navy, gap = 2 }) {
   const x2 = b.x - ux * d1;
   const y2 = b.y - uy * d1;
   const base = { stroke: color, 'stroke-width': lineWidth(), 'stroke-linecap': 'round', 'stroke-linejoin': 'round', fill: 'none' };
-  const kids = [el('line', { x1: n(x1), y1: n(y1), x2: n(x2), y2: n(y2), ...base })];
+  const kids = [el('line', { x1: n(x1), y1: n(y1), x2: n(x2), y2: n(y2), ...base, ...(dash ? { 'stroke-dasharray': '6 5' } : {}) })];
   if (head) {
     const ang = Math.atan2(uy, ux);
     const wing = (s) => `${n(x2 - HEAD * Math.cos(ang + s * 0.5))},${n(y2 - HEAD * Math.sin(ang + s * 0.5))}`;
