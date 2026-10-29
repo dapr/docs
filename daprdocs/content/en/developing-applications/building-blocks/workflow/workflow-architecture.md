@@ -322,7 +322,7 @@ The `dapr_runtime_workflow_completion_route_count` metric, tagged with `task_typ
 - [Workflow API reference]({{% ref workflow_api.md %}})
 - [Try out the Workflow quickstart]({{% ref workflow-quickstart.md %}})
 - Try out the following examples: 
-   - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
+   - [Python](https://github.com/dapr/python-sdk/tree/main/examples/workflow)
    - [JavaScript example](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
    - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
    - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
