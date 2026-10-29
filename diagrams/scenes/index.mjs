@@ -13,6 +13,7 @@ import sidecarApis from './sidecar-apis.mjs';
 import schedulerArchitecture from './scheduler-architecture.mjs';
 import serviceMesh from './service-mesh.mjs';
 import observabilityTracing from './observability-tracing.mjs';
+import observabilitySidecar from './observability-sidecar.mjs';
 import sidecarModel from './sidecar-model.mjs';
 
 export const scenes = {
@@ -28,5 +29,6 @@ export const scenes = {
   'scheduler-architecture': schedulerArchitecture,
   'service-mesh': serviceMesh,
   'observability-tracing': observabilityTracing,
+  'observability-sidecar': observabilitySidecar,
   'sidecar-model': sidecarModel,
 };
