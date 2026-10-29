@@ -15,6 +15,8 @@ import serviceMesh from './service-mesh.mjs';
 import observabilityTracing from './observability-tracing.mjs';
 import observabilitySidecar from './observability-sidecar.mjs';
 import resiliencyPolicies from './resiliency-policies.mjs';
+import appHealth from './app-health.mjs';
+import sidecarHealth from './sidecar-health.mjs';
 import sidecarModel from './sidecar-model.mjs';
 
 export const scenes = {
@@ -32,5 +34,7 @@ export const scenes = {
   'observability-tracing': observabilityTracing,
   'observability-sidecar': observabilitySidecar,
   'resiliency-policies': resiliencyPolicies,
+  'app-health': appHealth,
+  'sidecar-health': sidecarHealth,
   'sidecar-model': sidecarModel,
 };

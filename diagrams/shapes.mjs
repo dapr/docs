@@ -648,11 +648,17 @@ export function lollipop({ x, y, to, toY = y, elbowX, elbowR = 10, r = BALL_R, c
 
 // The socket, centred on the ball it cups, and the consumer's stalk out to the
 // arc's open side rather than to the ball, so the socket is what it ends on.
+// Which way round it is drawn follows from WHERE the consumer is: `from` to
+// the left of the ball cups it from the left, `from` to the right cups it
+// from the right. Nothing to pass, nothing to get backwards.
 export function socket({ x, y, from, r = SOCKET_R, color = C.navy }) {
+  const fromRight = from > x;
+  const edge = fromRight ? x + r : x - r;
+  const sweep = fromRight ? 1 : 0;
   return el('g', { class: 'd-socket' }, [
-    el('line', { x1: n(from), y1: n(y), x2: n(x - r), y2: n(y), stroke: color, 'stroke-width': lineWidth() }),
+    el('line', { x1: n(from), y1: n(y), x2: n(edge), y2: n(y), stroke: color, 'stroke-width': lineWidth() }),
     el('path', {
-      d: `M${n(x)},${n(y - r)} A${n(r)},${n(r)} 0 0 0 ${n(x)},${n(y + r)}`,
+      d: `M${n(x)},${n(y - r)} A${n(r)},${n(r)} 0 0 ${sweep} ${n(x)},${n(y + r)}`,
       fill: 'none',
       ...outline(color, { 'stroke-linecap': 'round' }),
     }),

@@ -490,3 +490,16 @@ test('a callout with no target draws no leader, and arrows are solid by default'
   const [line] = find(S.arrow({ from: [0, 0], to: [50, 0] }), (n) => n.tag === 'line');
   assert.equal(line.attrs['stroke-dasharray'], undefined);
 });
+
+test('socket() cups the ball from the side its consumer is on', () => {
+  const left = S.socket({ x: 200, y: 50, from: 100 });
+  const right = S.socket({ x: 200, y: 50, from: 300 });
+  const stalk = (g) => find(g, (n) => n.tag === 'line')[0].attrs;
+  const cup = (g) => find(g, (n) => n.tag === 'path')[0].attrs.d;
+  // The stalk stops at the near rim, which is a different rim each way.
+  assert.equal(+stalk(left).x2, 200 - S.SOCKET_R);
+  assert.equal(+stalk(right).x2, 200 + S.SOCKET_R);
+  // And the arc sweeps the other way, so the cup faces the ball either way.
+  assert.match(cup(left), /A21,21 0 0 0 /);
+  assert.match(cup(right), /A21,21 0 0 1 /);
+});

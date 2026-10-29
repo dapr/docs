@@ -293,6 +293,29 @@ const SCENES = [
     ],
   },
   {
+    name: 'app-health',
+    page: '/concepts/resiliency-concept/',
+    labels: [
+      'my-app',
+      '/healthz',
+      'Health probe, every 5 seconds',
+      '200-299 is healthy',
+      'Turn it on',
+      'After 3 failures in a row',
+    ],
+  },
+  {
+    name: 'sidecar-health',
+    page: '/concepts/resiliency-concept/',
+    labels: [
+      'my-app',
+      '/v1.0/healthz',
+      'Readiness and liveness',
+      'The endpoint',
+      'Who calls it',
+    ],
+  },
+  {
     name: 'resiliency-policies',
     page: '/concepts/resiliency-concept/',
     labels: [
