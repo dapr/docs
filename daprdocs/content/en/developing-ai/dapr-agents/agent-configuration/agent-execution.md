@@ -95,7 +95,7 @@ When runtime configuration is enabled, fields marked `Y` in the **Hot-reloadable
 
 The following validation rules apply to fields supported by each configuration source:
 
-| Rule | Instantiation | Environment | State store runtime/hot reload |
+| Rule | Instantiation | Environment | Runtime configuration and hot reload |
 |---|---|---|---|
 | Invalid value | Raises an error | Logged and ignored | Logged and ignored |
 | Empty or whitespace-only `tool_choice` | Rejected | Ignored | Ignored |

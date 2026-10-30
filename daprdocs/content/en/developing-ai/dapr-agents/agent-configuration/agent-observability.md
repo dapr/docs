@@ -97,7 +97,7 @@ When runtime configuration is enabled, fields marked `Y` in the **Hot-reloadable
 
 The following validation rules apply to fields supported by each configuration source:
 
-| Rule | Instantiation | Environment | State store runtime/hot reload |
+| Rule | Instantiation | Environment | Runtime configuration and hot reload |
 |---|---|---|---|
 | Invalid value | Raises an error | Logged and ignored | Logged and ignored |
 | OpenTelemetry boolean values | Native booleans or case-insensitive `true`/`false` | Case-insensitive `true`/`false` only | Case-insensitive `true`/`false` only |
