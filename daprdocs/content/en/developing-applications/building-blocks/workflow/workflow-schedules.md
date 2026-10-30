@@ -300,7 +300,7 @@ To list the runs of a schedule, list the workflow instances whose ID starts with
 dapr workflow list --app-id reports --instance-id-prefix nightly-report_
 ```
 
-The SDKs offer the same filter on their instance ID listing. Workflow instances that run the schedules themselves have IDs starting with `dapr-internal-schedule-`; `dapr workflow list` hides them unless you pass `--include-schedules`.
+The SDKs offer the same filter on their instance ID listing. Each schedule is itself a workflow instance, named `dapr.internal.schedule` with the ID `dapr-internal-schedule-<schedule name>`, and it is listed like any other workflow. `dapr workflow history dapr-internal-schedule-nightly-report` shows its steps.
 
 ## Trigger a run now
 

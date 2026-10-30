@@ -70,7 +70,6 @@ dapr workflow list [flags]
 | `--filter-max-age`, `-m` | string | Filter workflows started within duration or timestamp (e.g., "300ms", "1.5h", "2023-01-02T15:04:05") |
 | `--output`, `-o` | string | Output format: short, wide, yaml, json (default "short") |
 | `--instance-id-prefix`, `-p` | string | List only the workflows whose instance ID starts with this prefix, such as `<schedule name>_` for the runs of a workflow schedule |
-| `--include-schedules` | bool | Also list the workflow instances that run workflow schedules, which are hidden by default |
 | `--kubernetes`, `-k` | bool | Target a Kubernetes Dapr installation |
 | `--namespace`, `-n` | string | Kubernetes namespace (default "default") |
 
