@@ -11,6 +11,6 @@ Dapr Agents provides configuration options for controlling agent execution, inte
 Configure Dapr Agents through one or more of the following methods:
 
 1. **In code:** Configure options with typed Python objects when creating a `DurableAgent`.
-2. **From external configuration:** For supported options, Dapr Agents can automatically resolve values from environment variables or runtime values stored in a Dapr Configuration Store. When runtime configuration is enabled, changes to these fields can be applied without restarting the agent.
+2. **From external configuration:** For supported options, Dapr Agents can automatically resolve values from environment variables or state store runtime configuration. When runtime configuration is enabled (via Dapr Configuration), changes to these fields can be applied without restarting the agent.
 
 The pages in this section describe the available options, defaults, supported configuration sources, precedence rules, and hot reload behavior for local development and production deployments.
