@@ -85,6 +85,8 @@ Runtime configuration supports these key-naming conventions, from highest to low
 2. `snake_case`
 3. `kebab-case`
 
+> **Note:** Hot-reload configuration continues to support legacy naming conventions, such as `Tool_Choice`, `Tool-Choice`, and `TOOL-CHOICE`, for backward compatibility. For new configuration, use one of the supported naming conventions listed above.
+
 ## Hot reload
 
 When runtime configuration is enabled, fields marked `Y` in the **Hot-reloadable** column are applied without restarting the agent. Other execution settings require a restart.
