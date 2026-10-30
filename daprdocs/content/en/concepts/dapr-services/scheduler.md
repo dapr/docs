@@ -112,7 +112,7 @@ There are several different types of jobs which Scheduler manages:
 - `app/{app-id}/{job-name}`: Jobs created via the [Jobs API]({{% ref jobs_api %}})
 - `actor/{actor-type}/{actor-id}/{reminder-name}`: Actor reminder jobs created via the [Actor Reminders API]({{% ref "actors-timers-reminders#actor-reminders" %}})
 - `activity/{app-id}/{instance-id}::{task-id}::0`: Used internally for [Workflow Activity reminders]({{% ref "workflow-features-concepts.md#workflow-activities" %}})
-- `workflow/{app-id}/{instance-id}/{random-name}`: Used internally for [Workflows]({{% ref "workflow-overview.md" %}}).
+- `workflow/{app-id}/{instance-id}/{random-name}`: Used internally for [Workflows]({{% ref "workflow-overview.md" %}}). The timer of a [workflow schedule]({{% ref "workflow-schedules.md" %}}) named `{name}` has the instance ID `dapr-internal-schedule-{name}`.
 
 From Dapr 1.19, activity job names always end in `::0`. Earlier runtimes used the workflow instance's generation as the last component, for example `::1` on the first run, so update scripts that build these names.
 

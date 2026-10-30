@@ -196,6 +196,12 @@ In addition to [child workflows]({{% ref "#child-workflows" %}}), a workflow can
 
 For the comparison with child workflows, guidance on when to use them, and a code example, see [Detached workflows]({{% ref workflow-detached.md %}}).
 
+## Workflow schedules
+
+A _workflow schedule_ starts a workflow repeatedly on a cron schedule, such as every night at 02:00 or every 5 minutes. Each run is a new, detached instance of the workflow, with the instance ID `<schedule name>_<time>`. You create, list, trigger and delete schedules with the workflow client or the Dapr CLI, and each schedule reports when it runs next and how its last run went.
+
+For the schedule format, the options and examples in each SDK, see [Workflow schedules]({{% ref workflow-schedules.md %}}).
+
 ## Durable timers
 
 Dapr Workflows allow you to schedule reminder-like durable delays for any time range, including minutes, days, or even years. These _durable timers_ can be scheduled by workflows to implement simple delays or to set up ad-hoc timeouts on other async tasks. More specifically, a durable timer can be set to trigger on a particular date or after a specified duration. There are no limits to the maximum duration of durable timers, which are internally backed by internal actor reminders. For example, a workflow that tracks a 30-day free subscription to a service could be implemented using a durable timer that fires 30-days after the workflow is created. Workflows can be safely unloaded from memory while waiting for a durable timer to fire.
