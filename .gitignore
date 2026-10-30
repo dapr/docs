@@ -22,3 +22,11 @@ daprdocs/static/presentations/.DS_Store
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Superpowers SDD scratch workspace, and the spec and plan it works from:
+# how this repo's diagrams were built, not something the docs site ships.
+/.superpowers/
+/docs/superpowers/
+
+# Local diagram renders (skills/vector-2d-diagrams/scripts/render-scene.mjs)
+.diagram-renders/
