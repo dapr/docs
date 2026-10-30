@@ -85,7 +85,7 @@ Runtime configuration supports these key-naming conventions, from highest to low
 2. `snake_case`
 3. `kebab-case`
 
-> **Note:** Hot-reload configuration continues to support legacy naming conventions, such as `Otel_Logging_Enabled`, `Otel-Logging-Enabled`, and `OTEL-LOGGING-ENABLED`, for backward compatibility. For new configuration, use one of the supported naming conventions listed above.
+> **Note:** Hot-reload configuration continues to support legacy key-naming conventions, such as `Otel_Logging_Enabled`, `Otel-Logging-Enabled`, and `OTEL-LOGGING-ENABLED`, for backward compatibility. These conventions are not recommended for new configuration; use one of the supported naming conventions listed above.
 
 When provided through runtime configuration, `OTEL_EXPORTER_OTLP_HEADERS` is applied to `auth_token`; when provided as an environment variable, it populates `headers`.
 

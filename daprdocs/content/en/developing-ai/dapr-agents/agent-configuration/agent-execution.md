@@ -85,7 +85,7 @@ Runtime configuration supports these key-naming conventions, from highest to low
 2. `snake_case`
 3. `kebab-case`
 
-> **Note:** Hot-reload configuration continues to support legacy naming conventions, such as `Tool_Choice`, `Tool-Choice`, and `TOOL-CHOICE`, for backward compatibility. For new configuration, use one of the supported naming conventions listed above.
+> **Note:** Hot-reload configuration continues to support legacy key-naming conventions, such as `Tool_Choice`, `Tool-Choice`, and `TOOL-CHOICE`, for backward compatibility. These conventions are not recommended for new configuration; use one of the supported naming conventions listed above.
 
 ## Hot reload
 
