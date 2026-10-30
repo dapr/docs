@@ -135,5 +135,3 @@ agent = DurableAgent(
     ),
 )
 ```
-
-Use the Dapr sidecar's observability configuration separately when you also need telemetry from Dapr Workflows, state, or pub/sub operations.
