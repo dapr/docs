@@ -4,6 +4,7 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { join, dirname } from 'node:path';
@@ -26,11 +27,28 @@ function repoPaths(body) {
     .filter((p) => !/[<>*{}]/.test(p));
 }
 
+// Some paths the skill names are GENERATED - Hugo's build output, the render
+// directory - so they are absent from a fresh checkout and present the moment
+// anyone builds. "It does not exist" therefore says nothing about them, and a
+// CI runner would fail on a path that is perfectly correct. Git already knows
+// which ones those are: an ignored path is generated, and a typo is ignored by
+// nothing, so the check still catches the mistake this test is here for.
+function generated(p) {
+  try {
+    execFileSync('git', ['check-ignore', '-q', '--', p], { cwd: repo, stdio: 'ignore' });
+    return true;
+  } catch {
+    // Exit 1 is "not ignored"; anything else means git could not answer, and
+    // an unanswered question is not permission to skip the path.
+    return false;
+  }
+}
+
 test('every repo path named in the skill exists', () => {
   const missing = [];
   for (const doc of DOCS) {
     for (const p of repoPaths(read(doc))) {
-      if (!existsSync(join(repo, p))) missing.push(`${doc}: ${p}`);
+      if (!existsSync(join(repo, p)) && !generated(p)) missing.push(`${doc}: ${p}`);
     }
   }
   assert.deepEqual(missing, [], `paths named in the skill that do not exist:\n${missing.join('\n')}`);
