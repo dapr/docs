@@ -143,8 +143,9 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
 - **An app colour on something that is not an app says it belongs to that
   app.** `secureLock()` was tinted with the first app's green, so the mTLS
   shield on `security-end-to-end` read as App A's rather than as the thing
-  between the two sidecars, and `person()` had the same default, which would
-  have made an operator drawn with it look like App A in a hat. The shield is
+  between the two sidecars, and the hand-drawn person shape that preceded the
+  Fluent glyph had the same default, which would have made an operator look
+  like App A in a hat. The shield is
   sky now and the operator is a navy Fluent glyph. Reach for an `APP` fill only
   for an app.
 - **A dashed region's border is a colour that follows the theme.** The brand
@@ -314,6 +315,18 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
   moves. Give it the points; `heads` puts the chevron on the end, the start,
   both or neither. A feeder that runs INTO a bus takes `heads: 'none'` - the
   head belongs at the far end of the bus, where the traffic actually arrives.
+- **A caption is centred ON its border, so HALF of it hangs INSIDE the box.**
+  `region()` and `pod()` put the pill across the top edge, which spends the top
+  13 units of the box - directly over whatever stands at the top of the
+  contents, which in a pod is the app hexagon's own top node. Pad a region from
+  the PILL's lower edge, not from the border: `captionReach()` is exported for
+  that, and `sentry-kubernetes` derives its pod height from it rather than
+  choosing a number. This is the clearance that goes first when a pod is
+  shrunk to buy height elsewhere, and nothing warns you - the scene still
+  exports, the bbox is still inside the viewBox, every label is still drawn,
+  and both app hexagons are drawn through their own pod names. That shipped
+  through a review round here, which is why there is now a rendered test,
+  `keeps every caption clear of the contents it names`.
 - **A Kubernetes pod is `pod()`.** A dashed sky box with rounded corners and
   the pod's name on its top edge, the same everywhere. The caption width is
   measured, like every pill in the set, and `captionX` moves it along the top
@@ -1149,10 +1162,11 @@ before the next one starts. Report visual choices as proposals, not decisions.
   weight by a quarter, which reads as one of them being wrong. Give every mark
   that stands alone in a scene ONE size and every mark inside a card ANOTHER,
   named as constants, rather than sizing each by eye. A shape builder that
-  draws its own outline is a third weight again - `person()` draws at the
-  shared 2.2 whatever its `size`, so beside a glyph it looks light. Where they
-  must match, use the Fluent mark instead of the hand-drawn shape; they then
-  match by construction rather than by a number someone tuned.
+  draws its own outline is a third weight again: it draws at the shared 2.2
+  whatever its `size`, so beside a glyph scaled up it looks light. That is what
+  retired the hand-drawn person shape in favour of `fluent-person`. Where a
+  drawn shape and a glyph must match, the glyph wins - it matches by
+  construction rather than by a number someone tuned.
 - **`slots()` decides spacing WITHIN a span, not the span itself.** It spreads
   centres evenly across what you give it, which leaves half a pitch of margin
   at each END. Handing it the whole canvas therefore bakes that half-pitch in

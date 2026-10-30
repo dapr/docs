@@ -143,10 +143,15 @@ const ALLOWED_TAGS = new Set([
   'metadata', 'use', 'image',
 ]);
 // Creative Commons, Dublin Core and RDF elements appear inside <metadata> in
-// files exported by Inkscape (php.svg is one). clean() drops <metadata> whole,
-// so none of this reaches the output; rejecting the file over it would only
-// push us to a worse copy of the same mark.
-const allowedTag = (t) => ALLOWED_TAGS.has(t) || /^(cc|dc|rdf):[A-Za-z]+$/.test(t);
+// files exported by Inkscape (php.svg is one), and Inkscape's own editor state
+// - <sodipodi:namedview>, which records the page colour, the zoom and the
+// guides - sits directly under <svg> (kubernetes-secret.svg has one). None of
+// it is drawn: an element in a foreign namespace is ignored by every renderer,
+// and clean() drops every namespaced tag anyway, so none of it reaches the
+// output. Anything nested INSIDE one is still walked and still has to pass,
+// so this admits editor leftovers, not a hiding place. Rejecting a file over
+// them would only push us to a worse copy of the same mark.
+const allowedTag = (t) => ALLOWED_TAGS.has(t) || /^(cc|dc|rdf|sodipodi|inkscape):[A-Za-z-]+$/.test(t);
 
 function walk(node, fn) {
   fn(node);

@@ -188,6 +188,23 @@ test('only allowlisted elements pass the screen (handler, animateColor, a, text,
   }
 });
 
+test("an editor's own leftovers pass the screen and are dropped, but nothing hides inside one", () => {
+  // Inkscape writes <sodipodi:namedview> under <svg> - page colour, zoom,
+  // guides. kubernetes-secret.svg carries one. A foreign namespace draws
+  // nothing and clean() drops every namespaced tag, so the file is taken as
+  // published rather than edited or swapped for a worse copy of the mark.
+  const out = render('ns-ok', '<svg viewBox="0 0 1 1"><sodipodi:namedview pagecolor="#fff"/><inkscape:perspective/><path d="M0,0"/></svg>');
+  assert.ok(!out.includes('namedview'), 'editor state reached the output');
+  assert.ok(!out.includes('perspective'), 'editor state reached the output');
+  assert.ok(out.includes('<path'), 'the drawing survived');
+  // Being in a foreign namespace is not cover: children are still walked.
+  assert.throws(
+    () => render('ns-evil', '<svg viewBox="0 0 1 1"><sodipodi:namedview><script/></sodipodi:namedview></svg>'),
+    (e) => e instanceof IconError && /not an allowed element/.test(e.message),
+  );
+  assert.throws(() => render('ns-bad', '<svg viewBox="0 0 1 1"><evil:thing/></svg>'), IconError);
+});
+
 test('<image> is allowed, but only carrying an inline image payload', () => {
   // Some projects publish their logo as a raster inside an svg wrapper. That
   // payload cannot run or fetch anything, so it is the one data URI allowed -

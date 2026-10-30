@@ -316,6 +316,7 @@ const SCENES = [
       'Pod A',
       'Pod B',
       'Operator',
+      'Kubernetes Secret',
       'Read the root cert',
     ],
   },
@@ -702,6 +703,41 @@ for (const scene of SCENES) {
       expect(bbox.top).toBeGreaterThanOrEqual(EDGE_MARGIN);
       expect(bbox.right).toBeLessThanOrEqual(view.width - EDGE_MARGIN);
       expect(bbox.bottom).toBeLessThanOrEqual(view.height - EDGE_MARGIN);
+    });
+
+    // A region's caption is centred ON its border, so half of it hangs INSIDE
+    // the box, over whatever stands at the top of the contents. Nothing warns
+    // you: the scene still exports, the bbox is still inside the viewBox, and
+    // every label is still drawn. `sentry-kubernetes` shipped a review round
+    // with both app hexagons through their own pod names after the pods were
+    // shortened to save height, which is the clearance that goes first.
+    //
+    // Lines are not checked: a run is SUPPOSED to cross a pod's border. This
+    // is about the shapes and marks a caption can land on.
+    test(`${scene.name} keeps every caption clear of the contents it names`, async ({ page }) => {
+      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      const hits = await page.evaluate((root) => {
+        const svg = document.querySelector(`${root} svg`);
+        // getBoundingClientRect, NOT getBBox: a mark is a <g> under a
+        // transform, and getBBox would hand back its local box - the icon
+        // file's own coordinates - which overlaps everything and nothing.
+        const box = (node) => node.getBoundingClientRect();
+        const overlaps = (a, b) => a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+        const found = [];
+        // Only a REGION's caption: a bare pill() is a label on a line and
+        // is placed against the line, not against a border.
+        for (const pill of svg.querySelectorAll('g.d-region > g.d-pill')) {
+          const caption = pill.querySelector('text')?.textContent?.trim() ?? '(unnamed)';
+          const pb = box(pill);
+          for (const shape of svg.querySelectorAll('polygon, g.d-icon')) {
+            if (pill.contains(shape)) continue;
+            if (overlaps(pb, box(shape))) found.push(caption);
+          }
+        }
+        return [...new Set(found)];
+      }, sel(scene.name));
+
+      expect(hits, 'a caption is drawn over the contents it captions').toEqual([]);
     });
 
     test(`${scene.name} resolves its token colors in light and in dark`, async ({ page }) => {

@@ -395,22 +395,6 @@ export function lockBox({ x, y, size = 44, stroke = C.navy, fill = C.tealFill, l
   ]);
 }
 
-// Sky, not an app colour: a person is not an app, and the first app's green
-// on one would say it was. The same reasoning as secureLock().
-export function person({ x, y, size = 40, stroke = C.navy, fill = C.blueFill, label: name = '', labelDy }) {
-  assertStroke(stroke, name, 'person()');
-  const s = size;
-  const hr = s * 0.2;
-  const hy = y - s * 0.22;
-  const sy = y + s * 0.48;
-  const sw = s * 0.42;
-  return el('g', { class: 'd-person' }, [
-    el('circle', { cx: n(x), cy: n(hy), r: n(hr), ...tint(fill), ...outline(stroke) }),
-    el('path', { d: `M${n(x - sw)},${n(sy)} L${n(x - sw)},${n(sy - s * 0.1)} A${n(sw)},${n(s * 0.34)} 0 0 1 ${n(x + sw)},${n(sy - s * 0.1)} L${n(x + sw)},${n(sy)} Z`, ...tint(fill), ...outline(stroke) }),
-    name ? label({ x, y: y + (labelDy ?? s / 2 + 14), text: name }) : null,
-  ]);
-}
-
 // Secure communication: padlock inside a shield. Sky, not an app colour: in a
 // set where the apps are told apart by colour, a green shield reads as the
 // green app's.
@@ -535,7 +519,14 @@ export function elbowArrow({ points, r = 12, color = C.navy, heads = 'end' }) {
 
 export const CAPTION_INSET = 20;
 
-export function region({ x, y, w, h, stroke = C.caption, r = 10, caption = '', captionW, captionX, captionH = 26, captionSize = 15 }) {
+// A caption pill is centred ON the border, so HALF of it hangs INSIDE the box.
+// Exported because that half is the clearance a scene has to leave above its
+// contents: pad a region from the pill's lower edge, not from the border, or
+// the first thing it touches is whatever stands under the name.
+export const CAPTION_H = 26;
+export const captionReach = () => CAPTION_H / 2;
+
+export function region({ x, y, w, h, stroke = C.caption, r = 10, caption = '', captionW, captionX, captionH = CAPTION_H, captionSize = 15 }) {
   return el('g', { class: 'd-region' }, [
     panel({ x, y, w, h, stroke, r }),
     caption
