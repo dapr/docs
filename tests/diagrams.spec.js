@@ -321,6 +321,34 @@ const SCENES = [
     ],
   },
   {
+    // The eight numbers are the point: each one indexes an item in the list
+    // under the diagram, so every one of them is named here.
+    name: 'security-capabilities',
+    page: '/concepts/security-concept/',
+    labels: [
+      'Dapr control plane',
+      'namespace: dapr-system',
+      'namespace: redis',
+      'namespace: default',
+      'namespace: A',
+      'namespace: B',
+      'Reverse proxy',
+      'App A',
+      'App B',
+      'State store (encrypted)',
+      'SSL',
+      'mTLS',
+      'API token authentication',
+      'Service access policy',
+      'Pub/Sub topic access policy',
+      'Component scope policy',
+      'API access policy',
+      'Secret access policy',
+      'Secrets',
+      '1', '2', '3', '4', '5', '6', '7', '8',
+    ],
+  },
+  {
     name: 'api-scoping',
     page: '/concepts/security-concept/',
     labels: [

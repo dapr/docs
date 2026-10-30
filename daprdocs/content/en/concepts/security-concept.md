@@ -307,19 +307,19 @@ The Dapr runtime does not store any data at rest, meaning that Dapr runtime has 
 
 The diagram below shows a number of security capabilities placed in an example application hosted on Kubernetes. In the example, the Dapr control plane, the Redis state store, and each of the services have been deployed to their own namespaces. When deploying on Kubernetes, you can use regular Kubernetes RBAC to control access to management activities.
 
-In the application, requests are received by the ingress reverse-proxy which has a Dapr sidecar running next to it. From the reverse proxy, Dapr uses service invocation to call onto Service A, which then publishes a message to Service B. Service B retrieves a secret in order to read and save state to a Redis state store.
+In the application, requests are received by the ingress reverse-proxy which has a Dapr sidecar running next to it. From the reverse proxy, Dapr uses service invocation to call onto App A, which then publishes a message to App B. App B retrieves a secret in order to read and save state to a Redis state store.
 
-<img src="/images/security-overview-capabilities-example.png" width=1000>
+{{< diagram security-capabilities >}}
 
 Let's go over each of the security capabilities and describe how they are protecting this application.
 
 1. API Token authentication ensures the reverse-proxy knows it is communicating with the correct Dapr sidecar instance. This prevents forwarding messages to anything except this Dapr sidecar.
-2. Service invocation mTLS is used for authentication between the reverse proxy and Service A. A service access policy configured on Service A restricts it to only receive calls on a specific endpoint from the reverse proxy and no other services.
-3. Service B uses a pub/sub topic security policy to indicate it can only receive messages published from Service A.
-4. The Redis component definition uses a component scoping security policy to say only Service B is allowed to call it.
-5. Service B restricts the Dapr sidecar to only use the pub/sub, state management, and secrets APIs. All other API calls (for example, service invocation) would fail.
-6. A secrets security policy set in configuration restricts which secrets Service B can access. In this case, Service B can only read the secret needed to connect to the Redis state store component, and no others.
-7. Service B is deployed to namespace "B", which further isolates it from other services. Even if the service invocation API was enabled on it, it could not be called accidentally by being in the same namespace as Service A. Service B must explicitly set the Redis Host namespace in its component YAML file to call onto the "Redis" namespace, otherwise this call also fails.
+2. Service invocation mTLS is used for authentication between the reverse proxy and App A. A service access policy configured on App A restricts it to only receive calls on a specific endpoint from the reverse proxy and no other services.
+3. App B uses a pub/sub topic security policy to indicate it can only receive messages published from App A.
+4. The Redis component definition uses a component scoping security policy to say only App B is allowed to call it.
+5. App B restricts the Dapr sidecar to only use the pub/sub, state management, and secrets APIs. All other API calls (for example, service invocation) would fail.
+6. A secrets security policy set in configuration restricts which secrets App B can access. In this case, App B can only read the secret needed to connect to the Redis state store component, and no others.
+7. App B is deployed to namespace "B", which further isolates it from other services. Even if the service invocation API was enabled on it, it could not be called accidentally by being in the same namespace as App A. App B must explicitly set the Redis Host namespace in its component YAML file to call onto the "Redis" namespace, otherwise this call also fails.
 8. The data in the Redis state store is encrypted at rest and can only be read using the correctly configured Dapr Redis state store component.
 
 # Threat model
