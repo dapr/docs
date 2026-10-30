@@ -18,6 +18,8 @@ import resiliencyPolicies from './resiliency-policies.mjs';
 import appHealth from './app-health.mjs';
 import sidecarHealth from './sidecar-health.mjs';
 import securityEndToEnd from './security-end-to-end.mjs';
+import sentrySelfhosted from './sentry-selfhosted.mjs';
+import sentryKubernetes from './sentry-kubernetes.mjs';
 import sidecarModel from './sidecar-model.mjs';
 
 export const scenes = {
@@ -38,5 +40,7 @@ export const scenes = {
   'app-health': appHealth,
   'sidecar-health': sidecarHealth,
   'security-end-to-end': securityEndToEnd,
+  'sentry-selfhosted': sentrySelfhosted,
+  'sentry-kubernetes': sentryKubernetes,
   'sidecar-model': sidecarModel,
 };

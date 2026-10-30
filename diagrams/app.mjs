@@ -48,25 +48,56 @@ const nameSize = (r, size) => size ?? Math.max(MIN_LABEL, +(r / 3).toFixed(2));
 // Where the sidecar lands, as an arrow descriptor: a scene drawing a line to
 // or from the sidecar asks for this rather than recomputing the offsets, so
 // the arrow and the drawing cannot drift apart.
-export function sidecarAt({ x, y, r = 54, size }) {
+// `mirror` hangs the sidecar off the app's LEFT instead, for an app on the
+// right-hand side of a picture whose sidecar has to face inward. Everything
+// else is the same drawing: the sidecar's near edge still sits on the app's
+// centre, and it still drops below the app's lowest point by the same
+// clearance. Without it the two apps in `sentry-kubernetes` would talk to
+// each other through the right-hand app hexagon.
+export function sidecarAt({ x, y, r = 54, size, mirror = false }) {
   const rs = +(r * SIDECAR_R).toFixed(2);
   const name = nameSize(r, size);
   const clear = y + r + r * SIDECAR_CLEARANCE;
   const belowName = y + name * 0.5 + SIDECAR_GAP + rs;
   return {
-    x: +(x + sidecarDx(r)).toFixed(2),
+    x: +(x + (mirror ? -1 : 1) * sidecarDx(r)).toFixed(2),
     y: +Math.max(clear, belowName).toFixed(2),
     r: rs,
     hex: true,
   };
 }
 
+// How far the PAIR reaches from the app's centre, which is not the same as
+// how far the app reaches: the sidecar hangs off one side and below. A scene
+// that centres the pair in a box - a pod, a card - needs this rather than the
+// app's own radius, and `hosting-kubernetes` worked it out inline before this
+// existed.
+export function pairExtent({ r = 54, size, mirror = false }) {
+  const s = sidecarAt({ x: 0, y: 0, r, size, mirror });
+  const half = hexHalfWidth(s.r);
+  return {
+    left: mirror ? s.x - half : -hexHalfWidth(r),
+    right: mirror ? hexHalfWidth(r) : s.x + half,
+    top: -r,
+    bottom: s.y + s.r,
+  };
+}
+
+// Where to put the APP so that the whole pair is centred on (x, y).
+export function appSidecarCentre({ x, y, r = 54, size, mirror = false }) {
+  const e = pairExtent({ r, size, mirror });
+  return {
+    x: +(x - (e.left + e.right) / 2).toFixed(2),
+    y: +(y - (e.top + e.bottom) / 2).toFixed(2),
+  };
+}
+
 export function appSidecar({
-  x, y, r = 54, label = 'App', size,
+  x, y, r = 54, label = 'App', size, mirror = false,
   stroke = APP[0].stroke, fill = APP[0].fill, ink = APP[0].ink, solid = APP[0].solid,
 }) {
   const name = nameSize(r, size);
-  const s = sidecarAt({ x, y, r, size });
+  const s = sidecarAt({ x, y, r, size, mirror });
   return group([
     hex({ x, y, r, label, size: name, stroke, fill, ink, solid }),
     markHex({ x: s.x, y: s.y, r: s.r, mark: 'logo-blue', stroke: C.blue }),

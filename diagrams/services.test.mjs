@@ -77,3 +77,31 @@ test('serviceHex takes an explicit name size, and still holds the floor', () => 
   assert.equal(name.attrs['font-size'], 17, 'the given size, not the one derived from r');
   assert.throws(() => serviceHex({ key: 'scheduler', x: 0, y: 0, r: 60, size: 9 }), /floor/);
 });
+
+test("side: 'right' puts the whole stack beside the hexagon, centred on it", () => {
+  const r = 32;
+  const node = serviceHex({ key: 'sentry', x: 100, y: 200, r, role: true, wrap: true, side: 'right' });
+  const texts = find(node, (x) => x.tag === 'text');
+  assert.equal(texts.length, 2, 'the name and the role');
+  for (const t of texts) {
+    assert.equal(t.attrs['text-anchor'], 'start', 'a name beside the hexagon reads out from its edge');
+    assert.ok(+t.attrs.x > 100 + r * 0.866, `x ${t.attrs.x} is not clear of the hexagon's right edge`);
+  }
+  // The name's row and the role's two rows are ONE stack centred on the
+  // hexagon, so the BOTTOM NODE - where a line arrives - is clear and the
+  // group does not ride high or low with the number of role lines.
+  const size = +texts[0].attrs['font-size'];
+  const lh = size * 1.2;
+  // label() puts its block's FIRST baseline in `y`, so the role's last line
+  // is one line height further down.
+  const first = +texts[0].attrs.y;
+  const last = +texts[1].attrs.y + lh;
+  assert.ok(Math.abs((first + last) / 2 - (200 + size * 0.35)) < 0.01, `stack centre ${(first + last) / 2}`);
+});
+
+test("side: 'below' is the default, and an unknown side is refused", () => {
+  const below = serviceHex({ key: 'sentry', x: 100, y: 200, r: 32, role: true });
+  const beside = serviceHex({ key: 'sentry', x: 100, y: 200, r: 32, role: true, side: 'below' });
+  assert.deepEqual(below, beside);
+  assert.throws(() => serviceHex({ key: 'sentry', x: 0, y: 0, r: 32, side: 'under' }), /neither 'below' nor 'right'/);
+});

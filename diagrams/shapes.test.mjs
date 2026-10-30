@@ -503,3 +503,43 @@ test('socket() cups the ball from the side its consumer is on', () => {
   assert.match(cup(left), /A21,21 0 0 0 /);
   assert.match(cup(right), /A21,21 0 0 1 /);
 });
+
+test('elbowArrow() draws one run and puts the head at the end of it', () => {
+  const g = S.elbowArrow({ points: [[0, 0], [0, 100], [200, 100]] });
+  const runs = find(g, (n) => (n.attrs?.class ?? '') === 'd-run');
+  assert.equal(runs.length, 1, 'one path, however many corners');
+  const heads = find(g, (n) => n.tag === 'polyline');
+  assert.equal(heads.length, 1);
+  // The chevron sits ON the last point, not near it.
+  const tip = heads[0].attrs.points.split(' ')[1].split(',').map(Number);
+  assert.deepEqual(tip, [200, 100]);
+});
+
+test('elbowArrow() can put a head on both ends, and on neither', () => {
+  const pts = [[0, 0], [0, 100], [200, 100]];
+  assert.equal(find(S.elbowArrow({ points: pts, heads: 'both' }), (n) => n.tag === 'polyline').length, 2);
+  assert.equal(find(S.elbowArrow({ points: pts, heads: 'none' }), (n) => n.tag === 'polyline').length, 0);
+  const start = S.elbowArrow({ points: pts, heads: 'start' });
+  const tip = find(start, (n) => n.tag === 'polyline')[0].attrs.points.split(' ')[1].split(',').map(Number);
+  assert.deepEqual(tip, [0, 0]);
+});
+
+test('elbowArrow() never lets a head outrun the leg it sits on', () => {
+  // A leg shorter than the head length would otherwise push the chevron past
+  // the corner before it and bend the arrow backwards.
+  const g = S.elbowArrow({ points: [[0, 0], [0, 100], [10, 100]] });
+  // The chevron itself is a fixed size; what is capped is the line it is
+  // drawn on, which must not reach back past the corner at x = 0.
+  const head = find(g, (n) => (n.attrs?.class ?? '') === 'd-arrow')[0];
+  const line = find(head, (n) => n.tag === 'line')[0];
+  assert.equal(+line.attrs.x1, 5, `the head line starts at ${line.attrs.x1}, half the 10px leg`);
+  assert.equal(+line.attrs.x2, 10);
+});
+
+test('pod() is a dashed sky box that carries its own name', () => {
+  const g = S.pod({ x: 10, y: 20, w: 200, h: 160, name: 'Pod A', captionW: 70 });
+  const panel = find(g, (n) => n.tag === 'rect' && n.attrs['stroke-dasharray'])[0];
+  assert.equal(panel.attrs.stroke, C.blue, 'every pod in the set is sky');
+  assert.equal(+panel.attrs.width, 200);
+  assert.match(serialize(g), />Pod A</, 'the pod says which pod it is');
+});
