@@ -293,6 +293,43 @@ const SCENES = [
     ],
   },
   {
+    name: 'sentry-selfhosted',
+    page: '/concepts/dapr-services/sentry/',
+    labels: [
+      'App A',
+      'App B',
+      'Sentry',
+      'Filesystem',
+      'Operator',
+      'mTLS',
+      'Request a workload certificate',
+    ],
+  },
+  {
+    name: 'sentry-kubernetes',
+    page: '/concepts/dapr-services/sentry/',
+    labels: [
+      'App A',
+      'App B',
+      'Sentry',
+      'Injector',
+      'Pod A',
+      'Pod B',
+      'Operator',
+      'Read the root cert',
+    ],
+  },
+  {
+    name: 'sentry-selfhosted',
+    page: '/concepts/security-concept/',
+    labels: ['App A', 'App B', 'Sentry', 'Filesystem', 'Operator'],
+  },
+  {
+    name: 'sentry-kubernetes',
+    page: '/concepts/security-concept/',
+    labels: ['App A', 'App B', 'Sentry', 'Injector', 'Pod A', 'Pod B'],
+  },
+  {
     name: 'security-end-to-end',
     page: '/concepts/security-concept/',
     labels: [
@@ -510,7 +547,10 @@ function readPaint(page, name) {
     );
 
     return {
-      panelStroke: themedPanel ? getComputedStyle(themedPanel).stroke : pick('.d-panel', 'stroke'),
+      // null when the scene has no themed panel at all - every panel a pod,
+      // say. The loop below skips a null key; the fingerprint still carries
+      // the assertion that the scene re-themes.
+      panelStroke: themedPanel ? getComputedStyle(themedPanel).stroke : null,
       textFill: offPlate ? getComputedStyle(offPlate).fill : pick('text', 'fill'),
       fingerprint: all.join(';'),
       unresolved: all.filter((v) => v.includes('var(') || v.includes('||')),

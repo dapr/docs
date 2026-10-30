@@ -33,6 +33,11 @@ export const ROLE_DY = 2.4;
 // The name's size, as a multiple of the radius.
 export const SERVICE_LABEL = 13 / 34;
 
+// How far right of the centre a name set BESIDE the hexagon starts, as a
+// multiple of the radius. The hexagon's own half width is 0.866r, so this is
+// the edge plus a little under a third of a radius.
+export const NAME_DX = 1.15;
+
 // The size a name takes beside a hexagon of this radius. Exported because a
 // neighbour that is NOT a Dapr service - Consul, Redis, Zipkin - has to set
 // its name the same way, or the names in one column come out at two sizes.
@@ -75,15 +80,46 @@ export function service(key) {
 // scene's body type. A scene that passes it owes a comment saying which
 // neighbour set the radius - and passes the same size to that neighbour's
 // name, or it has just reintroduced the drift this module exists to stop.
-export function serviceHex({ key, x, y, r = SERVICE_R, role = false, wrap = false, size: given }) {
+// `side` is where the name goes. 'below' is the house arrangement and what
+// every scene should ask for. 'right' stacks the name and the role to the
+// RIGHT of the hexagon, centred on it, and exists for the one case a scene
+// cannot design its way out of: a line arriving at the hexagon's BOTTOM node,
+// which is where the name would otherwise be. `sentry-selfhosted` has one -
+// the two certificate requests merge below Sentry and come up into it. The
+// offsets for both arrangements live here rather than in the scene, so a
+// hexagon labelled beside cannot drift away from one labelled under.
+export function serviceHex({ key, x, y, r = SERVICE_R, role = false, wrap = false, size: given, side = 'below' }) {
   const s = service(key);
   const size = given ?? serviceLabel(r);
   if (size < MIN_LABEL) {
     throw new Error(`serviceHex(): a ${size}px name is below the ${MIN_LABEL}px floor.`);
   }
+  if (side !== 'below' && side !== 'right') {
+    throw new Error(`serviceHex(): side "${side}" is neither 'below' nor 'right'.`);
+  }
+  const roleText = role ? (wrap ? s.wrap : s.role) : null;
+  if (side === 'below') {
+    return group([
+      markHex({ x, y, r, mark: 'logo-blue' }),
+      label({ x, y: y + r * NAME_DY, text: s.name, size }),
+      roleText ? label({ x, y: y + r * ROLE_DY, text: roleText, size, color: C.blue }) : null,
+    ]);
+  }
+  // Beside: the name's row and the role's rows are ONE stack of lines, centred
+  // on the hexagon, so a hexagon with a two-line role does not sit higher in
+  // its own name than one with a single line.
+  const lh = size * 1.2;
+  const roleLines = roleText ? roleText.split('\n').length : 0;
+  const nameRow = +(y - (roleLines * lh) / 2).toFixed(2);
+  const lx = +(x + r * NAME_DX).toFixed(2);
   return group([
     markHex({ x, y, r, mark: 'logo-blue' }),
-    label({ x, y: y + r * NAME_DY, text: s.name, size }),
-    role ? label({ x, y: y + r * ROLE_DY, text: wrap ? s.wrap : s.role, size, color: C.blue }) : null,
+    label({ x: lx, y: nameRow, text: s.name, size, anchor: 'start' }),
+    roleText
+      ? label({
+        x: lx, y: +(nameRow + lh + ((roleLines - 1) * lh) / 2).toFixed(2),
+        text: roleText, size, color: C.blue, anchor: 'start',
+      })
+      : null,
   ]);
 }

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { APP, C } from './engine.mjs';
 import { hexHalfWidth } from './shapes.mjs';
-import { SIDECAR_CLEARANCE, SIDECAR_R, appSidecar, sidecarAt } from './app.mjs';
+import { SIDECAR_CLEARANCE, SIDECAR_R, appSidecar, appSidecarCentre, pairExtent, sidecarAt } from './app.mjs';
 
 // The app hexagon's class picks up a modifier when it is drawn solid, so match
 // on the class LIST rather than on the whole attribute.
@@ -75,4 +75,32 @@ test('a later app in the palette keeps its own fill and its own ink', () => {
   const name = find(node, (n) => n.tag === 'text' && find(n, (t) => t.content === 'App B').length)[0];
   assert.equal(name.attrs.fill, APP[1].ink, 'and the white that goes on it');
   assert.notEqual(APP[1].ink, APP[0].ink);
+});
+
+test('a mirrored sidecar hangs off the app LEFT, at the same height', () => {
+  const right = sidecarAt({ x: 200, y: 100, r: 50 });
+  const left = sidecarAt({ x: 200, y: 100, r: 50, mirror: true });
+  assert.equal(left.y, right.y, 'the drop below the app does not change');
+  assert.equal(left.r, right.r);
+  // The same offset, the other way: the near edge still sits on the centre.
+  assert.equal(200 - left.x, right.x - 200);
+  assert.ok(left.x < 200, 'and it is on the left');
+});
+
+test('appSidecarCentre() centres the PAIR, not the app, either way round', () => {
+  for (const mirror of [false, true]) {
+    const at = appSidecarCentre({ x: 400, y: 300, r: 48, size: 16, mirror });
+    const e = pairExtent({ r: 48, size: 16, mirror });
+    assert.ok(Math.abs((at.x + e.left + at.x + e.right) / 2 - 400) < 0.01, `x, mirror=${mirror}`);
+    assert.ok(Math.abs((at.y + e.top + at.y + e.bottom) / 2 - 300) < 0.01, `y, mirror=${mirror}`);
+  }
+});
+
+test('the pair reaches further on the sidecar side than on the app side', () => {
+  // Which is the whole reason a pod cannot be centred on the app hexagon.
+  const e = pairExtent({ r: 48, size: 16 });
+  assert.ok(e.right > -e.left, `${e.right} vs ${-e.left}`);
+  const m = pairExtent({ r: 48, size: 16, mirror: true });
+  assert.equal(m.right, -e.left);
+  assert.equal(-m.left, e.right);
 });

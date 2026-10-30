@@ -28,10 +28,10 @@
 //     other scenes draw a mark that has no wordmark of its own.
 
 import { APP, C, el } from '../engine.mjs';
-import { arrow, group, hex, hexHalfWidth, hexPoints, label, lineWidth, panel, region, roundedPath } from '../shapes.mjs';
+import { arrow, group, hex, hexHalfWidth, hexPoints, label, lineWidth, panel, pod, region, roundedPath } from '../shapes.mjs';
 import { icon, markHex, plate } from '../icons.mjs';
 import { serviceHex } from '../services.mjs';
-import { appSidecar, sidecarAt } from '../app.mjs';
+import { appSidecar, appSidecarCentre, sidecarAt } from '../app.mjs';
 import { apiTile } from '../apis.mjs';
 
 const W = 1200;
@@ -88,10 +88,11 @@ const POD_CX = 470;
 const POD_CY = 440;
 // The pair is centred in its pod: appSidecar() hangs the sidecar off the app's
 // right side and below its name, so the group reaches further right and lower
-// than the app hexagon alone, and the app is offset by half of each.
-const PAIR = sidecarAt({ x: 0, y: 0, r: APP_R, size: APP_SIZE });
-const APP_X = POD_CX - (PAIR.x + PAIR.r - hexHalfWidth(APP_R)) / 2;
-const APP_Y = POD_CY - (PAIR.y + PAIR.r - APP_R) / 2;
+// than the app hexagon alone. appSidecarCentre() is that offset, and it was
+// written out here before it was a function - with the sidecar's CIRCUMRADIUS
+// standing in for its half width, which put the pair about two units right of
+// where it belonged.
+const { x: APP_X, y: APP_Y } = appSidecarCentre({ x: POD_CX, y: POD_CY, r: APP_R, size: APP_SIZE });
 const SIDE = sidecarAt({ x: APP_X, y: APP_Y, r: APP_R, size: APP_SIZE });
 
 const BUS_Y = 316;
@@ -159,7 +160,7 @@ export default {
       CONTROL_PLANE.map(([key, why], i) => {
         const x = podX[i];
         return group([
-          region({ x: x - POD_W / 2, y: POD_Y - POD_H / 2, w: POD_W, h: POD_H, stroke: C.blue, r: 8, caption: 'Pod', captionW: 56, captionSize: TEXT }),
+          pod({ x: x - POD_W / 2, y: POD_Y - POD_H / 2, w: POD_W, h: POD_H, size: TEXT }),
           serviceHex({ key, x, y: POD_Y + CP_HEX_DY, r: CP_HEX_R, role: true, wrap: true }),
           // Up to the service, because it is the sidecar that calls it. The
           // reason rides BESIDE the arrow: a vertical arrow through centred
@@ -196,7 +197,7 @@ export default {
 
 
       // ---- the application pod -------------------------------------------
-      region({ x: POD_CX - APP_POD / 2, y: POD_CY - APP_POD / 2, w: APP_POD, h: APP_POD, stroke: C.blue, r: 8, caption: 'Pod', captionW: 56, captionSize: TEXT }),
+      pod({ x: POD_CX - APP_POD / 2, y: POD_CY - APP_POD / 2, w: APP_POD, h: APP_POD, size: TEXT }),
       appSidecar({ x: APP_X, y: APP_Y, r: APP_R, label: 'App', size: APP_SIZE, ...APP[0] }),
 
       // ---- the kubelet and the sidecar share one line --------------------

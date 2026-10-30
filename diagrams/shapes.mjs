@@ -395,7 +395,9 @@ export function lockBox({ x, y, size = 44, stroke = C.navy, fill = C.tealFill, l
   ]);
 }
 
-export function person({ x, y, size = 40, stroke = C.navy, fill = APP[0].fill, label: name = '', labelDy }) {
+// Sky, not an app colour: a person is not an app, and the first app's green
+// on one would say it was. The same reasoning as secureLock().
+export function person({ x, y, size = 40, stroke = C.navy, fill = C.blueFill, label: name = '', labelDy }) {
   assertStroke(stroke, name, 'person()');
   const s = size;
   const hr = s * 0.2;
@@ -505,6 +507,32 @@ export function roundedPath({ points, r = 10, color = C.navy, width }) {
   return el('path', { class: 'd-run', d, fill: 'none', stroke: color, 'stroke-width': width ?? lineWidth(), 'stroke-linecap': 'round' });
 }
 
+// An elbowed run with a chevron on one or both ends. Five scenes had already
+// written this by hand - a roundedPath with an arrow() laid along its last
+// leg - which is two shapes to keep in step every time a point moves.
+//
+// The head is a SHORT arrow drawn back along the final leg and over the run.
+// arrow() puts its chevron at `to`, the overlapping stroke is the same color,
+// and the two read as one line.
+export const HEAD_RUN = 26;
+
+export function elbowArrow({ points, r = 12, color = C.navy, heads = 'end' }) {
+  if (!Array.isArray(points) || points.length < 2) throw new Error('elbowArrow(): needs at least two points');
+  const chevron = (tip, prev) => {
+    const dx = prev[0] - tip[0];
+    const dy = prev[1] - tip[1];
+    const l = Math.hypot(dx, dy);
+    if (l === 0) throw new Error('elbowArrow(): a leg has no length');
+    // Never longer than half the leg, or the head outruns the corner before it.
+    const d = Math.min(HEAD_RUN, l / 2);
+    return arrow({ from: [+(tip[0] + (dx / l) * d).toFixed(2), +(tip[1] + (dy / l) * d).toFixed(2)], to: tip, color });
+  };
+  const kids = [roundedPath({ points, r, color })];
+  if (heads === 'end' || heads === 'both') kids.push(chevron(points[points.length - 1], points[points.length - 2]));
+  if (heads === 'start' || heads === 'both') kids.push(chevron(points[0], points[1]));
+  return el('g', { class: 'd-elbow-arrow' }, kids);
+}
+
 export const CAPTION_INSET = 20;
 
 export function region({ x, y, w, h, stroke = C.caption, r = 10, caption = '', captionW, captionX, captionH = 26, captionSize = 15 }) {
@@ -522,6 +550,17 @@ export function region({ x, y, w, h, stroke = C.caption, r = 10, caption = '', c
       })
       : null,
   ]);
+}
+
+// A Kubernetes pod: a dashed sky box with rounded corners and the pod name on
+// its top edge. It is one function rather than a region() call per scene
+// because a pod should look the same wherever it is drawn, and the two in
+// `hosting-kubernetes` had already been written out twice.
+//
+// `captionW` is measured, like every other pill in the set: the exporter has
+// no font metrics, so it cannot be derived from the name.
+export function pod({ x, y, w, h, name = 'Pod', captionW = 56, captionX, size = 13 }) {
+  return region({ x, y, w, h, stroke: C.blue, r: 8, caption: name, captionW, captionX, captionSize: size });
 }
 
 export function pill({ x, y, w, h = 26, text: content, color = C.navy, filled = false, size = 15 }) {

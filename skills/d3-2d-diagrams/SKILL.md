@@ -143,8 +143,10 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
 - **An app colour on something that is not an app says it belongs to that
   app.** `secureLock()` was tinted with the first app's green, so the mTLS
   shield on `security-end-to-end` read as App A's rather than as the thing
-  between the two sidecars. It is sky now. Reach for an `APP` fill only for
-  an app.
+  between the two sidecars, and `person()` had the same default, which would
+  have made an operator drawn with it look like App A in a hat. The shield is
+  sky now and the operator is a navy Fluent glyph. Reach for an `APP` fill only
+  for an app.
 - **A dashed region's border is a colour that follows the theme.** The brand
   colours - sky among them - are deliberately the same value in both, so a
   region drawn in one does not re-theme with the page. `C.caption` is the
@@ -299,6 +301,112 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
 - **Apps** are pointy-top hexagons. An app that runs Dapr has the Dapr badge
   docked on it, bottom right by default and bottom left when space needs it:
   use `daprApp()`.
+- **An arrow starts at whoever ACTS, not at where the data happens to sit.**
+  In self-hosted mode the trust anchors come out of files on disk, so the
+  first draft of `sentry-selfhosted` ran the line from the filesystem to the
+  sidecars - which drew a directory reaching into a process on its own. A
+  person reads those files and sets three environment variables; the run
+  starts at the operator, and the label names the files. When a step has a
+  human in it, the human is in the picture.
+- **An elbowed line with a head is `elbowArrow()`, not a `roundedPath()` with
+  an `arrow()` laid over it.** Five scenes had written that pair by hand before
+  it was one function, which is two shapes to keep in step every time a point
+  moves. Give it the points; `heads` puts the chevron on the end, the start,
+  both or neither. A feeder that runs INTO a bus takes `heads: 'none'` - the
+  head belongs at the far end of the bus, where the traffic actually arrives.
+- **A Kubernetes pod is `pod()`.** A dashed sky box with rounded corners and
+  the pod's name on its top edge, the same everywhere. The caption width is
+  measured, like every pill in the set, and `captionX` moves it along the top
+  edge - which it has to when a line leaves the shape underneath it, as Pod B's
+  did in `sentry-kubernetes`.
+- **An app on the right-hand side of a picture turns its sidecar inward:
+  `appSidecar({ mirror: true })`.** The sidecar's near edge still sits on the
+  app's centre and still drops below it by the same clearance; only the side
+  changes. Without it the line between two sidecars has to cross the right-hand
+  app to reach its own.
+- **A line leaves a hexagon at a NODE, or square out of an edge - never along
+  one.** The trust anchors arrive at the sidecar's bottom node, which reads as
+  arriving; the certificate request first left the upper outer node going
+  straight UP, which lies along the vertical edge below it and reads as the
+  line sliding off the shape rather than leaving it. It now leaves that node
+  sideways, square to both edges that meet there, and turns up once it is
+  clear. The sidecar's own top node is not available: the app hexagon hangs
+  over it, and a riser from there would emerge from behind the app.
+- **A mark that annotates a line sits CLEAR of it, and so does its name.** The
+  mTLS shield was placed by eye at `ROW_Y + 16` and its lower edge landed on
+  the arrow it marks; the name beside it then had to fit between two risers
+  that had moved in. Put the shield above the line by half its height plus the
+  name's, and stack the name under the shield rather than beside it: a vertical
+  group needs a third of the width and can be centred between whatever else is
+  in the column.
+- **Centre a pair in its box with `appSidecarCentre()`, never on the app
+  hexagon.** The sidecar hangs off one side and below, so the pair's centre is
+  not the app's. `hosting-kubernetes` worked this out inline and had the
+  sidecar's circumradius standing in for its half width, which put the pair two
+  units off.
+- **Two scenes that are the same picture with one thing different share a
+  skeleton only for as long as BOTH pictures want that shape.**
+  `sentry-selfhosted` and `sentry-kubernetes` were built on identical
+  coordinates, which is what made the one difference between them readable.
+  Then the self-hosted one was rearranged to follow its own source image - the
+  certs in the apps' row, Sentry centred over the apps, the operator centred
+  under them - and the Kubernetes one could not follow it, because it has two
+  pods and an injector to place that the other does not draw. Letting the
+  skeleton break was the right call; the cost is paid in the header comments,
+  where each scene now says where the other one stands and why, so the next
+  reader does not take the divergence for drift.
+- **A line arriving at a hexagon's BOTTOM NODE takes the place its name wanted,
+  so move the name - through the component, not around it.** The two
+  certificate requests in `sentry-selfhosted` merge below Sentry and come up
+  into its bottom node, which is exactly where `serviceHex()` puts the name and
+  the role. The scene does not draw its own labels there - scenes doing that by
+  hand is how the offsets drifted before `services.mjs` existed - it asks for
+  `side: 'right'`, which stacks the name and the role beside the hexagon,
+  centred on it, off the same radius as every other measurement.
+- **A mark with its name under it has THREE sides, not four.** A point-like
+  mark - an icon, a glyph - looks like something a line can reach from any
+  direction, and then its name takes one of those directions away. The
+  operator in `sentry-selfhosted` sends the trust anchors up and the optional
+  certs sideways because those are the only exits it has left: its own name
+  holds the bottom. The same count is why the certs' name sits UNDER the mark
+  in that scene and ABOVE it in `sentry-kubernetes` - whichever side carries no
+  line is the side the name gets. Count the lines a mark has to carry before
+  choosing where its name goes, not after.
+- **A line may arrive at the NAME.** A mark and its name are one object, and
+  the name is often the nearer edge of it. The operator's run to the certs in
+  `sentry-selfhosted` ends on the underside of "Filesystem" rather than at the
+  mark's own side, which let it rise in the certs' own column: one corner
+  instead of two, and the whole left of the picture - the read coming down, the
+  mark, the name, the optional run coming up - standing on one vertical line.
+  Arriving at the side would have bought a dogleg and said nothing more.
+- **Centring two marks on one axis SPENDS that axis.** In `sentry-selfhosted`
+  Sentry is centred over the two apps and the operator is centred under them,
+  so the column between the apps already carries the request trunk going up and
+  the trust riser coming down. The lock that marks the line between the two
+  sidecars could not be centred on it as well: it went in the gap left between
+  the two risers, and the risers were placed where they are to leave that gap.
+  Before centring a third thing, count what the line already carries. A centre
+  line is the most contested space in a picture, not the emptiest.
+- **A canvas is as wide as the distance between its parts, and every unit of
+  that distance is a line a reader has to follow.** The first
+  `sentry-selfhosted` was 920x566: the certs top left, Sentry centred over two
+  apps 350 apart, the operator stacked under the certs. Nothing stood in the
+  middle, so every run crossed a hole to get anywhere. Moving Sentry in beside
+  the certs it reads, closing the apps to the width the lock between them
+  needs, and wrapping the two long labels so they fit INTO the gap the runs
+  were crossing took it to 800x490 with the same content - a quarter less
+  picture, and no run longer than its job. The 16:9 floor is a minimum WIDTH,
+  not a licence to spread: a scene that meets it by growing has only moved the
+  whitespace somewhere else.
+- **Marks that stand together are fitted the same way, and `fit: 'ink'` is the
+  way.** `icon()` scales a mark by its 24-unit viewBox by default, and a Fluent
+  glyph leaves margin inside that box: at `size: 42` only 35 units of it are
+  drawing. The operator on the sentry scenes was drawn that way under a
+  filesystem mark at `fit: 'ink'`, and read as much the smaller of the two
+  although the two numbers were close. `fit: 'ink'` sizes a mark by what it
+  DRAWS, measured into `ink.json` by `npm run measure:ink`. Two marks a reader
+  will compare - one above the other in a column, or along a row - are both
+  fitted to their ink.
 - **An app hexagon hangs over the LEFT of its own sidecar.** The badge docks
   bottom RIGHT, so its centre sits about a sixth of the app radius below the
   hexagon's lowest point and well to the right of the hexagon's centre: a
@@ -977,11 +1085,31 @@ now than to be told about twice.
 
 ### 4. Render it and look at it
 
+While you are still moving things, use the fast one:
+
+```bash
+npm run export:diagrams
+node skills/d3-2d-diagrams/scripts/preview-scene.mjs <name>
+```
+
+It borrows the last build's stylesheet and webfonts out of `daprdocs/public`
+and inlines the exported scene into a page of its own, so it needs no dev
+server and takes a couple of seconds instead of a rebuild. It writes both
+themes, and it prints the scene's bbox, its four margins and **the measured
+box of every label** - which is how a wrap, a clearance or a canvas size gets
+decided rather than estimated. Put a label where the numbers say, not where it
+looked about right.
+
+Finish on the real page, which is the honest check:
+
 ```bash
 node skills/d3-2d-diagrams/scripts/render-scene.mjs <name>
 ```
 
-This is not optional and it is not a formality. The numeric tests pass on a
+Only this one shows that the shortcode inlines the scene and that the figure
+sits properly in the content column. It needs the dev server.
+
+Neither is optional and neither is a formality. The numeric tests pass on a
 mark that is invisible, on a label drawn twice in the same place, and on a
 glyph scaled to nothing inside a slack viewBox. Every one of those has shipped
 past a green suite here.
