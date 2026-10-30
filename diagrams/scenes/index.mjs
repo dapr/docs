@@ -20,6 +20,7 @@ import sidecarHealth from './sidecar-health.mjs';
 import securityEndToEnd from './security-end-to-end.mjs';
 import sentrySelfhosted from './sentry-selfhosted.mjs';
 import sentryKubernetes from './sentry-kubernetes.mjs';
+import mtlsSystemServices from './mtls-system-services.mjs';
 import sidecarModel from './sidecar-model.mjs';
 
 export const scenes = {
@@ -42,5 +43,6 @@ export const scenes = {
   'security-end-to-end': securityEndToEnd,
   'sentry-selfhosted': sentrySelfhosted,
   'sentry-kubernetes': sentryKubernetes,
+  'mtls-system-services': mtlsSystemServices,
   'sidecar-model': sidecarModel,
 };

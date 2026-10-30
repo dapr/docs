@@ -321,6 +321,23 @@ const SCENES = [
     ],
   },
   {
+    // `hosting-kubernetes` with the person who deploys it: the rows are the
+    // same picture, so the labels are the same list plus the operator's own.
+    name: 'mtls-system-services',
+    page: '/concepts/security-concept/',
+    labels: [
+      'Operator',
+      'Deploys and manages Dapr',
+      'Placement',
+      'Injector',
+      'Sentry',
+      'Scheduler',
+      'App',
+      'Kubelet',
+      'Host on any cloud or edge infrastructure',
+    ],
+  },
+  {
     name: 'sentry-selfhosted',
     page: '/concepts/security-concept/',
     labels: ['App A', 'App B', 'Sentry', 'Filesystem', 'Operator'],

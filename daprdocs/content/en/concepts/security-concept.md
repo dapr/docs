@@ -226,8 +226,7 @@ When the Dapr sidecar initializes, it authenticates with the system pods using t
 
 The diagram below shows secure communication between the Dapr sidecar and the Dapr Sentry (Certificate Authority), Placement (actor placement), and the Kubernetes Operator system services.
 
-<img src="/images/security-mTLS-dapr-system-services.png" width=1000>
-</br>
+{{< diagram mtls-system-services >}}
 
 # Operational Security
 

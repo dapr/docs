@@ -151,130 +151,145 @@ export default {
     'A dashed region stands for the Kubernetes cluster. Along its top are the five Dapr control plane services, each in its own pod: placement, which maps actor instances to pods and is used for actors only; the sidecar injector, which injects the Dapr sidecar into annotated pods; sentry, the certificate authority, which manages mTLS and assigns SPIFFE identity; the operator, which manages components and Kubernetes service endpoints; and the scheduler, which schedules jobs for the Jobs and Workflow APIs. Each reaches down to an application pod in the middle, where the Dapr sidecar runs beside the application. The kubelet probes that pod, using readiness and liveness probes on the healthz API to decide Dapr health state. Below, a dashed strip headed "Host on any cloud or edge infrastructure" carries Azure, AWS, Google Cloud, Alibaba Cloud and Kubernetes. On the right, the sidecar uses components for publish and subscribe, workflows, state management, configuration and secrets.',
 
   build() {
-    const podX = CONTROL_PLANE.map((_, i) => POD_X0 + i * POD_PITCH);
-
-    return [
-      panel({ x: CLUSTER.x, y: CLUSTER.y, w: CLUSTER.w, h: CLUSTER.h, stroke: C.navy }),
-
-      // ---- control plane --------------------------------------------------
-      CONTROL_PLANE.map(([key, why], i) => {
-        const x = podX[i];
-        return group([
-          pod({ x: x - POD_W / 2, y: POD_Y - POD_H / 2, w: POD_W, h: POD_H, size: TEXT }),
-          serviceHex({ key, x, y: POD_Y + CP_HEX_DY, r: CP_HEX_R, role: true, wrap: true }),
-          // Up to the service, because it is the sidecar that calls it. The
-          // reason rides BESIDE the arrow: a vertical arrow through centred
-          // text cuts the text in half.
-          // The outer two risers are part of the bus, which turns up into them
-          // with a rounded corner, so they start above that turn.
-          arrow({
-            from: [x, i === 0 || i === CONTROL_PLANE.length - 1 ? BUS_Y - BUS_R : BUS_Y],
-            to: [x, POD_Y + POD_H / 2 + 6],
-          }),
-          label({ x: x + WHY_DX, y: WHY_Y, text: why, size: TEXT, anchor: 'start' }),
-        ]);
-      }),
-
-      // The line the control plane arrows stand on. It sits ABOVE the
-      // application pod and drops into it once, down the pod's left side and in
-      // at the sidecar's own height, so no arrow cuts across the pod and
-      // nothing runs down through the application hexagon.
-      roundedPath({
-        points: [
-          [podX[0], BUS_Y - BUS_R],
-          [podX[0], BUS_Y],
-          [podX[CONTROL_PLANE.length - 1], BUS_Y],
-          [podX[CONTROL_PLANE.length - 1], BUS_Y - BUS_R],
-        ],
-        r: BUS_R,
-      }),
-      el('polyline', {
-        points: `${DROP_X} ${BUS_Y} ${DROP_X} ${SIDE.y}`,
-        fill: 'none',
-        stroke: C.navy,
-        'stroke-width': lineWidth(),
-      }),
-
-
-      // ---- the application pod -------------------------------------------
-      pod({ x: POD_CX - APP_POD / 2, y: POD_CY - APP_POD / 2, w: APP_POD, h: APP_POD, size: TEXT }),
-      appSidecar({ x: APP_X, y: APP_Y, r: APP_R, label: 'App', size: APP_SIZE, ...APP[0] }),
-
-      // ---- the kubelet and the sidecar share one line --------------------
-      // The probe goes one way and the health answer the other, so the single
-      // line between them carries a head at each end. It is the same line the
-      // control plane drops onto, which is why the kubelet sits at the
-      // sidecar's own height.
-      icon({ name: 'kubernetes', x: KUBELET_X, y: KUBELET_Y, size: 26, color: C.kubernetes }),
-      label({ x: KUBELET_X + 20, y: KUBELET_Y, text: 'Kubelet', size: TEXT + 1, anchor: 'start' }),
-      arrow({ from: [KUBELET_LINE_X, KUBELET_Y], to: SIDE }),
-      arrow({ from: SIDE, to: [KUBELET_LINE_X, KUBELET_Y] }),
-      label({
-        x: KUBELET_X - 30,
-        y: KUBELET_Y + 44,
-        text: 'Readiness and liveness\nprobes on the healthz API\ndecide Dapr health state',
-        size: TEXT,
-        anchor: 'start',
-      }),
-
-      // ---- where it runs --------------------------------------------------
-      region({
-        x: HOST.x, y: HOST.y, w: HOST.w, h: HOST.h, stroke: C.navy,
-        caption: 'Host on any cloud or edge infrastructure', captionW: 400,
-        captionX: HOST.x + HOST.w / 2, captionH: 36,
-      }),
-      CLOUDS.map((m, i) => {
-        const left = CLOUD_LEFT[i];
-        const markW = m.size ?? m.w;
-        return group([
-          // The dark-on-light wordmarks get the backing that is transparent in
-          // light mode and a light plate in dark; the rest need none.
-          m.backed ? plate({ x: left + m.span / 2, y: CLOUD_Y, w: m.span + 20, h: 46, fill: C.markPlate }) : null,
-          icon({
-            name: m.name,
-            x: m.text ? left + markW / 2 : left + m.span / 2,
-            y: CLOUD_Y,
-            ...(m.size ? { size: m.size } : { w: m.w, h: m.h }),
-            color: m.name === 'kubernetes' ? C.kubernetes : C.navy,
-          }),
-          m.text
-            ? label({ x: left + markW + CLOUD_NAME_GAP, y: CLOUD_Y, text: m.text, size: TEXT, anchor: 'start' })
-            : null,
-        ]);
-      }),
-
-      // ---- the components it uses ----------------------------------------
-      // Like the control plane bus, this one turns into its outer two arrows
-      // rather than ending in a square corner against them.
-      roundedPath({
-        points: [
-          [COMP_BUS_X + BUS_R, CARD_TOP],
-          [COMP_BUS_X, CARD_TOP],
-          [COMP_BUS_X, CARD_TOP + 4 * CARD_PITCH],
-          [COMP_BUS_X + BUS_R, CARD_TOP + 4 * CARD_PITCH],
-        ],
-        r: BUS_R,
-      }),
-      arrow({ from: SIDE, to: [COMP_BUS_X, SIDE.y] }),
-      label({ x: (SIDE.x + COMP_BUS_X) / 2 + 60, y: SIDE.y - 20, text: 'Use components', size: TEXT }),
-
-      COMPONENTS.map((key, i) => {
-        const y = CARD_TOP + i * CARD_PITCH;
-        return group([
-          arrow({
-            from: [i === 0 || i === COMPONENTS.length - 1 ? COMP_BUS_X + BUS_R : COMP_BUS_X, y],
-            to: { x: CARD_X, y, w: CARD, h: CARD },
-          }),
-          apiTile({
-            key,
-            wrap: true,
-            x: CARD_X,
-            y,
-            w: CARD,
-            h: CARD,
-          }),
-        ]);
-      }),
-    ];
+    return clusterParts();
   },
 };
+
+// The whole picture as a list of parts, so another scene can draw THIS one
+// and add to it rather than carry a copy of it. `mtls-system-services` is
+// this diagram with the person who deploys it standing over the cluster: a
+// copied scene drifts from its original and nothing tells you, which is the
+// same reason a definition never gets copied into a scene.
+export const CLUSTER_SIZE = { w: W, h: H };
+// The pod row's centre. Somebody deploying Dapr is pointing at the control
+// plane, not at any one service in it.
+export const POD_ROW_CX = POD_X0 + ((CONTROL_PLANE_COUNT - 1) / 2) * POD_PITCH;
+export const CLUSTER_TOP = CLUSTER.y;
+
+export function clusterParts() {
+  const podX = CONTROL_PLANE.map((_, i) => POD_X0 + i * POD_PITCH);
+
+  return [
+    panel({ x: CLUSTER.x, y: CLUSTER.y, w: CLUSTER.w, h: CLUSTER.h, stroke: C.navy }),
+
+    // ---- control plane --------------------------------------------------
+    CONTROL_PLANE.map(([key, why], i) => {
+      const x = podX[i];
+      return group([
+        pod({ x: x - POD_W / 2, y: POD_Y - POD_H / 2, w: POD_W, h: POD_H, size: TEXT }),
+        serviceHex({ key, x, y: POD_Y + CP_HEX_DY, r: CP_HEX_R, role: true, wrap: true }),
+        // Up to the service, because it is the sidecar that calls it. The
+        // reason rides BESIDE the arrow: a vertical arrow through centred
+        // text cuts the text in half.
+        // The outer two risers are part of the bus, which turns up into them
+        // with a rounded corner, so they start above that turn.
+        arrow({
+          from: [x, i === 0 || i === CONTROL_PLANE.length - 1 ? BUS_Y - BUS_R : BUS_Y],
+          to: [x, POD_Y + POD_H / 2 + 6],
+        }),
+        label({ x: x + WHY_DX, y: WHY_Y, text: why, size: TEXT, anchor: 'start' }),
+      ]);
+    }),
+
+    // The line the control plane arrows stand on. It sits ABOVE the
+    // application pod and drops into it once, down the pod's left side and in
+    // at the sidecar's own height, so no arrow cuts across the pod and
+    // nothing runs down through the application hexagon.
+    roundedPath({
+      points: [
+        [podX[0], BUS_Y - BUS_R],
+        [podX[0], BUS_Y],
+        [podX[CONTROL_PLANE.length - 1], BUS_Y],
+        [podX[CONTROL_PLANE.length - 1], BUS_Y - BUS_R],
+      ],
+      r: BUS_R,
+    }),
+    el('polyline', {
+      points: `${DROP_X} ${BUS_Y} ${DROP_X} ${SIDE.y}`,
+      fill: 'none',
+      stroke: C.navy,
+      'stroke-width': lineWidth(),
+    }),
+
+
+    // ---- the application pod -------------------------------------------
+    pod({ x: POD_CX - APP_POD / 2, y: POD_CY - APP_POD / 2, w: APP_POD, h: APP_POD, size: TEXT }),
+    appSidecar({ x: APP_X, y: APP_Y, r: APP_R, label: 'App', size: APP_SIZE, ...APP[0] }),
+
+    // ---- the kubelet and the sidecar share one line --------------------
+    // The probe goes one way and the health answer the other, so the single
+    // line between them carries a head at each end. It is the same line the
+    // control plane drops onto, which is why the kubelet sits at the
+    // sidecar's own height.
+    icon({ name: 'kubernetes', x: KUBELET_X, y: KUBELET_Y, size: 26, color: C.kubernetes }),
+    label({ x: KUBELET_X + 20, y: KUBELET_Y, text: 'Kubelet', size: TEXT + 1, anchor: 'start' }),
+    arrow({ from: [KUBELET_LINE_X, KUBELET_Y], to: SIDE }),
+    arrow({ from: SIDE, to: [KUBELET_LINE_X, KUBELET_Y] }),
+    label({
+      x: KUBELET_X - 30,
+      y: KUBELET_Y + 44,
+      text: 'Readiness and liveness\nprobes on the healthz API\ndecide Dapr health state',
+      size: TEXT,
+      anchor: 'start',
+    }),
+
+    // ---- where it runs --------------------------------------------------
+    region({
+      x: HOST.x, y: HOST.y, w: HOST.w, h: HOST.h, stroke: C.navy,
+      caption: 'Host on any cloud or edge infrastructure', captionW: 400,
+      captionX: HOST.x + HOST.w / 2, captionH: 36,
+    }),
+    CLOUDS.map((m, i) => {
+      const left = CLOUD_LEFT[i];
+      const markW = m.size ?? m.w;
+      return group([
+        // The dark-on-light wordmarks get the backing that is transparent in
+        // light mode and a light plate in dark; the rest need none.
+        m.backed ? plate({ x: left + m.span / 2, y: CLOUD_Y, w: m.span + 20, h: 46, fill: C.markPlate }) : null,
+        icon({
+          name: m.name,
+          x: m.text ? left + markW / 2 : left + m.span / 2,
+          y: CLOUD_Y,
+          ...(m.size ? { size: m.size } : { w: m.w, h: m.h }),
+          color: m.name === 'kubernetes' ? C.kubernetes : C.navy,
+        }),
+        m.text
+          ? label({ x: left + markW + CLOUD_NAME_GAP, y: CLOUD_Y, text: m.text, size: TEXT, anchor: 'start' })
+          : null,
+      ]);
+    }),
+
+    // ---- the components it uses ----------------------------------------
+    // Like the control plane bus, this one turns into its outer two arrows
+    // rather than ending in a square corner against them.
+    roundedPath({
+      points: [
+        [COMP_BUS_X + BUS_R, CARD_TOP],
+        [COMP_BUS_X, CARD_TOP],
+        [COMP_BUS_X, CARD_TOP + 4 * CARD_PITCH],
+        [COMP_BUS_X + BUS_R, CARD_TOP + 4 * CARD_PITCH],
+      ],
+      r: BUS_R,
+    }),
+    arrow({ from: SIDE, to: [COMP_BUS_X, SIDE.y] }),
+    label({ x: (SIDE.x + COMP_BUS_X) / 2 + 60, y: SIDE.y - 20, text: 'Use components', size: TEXT }),
+
+    COMPONENTS.map((key, i) => {
+      const y = CARD_TOP + i * CARD_PITCH;
+      return group([
+        arrow({
+          from: [i === 0 || i === COMPONENTS.length - 1 ? COMP_BUS_X + BUS_R : COMP_BUS_X, y],
+          to: { x: CARD_X, y, w: CARD, h: CARD },
+        }),
+        apiTile({
+          key,
+          wrap: true,
+          x: CARD_X,
+          y,
+          w: CARD,
+          h: CARD,
+        }),
+      ]);
+    }),
+  ];
+}
