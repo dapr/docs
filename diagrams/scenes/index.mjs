@@ -21,6 +21,7 @@ import securityEndToEnd from './security-end-to-end.mjs';
 import sentrySelfhosted from './sentry-selfhosted.mjs';
 import sentryKubernetes from './sentry-kubernetes.mjs';
 import mtlsSystemServices from './mtls-system-services.mjs';
+import apiScoping from './api-scoping.mjs';
 import sidecarModel from './sidecar-model.mjs';
 
 export const scenes = {
@@ -44,5 +45,6 @@ export const scenes = {
   'sentry-selfhosted': sentrySelfhosted,
   'sentry-kubernetes': sentryKubernetes,
   'mtls-system-services': mtlsSystemServices,
+  'api-scoping': apiScoping,
   'sidecar-model': sidecarModel,
 };

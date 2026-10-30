@@ -161,6 +161,12 @@
     20,
     20.001
   ],
+  "fluent-checkmark-circle": [
+    2,
+    2,
+    20,
+    20
+  ],
   "fluent-clock": [
     2,
     2,
@@ -183,6 +189,12 @@
     4,
     2,
     16,
+    20
+  ],
+  "fluent-dismiss-circle": [
+    2,
+    2,
+    20,
     20
   ],
   "fluent-document-multiple": [

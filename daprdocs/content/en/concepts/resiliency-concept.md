@@ -20,7 +20,7 @@ Dapr provides a capability for defining and applying fault tolerance resiliency 
 These policies can be applied to any Dapr API calls when calling components with a [resiliency spec]({{% ref resiliency-overview %}}).
 
 ## App Health Checks
-{{< diagram app-health >}}
+{{< diagram name="app-health" width="85" >}}
 
 Applications can become unresponsive for a variety of reasons. For example, they are too busy to accept new work, could have crashed, or be in a deadlock state. Sometimes the condition can be transitory or persistent.
 
@@ -29,7 +29,7 @@ Dapr provides a capability for monitoring app health through probes that check t
 Read more on how to apply [app health checks]({{% ref app-health %}}) to your application.
 
 ## Sidecar Health Checks
-{{< diagram sidecar-health >}}
+{{< diagram name="sidecar-health" width="85" >}}
 
 Dapr provides a way to determine its health using an [HTTP `/healthz` endpoint]({{% ref health_api %}}). With this endpoint, the *daprd* process, or sidecar, can be:
 

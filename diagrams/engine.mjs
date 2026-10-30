@@ -57,7 +57,13 @@ function idBase(title, desc, id) {
   return /^[a-z]/.test(base) ? base : `d-${base}`;
 }
 
-export function svg({ width, height, title, desc, id, children = [] }) {
+// `origin` moves the viewBox, not the drawing: it is how a scene's content
+// ends up CENTRED in its canvas without every coordinate in the scene having
+// to know where the middle is. The exporter passes the measured value from
+// bbox.json; the default leaves the canvas where the scene drew it.
+const num = (v) => String(+(+v).toFixed(2));
+
+export function svg({ width, height, title, desc, id, children = [], origin = [0, 0] }) {
   if (!title || !String(title).trim()) throw new Error('svg(): title is required');
   if (!desc || !String(desc).trim()) throw new Error('svg(): desc is required');
   const base = idBase(title, desc, id);
@@ -68,7 +74,7 @@ export function svg({ width, height, title, desc, id, children = [] }) {
       'svg',
       {
         xmlns: 'http://www.w3.org/2000/svg',
-        viewBox: `0 0 ${width} ${height}`,
+        viewBox: [origin[0], origin[1], width, height].map(num).join(' '),
         role: 'img',
         'aria-labelledby': `${titleId} ${descId}`,
       },

@@ -70,11 +70,16 @@ const inkHalf = (size) => +(size * 0.4).toFixed(2);
 // The certs and the two pairs stand on one line. Putting the filesystem in the
 // apps' own row is what lets Sentry sit over the apps instead of beside the
 // certs: the read runs up the left edge and along the top to reach it.
+// Every x below is set so the DRAWING is centred in the canvas, not just
+// inside it: the figure is centred on the page by the stylesheet, so an
+// off-centre bbox reads as a diagram that is not centred. Moving the certs
+// right in review left 106 of air on the left against 38 on the right, and
+// the whole arrangement moved 34 left to square that up.
 const ROW_Y = 222; // the PAIRS' centre, which is not the app hexagons' line
 const APP_R = 48;
 const APP_SIZE = 16;
-const A_CX = 390;
-const B_CX = 680;
+const A_CX = 356;
+const B_CX = 646;
 const MID = (A_CX + B_CX) / 2;
 
 // App B is mirrored so its sidecar faces inward; without that the mTLS line
@@ -87,7 +92,7 @@ const SIDE_HALF = hexHalfWidth(SIDE_A.r);
 
 // The filesystem sits on the app HEXAGONS' line, which is above the pairs'
 // centre by however far the sidecar hangs below.
-const STORE = { x: 140, y: A.y, size: 48 };
+const STORE = { x: 106, y: A.y, size: 48 };
 // icon() hangs a name this far under the mark's centre, and sets it at
 // `labelSize`. The operator's run ends on the underside of that name, so the
 // scene needs to know where its lower edge falls.
@@ -158,7 +163,7 @@ export default {
       // Under the run it names, in the gap the row leaves between the certs
       // and App A.
       label({
-        x: 254, y: 103, size: TEXT,
+        x: 220, y: 103, size: TEXT,
         text: 'Read the existing root and\nissuer certs, or create\na self-signed root',
       }),
       // The name and the role go BESIDE the hexagon: the merged request comes
@@ -189,7 +194,7 @@ export default {
       // To the right of the trunk, under Sentry's own name: the trunk is the
       // only thing in that column, so the words have to stand beside it.
       label({
-        x: 620, y: 128, size: TEXT,
+        x: 586, y: 128, size: TEXT,
         text: 'Request a workload\ncertificate',
       }),
 
@@ -209,7 +214,7 @@ export default {
       // Right of the operator's riser, where the fork above it is the only
       // line it can belong to: the run to the certs stops short of this column.
       label({
-        x: 650, y: 362, size: TEXT,
+        x: 616, y: 362, size: TEXT,
         text: 'Set the trust anchors\nfrom those files, as\nenvironment variables',
       }),
 
@@ -230,7 +235,7 @@ export default {
       // only line it can belong to is the one below it: bringing your own
       // certs is what is optional, not the operator.
       label({
-        x: 290, y: 345, size: SMALL,
+        x: 256, y: 345, size: SMALL,
         text: '(optional)\nBring your own root\nand issuer certs',
       }),
     ];

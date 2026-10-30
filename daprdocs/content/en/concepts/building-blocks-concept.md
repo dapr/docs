@@ -12,7 +12,7 @@ A [building block]({{% ref building-blocks %}}) is an HTTP or gRPC API that can 
 
 The diagram below shows how building blocks expose a public API that is called from your code, using components to implement the building blocks' capability.
 
-{{< diagram building-blocks-concept >}}
+{{< diagram name="building-blocks-concept" width="60" >}}
 
 Dapr provides the following building blocks:
 

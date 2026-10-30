@@ -7,6 +7,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { svg } from './engine.mjs';
 import { setIconScope } from './icons.mjs';
 import { setCanvasWidth } from './shapes.mjs';
+import ORIGINS from './bbox.json' with { type: 'json' };
 
 const here = dirname(fileURLToPath(import.meta.url));
 export const OUT_DIR = join(here, '..', 'daprdocs', 'assets', 'diagrams');
@@ -119,6 +120,7 @@ export function renderScene(name, scene) {
     desc: scene.desc,
     id: name,
     children,
+    origin: ORIGINS[name] ?? [0, 0],
   });
   // Some vendored marks carry CR inside their path data (java.svg has CR CR LF),
   // and .gitattributes pins these files to eol=lf, so git rewrites those bytes on

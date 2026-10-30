@@ -16,7 +16,7 @@ The Sentry service Docker container is not started automatically as part of [`da
 
 It can also be run manually as a process if you are running in [slim-init mode]({{% ref self-hosted-no-docker %}}).
 
-{{< diagram sentry-selfhosted >}}
+{{< diagram name="sentry-selfhosted" width="70" >}}
 
 ## Kubernetes mode
 

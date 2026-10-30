@@ -321,6 +321,18 @@ const SCENES = [
     ],
   },
   {
+    name: 'api-scoping',
+    page: '/concepts/security-concept/',
+    labels: [
+      'Sidecar configuration',
+      'MyApp',
+      'Service invocation',
+      'State management',
+      'Publish & subscribe',
+      'Bindings',
+    ],
+  },
+  {
     // `hosting-kubernetes` with the person who deploys it: the rows are the
     // same picture, so the labels are the same list plus the operator's own.
     name: 'mtls-system-services',
@@ -500,6 +512,31 @@ const PHONE_WIDTHS = [320, 360, 412];
 // SVG has no padding of its own, so geometry on the boundary touches the prose.
 const EDGE_MARGIN = 10;
 
+// How far the air on one side may differ from the air on the other. The leans
+// this was written to catch ran from 7 to 30 units; the slack is for the font,
+// which is what the drawing's extent is mostly made of and which measures a
+// little differently on another platform.
+const CENTRE_TOLERANCE = 6;
+
+/**
+ * The air on each side of the drawing, in scene units.
+ *
+ * Measured against the viewBox's own ORIGIN, not against zero: the exporter
+ * moves that origin to centre the content, so a scene's top left corner is no
+ * longer the canvas's.
+ */
+function margins(root) {
+  const svg = document.querySelector(`${root} svg`);
+  const b = svg.getBBox();
+  const v = svg.viewBox.baseVal;
+  return {
+    left: b.x - v.x,
+    top: b.y - v.y,
+    right: (v.x + v.width) - (b.x + b.width),
+    bottom: (v.y + v.height) - (b.y + b.height),
+  };
+}
+
 const sel = (name) => `.dapr-diagram[data-diagram="${name}"]`;
 
 /**
@@ -587,7 +624,10 @@ for (const scene of SCENES) {
       // Inlined, not an <img>: only an inline SVG re-themes and is searchable.
       const svg = figure.locator('> svg');
       await expect(svg).toHaveCount(1);
-      await expect(svg).toHaveAttribute('viewBox', /^0 0 \d+(\.\d+)? \d+(\.\d+)?$/);
+      // Four numbers, and the ORIGIN is not assumed to be 0 0: the exporter
+      // moves it by the measured amount that centres the drawing, which can be
+      // negative and is rarely whole. The size is still positive.
+      await expect(svg).toHaveAttribute('viewBox', /^-?\d+(\.\d+)? -?\d+(\.\d+)? \d+(\.\d+)? \d+(\.\d+)?$/);
       await expect(svg).toHaveAttribute('role', 'img');
 
       // The accessible name and description come from inside the SVG and are
@@ -706,20 +746,33 @@ for (const scene of SCENES) {
 
     test(`${scene.name} has no element outside its viewBox`, async ({ page }) => {
       await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
-      const { bbox, view } = await page.evaluate((root) => {
-        const svg = document.querySelector(`${root} svg`);
-        const b = svg.getBBox();
-        const v = svg.viewBox.baseVal;
-        return {
-          bbox: { left: b.x, top: b.y, right: b.x + b.width, bottom: b.y + b.height },
-          view: { width: v.width, height: v.height },
-        };
-      }, sel(scene.name));
+      const m = await page.evaluate(margins, sel(scene.name));
 
-      expect(bbox.left).toBeGreaterThanOrEqual(EDGE_MARGIN);
-      expect(bbox.top).toBeGreaterThanOrEqual(EDGE_MARGIN);
-      expect(bbox.right).toBeLessThanOrEqual(view.width - EDGE_MARGIN);
-      expect(bbox.bottom).toBeLessThanOrEqual(view.height - EDGE_MARGIN);
+      expect(m.left).toBeGreaterThanOrEqual(EDGE_MARGIN);
+      expect(m.top).toBeGreaterThanOrEqual(EDGE_MARGIN);
+      expect(m.right).toBeGreaterThanOrEqual(EDGE_MARGIN);
+      expect(m.bottom).toBeGreaterThanOrEqual(EDGE_MARGIN);
+    });
+
+    // A canvas is not a frame the drawing is centred in by construction: the
+    // parts land where the arithmetic put them and the air left over falls
+    // wherever it falls. It does not show while a figure fills the content
+    // column, because the figure's edges ARE the page's; it shows the moment
+    // one renders narrower, where the drawing sits off to one side of its own
+    // white space. `bbox.json` holds the viewBox origin that squares it up,
+    // and `npm run measure:bbox` regenerates it after a scene moves.
+    test(`${scene.name} centres its drawing in its canvas`, async ({ page }) => {
+      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      const m = await page.evaluate(margins, sel(scene.name));
+
+      expect(
+        Math.abs(m.left - m.right),
+        `off-centre across: ${m.left.toFixed(1)} left against ${m.right.toFixed(1)} right - run \`npm run measure:bbox\``,
+      ).toBeLessThanOrEqual(CENTRE_TOLERANCE);
+      expect(
+        Math.abs(m.top - m.bottom),
+        `off-centre down: ${m.top.toFixed(1)} top against ${m.bottom.toFixed(1)} bottom - run \`npm run measure:bbox\``,
+      ).toBeLessThanOrEqual(CENTRE_TOLERANCE);
     });
 
     // A region's caption is centred ON its border, so half of it hangs INSIDE
@@ -866,8 +919,15 @@ function diagramCallSites() {
   const calls = [];
   for (const file of markdownFiles(CONTENT_DIR)) {
     const body = fs.readFileSync(file, 'utf8');
-    for (const m of body.matchAll(/\{\{<\s*diagram\s+([^\s>]+)/g)) {
-      calls.push({ name: m[1].replace(/^["']|["']$/g, ''), page: urlFor(file) });
+    // Both call forms: `{{< diagram overview >}}` and, where the page asks for
+    // a width, the all-named `{{< diagram name="x" width="70" >}}` - Hugo
+    // refuses to mix positional and named parameters, so passing one means
+    // naming both.
+    for (const m of body.matchAll(/\{\{<\s*diagram\s+([^>]*?)\s*>\}\}/g)) {
+      const args = m[1];
+      const named = args.match(/(^|\s)name\s*=\s*["']([^"']+)["']/);
+      const name = named ? named[2] : args.split(/\s+/)[0].replace(/^["']|["']$/g, '');
+      calls.push({ name, page: urlFor(file) });
     }
   }
   return calls;

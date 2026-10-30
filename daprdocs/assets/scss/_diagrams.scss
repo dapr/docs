@@ -7,7 +7,17 @@
 //
 
 .dapr-diagram {
-  margin: 0 0 1.5rem;
+  // `auto` so a figure narrowed by the shortcode's `width` centres in the
+  // column instead of hugging its left edge.
+  margin: 0 auto 1.5rem;
+
+  // The shortcode sets --dapr-diagram-width when a page asks for a diagram to
+  // render at less than the full column. Only above the `md` breakpoint: on a
+  // phone the column is already the smallest the drawing can usefully be, and
+  // taking another third off it makes the labels unreadable.
+  @include media-breakpoint-up(md) {
+    max-width: var(--dapr-diagram-width, 100%);
+  }
 
   // The scene carries a viewBox and no width/height, so it scales to the
   // column and never renders larger than the content area (decision 12).

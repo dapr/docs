@@ -5,6 +5,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { el, text } from './engine.mjs';
 import { run, renderScene, OUT_DIR } from './export.mjs';
+import { scenes } from './scenes/index.mjs';
+import ORIGINS from './bbox.json' with { type: 'json' };
 
 const scene = (over = {}) => ({
   width: 100,
@@ -219,4 +221,27 @@ test('run() reports the scene name when build() throws', () => {
   });
   assert.equal(ok, false);
   assert.match(problems.join('\n'), /scene "beta".*kaboom/s);
+});
+
+test('every scene has a measured viewBox origin, and the exporter uses it', () => {
+  // bbox.json centres each drawing in its canvas. A scene added without
+  // re-measuring exports at 0 0 and leans whichever way its coordinates fell,
+  // which only shows once a figure renders narrower than the column - so it
+  // is caught here rather than by eye.
+  const missing = Object.keys(scenes).filter((name) => !Array.isArray(ORIGINS[name]));
+  assert.deepEqual(missing, [], `scenes with no entry in diagrams/bbox.json - run \`npm run measure:bbox\`:\n${missing.join('\n')}`);
+
+  for (const [name, origin] of Object.entries(ORIGINS)) {
+    assert.ok(scenes[name], `bbox.json names "${name}", which is not a scene`);
+    assert.equal(origin.length, 2, name);
+    for (const v of origin) assert.ok(Number.isFinite(v), `${name}: ${v}`);
+  }
+
+  // The origin reaches the output: without this the file could be correct and
+  // ignored, and every centring test would still pass on an unshifted canvas.
+  const name = Object.keys(scenes).find((k) => ORIGINS[k].some((v) => Math.abs(v) > 1));
+  if (name) {
+    const [ox, oy] = ORIGINS[name];
+    assert.match(renderScene(name, scenes[name]), new RegExp(`viewBox="${ox} ${oy} `));
+  }
 });

@@ -1,0 +1,90 @@
+{
+  "agents-overview": [
+    0.45,
+    3.75
+  ],
+  "api-scoping": [
+    -0.07,
+    0
+  ],
+  "app-health": [
+    -30,
+    25
+  ],
+  "building-blocks": [
+    0,
+    0
+  ],
+  "building-blocks-concept": [
+    0.25,
+    0
+  ],
+  "components-concept": [
+    2,
+    4.28
+  ],
+  "hosting-kubernetes": [
+    -12,
+    0
+  ],
+  "hosting-standalone": [
+    -12,
+    -8.5
+  ],
+  "hosting-vms": [
+    -16.68,
+    -4.47
+  ],
+  "mtls-system-services": [
+    -12,
+    -3
+  ],
+  "observability-sidecar": [
+    0,
+    -4.5
+  ],
+  "observability-tracing": [
+    -2.25,
+    -4
+  ],
+  "overview": [
+    0,
+    0
+  ],
+  "resiliency-policies": [
+    5,
+    25
+  ],
+  "scheduler-architecture": [
+    16.02,
+    1.5
+  ],
+  "security-end-to-end": [
+    0,
+    -7.5
+  ],
+  "sentry-kubernetes": [
+    -0.96,
+    -5.5
+  ],
+  "sentry-selfhosted": [
+    0,
+    4.49
+  ],
+  "service-mesh": [
+    3.81,
+    2.01
+  ],
+  "sidecar-apis": [
+    -0.25,
+    0.69
+  ],
+  "sidecar-health": [
+    -2,
+    25
+  ],
+  "sidecar-model": [
+    -7.32,
+    -0.17
+  ]
+}

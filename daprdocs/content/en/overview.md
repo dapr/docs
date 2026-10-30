@@ -74,7 +74,7 @@ Alongside its building blocks, Dapr provides cross-cutting APIs that apply acros
 
 Dapr exposes its HTTP and gRPC APIs as a sidecar architecture, either as a container or as a process, not requiring the application code to include any Dapr runtime code. This makes integration with Dapr easy from other runtimes, as well as providing separation of the application logic for improved supportability.
 
-{{< diagram sidecar-model >}}
+{{< diagram name="sidecar-model" width="65" >}}
 
 ## Hosting environments
 
@@ -148,7 +148,7 @@ Dapr can be used from any developer framework. Here are some that have been inte
 
 #### Dapr Agents
 
-{{< diagram agents-overview >}}
+{{< diagram name="agents-overview" width="85" >}}
 
 
 [Dapr Agents]({{% ref "../developing-ai/dapr-agents" %}}) is a Python framework for building intelligent, durable agents powered by LLMs. It provides agent-centric capabilities such as tool calling, memory management, [MCP support](https://modelcontextprotocol.io/) and agent orchestration, while leveraging Dapr for durability, observability, and security, at scale.

@@ -54,6 +54,21 @@ The engine's API is in [reference/engine.md](reference/engine.md).
   width for left and right, height for top and bottom - and never less than
   about 12 units, whatever the percentage says on a small canvas. The rendered
   tests already fail anything within 10 units of the edge.
+- **The drawing is CENTRED in its canvas, and that is measured, not eyeballed.**
+  A canvas is not a frame a drawing is centred in by construction: the parts
+  land where the arithmetic puts them and the air left over falls wherever it
+  falls. `sentry-selfhosted` ended a review with 106 units of air on the left
+  and 38 on the right, and nothing showed it, because a figure that fills the
+  content column has the page's own edges. The moment one renders narrower -
+  `{{< diagram name="x" width="70" >}}` - the drawing sits visibly off to one
+  side of its own white space.
+  You do not fix this by moving coordinates. `diagrams/bbox.json` holds the
+  viewBox ORIGIN that squares each scene up, `npm run measure:bbox` measures
+  it in a browser and rewrites the file, and the exporter passes it to `svg()`.
+  Measured, because most of a drawing's extent is TEXT and text has no width
+  until a font renders it - the same reason `ink.json` exists. Run it after
+  anything that moves a scene's extent, and the rendered test
+  `centres its drawing in its canvas` will tell you when you forget.
 - **Padding is also the only scale control, so expect one axis to carry it.**
   The SVG always fills the content column, so the only thing that changes how
   BIG a drawing renders is its ratio to the canvas: ask for a diagram at 80%
@@ -98,7 +113,46 @@ The engine's API is in [reference/engine.md](reference/engine.md).
   so a label's rendered size is `size x columnWidth / viewBoxWidth`. On a
   1512-wide canvas a 12-unit label lands near 6 to 7 CSS px in a docs column.
   The 11-unit floor the tests enforce is therefore a floor in **user units**,
-  not in pixels a reader sees. A wide canvas needs proportionally larger labels.
+  not in pixels a reader sees. Do not answer this by sizing a scene's labels
+  against its canvas, which fights every rule about keeping one type size
+  across the set: answer it with how wide the figure RENDERS, below.
+- **A small canvas renders BIG, and the shortcode's `width` is the lever - set
+  from a calculation, not by eye.** A scene unit renders at
+  `columnWidth / canvasWidth`, so the narrower the canvas, the further it is
+  stretched and the larger everything in it comes out. Measured across this set
+  in a 900px column, a 13-unit label renders **17.2px** in
+  `building-blocks-concept` (canvas 680) and **7.7px** in `overview`
+  (canvas 1512). The same declared size, two and a bit times apart, decided by
+  nothing but how wide the canvas happened to end up.
+  So a diagram on a small canvas is narrowed where it is CALLED:
+
+  ```
+  {{< diagram name="sentry-selfhosted" width="70" >}}
+  ```
+
+  ```
+  width = round(canvasWidth / 1100 * 20) * 5     // nearest 5, capped at 100
+  ```
+
+  Leave it out above 85: the difference is not worth the markup. The divisor is
+  not a taste: the canvases in this set fall into two groups with a clear gap
+  between 1050 and 1122 - full-page architecture diagrams above it, set-pieces
+  below - and 1100 sits in that gap. It puts a 13-unit label near 10.6 CSS px
+  in a 900px column, which is `sentry-selfhosted` at 70%, the size that was
+  reviewed and accepted.
+
+  | canvas | width | | canvas | width |
+  | --- | --- | --- | --- | --- |
+  | 680 | 60 | | 900 | 80 |
+  | 730 | 65 | | 914 | 85 |
+  | 770 | 70 | | 940 | 85 |
+  | 880 | 80 | | 1050 and up | leave it out |
+
+  This changes nothing in the scene, and it is not a way to make a diagram you
+  think looks too big smaller - it is how the TYPE stays one size across the
+  set. Shrinking the canvas instead does nothing at all; see the rule on that
+  under Gotchas. `width` is ignored below the `md` breakpoint, where the column
+  is already the smallest a drawing can usefully be.
 
 ### Colors
 
@@ -1105,6 +1159,14 @@ npm run export:diagrams
 node skills/vector-2d-diagrams/scripts/preview-scene.mjs <name>
 ```
 
+Once the layout has settled, re-measure where the drawing sits in its canvas
+and export again, or it will lean:
+
+```bash
+npm run measure:bbox
+npm run export:diagrams
+```
+
 It borrows the last build's stylesheet and webfonts out of `daprdocs/public`
 and inlines the exported scene into a page of its own, so it needs no dev
 server and takes a couple of seconds instead of a rebuild. It writes both
@@ -1236,6 +1298,18 @@ before the next one starts. Report visual choices as proposals, not decisions.
   started is invisible to `resources.Get`, so the shortcode errors and the page
   returns 500 while the file sits on disk. The first export of a new scene is
   therefore always a restart. Changing an existing scene is not.
+- **Fast Render Mode serves a stale page for anything you were not looking
+  at, and it does not look stale.** `npm run serve` runs with it on. Change a
+  SHORTCODE - a new `width`, a renamed scene - and the page you have open
+  updates while the others keep serving the markup they were built with, with
+  no warning in the log, which reads as a change that did not take. It can also
+  hold an error after you have fixed it: a shortcode error kept being reported
+  at a line and column that were already correct until the server was
+  restarted. When a content change seems not to have landed, restart before
+  you debug it, and confirm against the served HTML rather than the file:
+  `curl -s localhost:1313/<page>/ | grep dapr-diagram`. Note the minifier
+  strips attribute quotes, so grep for `data-diagram=name`, not
+  `data-diagram="name"`.
 - **An inlined SVG is not portable.** Every colour in a scene is a
   `var(--d-*)`, which resolves against the PAGE. The same markup saved to a
   file or pasted into another tool has nothing to resolve against and paints
