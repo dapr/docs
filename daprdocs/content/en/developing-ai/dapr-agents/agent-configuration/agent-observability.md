@@ -95,14 +95,14 @@ When runtime configuration is enabled, fields marked `Y` in the **Hot-reloadable
 
 ## Validation and resolution behavior
 
-The following validation rules apply to fields supported by each configuration source:
+The following validation rules apply to the fields supported by each configuration source:
 
 | Rule | Instantiation | Environment | Runtime configuration and hot reload |
 |---|---|---|---|
 | Invalid value | Raises an error | Logged and ignored | Logged and ignored |
 | OpenTelemetry boolean values | Native booleans or case-insensitive `true`/`false` | Case-insensitive `true`/`false` only | Case-insensitive `true`/`false` only |
 | Logging and tracing exporter names | Case-insensitive | Case-insensitive | Case-insensitive |
-| Empty or whitespace-only `auth_token`, `endpoint`, and `service_name` | Treated as unset | Ignored | Ignored |
+| Empty or whitespace-only `auth_token`, `endpoint`, and `service_name` values | Treated as unset | Ignored | Ignored |
 
 The following OpenTelemetry boolean keys are used for both environment variables and runtime configuration: `OTEL_SDK_DISABLED`, `OTEL_LOGGING_ENABLED`, and `OTEL_TRACING_ENABLED`.
 

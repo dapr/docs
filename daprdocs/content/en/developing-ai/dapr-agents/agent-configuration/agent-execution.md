@@ -93,7 +93,7 @@ When runtime configuration is enabled, fields marked `Y` in the **Hot-reloadable
 
 ## Validation and resolution behavior
 
-The following validation rules apply to fields supported by each configuration source:
+The following validation rules apply to the fields supported by each configuration source:
 
 | Rule | Instantiation | Environment | Runtime configuration and hot reload |
 |---|---|---|---|
