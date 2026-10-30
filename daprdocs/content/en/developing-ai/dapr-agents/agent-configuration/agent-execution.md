@@ -6,19 +6,19 @@ weight: 10
 description: "Configure DurableAgent execution behavior"
 ---
 
-Dapr Agents uses `AgentExecutionConfig` to control how a `DurableAgent` runs LLM turns, executes tools, streams responses, and handles execution limits.
+Dapr Agents uses `AgentExecutionConfig` to control how a `DurableAgent` runs LLM turns, executes tools, streams responses, and enforces iteration, approval-round, and message-size limits.
 
-## Configuration
+## Configuration fields
 
-The table describes the available execution options.
+The following table lists the available execution configuration fields:
 
 | Field | Type | Default | Description |
 |---|---|---:|---|
 | `max_iterations` | `int` | `10` | Maximum number of LLM and tool iterations per turn. |
-| `tool_choice` | `str \| None` | `"auto"` | Provider tool-choice behavior. Standard values include `auto`, `none`, and `required`; non-empty provider-specific values are also accepted. |
+| `tool_choice` | `str \| None` | `"auto"` | Controls provider tool-choice behavior. Standard values include `auto`, `none`, and `required`; non-empty provider-specific values are also accepted. |
 | `tool_execution_mode` | `ToolExecutionMode` | `PARALLEL` | Executes tool calls in parallel or sequentially. Use `PARALLEL` for independent calls and `SEQUENTIAL` when calls depend on prior results or side effects. |
 | `orchestration_mode` | `OrchestrationMode \| None` | `None` | Selects the orchestration strategy: `agent`, `random`, or `roundrobin`. |
-| `approval` | `AgentApprovalConfig` | See below | Configures delivery and timeout behavior for human approvals. |
+| `approval` | `AgentApprovalConfig` | See the `AgentApprovalConfig` fields section below. | Configures delivery and timeout behavior for human approvals. |
 | `max_approval_rounds` | `int \| None` | `None` | Maximum number of human-approval rounds in one executor run. When unset, uses `max_iterations`. |
 | `max_grpc_inbound_message_size_bytes` | `int \| None` | `None` | Overrides the inbound gRPC message-size limit for this agent. |
 | `streaming` | `bool` | `False` | Enables streaming responses for pub/sub-triggered sessions. |
@@ -37,24 +37,26 @@ The table describes the available execution options.
 
 ## Configuration sources
 
-Configuration sources are resolved in descending order of priority: state store runtime configuration, instantiation values, and environment variables.
+Configuration sources are resolved from highest to lowest priority:
 
-### Source support
+1. State store runtime configuration
+2. Instantiation values
+3. Environment variables
 
-| Field | Instantiation | Environment | Runtime configuration |
-|---|---|---|---|
-| `max_iterations` | Y | Y | Y |
-| `tool_choice` | Y | Y | Y |
-| `tool_execution_mode` | Y | Y | N |
-| `orchestration_mode` | Y | N | N |
-| `approval` | Y | N | N |
-| `max_approval_rounds` | Y | N | N |
-| `max_grpc_inbound_message_size_bytes` | Y | Y | N |
-| `streaming` | Y | N | N |
-| `stream_listener` | Y | N | N |
-| `builtin_tools` | Y | N | N |
+### Configuration support
 
-Environment variables support canonical `SCREAMING_SNAKE_CASE` names and lowercase `snake_case` equivalents. When both forms are present, the uppercase name takes precedence.
+| Field | Instantiation | Environment | Runtime configuration | Hot-reloadable |
+|---|---|---|---|---|
+| `max_iterations` | Y | Y | Y | Y |
+| `tool_choice` | Y | Y | Y | Y |
+| `tool_execution_mode` | Y | Y | N | N |
+| `orchestration_mode` | Y | N | N | N |
+| `approval` | Y | N | N | N |
+| `max_approval_rounds` | Y | N | N | N |
+| `max_grpc_inbound_message_size_bytes` | Y | Y | N | N |
+| `streaming` | Y | N | N | N |
+| `stream_listener` | Y | N | N | N |
+| `builtin_tools` | Y | N | N | N |
 
 ### Environment variables
 
@@ -65,20 +67,41 @@ Environment variables support canonical `SCREAMING_SNAKE_CASE` names and lowerca
 | `tool_execution_mode` | `DAPR_AGENTS_TOOL_EXECUTION_MODE` |
 | `max_grpc_inbound_message_size_bytes` | `DAPR_GRPC_MAX_INBOUND_MESSAGE_SIZE_BYTES` |
 
-Runtime configuration supports `SCREAMING_SNAKE_CASE`, `snake_case`, and `kebab-case` keys, in that order of priority. Runtime configuration currently supports only `max_iterations` and `tool_choice`.
+Environment variables support these key-naming conventions, from highest to lowest priority:
+
+1. `SCREAMING_SNAKE_CASE`
+2. `snake_case`
+
+### Runtime configuration keys
+
+| Field | Canonical runtime key |
+|---|---|
+| `max_iterations` | `MAX_ITERATIONS` |
+| `tool_choice` | `TOOL_CHOICE` |
+
+Runtime configuration supports these key-naming conventions, from highest to lowest priority:
+
+1. `SCREAMING_SNAKE_CASE`
+2. `snake_case`
+3. `kebab-case`
 
 ## Hot reload
 
-When runtime configuration is enabled, changes to `max_iterations` and `tool_choice` are applied without restarting the agent. Other execution settings are not hot-reloadable. Invalid hot-reload values are logged and ignored.
+When runtime configuration is enabled, fields marked `Y` in the **Hot-reloadable** column are applied without restarting the agent. Other execution settings require a restart.
 
 ## Validation and resolution behavior
 
-- Values provided during instantiation are validated strictly. Invalid values raise an error.
-- Invalid environment-variable and runtime values are logged and ignored.
-- `max_iterations`, `max_approval_rounds`, and `max_grpc_inbound_message_size_bytes` must be positive integral values smaller than `10^19`. Values such as `10`, `"10"`, `10.0`, and `"1e3"` are accepted; zero, negative, fractional, and values such as `"1e19"` are rejected.
-- Enum values such as `tool_choice` and `tool_execution_mode` are case-insensitive across supported sources.
-- Empty or whitespace-only `tool_choice` values are rejected during instantiation and ignored from environment or runtime configuration.
-- When creating partial execution overrides, prefer direct construction or mutation. `dataclasses.replace()` and equivalent reconstruction can pass default values as explicit overrides and unintentionally replace environment values.
+The following validation rules apply to fields supported by each configuration source:
+
+| Rule | Instantiation | Environment | State store runtime/hot reload |
+|---|---|---|---|
+| Invalid value | Raises an error | Logged and ignored | Logged and ignored |
+| Empty or whitespace-only `tool_choice` | Rejected | Ignored | Ignored |
+| Enum values | Case-insensitive for `tool_choice` and `tool_execution_mode` | Case-insensitive for `tool_choice` and `tool_execution_mode` | Case-insensitive for `tool_choice`; not supported for `tool_execution_mode` |
+
+`max_iterations`, `max_approval_rounds`, and `max_grpc_inbound_message_size_bytes` must be positive integral values less than `10^19`. Values such as `10`, `"10"`, `10.0`, and `"1e3"` are accepted; zero, negative, fractional, and values such as `"1e19"` are rejected. This limit prevents unsafe conversion of extremely large numeric values while covering the signed 64-bit integer range.
+
+When creating partial execution overrides, prefer direct construction or mutation. `dataclasses.replace()` and equivalent reconstruction can pass default values as explicit overrides and unintentionally replace environment values.
 
 ## Usage
 

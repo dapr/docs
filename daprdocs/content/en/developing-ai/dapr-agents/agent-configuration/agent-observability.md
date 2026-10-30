@@ -8,43 +8,45 @@ description: "Configure OpenTelemetry observability for DurableAgent"
 
 Dapr Agents uses `AgentObservabilityConfig` to configure OpenTelemetry logging and tracing for a `DurableAgent`.
 
-## Configuration
+## Configuration fields
 
-The table describes the available observability options.
+The following table lists the available observability configuration fields:
 
 | Field | Type | Default | Description |
 |---|---|---:|---|
 | `enabled` | `bool \| None` | `None` | Enables or disables observability for the agent. When `OTEL_SDK_DISABLED` is set to `true`, observability is disabled. |
 | `headers` | `dict[str, str]` | `{}` | Headers included in requests to the selected exporter. |
-| `auth_token` | `str \| None` | `None` | Authentication token used when exporting telemetry. The runtime configuration value is applied to `auth_token`; the environment value populates `headers`. |
+| `auth_token` | `str \| None` | `None` | Authentication token used when exporting telemetry. When provided through runtime configuration, the value is applied to `auth_token`; when provided as an environment variable, it populates `headers`. |
 | `endpoint` | `str \| None` | `None` | Base endpoint for the selected telemetry exporter. Required for non-console exporters; console exporters do not require an endpoint. |
 | `service_name` | `str \| None` | `None` | Sets the service name included in exported telemetry. |
-| `logging_enabled` | `bool \| None` | `None` | Enables export of agent logs. |
-| `logging_exporter` | `AgentLoggingExporter \| None` | `None` | Exporter used to export agent logs: `console`, `otlp_grpc`, or `otlp_http`. |
-| `tracing_enabled` | `bool \| None` | `None` | Enables export of agent traces. |
-| `tracing_exporter` | `AgentTracingExporter \| None` | `None` | Exporter used to export agent traces: `otlp_grpc`, `otlp_http`, `zipkin`, or `console`. |
+| `logging_enabled` | `bool \| None` | `None` | Enables agent log export. |
+| `logging_exporter` | `AgentLoggingExporter \| None` | `None` | Exporter used for agent logs: `console`, `otlp_grpc`, or `otlp_http`. |
+| `tracing_enabled` | `bool \| None` | `None` | Enables agent trace export. |
+| `tracing_exporter` | `AgentTracingExporter \| None` | `None` | Exporter used for agent traces: `otlp_grpc`, `otlp_http`, `zipkin`, or `console`. |
 
-Use the endpoint format expected by the selected exporter, for example `http://otel-collector:4317` for OTLP gRPC, `http://otel-collector:4318` for OTLP HTTP, or `http://zipkin:9411` for Zipkin. Dapr Agents appends `/v1/logs`, `/v1/traces`, or `/api/v2/spans` when those paths are not already present.
+Use the endpoint format expected by the selected exporter, for example `http://otel-collector:4317` for OTLP gRPC, `http://otel-collector:4318` for OTLP HTTP, or `http://zipkin:9411` for Zipkin. Dapr Agents appends the appropriate path—`/v1/logs`, `/v1/traces`, or `/api/v2/spans`—if it is not already present.
 
 ## Configuration sources
 
-Configuration sources are resolved in descending order of priority: instantiation values, environment variables, and state store runtime configuration.
+Configuration sources are resolved from highest to lowest priority:
 
-### Source support
+1. Instantiation values
+2. Environment variables
+3. State store runtime configuration
 
-| Field | Instantiation | Environment | Runtime configuration |
-|---|---|---|---|
-| `enabled` | Y | Y | Y |
-| `headers` | Y | Y | N |
-| `auth_token` | Y | N | Y |
-| `endpoint` | Y | Y | Y |
-| `service_name` | Y | Y | Y |
-| `logging_enabled` | Y | Y | Y |
-| `logging_exporter` | Y | Y | Y |
-| `tracing_enabled` | Y | Y | Y |
-| `tracing_exporter` | Y | Y | Y |
+### Configuration support
 
-Environment variables support canonical `SCREAMING_SNAKE_CASE` names and lowercase `snake_case` equivalents. When both forms are present, the uppercase name takes precedence.
+| Field | Instantiation | Environment | Runtime configuration | Hot-reloadable |
+|---|---|---|---|---|
+| `enabled` | Y | Y | Y | Y |
+| `headers` | Y | Y | N | N |
+| `auth_token` | Y | N | Y | Y |
+| `endpoint` | Y | Y | Y | Y |
+| `service_name` | Y | Y | Y | Y |
+| `logging_enabled` | Y | Y | Y | Y |
+| `logging_exporter` | Y | Y | Y | Y |
+| `tracing_enabled` | Y | Y | Y | Y |
+| `tracing_exporter` | Y | Y | Y | Y |
 
 ### Environment variables
 
@@ -59,19 +61,50 @@ Environment variables support canonical `SCREAMING_SNAKE_CASE` names and lowerca
 | `tracing_enabled` | `OTEL_TRACING_ENABLED` |
 | `tracing_exporter` | `OTEL_TRACES_EXPORTER` |
 
-Runtime configuration supports `SCREAMING_SNAKE_CASE`, `snake_case`, and `kebab-case` keys, in that order of priority. Runtime values use the corresponding OpenTelemetry environment-variable names as configuration keys.
+Environment variables support these key-naming conventions, from highest to lowest priority:
+
+1. `SCREAMING_SNAKE_CASE`
+2. `snake_case`
+
+### Runtime configuration keys
+
+| Field | Canonical runtime key |
+|---|---|
+| `enabled` | `OTEL_SDK_DISABLED` |
+| `auth_token` | `OTEL_EXPORTER_OTLP_HEADERS` |
+| `endpoint` | `OTEL_EXPORTER_OTLP_ENDPOINT` |
+| `service_name` | `OTEL_SERVICE_NAME` |
+| `logging_enabled` | `OTEL_LOGGING_ENABLED` |
+| `logging_exporter` | `OTEL_LOGS_EXPORTER` |
+| `tracing_enabled` | `OTEL_TRACING_ENABLED` |
+| `tracing_exporter` | `OTEL_TRACES_EXPORTER` |
+
+Runtime configuration supports these key-naming conventions, from highest to lowest priority:
+
+1. `SCREAMING_SNAKE_CASE`
+2. `snake_case`
+3. `kebab-case`
+
+When provided through runtime configuration, `OTEL_EXPORTER_OTLP_HEADERS` is applied to `auth_token`; when provided as an environment variable, it populates `headers`.
 
 ## Hot reload
 
-When runtime configuration is enabled, changes to `enabled`, `auth_token`, `endpoint`, `service_name`, `logging_enabled`, `logging_exporter`, `tracing_enabled`, and `tracing_exporter` are applied without restarting the agent. The `headers` field is not hot-reloadable. Invalid hot-reload values are logged and ignored.
+When runtime configuration is enabled, fields marked `Y` in the **Hot-reloadable** column are applied without restarting the agent. Other observability settings require a restart.
 
 ## Validation and resolution behavior
 
-- Values provided during instantiation are validated strictly. Invalid values raise an error.
-- Invalid environment-variable and runtime values are logged and ignored, including invalid values received during hot reload.
-- OpenTelemetry boolean values (`OTEL_SDK_DISABLED`, `OTEL_LOGGING_ENABLED`, and `OTEL_TRACING_ENABLED`) accept only case-insensitive `true` and `false` strings from environment and runtime configuration, as defined by the [OpenTelemetry environment variable specification](https://opentelemetry.io/docs/specs/otel/configuration/sdk-environment-variables/#boolean). Native booleans are also accepted during instantiation. Other aliases, such as `1`, `0`, `yes`, and `no`, are ignored or rejected according to their source.
-- Exporter values are case-insensitive across supported sources.
-- Empty or whitespace-only `auth_token`, `endpoint`, and `service_name` values are treated as unset during instantiation and ignored from environment or runtime configuration.
+The following validation rules apply to fields supported by each configuration source:
+
+| Rule | Instantiation | Environment | State store runtime/hot reload |
+|---|---|---|---|
+| Invalid value | Raises an error | Logged and ignored | Logged and ignored |
+| OpenTelemetry boolean values | Native booleans or case-insensitive `true`/`false` | Case-insensitive `true`/`false` only | Case-insensitive `true`/`false` only |
+| Logging and tracing exporter names | Case-insensitive | Case-insensitive | Case-insensitive |
+| Empty or whitespace-only `auth_token`, `endpoint`, and `service_name` | Treated as unset | Ignored | Ignored |
+
+The following OpenTelemetry boolean keys are used for both environment variables and runtime configuration: `OTEL_SDK_DISABLED`, `OTEL_LOGGING_ENABLED`, and `OTEL_TRACING_ENABLED`.
+
+Only case-insensitive `true` and `false` strings are valid for environment variables and runtime configuration, as specified by the [OpenTelemetry environment variable specification](https://opentelemetry.io/docs/specs/otel/configuration/sdk-environment-variables/#boolean). Values such as `1`, `0`, `yes`, and `no` are invalid. During instantiation, invalid values raise an error; through environment variables or runtime configuration, they are logged and ignored.
 
 ## Usage
 
