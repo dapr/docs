@@ -241,7 +241,26 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
 - **Sizes:** use `label()`. 11 units at weight 600 by default; app names at
   about a third of the hexagon's radius; section captions in `C.caption`. Use
   `\n` for a second line, which `label()` centers vertically for you.
-- **Text over a line** gets `halo: true` so the line does not run through it.
+- **Text over ANY line gets `halo: true` - an arrow, a bus, or a dashed
+  region border.** The halo is the page's own ground painted behind the
+  glyphs, so the line stops at the word and picks up after it instead of
+  striking through it. A dashed border is the case that gets forgotten,
+  because a label only ever lands on one when a flow crosses a boundary -
+  which is exactly when the label matters most. `security-threat-model` names
+  flows that leave their trust boundary, and every one of those names carries
+  a halo. It costs nothing where nothing crosses: the halo is invisible
+  against bare ground.
+
+  **This one is checked.** `paints ground behind any label a line crosses` in
+  `tests/diagrams.spec.js` walks every stroked, unfilled shape in a scene with
+  `getPointAtLength` - the geometry itself, not its bounding box, because an
+  elbow's box is the whole L - and fails any label those points pass through
+  with nothing painted behind it. Ground is anything FILLED that covers the
+  label and paints after the line, so a halo, a caption pill, a plate and a
+  card all satisfy it and none of them has to be special-cased. It found the
+  threat model's injector naming itself straight through the
+  read-root-certificate line, in a scene that had already been read over by
+  eye several times.
 - **A label sits under the thing it names, centered on it.** Centered is the
   default because it is the one position a reader never has to reason about:
   a label belongs to whatever it is centered on, and one that drifts has
@@ -737,6 +756,21 @@ instead of the group it belongs to. Three rules cover it.
   ```
 
   Then read the two margins back off the rendered page and check they match.
+- **Bands stacked on one axis are read by the GAPS between them, so derive
+  the gaps, do not pick them.** When three regions share a vertical axis,
+  nothing tells the reader which band is closely related to the middle one
+  except how far apart they sit. The threat model put the certificate
+  authority 62 above the two apps and the injector 42 below them, which reads
+  as the authority being the outlying one - not the claim the drawing was
+  making. Match them, or derive both from one constant, rather than placing
+  each band at the y that looked right on its own.
+- **Compacting a drawing means taking the same amount off the CANVAS.**
+  Pulling a band in by 24 and leaving the canvas alone tightens nothing: it
+  turns 24 units of drawing into 24 units of air, the centring pass splits
+  that air evenly over both ends, and the figure renders smaller on the page
+  instead of denser - the inlined SVG always fills the content column, so only
+  ratios inside the scene are visible. Move the band and take the 24 off the
+  canvas on that axis, then re-run `measure:bbox`.
 - **After centring, re-check whatever extends beyond the group's own boxes.**
   Labels anchored `start` beside each item stick out to the right of it, so
   centring the boxes can push the last label through the container's border.
@@ -1175,6 +1209,12 @@ box of every label** - which is how a wrap, a clearance or a canvas size gets
 decided rather than estimated. Put a label where the numbers say, not where it
 looked about right.
 
+It prints in TWO coordinate systems and says which is which. The bbox and the
+label boxes are SCENE coordinates, the ones you typed, so they compare
+straight against the constants in the file. The margins are measured against
+the FRAME - the viewBox including its origin - because the frame is what the
+reader sees. The two agree only while a scene's origin is still 0 0.
+
 Finish on the real page, which is the honest check:
 
 ```bash
@@ -1333,6 +1373,17 @@ before the next one starts. Report visual choices as proposals, not decisions.
   the ratio of their rendered widths, not their coordinates. Name the shape
   everything else is sized against, and say in the scene what the ratio is, or
   the next edit drifts it back.
+- **Scene coordinates are not frame coordinates, once a scene has an origin.**
+  `bbox.json` centres a drawing by moving the viewBox, not the parts, so from
+  then on the numbers in the scene file and the numbers the reader sees differ
+  by that origin. A margin computed as `bbox.x` and
+  `viewBox.width - (bbox.x + bbox.width)` is wrong by the origin at BOTH ends
+  and wrong in opposite directions, which is indistinguishable from a drawing
+  that leans. `preview-scene.mjs` measured margins that way and reported the
+  threat model as 51 above and 6 below when the frame had 28.5 on each side;
+  the rendered test disagreed and was right. Subtract the origin before
+  comparing an edge to anything. When a tool and a test disagree about a
+  measurement, suspect the tool - the test is the one with an assertion on it.
 - **A measurement that comes back unchanged after a change usually means the
   change did not land.** Check that the export actually succeeded before
   concluding a layout fix had no effect: a failed export leaves the previously

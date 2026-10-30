@@ -331,7 +331,7 @@ Threat modeling is a process by which:
 
 The Dapr threat model is below.
 
-<img src="/images/security-threat-model.png" alt="Dapr threat model" width=1000>
+{{< diagram security-threat-model >}}
 
 ## Security audit
 

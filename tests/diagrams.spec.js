@@ -321,6 +321,27 @@ const SCENES = [
     ],
   },
   {
+    name: 'security-threat-model',
+    page: '/concepts/security-concept/',
+    labels: [
+      'Certificate authority',
+      'Filesystem or Kubernetes secret',
+      'Sentry',
+      'CA private key',
+      'App A',
+      'App B',
+      'Injector',
+      'Trust anchor injector',
+      'CSR',
+      'Workload certificate',
+      'mTLS API calls',
+      'Dapr API request',
+      'Dapr API response',
+      'Inject root certificate',
+      'Read root certificate',
+    ],
+  },
+  {
     // The eight numbers are the point: each one indexes an item in the list
     // under the diagram, so every one of them is named here.
     name: 'security-capabilities',
@@ -836,6 +857,73 @@ for (const scene of SCENES) {
       }, sel(scene.name));
 
       expect(hits, 'a caption is drawn over the contents it captions').toEqual([]);
+    });
+
+    // A name with a line drawn through it is the one legibility fault the
+    // other checks cannot see: the scene resolves, the label is present, it
+    // holds its colours, and it is still unreadable. The rule is that text
+    // over ANY line - an arrow, a bus, a dashed border - carries ground
+    // behind it, and this is what says so.
+    test(`${scene.name} paints ground behind any label a line crosses`, async ({ page }) => {
+      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      await page.evaluate(() => document.fonts.ready);
+      const hits = await page.evaluate((root) => {
+        const svg = document.querySelector(`${root} svg`);
+        const INSET = 1; // a stroke grazing the box's own corner is not a crossing
+
+        // A LINE is a stroked shape with no fill. A filled shape that also has
+        // a stroke is an object, and a label on one of those is a different
+        // question - the hexagon's own name is not struck through by it.
+        const strokes = [];
+        for (const g of svg.querySelectorAll('path, line, polyline, polygon, rect, circle, ellipse')) {
+          const cs = getComputedStyle(g);
+          if (cs.fill !== 'none' || cs.stroke === 'none' || parseFloat(cs.strokeWidth) === 0) continue;
+          if (typeof g.getTotalLength !== 'function') continue;
+          let len = 0;
+          try { len = g.getTotalLength(); } catch { continue; }
+          const m = len && g.getScreenCTM();
+          if (!m) continue;
+          // Walk the geometry rather than test its bounding box: an elbow's box
+          // is the whole L, most of which the line never touches.
+          const pts = [];
+          const step = Math.max(0.75, len / 4000);
+          for (let d = 0; d <= len; d += step) {
+            const q = g.getPointAtLength(d);
+            pts.push(new DOMPoint(q.x, q.y).matrixTransform(m));
+          }
+          strokes.push({ el: g, pts });
+        }
+
+        // Ground is anything filled: a halo, a caption pill, a plate, a card.
+        const filled = [...svg.querySelectorAll('path, polygon, rect, circle, ellipse')]
+          .filter((f) => getComputedStyle(f).fill !== 'none')
+          .map((f) => ({ el: f, r: f.getBoundingClientRect() }));
+
+        const found = [];
+        for (const t of svg.querySelectorAll('text')) {
+          if (t.getAttribute('aria-hidden') === 'true') continue; // the halo copy itself
+          const prev = t.previousElementSibling;
+          const haloed = prev && prev.tagName.toLowerCase() === 'text'
+            && prev.getAttribute('aria-hidden') === 'true';
+          if (haloed) continue;
+          const r = t.getBoundingClientRect();
+          if (!r.width || !r.height) continue;
+          const box = { l: r.left + INSET, r: r.right - INSET, t: r.top + INSET, b: r.bottom - INSET };
+          if (box.r <= box.l || box.b <= box.t) continue;
+          for (const s of strokes) {
+            if (!s.pts.some((q) => q.x > box.l && q.x < box.r && q.y > box.t && q.y < box.b)) continue;
+            // Ground only counts if it paints AFTER the line it has to hide,
+            // and in SVG that is document order.
+            const covered = filled.some((f) =>
+              f.r.left <= box.l && f.r.right >= box.r && f.r.top <= box.t && f.r.bottom >= box.b
+              && (s.el.compareDocumentPosition(f.el) & Node.DOCUMENT_POSITION_FOLLOWING));
+            if (!covered) { found.push(t.textContent.trim()); break; }
+          }
+        }
+        return [...new Set(found)];
+      }, sel(scene.name));
+
+      expect(hits, 'a line is drawn through a label with nothing behind it').toEqual([]);
     });
 
     test(`${scene.name} resolves its token colors in light and in dark`, async ({ page }) => {

@@ -23,6 +23,7 @@ import sentryKubernetes from './sentry-kubernetes.mjs';
 import mtlsSystemServices from './mtls-system-services.mjs';
 import apiScoping from './api-scoping.mjs';
 import securityCapabilities from './security-capabilities.mjs';
+import securityThreatModel from './security-threat-model.mjs';
 import sidecarModel from './sidecar-model.mjs';
 
 export const scenes = {
@@ -48,5 +49,6 @@ export const scenes = {
   'mtls-system-services': mtlsSystemServices,
   'api-scoping': apiScoping,
   'security-capabilities': securityCapabilities,
+  'security-threat-model': securityThreatModel,
   'sidecar-model': sidecarModel,
 };

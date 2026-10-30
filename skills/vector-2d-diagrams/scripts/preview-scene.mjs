@@ -121,7 +121,10 @@ try {
         const v = svgEl.viewBox.baseVal;
         const round = (n) => +n.toFixed(1);
         return {
-          view: { w: v.width, h: v.height },
+          // The FRAME, origin included: bbox.json gives most scenes a
+          // non-zero viewBox origin, and a margin measured from 0 is wrong by
+          // exactly that much.
+          view: { w: v.width, h: v.height, x: v.x, y: v.y },
           box: { l: round(b.x), t: round(b.y), r: round(b.x + b.width), b: round(b.y + b.height) },
           texts: [...svgEl.querySelectorAll('text')].map((t) => {
             const r = t.getBBox();
@@ -139,9 +142,11 @@ try {
           }),
         };
       });
-      console.log(`viewBox ${m.view.w} x ${m.view.h}   ratio ${(m.view.w / m.view.h).toFixed(3)}`);
-      console.log(`bbox    left ${m.box.l}  top ${m.box.t}  right ${m.box.r}  bottom ${m.box.b}`);
-      console.log(`margins left ${m.box.l}  top ${m.box.t}  right ${(m.view.w - m.box.r).toFixed(1)}  bottom ${(m.view.h - m.box.b).toFixed(1)}`);
+      const at = m.view.x || m.view.y ? `  at ${m.view.x} ${m.view.y}` : '';
+      console.log(`viewBox ${m.view.w} x ${m.view.h}${at}   ratio ${(m.view.w / m.view.h).toFixed(3)}`);
+      console.log(`bbox    left ${m.box.l}  top ${m.box.t}  right ${m.box.r}  bottom ${m.box.b}   (scene coordinates)`);
+      const edge = (n) => n.toFixed(1);
+      console.log(`margins left ${edge(m.box.l - m.view.x)}  top ${edge(m.box.t - m.view.y)}  right ${edge(m.view.x + m.view.w - m.box.r)}  bottom ${edge(m.view.y + m.view.h - m.box.b)}`);
       console.log('labels, as drawn:');
       for (const t of m.texts) {
         console.log(`  x ${t.l}..${t.r}   y ${t.t}..${t.b}   ${JSON.stringify(t.text)}`);

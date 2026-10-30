@@ -67,6 +67,10 @@
     0,
     -7.5
   ],
+  "security-threat-model": [
+    7.5,
+    22.5
+  ],
   "sentry-kubernetes": [
     -0.96,
     -5.5
