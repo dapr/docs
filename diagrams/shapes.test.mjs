@@ -28,7 +28,6 @@ const samples = () => ({
   envelope: S.envelope({ x: 100, y: 100, label: 'Msg' }),
   broker: S.broker({ x: 100, y: 100, label: 'Broker' }),
   lockBox: S.lockBox({ x: 100, y: 100, label: 'Secrets' }),
-  person: S.person({ x: 100, y: 100, label: 'User' }),
   secureLock: S.secureLock({ x: 100, y: 100, label: 'mTLS' }),
   panel: S.panel({ x: 10, y: 10, w: 100, h: 80 }),
   pill: S.pill({ x: 100, y: 100, w: 80, text: 'Caption' }),
@@ -304,7 +303,7 @@ test('panel is dashed, rounded r=10, unfilled; box defaults to 194x30', () => {
 });
 
 test('every outline takes the one line weight, and tints are 0.6', () => {
-  for (const k of ['hex', 'box', 'node', 'cylinder', 'envelope', 'broker', 'lockBox', 'person', 'secureLock', 'panel']) {
+  for (const k of ['hex', 'box', 'node', 'cylinder', 'envelope', 'broker', 'lockBox', 'secureLock', 'panel']) {
     const strokes = find(samples()[k], (x) => x.attrs['stroke-width'] !== undefined && x.attrs['stroke-width'] !== 4 && x.attrs.stroke !== 'none');
     assert.ok(strokes.length > 0, k);
     for (const s of strokes) assert.equal(s.attrs['stroke-width'], S.lineWidth(), k);
@@ -382,7 +381,6 @@ test('teal and mint outlines throw without a label, including an empty one', () 
       envelope: (label) => S.envelope({ ...at, color: c, label }),
       broker: (label) => S.broker({ ...at, stroke: c, label }),
       lockBox: (label) => S.lockBox({ ...at, stroke: c, label }),
-      person: (label) => S.person({ ...at, stroke: c, label }),
       secureLock: (label) => S.secureLock({ ...at, stroke: c, label }),
       tile: (label) => S.tile({ ...at, color: c, label }),
     };

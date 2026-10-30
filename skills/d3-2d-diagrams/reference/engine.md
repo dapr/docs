@@ -40,7 +40,6 @@ pure: the same input always gives byte-identical output.
 | `envelope(o)` | `x, y, w` (35), `color, stroke, fill, label, labelDy` | a message |
 | `broker(o)` | `x, y, w` (46), `label, labelDy, stroke, fill` | a message broker, two stacked envelopes |
 | `lockBox(o)` | `x, y, size` (44), `stroke, fill, label, labelDy` | a secret store, padlock in a square |
-| `person(o)` | `x, y, size` (40), `stroke, fill, label, labelDy` | a person, for an external system |
 | `secureLock(o)` | `x, y, size` (44), `stroke, label, labelDy` | secure service communication, padlock and shield |
 | `region(o)` | `x, y, w, h, stroke` (`C.caption`), `r` (10), `caption, captionW, captionX, captionH` (26), `captionSize` (15) | a dashed area with its name on the border; the pill takes the region's colour and the text is body ink |
 | `panel(o)` | `x, y, w, h, stroke` (`C.caption`), `r` (10) | a dashed, rounded area grouping part of a diagram. `x, y` is the top-left corner |

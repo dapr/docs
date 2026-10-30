@@ -133,10 +133,10 @@ export default {
       ]),
 
       // ---- the user -------------------------------------------------------
-      // The Fluent person glyph rather than the hand-drawn person() shape: its
-      // ink scales with its size, as the robot's and the globe's do, so all
-      // three carry the same weight. person() draws at the shared 2.2 outline,
-      // which is visibly lighter beside a glyph this size.
+      // The Fluent person glyph, not a drawn shape: its ink scales with its
+      // size, as the robot's and the globe's do, so all three carry the same
+      // weight. A builder that draws its own outline holds the shared 2.2
+      // whatever its size, which is visibly lighter beside a glyph this big.
       icon({ name: 'fluent-person', x: USER_X, y: AGENT_Y, size: MARK, color: C.navy }),
       label({ x: USER_X, y: AGENT_Y + MARK / 2 + 14, text: 'User', size: TEXT }),
 
