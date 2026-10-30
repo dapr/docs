@@ -14,7 +14,7 @@ The following table lists the available execution configuration fields:
 
 | Field | Type | Default | Description |
 |---|---|---:|---|
-| `max_iterations` | `int` | `10` | Maximum number of LLM and tool iterations per turn. |
+| `max_iterations` | `int` | `10` | Maximum number of LLM and tool iterations in a single agent run. |
 | `tool_choice` | `str \| None` | `"auto"` | Controls provider tool-choice behavior. Standard values include `auto`, `none`, and `required`; non-empty provider-specific values are also accepted. |
 | `tool_execution_mode` | `ToolExecutionMode` | `PARALLEL` | Executes tool calls in parallel or sequentially. Use `PARALLEL` for independent calls and `SEQUENTIAL` when calls depend on prior results or side effects. |
 | `orchestration_mode` | `OrchestrationMode \| None` | `None` | Selects the orchestration strategy: `agent`, `random`, or `roundrobin`. |
