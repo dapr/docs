@@ -1,5 +1,5 @@
 ---
-name: d3-2d-diagrams
+name: vector-2d-diagrams
 description: Create or change the generated SVG diagrams in the Dapr docs (scenes in diagrams/scenes/, inlined by the {{< diagram >}} shortcode). Use for a new diagram from a source image or a text description, and for changes to an existing scene's layout, colors, icons, labels or tests.
 ---
 
@@ -1102,7 +1102,7 @@ While you are still moving things, use the fast one:
 
 ```bash
 npm run export:diagrams
-node skills/d3-2d-diagrams/scripts/preview-scene.mjs <name>
+node skills/vector-2d-diagrams/scripts/preview-scene.mjs <name>
 ```
 
 It borrows the last build's stylesheet and webfonts out of `daprdocs/public`
@@ -1116,7 +1116,7 @@ looked about right.
 Finish on the real page, which is the honest check:
 
 ```bash
-node skills/d3-2d-diagrams/scripts/render-scene.mjs <name>
+node skills/vector-2d-diagrams/scripts/render-scene.mjs <name>
 ```
 
 Only this one shows that the shortcode inlines the scene and that the figure

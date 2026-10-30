@@ -1,7 +1,7 @@
 // Screenshot a scene in both themes WITHOUT the Hugo dev server, and print
 // what it actually measures.
 //
-//   node skills/d3-2d-diagrams/scripts/preview-scene.mjs <name> [css-width]
+//   node skills/vector-2d-diagrams/scripts/preview-scene.mjs <name> [css-width]
 //
 // `render-scene.mjs` loads the real page, which is the honest check and the one
 // to finish on. It also needs the dev server up and a rebuild between every

@@ -1,6 +1,6 @@
 // Screenshot a diagram as the page actually renders it, in both themes.
 //
-//   node skills/d3-2d-diagrams/scripts/render-scene.mjs <name> [page-path] [width]
+//   node skills/vector-2d-diagrams/scripts/render-scene.mjs <name> [page-path] [width]
 //
 // Looking at the result is a required step, not a formality: the numeric tests
 // pass on a mark that is invisible, on a label drawn twice in the same place,

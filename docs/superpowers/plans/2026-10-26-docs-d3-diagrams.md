@@ -40,7 +40,7 @@ Input classes the spec implies but which no task's happy path exercises. Each ha
 ## File Structure
 
 ```
-skills/d3-2d-diagrams/            Task 1 copies verbatim, Task 12 adapts
+skills/vector-2d-diagrams/            Task 1 copies verbatim, Task 12 adapts
   SKILL.md
   reference/engine.md
   scripts/
@@ -70,9 +70,9 @@ diagrams/*.test.mjs               node --test, colocated                   (Task
 Copied verbatim first, adapted last (Task 12). The adapted version must describe paths that do not exist until Tasks 2–7 land, so adapting now would mean writing fiction and correcting it later.
 
 **Files:**
-- Create: `skills/d3-2d-diagrams/` (6 files, verbatim)
-- Create: `skills/d3-2d-diagrams/UPSTREAM.md`
-- Test: `skills/d3-2d-diagrams/upstream.test.mjs`
+- Create: `skills/vector-2d-diagrams/` (6 files, verbatim)
+- Create: `skills/vector-2d-diagrams/UPSTREAM.md`
+- Test: `skills/vector-2d-diagrams/upstream.test.mjs`
 
 **Interfaces:**
 - Produces: the skill text that Tasks 3, 4 and 9–11 follow for shape vocabulary, color order, icon policy and accessibility rules.
@@ -88,12 +88,12 @@ test('UPSTREAM.md names the pinned commit b63be76d4d7e1cae589159ad65647128b95d79
 
 - [ ] **Step 2: Run it and watch it fail**
 
-Run: `node --test skills/d3-2d-diagrams/upstream.test.mjs`
+Run: `node --test skills/vector-2d-diagrams/upstream.test.mjs`
 Expected: FAIL, no such file or directory.
 
 - [ ] **Step 3: Copy the six files**
 
-From `dapr/website@b63be76d4d7e1cae589159ad65647128b95d791b`, path `skills/d3-2d-diagrams/`: `SKILL.md`, `reference/engine.md`, `scripts/lib.mjs`, `scripts/scene-frames.mjs`, `scripts/smoothness.mjs`, `scripts/video-frames.sh`. Byte-for-byte, no edits.
+From `dapr/website@b63be76d4d7e1cae589159ad65647128b95d791b`, path `skills/vector-2d-diagrams/`: `SKILL.md`, `reference/engine.md`, `scripts/lib.mjs`, `scripts/scene-frames.mjs`, `scripts/smoothness.mjs`, `scripts/video-frames.sh`. Byte-for-byte, no edits.
 
 - [ ] **Step 4: Write `UPSTREAM.md`**
 
@@ -101,7 +101,7 @@ The source repo, the pinned commit, the date, and the sha256 table from the spec
 
 - [ ] **Step 5: Run the test**
 
-Run: `node --test skills/d3-2d-diagrams/upstream.test.mjs`
+Run: `node --test skills/vector-2d-diagrams/upstream.test.mjs`
 Expected: PASS.
 
 ---
@@ -172,7 +172,7 @@ Expected: PASS.
 
 **Interfaces:**
 - Consumes: `el`, `text`, `C`, `APP` from Task 2.
-- Produces, each returning a `Node`, mirroring `skills/d3-2d-diagrams/reference/engine.md` so the vendored skill still describes reality:
+- Produces, each returning a `Node`, mirroring `skills/vector-2d-diagrams/reference/engine.md` so the vendored skill still describes reality:
   `group`, `label({ x, y, text, size = 11, weight = 600, color = C.body, halo = false, anchor = 'middle' })`, `hex`, `badge`, `daprApp`, `box`, `node`, `cylinder`, `envelope`, `broker`, `lockBox`, `person`, `secureLock`, `panel`, `pill`, `tile`, `arrow({ from, to, head = true, color = C.navy })`.
 
   The website's engine defaults labels to literal black and arrows to a navy hex. Here `C.body` and `C.navy` resolve to `var(--d-body)` and `var(--d-blue)`, which is what makes a label readable in dark mode.
@@ -197,7 +197,7 @@ Expected: FAIL.
 
 - [ ] **Step 3: Implement `diagrams/shapes.mjs`**
 
-Follow `skills/d3-2d-diagrams/SKILL.md` for geometry and defaults: outlines 2.2px, arrows 2px with an open 8px head, fills at `fill-opacity: 0.6`, hidden edges faint and dashed, app radius 42.5px (32px when crowded).
+Follow `skills/vector-2d-diagrams/SKILL.md` for geometry and defaults: outlines 2.2px, arrows 2px with an open 8px head, fills at `fill-opacity: 0.6`, hidden edges faint and dashed, app radius 42.5px (32px when crowded).
 
 - [ ] **Step 4: Run the tests**
 
@@ -496,10 +496,10 @@ Two carry extra work under decision 10:
 Last, so it describes what exists rather than what was planned.
 
 **Files:**
-- Modify: `skills/d3-2d-diagrams/SKILL.md`, `skills/d3-2d-diagrams/reference/engine.md`
-- Delete: `skills/d3-2d-diagrams/scripts/smoothness.mjs`
-- Modify: `skills/d3-2d-diagrams/UPSTREAM.md`
-- Test: `skills/d3-2d-diagrams/paths.test.mjs`
+- Modify: `skills/vector-2d-diagrams/SKILL.md`, `skills/vector-2d-diagrams/reference/engine.md`
+- Delete: `skills/vector-2d-diagrams/scripts/smoothness.mjs`
+- Modify: `skills/vector-2d-diagrams/UPSTREAM.md`
+- Test: `skills/vector-2d-diagrams/paths.test.mjs`
 
 - [ ] **Step 1: Write the failing test**
 
@@ -511,7 +511,7 @@ test('UPSTREAM.md records which files were adapted and which are still verbatim'
 
 - [ ] **Step 2: Run it and watch it fail**
 
-Run: `node --test skills/d3-2d-diagrams/paths.test.mjs`
+Run: `node --test skills/vector-2d-diagrams/paths.test.mjs`
 Expected: FAIL, the paths are all the website's.
 
 - [ ] **Step 3: Rewrite "Where things live"**
@@ -532,7 +532,7 @@ Match the real `shapes.mjs` and `icons.mjs` API from Tasks 3 and 4. Remove `retr
 
 - [ ] **Step 7: Run the test**
 
-Run: `node --test skills/d3-2d-diagrams/paths.test.mjs`
+Run: `node --test skills/vector-2d-diagrams/paths.test.mjs`
 Expected: PASS.
 
 - [ ] **Step 8: Full suite**

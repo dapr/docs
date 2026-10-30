@@ -12,7 +12,7 @@ update one without the original design file, and the colors are baked in, so
 every diagram stays light even though the site now has a dark-mode toggle.
 
 dapr.io solved this for its homepage: diagrams are D3 code, shipped as SVG,
-styled from the theme. It left behind a skill, `d3-2d-diagrams`, that records
+styled from the theme. It left behind a skill, `vector-2d-diagrams`, that records
 the shape vocabulary and the rules that keep diagrams looking like one set.
 
 This work brings that approach to the docs and uses it on the two sections a
@@ -35,7 +35,7 @@ with no judgment calls about what qualifies.
 - They follow the site's dark-mode toggle.
 - They are SVG: sharp at any zoom and size, with real text that screen readers
   read and browsers find.
-- The `d3-2d-diagrams` skill lives in this repo, adapted to it, so the next
+- The `vector-2d-diagrams` skill lives in this repo, adapted to it, so the next
   diagram matches without anyone rediscovering the rules.
 - Playwright covers them, so a rendering or layout regression fails CI.
 
@@ -170,7 +170,7 @@ Decided during design, as my call:
 8. **Exported SVGs live in `daprdocs/assets/diagrams/`**, not `static/`, so the
    shortcode can `resources.Get` them and Hugo fingerprints and minifies them
    as part of the build.
-9. **The skill lives at `skills/d3-2d-diagrams/`** in the repo root, matching
+9. **The skill lives at `skills/vector-2d-diagrams/`** in the repo root, matching
    the website's convention of a generic `skills/` folder rather than a
    Claude-specific one.
 14. **No D3, and no DOM, in the export path.** With nothing animating and
@@ -191,7 +191,7 @@ Decided during design, as my call:
 ### Where the skill comes from
 
 `dapr/website` at commit `b63be76d4d7e1cae589159ad65647128b95d791b` (the merge
-of PR #196, 2026-10-26), path `skills/d3-2d-diagrams/`. It is not in any local
+of PR #196, 2026-10-26), path `skills/vector-2d-diagrams/`. It is not in any local
 `dapr-website` checkout on this machine; those forks predate it. Six files:
 
 | File | sha256 |
@@ -206,7 +206,7 @@ of PR #196, 2026-10-26), path `skills/d3-2d-diagrams/`. It is not in any local
 ## Shape of the solution
 
 ```
-skills/d3-2d-diagrams/          ported and adapted from dapr/website
+skills/vector-2d-diagrams/          ported and adapted from dapr/website
   SKILL.md
   reference/engine.md
 
@@ -292,5 +292,5 @@ contain no diagrams.
   English and Chinese, still renders.
 - Re-exporting produces no diff; CI fails if it would.
 - `npm run test:layout` passes, including the new diagram spec.
-- `skills/d3-2d-diagrams/` describes the engine and conventions as they
+- `skills/vector-2d-diagrams/` describes the engine and conventions as they
   actually are in this repo.
