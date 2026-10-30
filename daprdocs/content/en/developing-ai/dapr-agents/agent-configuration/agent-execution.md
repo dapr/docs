@@ -1,14 +1,14 @@
 ---
 type: docs
-title: "Execution configuration"
+title: "Execution Configuration"
 linkTitle: "Execution"
 weight: 10
 description: "Configure DurableAgent execution behavior"
 ---
 
-`AgentExecutionConfig` controls how a `DurableAgent` runs LLM turns, executes tools, streams responses, and handles execution limits.
+Dapr Agents uses `AgentExecutionConfig` to control how a `DurableAgent` runs LLM turns, executes tools, streams responses, and handles execution limits.
 
-## Fields
+## Configuration
 
 | Field | Type | Default | Description | Resolution support |
 |---|---|---:|---|---|

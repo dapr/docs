@@ -1,14 +1,14 @@
 ---
 type: docs
-title: "Observability configuration"
+title: "Observability Configuration"
 linkTitle: "Observability"
 weight: 20
 description: "Configure OpenTelemetry observability for DurableAgent"
 ---
 
-`AgentObservabilityConfig` controls the OpenTelemetry logging and tracing emitted by a `DurableAgent`.
+Dapr Agents uses `AgentObservabilityConfig` to configure OpenTelemetry logging and tracing for a `DurableAgent`.
 
-## Fields
+## Configuration
 
 | Field | Type | Default | Description | Resolution support |
 |---|---|---:|---|---|
