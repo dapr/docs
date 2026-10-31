@@ -48,18 +48,18 @@ Configuration sources are resolved from highest to lowest priority:
 
 ### Configuration support
 
-| Field | Instantiation | Environment variables | Runtime configuration | Hot-reloadable |
+| Field | Runtime configuration | Instantiation | Environment variables | Hot-reloadable |
 |---|---|---|---|---|
 | `max_iterations` | Y | Y | Y | Y |
 | `tool_choice` | Y | Y | Y | Y |
-| `tool_execution_mode` | Y | Y | N | N |
-| `orchestration_mode` | Y | N | N | N |
-| `approval` | Y | N | N | N |
-| `max_approval_rounds` | Y | N | N | N |
-| `max_grpc_inbound_message_size_bytes` | Y | Y | N | N |
-| `streaming` | Y | N | N | N |
-| `stream_listener` | Y | N | N | N |
-| `builtin_tools` | Y | N | N | N |
+| `tool_execution_mode` | N | Y | Y | N |
+| `orchestration_mode` | N | Y | N | N |
+| `approval` | N | Y | N | N |
+| `max_approval_rounds` | N | Y | N | N |
+| `max_grpc_inbound_message_size_bytes` | N | Y | Y | N |
+| `streaming` | N | Y | N | N |
+| `stream_listener` | N | Y | N | N |
+| `builtin_tools` | N | Y | N | N |
 
 ### Environment variables
 
