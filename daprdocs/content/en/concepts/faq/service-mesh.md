@@ -26,7 +26,7 @@ Another difference between Dapr and service meshes is observability (tracing and
 
 The illustration below captures the overlapping features and unique capabilities that Dapr and service meshes offer:
 
-<img src="/images/service-mesh.png" width=1000>
+{{< diagram service-mesh >}}
 
 ## Using Dapr with a service mesh
 Dapr does work with service meshes. In the case where both are deployed together, both Dapr and service mesh sidecars are running in the application environment. In this case, it is recommended to configure only Dapr or only the service mesh to perform mTLS encryption and distributed tracing.

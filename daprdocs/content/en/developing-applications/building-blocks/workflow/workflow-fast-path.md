@@ -4,6 +4,7 @@ title: "Workflow fast path"
 linkTitle: "Fast path"
 weight: 4500
 description: "Drive workflow turns and activities locally and fold activity completions into a single state commit, removing scheduler round trips and state store commits from the workflow hot path"
+is_preview: true
 ---
 
 The workflow fast path is a set of three optimizations inside the Dapr sidecar that remove the per-event Scheduler reminders and most of the state store commits from every workflow turn, while keeping the same at-least-once execution guarantees as the default path. Workflows and activities are driven on the host that already holds the work, and activity completions are persisted inside the next turn's single state store commit instead of in a commit of their own.
