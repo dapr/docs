@@ -17,16 +17,16 @@ The **Constructor default** and **Resolved default** columns are defined as foll
 
 | Field | Type | Constructor default | Resolved default | Description |
 |---|---|---:|---:|---|
-| `max_iterations` | `int` | `10` | `10` | Maximum number of turns in the agent’s LLM/tool loop during a single agent run. Each turn may include one LLM call and zero or more tool calls. |
-| `tool_choice` | `str \| None` | `"auto"` | `"auto"` | Controls provider tool-choice behavior. Standard values include `auto`, `any`, `none`, and `required`; `any` and `required` are functionally equivalent, although provider support may vary. Non-empty provider-specific values are also accepted. |
-| `tool_execution_mode` | `ToolExecutionMode` | `ToolExecutionMode.PARALLEL` | `ToolExecutionMode.PARALLEL` | Executes tool calls in `parallel` or `sequential` order. Use `parallel` for independent calls and `sequential` when calls depend on prior results or side effects. |
-| `orchestration_mode` | `OrchestrationMode \| None` | `None` | `None` | Selects the orchestration strategy: `agent`, `random`, or `roundrobin`. |
-| `approval` | `AgentApprovalConfig` | See the `AgentApprovalConfig` fields section below. | See the `AgentApprovalConfig` fields section below. | Configures delivery and timeout behavior for human approvals. |
+| `max_iterations` | `int \| None` | `None` | `10` | Maximum number of turns in the agent’s LLM/tool loop during a single agent run. Each turn may include one LLM call and zero or more tool calls. |
+| `tool_choice` | `str \| None` | `None` | `"auto"` | Controls provider tool-choice behavior. Standard values include `auto`, `any`, `none`, and `required`; `any` and `required` are functionally equivalent, although provider support may vary. Non-empty provider-specific values are also accepted. |
+| `tool_execution_mode` | `ToolExecutionMode \| None` | `None` | `ToolExecutionMode.PARALLEL` | Executes tool calls in `parallel` or `sequential` order. Use `parallel` for independent calls and `sequential` when calls depend on prior results or side effects. |
+| `orchestration_mode` | `OrchestrationMode \| None` | `None` | `None` | Selects the orchestration strategy: `agent`, `random`, or `roundrobin`. When unset or explicitly set to `None`, orchestration is disabled. |
+| `approval` | `AgentApprovalConfig \| None` | `None` | Default `AgentApprovalConfig`; see the `AgentApprovalConfig` fields section below. | Configures delivery and timeout behavior for human approvals. |
 | `max_approval_rounds` | `int \| None` | `None` | `None` | Maximum number of human-approval rounds in one executor run. When unset, uses `max_iterations`. |
-| <code>max_grpc_inbound_<wbr>message_<wbr>size_<wbr>bytes</code> | `int \| None` | `None` | `None` | Sets the maximum inbound gRPC message size for this agent, in bytes. When set, it overrides <code>DAPR_GRPC_<wbr>MAX_INBOUND_<wbr>MESSAGE_<wbr>SIZE_<wbr>BYTES</code> for this agent. |
-| `streaming` | `bool` | `False` | `False` | Enables streaming responses for pub/sub-triggered sessions. |
+| <code>max_grpc_<wbr>inbound_message_<wbr>size_bytes</code> | `int \| None` | `None` | `None` | Sets the maximum inbound gRPC message size for this agent, in bytes. When set, it overrides <code>DAPR_GRPC_<wbr>MAX_INBOUND_<wbr>MESSAGE_SIZE_BYTES</code> for this agent. |
+| `streaming` | `bool \| None` | `None` | `False` | Enables streaming responses for pub/sub-triggered sessions. |
 | `stream_listener` | `dict \| None` | `None` | `None` | Provides a JSON-serializable stream-listener configuration. Supported types include `pubsub`, `in_process`, `webhook`, `composite`, and `custom`. |
-| `builtin_tools` | `list[str]` | `[]` | `[]` | Names of opt-in built-in tools to register, such as `ask_user`. The `ask_user` tool requires `streaming=True` and is unavailable for orchestrators. |
+| `builtin_tools` | `list[str] \| None` | `None` | `[]` | Names of opt-in built-in tools to register, such as `ask_user`. The `ask_user` tool requires `streaming=True` and is unavailable for orchestrators. |
 
 ### `AgentApprovalConfig` fields
 
