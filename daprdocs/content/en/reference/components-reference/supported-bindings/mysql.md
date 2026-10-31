@@ -47,7 +47,7 @@ Note that you can not use secret just for username/password. If you use secret, 
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| `url` | Y | Output | Represent DB connection in Data Source Name (DNS) format. See [here](#ssl-connection-details) SSL details | `"user:password@tcp(localhost:3306)/dbname"` |
+| `url` | Y | Output | Represent DB connection in Data Source Name (DNS) format. See [here](#ssl-connection) SSL details | `"user:password@tcp(localhost:3306)/dbname"` |
 | `pemPath` | Y | Output | Path to the PEM file. Used with SSL connection | `"path/to/pem/file"` |
 | `maxIdleConns` | N | Output | The max idle connections. Integer greater than 0 | `"10"` |
 | `maxOpenConns` | N | Output | The max open connections. Integer greater than 0 | `"10"` |

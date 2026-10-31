@@ -68,7 +68,7 @@ The following menu includes all of the configuration settings you can set:
 - [Metrics](#metrics)
 - [Logging](#logging)
 - [Middleware](#middleware)
-- [Name resolution](#name-resolution)
+- [Name resolution](#name-resolution-component)
 - [Workflow](#workflow)
 - [Scope secret store access](#scope-secret-store-access)
 - [Access Control allow lists for building block APIs](#access-control-allow-lists-for-building-block-apis)
