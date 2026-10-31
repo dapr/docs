@@ -12,6 +12,11 @@ This integration is currently in Alpha; breaking changes may occur at any time.
 
 The Drasi extension in Dapr Agents enables `DurableAgent` runs to be triggered by Drasi events.
 
+Use **author-configured triggers** when query IDs and task mapping are fixed by
+the application. For runtime selection from an operator-approved catalog, see
+[agent-managed subscriptions]({{< ref "drasi-agent-managed-subscriptions.md" >}}).
+The two modes cannot be combined on the same agent.
+
 ## Why Use Drasi?
 
 Many systems need to react to changes produced by other systems in near real-time. Traditional polling cannot detect the absence of change, or changes that occur at an extremely high frequency without unnecessary load on source systems (even without considering network delay). Raw changes are usually not actionable, requiring custom change data capture (CDC) pipelines to process changes at scale and convert them into meaningful domain events. However, these pipelines can be expensive (if managed) or difficult to set up and maintain (if self-hosted).
@@ -22,6 +27,17 @@ For many use cases, [Drasi](https://drasi.io/) is a viable alternative. Drasi is
 - **Reactions** to push events to downstream consumers
 
 ## Installation
+
+{{% alert title="Unreleased API" color="warning" %}}
+The `register_drasi_trigger()` name used below is proposed alongside the managed
+lifecycle and is not in the published `dapr-agents-ext-drasi==0.1.0` package.
+That package exposes the original `drasi_trigger()` name. The new name has no
+compatibility alias; use the contribution's source checkout to review these
+examples until a new extension release is selected. See the
+[source setup and availability notes]({{< ref "drasi-agent-managed-subscriptions.md#review-the-feature-implementation" >}}).
+{{% /alert %}}
+
+These commands install the currently released extension, not the unreleased APIs:
 
 {{< tabpane text=true >}}
 
@@ -49,7 +65,7 @@ uv add dapr-agents[drasi]
 from dapr_agents import AgentRunner, DurableAgent
 from dapr_agents.agents.configs import AgentPubSubConfig
 
-from dapr_agents.ext.drasi import drasi_trigger
+from dapr_agents.ext.drasi import register_drasi_trigger
 
 agent = DurableAgent(
     name="InventoryAgent",
@@ -59,7 +75,7 @@ agent = DurableAgent(
     ),
 )
 
-drasi_trigger(
+register_drasi_trigger(
     agent,
     query_id="low-stock-products",      # Replace with your Drasi query ID
 )
@@ -69,9 +85,12 @@ AgentRunner().serve(agent)
 
 ## API
 
-### `drasi_trigger`
+### `register_drasi_trigger`
 
-`drasi_trigger` creates a static subscription to a Drasi query and allows agents to be triggered by Drasi events via Dapr pub/sub.
+`register_drasi_trigger` registers a static Drasi query trigger before hosting and
+allows agents to be triggered by Drasi events via Dapr pub/sub. It preserves the
+existing unpacked event and task-mapping behavior. Call it once per fixed query;
+it cannot be combined with `drasi_subscription_lifecycle()` on the same agent.
 
 #### Parameters
 
@@ -89,6 +108,7 @@ Parameter | Type | Required | Details | Example
 ### `DrasiOperation`
 
 `DrasiOperation` is an enum representing the supported Drasi change operations.
+These describe query-result changes, not necessarily source-record CRUD.
 
 #### Operations
 
