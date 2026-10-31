@@ -620,7 +620,7 @@ patch and introduce new named workflow versions to incorporate changes to your w
 - [How-To: Apply workflow access policies]({{% ref workflow-access-policy.md %}})
 - [Workflow API reference]({{% ref workflow_api.md %}})
 - Try out the following examples:
-   - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
+   - [Python](https://github.com/dapr/python-sdk/tree/main/examples/workflow)
    - [JavaScript](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
    - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
    - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
