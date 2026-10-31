@@ -18,8 +18,8 @@ The **Constructor default** and **Resolved default** columns are defined as foll
 | Field | Type | Constructor default | Resolved default | Description |
 |---|---|---:|---:|---|
 | `enabled` | `bool \| None` | `None` | `False` | Enables or disables observability for the agent. When `OTEL_SDK_DISABLED` is set to `true`, observability is disabled. |
-| `headers` | `dict[str, str]` | `{}` | `{}` | Headers included in requests to the selected exporter. |
-| `auth_token` | `str \| None` | `None` | `None` | Authentication token used when exporting telemetry. When provided through runtime configuration, the value is applied to `auth_token`; when provided as an environment variable, it populates `headers`. |
+| `headers` | `dict[str, str]` | `{}` | `{}` | Headers included in requests to the selected exporter. The `OTEL_EXPORTER_OTLP_HEADERS` environment variable is parsed into this field. |
+| `auth_token` | `str \| None` | `None` | `None` | Authentication token used when exporting telemetry. For runtime configuration, `OTEL_EXPORTER_OTLP_HEADERS` maps to this field. |
 | `endpoint` | `str \| None` | `None` | `None` | Base endpoint for the selected telemetry exporter. Required for non-console exporters; console exporters do not require an endpoint. |
 | `service_name` | `str \| None` | `None` | `None` | Sets the service name included in exported telemetry. |
 | `logging_enabled` | `bool \| None` | `None` | `False` | Enables agent log export. |
@@ -89,8 +89,6 @@ Runtime configuration supports these key-naming conventions, from highest to low
 1. `SCREAMING_SNAKE_CASE`
 2. `snake_case`
 3. `kebab-case`
-
-When provided through runtime configuration, `OTEL_EXPORTER_OTLP_HEADERS` is applied to `auth_token`; when provided as an environment variable, it populates `headers`.
 
 ## Hot reload
 
