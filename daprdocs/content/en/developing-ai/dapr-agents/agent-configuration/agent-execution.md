@@ -48,7 +48,7 @@ Configuration sources are resolved from highest to lowest priority:
 
 ### Configuration support
 
-| Field | Instantiation | Environment | Runtime configuration | Hot-reloadable |
+| Field | Instantiation | Environment variables | Runtime configuration | Hot-reloadable |
 |---|---|---|---|---|
 | `max_iterations` | Y | Y | Y | Y |
 | `tool_choice` | Y | Y | Y | Y |
@@ -75,7 +75,7 @@ Environment variables support these key-naming conventions, from highest to lowe
 1. `SCREAMING_SNAKE_CASE`
 2. `snake_case`
 
-### Runtime configuration keys
+### Runtime configuration
 
 | Field | Canonical runtime key |
 |---|---|

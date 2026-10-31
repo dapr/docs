@@ -40,8 +40,8 @@ Configuration sources are resolved from highest to lowest priority:
 3. State store runtime configuration
 
 ### Configuration support
-
-| Field | Instantiation | Environment | Runtime configuration | Hot-reloadable |
+S
+| Field | Instantiation | Environment variables | Runtime configuration | Hot-reloadable |
 |---|---|---|---|---|
 | `enabled` | Y | Y | Y | Y |
 | `headers` | Y | Y | N | N |
@@ -71,7 +71,7 @@ Environment variables support these key-naming conventions, from highest to lowe
 1. `SCREAMING_SNAKE_CASE`
 2. `snake_case`
 
-### Runtime configuration keys
+### Runtime configuration
 
 | Field | Canonical runtime key |
 |---|---|
