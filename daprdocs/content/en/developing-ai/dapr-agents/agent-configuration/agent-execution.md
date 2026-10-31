@@ -23,7 +23,7 @@ The **Constructor default** and **Resolved default** columns are defined as foll
 | `orchestration_mode` | `OrchestrationMode \| None` | `None` | `None` | Selects the orchestration strategy: `agent`, `random`, or `roundrobin`. |
 | `approval` | `AgentApprovalConfig` | See the `AgentApprovalConfig` fields section below. | See the `AgentApprovalConfig` fields section below. | Configures delivery and timeout behavior for human approvals. |
 | `max_approval_rounds` | `int \| None` | `None` | `None` | Maximum number of human-approval rounds in one executor run. When unset, uses `max_iterations`. |
-| `max_grpc_inbound_message_size_bytes` | `int \| None` | `None` | `None` | Sets the maximum inbound gRPC message size for this agent, in bytes. When set, it overrides `DAPR_GRPC_MAX_INBOUND_MESSAGE_SIZE_BYTES` for this agent. |
+| <code>max_grpc_inbound_<wbr>message_<wbr>size_<wbr>bytes</code> | `int \| None` | `None` | `None` | Sets the maximum inbound gRPC message size for this agent, in bytes. When set, it overrides <code>DAPR_GRPC_<wbr>MAX_INBOUND_<wbr>MESSAGE_<wbr>SIZE_<wbr>BYTES</code> for this agent. |
 | `streaming` | `bool` | `False` | `False` | Enables streaming responses for pub/sub-triggered sessions. |
 | `stream_listener` | `dict \| None` | `None` | `None` | Provides a JSON-serializable stream-listener configuration. Supported types include `pubsub`, `in_process`, `webhook`, `composite`, and `custom`. |
 | `builtin_tools` | `list[str]` | `[]` | `[]` | Names of opt-in built-in tools to register, such as `ask_user`. The `ask_user` tool requires `streaming=True` and is unavailable for orchestrators. |
