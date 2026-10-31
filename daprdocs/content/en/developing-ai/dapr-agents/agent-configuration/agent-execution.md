@@ -92,8 +92,8 @@ Runtime configuration supports these key-naming conventions, from highest to low
 
 Updates to fields marked `Y` in the **Hot-reloadable** column of the [Configuration support](#configuration-support) table can be applied without restarting the agent. To enable this behavior, include the corresponding keys from the [Runtime configuration keys](#runtime-configuration-keys) table in a runtime configuration subscription. Updates to other fields require a restart.
 
-{{% alert title="Note" color="primary" %}}
-Hot-reload configuration continues to support legacy key-naming conventions, such as `Tool_Choice`, `Tool-Choice`, and `TOOL-CHOICE`, for backward compatibility. These conventions are not recommended for new configuration; use one of the supported naming conventions in the [Runtime configuration keys](#runtime-configuration-keys) section.
+{{% alert title="Warning" color="warning" %}}
+Hot-reload configuration continues to support legacy key-naming conventions, such as `Tool_Choice`, `Tool-Choice`, and `TOOL-CHOICE`, for backward compatibility. These conventions are deprecated and may be removed in a future release. For new configuration, use one of the supported naming conventions in the [Runtime configuration keys](#runtime-configuration-keys) section.
 {{% /alert %}}
 
 ## Validation and resolution behavior
