@@ -293,6 +293,26 @@ const SCENES = [
     ],
   },
   {
+    // Same scene, second page: the jobs overview used to show
+    // /images/scheduler/scheduler-architecture.png, which this scene replaces.
+    name: 'scheduler-architecture',
+    page: '/developing-applications/building-blocks/jobs/jobs-overview/',
+    labels: [
+      'My app',
+      'Dapr sidecar',
+      'Jobs API, gRPC or HTTP',
+      'OnJobEvent',
+      'the triggered job, back to the app',
+      'schedule / get / delete',
+      'WatchJobs',
+      'jobs as they come due',
+      'Scheduler process',
+      'Scheduler',
+      'etcd',
+      'Every tracked job is stored in etcd, embedded in the Scheduler by default',
+    ],
+  },
+  {
     name: 'sentry-selfhosted',
     page: '/concepts/dapr-services/sentry/',
     labels: [

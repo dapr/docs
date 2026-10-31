@@ -108,10 +108,6 @@ const PAGES_STILL_SHOWING = [
     page: '/operations/hosting/kubernetes/kubernetes-overview/',
   },
   {
-    image: 'scheduler/scheduler-architecture.png',
-    page: '/developing-applications/building-blocks/jobs/jobs-overview/',
-  },
-  {
     image: 'security-mTLS-dapr-system-services.png',
     page: '/operations/resiliency/health-checks/sidecar-health/',
   },
@@ -122,7 +118,13 @@ const PAGES_STILL_SHOWING = [
 // assertion, and the tests below then require its image to be in
 // IN_SCOPE_IMAGES - which is the whole point: the page stops vouching for the
 // file, so the file list has to.
-const CONVERTED_PAGES = [];
+const CONVERTED_PAGES = [
+  {
+    image: 'scheduler/scheduler-architecture.png',
+    page: '/developing-applications/building-blocks/jobs/jobs-overview/',
+    scene: 'scheduler-architecture',
+  },
+];
 
 const git = (...args) =>
   execFileSync('git', args, { cwd: REPO_ROOT, encoding: 'utf8' }).trim();
