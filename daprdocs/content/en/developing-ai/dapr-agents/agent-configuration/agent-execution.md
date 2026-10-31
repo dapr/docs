@@ -30,11 +30,11 @@ The **Constructor default** and **Resolved default** columns are defined as foll
 
 ### `AgentApprovalConfig` fields
 
-`AgentApprovalConfig` configures how the agent delivers human-approval requests and handles approval timeouts. For the full Hooks and Human-in-the-Loop workflow, see [Hooks and Human-in-the-Loop]({{< ref "dapr-agents-hooks.md" >}}).
+`AgentApprovalConfig` configures how the agent delivers human-approval requests and handles approval timeouts. For details about approval delivery and response handling across HTTP, pub/sub, and direct workflow modes, see [Hooks and Human-in-the-Loop]({{< ref "dapr-agents-hooks.md" >}}).
 
 | Field | Type | Default | Description |
 |---|---|---:|---|
-| `pubsub_name` | `str \| None` | `None` | Dapr pub/sub component for approval events. When unset, approvals are held for HTTP polling or direct workflow responses. |
+| `pubsub_name` | `str \| None` | `None` | Dapr pub/sub component for delivering approval requests. When unset, approval delivery depends on the hosting mode. |
 | `topic` | `str` | `"agent-approval-requests"` | Topic used when `pubsub_name` is set. |
 | `default_timeout_seconds` | `int \| None` | `300` | Time to wait before automatically denying an approval. Set to `None` to wait indefinitely. |
 
