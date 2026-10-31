@@ -23,9 +23,9 @@ The **Constructor default** and **Resolved default** columns are defined as foll
 | `endpoint` | `str \| None` | `None` | `None` | Base endpoint for the selected telemetry exporter. Required for non-console exporters; console exporters do not require an endpoint. |
 | `service_name` | `str \| None` | `None` | `None` | Sets the service name included in exported telemetry. |
 | `logging_enabled` | `bool \| None` | `None` | `False` | Enables agent log export. |
-| `logging_exporter` | `AgentLoggingExporter \| None` | `None` | `console` | Exporter used for agent logs: `console`, `otlp_grpc`, or `otlp_http`. |
+| `logging_exporter` | `AgentLoggingExporter \| None` | `None` | `AgentLoggingExporter.CONSOLE` | Exporter used for agent logs: `console`, `otlp_grpc`, or `otlp_http`. |
 | `tracing_enabled` | `bool \| None` | `None` | `False` | Enables agent trace export. |
-| `tracing_exporter` | `AgentTracingExporter \| None` | `None` | `console` | Exporter used for agent traces: `otlp_grpc`, `otlp_http`, `zipkin`, or `console`. |
+| `tracing_exporter` | `AgentTracingExporter \| None` | `None` | `AgentTracingExporter.CONSOLE` | Exporter used for agent traces: `console`, `otlp_grpc`, `otlp_http`, or `zipkin`. |
 
 {{% alert title="Note" color="primary" %}}
 For non-console exporters, use the endpoint format expected by the selected exporter. For example, use `http://otel-collector:4317` for OTLP gRPC, `http://otel-collector:4318` for OTLP HTTP, or `http://zipkin:9411` for Zipkin. Dapr Agents appends `/v1/logs` or `/v1/traces` to OTLP HTTP endpoints and `/api/v2/spans` to Zipkin endpoints when missing. OTLP gRPC endpoints are used as provided.
