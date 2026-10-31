@@ -29,6 +29,7 @@ button and no reduced-motion path.
 | Shape builders | `diagrams/shapes.mjs`: hexagons, arrows, cylinders, panels, tiles and the rest |
 | Brand marks and icons | `diagrams/icons.mjs`: reads a vendored SVG, screens it, prefixes its ids, returns nodes |
 | The Dapr API catalogue | `diagrams/apis.mjs`: one definition per API and cross-cutting concern, and `apiTile()`, which draws the block |
+| The language and cloud marks | `diagrams/brands.mjs`: the rows of vendored marks that name a LANGUAGE or a CLOUD, with the box each draws in, and `scaleMarks()` to take a whole row to another size |
 | One scene per diagram | `diagrams/scenes/<name>.mjs`, registered in `diagrams/scenes/index.mjs` |
 | Exporter | `diagrams/export.mjs`, run as `npm run export:diagrams` |
 | Generated SVGs, committed | `daprdocs/assets/diagrams/<name>.svg` |
@@ -112,10 +113,11 @@ The engine's API is in [reference/engine.md](reference/engine.md).
 - **Label sizes are canvas-relative.** `_diagrams.scss` sets `svg { width: 100% }`,
   so a label's rendered size is `size x columnWidth / viewBoxWidth`. On a
   1512-wide canvas a 12-unit label lands near 6 to 7 CSS px in a docs column.
-  The 11-unit floor the tests enforce is therefore a floor in **user units**,
-  not in pixels a reader sees. Do not answer this by sizing a scene's labels
-  against its canvas, which fights every rule about keeping one type size
-  across the set: answer it with how wide the figure RENDERS, below.
+  The `MIN_LABEL` floor the tests enforce - 10 units - is therefore a floor
+  in **user units**, not in pixels a reader sees. Do not answer this by
+  sizing a scene's labels against its canvas, which fights every rule about
+  keeping one type size across the set: answer it with how wide the figure
+  RENDERS, below.
 - **A small canvas renders BIG, and the shortcode's `width` is the lever - set
   from a calculation, not by eye.** A scene unit renders at
   `columnWidth / canvasWidth`, so the narrower the canvas, the further it is
@@ -134,12 +136,17 @@ The engine's API is in [reference/engine.md](reference/engine.md).
   width = round(canvasWidth / 1100 * 20) * 5     // nearest 5, capped at 100
   ```
 
-  Leave it out above 85: the difference is not worth the markup. The divisor is
-  not a taste: the canvases in this set fall into two groups with a clear gap
-  between 1050 and 1122 - full-page architecture diagrams above it, set-pieces
-  below - and 1100 sits in that gap. It puts a 13-unit label near 10.6 CSS px
-  in a 900px column, which is `sentry-selfhosted` at 70%, the size that was
-  reviewed and accepted.
+  Note the form: a call that passes `width` names the scene as well. Hugo
+  refuses to mix positional and named parameters, so
+  `{{< diagram sidecar-apis width="65" >}}` is an error rather than the
+  obvious shorthand - the shortcode says so in its own header.
+
+  Leave `width` out above 85: the difference is not worth the markup. The
+  divisor is not a taste: the canvases in this set fall into two groups with
+  a clear gap between 1050 and 1122 - full-page architecture diagrams above
+  it, set-pieces below - and 1100 sits in that gap. It puts a 13-unit label
+  near 10.6 CSS px in a 900px column, which is `sentry-selfhosted` at 70%,
+  the size that was reviewed and accepted.
 
   | canvas | width | | canvas | width |
   | --- | --- | --- | --- | --- |
@@ -625,7 +632,11 @@ cannot disagree with itself on another page.
   These three diagrams run 58.9, 58.9 and 62.4 units wide with names at 13, 13
   and 13.76.
 - **A component too small to carry a legible name is refused.** The floor is
-  11px. Clamping silently would ship an unreadable label; throwing says the
+  `MIN_LABEL`, 10 units - the same one `label()` enforces, imported rather
+  than repeated. Do not confuse it with `label()`'s DEFAULT size, which is
+  11: this skill stated the floor as 11 in two places before anyone checked
+  it against `shapes.mjs`, which is exactly the drift this rule exists to
+  stop. Clamping silently would ship an unreadable label; throwing says the
   block has to be drawn larger. Note that this makes "half the size" an
   invalid test case for a small component - scale UP to prove the ratio.
 - **A text baseline does not scale in the same ratio as the shape** around it,

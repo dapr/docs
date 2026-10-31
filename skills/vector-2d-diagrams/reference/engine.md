@@ -48,6 +48,10 @@ pure: the same input always gives byte-identical output.
 | `lineWidth()` | the stroke for arrows, buses and dashed borders, derived from the canvas the exporter set so every diagram renders at `LINE_TARGET` |
 | `roundedPath(o)` | `points` ([[x,y],…]), `r` (10), `color, width` (2) | a connector that turns each corner with an arc; the radius clamps to half the shortest leg |
 | `arrow(o)` | `from, to, head` (true), `color` (`C.navy`), `gap` (2) | a static arrow with an open head, stopping at each shape's edge |
+| `elbowArrow(o)` | `points` ([[x,y],…]), `r` (12), `color` (`C.navy`), `heads` (`'end'`, `'start'`, `'both'`, `'none'`) | a turning line with its chevron: one path, not a `roundedPath()` with an `arrow()` laid over it. A feeder running INTO a bus takes `heads: 'none'` |
+| `pod(o)` | `x, y, w, h` (top-left, like `panel()`), `name` (`'Pod'`), `captionW` (56), `captionX`, `size` (13) | a Kubernetes pod: a dashed sky `region()` with rounded corners and the pod's name on its top edge |
+| `CAPTION_H` | — | a caption pill's height, 26 |
+| `captionReach()` | — | how far a caption pill hangs INSIDE its region, `CAPTION_H / 2`. Pad a region's contents from this, not from the border |
 | `MIN_LABEL` | — | the smallest type anywhere, 10; `label()` throws below it |
 | `richLabel(o)` | `x, y, parts, size, weight, color, anchor, mono` | one line of text whose segments take different colours or weights |
 | `MONO` | — | the page's code font, the one font-family a scene may set |
@@ -68,6 +72,8 @@ such as `{ x, y, r, hex: true }`, so the arrow and the shape cannot drift apart.
 | `appSidecar(o)` | `x, y, r` (54), `label, size, stroke, fill` | the app hexagon with the Dapr sidecar overlapping it |
 | `sidecarAt(o)` | the sidecar as an arrow descriptor `{ x, y, r, hex }`, so a scene's arrows cannot drift from the drawing |
 | `sidecarDx(r)` | how far right of the app's centre the sidecar sits, for placing the app from a wanted sidecar position |
+| `pairExtent(o)` | `r` (54), `size, mirror` | the pair's `{ left, right, top, bottom }` about the app's centre. The sidecar hangs off one side and below, so the pair's extent is not the app's |
+| `appSidecarCentre(o)` | `x, y, r` (54), `size, mirror` | where to put the APP so the whole pair is centred on `x, y`. Centring on the app hexagon instead leaves the pair off-centre |
 | `SIDECAR_R` | the sidecar's radius as a multiple of the app's, 0.75 |
 | `SIDECAR_CLEARANCE` | how far below the app's lowest point the sidecar's centre sits, 0.15 of `r` |
 | `SIDECAR_GAP` | the floor between the app's name and the sidecar's top, 7 |
@@ -134,6 +140,31 @@ import { APIS, apiTile } from '../apis.mjs';
 APIS.map((a, i) => apiTile({ key: a.key, wrap: true, x: slot[i], y: 100, w: 112, h: 118 }));
 apiTile({ key: 'secrets', x: 300, y: 100, w: 96, h: 96, glyph: 28, glyphSize: 28 });
 ```
+
+## The language and cloud marks
+
+`diagrams/brands.mjs` holds the rows of vendored marks that name a LANGUAGE or
+a CLOUD, so a scene drawing either row names the module rather than carrying
+its own copy. Two scenes carry these rows - the overview and the service mesh
+comparison - and before the module each had its own list; the copies had
+already diverged, one listing six languages in a different order at sizes
+picked by eye.
+
+| Export | Returns |
+| --- | --- |
+| `LANGUAGES` | the seven SDK languages in the website's order; each `{ name, w, h, content }`, where `w` and `h` bound the mark and `content` is the ink the plate is sized around |
+| `CLOUDS` | azure, aws, google-cloud, kubernetes; each `{ name, size or w/h, text, color, backed }`. `backed` marks a dark wordmark that may not be recoloured, so it gets a light backing in dark mode |
+| `scaleMarks(marks, k)` | every number in a row scaled by one factor, so a row drawn smaller is the same row rather than a new set of sizes |
+| `cloudMark(o)` | `mark, x, y, k` (1), `textDx` (`CLOUD_TEXT_DX`), `backingH` (`MARK_PLATE_H`) | one cloud mark the way the overview draws it: the backing where the mark needs one, the mark, and its name beside it where the file carries none. `x` is the MARK's centre |
+| `LANG_PLATE_H` | the plate height that goes with `LANGUAGES` at scale 1, 80 |
+| `CLOUD_LABEL`, `CLOUD_TEXT_DX` | a cloud name's size, 15, and the gap from the mark's centre to the start of its name, 21 |
+| `MARK_PLATE_H`, `MARK_PLATE_PAD` | the shared backing height, 56, and its padding, 16 |
+
+A row scales by ONE factor through `scaleMarks()`, which is what keeps the
+marks in proportion to each other - the Go wordmark is two and a half times the
+width of the Java cup and has to stay that way. The backing does not scale with
+it: it is a margin round a dark wordmark, and a margin scaled down stops being
+one.
 
 ## The Dapr control plane services
 
