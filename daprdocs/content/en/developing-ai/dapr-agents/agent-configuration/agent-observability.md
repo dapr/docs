@@ -27,7 +27,9 @@ The **Constructor default** and **Resolved default** columns are defined as foll
 | `tracing_enabled` | `bool \| None` | `None` | `False` | Enables agent trace export. |
 | `tracing_exporter` | `AgentTracingExporter \| None` | `None` | `console` | Exporter used for agent traces: `otlp_grpc`, `otlp_http`, `zipkin`, or `console`. |
 
-Use the endpoint format expected by the selected exporter, for example `http://otel-collector:4317` for OTLP gRPC, `http://otel-collector:4318` for OTLP HTTP, or `http://zipkin:9411` for Zipkin. Dapr Agents appends the appropriate path—`/v1/logs`, `/v1/traces`, or `/api/v2/spans`—if it is not already present.
+{{% alert title="Note" color="primary" %}}
+For non-console exporters, use the endpoint format expected by the selected exporter. For example, use `http://otel-collector:4317` for OTLP gRPC, `http://otel-collector:4318` for OTLP HTTP, or `http://zipkin:9411` for Zipkin. Dapr Agents appends `/v1/logs` or `/v1/traces` to OTLP HTTP endpoints and `/api/v2/spans` to Zipkin endpoints when missing. OTLP gRPC endpoints are used as provided.
+{{% /alert %}}
 
 ## Configuration sources
 
