@@ -100,7 +100,7 @@ Hot-reload configuration continues to support legacy key-naming conventions, suc
 
 The following validation rules apply to the fields supported by each configuration source:
 
-| Rule | Instantiation | Environment | Runtime configuration and hot reload |
+| Rule | Instantiation | Environment variables | Runtime configuration and hot reload |
 |---|---|---|---|
 | Invalid value | Raises an error | Logged and ignored | Logged and ignored |
 | Empty or whitespace-only `tool_choice` | Rejected | Ignored | Ignored |

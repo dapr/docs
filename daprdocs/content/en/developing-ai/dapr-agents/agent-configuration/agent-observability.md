@@ -40,7 +40,7 @@ Configuration sources are resolved from highest to lowest priority:
 3. State store runtime configuration
 
 ### Configuration support
-S
+
 | Field | Instantiation | Environment variables | Runtime configuration | Hot-reloadable |
 |---|---|---|---|---|
 | `enabled` | Y | Y | Y | Y |
@@ -102,7 +102,7 @@ Hot-reload configuration continues to support legacy key-naming conventions, suc
 
 The following validation rules apply to the fields supported by each configuration source:
 
-| Rule | Instantiation | Environment | Runtime configuration and hot reload |
+| Rule | Instantiation | Environment variables | Runtime configuration and hot reload |
 |---|---|---|---|
 | Invalid value | Raises an error | Logged and ignored | Logged and ignored |
 | OpenTelemetry boolean values | Native booleans or case-insensitive `true`/`false` | Case-insensitive `true`/`false` only | Case-insensitive `true`/`false` only |
