@@ -10,19 +10,22 @@ Dapr Agents uses `AgentObservabilityConfig` to configure OpenTelemetry logging a
 
 ## Configuration fields
 
-The following table lists the available observability configuration fields:
+The **Constructor default** and **Resolved default** columns are defined as follows:
 
-| Field | Type | Default | Description |
-|---|---|---:|---|
-| `enabled` | `bool \| None` | `None` | Enables or disables observability for the agent. When `OTEL_SDK_DISABLED` is set to `true`, observability is disabled. |
-| `headers` | `dict[str, str]` | `{}` | Headers included in requests to the selected exporter. |
-| `auth_token` | `str \| None` | `None` | Authentication token used when exporting telemetry. When provided through runtime configuration, the value is applied to `auth_token`; when provided as an environment variable, it populates `headers`. |
-| `endpoint` | `str \| None` | `None` | Base endpoint for the selected telemetry exporter. Required for non-console exporters; console exporters do not require an endpoint. |
-| `service_name` | `str \| None` | `None` | Sets the service name included in exported telemetry. |
-| `logging_enabled` | `bool \| None` | `None` | Enables agent log export. |
-| `logging_exporter` | `AgentLoggingExporter \| None` | `None` | Exporter used for agent logs: `console`, `otlp_grpc`, or `otlp_http`. |
-| `tracing_enabled` | `bool \| None` | `None` | Enables agent trace export. |
-| `tracing_exporter` | `AgentTracingExporter \| None` | `None` | Exporter used for agent traces: `otlp_grpc`, `otlp_http`, `zipkin`, or `console`. |
+- **Constructor default:** The value used when the configuration object is created without an override.
+- **Resolved default:** The value used when no configuration source provides an override.
+
+| Field | Type | Constructor default | Resolved default | Description |
+|---|---|---:|---:|---|
+| `enabled` | `bool \| None` | `None` | `False` | Enables or disables observability for the agent. When `OTEL_SDK_DISABLED` is set to `true`, observability is disabled. |
+| `headers` | `dict[str, str]` | `{}` | `{}` | Headers included in requests to the selected exporter. |
+| `auth_token` | `str \| None` | `None` | `None` | Authentication token used when exporting telemetry. When provided through runtime configuration, the value is applied to `auth_token`; when provided as an environment variable, it populates `headers`. |
+| `endpoint` | `str \| None` | `None` | `None` | Base endpoint for the selected telemetry exporter. Required for non-console exporters; console exporters do not require an endpoint. |
+| `service_name` | `str \| None` | `None` | `None` | Sets the service name included in exported telemetry. |
+| `logging_enabled` | `bool \| None` | `None` | `False` | Enables agent log export. |
+| `logging_exporter` | `AgentLoggingExporter \| None` | `None` | `console` | Exporter used for agent logs: `console`, `otlp_grpc`, or `otlp_http`. |
+| `tracing_enabled` | `bool \| None` | `None` | `False` | Enables agent trace export. |
+| `tracing_exporter` | `AgentTracingExporter \| None` | `None` | `console` | Exporter used for agent traces: `otlp_grpc`, `otlp_http`, `zipkin`, or `console`. |
 
 Use the endpoint format expected by the selected exporter, for example `http://otel-collector:4317` for OTLP gRPC, `http://otel-collector:4318` for OTLP HTTP, or `http://zipkin:9411` for Zipkin. Dapr Agents appends the appropriate path—`/v1/logs`, `/v1/traces`, or `/api/v2/spans`—if it is not already present.
 
