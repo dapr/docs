@@ -15,7 +15,7 @@ As a CNCF distributed application runtime, Dapr is portable and event-driven, ma
 
 ## Any language, any framework, anywhere
 
-<img src="/images/overview.png" width=1200 style="padding-bottom:15px;">
+{{< diagram overview >}}
 
 With the current wave of cloud adoption, web + database application architectures (such as classic 3-tier designs) are trending more toward microservice application architectures, which are inherently distributed. You shouldn't have to become a distributed systems expert just to create microservices applications.
 
@@ -36,7 +36,7 @@ This enables you to build microservice applications that can run on the cloud an
 
 ## Microservice building blocks for cloud and edge
 
-<img src="/images/building_blocks.png" width=1200 style="padding-bottom:15px;">
+{{< diagram building-blocks >}}
 
 Dapr provides distributed system building blocks for you to build microservice applications in a standard way and to deploy to any environment.
 
@@ -48,6 +48,7 @@ Each of these building block APIs is independent, meaning that you can use any n
 | [**Service-to-service invocation**]({{% ref "service-invocation-overview" %}})  | Resilient service-to-service invocation enables method calls, including retries, on remote services, wherever they are located in the supported hosting environment.
 | [**Publish and subscribe**]({{% ref "pubsub-overview" %}}) | Publishing events and subscribing to topics between services enables event-driven architectures to simplify horizontal scalability and make them resilient to failure. Dapr provides at-least-once message delivery guarantee, message TTL, consumer groups and other advance features.
 | [**State management**]({{% ref "state-management-overview" %}}) | With state management for storing and querying key/value pairs, long-running, highly available, stateful services can be easily written alongside stateless services in your application. The state store is pluggable and examples include AWS DynamoDB, Azure Cosmos DB, Azure SQL Server, GCP Firebase, PostgreSQL or Redis, among others.
+| [**Binary Store**]({{% ref "binarystore-overview" %}}) | The binary store API enables you to store, retrieve, and delete files that are too large for a state store. File content is streamed between your application and the configured store rather than buffered in the Dapr sidecar as a JSON value.
 | [**Resource bindings**]({{% ref "bindings-overview" %}}) | Resource bindings with triggers builds further on event-driven architectures for scale and resiliency by receiving and sending events to and from any external source such as databases, queues, file systems, etc.
 | [**Actors**]({{% ref "actors-overview" %}}) | A pattern for stateful and stateless objects that makes concurrency simple, with method and state encapsulation. Dapr provides many capabilities in its actor runtime, including concurrency, state, and life-cycle management for actor activation/deactivation, and timers and reminders to wake up actors.
 | [**Secrets**]({{% ref "secrets-overview" %}}) | The secrets management API integrates with public cloud and local secret stores to retrieve the secrets for use in application code.
@@ -73,7 +74,7 @@ Alongside its building blocks, Dapr provides cross-cutting APIs that apply acros
 
 Dapr exposes its HTTP and gRPC APIs as a sidecar architecture, either as a container or as a process, not requiring the application code to include any Dapr runtime code. This makes integration with Dapr easy from other runtimes, as well as providing separation of the application logic for improved supportability.
 
-<img src="/images/overview-sidecar-model.png" width=900>
+{{< diagram name="sidecar-model" width="65" >}}
 
 ## Hosting environments
 
@@ -87,7 +88,7 @@ In [self-hosted mode]({{% ref self-hosted-overview %}}), Dapr runs as a separate
 
 You can use the [Dapr CLI](https://github.com/dapr/cli#launch-dapr-and-your-app) to run a Dapr-enabled application on your local machine. In the following diagram, Dapr's local development environment gets configured with the CLI `init` command. Try this out with the [getting started samples]({{% ref getting-started %}}).
 
-<img src="/images/overview-standalone.png" width=1200 alt="Architecture diagram of Dapr in self-hosted mode">
+{{< diagram hosting-standalone >}}
 
 ### Kubernetes
 
@@ -107,13 +108,13 @@ The `dapr-sentry` service is a certificate authority that enables mutual TLS bet
 
 Deploying and running a Dapr-enabled application into your Kubernetes cluster is as simple as adding a few annotations to the deployment schemes. Visit the [Dapr on Kubernetes docs]({{% ref kubernetes %}}).
 
-<img src="/images/overview-kubernetes.png" width=1200 alt="Architecture diagram of Dapr in Kubernetes mode">
+{{< diagram hosting-kubernetes >}}
 
 ### Clusters of physical or virtual machines
 
 The Dapr control plane services can be deployed in high availability (HA) mode to clusters of physical or virtual machines in production. In the diagram below, the Actor `Placement` and security `Sentry` services are started on three different VMs to provide HA control plane. In order to provide name resolution using DNS for the applications running in the cluster, Dapr uses multicast DNS by default, but can also optionally support [Hashicorp Consul service]({{% ref setup-nr-consul %}}).
 
-<img src="/images/overview-vms-hosting.png" width=1200 alt="Architecture diagram of Dapr control plane and Consul deployed to VMs in high availability mode">
+{{< diagram hosting-vms >}}
 
 ## Developer language SDKs and frameworks
 
@@ -147,7 +148,7 @@ Dapr can be used from any developer framework. Here are some that have been inte
 
 #### Dapr Agents
 
-![Dapr Agents  Overview](/images/dapr-agents/concepts-agents-overview.png)
+{{< diagram name="agents-overview" width="85" >}}
 
 
 [Dapr Agents]({{% ref "../developing-ai/dapr-agents" %}}) is a Python framework for building intelligent, durable agents powered by LLMs. It provides agent-centric capabilities such as tool calling, memory management, [MCP support](https://modelcontextprotocol.io/) and agent orchestration, while leveraging Dapr for durability, observability, and security, at scale.
