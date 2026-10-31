@@ -108,7 +108,7 @@ The following validation rules apply to the fields supported by each configurati
 
 The following OpenTelemetry boolean keys are used for both environment variables and runtime configuration: `OTEL_SDK_DISABLED`, `OTEL_LOGGING_ENABLED`, and `OTEL_TRACING_ENABLED`.
 
-Only case-insensitive `true` and `false` strings are valid for environment variables and runtime configuration, as specified by the [OpenTelemetry environment variable specification](https://opentelemetry.io/docs/specs/otel/configuration/sdk-environment-variables/#boolean). Values such as `1`, `0`, `yes`, and `no` are invalid. During instantiation, invalid values raise an error; through environment variables or runtime configuration, they are logged and ignored.
+For OpenTelemetry boolean keys, environment variables and runtime configuration accept only case-insensitive `true` and `false` strings, following the [OpenTelemetry environment variable specification](https://opentelemetry.io/docs/specs/otel/configuration/sdk-environment-variables/#boolean). Native booleans are accepted during instantiation. Values such as `1`, `0`, `yes`, and `no` are invalid: during instantiation, they raise an error; when provided through environment variables or runtime configuration, they are logged and ignored.
 
 ## Usage
 
