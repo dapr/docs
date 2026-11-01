@@ -71,6 +71,17 @@ const IN_SCOPE_IMAGES = [
   'security-dapr-API-scoping.png',
   'security-overview-capabilities-example.png',
   'security-threat-model.png',
+
+  // Added by the developing-applications / developing-ai conversion. Each of
+  // these had its page-level guard retired when its page converted, so this
+  // list is now their only protection.
+  'scheduler/scheduler-architecture.png',
+  'workflow-overview/workflows-chaining.png',
+  'workflow-overview/workflows-fanin-fanout.png',
+  'workflow-overview/workflow-async-request-response.png',
+  'workflow-overview/workflow-monitor-pattern.png',
+  'workflow-overview/workflow-human-interaction-pattern.png',
+  'workflow-overview/workflows-compensation.png',
 ];
 
 // IN_SCOPE_IMAGES as the previous conversion froze it. It may GROW - the
@@ -124,6 +135,19 @@ const CONVERTED_PAGES = [
     page: '/developing-applications/building-blocks/jobs/jobs-overview/',
     scene: 'scheduler-architecture',
   },
+  // workflow-patterns.md, converted whole: six images, six scenes.
+  ...[
+    ['workflow-overview/workflows-chaining.png', 'workflow-task-chaining'],
+    ['workflow-overview/workflows-fanin-fanout.png', 'workflow-fan-out-fan-in'],
+    ['workflow-overview/workflow-async-request-response.png', 'workflow-async-http'],
+    ['workflow-overview/workflow-monitor-pattern.png', 'workflow-monitor'],
+    ['workflow-overview/workflow-human-interaction-pattern.png', 'workflow-external-system'],
+    ['workflow-overview/workflows-compensation.png', 'workflow-compensation'],
+  ].map(([image, scene]) => ({
+    image,
+    page: '/developing-applications/building-blocks/workflow/workflow-patterns/',
+    scene,
+  })),
 ];
 
 const git = (...args) =>

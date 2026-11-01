@@ -94,5 +94,29 @@
   "sidecar-model": [
     -7.32,
     -0.17
+  ],
+  "workflow-async-http": [
+    3.49,
+    0
+  ],
+  "workflow-compensation": [
+    0,
+    8
+  ],
+  "workflow-external-system": [
+    4.5,
+    0
+  ],
+  "workflow-fan-out-fan-in": [
+    0,
+    0
+  ],
+  "workflow-monitor": [
+    0,
+    0.22
+  ],
+  "workflow-task-chaining": [
+    0,
+    0
   ]
 }

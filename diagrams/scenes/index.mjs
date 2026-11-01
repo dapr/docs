@@ -25,6 +25,12 @@ import apiScoping from './api-scoping.mjs';
 import securityCapabilities from './security-capabilities.mjs';
 import securityThreatModel from './security-threat-model.mjs';
 import sidecarModel from './sidecar-model.mjs';
+import workflowTaskChaining from './workflow-task-chaining.mjs';
+import workflowFanOutFanIn from './workflow-fan-out-fan-in.mjs';
+import workflowMonitor from './workflow-monitor.mjs';
+import workflowExternalSystem from './workflow-external-system.mjs';
+import workflowCompensation from './workflow-compensation.mjs';
+import workflowAsyncHttp from './workflow-async-http.mjs';
 
 export const scenes = {
   'agents-overview': agentsOverview,
@@ -51,4 +57,10 @@ export const scenes = {
   'security-capabilities': securityCapabilities,
   'security-threat-model': securityThreatModel,
   'sidecar-model': sidecarModel,
+  'workflow-task-chaining': workflowTaskChaining,
+  'workflow-fan-out-fan-in': workflowFanOutFanIn,
+  'workflow-monitor': workflowMonitor,
+  'workflow-external-system': workflowExternalSystem,
+  'workflow-compensation': workflowCompensation,
+  'workflow-async-http': workflowAsyncHttp,
 };
