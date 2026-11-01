@@ -39,7 +39,7 @@ For local development, the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}
 {{% /alert %}}
 
 The diagram below shows some examples of the components for each component type
-<img src="/images/concepts-components.png" width=1200>
+{{< diagram name="components-concept" width="80" >}}
 
 ## Built-in and pluggable components
 
