@@ -31,6 +31,10 @@ import workflowMonitor from './workflow-monitor.mjs';
 import workflowExternalSystem from './workflow-external-system.mjs';
 import workflowCompensation from './workflow-compensation.mjs';
 import workflowAsyncHttp from './workflow-async-http.mjs';
+import workflowMultiAppActivity from './workflow-multi-app-activity.mjs';
+import workflowMultiAppChildWorkflow from './workflow-multi-app-child-workflow.mjs';
+import workflowMultiAppComplex from './workflow-multi-app-complex.mjs';
+import workflowCrossAppClient from './workflow-cross-app-client.mjs';
 
 export const scenes = {
   'agents-overview': agentsOverview,
@@ -63,4 +67,8 @@ export const scenes = {
   'workflow-external-system': workflowExternalSystem,
   'workflow-compensation': workflowCompensation,
   'workflow-async-http': workflowAsyncHttp,
+  'workflow-multi-app-activity': workflowMultiAppActivity,
+  'workflow-multi-app-child-workflow': workflowMultiAppChildWorkflow,
+  'workflow-multi-app-complex': workflowMultiAppComplex,
+  'workflow-cross-app-client': workflowCrossAppClient,
 };

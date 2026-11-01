@@ -394,6 +394,63 @@ const SCENES = [
     ],
   },
   {
+    name: 'workflow-multi-app-activity',
+    page: '/developing-applications/building-blocks/workflow/workflow-multi-app/',
+    labels: ['App1', 'App2', 'Start', 'call activity ActivityA on App2', 'ActivityA', 'End'],
+  },
+  {
+    name: 'workflow-multi-app-child-workflow',
+    page: '/developing-applications/building-blocks/workflow/workflow-multi-app/',
+    labels: [
+      'App1',
+      'App2',
+      'Workflow1',
+      'Workflow2',
+      'call child workflow (Workflow2) on App2',
+      'Activity A',
+      'Start',
+      'End',
+    ],
+  },
+  {
+    name: 'workflow-multi-app-complex',
+    page: '/developing-applications/building-blocks/workflow/workflow-multi-app/',
+    labels: [
+      'Main Orchestration Workflow',
+      'GPU activities',
+      'ML Training Workflow',
+      'call Data Processing Activities on App2',
+      'call ML Training Child Workflow on App3',
+      'call Model Deployment on App4',
+      'Data Ingesting Activity',
+      'Feature Engineering Activity',
+      'Data Processing Activity',
+      'Model Training Activity',
+      'Model Validation Activity',
+      'Model Loading Activity',
+      'Inference Setup Activity',
+      'Start',
+      'End',
+    ],
+  },
+  {
+    name: 'workflow-cross-app-client',
+    page: '/developing-applications/building-blocks/workflow/workflow-multi-app/',
+    labels: [
+      'app-a',
+      'app-b',
+      'Your code: terminate order-1 naming app-b',
+      'Dapr sidecar',
+      'caller identity over mTLS',
+      'may app-a terminate OrderWF?',
+      'WorkflowAccessPolicy',
+      'allowed',
+      'denied',
+      'order-1, an OrderWF instance',
+      'PermissionDenied',
+    ],
+  },
+  {
     name: 'sentry-selfhosted',
     page: '/concepts/dapr-services/sentry/',
     labels: [
@@ -873,6 +930,53 @@ for (const scene of SCENES) {
           .filter(Boolean),
       );
       expect(overflowing, 'tile labels wider or taller than their tile').toEqual([]);
+    });
+
+    // The same defect as the tile check above, on the one shape whose width is
+    // handed in rather than derived: a caption pill. `captionW` is MEASURED,
+    // because the exporter has no font metrics - and a measurement taken as
+    // the text's own width leaves a pill whose ends graze its letters. Nothing
+    // else here notices: the scene exports, the bbox is inside the viewBox,
+    // the caption is clear of the contents it names, and the label is drawn.
+    //
+    // The rule is half an em of clear space each side. Every scene written
+    // before this cleared it, the tightest (`security-capabilities`, at 12px)
+    // by 0.8 units. All five workflow scenes using region() failed it, and
+    // `workflow-multi-app-complex` drew "Main Orchestration Workflow" 0.4
+    // units WIDER than the pill it sits in.
+    test(`${scene.name} keeps every caption pill's text clear of its own ends`, async ({ page }) => {
+      const { CAPTION_PAD_EM } = await import('../diagrams/shapes.mjs');
+      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      const tight = await page.$$eval(
+        `${sel(scene.name)} svg g.d-region > g.d-pill`,
+        (pills, em) =>
+          pills
+            .map((pill) => {
+              const rect = pill.querySelector('rect');
+              const t = pill.querySelector('text');
+              if (!rect || !t) return null;
+              // getBBox, not getBoundingClientRect: scene units are what
+              // `captionW` is expressed in, so the number a failure prints is
+              // the number to change.
+              const r = rect.getBBox();
+              const b = t.getBBox();
+              const pad = Math.min(b.x - r.x, r.x + r.width - (b.x + b.width));
+              const size = Number(t.getAttribute('font-size'));
+              const need = size * em;
+              return pad < need
+                ? {
+                  caption: t.textContent.replace(/\s+/g, ' ').trim(),
+                  pad: +pad.toFixed(1),
+                  need: +need.toFixed(1),
+                  captionW: +r.width.toFixed(1),
+                  useAtLeast: Math.ceil(b.width + 2 * need),
+                }
+                : null;
+            })
+            .filter(Boolean),
+        CAPTION_PAD_EM,
+      );
+      expect(tight, 'caption text too close to its pill ends - raise captionW').toEqual([]);
     });
 
     // The point of the standalone copy: a file that still looks like the

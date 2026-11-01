@@ -82,6 +82,9 @@ const IN_SCOPE_IMAGES = [
   'workflow-overview/workflow-monitor-pattern.png',
   'workflow-overview/workflow-human-interaction-pattern.png',
   'workflow-overview/workflows-compensation.png',
+  'workflow-overview/workflow-multi-app-complex.png',
+  'workflow-overview/workflow-multi-app-callactivity.png',
+  'workflow-overview/workflow-multi-app-child-workflow.png',
 ];
 
 // IN_SCOPE_IMAGES as the previous conversion froze it. It may GROW - the
@@ -146,6 +149,16 @@ const CONVERTED_PAGES = [
   ].map(([image, scene]) => ({
     image,
     page: '/developing-applications/building-blocks/workflow/workflow-patterns/',
+    scene,
+  })),
+  // workflow-multi-app.md: three images and the page's one Mermaid flowchart.
+  ...[
+    ['workflow-overview/workflow-multi-app-complex.png', 'workflow-multi-app-complex'],
+    ['workflow-overview/workflow-multi-app-callactivity.png', 'workflow-multi-app-activity'],
+    ['workflow-overview/workflow-multi-app-child-workflow.png', 'workflow-multi-app-child-workflow'],
+  ].map(([image, scene]) => ({
+    image,
+    page: '/developing-applications/building-blocks/workflow/workflow-multi-app/',
     scene,
   })),
 ];

@@ -420,6 +420,50 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
   and both app hexagons are drawn through their own pod names. That shipped
   through a review round here, which is why there is now a rendered test,
   `keeps every caption clear of the contents it names`.
+- **A measured `captionW` is the TEXT's width; the pill needs half an em more
+  at each end.** `captionPad(size)` is that number and the rendered test
+  `keeps every caption pill's text clear of its own ends` enforces it. Measure
+  with `preview-scene.mjs`, then add `2 * captionPad(captionSize)`. Taking the
+  measurement as the width is the whole mistake: it draws a pill whose rounded
+  ends graze its own letters, and nothing else notices - the scene exports, the
+  bbox fits, the caption is clear of the contents it names, the label is drawn.
+  Five workflow scenes shipped it to review; one drew `Main Orchestration
+  Workflow` 0.4 units WIDER than the pill around it.
+- **A region's caption is set in the DIAGRAM's text size, not `region()`'s
+  default 15.** Every concept scene has a `TEXT` constant and passes
+  `captionSize: TEXT`. Left at the default, a lane's name sat two steps above
+  the activity names underneath it and read as a heading for the page rather
+  than a name for the lane. In a flow diagram you do not pass it at all: draw
+  the lane with `flowLane()` and it is already right.
+- **A flow diagram's lane is `flowLane()` and its annotations are `note()`,
+  both from `flow.mjs`.** A lane is the dashed band a row sits in - an
+  application, a workflow, a `try`. A note is a remark ON the flow rather than
+  the name OF a shape: "allowed", "denied", "caller identity over mTLS", set
+  one step below `FLOW.SIZE` and lighter so the two are told apart at a glance;
+  `halo: true` when it sits on a line. `FLOW.PAD` stands a lane off its
+  contents and `FLOW.LANE_TERMINAL_H` / `FLOW.LANE_ACTIVITY_H` are the two lane
+  heights, because a row of circles is taller than a row of boxes. Before
+  these, ten workflow scenes carried five copies of the pad, five hand-written
+  note labels and four hand-rolled lane helpers, and the caption size above was
+  missing from every one of them.
+- **Prefer a builder that OWNS an arrangement over one that only names colours.**
+  `app.mjs`, `services.mjs`, `cards.mjs`, `pod()` and now `flowLane()` exist
+  because the arrangement they hold had already drifted between scenes before
+  anyone looked - three hosting diagrams with three different sidecar offsets,
+  five workflow scenes with no caption size. A constant stops two scenes
+  disagreeing about a number. A builder stops them disagreeing about a
+  decision, which is the kind of drift a reviewer sees and no test does. When
+  you find yourself writing the same call in a second scene, that is where the
+  next one goes - and the cheapest way to make it stick is a unit test that
+  reads the scene sources and fails on the copy, as `flow.test.mjs`'s
+  `no flow scene carries its own copy of any of this` does.
+- **A row of shapes between two fixed ends is `slots()`, not accumulated
+  offsets.** `slots(x0, x1, n)` gives n centres evenly spread between them, and
+  one item is the midpoint. `workflow-multi-app-child-workflow` laid its second
+  lane out by adding gaps from the left instead, which put the lane's single
+  activity 54 units off centre - under the call box in the lane ABOVE it rather
+  than between its own Start and End. Nothing catches that; using `slots()`
+  means it cannot happen.
 - **A Kubernetes pod is `pod()`.** A dashed sky box with rounded corners and
   the pod's name on its top edge, the same everywhere. The caption width is
   measured, like every pill in the set, and `captionX` moves it along the top

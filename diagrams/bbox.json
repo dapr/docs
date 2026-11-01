@@ -103,6 +103,10 @@
     0,
     8
   ],
+  "workflow-cross-app-client": [
+    0,
+    -2
+  ],
   "workflow-external-system": [
     4.5,
     0
@@ -114,6 +118,18 @@
   "workflow-monitor": [
     0,
     0.22
+  ],
+  "workflow-multi-app-activity": [
+    0,
+    -4.5
+  ],
+  "workflow-multi-app-child-workflow": [
+    0,
+    -4.5
+  ],
+  "workflow-multi-app-complex": [
+    0,
+    0
   ],
   "workflow-task-chaining": [
     0,

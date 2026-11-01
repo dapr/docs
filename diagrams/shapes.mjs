@@ -591,6 +591,20 @@ export const CAPTION_INSET = 20;
 export const CAPTION_H = 26;
 export const captionReach = () => CAPTION_H / 2;
 
+// The least clear space a caption pill leaves between its text and its own
+// rounded end, as a fraction of the caption's type size: half an em each side.
+//
+// `captionW` is measured, because the exporter has no font metrics and cannot
+// derive it. What it CANNOT do is tell you that the number you measured was
+// the text's own width with nothing left over - and a pill whose ends graze
+// its letters reads as a mistake long before it reads as tight. The scenes
+// that predate this all clear the rule, the tightest by 0.8 units; the first
+// five workflow scenes to use region() all failed it, one of them by drawing
+// the text 0.4 units WIDER than the pill around it. The rendered test
+// `keeps every caption pill's text clear of its own ends` is the check.
+export const CAPTION_PAD_EM = 0.5;
+export const captionPad = (size) => +(size * CAPTION_PAD_EM).toFixed(2);
+
 export function region({ x, y, w, h, stroke = C.caption, r = 10, caption = '', captionW, captionX, captionH = CAPTION_H, captionSize = 15 }) {
   return el('g', { class: 'd-region' }, [
     panel({ x, y, w, h, stroke, r }),
