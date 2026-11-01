@@ -161,6 +161,19 @@ The engine's API is in [reference/engine.md](reference/engine.md).
   under Gotchas. `width` is ignored below the `md` breakpoint, where the column
   is already the smallest a drawing can usefully be.
 
+  **You do not have to remember this, and you should not try.** `renderWidth()`
+  in `diagrams/render-width.mjs` is the formula, and
+  `diagrams/render-width.test.mjs` sweeps every `{{< diagram >}}` call in the
+  docs against it, naming the file, the line, the canvas and the value to use.
+  Run `npm run test:diagrams` after adding a call site.
+
+  That check exists because this section was read and then not applied: seven
+  diagrams were converted in one branch and all seven shortcodes went in
+  without a width - six on one page, which rendered at six different type
+  sizes, and one calling a scene whose other call site already narrowed it to
+  85. Nothing failed. The scenes exported, the pages built, the rendered suite
+  passed. A rule that is only prose is a rule that gets skipped.
+
 ### Colors
 
 Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
