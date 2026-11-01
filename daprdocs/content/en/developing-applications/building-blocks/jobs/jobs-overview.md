@@ -16,7 +16,7 @@ Jobs in Dapr consist of:
 
 [See example scenarios.]({{% ref "#scenarios" %}})
 
-{{< diagram scheduler-architecture >}}
+{{< diagram name="scheduler-architecture" width="85" >}}
 
 ## How it works
 
