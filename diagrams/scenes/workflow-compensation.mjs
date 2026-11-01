@@ -22,9 +22,8 @@
 //     rather than inside it: a diamond is widest at its centre line and that
 //     name does not fit there at a readable size.
 
-import { C } from '../engine.mjs';
-import { FLOW } from '../flow.mjs';
-import { arrow, box, decision, decisionPoints, elbowArrow, group, label, node, region } from '../shapes.mjs';
+import { FLOW, flowLane, note } from '../flow.mjs';
+import { arrow, box, decision, decisionPoints, elbowArrow, group, label, node } from '../shapes.mjs';
 
 const MARGIN = 40;
 
@@ -43,20 +42,24 @@ const END_Y = COL_Y[2] + 110;
 const GATE_W = 96;
 const GATE_H = 64;
 
-// A region is padded from how far its caption pill hangs inside, not from its
-// border: `captionReach()` is that distance and the skill says to pad from it.
-const PAD = 26;
-const regionFor = (x, caption) => region({
-  x: x - FLOW.W / 2 - PAD,
-  y: COL_Y[0] - FLOW.H / 2 - PAD,
-  w: FLOW.W + PAD * 2,
-  h: (COL_Y[2] + FLOW.H / 2) - (COL_Y[0] - FLOW.H / 2) + PAD * 2,
+// A lane here runs DOWN a column of three steps rather than along a row of
+// them, which is the one thing about this diagram that is not the set's usual
+// shape. It is still a lane: FLOW.PAD stands it off its contents the same way.
+const regionFor = (x, caption) => flowLane({
+  x: x - FLOW.W / 2 - FLOW.PAD,
+  y: COL_Y[0] - FLOW.H / 2 - FLOW.PAD,
+  w: FLOW.W + FLOW.PAD * 2,
+  h: (COL_Y[2] + FLOW.H / 2) - (COL_Y[0] - FLOW.H / 2) + FLOW.PAD * 2,
   caption,
-  captionW: 54,
+  // Measured at FLOW.CAPTION_SIZE, with half an em clear of each end - the
+  // rule `keeps every caption pill's text clear of its own ends` checks.
+  // "catch" is the longer of the two and sets the width; "try" takes the same
+  // one so the pair reads as a pair.
+  captionW: 62,
 });
 
 export default {
-  width: CATCH_X + FLOW.W / 2 + PAD + MARGIN,
+  width: CATCH_X + FLOW.W / 2 + FLOW.PAD + MARGIN,
   height: END_Y + FLOW.NODE_R + 34,
   title: 'The compensation workflow pattern',
   desc:
@@ -82,9 +85,9 @@ export default {
       regionFor(CATCH_X, 'catch'),
 
       // In, across to the gate, and out of the catch column to End.
-      arrow({ from: [START_X + FLOW.NODE_R, MID_Y], to: [TRY_X - FLOW.W / 2 - PAD, MID_Y] }),
-      arrow({ from: [TRY_X + FLOW.W / 2 + PAD, MID_Y], to: gate.left }),
-      arrow({ from: gate.right, to: [CATCH_X - FLOW.W / 2 - PAD, MID_Y] }),
+      arrow({ from: [START_X + FLOW.NODE_R, MID_Y], to: [TRY_X - FLOW.W / 2 - FLOW.PAD, MID_Y] }),
+      arrow({ from: [TRY_X + FLOW.W / 2 + FLOW.PAD, MID_Y], to: gate.left }),
+      arrow({ from: gate.right, to: [CATCH_X - FLOW.W / 2 - FLOW.PAD, MID_Y] }),
 
       // No: straight down the middle to End. Yes: through the catch column,
       // which then drops to the same terminal.
@@ -103,8 +106,8 @@ export default {
 
       decision({ x: GATE_X, y: MID_Y, w: GATE_W, h: GATE_H, ...FLOW.wait }),
       label({ x: GATE_X, y: MID_Y - GATE_H / 2 - 18, text: 'IsException', size: 12, weight: 600 }),
-      label({ x: (gate.right[0] + CATCH_X - FLOW.W / 2 - PAD) / 2, y: MID_Y - 14, text: 'Yes', size: 12, weight: 500, color: C.caption }),
-      label({ x: GATE_X + 14, y: gate.bottom[1] + 26, text: 'No', size: 12, weight: 500, color: C.caption, anchor: 'start' }),
+      note({ x: (gate.right[0] + CATCH_X - FLOW.W / 2 - FLOW.PAD) / 2, y: MID_Y - 14, text: 'Yes' }),
+      note({ x: GATE_X + 14, y: gate.bottom[1] + 26, text: 'No', anchor: 'start' }),
 
       node({ x: START_X, y: MID_Y, r: FLOW.NODE_R, ...FLOW.start, label: 'Start' }),
       node({ x: GATE_X + 60 + FLOW.NODE_R, y: END_Y, r: FLOW.NODE_R, ...FLOW.end, label: 'End' }),

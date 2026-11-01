@@ -25,9 +25,8 @@
 //   - there is no End terminal, because the pattern has no end: the source
 //     draws the loop returning to Start and so does this.
 
-import { C } from '../engine.mjs';
-import { FLOW } from '../flow.mjs';
-import { arrow, box, elbowArrow, group, label, node } from '../shapes.mjs';
+import { FLOW, note } from '../flow.mjs';
+import { arrow, box, elbowArrow, group, node } from '../shapes.mjs';
 import { serviceInvocation, SI_H } from '../icons.mjs';
 
 const STEPS = [
@@ -99,7 +98,7 @@ export default {
 
     const notes = STEPS
       .map((s, i) => (s.note
-        ? label({ x: stepX(i), y: ROW_Y + FLOW.H / 2 + 26, text: s.note, size: 12, weight: 500, color: C.caption })
+        ? note({ x: stepX(i), y: ROW_Y + FLOW.H / 2 + 26, text: s.note })
         : null))
       .filter(Boolean);
 

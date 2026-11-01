@@ -30,8 +30,8 @@
 //     not separate apps, and drawing them as apps would say otherwise.
 
 import { C } from '../engine.mjs';
-import { FLOW } from '../flow.mjs';
-import { arrow, box, cylinder, elbowArrow, group, hex, hexHalfWidth, label } from '../shapes.mjs';
+import { FLOW, note } from '../flow.mjs';
+import { arrow, box, cylinder, elbowArrow, group, hex, hexHalfWidth } from '../shapes.mjs';
 
 const MARGIN = 44;
 
@@ -60,8 +60,7 @@ const BOTTOM_Y = MID_Y + HEX_R + LEG;      // the status leg
 // offset either side of the box's centre line rather than drawn on it.
 const LEG_SPLIT = 12;
 
-const cap = (x, y, text) =>
-  label({ x, y, text, size: 12, weight: 500, color: C.caption });
+const cap = (x, y, text) => note({ x, y, text });
 
 export default {
   width: WORKER_X + HEX_HALF + MARGIN,

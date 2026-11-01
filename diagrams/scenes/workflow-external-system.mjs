@@ -26,9 +26,9 @@
 //     because a drawn shape and a glyph beside it never match in weight.
 
 import { C } from '../engine.mjs';
-import { FLOW } from '../flow.mjs';
+import { FLOW, note } from '../flow.mjs';
 import {
-  arrow, box, decision, decisionPoints, elbowArrow, group, label, node,
+  arrow, box, decision, decisionPoints, elbowArrow, group, node,
 } from '../shapes.mjs';
 import { icon, serviceInvocation, SI_W } from '../icons.mjs';
 
@@ -72,8 +72,7 @@ const FAR_X = END_X + FLOW.NODE_R + 52;
 // own clear of the diamond before it drops.
 const LEFT_RAIL_X = SPINE_X - GATE_W / 2 - 38;
 
-const when = (x, y, text) =>
-  label({ x, y, text, size: 12, weight: 500, color: C.caption });
+const when = (x, y, text) => note({ x, y, text });
 
 export default {
   width: FAR_X + MARGIN,
