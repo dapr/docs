@@ -5,7 +5,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { serialize, C } from './engine.mjs';
-import { icon, plate, markHex, DAPR_MARK, listMarks, parseMark, IconError, ICONS_DIR } from './icons.mjs';
+import { icon, plate, markHex, serviceInvocation, DAPR_MARK, listMarks, parseMark, IconError, ICONS_DIR } from './icons.mjs';
+import { APIS } from './apis.mjs';
 
 const OVERVIEW = ['nodejs', 'python', 'dotnet', 'go', 'java', 'cpp', 'php', 'rust', 'azure', 'aws', 'google-cloud', 'kubernetes'];
 
@@ -417,4 +418,16 @@ test('markHex() centres a mark in a hexagon and sizes the Dapr wordmark from r',
   const other = markHex({ x: 0, y: 0, r: 30, mark: 'redis', size: 26, stroke: C.navy, color: C.navy });
   assert.equal(walk(other, (n) => n.tag === 'polygon')[0].attrs.fill, C.bg);
   assert.throws(() => markHex({ x: 0, y: 0, r: 30, mark: 'redis' }), /needs a size/);
+});
+
+test('serviceInvocation() is the same mark the service invocation API wears', () => {
+  // One API, one mark. The workflow diagrams set it above an activity that
+  // calls another service; the overview sets it on a tile. A hand-drawn glyph
+  // here would be a second mark for one API, which is how a set stops being
+  // one set - so this reads the mark out of APIS rather than naming it twice.
+  const fromApis = APIS.find((a) => a.key === 'service-invocation');
+  const g = serviceInvocation({ x: 100, y: 50 });
+  const mark = walk(g, (n) => n.attrs?.['data-mark'])[0];
+  assert.equal(mark.attrs['data-mark'], `fluent-${fromApis.mark}`);
+  assert.equal(mark.attrs.fill, C.blue, 'the Dapr sky, as the source images draw it');
 });

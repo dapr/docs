@@ -275,11 +275,62 @@ export function callout({
 }
 
 // A workflow start or end. Label sits under the circle unless labelDy says otherwise.
-export function node({ x, y, r = 16, stroke = C.navy, fill = C.bg, label: name = '', labelDy }) {
+// A DECISION: the diamond a flow branches at. The one shape the workflow and
+// agent pattern sets needed that the library did not already have.
+//
+// `w` and `h` are the full width and height, not half, so a diamond is sized
+// against the box() beside it rather than by its half-diagonals.
+//
+// The label sits on the VERTICAL CENTRE and nowhere else. A diamond is widest
+// exactly there, so that row is the only one with the full `w` to set a name
+// in; a label nudged up or down overflows a shape that still passes every
+// geometric check, because the polygon itself is the right size. Keep names
+// here to one short word - "Gate", "Yes/No" - and put the condition in the
+// arrow labels, which is what the source diagrams do.
+// The four points of the diamond, by name. A decision means "which way out",
+// and in a flowchart each way out leaves from its OWN point - the source
+// images do this and it is what makes the shape read as a decision rather than
+// a junction. Exported because a scene that works the vertices out for itself
+// gets them subtly wrong: the external-system gate had all three branches
+// leaving the right-hand point, which drew as one arrow splitting into three.
+export function decisionPoints({ x, y, w = 92, h = 64 }) {
+  return {
+    top: [x, y - h / 2],
+    right: [x + w / 2, y],
+    bottom: [x, y + h / 2],
+    left: [x - w / 2, y],
+  };
+}
+
+export function decision({ x, y, w = 92, h = 64, label: name = '', stroke = C.appInk, fill = C.appGold, size = 11 }) {
+  assertStroke(stroke, name, 'decision()');
+  const p = decisionPoints({ x, y, w, h });
+  const pts = [p.top, p.right, p.bottom, p.left];
+  return el('g', { class: 'd-decision' }, [
+    el('polygon', { points: pts.map(([px, py]) => `${n(px)},${n(py)}`).join(' '), ...tint(fill), ...outline(stroke) }),
+    name ? label({ x, y, text: name, size }) : null,
+  ]);
+}
+
+// A terminal marker. By default it names itself BELOW the circle, which is
+// right for a small marker beside a line.
+//
+// `labelInside` puts the name in the circle instead, the way a flowchart's
+// Start and End terminals are drawn, and `ink` is the colour it is set in -
+// which on a solid fill has to be the fill's own ink, not the page's body
+// colour. The caller states the ink rather than this deriving it: the fill is
+// a token here, not a value, so there is nothing to measure at build time.
+export function node({
+  x, y, r = 16, stroke = C.navy, fill = C.bg,
+  label: name = '', labelDy, labelInside = false, ink = C.body, size = 11,
+}) {
   assertStroke(stroke, name, 'node()');
+  assertInk(ink, 'node()');
   return el('g', { class: 'd-node' }, [
     el('circle', { cx: n(x), cy: n(y), r, fill, ...outline(stroke) }),
-    name ? label({ x, y: y + (labelDy ?? r + 14), text: name }) : null,
+    name
+      ? label({ x, y: labelInside ? y : y + (labelDy ?? r + 14), text: name, size, color: ink })
+      : null,
   ]);
 }
 
@@ -472,6 +523,18 @@ export const lineWidth = () => {
 // fold the line back on itself.
 export function roundedPath({ points, r = 10, color = C.navy, width }) {
   const len = (from, to) => Math.hypot(to[0] - from[0], to[1] - from[1]);
+  // Every leg, not just the ones that end up carrying a chevron. The corner
+  // cut divides by the leg length, so a repeated point makes that 0/0 and
+  // writes NaN into `d` - an invalid path the exporter accepts and the browser
+  // draws as a truncated run with a mark at the junction. The guard that was
+  // supposed to catch this lived in elbowArrow()'s chevron helper, which only
+  // ever saw the first and last legs, so a headless bus feeder got no check at
+  // all. It belongs here, where the division happens.
+  for (let i = 1; i < points.length; i += 1) {
+    if (len(points[i - 1], points[i]) === 0) {
+      throw new Error(`roundedPath(): a leg has no length (point ${i} repeats point ${i - 1})`);
+    }
+  }
   const back = (from, to, d) => {
     const l = len(from, to);
     return [+(from[0] + ((to[0] - from[0]) / l) * d).toFixed(2), +(from[1] + ((to[1] - from[1]) / l) * d).toFixed(2)];
@@ -506,6 +569,8 @@ export function elbowArrow({ points, r = 12, color = C.navy, heads = 'end' }) {
     const dx = prev[0] - tip[0];
     const dy = prev[1] - tip[1];
     const l = Math.hypot(dx, dy);
+    // roundedPath() has already checked every leg by the time a head is placed;
+    // this stays as the guard on the arithmetic immediately below it.
     if (l === 0) throw new Error('elbowArrow(): a leg has no length');
     // Never longer than half the leg, or the head outruns the corner before it.
     const d = Math.min(HEAD_RUN, l / 2);
@@ -662,8 +727,14 @@ export const SOCKET_R = 21;
 // their names and the stalks elbow across to the face. `elbowX` is where the
 // turn happens, and it is required rather than guessed - halfway is rarely
 // right, and a turn in the wrong place reads as a routing mistake.
+// A stalk that only changes height is VERTICAL: it leaves a horizontal face,
+// which is how a flow diagram hangs the mark above a step. There is no turn to
+// place, so elbowX is neither needed nor asked for. Without this the three
+// points collapse onto one x, the path has zero length, and the scene renders
+// a ring joined to nothing - a mark no geometric test can see.
 export function lollipop({ x, y, to, toY = y, elbowX, elbowR = 10, r = BALL_R, color = C.navy }) {
-  const bend = toY !== y;
+  const straightDown = to === x && toY !== y;
+  const bend = toY !== y && !straightDown;
   if (bend && !fin(elbowX)) throw new Error('lollipop(): a stalk that changes height needs elbowX, the x it turns at');
   const stalk = bend
     ? roundedPath({
@@ -671,7 +742,10 @@ export function lollipop({ x, y, to, toY = y, elbowX, elbowR = 10, r = BALL_R, c
       r: elbowR,
       color,
     })
-    : el('line', { x1: n(x), y1: n(y), x2: n(to), y2: n(y), stroke: color, 'stroke-width': lineWidth() });
+    : el('line', {
+      x1: n(x), y1: n(y), x2: n(to), y2: n(straightDown ? toY : y),
+      stroke: color, 'stroke-width': lineWidth(),
+    });
   return el('g', { class: 'd-lollipop' }, [
     stalk,
     el('circle', { cx: n(x), cy: n(y), r: n(r), fill: C.bg, ...outline(color) }),

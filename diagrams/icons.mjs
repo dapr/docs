@@ -501,3 +501,31 @@ export function markHex({ x, y, r, mark, size, stroke = C.blue, fill, color }) {
     icon({ name: mark, x, y, w, h: w, ...(color ? { color } : {}) }),
   ]);
 }
+
+// The SERVICE-INVOCATION MARK the workflow diagrams set above an activity that
+// calls another service. It is the SAME Fluent mark the service invocation API
+// wears everywhere else in this set - `APIS` in apis.mjs names it - so that a
+// reader who has met it on the overview page meets it again here. The first
+// draft drew the source image's own arrow-and-ring glyph by hand, which put a
+// second mark for one API into a set that already had one.
+//
+// It is a GLYPH, not a connector, which is the whole difference from
+// `lollipop()`: a lollipop's stalk IS the relationship and starts on the shape
+// that provides the interface, whereas this stands on its own and the activity
+// reaches it with an arrow of its own. Drawing it as a lollipop said the
+// activity PROVIDED an interface when what it does is CALL one.
+// The mark is WIDE and short - 20 by 11 of drawn ink in a 24 box - so it is
+// sized by `fit: 'ink'`, its drawn width. Sized by the viewBox instead it came
+// out two thirds of what was asked for and read as a speck. SI_W is a quarter
+// of an activity's width, measured off the source images; SI_H follows from
+// the mark's own proportions, so a scene can clear it without guessing.
+const SI_MARK = 'fluent-arrow-step-in-right';
+export const SI_W = 42;
+export const SI_H = (() => {
+  const [, , w, h] = inkBox(SI_MARK);
+  return +((SI_W * h) / w).toFixed(2);
+})();
+
+export function serviceInvocation({ x, y, w = SI_W, color = C.blue }) {
+  return icon({ name: SI_MARK, x, y, w, h: w, color, fit: 'ink' });
+}

@@ -35,6 +35,51 @@ const samples = () => ({
   tile: S.tile({ x: 100, y: 100, label: 'State\nstore', tag: 'alpha', icon: S.badge({ x: 100, y: 85 }) }),
   tileInline: S.tile({ x: 100, y: 100, w: 150, h: 40, inline: true, label: 'Jobs', icon: (cx, cy) => S.badge({ x: cx, y: cy, r: 8 }) }),
   arrow: S.arrow({ from: [0, 0], to: [50, 0] }),
+  decision: S.decision({ x: 100, y: 100, label: 'Gate', ...APP[2] }),
+});
+
+test('a lollipop on a purely vertical stalk needs no elbowX and draws the stalk', () => {
+  // The builder was written for a stalk leaving a vertical face sideways. A
+  // flow diagram hangs the mark above a box instead, so the stalk runs
+  // straight down. Before this, every point shared an x, the path collapsed to
+  // zero length, and the scene rendered a bare ring with nothing joining it to
+  // the shape - which no geometric test could see.
+  const g = S.lollipop({ x: 100, y: 60, to: 100, toY: 100 });
+  const [line] = find(g, (x) => x.tag === 'line');
+  assert.ok(line, 'a vertical stalk is drawn as a line');
+  assert.deepEqual(
+    [line.attrs.x1, line.attrs.y1, line.attrs.x2, line.attrs.y2].map(Number),
+    [100, 60, 100, 100],
+  );
+});
+
+test('a lollipop that changes BOTH x and y still demands elbowX', () => {
+  assert.throws(() => S.lollipop({ x: 100, y: 60, to: 160, toY: 100 }), /elbowX/);
+});
+
+test('decision draws a diamond centred on x, y', () => {
+  const g = S.decision({ x: 100, y: 200, w: 90, h: 60, label: 'Gate' });
+  const pts = polyPts(g);
+  assert.equal(pts.length, 4);
+  // top, right, bottom, left - in that order, so the points read as a path
+  assert.deepEqual(pts, [[100, 170], [145, 200], [100, 230], [55, 200]]);
+  assert.equal(mid(pts.map((p) => p[0])), 100);
+  assert.equal(mid(pts.map((p) => p[1])), 200);
+});
+
+test('decision takes the shared line weight, like every other outline', () => {
+  const [poly] = find(S.decision({ x: 0, y: 0, label: 'Gate' }), (x) => x.tag === 'polygon');
+  assert.equal(poly.attrs['stroke-width'], S.lineWidth());
+});
+
+test('decision centres its label on the widest part of the diamond', () => {
+  // The diamond is widest at its vertical centre, so that is the only row
+  // where a label has the full w to sit in. A label placed anywhere else
+  // overflows a shape that still passes every geometric check.
+  const g = S.decision({ x: 100, y: 200, w: 90, h: 60, label: 'Gate' });
+  const [t] = find(g, (x) => x.tag === 'text');
+  assert.equal(Number(t.attrs.x), 100);
+  assert.equal(Number(t.attrs.y) - 200 < 6, true, 'label sits on the centre row');
 });
 
 test('hex draws a pointy-top hexagon with 6 points at radius r', () => {
@@ -541,3 +586,64 @@ test('pod() is a dashed sky box that carries its own name', () => {
   assert.equal(+panel.attrs.width, 200);
   assert.match(serialize(g), />Pod A</, 'the pod says which pod it is');
 });
+
+// ------------------------------------------- the maintainer's review of page 2
+
+test('node() can set its name INSIDE the circle, in a given ink', () => {
+  // The source flowcharts put "Start" and "End" inside their terminals. The
+  // first draft hung them underneath because C.orange is the ink version of
+  // the brand orange; measured, C.appInk on it is 5.5:1 in light and 7.0:1 in
+  // dark, so the name can go where the source puts it.
+  const g = S.node({
+    x: 100, y: 200, r: 28, fill: C.orange, stroke: C.appInk,
+    label: 'End', labelInside: true, ink: C.appInk,
+  });
+  const t = find(g, (x) => x.tag === 'text')[0];
+  assert.equal(t.attrs.fill, C.appInk);
+  // label() centres on y by dropping the baseline about a third of the size,
+  // so the baseline sits just below the centre and nowhere near the rim.
+  assert.ok(Math.abs(Number(t.attrs.y) - 200) < 14, `baseline ${t.attrs.y} is not inside the circle`);
+});
+
+test('node() still names itself below the circle when nothing says otherwise', () => {
+  const g = S.node({ x: 0, y: 0, r: 16, label: 'Start' });
+  const t = find(g, (x) => x.tag === 'text')[0];
+  assert.ok(Number(t.attrs.y) > 16, 'the default is still a name under the marker');
+});
+
+test('decisionPoints() names the four vertices decision() actually draws', () => {
+  // A diamond means a decision, and each way out leaves from its OWN point.
+  // The scene was computing `x + w / 2` by hand, which is how three branches
+  // ended up leaving the gate from one vertex.
+  const spec = { x: 300, y: 200, w: 104, h: 68 };
+  const p = S.decisionPoints(spec);
+  const drawn = polyPts(S.decision(spec));
+  assert.deepEqual(p.top, [300, 166]);
+  assert.deepEqual(p.right, [352, 200]);
+  assert.deepEqual(p.bottom, [300, 234]);
+  assert.deepEqual(p.left, [248, 200]);
+  for (const v of [p.top, p.right, p.bottom, p.left]) {
+    assert.ok(drawn.some(([dx, dy]) => dx === v[0] && dy === v[1]), `${v} is not a corner of the polygon`);
+  }
+});
+
+test('roundedPath() refuses a repeated point rather than emitting NaN', () => {
+  // The corner cut divides by the leg length, so a repeated point makes that
+  // 0/0 and every coordinate downstream of it is NaN in the `d` attribute - an
+  // invalid path the exporter accepted and the browser drew as a truncated run.
+  assert.throws(
+    () => S.roundedPath({ points: [[0, 0], [100, 0], [100, 0], [200, 0]] }),
+    /a leg has no length/,
+  );
+  assert.ok(!S.roundedPath({ points: [[0, 0], [100, 0], [100, 80]] }).attrs.d.includes('NaN'));
+});
+
+test('elbowArrow() rejects a zero-length leg anywhere, not only under a head', () => {
+  // The guard used to live inside the chevron helper, so it only ever saw the
+  // legs that carry a head. A repeated point in the middle of a run, or
+  // anywhere in a headless bus feeder, reached roundedPath() and exported clean.
+  const repeated = [[0, 0], [100, 0], [100, 0], [200, 0]];
+  assert.throws(() => S.elbowArrow({ points: repeated }), /a leg has no length/);
+  assert.throws(() => S.elbowArrow({ points: repeated, heads: 'none' }), /a leg has no length/);
+});
+
