@@ -429,6 +429,16 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
   bbox fits, the caption is clear of the contents it names, the label is drawn.
   Five workflow scenes shipped it to review; one drew `Main Orchestration
   Workflow` 0.4 units WIDER than the pill around it.
+- **A free label is measured against the shapes beside it, not placed near
+  them.** A name INSIDE a shape is the builder's problem; a label you position
+  yourself - an arrow's condition, a note under a hexagon - is yours, and its
+  width is the one thing the exporter cannot tell you. Take it from
+  `preview-scene.mjs`, which prints the measured box of every label, and derive
+  the label's x from the run it rides on rather than from a midpoint you
+  eyeballed. On `workflow-external-system` two labels landed on what they
+  annotated: a 78-unit label over a 77-unit run. The rendered test
+  `keeps every free label clear of the shapes around it` is the check, and it
+  names both the label and the shape it hit.
 - **A region's caption is set in the DIAGRAM's text size, not `region()`'s
   default 15.** Every concept scene has a `TEXT` constant and passes
   `captionSize: TEXT`. Left at the default, a lane's name sat two steps above
@@ -1200,6 +1210,52 @@ eyeballing will not give you:
 A reference is not automatically right. Measure contrast on anything you copy,
 and keep a departure only with its reason written next to it in the scene.
 
+#### Converting a Mermaid block
+
+The step above assumes a source image. A Mermaid block is a different source,
+and the difference is the whole of this section: **there is no arrangement to
+match.** The positions in a rendered Mermaid diagram are its layout engine's
+output, not anybody's decision, so "keep the source's arrangement" has nothing
+to bind to. What the source gives you is the graph; the layout comes from the
+page.
+
+**First, decide whether it converts at all.** A Mermaid **flowchart** that
+draws a mechanism - participants, the calls between them, a decision with
+outcomes - is the same kind of picture as the rest of this set, and on a page
+whose other diagrams are generated it is the only thing rendering in a
+different hand. Convert it. A **sequence diagram** stays Mermaid: its lifelines
+and activations are a notation this set does not have and should not grow one
+for. A gantt chart stays too. A page carrying both kinds is not yours to
+settle while drawing - ask the maintainer how that page should read before you
+start.
+
+Then:
+
+1. **Read the graph, not the picture.** Node ids with their text, every edge
+   with its label and direction, and the `subgraph` blocks. A subgraph is a
+   lane: `flowLane()`.
+2. **Take the axis from the declaration.** `flowchart LR` means the lanes sit
+   side by side; `TD` stacks them. A subgraph may override it with its own
+   `direction TB`, which is the author saying that this lane runs down while
+   the diagram runs across - `workflow-cross-app-client` is two columns, each
+   read downwards, for exactly that reason. That much of the arrangement IS a
+   decision somebody made.
+3. **Take the order from the prose.** The paragraphs around the block say what
+   happens in what order, and they outrank the Mermaid: see step 1. Where the
+   two disagree, that is a factual discrepancy to raise, not to resolve.
+4. **Mermaid's shapes are what Mermaid can draw.** `[]` and `{}` are a box and
+   a diamond because those are the glyphs it has, so map each node to the house
+   shape for what the thing IS, not for the bracket it was written in. A box
+   labelled "Dapr sidecar" is `markHex()`. Mermaid gives every node the same
+   fill; a refusal gets the palette's colour for one.
+5. **The house constraints still apply, and Mermaid's do not.** Mermaid will
+   set three lines inside a diamond quite happily. `decision()` holds one short
+   word, with the condition carried above the shape as a `note()`.
+
+The replacement is the same shortcode as any other scene. The whole block goes,
+`{{< mermaid >}}` and `{{< /mermaid >}}` included - a stranded opening tag
+builds clean and renders an empty figure.
+
 ### 3. Build the scene
 
 A scene module default-exports `{ width, height, title, desc, build() }`, where
@@ -1308,9 +1364,18 @@ npm run test:layout                    # rendered tests
 npm run build                          # Hugo builds clean
 ```
 
-Add the scene to `SCENES` in `tests/diagrams.spec.js`, with every label it must
-draw. The spec fails if an exported scene or a `{{< diagram >}}` call site in
-the content has no row, so no diagram can ship untested.
+Add the scene to `SCENE_ROWS` in `tests/diagrams.spec.js`, with every label it
+must draw. The spec fails if an exported scene or a `{{< diagram >}}` call site
+in the content has no row, so no diagram can ship untested.
+
+**One scene, one row.** A scene drawn on a second page lists both in `pages`;
+it does not get a second row. The labels belong to the drawing and the page
+does not change them, so a copied row is two label lists for one scene, and the
+day the scene gains a word only one of them learns it. That had already
+happened twice before the rule existed: `sentry-selfhosted` and
+`sentry-kubernetes` each had a full list on one page and a five-label stub on
+the other. `each scene has exactly one row, however many pages draw it` is the
+check.
 
 ### 6. Get it signed off
 
@@ -1321,6 +1386,17 @@ before the next one starts. Report visual choices as proposals, not decisions.
 
 - **A green suite is not a correct diagram.** Structural tests are necessary
   and not sufficient. Render and look.
+- **Git Bash rewrites a leading-slash argument into a Windows path.** Pass a
+  page path to `render-scene.mjs` from Git Bash and the script is handed
+  `C:/Program Files/Git/developing-applications/...`, which fails as an invalid
+  URL rather than as a path. Prefix the command with `MSYS_NO_PATHCONV=1`. This
+  is the maintainer's shell, so it bites on every page that names one.
+- **Hugo does not always serve on 1313.** With the port taken it binds to
+  another one and says so in its own "Web Server is available at" line. Until
+  `DIAGRAM_PORT` is set to match, `render-scene.mjs` fetches from 1313 and gets
+  a 500 - which looks exactly like the "a NEW svg needs the dev server
+  restarted" trap below and will be misdiagnosed as one. Read the server's line
+  before diagnosing anything.
 - **Check that a label still fits by measuring it,** not by looking at it. Run
   `getBBox` over every tile's rect and its text in the browser and compare the
   edges. Raising a label size or a glyph size is exactly the change that pushes

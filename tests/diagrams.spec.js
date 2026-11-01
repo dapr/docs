@@ -21,11 +21,15 @@ const REPO_ROOT = path.resolve(__dirname, '..');
 /**
  * name   the scene, i.e. assets/diagrams/<name>.svg and the figure's data-diagram
  * page   a page that calls `{{< diagram <name> >}}`
+ * pages  several such pages, when one scene is drawn on more than one. Use
+ *        this rather than a second row: the labels belong to the SCENE and
+ *        the page does not change them, so a copied row is a label list that
+ *        drifts the first time the scene gains a word. One scene, one row.
  * labels every text label the scene must draw, with multi-line labels written
  *        as one line (the test joins a label's tspan LINES with a space;
  *        richLabel's inline runs join with nothing)
  */
-const SCENES = [
+const SCENE_ROWS = [
   {
     name: 'overview',
     page: '/overview/',
@@ -73,9 +77,8 @@ const SCENES = [
     ],
   },
   {
-    // One scene, two pages. Both rows are needed: the call-site guard matches on
     name: 'building-blocks',
-    page: '/overview/',
+    pages: ['/overview/', '/concepts/building-blocks-concept/'],
     labels: [
       'Workflows',
       'Publish & subscribe',
@@ -100,61 +103,12 @@ const SCENES = [
       'Binary Store',
       'Search',
       'Vector',
-    ],
-  },
-  {
-    // name AND page, so a scene shown twice must be listed twice.
-    name: 'building-blocks',
-    page: '/concepts/building-blocks-concept/',
-    labels: [
-      'Workflows',
-      'Publish & subscribe',
-      'Service invocation',
-      'State management',
-      'Actors',
-      'Jobs',
-      'Configuration',
-      'Secrets',
-      'Bindings',
-      'Cryptography',
-      'Distributed lock',
-      'Conversation',
-      'Binary Store',
-      'Search',
-      'Vector',
-    ],
-    alpha: [
-      'Cryptography',
-      'Distributed lock',
-      'Conversation',
-      'Binary Store',
-      'Search',
-      'Vector',
-    ],
-  },
-  {
-    // Shared with the sidecar page below; one row per page, as above.
-    name: 'sidecar-model',
-    page: '/overview/',
-    labels: [
-      'App',
-      'Application code',
-      'Dapr sidecar',
-      'Dapr API',
-      'HTTP/gRPC',
-      'POST',
-      'GET',
-      'http://localhost:3500/v1.0/invoke/cart/method/order',
-      'http://localhost:3500/v1.0/state/inventory/item50',
-      'http://localhost:3500/v1.0/publish/mybroker/order-messages',
-      'http://localhost:3500/v1.0/secrets/vault/dbaccess',
-      'http://localhost:3500/v1.0/workflows/dapr/businessprocess/start',
     ],
   },
   {
     // The URLs are single labels: richLabel joins its tspans with no space.
     name: 'sidecar-model',
-    page: '/concepts/dapr-services/sidecar/',
+    pages: ['/overview/', '/concepts/dapr-services/sidecar/'],
     labels: [
       'App',
       'Application code',
@@ -276,27 +230,12 @@ const SCENES = [
   },
   {
     name: 'scheduler-architecture',
-    page: '/concepts/dapr-services/scheduler/',
-    labels: [
-      'My app',
-      'Dapr sidecar',
-      'Jobs API, gRPC or HTTP',
-      'OnJobEvent',
-      'the triggered job, back to the app',
-      'schedule / get / delete',
-      'WatchJobs',
-      'jobs as they come due',
-      'Scheduler process',
-      'Scheduler',
-      'etcd',
-      'Every tracked job is stored in etcd, embedded in the Scheduler by default',
-    ],
-  },
-  {
-    // Same scene, second page: the jobs overview used to show
+    // Two pages: the jobs overview used to show
     // /images/scheduler/scheduler-architecture.png, which this scene replaces.
-    name: 'scheduler-architecture',
-    page: '/developing-applications/building-blocks/jobs/jobs-overview/',
+    pages: [
+      '/concepts/dapr-services/scheduler/',
+      '/developing-applications/building-blocks/jobs/jobs-overview/',
+    ],
     labels: [
       'My app',
       'Dapr sidecar',
@@ -452,7 +391,7 @@ const SCENES = [
   },
   {
     name: 'sentry-selfhosted',
-    page: '/concepts/dapr-services/sentry/',
+    pages: ['/concepts/dapr-services/sentry/', '/concepts/security-concept/'],
     labels: [
       'App A',
       'App B',
@@ -465,7 +404,7 @@ const SCENES = [
   },
   {
     name: 'sentry-kubernetes',
-    page: '/concepts/dapr-services/sentry/',
+    pages: ['/concepts/dapr-services/sentry/', '/concepts/security-concept/'],
     labels: [
       'App A',
       'App B',
@@ -555,16 +494,6 @@ const SCENES = [
       'Kubelet',
       'Host on any cloud or edge infrastructure',
     ],
-  },
-  {
-    name: 'sentry-selfhosted',
-    page: '/concepts/security-concept/',
-    labels: ['App A', 'App B', 'Sentry', 'Filesystem', 'Operator'],
-  },
-  {
-    name: 'sentry-kubernetes',
-    page: '/concepts/security-concept/',
-    labels: ['App A', 'App B', 'Sentry', 'Injector', 'Pod A', 'Pod B'],
   },
   {
     name: 'security-end-to-end',
@@ -709,6 +638,24 @@ const SCENES = [
     ],
   },
 ];
+
+// One row per (scene, page), which is what every check below reads. The rows
+// above are one per SCENE, so a scene drawn on three pages is written once
+// and expanded here rather than copied three times.
+const SCENES = SCENE_ROWS.flatMap(({ pages, page, ...rest }) =>
+  (pages ?? [page]).map((p) => ({ ...rest, page: p })));
+
+// The invariant that makes the expansion worth having. Two rows for one scene
+// means two label lists for one drawing, and the day the scene gains a word
+// only one of them learns it.
+test('each scene has exactly one row, however many pages draw it', () => {
+  const seen = new Map();
+  for (const s of SCENE_ROWS) seen.set(s.name, (seen.get(s.name) ?? 0) + 1);
+  expect(
+    [...seen].filter(([, n]) => n > 1).map(([name]) => name),
+    'a scene with more than one row - give the row a `pages` list instead',
+  ).toEqual([]);
+});
 
 // Phone widths. 320 is the narrowest viewport still worth supporting, 360 and
 // 412 are the two commonest Android widths; `tests/layout.spec.js` uses the
@@ -977,6 +924,77 @@ for (const scene of SCENES) {
         CAPTION_PAD_EM,
       );
       expect(tight, 'caption text too close to its pill ends - raise captionW').toEqual([]);
+    });
+
+    // The third member of the same family, and the one the pilot found by
+    // eye. A label that NAMES a shape is a child of that shape, and the two
+    // checks above own it. A FREE label - "Approval Event", "allowed", "Dapr
+    // sidecar" - is placed by hand against a run or under a shape, and
+    // nothing measured it against the shapes beside it. On
+    // `workflow-human-interaction` two of them landed on what they annotated:
+    // one over the wait step, one touching the box its arrow pointed at. Both
+    // read as a drawing mistake, and both were caught by a person looking.
+    //
+    // A free label ON a lane border or ON a run is fine - that is what the
+    // halo is for, and `paints ground behind any label a line crosses` owns
+    // that question. This one is only about the filled, named objects.
+    test(`${scene.name} keeps every free label clear of the shapes around it`, async ({ page }) => {
+      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      await page.evaluate(() => document.fonts.ready);
+      const hits = await page.evaluate((root) => {
+        const svg = document.querySelector(`${root} svg`);
+        // Every builder that draws an object carrying its own name. A region,
+        // a run and a bare pill are deliberately absent: type belongs on those.
+        const OBJECTS = [
+          'd-box', 'd-node', 'd-decision', 'd-hex', 'd-dapr-app', 'd-badge',
+          'd-cylinder', 'd-envelope', 'd-broker', 'd-lock-box', 'd-secure-lock',
+          'd-callout', 'd-tile', 'd-pipe', 'd-socket',
+        ].map((c) => `g.${c}`).join(', ');
+        const objects = [...svg.querySelectorAll(OBJECTS)];
+        // A nested object - the hexagon inside a d-dapr-app - would report one
+        // overlap twice, under two names.
+        const outer = objects.filter((o) => !objects.some((p) => p !== o && p.contains(o)));
+
+        // The object's own body, not its group's box. `callout()` carries its
+        // dashed LEADER inside the group, so the group's bounding box is the
+        // card plus a line reaching across the drawing - which is how the
+        // first run of this check reported `resiliency-policies`' lane caption
+        // as sitting on a card eight hundred units away.
+        const bodyOf = (o) => {
+          const parts = [...o.querySelectorAll('rect, polygon, circle, ellipse')]
+            .filter((p) => !p.closest('g.d-arrow'))
+            .map((p) => p.getBoundingClientRect())
+            .filter((b) => b.width && b.height);
+          if (!parts.length) return null;
+          return {
+            left: Math.min(...parts.map((b) => b.left)),
+            right: Math.max(...parts.map((b) => b.right)),
+            top: Math.min(...parts.map((b) => b.top)),
+            bottom: Math.max(...parts.map((b) => b.bottom)),
+          };
+        };
+        const bodies = outer.map((o) => ({ o, b: bodyOf(o) })).filter((e) => e.b);
+
+        const INSET = 1; // a descender grazing an outline is not a collision
+        const found = [];
+        for (const t of svg.querySelectorAll('text')) {
+          if (t.getAttribute('aria-hidden') === 'true') continue; // the halo copy
+          if (outer.some((o) => o.contains(t))) continue;         // the shape's own name
+          const r = t.getBoundingClientRect();
+          if (!r.width || !r.height) continue;
+          const box = { l: r.left + INSET, r: r.right - INSET, t: r.top + INSET, b: r.bottom - INSET };
+          if (box.r <= box.l || box.b <= box.t) continue;
+          for (const { o, b } of bodies) {
+            if (box.l < b.right && b.left < box.r && box.t < b.bottom && b.top < box.b) {
+              found.push(`"${t.textContent.replace(/\s+/g, ' ').trim()}" over ${o.getAttribute('class')}`);
+              break;
+            }
+          }
+        }
+        return [...new Set(found)];
+      }, sel(scene.name));
+
+      expect(hits, 'a free label is drawn on top of a shape').toEqual([]);
     });
 
     // The point of the standalone copy: a file that still looks like the
