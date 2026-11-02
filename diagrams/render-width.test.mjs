@@ -14,7 +14,7 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { renderWidth, diagramCalls } from './render-width.mjs';
+import { renderWidth, expectedWidth, diagramCalls } from './render-width.mjs';
 import { scenes } from './scenes/index.mjs';
 
 test('renderWidth() reproduces the table in SKILL.md', () => {
@@ -53,10 +53,11 @@ test('every diagram shortcode passes the width its canvas calls for', () => {
       wrong.push(`${call.file}:${call.line} calls "${call.name}", which is not a registered scene`);
       continue;
     }
-    const expected = renderWidth(scene.width);
+    const expected = expectedWidth(scene);
     if (call.width !== expected) {
       wrong.push(
-        `${call.file}:${call.line} ${call.name} (canvas ${scene.width}) passes `
+        `${call.file}:${call.line} ${call.name} (canvas ${scene.width}`
+        + `${scene.renderWidth === undefined ? '' : ', pinned'}) passes `
         + `${call.width === null ? 'no width' : `width="${call.width}"`}, `
         + `expected ${expected === null ? 'no width' : `width="${expected}"`}`,
       );
@@ -86,4 +87,30 @@ test('diagramCalls() reads both call forms and ignores fenced examples', () => {
     [['overview', null], ['api-scoping', 70]],
     'a positional call passes no width, and a fenced example is documentation',
   );
+});
+
+// The formula sizes a scene against the rest of the set, which is the right
+// default and a poor master: a maintainer looking at the page can want one
+// drawing larger than its canvas asks for. A scene may say so once, on the
+// scene, and then every page that draws it draws it at that size - which is
+// the property that matters, since the same scene appears on several pages.
+test('expectedWidth() follows the formula when the scene says nothing', () => {
+  assert.equal(expectedWidth({ width: 680 }), renderWidth(680));
+  assert.equal(expectedWidth({ width: 1200 }), null);
+});
+
+test('expectedWidth() honours a scene that pins its own render width', () => {
+  assert.equal(expectedWidth({ width: 680, renderWidth: 75 }), 75);
+});
+
+test('a pinned render width is one the shortcode will accept', () => {
+  // daprdocs/layouts/shortcodes/diagram.html refuses anything outside 10..100,
+  // so a pin the formula never produced still has to be in range.
+  for (const [name, scene] of Object.entries(scenes)) {
+    if (scene.renderWidth === undefined) continue;
+    assert.ok(
+      Number.isInteger(scene.renderWidth) && scene.renderWidth >= 10 && scene.renderWidth <= 100,
+      `${name} pins renderWidth ${scene.renderWidth}, which the shortcode rejects`,
+    );
+  }
 });

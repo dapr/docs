@@ -34,6 +34,21 @@ export function renderWidth(canvasWidth) {
   return pct > WIDTH_CEILING ? null : pct;
 }
 
+/**
+ * What a call site should pass for this scene: the formula's answer, unless
+ * the scene pins its own `renderWidth`.
+ *
+ * The formula sizes a scene against the rest of the set and that is the right
+ * default, but it knows nothing about how much detail a particular drawing
+ * carries. A scene whose maintainer has looked at it on the page may pin a
+ * size; it pins it ONCE, on the scene, so that every page drawing it draws it
+ * the same size. A pin is not a new rule - the formula below is unchanged and
+ * still governs every scene that does not name one.
+ */
+export function expectedWidth(scene) {
+  return scene.renderWidth === undefined ? renderWidth(scene.width) : scene.renderWidth;
+}
+
 // `{{< diagram overview >}}` and `{{< diagram name="x" width="70" >}}`. Hugo
 // refuses to mix positional and named parameters, so a call that passes a
 // width names the scene as well - which is why the positional form can never

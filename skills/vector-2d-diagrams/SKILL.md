@@ -161,6 +161,16 @@ The engine's API is in [reference/engine.md](reference/engine.md).
   under Gotchas. `width` is ignored below the `md` breakpoint, where the column
   is already the smallest a drawing can usefully be.
 
+  **A scene may overrule the formula, once, on the scene.** A maintainer who
+  has looked at a drawing on the page can want it bigger than its canvas asks
+  for: `building-blocks-concept` computes 60 and is pinned at 75. Say it as
+  `renderWidth: 75` beside `width` and `height` in the scene module, with a
+  comment saying who asked and why, and then EVERY call site passes that value
+  - which is the point of putting it on the scene rather than on one page. Do
+  not pin a scene because you think it looks too big or too small: that is the
+  formula doing its job, keeping the type one size across the set. A pin is a
+  decision someone made about one drawing, not a second rule.
+
   **You do not have to remember this, and you should not try.** `renderWidth()`
   in `diagrams/render-width.mjs` is the formula, and
   `diagrams/render-width.test.mjs` sweeps every `{{< diagram >}}` call in the
