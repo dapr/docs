@@ -630,6 +630,28 @@ test('elbowArrow() draws one run and puts the head at the end of it', () => {
   assert.deepEqual(tip, [200, 100]);
 });
 
+test('stepMark() puts its number on a fill that is the same in both themes', () => {
+  // C.navy and C.bg would look right on the light theme and inverted on the
+  // dark one: --d-blue is a deep navy in light and a pale blue in dark, while
+  // the page ground goes the other way. The app tokens are fixed across both,
+  // which is what a numeral sitting ON a shape needs.
+  const g = S.stepMark({ x: 40, y: 40, step: 2 });
+  const disc = find(g, (n) => n.tag === 'circle')[0];
+  assert.equal(disc.attrs.fill, C.appBlue);
+  const text = find(g, (n) => n.tag === 'text')[0];
+  assert.equal(text.attrs.fill, C.paper);
+  // And the theme check is told to look past it.
+  assert.ok(find(g, (n) => (n.attrs?.class ?? '') === 'd-on-fill').length);
+});
+
+test('stepMark() renders its number, not the formatter that shares its name', () => {
+  // `n` is this module's number formatter; a parameter called `n` shadowed it
+  // and cx came out as "n is not a function".
+  const g = S.stepMark({ x: 7, y: 9, step: 3 });
+  assert.equal(find(g, (x) => x.tag === 'circle')[0].attrs.cx, '7');
+  assert.equal(find(g, (x) => x.tag === 'text')[0].children[0].content, '3');
+});
+
 test('elbowArrow() dashes the run and leaves the head solid', () => {
   // A dashed line says the thing does not happen; a dashed chevron just reads
   // as a badly drawn one, which is the split arrow() already makes.

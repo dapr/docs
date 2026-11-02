@@ -47,6 +47,9 @@ import configurationApiOverview from './configuration-api-overview.mjs';
 import conversationOverview from './conversation-overview.mjs';
 import cryptographyOverview from './cryptography-overview.mjs';
 import distributedLockOverview from './distributed-lock-overview.mjs';
+import lockExample from './lock-example.mjs';
+import lockUnlockExample from './lock-unlock-example.mjs';
+import lockMultipleExample from './lock-multiple-example.mjs';
 
 export const scenes = {
   'agents-overview': agentsOverview,
@@ -95,4 +98,7 @@ export const scenes = {
   'conversation-overview': conversationOverview,
   'cryptography-overview': cryptographyOverview,
   'distributed-lock-overview': distributedLockOverview,
+  'lock-example': lockExample,
+  'lock-unlock-example': lockUnlockExample,
+  'lock-multiple-example': lockMultipleExample,
 };

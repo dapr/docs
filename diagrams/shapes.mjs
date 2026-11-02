@@ -269,6 +269,34 @@ export function badge({ x, y, r = 19, mark = null }) {
   ]);
 }
 
+// A NUMBERED STEP: a filled disc with its number on it, for a diagram that
+// says "this happens, then this". The source images on the distributed lock
+// how-to put one beside each run, and nothing in this set drew one before.
+//
+// It is `--d-app-blue` with `--d-app-paper` on it, not C.navy with C.bg. Those
+// two look identical on the light theme and fail on the dark one: `--d-blue`
+// is #0D2192 in light and #6f9fe8 in dark, so the disc goes pale while the
+// numeral - the page's own ground - goes almost black, and the marker ends up
+// dark-on-light instead of light-on-dark. The app tokens are the ones that are
+// the SAME in both themes, which is exactly the property a number sitting on a
+// fill needs, and they are the colours the source used anyway.
+//
+// `d-on-fill` tells the theme check this type is meant not to follow the page.
+export const STEP_R = 15;
+
+// `step` rather than `n`: this module's number formatter is called `n`, and a
+// parameter of that name shadows it inside the function - cx came out as
+// "n is not a function" on the first call.
+export function stepMark({ x, y, step, r = STEP_R, size }) {
+  const s = size ?? Math.max(MIN_LABEL, +(r * 0.95).toFixed(2));
+  return el('g', { class: 'd-step' }, [
+    el('circle', {
+      cx: n(x), cy: n(y), r: n(r), fill: C.appBlue, ...outline(C.appBlue),
+    }),
+    onFill(label({ x, y, text: String(step), size: s, color: C.paper })),
+  ]);
+}
+
 export function daprApp({ x, y, r = 42.5, stroke, fill, label: name, size, labelDx, badgeLeft = false, mark = null }) {
   const bx = x + (badgeLeft ? -1 : 1) * r * 0.75;
   const by = y + r * 0.7;

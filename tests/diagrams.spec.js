@@ -615,6 +615,52 @@ const SCENE_ROWS = [
     ],
   },
   {
+    name: 'lock-example',
+    // Replaced /images/building-block-lock-example.png. One of three states of
+    // one arrangement on this page, all from diagrams/lock-example.mjs, so the
+    // three are the same picture and the same size. Both hexagons are App 1 -
+    // two instances of one app id, which is what makes the lock contended.
+    page: '/developing-applications/building-blocks/distributed-lock/howto-use-distributed-lock/',
+    labels: [
+      'App 1',
+      'Instance 1',
+      'Instance 2',
+      'Shared resource',
+      'Acquire lock on resource for mutually exclusive access',
+      'Lock denies access to update resource',
+    ],
+  },
+  {
+    name: 'lock-unlock-example',
+    // The same two instances one step later. The source's green tick is the
+    // navy checkmark this set uses for a permitted call: C.green is a FILL
+    // token that assertInk() refuses as glyph ink.
+    page: '/developing-applications/building-blocks/distributed-lock/howto-use-distributed-lock/',
+    labels: [
+      'App 1',
+      'Instance 1',
+      'Instance 2',
+      'Shared resource',
+      'Release lock on resource',
+      'Other apps can update the resource',
+    ],
+  },
+  {
+    name: 'lock-multiple-example',
+    // Two DIFFERENT applications, so two colours - see
+    // diagrams/app-colour.test.mjs. The source captions both runs "for
+    // mutually exclusive access", which cannot be true of both at once; the
+    // scene header raises it.
+    page: '/developing-applications/building-blocks/distributed-lock/howto-use-distributed-lock/',
+    labels: [
+      'App 1',
+      'App 2',
+      'Shared resource',
+      'App 1 acquires lock on resource for mutually exclusive access',
+      'App 2 acquires lock on resource for mutually exclusive access',
+    ],
+  },
+  {
     name: 'sentry-selfhosted',
     pages: ['/concepts/dapr-services/sentry/', '/concepts/security-concept/'],
     labels: [

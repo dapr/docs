@@ -67,6 +67,18 @@
     -16.68,
     -4.47
   ],
+  "lock-example": [
+    0,
+    -2.84
+  ],
+  "lock-multiple-example": [
+    0,
+    -9
+  ],
+  "lock-unlock-example": [
+    0,
+    -2.84
+  ],
   "mtls-system-services": [
     -12,
     -3
