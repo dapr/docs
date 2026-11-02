@@ -16,6 +16,10 @@ export const FILL_OPACITY = 0.6;
 // checks against THIS constant rather than carrying its own copy, so the
 // floor can only ever be in one place.
 export const MIN_LABEL = 10;
+
+// Survives the page minifier, which an ordinary space at a tspan boundary
+// does not. See richLabel().
+const NBSP = ' ';
 const HIDDEN = { 'stroke-dasharray': '3 3', 'stroke-opacity': 0.35 };
 
 const n = (v) => String(+Number(v).toFixed(2));
@@ -122,7 +126,25 @@ export function richLabel({
       attrs.fill = part.color;
     }
     if (part.weight !== undefined && part.weight !== weight) attrs['font-weight'] = part.weight;
-    return el('tspan', attrs, [text(String(part.text))]);
+    // A PART may be code while the line around it is prose - "Invoke /orders
+    // method", where only the path is a path. font-family inherits, so setting
+    // it on the tspan is all this takes, and a line that is wholly code still
+    // takes `mono` on the label rather than on every part.
+    if (part.mono && !mono) attrs['font-family'] = MONO;
+    // A space at the BOUNDARY of a tspan does not survive to the page. Hugo
+    // minifies the document this svg is inlined into, and a minifier's whole
+    // job is to drop whitespace between tags: "Invoke " + "/orders" + " method"
+    // was served as <tspan>Invoke</tspan><tspan>/orders</tspan><tspan>method
+    // </tspan> and the page read "Invoke/ordersmethod". xml:space="preserve"
+    // does not help - the attribute is stripped too. A non-breaking space is
+    // not whitespace to a minifier, so it is the one that arrives.
+    //
+    // Done here rather than in the scenes: a caller writing an ordinary space
+    // is right, and should not have to know what happens to it downstream.
+    // tests/diagrams.spec.js reads labels through a whitespace run, which matches NBSP,
+    // so the expected labels stay written with ordinary spaces too.
+    const content = String(part.text).replace(/^ +| +$/g, (run) => NBSP.repeat(run.length));
+    return el('tspan', attrs, [text(content)]);
   });
   if (!kids.length) throw new Error('richLabel(): parts is required');
   return el('text', {
@@ -186,10 +208,19 @@ export function hexPoints(x, y, r) {
 // with a code sub-line is. The lead reduces to label()'s own 1.2x line height
 // when the two sizes match, so a name with a sub-line sits exactly where a
 // two-line label() would put it.
-export function hexNameBlock({ size, sub = '', subSize }) {
-  if (!sub) return { lead: 0, size: 0, bottom: +(size * 0.5).toFixed(2) };
+export function hexNameBlock({ size, sub = '', subSize, lines = 1 }) {
+  if (!sub) {
+    return { lead: 0, size: 0, bottom: +(((lines - 1) * size * 1.2 + size) * 0.5).toFixed(2) };
+  }
   const ss = subSize ?? Math.max(MIN_LABEL, +(size * 0.7).toFixed(2));
-  const lead = +((size + ss) * 0.6).toFixed(2);
+  // label() centres a name on its own y, so a SECOND line reaches a line
+  // height further down than a one-line name does. Spacing the sub-line from
+  // the name's centre without counting those lines is what drew `/orders`
+  // straight through the second line of "Order Processor" - and nothing saw
+  // it, because both are inside the hexagon's own group and so are not free
+  // labels for the rendered check to catch.
+  const nameSpan = (lines - 1) * size * 1.2 + size;
+  const lead = +((nameSpan + ss) * 0.6).toFixed(2);
   return { lead, size: ss, bottom: +(lead / 2 + ss * 0.6).toFixed(2) };
 }
 
@@ -205,7 +236,7 @@ export function hex({
   // it is drawn INSIDE this group: a text node laid over a hexagon from the
   // scene is indistinguishable from a label that has drifted onto a shape,
   // which is the defect the free-label check in tests/diagrams.spec.js catches.
-  const block = hexNameBlock({ size: s, sub, subSize });
+  const block = hexNameBlock({ size: s, sub, subSize, lines: String(name).split('\n').length });
   const ss = block.size;
   const lead = block.lead;
   // labelDy moves the whole name block. A hexagon holding a MARK as well as a

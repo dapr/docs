@@ -715,3 +715,76 @@ test('elbowArrow() rejects a zero-length leg anywhere, not only under a head', (
   assert.throws(() => S.elbowArrow({ points: repeated, heads: 'none' }), /a leg has no length/);
 });
 
+test('richLabel() sets the code font on a part that asks for it', () => {
+  // "Invoke /orders method" is prose with a path inside it. The path has to be
+  // recognisable as one, and the rest must not turn into code.
+  const node = S.richLabel({
+    x: 0, y: 0, size: 13,
+    parts: [{ text: 'Invoke ' }, { text: '/orders', mono: true }, { text: ' method' }],
+  });
+  const fonts = node.children.map((c) => c.attrs['font-family']);
+  assert.equal(fonts[0], undefined);
+  assert.equal(fonts[1], S.MONO);
+  assert.equal(fonts[2], undefined);
+  assert.equal(node.attrs['font-family'], undefined, 'the line itself is not code');
+});
+
+test('richLabel() does not repeat the code font on a line that is wholly code', () => {
+  const node = S.richLabel({
+    x: 0, y: 0, size: 13, mono: true,
+    parts: [{ text: 'GET ' }, { text: '/v1.0/state', mono: true }],
+  });
+  assert.equal(node.attrs['font-family'], S.MONO);
+  for (const kid of node.children) assert.equal(kid.attrs['font-family'], undefined);
+});
+
+test('richLabel() keeps a space that sits at the edge of a part', () => {
+  // The page this svg is inlined into is minified, and a minifier drops
+  // whitespace between tags: "Invoke " + "/orders" + " method" was served as
+  // <tspan>Invoke</tspan><tspan>/orders</tspan><tspan>method</tspan> and the
+  // page read "Invoke/ordersmethod". The exported FILE was correct the whole
+  // time, which is why only the rendered page showed it. xml:space="preserve"
+  // is no use - the minifier strips that attribute too.
+  const node = S.richLabel({
+    x: 0, y: 0, size: 13,
+    parts: [{ text: 'Invoke ' }, { text: '/orders', mono: true }, { text: ' method' }],
+  });
+  const texts = node.children.map((c) => c.children[0].content);
+  assert.equal(texts[0], 'Invoke ', 'the trailing space became non-breaking');
+  assert.equal(texts[1], '/orders', 'and a part with no edge space is untouched');
+  assert.equal(texts[2], ' method', 'as did the leading one');
+
+  // Spaces INSIDE a part are ordinary: nothing can collapse them, because they
+  // are not at a tag boundary.
+  const inner = S.richLabel({ x: 0, y: 0, size: 13, parts: [{ text: 'two words' }] });
+  assert.equal(inner.children[0].children[0].content, 'two words');
+});
+
+test('hexNameBlock leaves a one-line name exactly where it was', () => {
+  // This fix must not move a single committed SVG, and `bindings-overview` is
+  // the one scene already drawing a sub-line. The old spacing was
+  // (size + subSize) * 0.6 from the name's centre; for one line the new
+  // formula has to reduce to that same number.
+  const size = 20;
+  const sub = Math.max(S.MIN_LABEL, +(size * 0.7).toFixed(2));
+  const block = S.hexNameBlock({ size, sub: '/method' });
+  assert.equal(block.lead, +((size + sub) * 0.6).toFixed(2));
+});
+
+test('hex clears a two-line name before its sub-line', () => {
+  // A sub spaced from the name's CENTRE runs into a name that has a second
+  // line, because label() centres multi-line text on its own y. Both sit
+  // inside the hexagon's group, so the rendered free-label check cannot see
+  // it - it only catches text that has drifted onto a shape from outside.
+  // This is the only thing that can.
+  const texts = (g) => find(g, (x) => x.tag === 'text');
+  const [, oneSub] = texts(S.hex({ x: 0, y: 0, r: 60, label: 'App', sub: '/orders' }));
+  const [twoName, twoSub] = texts(
+    S.hex({ x: 0, y: 0, r: 60, label: 'Order\nProcessor', sub: '/orders' }),
+  );
+
+  // label() sets the second line a line height below the first.
+  const secondLine = +twoName.attrs.y + 20 * 1.2;
+  assert.ok(+twoSub.attrs.y > secondLine, 'the sub-line clears the second line of the name');
+  assert.ok(+twoSub.attrs.y > +oneSub.attrs.y, 'and sits lower than a one-line name puts it');
+});
