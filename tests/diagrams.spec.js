@@ -501,6 +501,30 @@ const SCENE_ROWS = [
     ],
   },
   {
+    name: 'pubsub-publish-raw',
+    // Replaced /images/pubsub_publish_raw.png. The page's other diagram is
+    // this one with the Dapr app on the other side; they share every
+    // measurement through diagrams/pubsub-raw.mjs.
+    page: '/developing-applications/building-blocks/pubsub/pubsub-raw/',
+    labels: [
+      'Dapr publisher',
+      'Raw message',
+      'Pub/sub topic',
+      'Non-Dapr subscriber',
+    ],
+  },
+  {
+    name: 'pubsub-subscribe-raw',
+    // Replaced /images/pubsub_subscribe_raw.png, the second half of the pair.
+    page: '/developing-applications/building-blocks/pubsub/pubsub-raw/',
+    labels: [
+      'Non-Dapr publisher',
+      'Raw message',
+      'Pub/sub topic',
+      'Dapr subscriber',
+    ],
+  },
+  {
     name: 'sentry-selfhosted',
     pages: ['/concepts/dapr-services/sentry/', '/concepts/security-concept/'],
     labels: [

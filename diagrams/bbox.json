@@ -67,6 +67,14 @@
     0,
     0
   ],
+  "pubsub-publish-raw": [
+    -0.08,
+    -0.8
+  ],
+  "pubsub-subscribe-raw": [
+    -0.08,
+    -0.8
+  ],
   "resiliency-policies": [
     5,
     25

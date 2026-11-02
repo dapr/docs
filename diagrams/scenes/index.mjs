@@ -41,6 +41,8 @@ import bindingInputKafka from './binding-input-kafka.mjs';
 import serviceInvocationExample from './service-invocation-example.mjs';
 import configurationExample from './configuration-example.mjs';
 import stateManagementExample from './state-management-example.mjs';
+import pubsubPublishRaw from './pubsub-publish-raw.mjs';
+import pubsubSubscribeRaw from './pubsub-subscribe-raw.mjs';
 
 export const scenes = {
   'agents-overview': agentsOverview,
@@ -83,4 +85,6 @@ export const scenes = {
   'service-invocation-example': serviceInvocationExample,
   'configuration-example': configurationExample,
   'state-management-example': stateManagementExample,
+  'pubsub-publish-raw': pubsubPublishRaw,
+  'pubsub-subscribe-raw': pubsubSubscribeRaw,
 };
