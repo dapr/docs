@@ -67,7 +67,7 @@ import { NAME_DY as HEX_NAME_DY } from '../services.mjs';
 // clearance the house rule asks for is 16 units a side here, not the 13 a
 // body-font label of this size would want.
 const W = 682;
-const H = 180;
+const H = 188;
 
 // 13, which is what the rest of the set sets its body type at and what the
 // render-width formula is calibrated against: it targets a 13-unit label at
@@ -83,6 +83,14 @@ const TEXT = 13;
 const APP_R = 60;
 const SIDE_R = 48;
 const KAFKA_R = 60;
+
+// A shape's NAME is not body type: it belongs to the shape and scales with
+// it, which is why hex() derives it from the radius rather than taking the
+// scene's TEXT. bindings-overview names its app hexagon at that default and
+// this scene must agree with it, the two being adjacent pages about one API.
+// Both hexagons here take the same one, because a part beside a component
+// copies its measurements rather than deriving its own.
+const NAME = APP_R / 3;
 
 const ROW_Y = 74;
 
@@ -131,7 +139,7 @@ export default {
       }),
 
       // ---- the shapes, over the lines that reach them ---------------------
-      hex({ x: APP_AT.x, y: APP_AT.y, r: APP_R, label: 'Service', size: TEXT, ...APP[0] }),
+      hex({ x: APP_AT.x, y: APP_AT.y, r: APP_R, label: 'Service', ...APP[0] }),
       markHex({ x: SIDE.x, y: SIDE.y, r: SIDE_R, mark: 'logo-blue', stroke: C.blue }),
       group([
         // The Kafka symbol is a single near-black (#1a1919) and its licence
@@ -145,7 +153,7 @@ export default {
           x: KAFKA.x, y: KAFKA.y, r: KAFKA_R, mark: 'kafka',
           size: KAFKA_R * MARK_IN_HEX, fill: C.markPlate,
         }),
-        label({ x: KAFKA.x, y: KAFKA.y + NAME_DY, text: 'Kafka', size: TEXT }),
+        label({ x: KAFKA.x, y: KAFKA.y + NAME_DY, text: 'Kafka', size: NAME }),
       ]),
     ];
   },

@@ -437,6 +437,22 @@ const SCENE_ROWS = [
     ],
   },
   {
+    name: 'binding-input-kafka',
+    // Replaced /images/howto-triggers/kafka-input-binding.png. The mirror of
+    // binding-output-kafka: same shapes, same radii, traffic the other way.
+    // The source ran one arrow from Kafka straight to the service; the sidecar
+    // sits between them per the 2026-11-02 ruling, the source's caption rides
+    // the leg the binding performs, and the app's leg names the endpoint the
+    // sidecar calls - the binding's own name, which every SDK sample routes.
+    page: '/developing-applications/building-blocks/bindings/howto-triggers/',
+    labels: [
+      'Kafka',
+      'Input binding',
+      '/checkout',
+      'Service',
+    ],
+  },
+  {
     name: 'sentry-selfhosted',
     pages: ['/concepts/dapr-services/sentry/', '/concepts/security-concept/'],
     labels: [

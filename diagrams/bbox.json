@@ -11,9 +11,13 @@
     -30,
     25
   ],
+  "binding-input-kafka": [
+    0,
+    -1.96
+  ],
   "binding-output-kafka": [
     0,
-    -0.21
+    -2.23
   ],
   "bindings-overview": [
     0,

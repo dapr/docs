@@ -14,7 +14,7 @@ Input bindings are ideal for event-driven processing, data pipelines, or general
 - Replace bindings without changing your code
 - Focus on business logic and not the event resource implementation
 
-<img src="/images/howto-triggers/kafka-input-binding.png" width=1000 alt="Diagram showing bindings of example service">
+{{< diagram name="binding-input-kafka" width="50" >}}
 
 This guide uses a Kafka binding as an example. You can find your preferred binding spec from [the list of bindings components]({{% ref setup-bindings %}}). In this guide:
 

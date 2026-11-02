@@ -37,6 +37,7 @@ import workflowMultiAppComplex from './workflow-multi-app-complex.mjs';
 import workflowCrossAppClient from './workflow-cross-app-client.mjs';
 import bindingsOverview from './bindings-overview.mjs';
 import bindingOutputKafka from './binding-output-kafka.mjs';
+import bindingInputKafka from './binding-input-kafka.mjs';
 
 export const scenes = {
   'agents-overview': agentsOverview,
@@ -75,4 +76,5 @@ export const scenes = {
   'workflow-cross-app-client': workflowCrossAppClient,
   'bindings-overview': bindingsOverview,
   'binding-output-kafka': bindingOutputKafka,
+  'binding-input-kafka': bindingInputKafka,
 };
