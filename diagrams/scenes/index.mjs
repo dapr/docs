@@ -38,6 +38,7 @@ import workflowCrossAppClient from './workflow-cross-app-client.mjs';
 import bindingsOverview from './bindings-overview.mjs';
 import bindingOutputKafka from './binding-output-kafka.mjs';
 import bindingInputKafka from './binding-input-kafka.mjs';
+import serviceInvocationExample from './service-invocation-example.mjs';
 
 export const scenes = {
   'agents-overview': agentsOverview,
@@ -77,4 +78,5 @@ export const scenes = {
   'bindings-overview': bindingsOverview,
   'binding-output-kafka': bindingOutputKafka,
   'binding-input-kafka': bindingInputKafka,
+  'service-invocation-example': serviceInvocationExample,
 };

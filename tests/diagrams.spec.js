@@ -453,6 +453,23 @@ const SCENE_ROWS = [
     ],
   },
   {
+    name: 'service-invocation-example',
+    // Replaced /images/building-block-service-invocation-example.png. The
+    // source runs one arrow between the two app hexagons; here it runs
+    // between the two SIDECARS, which is what service invocation does and
+    // what every call in resiliency-policies already draws. The right-hand
+    // app turns its sidecar inward so the line does not cross it.
+    page: '/developing-applications/building-blocks/service-invocation/howto-invoke-discover-services/',
+    labels: [
+      'Checkout',
+      // The hexagon's two lines and richLabel's three parts each arrive as one
+      // string: the spec reads a <text>'s content, and tspans join.
+      'Order Processor',
+      '/orders',
+      'Invoke /orders method',
+    ],
+  },
+  {
     name: 'sentry-selfhosted',
     pages: ['/concepts/dapr-services/sentry/', '/concepts/security-concept/'],
     labels: [
