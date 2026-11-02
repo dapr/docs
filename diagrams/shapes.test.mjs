@@ -11,6 +11,10 @@ const find = (node, pred, out = []) => {
   return out;
 };
 const byClass = (node, cls) => find(node, (x) => x.attrs.class === cls);
+// Everything a <text> says, tspans joined, for asserting on what a card reads.
+const said = (t) => find(t, (x) => x.tag === 'tspan').length
+  ? find(t, (x) => x.tag === 'tspan').map((x) => x.children[0].content).join('')
+  : t.children.map((c) => c.content).join('');
 const polyPts = (g) => find(g, (x) => x.tag === 'polygon')[0].attrs.points.split(' ').map((p) => p.split(',').map(Number));
 const mid = (vals) => (Math.min(...vals) + Math.max(...vals)) / 2;
 
@@ -787,4 +791,51 @@ test('hex clears a two-line name before its sub-line', () => {
   const secondLine = +twoName.attrs.y + 20 * 1.2;
   assert.ok(+twoSub.attrs.y > secondLine, 'the sub-line clears the second line of the name');
   assert.ok(+twoSub.attrs.y > +oneSub.attrs.y, 'and sits lower than a one-line name puts it');
+});
+
+// AN HTTP EXCHANGE CARD. The configuration, state, secrets and pub/sub
+// overviews all show a call to the Dapr API this way, so the card is one
+// drawing rather than four scenes stacking their own text at their own
+// offsets.
+test('httpCard draws the request, the status and the response', () => {
+  const card = S.httpCard({
+    x: 0, y: 0, w: 300, h: 160,
+    method: 'GET', url: '/v1.0/configuration/store', status: '200 OK', body: '"value"',
+  });
+  const lines = find(card, (n) => n.tag === 'text').map(said);
+  assert.deepEqual(lines, ['GET', '/v1.0/configuration/store', '200 OK', '"value"']);
+});
+
+test('httpCard puts its divider between the request and the response', () => {
+  // Derived, not picked: the line has to move with the card rather than sit
+  // at a y somebody chose for one size of it.
+  const card = S.httpCard({
+    x: 0, y: 0, w: 300, h: 160,
+    method: 'GET', url: '/v1.0/x', status: '200 OK', body: '"v"',
+  });
+  const line = find(card, (n) => n.tag === 'line')[0];
+  const urlY = +find(card, (n) => n.tag === 'text' && said(n) === '/v1.0/x')[0].attrs.y;
+  const bodyY = +find(card, (n) => n.tag === 'text' && said(n) === '"v"')[0].attrs.y;
+  assert.ok(+line.attrs.y1 > urlY, 'under the url');
+  assert.ok(+line.attrs.y1 < bodyY, 'and over the body');
+  assert.equal(line.attrs.y1, line.attrs.y2, 'and level');
+});
+
+test('httpCard paints ground behind the status so the divider cannot cross it', () => {
+  // The rendered check `paints ground behind any label a line crosses` fails a
+  // label a line runs through with nothing painted behind it, and the divider
+  // runs straight through this one.
+  const card = S.httpCard({
+    x: 0, y: 0, w: 300, h: 160,
+    method: 'GET', url: '/v1.0/x', status: '200 OK', body: '"v"',
+  });
+  const chip = find(card, (n) => n.attrs && n.attrs.class === 'd-pill')[0];
+  assert.ok(chip, 'the status sits on a pill');
+  const plate = find(chip, (n) => n.tag === 'rect')[0];
+  assert.equal(plate.attrs.fill, C.bg, 'filled with the page ground');
+});
+
+test('httpCard refuses type below the floor, and a card with no method', () => {
+  assert.throws(() => S.httpCard({ x: 0, y: 0, w: 300, h: 160, method: 'GET', size: 4 }), /below/);
+  assert.throws(() => S.httpCard({ x: 0, y: 0, w: 300, h: 160 }), /method/);
 });

@@ -525,6 +525,24 @@ const SCENE_ROWS = [
     ],
   },
   {
+    name: 'configuration-api-overview',
+    // Replaced /images/configuration-api-overview.png. The source's URL put
+    // the key in the path and its response was a bare string; both are
+    // corrected against reference/api/configuration_api.md and recorded in
+    // the scene header.
+    page: '/developing-applications/building-blocks/configuration/configuration-api-overview/',
+    labels: [
+      'myApp',
+      'Dapr sidecar',
+      'Configuration component',
+      'Key',
+      'Value',
+      'myApp||dbname',
+      'GET',
+      '200 OK',
+    ],
+  },
+  {
     name: 'sentry-selfhosted',
     pages: ['/concepts/dapr-services/sentry/', '/concepts/security-concept/'],
     labels: [

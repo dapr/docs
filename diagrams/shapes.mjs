@@ -708,6 +708,67 @@ export function pod({ x, y, w, h, name = 'Pod', captionW = 56, captionX, size = 
   return region({ x, y, w, h, stroke: C.blue, r: 8, caption: name, captionW, captionX, captionSize: size });
 }
 
+// AN HTTP EXCHANGE: a request over a divider, and the response under it.
+//
+// The configuration, state, secrets and pub/sub overviews all show a call to
+// the Dapr API this way - a verb, the URL it goes to, a status, and what comes
+// back - so the card is one drawing rather than four scenes stacking their own
+// text at their own offsets.
+//
+// The method and the URL follow what `sidecar-model` already draws for a call
+// to the Dapr API: the verb in blue at the weight code is set in, and the URL
+// in the page's code font with the part that names the building block picked
+// out. `url` takes richLabel parts for that, or a plain string where nothing
+// needs picking out.
+//
+// `statusW` is the measured width of the status chip. The exporter has no font
+// metrics, so a caller that cares measures it on the rendered page and writes
+// the number down; the default is an estimate good enough for "200 OK".
+export function httpCard({
+  x, y, w, h, method, url, status = '', body = '', size = 13, statusW,
+  stroke = C.caption, fill = C.bg,
+}) {
+  if (size < MIN_LABEL) throw new RangeError(`httpCard(): size ${size} is below ${MIN_LABEL}px`);
+  if (!method) throw new Error('httpCard(): a method names the request and is required');
+  const top = y - h / 2;
+  const bottom = y + h / 2;
+  const pad = size * 1.8;
+  const lead = size * 1.25;
+  const methodY = top + pad + size * 0.5;
+  const urlY = methodY + lead * 1.4;
+  const bodyY = bottom - pad - size * 0.5;
+  // Halfway between what was asked and what came back, so the divider moves
+  // with the card instead of sitting at a y somebody picked.
+  const lineY = +((urlY + bodyY) / 2).toFixed(2);
+  const chipW = statusW ?? +(String(status).length * size * 0.62 + size).toFixed(2);
+  const parts = Array.isArray(url) ? url : [{ text: String(url ?? '') }];
+  return el('g', { class: 'd-http-card' }, [
+    el('rect', {
+      x: n(x - w / 2), y: n(top), width: n(w), height: n(h), rx: 10,
+      fill, ...outline(stroke),
+    }),
+    label({ x, y: methodY, text: method, size, weight: 700, color: C.blue }),
+    url ? richLabel({ x, y: urlY, parts, size, anchor: 'middle', mono: true }) : null,
+    status
+      ? group([
+        el('line', {
+          x1: n(x - w / 2 + pad), y1: n(lineY), x2: n(x + w / 2 - pad), y2: n(lineY),
+          ...outline(stroke, { 'stroke-dasharray': '2 4' }),
+        }),
+        // The chip is FILLED with the page's own ground, which is what stops
+        // the divider striking through the status - the same thing a label's
+        // halo does, and what `paints ground behind any label a line crosses`
+        // checks for.
+        pill({ x, y: lineY, w: chipW, h: size * 1.7, text: status, color: stroke, size }),
+      ])
+      : null,
+    // Weight 400, which is what richLabel sets the URL above it in: the
+    // request and the response are the same kind of text, and label()'s own
+    // default of 600 made the body read as the louder of the two.
+    body ? label({ x, y: bodyY, text: body, size, weight: 400, mono: true }) : null,
+  ]);
+}
+
 export function pill({ x, y, w, h = 26, text: content, color = C.navy, filled = false, size = 15 }) {
   if (filled) assertInk(color, 'pill() filled');
   return el('g', { class: 'd-pill' }, [
