@@ -12,12 +12,12 @@
     25
   ],
   "binding-input-kafka": [
-    0,
-    -1.96
+    -0.02,
+    -2.04
   ],
   "binding-output-kafka": [
-    0,
-    -2.23
+    0.02,
+    -2.03
   ],
   "bindings-overview": [
     0,
@@ -34,6 +34,10 @@
   "components-concept": [
     2,
     4.28
+  ],
+  "configuration-example": [
+    4.02,
+    0.18
   ],
   "hosting-kubernetes": [
     -12,

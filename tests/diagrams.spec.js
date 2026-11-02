@@ -430,8 +430,9 @@ const SCENE_ROWS = [
     // own example posts to.
     page: '/developing-applications/building-blocks/bindings/howto-bindings/',
     labels: [
-      'Service',
+      'App',
       '/v1.0/bindings/checkout',
+      'Dapr sidecar',
       'Output binding',
       'Kafka',
     ],
@@ -448,8 +449,9 @@ const SCENE_ROWS = [
     labels: [
       'Kafka',
       'Input binding',
+      'Dapr sidecar',
       '/checkout',
-      'Service',
+      'App',
     ],
   },
   {
@@ -467,6 +469,21 @@ const SCENE_ROWS = [
       'Order Processor',
       '/orders',
       'Invoke /orders method',
+    ],
+  },
+  {
+    name: 'configuration-example',
+    // Replaced /images/building-block-configuration-example.png. The source is
+    // in an older style - grey boxes, a blue square sidecar, a circle for
+    // Redis - mapped onto the house shapes, which is how the two bindings
+    // how-tos next door draw Kafka. It already ran app, sidecar, store, so
+    // unlike those pages nothing had to be re-routed.
+    page: '/developing-applications/building-blocks/configuration/howto-manage-configuration/',
+    labels: [
+      'Order Processing Service',
+      'Dapr sidecar',
+      'Get configuration',
+      'Redis',
     ],
   },
   {

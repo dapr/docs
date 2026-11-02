@@ -9,7 +9,7 @@ weight: 300
 
 With output bindings, you can invoke external resources. An optional payload and metadata can be sent with the invocation request.
 
-{{< diagram name="binding-output-kafka" width="60" >}}
+{{< diagram name="binding-output-kafka" width="65" >}}
 
 This guide uses a Kafka binding as an example. You can find your preferred binding spec from [the list of bindings components]({{% ref setup-bindings %}}). In this guide:
 
