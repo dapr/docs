@@ -78,7 +78,13 @@ const SCENE_ROWS = [
   },
   {
     name: 'building-blocks',
-    pages: ['/overview/', '/concepts/building-blocks-concept/'],
+    pages: [
+      '/overview/',
+      '/concepts/building-blocks-concept/',
+      // Replaced /images/buildingblocks-overview.png, a single row of twelve
+      // icon-and-name tiles with no descriptions.
+      '/developing-applications/building-blocks/',
+    ],
     labels: [
       'Workflows',
       'Publish & subscribe',
@@ -126,7 +132,14 @@ const SCENE_ROWS = [
   },
   {
     name: 'hosting-standalone',
-    page: '/overview/',
+    pages: [
+      '/overview/',
+      // Replaced /images/dapr-agents/home_installation_init.png, which is
+      // this diagram with "Workflow" and "External Configuration" for
+      // "Workflows" and "Configuration", and four OS logos where this scene
+      // names the four platforms in a sentence.
+      '/developing-ai/dapr-agents/dapr-agents-getting-started/',
+    ],
     labels: [
       'Docker Desktop',
       'dapr init',
@@ -212,7 +225,12 @@ const SCENE_ROWS = [
   },
   {
     name: 'building-blocks-concept',
-    page: '/concepts/building-blocks-concept/',
+    pages: [
+      '/concepts/building-blocks-concept/',
+      // Replaced /images/concepts-building-blocks.png, which drew the same
+      // thing vertically and without the caller.
+      '/developing-applications/develop-components/pluggable-components/pluggable-components-overview/',
+    ],
     labels: ['Your code', 'API', 'HTTP or gRPC', 'Building block', 'Component'],
   },
   {

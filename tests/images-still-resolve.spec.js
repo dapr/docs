@@ -85,6 +85,8 @@ const IN_SCOPE_IMAGES = [
   'workflow-overview/workflow-multi-app-complex.png',
   'workflow-overview/workflow-multi-app-callactivity.png',
   'workflow-overview/workflow-multi-app-child-workflow.png',
+  'buildingblocks-overview.png',
+  'dapr-agents/home_installation_init.png',
 ];
 
 // IN_SCOPE_IMAGES as the previous conversion froze it. It may GROW - the
@@ -101,10 +103,6 @@ const FROZEN_IMAGE_BASELINE = [...IN_SCOPE_IMAGES];
 // in the scope of the current conversion, and each is the only English page
 // rendering its image, so each will move to CONVERTED_PAGES below.
 const PAGES_STILL_SHOWING = [
-  {
-    image: 'concepts-building-blocks.png',
-    page: '/developing-applications/develop-components/pluggable-components/pluggable-components-overview/',
-  },
   {
     image: 'dapr-agents/concepts-agents-overview.png',
     page: '/developing-ai/dapr-agents/dapr-agents-introduction/',
@@ -137,6 +135,26 @@ const CONVERTED_PAGES = [
     image: 'scheduler/scheduler-architecture.png',
     page: '/developing-applications/building-blocks/jobs/jobs-overview/',
     scene: 'scheduler-architecture',
+  },
+  {
+    image: 'concepts-building-blocks.png',
+    page: '/developing-applications/develop-components/pluggable-components/pluggable-components-overview/',
+    scene: 'building-blocks-concept',
+  },
+  // This page carried no PAGES_STILL_SHOWING row - the earlier conversion
+  // never pinned it - but converting it still takes away the only English
+  // page that referenced the file, so the file-level guard is what replaces
+  // it. A converted page earns its image a place in IN_SCOPE_IMAGES whether
+  // or not the page guard happened to name it.
+  {
+    image: 'buildingblocks-overview.png',
+    page: '/developing-applications/building-blocks/',
+    scene: 'building-blocks',
+  },
+  {
+    image: 'dapr-agents/home_installation_init.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-getting-started/',
+    scene: 'hosting-standalone',
   },
   // workflow-patterns.md, converted whole: six images, six scenes.
   ...[
