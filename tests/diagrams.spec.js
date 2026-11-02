@@ -487,6 +487,20 @@ const SCENE_ROWS = [
     ],
   },
   {
+    name: 'state-management-example',
+    // Replaced /images/building-block-state-management-example.png. The same
+    // picture as configuration-example - the two pages ship the same source
+    // image with one word different - so both draw component-call.mjs and
+    // differ only in their caption.
+    page: '/developing-applications/building-blocks/state-management/howto-get-save-state/',
+    labels: [
+      'Order Processing Service',
+      'Dapr sidecar',
+      'State management',
+      'Redis',
+    ],
+  },
+  {
     name: 'sentry-selfhosted',
     pages: ['/concepts/dapr-services/sentry/', '/concepts/security-concept/'],
     labels: [

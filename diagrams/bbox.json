@@ -36,8 +36,8 @@
     4.28
   ],
   "configuration-example": [
-    4.02,
-    0.18
+    -0.46,
+    -0.05
   ],
   "hosting-kubernetes": [
     -12,
@@ -114,6 +114,10 @@
   "sidecar-model": [
     -7.32,
     -0.17
+  ],
+  "state-management-example": [
+    -0.46,
+    -0.05
   ],
   "workflow-async-http": [
     3.49,

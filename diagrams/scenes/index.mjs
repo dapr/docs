@@ -40,6 +40,7 @@ import bindingOutputKafka from './binding-output-kafka.mjs';
 import bindingInputKafka from './binding-input-kafka.mjs';
 import serviceInvocationExample from './service-invocation-example.mjs';
 import configurationExample from './configuration-example.mjs';
+import stateManagementExample from './state-management-example.mjs';
 
 export const scenes = {
   'agents-overview': agentsOverview,
@@ -81,4 +82,5 @@ export const scenes = {
   'binding-input-kafka': bindingInputKafka,
   'service-invocation-example': serviceInvocationExample,
   'configuration-example': configurationExample,
+  'state-management-example': stateManagementExample,
 };

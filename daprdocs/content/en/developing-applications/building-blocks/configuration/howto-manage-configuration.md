@@ -8,7 +8,7 @@ description: "Learn how to get application configuration and subscribe for chang
 
 This example uses the Redis configuration store component to demonstrate how to retrieve a configuration item.
 
-{{< diagram name="configuration-example" width="50" >}}
+{{< diagram name="configuration-example" width="55" >}}
 
 {{% alert title="Note" color="primary" %}}
  If you haven't already, [try out the configuration quickstart]({{% ref configuration-quickstart %}}) for a quick walk-through on how to use the configuration API.
