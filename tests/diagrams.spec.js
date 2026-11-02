@@ -422,6 +422,21 @@ const SCENE_ROWS = [
     ],
   },
   {
+    name: 'binding-output-kafka',
+    // Replaced /images/howto-bindings/kafka-output-binding.png. The source ran
+    // one arrow from the service straight to Kafka; the sidecar sits between
+    // them here, per the 2026-11-02 ruling, the source's caption rides the leg
+    // the binding performs, and the app's leg names the endpoint the page's
+    // own example posts to.
+    page: '/developing-applications/building-blocks/bindings/howto-bindings/',
+    labels: [
+      'Service',
+      '/v1.0/bindings/checkout',
+      'Output binding',
+      'Kafka',
+    ],
+  },
+  {
     name: 'sentry-selfhosted',
     pages: ['/concepts/dapr-services/sentry/', '/concepts/security-concept/'],
     labels: [
