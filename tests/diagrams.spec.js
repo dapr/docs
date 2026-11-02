@@ -1233,6 +1233,66 @@ for (const scene of SCENES) {
       });
     }
 
+    test(`${scene.name} centres a narrowed diagram on the prose column`, async ({ page }) => {
+      // Docsy caps every `.td-content > *` at 80% of the content area and
+      // leaves it LEFT-aligned, so the prose occupies the left four fifths and
+      // the last fifth is empty. A figure centred with `auto` margins centres
+      // on .td-content instead, which put a 50%-wide diagram 100px right of
+      // the paragraph above it - a drawing that reads as having drifted, on a
+      // page where nothing else is off-centre.
+      //
+      // `_diagrams.scss` offsets the figure by (prose - width) / 2 to correct
+      // it. That 80% is the THEME's number, not ours, so this test measures
+      // the two centres on the real page rather than asserting the constant:
+      // if Docsy ever moves the cap, this fails instead of the pages quietly
+      // drifting again.
+      //
+      // Only below the prose width. A diagram asked for at more than 80% -
+      // and one at the full width, which passes no `width` at all - cannot be
+      // centred inside a column narrower than itself without hanging off the
+      // left edge, so those stay aligned to the prose's left edge and this
+      // test checks that instead.
+      await page.setViewportSize({ width: 1600, height: 1000 });
+      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+
+      const geom = await page.evaluate((root) => {
+        const fig = document.querySelector(root);
+        const content = fig.closest('.td-content');
+        // Any block of prose Docsy has capped; its box is the text column.
+        const prose = [...content.children].find(
+          (el) => el !== fig && /^(P|UL|OL|H2|H3)$/.test(el.tagName)
+            && el.textContent.trim().length > 40,
+        );
+        if (!prose) return null;
+        const f = fig.getBoundingClientRect();
+        const p = prose.getBoundingClientRect();
+        return {
+          figCentre: (f.left + f.right) / 2,
+          figLeft: f.left,
+          figWidth: f.width,
+          proseCentre: (p.left + p.right) / 2,
+          proseLeft: p.left,
+          proseWidth: p.width,
+        };
+      }, sel(scene.name));
+
+      // A page with no capped prose block beside the figure has nothing to
+      // measure against; that is not a failure of the figure.
+      test.skip(geom === null, 'no prose block on this page to measure against');
+
+      if (geom.figWidth <= geom.proseWidth + 1) {
+        expect(
+          Math.abs(geom.figCentre - geom.proseCentre),
+          'a diagram narrower than the prose shares its centre',
+        ).toBeLessThanOrEqual(1);
+      } else {
+        expect(
+          Math.abs(geom.figLeft - geom.proseLeft),
+          'a diagram wider than the prose shares its left edge',
+        ).toBeLessThanOrEqual(1);
+      }
+    });
+
     test(`${scene.name} runs no engine in the browser`, async ({ page }) => {
       await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
 

@@ -11,12 +11,39 @@
   // column instead of hugging its left edge.
   margin: 0 auto 1.5rem;
 
+  // Docsy caps every `.td-content > *` at this and leaves it LEFT-aligned, so
+  // the prose occupies the left 80% of .td-content and the remaining fifth is
+  // empty. A figure centred with `auto` margins therefore centres on
+  // .td-content, not on the text: at 50% it sat 100px right of the paragraph
+  // centre, which reads as a drawing that has drifted. The number is Docsy's,
+  // not ours, so `centres a narrowed diagram on the prose column` in
+  // tests/diagrams.spec.js measures the two centres on a real page and fails
+  // if the theme ever moves it.
+  --dapr-prose-width: 80%;
+
   // The shortcode sets --dapr-diagram-width when a page asks for a diagram to
   // render at less than the full column. Only above the `md` breakpoint: on a
   // phone the column is already the smallest the drawing can usefully be, and
   // taking another third off it makes the labels unreadable.
   @include media-breakpoint-up(md) {
     max-width: var(--dapr-diagram-width, 100%);
+
+    // Centre the figure on the PROSE column rather than on .td-content. Both
+    // percentages resolve against .td-content, so the inset that puts a
+    // W-wide figure in the middle of an 80%-wide band is (80% - W) / 2.
+    //
+    // Clamped at zero because a diagram asked for at more than the prose width
+    // - anything above 80, and 100% when the page passes no width at all -
+    // would otherwise take a NEGATIVE inset and hang off the left edge of the
+    // content area. Those keep the full width they ask for and stay aligned
+    // with the prose's left edge, which is what they do today.
+    //
+    // Quoted and interpolated because this project compiles with libsass,
+    // which treats `max()` as Sass's own function and refuses a calc()
+    // argument ("is not a number for `max'") rather than passing the CSS
+    // through. The string is emitted verbatim.
+    margin-left: #{"max(0px, calc((var(--dapr-prose-width) - var(--dapr-diagram-width, var(--dapr-prose-width))) / 2))"};
+    margin-right: auto;
   }
 
   // The scene carries a viewBox and no width/height, so it scales to the
