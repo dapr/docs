@@ -157,6 +157,18 @@ export function hexHalfWidthAt(r, dy) {
   return d <= r / 2 ? w : (w * (r - d)) / (r / 2);
 }
 
+// The other question: how far BELOW the centre the boundary sits at a given
+// horizontal offset - the same number above it, the shape being symmetric.
+// This is what a VERTICAL arrow meeting a hexagon off its centre line has to
+// stop at: aimed at the centre's depth instead it buries its head in the
+// shape, and aimed at the corner's it stops in mid air. Straight below the
+// centre that is the bottom vertex, r; at the full half width it is the lower
+// corner, r/2; and it runs straight between them, as the drawn polygon does.
+export function hexEdgeAt(r, dx) {
+  const d = Math.min(Math.abs(dx), hexHalfWidth(r));
+  return r - (d / hexHalfWidth(r)) * (r / 2);
+}
+
 export function hexPoints(x, y, r) {
   const pts = [];
   for (let k = 0; k < 6; k++) {

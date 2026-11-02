@@ -82,6 +82,33 @@ test('decision centres its label on the widest part of the diamond', () => {
   assert.equal(Number(t.attrs.y) - 200 < 6, true, 'label sits on the centre row');
 });
 
+// hexHalfWidthAt() answers "how wide is the shape at this height", which is
+// what a label beside a hexagon needs. A VERTICAL arrow meeting a hexagon off
+// its centre line needs the other question - "how low is the boundary at this
+// horizontal offset" - and the hexagon's own polygon is what that has to
+// agree with, or the arrow stops in mid air or buries its head in the shape.
+test('hexEdgeAt() lands on the lower edge of the polygon hex() draws', () => {
+  const r = 60;
+  const w = S.hexHalfWidth(r);
+  assert.equal(S.hexEdgeAt(r, 0), r, 'straight below the centre: the bottom vertex');
+  assert.ok(Math.abs(S.hexEdgeAt(r, w) - r / 2) < 1e-9, 'at the widest point: the lower corner');
+  assert.equal(S.hexEdgeAt(r, -24), S.hexEdgeAt(r, 24), 'the same on either side');
+  // The lower-right edge of the drawn polygon runs from the bottom vertex to
+  // the lower-right corner; every answer has to sit on that segment.
+  const pts = polyPts(S.hex({ x: 0, y: 0, r }));
+  const [bx, by] = pts[3];
+  const [cx2, cy2] = pts[2];
+  // Distance FROM that segment, in scene units: hexPoints() rounds its
+  // vertices to two places, so the drawn edge is not exactly the ideal one
+  // and an exact-equality check here would be measuring the rounding.
+  const edge = Math.hypot(cx2 - bx, cy2 - by);
+  for (const dx of [12, 24, 36, 48]) {
+    const dy = S.hexEdgeAt(r, dx);
+    const off = Math.abs((cx2 - bx) * (dy - by) - (cy2 - by) * (dx - bx)) / edge;
+    assert.ok(off < 0.01, `dx ${dx} is ${off} off the drawn edge`);
+  }
+});
+
 test('hex draws a pointy-top hexagon with 6 points at radius r', () => {
   const g = S.hex({ x: 100, y: 200, r: 40 });
   const pts = polyPts(g);
