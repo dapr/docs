@@ -122,6 +122,14 @@ const component = ({ x, y, r, text }) => group([
 export default {
   width: W,
   height: H,
+  // Pinned rather than computed. The 800 canvas asks for 75%, which is what
+  // the formula gives every other scene of this size, and at that width the
+  // maintainer read the drawing as too large beside the rest of the bindings
+  // pages: 65% (2026-11-02). The scene is unchanged - this is the render
+  // lever, not the drawing - so its type comes out a shade smaller than the
+  // set's, which is the cost of the exception and is why it is recorded here
+  // rather than typed into the call site.
+  renderWidth: 65,
   title: 'An input binding triggering an app through its sidecar, and the app calling an output binding the same way',
   desc:
     'In the middle of the drawing, the application: a green hexagon named App with the endpoint /method under its name, and below it the Dapr sidecar, a hexagon carrying the Dapr logo. Left and right of the sidecar, on its line, sits a plug-marked hexagon each: "Input binding component" on the left and "Output binding component" on the right. Coming in, an arrow runs from the input binding component to the sidecar, and a second from the sidecar up to the app, labelled "Trigger endpoint methods on app". Going out, an arrow runs from the app down to the sidecar, and a second from the sidecar to the output binding component, labelled "Execute operations on component".',
