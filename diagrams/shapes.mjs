@@ -168,19 +168,51 @@ export function hexPoints(x, y, r) {
 
 // `solid` fills without the tint and `ink` colours the name - the pair the
 // first app needs, because its name sits on the fill rather than on the page.
+// The name block inside a hexagon: how far apart its two lines sit and how far
+// the lower one reaches below the centre. hex() draws from this and app.mjs
+// clears the sidecar past it, so the two cannot disagree about how tall a name
+// with a code sub-line is. The lead reduces to label()'s own 1.2x line height
+// when the two sizes match, so a name with a sub-line sits exactly where a
+// two-line label() would put it.
+export function hexNameBlock({ size, sub = '', subSize }) {
+  if (!sub) return { lead: 0, size: 0, bottom: +(size * 0.5).toFixed(2) };
+  const ss = subSize ?? Math.max(MIN_LABEL, +(size * 0.7).toFixed(2));
+  const lead = +((size + ss) * 0.6).toFixed(2);
+  return { lead, size: ss, bottom: +(lead / 2 + ss * 0.6).toFixed(2) };
+}
+
 export function hex({
   x, y, r = 42.5, stroke = APP[0].stroke, fill = APP[0].fill, ink, solid = false,
-  label: name = 'App', size, labelDx = 0,
+  label: name = 'App', size, labelDx = 0, labelDy = 0, sub = '', subSize,
 }) {
   assertStroke(stroke, name, 'hex()');
   const poly = el('polygon', { points: hexPoints(x, y, r), ...(solid ? { fill } : tint(fill)), ...outline(stroke) });
   const s = size ?? Math.max(MIN_LABEL, +(r / 3).toFixed(2));
+  // A second line, for an app that answers on a named endpoint or port. It is
+  // CODE, so it takes the page's code font at the weight code is set in, and
+  // it is drawn INSIDE this group: a text node laid over a hexagon from the
+  // scene is indistinguishable from a label that has drifted onto a shape,
+  // which is the defect the free-label check in tests/diagrams.spec.js catches.
+  const block = hexNameBlock({ size: s, sub, subSize });
+  const ss = block.size;
+  const lead = block.lead;
+  // labelDy moves the whole name block. A hexagon holding a MARK as well as a
+  // name centres the PAIR, so the name sits below the centre row by however
+  // much the mark takes above it - and it still has to be inside this group,
+  // or the free-label check cannot tell it from a label that has drifted.
+  const ny = y + labelDy;
   // A solid hexagon carries its name ON the fill, so that name's colour belongs
   // to the SHAPE and is the same in both themes - the class says so, and the
   // theme test skips it when looking for type that should follow the page.
   return el('g', { class: solid ? 'd-hex d-hex-solid' : 'd-hex' }, [
     poly,
-    name ? label({ x: x + labelDx, y, text: name, size: s, color: ink ?? C.body }) : null,
+    name ? label({ x: x + labelDx, y: ny - lead / 2, text: name, size: s, color: ink ?? C.body }) : null,
+    sub
+      ? label({
+        x: x + labelDx, y: ny + lead / 2, text: sub, size: ss,
+        color: ink ?? C.body, weight: 400, mono: true,
+      })
+      : null,
   ]);
 }
 

@@ -130,6 +130,47 @@ test('hex defaults to APP[0] colours and a label of a third of r, never under th
   assert.ok(Math.abs(Math.hypot(polyPts(g)[0][0], polyPts(g)[0][1]) - 42.5) < 0.02);
 });
 
+// An app hexagon can name the endpoint it answers on - `/method`, a port -
+// and that second line is CODE, so it is set in the code font and smaller.
+// It belongs inside the hexagon's own group: a text node laid over a shape
+// from outside is what the free-label check in tests/diagrams.spec.js exists
+// to catch, and it cannot tell a deliberate one from the defect.
+test('hex sets an optional sub-line under the name, in the code font', () => {
+  const g = S.hex({ x: 10, y: 20, r: 62, label: 'App', sub: '/method' });
+  const ts = find(g, (x) => x.tag === 'text');
+  assert.equal(ts.length, 2, 'the name and the sub-line');
+  assert.equal(ts[1].attrs['font-family'], S.MONO, 'a path is code, and set in the code font');
+  assert.ok(+ts[1].attrs.y > +ts[0].attrs.y, 'the sub-line is under the name');
+  assert.ok(+ts[1].attrs['font-size'] < +ts[0].attrs['font-size'], 'and smaller than it');
+  assert.equal(ts[1].attrs.fill, ts[0].attrs.fill, 'both take the name ink');
+});
+
+test('the name and its sub-line straddle the hexagon the way label() sets two lines', () => {
+  const g = S.hex({ x: 0, y: 0, r: 60, label: 'App', sub: 'App', size: 20, subSize: 20 });
+  const ts = find(g, (x) => x.tag === 'text');
+  const two = S.label({ x: 0, y: 0, text: ['App', 'App'].join(String.fromCharCode(10)), size: 20 });
+  assert.equal(+ts[0].attrs.y, +two.attrs.y, 'the name sits where a two-line label puts its first line');
+  assert.equal(+ts[1].attrs.y - +ts[0].attrs.y, 24, 'and the sub-line one line height below it');
+});
+
+// A hexagon whose contents are a MARK and a name has to centre the pair, not
+// the name: the name alone on the centre row leaves the block sitting high.
+// labelDy moves the whole name block, sub-line included, the way labelDx
+// moves it sideways - and the name stays inside the hexagon's own group,
+// which a scene positioning the text itself could not manage.
+test('hex drops its name off the centre row with labelDy, sub-line and all', () => {
+  const at = { x: 0, y: 100, r: 60, label: 'App', sub: '/method' };
+  const plain = find(S.hex(at), (x) => x.tag === 'text');
+  const moved = find(S.hex({ ...at, labelDy: 18 }), (x) => x.tag === 'text');
+  assert.equal(+moved[0].attrs.y - +plain[0].attrs.y, 18, 'the name moves down');
+  assert.equal(+moved[1].attrs.y - +plain[1].attrs.y, 18, 'and the sub-line with it');
+});
+
+test('a hex sub-line never falls under the label floor', () => {
+  const ts = find(S.hex({ x: 0, y: 0, r: 36, label: 'App', sub: '/x' }), (x) => x.tag === 'text');
+  assert.equal(+ts[1].attrs['font-size'], S.MIN_LABEL);
+});
+
 test('daprApp docks the badge bottom-right by default, bottom-left with badgeLeft', () => {
   const badgePts = (g) => polyPts(byClass(g, 'd-badge')[0]);
   const right = badgePts(S.daprApp({ x: 100, y: 100 }));
