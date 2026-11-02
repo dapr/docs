@@ -203,6 +203,12 @@
     20,
     20
   ],
+  "fluent-document": [
+    4,
+    2,
+    16,
+    20
+  ],
   "fluent-document-multiple": [
     4,
     2,
@@ -249,6 +255,12 @@
     2,
     2,
     20,
+    21
+  ],
+  "fluent-lock-closed": [
+    4,
+    1,
+    16,
     21
   ],
   "fluent-lock-closed-key": [

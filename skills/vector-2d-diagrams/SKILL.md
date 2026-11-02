@@ -346,6 +346,21 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
   so the theme test knows to look past their names. Which ink goes on which
   fill is in the colour rules above; a name set in the wrong one is the
   failure those rules exist to stop.
+- **The apps in one scene take `APP` entries IN ORDER, and a colour names one
+  application.** First app `APP[0]`, second `APP[1]`, and so on: when two
+  hexagons are the same size with short names on them, the fill is how a
+  reader tells them apart, and `service-invocation-example` and
+  `pubsub-publish-raw` both lean on it. The exception is a scene that draws
+  the SAME application more than once - two instances competing for a lock,
+  one service at two moments. Then they share a colour *and* share a name,
+  and a caption beside each says which instance it is;
+  `distributed-lock-overview` is the one scene in the set doing this, and
+  giving its two hexagons different names would say two app ids, which for a
+  lock means no contention at all. `diagrams/app-colour.test.mjs` holds the
+  line: **two app hexagons may share a fill only when they carry the same
+  name.** An unnamed hexagon is skipped, because a blank swatch in an app's
+  colour - `observability-tracing` ends with a row of them - is the colour
+  doing its job rather than a second app.
 - **Spread a whole palette entry; never pick properties off it.** Write
   `hex({ x, y, label, ...APP[0] })`, not `stroke: APP[0].stroke, fill:
   APP[0].fill`: the entry carries four properties and picking two silently

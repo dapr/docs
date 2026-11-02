@@ -596,7 +596,7 @@ export const lineWidth = () => {
 // the original point, so the line still passes where the coordinates say it
 // does. A corner never eats more than half of either leg, or a short leg would
 // fold the line back on itself.
-export function roundedPath({ points, r = 10, color = C.navy, width }) {
+export function roundedPath({ points, r = 10, color = C.navy, width, dash = false }) {
   const len = (from, to) => Math.hypot(to[0] - from[0], to[1] - from[1]);
   // Every leg, not just the ones that end up carrying a chevron. The corner
   // cut divides by the leg length, so a repeated point makes that 0/0 and
@@ -626,7 +626,17 @@ export function roundedPath({ points, r = 10, color = C.navy, width }) {
   }
   const last = points[points.length - 1];
   d += ` L${n(last[0])},${n(last[1])}`;
-  return el('path', { class: 'd-run', d, fill: 'none', stroke: color, 'stroke-width': width ?? lineWidth(), 'stroke-linecap': 'round' });
+  return el('path', {
+    class: 'd-run',
+    d,
+    fill: 'none',
+    stroke: color,
+    'stroke-width': width ?? lineWidth(),
+    'stroke-linecap': 'round',
+    // The same pattern arrow() dashes with, so a straight run and an elbowed
+    // one that mean the same thing look the same.
+    ...(dash ? { 'stroke-dasharray': '6 5' } : {}),
+  });
 }
 
 // An elbowed run with a chevron on one or both ends. Five scenes had already
@@ -638,7 +648,7 @@ export function roundedPath({ points, r = 10, color = C.navy, width }) {
 // and the two read as one line.
 export const HEAD_RUN = 26;
 
-export function elbowArrow({ points, r = 12, color = C.navy, heads = 'end' }) {
+export function elbowArrow({ points, r = 12, color = C.navy, heads = 'end', dash = false }) {
   if (!Array.isArray(points) || points.length < 2) throw new Error('elbowArrow(): needs at least two points');
   const chevron = (tip, prev) => {
     const dx = prev[0] - tip[0];
@@ -651,7 +661,10 @@ export function elbowArrow({ points, r = 12, color = C.navy, heads = 'end' }) {
     const d = Math.min(HEAD_RUN, l / 2);
     return arrow({ from: [+(tip[0] + (dx / l) * d).toFixed(2), +(tip[1] + (dy / l) * d).toFixed(2)], to: tip, color });
   };
-  const kids = [roundedPath({ points, r, color })];
+  // `dash` dashes the LINE and not the head, which is what arrow() does and
+  // for the same reason: a dashed line says the thing does not happen, and a
+  // dashed chevron just reads as a badly drawn one.
+  const kids = [roundedPath({ points, r, color, dash })];
   if (heads === 'end' || heads === 'both') kids.push(chevron(points[points.length - 1], points[points.length - 2]));
   if (heads === 'start' || heads === 'both') kids.push(chevron(points[0], points[1]));
   return el('g', { class: 'd-elbow-arrow' }, kids);

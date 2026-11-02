@@ -630,6 +630,20 @@ test('elbowArrow() draws one run and puts the head at the end of it', () => {
   assert.deepEqual(tip, [200, 100]);
 });
 
+test('elbowArrow() dashes the run and leaves the head solid', () => {
+  // A dashed line says the thing does not happen; a dashed chevron just reads
+  // as a badly drawn one, which is the split arrow() already makes.
+  const pts = [[0, 0], [0, 100], [200, 100]];
+  const g = S.elbowArrow({ points: pts, dash: true });
+  const run = find(g, (n) => (n.attrs?.class ?? '') === 'd-run')[0];
+  assert.equal(run.attrs['stroke-dasharray'], '6 5');
+  const head = find(g, (n) => n.tag === 'polyline')[0];
+  assert.equal(head.attrs['stroke-dasharray'], undefined);
+  // And the default stays solid, so nothing already drawn changes.
+  const plain = find(S.elbowArrow({ points: pts }), (n) => (n.attrs?.class ?? '') === 'd-run')[0];
+  assert.equal(plain.attrs['stroke-dasharray'], undefined);
+});
+
 test('elbowArrow() can put a head on both ends, and on neither', () => {
   const pts = [[0, 0], [0, 100], [200, 100]];
   assert.equal(find(S.elbowArrow({ points: pts, heads: 'both' }), (n) => n.tag === 'polyline').length, 2);

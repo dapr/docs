@@ -46,6 +46,7 @@ import pubsubSubscribeRaw from './pubsub-subscribe-raw.mjs';
 import configurationApiOverview from './configuration-api-overview.mjs';
 import conversationOverview from './conversation-overview.mjs';
 import cryptographyOverview from './cryptography-overview.mjs';
+import distributedLockOverview from './distributed-lock-overview.mjs';
 
 export const scenes = {
   'agents-overview': agentsOverview,
@@ -93,4 +94,5 @@ export const scenes = {
   'configuration-api-overview': configurationApiOverview,
   'conversation-overview': conversationOverview,
   'cryptography-overview': cryptographyOverview,
+  'distributed-lock-overview': distributedLockOverview,
 };

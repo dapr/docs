@@ -593,6 +593,28 @@ const SCENE_ROWS = [
     ],
   },
   {
+    name: 'distributed-lock-overview',
+    // Replaced /images/lock-overview.png. App and sidecar are the combined
+    // shape appSidecar() draws, as the source draws them, so the runs to the
+    // store leave the sidecar. The lock component is a component YAML - a
+    // file, not a store - and the one store in the frame is the shared
+    // resource, unbranded because the API is agnostic about what is locked.
+    // Denial is orange and dashed with fluent-dismiss-circle, as api-scoping
+    // already draws a blocked call - not the source's red X.
+    page: '/developing-applications/building-blocks/distributed-lock/distributed-lock-api-overview/',
+    labels: [
+      // BOTH hexagons are "App 1" - two instances of one app id, which is
+      // what makes the lock contended; the captions say which is which.
+      'App 1',
+      'Instance 1',
+      'Instance 2',
+      'Lock component YAML',
+      'Shared resource',
+      'Acquire named lock on resource for mutually exclusive access',
+      'Named lock denies access to update resource',
+    ],
+  },
+  {
     name: 'sentry-selfhosted',
     pages: ['/concepts/dapr-services/sentry/', '/concepts/security-concept/'],
     labels: [
