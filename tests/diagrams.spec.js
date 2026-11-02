@@ -408,6 +408,20 @@ const SCENE_ROWS = [
     ],
   },
   {
+    name: 'bindings-overview',
+    // Replaced /images/binding-overview.png, the same three shapes in the same
+    // row with the same two captions.
+    page: '/developing-applications/building-blocks/bindings/bindings-overview/',
+    labels: [
+      'Input binding component',
+      'Output binding component',
+      'App',
+      '/method',
+      'Trigger endpoint methods on app',
+      'Execute operations on component',
+    ],
+  },
+  {
     name: 'sentry-selfhosted',
     pages: ['/concepts/dapr-services/sentry/', '/concepts/security-concept/'],
     labels: [

@@ -35,6 +35,7 @@ import workflowMultiAppActivity from './workflow-multi-app-activity.mjs';
 import workflowMultiAppChildWorkflow from './workflow-multi-app-child-workflow.mjs';
 import workflowMultiAppComplex from './workflow-multi-app-complex.mjs';
 import workflowCrossAppClient from './workflow-cross-app-client.mjs';
+import bindingsOverview from './bindings-overview.mjs';
 
 export const scenes = {
   'agents-overview': agentsOverview,
@@ -71,4 +72,5 @@ export const scenes = {
   'workflow-multi-app-child-workflow': workflowMultiAppChildWorkflow,
   'workflow-multi-app-complex': workflowMultiAppComplex,
   'workflow-cross-app-client': workflowCrossAppClient,
+  'bindings-overview': bindingsOverview,
 };

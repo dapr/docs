@@ -87,6 +87,7 @@ const IN_SCOPE_IMAGES = [
   'workflow-overview/workflow-multi-app-child-workflow.png',
   'buildingblocks-overview.png',
   'dapr-agents/home_installation_init.png',
+  'binding-overview.png',
 ];
 
 // IN_SCOPE_IMAGES as the previous conversion froze it. It may GROW - the
@@ -155,6 +156,11 @@ const CONVERTED_PAGES = [
     image: 'dapr-agents/home_installation_init.png',
     page: '/developing-ai/dapr-agents/dapr-agents-getting-started/',
     scene: 'hosting-standalone',
+  },
+  {
+    image: 'binding-overview.png',
+    page: '/developing-applications/building-blocks/bindings/bindings-overview/',
+    scene: 'bindings-overview',
   },
   // workflow-patterns.md, converted whole: six images, six scenes.
   ...[
