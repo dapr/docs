@@ -83,6 +83,12 @@ const NAME_SIZE = 10;
 const markTop = (cardY) => cardY + CARD / 2 + MARK_GAP;
 const markBottom = (cardY, count) => markTop(cardY) + (count - 1) * MARK_PITCH + NAME_DY + NAME_SIZE * 1.2;
 
+// CONVERSATION IS DELIBERATELY SHORT HERE. This column shows four LLMs while
+// conversation-overview draws all nine the reference supports. That is a
+// maintainer ruling of 2026-11-02, not drift: this page would grow too large
+// to read if every block listed every component, and it says so in its own
+// caption - "These are examples, not the full list". Do not reconcile the two.
+//
 // [api key, the marks of its components]. The lists are the source image's,
 // except for the last three blocks, which the source predates.
 const STABLE = [

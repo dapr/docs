@@ -5,7 +5,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { serialize, C } from './engine.mjs';
-import { icon, plate, markHex, serviceInvocation, DAPR_MARK, listMarks, parseMark, IconError, ICONS_DIR } from './icons.mjs';
+import { icon, plate, markHex, serviceInvocation, logoStrip, setIconScope, DAPR_MARK, listMarks, parseMark, IconError, ICONS_DIR } from './icons.mjs';
+import { setCanvasWidth } from './shapes.mjs';
 import { APIS } from './apis.mjs';
 
 const OVERVIEW = ['nodejs', 'python', 'dotnet', 'go', 'java', 'cpp', 'php', 'rust', 'azure', 'aws', 'google-cloud', 'kubernetes'];
@@ -20,6 +21,14 @@ const render = (name, svg, args = {}) => serialize(icon({ name, x: 100, y: 100, 
 const SINGLE = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z"/></svg>';
 const FULL = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#ff0000" d="M0 0h24v24H0z"/></svg>';
 const ids = (s) => [...s.matchAll(/\sid="([^"]*)"/g)].map((m) => m[1]);
+// Every node under a tree that matches, for asserting on what a strip drew.
+const findAll = (node, pred, out = []) => {
+  if (node && node.tag) {
+    if (pred(node)) out.push(node);
+    node.children.forEach((c) => findAll(c, pred, out));
+  }
+  return out;
+};
 // Classes that came from the vendored file. The two wrappers icon() adds are removed by their exact
 // markup (not by a name shape), so a source class called d-* stays visible to the prefix tests.
 const classes = (s) =>
@@ -430,4 +439,105 @@ test('serviceInvocation() is the same mark the service invocation API wears', ()
   const mark = walk(g, (n) => n.attrs?.['data-mark'])[0];
   assert.equal(mark.attrs['data-mark'], `fluent-${fromApis.mark}`);
   assert.equal(mark.attrs.fill, C.blue, 'the Dapr sky, as the source images draw it');
+});
+
+// A STRIP OF VENDOR MARKS. The conversation, secrets and pub/sub overviews all
+// show the components a block can be configured with this way.
+test('logoStrip lays its marks out in columns', () => {
+  setIconScope('t');
+  setCanvasWidth(900);
+  const strip = logoStrip({
+    x: 0, y: 0, cols: 2, caption: 'LLMs',
+    marks: [
+      { mark: 'openai', name: 'OpenAI' },
+      { mark: 'anthropic', name: 'Anthropic' },
+      { mark: 'mistral-ai', name: 'Mistral' },
+    ],
+  });
+  const names = findAll(strip, (n) => n.tag === 'text').map((t) => t.children.map((c) => c.content).join(''));
+  assert.ok(names.includes('OpenAI') && names.includes('Anthropic') && names.includes('Mistral'));
+  // Three marks in two columns is two rows: the first two share a y, and the
+  // third drops to the next one.
+  const ys = findAll(strip, (n) => n.tag === 'text' && /OpenAI|Anthropic|Mistral/.test(n.children.map((c) => c.content).join('')))
+    .map((t) => +t.attrs.y);
+  assert.equal(ys[0], ys[1], 'the first two share a row');
+  assert.ok(ys[2] > ys[0], 'and the third is on the next one');
+  setIconScope('');
+  setCanvasWidth(null);
+});
+
+test('logoStrip starts its contents below what the caption reaches into the region', () => {
+  // The caption straddles the top edge. Padding from the BORDER instead is
+  // what draws a caption straight through the first row of marks.
+  setIconScope('t');
+  setCanvasWidth(900);
+  const withCaption = logoStrip({ x: 0, y: 0, caption: 'LLMs', marks: [{ mark: 'openai', name: 'OpenAI' }] });
+  const bare = logoStrip({ x: 0, y: 0, marks: [{ mark: 'openai', name: 'OpenAI' }] });
+  const panelOf = (g) => findAll(g, (n) => n.tag === 'rect' && n.attrs.class === 'd-panel')[0];
+  assert.ok(+panelOf(withCaption).attrs.height > +panelOf(bare).attrs.height,
+    'a captioned strip is taller by what the caption reaches in');
+  setIconScope('');
+  setCanvasWidth(null);
+});
+
+test('logoStrip refuses an empty list and type below the floor', () => {
+  assert.throws(() => logoStrip({ x: 0, y: 0, marks: [] }), /marks/);
+  assert.throws(() => logoStrip({ x: 0, y: 0, marks: [{ mark: 'openai', name: 'A' }], size: 4 }), /below/);
+});
+
+test('logoStrip plates every mark or none of them', () => {
+  // Half and half is the defect: a full-colour mark needs a plate on the dark
+  // ground, and a single-colour one beside it without one reads as a
+  // different kind of thing.
+  setIconScope('t');
+  setCanvasWidth(900);
+  const marks = [{ mark: 'openai', name: 'OpenAI' }, { mark: 'anthropic', name: 'Anthropic' }];
+  const plated = logoStrip({ x: 0, y: 0, marks, plated: true });
+  const bare = logoStrip({ x: 0, y: 0, marks });
+  assert.equal(findAll(plated, (n) => n.attrs.class === 'd-plate').length, 2, 'one plate each');
+  assert.equal(findAll(bare, (n) => n.attrs.class === 'd-plate').length, 0, 'or none at all');
+  setIconScope('');
+  setCanvasWidth(null);
+});
+
+test('logoStrip sizes its region from what it draws, not from the pitch', () => {
+  // The pitch alone leaves out the mark's own height and the name under the
+  // last row, and the area then ends shorter than its contents.
+  setIconScope('t');
+  setCanvasWidth(900);
+  const strip = logoStrip({
+    x: 0, y: 0, cols: 1, plated: true, markSize: 30, size: 13,
+    marks: [{ mark: 'openai', name: 'OpenAI' }, { mark: 'anthropic', name: 'Anthropic' }],
+  });
+  const box = findAll(strip, (n) => n.tag === 'rect' && n.attrs.class === 'd-panel')[0];
+  const top = +box.attrs.y;
+  const bottom = top + +box.attrs.height;
+  const texts = findAll(strip, (n) => n.tag === 'text');
+  for (const t of texts) {
+    assert.ok(+t.attrs.y > top && +t.attrs.y < bottom, `${t.children[0]?.content} is inside the region`);
+  }
+  setIconScope('');
+  setCanvasWidth(null);
+});
+
+test('logoStrip refuses a row pitch too small for a mark and its name', () => {
+  // Otherwise the next row's mark draws straight through the name above it,
+  // which no numeric check sees: every label is drawn, every one is inside the
+  // region, and the canvas is the right size.
+  setIconScope('t');
+  setCanvasWidth(900);
+  const marks = [
+    { mark: 'openai', name: 'OpenAI' }, { mark: 'anthropic', name: 'Anthropic' },
+    { mark: 'ollama', name: 'Ollama' },
+  ];
+  assert.throws(
+    () => logoStrip({ x: 0, y: 0, cols: 1, marks, plated: true, markSize: 30, gapY: 64 }),
+    /cannot carry/,
+  );
+  // One row has nothing below it to collide with.
+  assert.doesNotThrow(
+    () => logoStrip({ x: 0, y: 0, cols: 3, marks, plated: true, markSize: 30, gapY: 64 }),
+  );
+  setIconScope('');
+  setCanvasWidth(null);
 });

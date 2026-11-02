@@ -44,6 +44,7 @@ import stateManagementExample from './state-management-example.mjs';
 import pubsubPublishRaw from './pubsub-publish-raw.mjs';
 import pubsubSubscribeRaw from './pubsub-subscribe-raw.mjs';
 import configurationApiOverview from './configuration-api-overview.mjs';
+import conversationOverview from './conversation-overview.mjs';
 
 export const scenes = {
   'agents-overview': agentsOverview,
@@ -89,4 +90,5 @@ export const scenes = {
   'pubsub-publish-raw': pubsubPublishRaw,
   'pubsub-subscribe-raw': pubsubSubscribeRaw,
   'configuration-api-overview': configurationApiOverview,
+  'conversation-overview': conversationOverview,
 };

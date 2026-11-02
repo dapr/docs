@@ -543,6 +543,28 @@ const SCENE_ROWS = [
     ],
   },
   {
+    name: 'conversation-overview',
+    // Replaced /images/conversation-overview.png. The source showed six
+    // providers at v1.0-alpha1; the reference has nine real ones at
+    // v1.0-alpha2, and the maintainer ruled this page shows all nine.
+    page: '/developing-applications/building-blocks/conversation/conversation-overview/',
+    labels: [
+      'App',
+      'POST',
+      'Dapr sidecar',
+      'LLMs',
+      'Anthropic',
+      'AWS Bedrock',
+      'DeepSeek',
+      'GoogleAI',
+      'Huggingface',
+      'Mistral',
+      'Ollama',
+      'OpenAI',
+      'OpenRouter',
+    ],
+  },
+  {
     name: 'sentry-selfhosted',
     pages: ['/concepts/dapr-services/sentry/', '/concepts/security-concept/'],
     labels: [

@@ -7,7 +7,9 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 import { el, text, C } from './engine.mjs';
-import { label as drawLabel, group, hexPoints, lineWidth } from './shapes.mjs';
+import {
+  CAPTION_H, MIN_LABEL, captionPad, captionReach, group, hexPoints, label as drawLabel, lineWidth, panel, region,
+} from './shapes.mjs';
 
 export const ICONS_DIR = fileURLToPath(new URL('../daprdocs/assets/icons/', import.meta.url));
 
@@ -528,4 +530,137 @@ export const SI_H = (() => {
 
 export function serviceInvocation({ x, y, w = SI_W, color = C.blue }) {
   return icon({ name: SI_MARK, x, y, w, h: w, color, fit: 'ink' });
+}
+
+// A STRIP OF VENDOR MARKS IN A REGION: the components a building block can be
+// configured with, each mark with its name under it, inside a captioned area.
+//
+// The conversation, secrets and pub/sub overviews all show one, so the layout
+// is decided once rather than per scene.
+//
+// It lives HERE rather than in shapes.mjs, where the plan put it, because it
+// composes icon() and icons.mjs already imports from shapes.mjs - the other
+// way round is a cycle. markHex() and brand() are here for the same reason.
+//
+// `cols` lays the marks out in columns: nine down one side makes a canvas
+// taller than it is wide, and the house frame is landscape.
+//
+// WHICH marks, and in what order, is the scene's business - but a list two
+// pages both show belongs in a module they both name, the way brands.mjs holds
+// the language and cloud rows. This draws what it is handed.
+// How much wider than its mark a plate is drawn.
+export const PLATE_SCALE = 1.6;
+
+// What region() sets a caption at, mirrored so the pill can be sized from the
+// same number the text is drawn at.
+const CAPTION_SIZE = 15;
+
+/**
+ * The least a row's pitch can be: the mark, the name under it, and a line's
+ * worth of air. Below this the next row's mark is drawn through the name
+ * above it, which no numeric check sees - every label is drawn, every one is
+ * inside the region, and the canvas is the right size.
+ *
+ * A fixed default cannot be right for both a plated and a bare strip, because
+ * a plate is 1.6 times the mark; deriving it is what makes the default valid
+ * whatever the caller asks for.
+ */
+export const stripPitch = (markSize, size, plated) =>
+  Math.ceil(markSize * (plated ? PLATE_SCALE : 1) + size * 1.6 + size * 2);
+
+/**
+ * The box a strip of these marks draws in. Exported because a scene has to
+ * place the strip and size its canvas around it, and a scene recomputing this
+ * is a second copy of the formula that drifts from the first - which it did,
+ * by six units, before this existed.
+ */
+export function logoStripSize({
+  marks, caption = '', cols = 1, markSize = 30, size = 13,
+  gapX = 120, gapY, pad = 26, plated = false, itemW,
+}) {
+  const rows = Math.ceil(marks.length / cols);
+  const markH = markSize * (plated ? PLATE_SCALE : 1);
+  const pitch = gapY ?? stripPitch(markSize, size, plated);
+  const cell = itemW ?? markH;
+  const reach = caption ? captionReach() : 0;
+  return {
+    w: pad * 2 + gapX * (cols - 1) + cell,
+    h: pad * 2 + reach + markH / 2 + pitch * (rows - 1) + (markH / 2 + size + size * 0.6),
+    markH,
+    cell,
+    reach,
+    pitch,
+  };
+}
+
+export function logoStrip({
+  x, y, marks, caption = '', cols = 1, markSize = 30, size = 13,
+  gapX = 120, gapY, pad = 26, stroke = C.caption, plated = false, itemW,
+  captionW, captionSize = CAPTION_SIZE,
+}) {
+  if (size < MIN_LABEL) throw new RangeError(`logoStrip(): size ${size} is below ${MIN_LABEL}px`);
+  if (!Array.isArray(marks) || !marks.length) throw new Error('logoStrip(): marks is required');
+  if (!(cols >= 1)) throw new Error('logoStrip(): cols must be at least one');
+  // The region is sized from what it actually DRAWS - the mark's own height
+  // and the name under the last row included. logoStripSize() is that
+  // arithmetic, shared with the scene so the two cannot disagree.
+  const rows = Math.ceil(marks.length / cols);
+  const { w, h, markH, cell, reach, pitch } = logoStripSize({
+    marks, caption, cols, markSize, size, gapX, gapY, pad, plated, itemW,
+  });
+  // A row's pitch has to clear the mark AND the name under it, or the next
+  // row's mark is drawn straight through the name above it - which it was, on
+  // seven of nine providers, in a strip whose every number checked out. Refuse
+  // rather than clamp: a clamped pitch silently stops being the pitch asked
+  // for, and the fix is a taller strip or more columns, which only the caller
+  // can choose.
+  const least = stripPitch(markSize, size, plated);
+  if (rows > 1 && pitch < least) {
+    throw new Error(
+      `logoStrip(): gapY ${pitch} cannot carry a ${markH} mark and its name - `
+      + `needs at least ${least}. Give it more room, or more columns.`,
+    );
+  }
+  const left = x - w / 2;
+  const top = y - h / 2;
+  const x0 = left + pad + cell / 2;
+  const y0 = top + pad + reach + markH / 2;
+  const at = (i) => ({ cx: x0 + gapX * (i % cols), cy: y0 + pitch * Math.floor(i / cols) });
+  return el('g', { class: 'd-logo-strip' }, [
+    caption
+      ? region({
+        x: left, y: top, w, h, stroke, caption, captionH: CAPTION_H, captionSize,
+        // A pill's width is its TEXT plus the rounded ends, and captionPad()
+        // is what the rendered check measures those ends against. Sized from
+        // the CAPTION's own size, not the strip's body size - region() sets a
+        // caption at 15 and measuring the pill against 13 came out a unit
+        // short of what the check wants, twice. The estimate is per-character
+        // and deliberately generous, caps running wider than an average
+        // character; a caller who has measured the real width passes
+        // `captionW` instead.
+        captionW: captionW
+          ?? Math.ceil(caption.length * captionSize * 0.78 + captionPad(captionSize) * 2),
+      })
+      : panel({ x: left, y: top, w, h, stroke }),
+    ...marks.map((m, i) => {
+      const { cx, cy } = at(i);
+      return group([
+        // Plated or not, never half and half. A full-colour mark needs a plate
+        // to stay legible on the dark ground, and once one mark in a row has
+        // one the single-colour marks beside it need one too or the row reads
+        // as two kinds of thing. A caller mixing the two kinds passes
+        // `plated` and every mark gets one.
+        plated ? plate({ x: cx, y: cy, w: markSize * PLATE_SCALE, h: markSize * PLATE_SCALE }) : null,
+        // A plated mark takes PLATE ink: body ink is near-white in the dark
+        // theme and would vanish on its own plate. icon() tints only the
+        // single-colour marks, so the full-colour ones ignore it.
+        icon({
+          name: m.mark, x: cx, y: cy, size: markSize, fit: 'ink',
+          color: m.color ?? (plated ? C.plateInk : C.body),
+        }),
+        // The NAME sits below the plate, not on it, so it keeps body ink.
+        drawLabel({ x: cx, y: cy + markH / 2 + size, text: m.name, size }),
+      ]);
+    }),
+  ]);
 }
