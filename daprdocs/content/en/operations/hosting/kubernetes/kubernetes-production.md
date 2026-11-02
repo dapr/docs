@@ -23,6 +23,10 @@ Use the following resource settings as a starting point. Requirements vary depen
 For more information, refer to the Kubernetes documentation on [CPU and Memory resource units and their meaning](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes).
 {{% /alert %}}
 
+{{% alert title="Note" color="primary" %}}
+The table does not include the Scheduler service. Scheduler resource use depends on the number of jobs, actor reminders and workflows you run, and on payload size, so there is no fixed starting value. Set requests from usage observed under representative load, and do not set a memory limit. Do not scale Scheduler replicas up or down after installation, because this causes data loss. When actor placement is served by the Scheduler service (`global.scheduler.placement.enabled=true`), the Placement service is not deployed and the Placement row above does not apply.
+{{% /alert %}}
+
 ### Helm
 
 When installing Dapr using Helm, no default limit/request values are set. Each component has a `resources` option (for example, `dapr_dashboard.resources`), which you can use to tune the Dapr control plane to fit your environment.
