@@ -14,13 +14,24 @@
 // `bindings-overview` sits at 15 today. Both were caught by eye at review,
 // one after the other, which is the signal that it wants a test.
 //
+// WHAT "BODY TYPE" MEANS HERE, and it took a wrong answer to pin down. A
+// shape's NAME is not body type: it belongs to the shape and scales with it,
+// which is why hex() derives it from the radius. Counting it reads a scene
+// backwards - `service-invocation-example` has two app names at 17 against one
+// caption at 13, so counting everything made the MODE 17 and reported a scene
+// whose body type was already correct as 31% oversized. Only the scene's own
+// FREE labels count, and every shape builder tags its group with a `d-` class
+// while group() does not, so the two are told apart by that.
+//
 // WHAT THIS DOES NOT CLAIM. SKILL.md says one type size across the set; the
-// set does not have one. Measured when this test was written, 19 of 36 scenes
-// use 13 and 17 do not, from 10 to 15. So this is not a rule being enforced
-// retroactively - it is a ratchet. Scenes already off 13 are listed below with
-// the size they actually use, so a NEW scene cannot drift and an OLD one
-// cannot drift further without saying so. The list is the backlog, and every
-// entry removed from it is a scene brought onto the house size.
+// set does not have one. Measured when this test was written, 12 of 36 scenes
+// set their free labels at 13 and 18 do not, from 10 to 17.25; 6 more place no
+// free label at all and have no body type to check. So this is not a rule
+// being enforced retroactively - it is a ratchet. Scenes already off 13 are
+// listed below with the size they actually use, so a NEW scene cannot drift in
+// and an OLD one cannot drift further without saying so. The list is the
+// backlog, and every entry removed from it is a scene brought onto the house
+// size.
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -44,34 +55,47 @@ const BODY = 13;
 // `bindings-overview` (15) and `building-blocks-concept` (10.5) are both that.
 const OFF_BODY = {
   'agents-overview': 10.5,
-  'api-scoping': 14,
+  'api-scoping': 12,
   'components-concept': 10,
+  'hosting-standalone': 14,
   'observability-tracing': 14,
-  overview: 14,
+  overview: 17.25,
   'resiliency-policies': 14,
-  'security-capabilities': 12,
   'security-end-to-end': 14,
   'security-threat-model': 12,
   'service-mesh': 15,
   'sidecar-apis': 12,
-  'sidecar-health': 14,
+  'sidecar-health': 12,
   'sidecar-model': 12.6,
   'workflow-async-http': 12,
+  'workflow-compensation': 12,
   'workflow-cross-app-client': 12,
+  'workflow-external-system': 12,
+  'workflow-monitor': 12,
 };
 
-// Every `font-size` the scene actually emits, from the built node tree rather
-// than from the source, so a size derived inside a builder counts the same as
-// one typed in the scene.
-function fontSizes(node, out = []) {
+// The sizes of the scene's own FREE labels, from the built node tree.
+//
+// Text inside a shape is skipped, and that distinction is the whole point. A
+// shape's name belongs to the shape and scales with it - hex() derives it from
+// the radius - so it is not body type and must not be read as it. Counting it
+// got this exactly backwards on a two-app scene: two app names at 17 against
+// one caption at 13 made the MODE 17, and the test reported a scene whose body
+// type was already 13 as being 31% oversized.
+//
+// Every shape builder tags its group with a `d-` class and `group()` does not,
+// so "no `d-` ancestor" is precisely "a label the scene placed itself".
+function fontSizes(node, out = [], inShape = false) {
   if (!node || typeof node !== 'object') return out;
   if (Array.isArray(node)) {
-    for (const child of node) fontSizes(child, out);
+    for (const child of node) fontSizes(child, out, inShape);
     return out;
   }
+  const cls = node.attrs && node.attrs.class;
+  const shape = inShape || (typeof cls === 'string' && cls.split(' ').some((c) => c.startsWith('d-')));
   const size = node.attrs && node.attrs['font-size'];
-  if (size !== undefined && Number.isFinite(Number(size))) out.push(Number(size));
-  if (node.children) fontSizes(node.children, out);
+  if (!shape && size !== undefined && Number.isFinite(Number(size))) out.push(Number(size));
+  if (node.children) fontSizes(node.children, out, shape);
   return out;
 }
 
@@ -113,7 +137,9 @@ test('every scene sets its body type to the size the width formula assumes', () 
         + `off the house size whatever width the formula returns. Use ${BODY}, or pin `
         + `renderWidth on the scene to compensate and say why.`,
       );
-    } else if (body !== allowed) {
+    } else if (+body.toFixed(2) !== allowed) {
+      // Rounded: a size derived from a radius is a float, and the list records
+      // what a reader can read rather than its last binary digit.
       wrong.push(
         `${name} is listed at ${allowed} and now reads ${body}. A scene already off `
         + `${BODY} may not drift further: bring it to ${BODY} and delete its entry, or `
@@ -132,7 +158,7 @@ test('the off-body list names only scenes that are still off body', () => {
     const row = measured.find((r) => r.name === name);
     if (!row) {
       stale.push(`${name} is listed but is not a registered scene`);
-    } else if (row.body === BODY) {
+    } else if (+row.body.toFixed(2) === BODY) {
       stale.push(`${name} now uses ${BODY}; delete its entry`);
     } else if (row.scene.renderWidth !== undefined) {
       stale.push(`${name} now pins its render width; delete its entry, the pin records it`);
