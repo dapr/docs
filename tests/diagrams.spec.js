@@ -484,6 +484,9 @@ const SCENE_ROWS = [
       'Dapr sidecar',
       'Get configuration',
       'Redis',
+      // The page's own command is a GET, not a POST; see the scene header.
+      'GET',
+      '/v1.0/configuration/configstore?key=orderId1',
     ],
   },
   {
@@ -491,13 +494,16 @@ const SCENE_ROWS = [
     // Replaced /images/building-block-state-management-example.png. The same
     // picture as configuration-example - the two pages ship the same source
     // image with one word different - so both draw component-call.mjs and
-    // differ only in their caption.
+    // differ only in their caption and in the HTTP call each page documents.
     page: '/developing-applications/building-blocks/state-management/howto-get-save-state/',
     labels: [
       'Order Processing Service',
       'Dapr sidecar',
       'State management',
       'Redis',
+      'POST',
+      '/v1.0/state/statestore',
+      '[{ "key": "order_1", "value": "250"}]',
     ],
   },
   {
@@ -562,6 +568,28 @@ const SCENE_ROWS = [
       'Ollama',
       'OpenAI',
       'OpenRouter',
+    ],
+  },
+  {
+    name: 'cryptography-overview',
+    // Replaced /images/cryptography-overview.png. The source labelled the API
+    // "Encrypt and Decrypt AI", corrected here; the two components the
+    // reference pages do not list for this block are drawn on the maintainer's
+    // ruling, and both points are recorded in the scene header.
+    page: '/developing-applications/building-blocks/cryptography/cryptography-overview/',
+    labels: [
+      'App',
+      'Encrypt and Decrypt API',
+      'Dapr sidecar',
+      'Built-in cryptographic engine',
+      'Generic',
+      'JWKS',
+      'Kubernetes secrets',
+      'Local storage',
+      'Clouds',
+      'Azure Key Vault',
+      'Google Key Management',
+      'AWS Secrets Manager',
     ],
   },
   {

@@ -44,14 +44,39 @@
 //     ink the store's own fill carries and needs no plate - the plate exists
 //     for full-colour marks that cannot be tinted.
 
+import { C } from '../engine.mjs';
 import { componentCall } from '../component-call.mjs';
+
+// THE CALL IS A GET, not a POST. The request that added it asked for "a POST
+// call to their respective http endpoints"; on the state management page next
+// door that is right, but this page's own command is
+// `curl http://localhost:3601/v1.0/configuration/configstore?key=orderId1`,
+// and reference/api/configuration_api.md gives the same verb. A diagram
+// showing POST would contradict the command printed eleven screens below it.
+// Drawn as the page documents it - raised rather than resolved silently.
+//
+// The HOST is left off, as conversation-overview leaves its own off: `3601` is
+// whatever port the reader's `dapr run` chose, and the path is the fact.
+const CALL = {
+  method: 'GET',
+  path: [
+    { text: '/v1.0/' },
+    { text: 'configuration', color: C.orange, weight: 700 },
+    { text: '/configstore?key=orderId1' },
+  ],
+  // Measured on the rendered page in the code face at 13 - the exporter has no
+  // font metrics. It is a fixed-width face, so the bold segment costs nothing.
+  width: 344,
+};
 
 // The picture is diagrams/component-call.mjs, which the state management
 // how-to draws too: the same source image with one word different. This file
-// is what is true of THIS page - its caption, and the fact-check above.
+// is what is true of THIS page - its caption, its call, and the fact-check
+// above.
 export default componentCall({
   caption: 'Get configuration',
+  call: CALL,
   title: 'A service reading configuration from a Redis store through its Dapr sidecar',
   desc:
-    'Three shapes in a row. On the left, a green hexagon named Order Processing Service. In the middle, a hexagon carrying the Dapr logo, named Dapr sidecar. On the right, a gold data-store cylinder holding the Redis mark, named Redis. A line with a head at each end joins the service to its sidecar, and a second joins the sidecar to Redis, labelled Get configuration.',
+    'Three shapes in a row. On the left, a green hexagon named Order Processing Service. In the middle, a hexagon carrying the Dapr logo, named Dapr sidecar. On the right, a gold data-store cylinder holding the Redis mark, named Redis. A line with a head at each end joins the service to its sidecar, and a second joins the sidecar to Redis, labelled Get configuration. Below the row, the call the service makes: GET over the path /v1.0/configuration/configstore?key=orderId1.',
 });

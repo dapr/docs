@@ -10,8 +10,14 @@
 // different lengths, which is why apis.mjs exists.
 //
 // So this is the picture, once. A scene names what differs - its caption, its
-// title and desc - and keeps its own fact-check in its own header, because what
-// a page CLAIMS is the scene's business and not this module's.
+// call, its title and desc - and keeps its own fact-check in its own header,
+// because what a page CLAIMS is the scene's business and not this module's.
+//
+// The two pictures are no longer byte-identical, and that is the point of the
+// module rather than a failure of it: each page now also shows the HTTP call
+// it documents, which is a different endpoint on each. Everything a reader
+// moving between the pages could mistake for a change of meaning - every
+// radius, every gap, every baseline - is still computed once, here.
 //
 // It is a whole scene rather than a builder because the whole picture is what
 // repeats. The moment one of these pages wants a different arrangement, that
@@ -20,17 +26,20 @@
 // bending it with options nobody can check.
 
 import { C, APP } from './engine.mjs';
-import { arrow, cylinder, group, hex, hexHalfWidth, label, STORE_RATIO } from './shapes.mjs';
+import {
+  arrow, cylinder, group, hex, hexHalfWidth, label, richLabel, STORE_RATIO,
+} from './shapes.mjs';
 import { icon, markHex } from './icons.mjs';
 import { NAME_DY as HEX_NAME_DY } from './services.mjs';
 
 // Three shapes on one line, so the canvas is the distance between them and
 // each gap is only as wide as its job: the store's gap carries the caption and
 // is sized from it, the app's carries nothing and is the shorter of the two.
-const H = 182;
+const ROW_H = 182;
 
 // Least space from the drawing to any edge.
 const EDGE = 29;
+const V_EDGE = 14;
 
 // 13, the size render-width.mjs is calibrated against; see
 // diagrams/type-size.test.mjs.
@@ -103,6 +112,40 @@ const NAME_Y = ROW_Y + Math.max(SIDE_R, STORE_W / 2) * HEX_NAME_DY;
 // two lines side by side: the same arrow drawn twice, once each way.
 const bothWays = (from, to) => [arrow({ from, to }), arrow({ from: to, to: from })];
 
+// ---- the HTTP call, under the row -------------------------------------------
+// Set as `conversation-overview` sets its own: the PATH only, in the code
+// face, with the building block picked out of it; the method on the line
+// above, in the blue this set gives a method. The host is left off there
+// because the reference writes it as `<daprPort>` and it carries no fact the
+// path does not - the same is true of the `localhost:3601` these pages print
+// in their curl commands, which is whatever port the reader's `dapr run`
+// chose.
+//
+// It clears the sidecar's NAME, not the sidecar. The name is set at 17 and
+// reaches about twelve below its own baseline while the method reaches eight
+// above its own, so measuring against the baselines puts the two boxes
+// together although neither baseline looks close: 5.2 is what clears them,
+// and it is the number conversation-overview arrived at the same way.
+const CALL_DY = TEXT * 5.2;
+const METHOD_DY = TEXT * 1.9;
+// A request BODY, where the page's command sends one, goes a line under the
+// path at the same pitch the method sits above it, so the three read as one
+// block. Set as httpCard() sets its own body: the code face at weight 400,
+// because a request and what it carries are the same kind of text and
+// label()'s own default of 600 makes the payload the louder of the two.
+const BODY_DY = TEXT * 1.9;
+
+/**
+ * Where the call is centred. It belongs to the APP-to-SIDECAR leg, so it is
+ * centred on that pair - but the configuration path is 344 units against the
+ * pair's 268, so centring alone would hang it off the left edge of the canvas.
+ * Clamped to the margin, which is where `conversation-overview` puts its own
+ * for the same reason. The clamp is against the call's WIDEST line, which on
+ * the state page is the payload rather than the path.
+ */
+const callMid = (width) =>
+  Math.max(EDGE + width / 2, (APP_AT.x - hexHalfWidth(APP_R) + SIDE.x + hexHalfWidth(SIDE_R)) / 2);
+
 /**
  * The scene. `caption` is the only thing these pages differ by today; the
  * rest take the defaults both of them draw, and are options so that the next
@@ -113,15 +156,27 @@ export function componentCall({
   title,
   desc,
   caption,
+  call,
   app = 'Order\nProcessing\nService',
   sidecar = 'Dapr sidecar',
   storeMark = 'redis',
   storeName = 'Redis',
 }) {
   if (!caption) throw new Error('componentCall(): a caption names the call and is required');
+  if (call && !(call.width > 0)) {
+    // The exporter has no font metrics, so the width is measured on the
+    // rendered page and passed in. Refuse rather than guess: a call placed
+    // from an estimate is the one thing here that can run off the canvas, and
+    // nothing downstream would see it.
+    throw new Error('componentCall(): a call needs its measured `width`');
+  }
+  const CALL_Y = NAME_Y + CALL_DY;
+  const CALL_MID = call ? callMid(call.width) : 0;
+  const BODY_Y = CALL_Y + BODY_DY;
+  const LAST_Y = call?.body ? BODY_Y : CALL_Y;
   return {
     width: W,
-    height: H,
+    height: call ? Math.ceil(LAST_Y + TEXT * 0.5 + V_EDGE) : ROW_H,
     title,
     desc,
 
@@ -163,6 +218,32 @@ export function componentCall({
             label({ x: STORE.x, y: NAME_Y, text: storeName, size: APP_NAME }),
           ],
         }),
+
+        // ---- and the call the page documents for that first leg -----------
+        // The PATH is emitted BEFORE the method, though it is drawn under it.
+        // The theme check samples the first text in a scene that is not on a
+        // plate or a solid fill, and a method is C.blue - a brand colour, the
+        // same value in both themes by design - so leading with it makes the
+        // check read a scene that re-themes perfectly as one that does not.
+        // Nothing moves: the two do not overlap.
+        call
+          ? group([
+            richLabel({
+              x: CALL_MID, y: CALL_Y, size: TEXT, anchor: 'middle', mono: true,
+              parts: call.path,
+            }),
+            call.body
+              ? label({
+                x: CALL_MID, y: BODY_Y, text: call.body,
+                size: TEXT, weight: 400, mono: true,
+              })
+              : null,
+            label({
+              x: CALL_MID, y: CALL_Y - METHOD_DY,
+              text: call.method, size: TEXT, weight: 700, color: C.blue,
+            }),
+          ])
+          : null,
       ];
     },
   };

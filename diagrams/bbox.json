@@ -41,11 +41,15 @@
   ],
   "configuration-example": [
     -0.46,
-    -0.05
+    0.54
   ],
   "conversation-overview": [
     -1.91,
     0
+  ],
+  "cryptography-overview": [
+    0,
+    -9.06
   ],
   "hosting-kubernetes": [
     -12,
@@ -133,7 +137,7 @@
   ],
   "state-management-example": [
     -0.46,
-    -0.05
+    0.9
   ],
   "workflow-async-http": [
     3.49,

@@ -37,11 +37,40 @@
 //     the page's own prose calls it state management, and the rest of this set
 //     captions in sentence case.
 
+import { C } from '../engine.mjs';
 import { componentCall } from '../component-call.mjs';
+
+// THE SAVE, not the get. The page documents both -
+// `curl -X POST ... http://localhost:3601/v1.0/state/statestore` and
+// `curl http://localhost:3601/v1.0/state/statestore/order_1` - and the drawing
+// shows the one the page leads with and the one its caption is about: the
+// service SAVING its order. The get is the same path with a key on the end,
+// and the line it travels already carries a head at each end.
+//
+// The HOST is left off, as conversation-overview leaves its own off: `3601` is
+// whatever port the reader's `dapr run` chose, and the path is the fact.
+const CALL = {
+  method: 'POST',
+  path: [
+    { text: '/v1.0/' },
+    { text: 'state', color: C.orange, weight: 700 },
+    { text: '/statestore' },
+  ],
+  // The payload the page's own `curl -d` sends, character for character. It is
+  // an ARRAY: the state API takes a list of key/value pairs even when there is
+  // one of them, and a diagram showing a bare object would send a reader to a
+  // 400 the page's command does not get.
+  body: '[{ "key": "order_1", "value": "250"}]',
+  // The WIDEST line, measured on the rendered page in the code face at 13 -
+  // the exporter has no font metrics. That is the payload at 289, not the path
+  // at 172. It is a fixed-width face, so the bold segment costs nothing.
+  width: 289,
+};
 
 export default componentCall({
   caption: 'State management',
+  call: CALL,
   title: 'A service saving and getting state in a Redis store through its Dapr sidecar',
   desc:
-    'Three shapes in a row. On the left, a green hexagon named Order Processing Service. In the middle, a hexagon carrying the Dapr logo, named Dapr sidecar. On the right, a gold data-store cylinder holding the Redis mark, named Redis. A line with a head at each end joins the service to its sidecar, and a second joins the sidecar to Redis, labelled State management.',
+    'Three shapes in a row. On the left, a green hexagon named Order Processing Service. In the middle, a hexagon carrying the Dapr logo, named Dapr sidecar. On the right, a gold data-store cylinder holding the Redis mark, named Redis. A line with a head at each end joins the service to its sidecar, and a second joins the sidecar to Redis, labelled State management. Below the row, the call the service makes to save an order: POST over the path /v1.0/state/statestore, carrying the body [{ "key": "order_1", "value": "250"}].',
 });
