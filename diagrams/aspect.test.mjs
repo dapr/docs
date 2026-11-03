@@ -38,6 +38,16 @@ const EXCEPTIONS = {
     'One namespace, a broker above it and the consumer group card beside '
     + 'that. Reaching 16:9 means padding the cluster out to a second, empty '
     + 'namespace slot, which is what it used to do and what was rejected.',
+  // A topic feeding three stacked instances, with the consumer group drawn
+  // round them. The stack sets the height and the chain - publisher, topic,
+  // fan - sets the width, and the chain is short because the page's sentence
+  // is short. Reaching 16:9 means roughly 180 units of empty line between the
+  // publisher, the topic and the fan, which is the padding rejected on the
+  // secrets pictures.
+  'pubsub-competing-consumers':
+    'One topic fanning to three stacked instances of one app. The three rows '
+    + 'set the height; the publisher-topic-fan chain is all there is to set '
+    + 'the width, and stretching it is empty line.',
   'secrets-kubernetes-store':
     'A pod in a cluster with the secret store beside it and the GET beneath. '
     + 'Reaching 16:9 means 236 units of empty line between the sidecar and the '

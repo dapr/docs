@@ -639,6 +639,66 @@ const SCENE_ROWS = [
     ],
   },
   {
+    name: 'pubsub-pattern',
+    // Replaced /images/pubsub-overview-pattern.png. No Dapr in it: the page
+    // opens with the pattern and the API arrives in the section after.
+    page: '/developing-applications/building-blocks/pubsub/pubsub-overview/',
+    labels: ['Publisher', 'Input channel', 'Message broker', 'Output channel', 'Subscriber'],
+  },
+  {
+    name: 'pubsub-competing-consumers',
+    // Replaced /images/pubsub-overview-pattern-competing-consumers.png. The
+    // source illustrates many PRODUCERS; the page's sentence is about many
+    // instances of one subscriber sharing a consumer group.
+    page: '/developing-applications/building-blocks/pubsub/pubsub-overview/',
+    labels: [
+      'Publisher',
+      'Message broker',
+      'One consumer group',
+      'App',
+      'Instance 1',
+      'Instance 3',
+      'Each message goes to one instance',
+    ],
+  },
+  {
+    name: 'pubsub-components',
+    // Replaced /images/pubsub-overview-components.png. The fourth component
+    // is RabbitMQ, not GCP Pub/Sub, which has no mark this repo can carry;
+    // the page's own list was changed with it.
+    page: '/developing-applications/building-blocks/pubsub/pubsub-overview/',
+    labels: [
+      'Publish',
+      'Pub/Sub brokers',
+      'Subscribe',
+      'Cart',
+      'Shipping',
+      'Email',
+      'Redis',
+      'NATS',
+      'Azure Service Bus',
+      'RabbitMQ',
+      'Component configuration yaml',
+      '+11 more',
+    ],
+  },
+  {
+    name: 'pubsub-publish-api',
+    // Replaced /images/pubsub-overview-publish-API.png. Same three bands as
+    // pubsub-components, with the calls in place of the configuration.
+    page: '/developing-applications/building-blocks/pubsub/pubsub-overview/',
+    labels: [
+      'Publish',
+      'Subscribe',
+      'Cart',
+      'Shipping',
+      'Email',
+      'POST',
+      '/v1.0/publish/pubsub/order',
+      '/order',
+    ],
+  },
+  {
     name: 'pubsub-deadletter',
     // Replaced /images/pubsub_deadletter.png. The cross is orange, not the
     // source's red: deny in this set is orange and allow is navy.

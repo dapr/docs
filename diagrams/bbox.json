@@ -95,6 +95,14 @@
     0,
     0
   ],
+  "pubsub-competing-consumers": [
+    -0.23,
+    0
+  ],
+  "pubsub-components": [
+    -0.15,
+    0
+  ],
   "pubsub-deadletter": [
     -0.47,
     -8
@@ -112,6 +120,14 @@
     0
   ],
   "pubsub-namespace-without": [
+    0,
+    0
+  ],
+  "pubsub-pattern": [
+    -0.11,
+    0
+  ],
+  "pubsub-publish-api": [
     0,
     0
   ],
