@@ -48,12 +48,17 @@
 // no brand mark: the API is agnostic about what is being locked, and the
 // page's own examples run from a database row to a queue.
 //
-// HOW DENIAL IS DRAWN. Orange, dashed, with `fluent-dismiss-circle` over the
-// run - which is what `api-scoping` already does for an API its allowlist
-// blocks, so a reader who has met one has met both. NOT the source's red X:
-// `C.red` is drawn by no scene in this set, and `C.green` is a FILL token that
-// assertInk() refuses as label ink, so red-and-green is not a vocabulary this
-// set has. Navy and orange is.
+// HOW DENIAL IS DRAWN. RED, dashed, with `fluent-dismiss-circle` beside the
+// run - the house default, set by the maintainer on 2026-11-03 and applied
+// across every scene that blocks a path: this one, `api-scoping`,
+// `lock-example` and the two pub/sub pages.
+//
+// It used to be orange, on the reasoning that red-and-green carries nothing
+// for a reader who cannot tell the two apart. That reasoning still holds -
+// which is why nothing in this set pairs red WITH green. What marks a path as
+// allowed here is that it is solid and navy, not that it is green, so red
+// adds a second signal to a distinction the dashing already makes rather than
+// being the only one carrying it.
 //
 // THE PADLOCK is `fluent-lock-closed`, and deliberately not
 // `fluent-lock-closed-key`, which apis.mjs already spends on the cryptography
@@ -177,7 +182,7 @@ const H = Math.ceil(BOT_RAIL + V_EDGE);
 //          the RIGHT
 //
 // Every other pairing either runs the two out of the same point - where they
-// share a stretch of line, and on the lower row a dashed orange run and a
+// share a stretch of line, and on the lower row a dashed red run and a
 // solid navy one become one line that changes colour halfway - or crosses the
 // store run with the file run. This one does neither.
 const accessTop = () => elbowArrow({
@@ -189,7 +194,7 @@ const accessTop = () => elbowArrow({
 });
 
 const accessBottom = () => elbowArrow({
-  color: C.orange,
+  color: C.red,
   dash: true,
   points: [
     [SIDE_B.x, SIDE_B.y + SIDE_R + 2],
@@ -204,7 +209,7 @@ export default {
   height: H,
   title: 'Two instances of one app competing for a named lock on a shared resource',
   desc:
-    'Two green hexagons, one above the other, both named App 1 - they are two instances of one application - each with a hexagon carrying the Dapr logo overlapping its lower right corner, and each captioned underneath, Instance 1 and Instance 2. Between the two Dapr hexagons is a file glyph named Lock component YAML, joined to each of them by a line with a head at each end. From the upper Dapr hexagon a line runs right and turns down into the top of a gold data-store cylinder named Shared resource; a padlock and the words "Acquire named lock on resource for mutually exclusive access" stand just above that line. From the lower Dapr hexagon a dashed orange line runs right and turns up into the foot of the same store; a cross in a circle and the words "Named lock denies access to update resource" stand just below it.',
+    'Two green hexagons, one above the other, both named App 1 - they are two instances of one application - each with a hexagon carrying the Dapr logo overlapping its lower right corner, and each captioned underneath, Instance 1 and Instance 2. Between the two Dapr hexagons is a file glyph named Lock component YAML, joined to each of them by a line with a head at each end. From the upper Dapr hexagon a line runs right and turns down into the top of a gold data-store cylinder named Shared resource; a padlock and the words "Acquire named lock on resource for mutually exclusive access" stand just above that line. From the lower Dapr hexagon a dashed red line runs right and turns up into the foot of the same store; a cross in a circle and the words "Named lock denies access to update resource" stand just below it.',
 
   build() {
     return [
@@ -266,7 +271,7 @@ export default {
       accessBottom(),
       icon({
         name: 'fluent-dismiss-circle', x: GLYPH_X, y: CAP_B_Y, size: GLYPH,
-        color: C.orange, fit: 'ink',
+        color: C.red, fit: 'ink',
       }),
       label({
         x: CAPTION_X, y: CAP_B_Y, size: TEXT,

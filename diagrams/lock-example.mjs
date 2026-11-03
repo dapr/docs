@@ -17,7 +17,7 @@
 //
 // IT AGREES WITH `distributed-lock-overview`, on the page before it: same
 // radii, same combined app-and-sidecar shape, same unbranded store named
-// Shared resource, same navy-and-orange for allowed and denied. A reader
+// Shared resource, same navy-for-allowed and red-dashed-for-denied. A reader
 // moving from the overview to the how-to should not have to re-learn the
 // picture.
 //

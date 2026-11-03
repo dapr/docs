@@ -239,12 +239,28 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
   theme test only samples the FIRST panel in a scene, so a scene whose only
   region is sky fails it and a scene whose second region is sky does not.
   That is the test being thin, not permission.
+- **A BLOCKED PATH IS RED AND DASHED, with `fluent-dismiss-circle` beside it.**
+  House default, set by the maintainer on 2026-11-03. The dashing is what
+  carries the meaning - a dashed line says the thing does not happen - and the
+  colour says it a second time, so neither signal is working alone. The mark
+  goes BESIDE the run, not on top of it, so the line still reads whole
+  underneath. An allowed path beside it stays solid navy, and where one is
+  marked at all it takes `fluent-checkmark-circle`.
+
+  This was orange until that ruling, on the reasoning that red-and-green
+  carries nothing for a reader who cannot tell the two apart. That reasoning
+  still stands and is why nothing here pairs red WITH green: an allowed path
+  is solid and navy, never green, so red is never the only thing separating
+  two states. Drawn this way: `api-scoping`, `distributed-lock-overview`,
+  `lock-example`, `pubsub-deadletter` and the three `pubsub-namespace-*`
+  scenes.
 - **A large Dapr hexagon** is navy with the logo inside it.
 - **What the other colors mean:**
   - `C.navy` for arrows and Dapr badges
   - `C.mint` for a workflow start
-  - `C.orange` for a workflow end and failure marks
-  - `C.red` for a failed call
+  - `C.orange` for a workflow end, and for the building block's own segment
+    inside a documented path
+  - `C.red` for a blocked or failed path - see the rule below
   - `C.blue` for secure communication and resiliency
   - `C.caption` for section captions
   - `C.body` for labels

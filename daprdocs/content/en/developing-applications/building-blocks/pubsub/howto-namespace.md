@@ -12,15 +12,17 @@ Dapr solves multi-tenancy at-scale with its pub/sub namespace consumer groups co
 
 ## Without namespace consumer groups
 
-Let's say you have a Kubernetes cluster, with two applications (App1 and App2) deployed to the same namespace (namespace-a). App2 publishes to a topic called `order`, while App1 subscribes to the topic called `order`. This will create two consumer groups, named after your applications (App1 and App2).
+Let's say you have a Kubernetes cluster, with two applications (App1 and App2) deployed to the same namespace (namespace-a). App1 publishes to a topic called `order`, while App2 subscribes to the topic called `order`. This will create two consumer groups, named after your applications (App1 and App2).
 
-<img src="/images/howto-namespace/basic-pubsub.png" width=1000 alt="Diagram showing basic pubsub process.">
+{{< diagram name="pubsub-namespace-basic" width="60" >}}
 
 In order to perform simple testing and deployments while using a centralized message broker, you create another namespace with two applications of the same `app-id`, App1 and App2. 
 
 Dapr creates consumer groups using the `app-id` of individual applications, so the consumer group names will remain App1 and App2. 
 
-<img src="/images/howto-namespace/without-namespace.png" width=1000 alt="Diagram showing complications around multi-tenancy without Dapr namespace consumer groups.">
+{{< diagram pubsub-namespace-without >}}
+
+Both namespaces now run an App2, and Dapr names a consumer group after the `app-id` alone. The two subscribers therefore join the *same* consumer group, and a message broker delivers each message to only one member of a group. The two compete: a message published in namespace-a can be handed to the App2 in namespace-b, and a message published in namespace-b can be handed to the App2 in namespace-a. Neither namespace can rely on receiving its own messages, which is what the crossed-out delivery in the diagram above stands for.
 
 To avoid this, you'd then need to have something "creep" into your code to change the `app-id`, depending on the namespace on which you're running. This workaround is cumbersome and a significant painpoint.
 
@@ -47,7 +49,7 @@ spec:
 
 By configuring `consumerID` with the `{namespace}` value, you'll be able to use the same `app-id` with the same topics from different namespaces.
 
-<img src="/images/howto-namespace/with-namespace.png" width=1000 alt="Diagram showing how namespace consumer groups help with multi-tenancy.">
+{{< diagram pubsub-namespace-with >}}
 
 In the diagram above, you have two namespaces, each with applications of the same `app-id`, publishing and subscribing to the same logical topic `orders`. Dapr namespaces the underlying broker entities so the two namespaces do not interfere with each other.
 

@@ -95,9 +95,25 @@
     0,
     0
   ],
+  "pubsub-deadletter": [
+    -0.47,
+    -8
+  ],
   "pubsub-howto-overview": [
     -0.08,
     7.72
+  ],
+  "pubsub-namespace-basic": [
+    0,
+    0
+  ],
+  "pubsub-namespace-with": [
+    0,
+    0
+  ],
+  "pubsub-namespace-without": [
+    0,
+    0
   ],
   "pubsub-publish-raw": [
     -0.08,

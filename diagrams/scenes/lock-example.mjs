@@ -19,9 +19,10 @@
 // adds that locks are scoped to a Dapr app-id, which is what makes these two
 // contend at all.
 //
-// The source's red X is the orange `fluent-dismiss-circle` this set uses for
-// a call that is refused, and the denied run is dashed: `api-scoping` draws a
-// blocked call that way, and `C.red` is drawn by no scene here.
+// The denied run is RED and dashed with `fluent-dismiss-circle` beside it,
+// which is the house default for a blocked path and what `api-scoping` and
+// `distributed-lock-overview` draw. The dashing carries the distinction on
+// its own; the colour is a second signal on top of it.
 
 import { C } from '../engine.mjs';
 import { lockExample } from '../lock-example.mjs';
@@ -37,11 +38,11 @@ export default lockExample({
   bottom: {
     step: 2,
     mark: 'fluent-dismiss-circle',
-    color: C.orange,
+    color: C.red,
     dash: true,
     caption: 'Lock denies access to\nupdate resource',
   },
   title: 'One instance of an app holding a lock while the other is refused it',
   desc:
-    'Two green hexagons, one above the other, both named App 1 and captioned Instance 1 and Instance 2, each with a hexagon carrying the Dapr logo overlapping its lower right corner. From the upper Dapr hexagon a line runs right and turns down into the top of a gold data-store cylinder named Shared resource; beside it a numbered step 1, a closed padlock, and the words "Acquire lock on resource for mutually exclusive access". From the lower Dapr hexagon a dashed orange line runs right and turns up into the foot of the same store; beside it a numbered step 2, a cross in a circle, and the words "Lock denies access to update resource".',
+    'Two green hexagons, one above the other, both named App 1 and captioned Instance 1 and Instance 2, each with a hexagon carrying the Dapr logo overlapping its lower right corner. From the upper Dapr hexagon a line runs right and turns down into the top of a gold data-store cylinder named Shared resource; beside it a numbered step 1, a closed padlock, and the words "Acquire lock on resource for mutually exclusive access". From the lower Dapr hexagon a dashed red line runs right and turns up into the foot of the same store; beside it a numbered step 2, a cross in a circle, and the words "Lock denies access to update resource".',
 });

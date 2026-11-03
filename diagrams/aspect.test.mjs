@@ -29,6 +29,15 @@ const EXCEPTIONS = {
   // The lever is still there. Put the derived gap back in either scene and it
   // clears the floor again; what you get for it is a third of the canvas spent
   // on empty line.
+  // The one-namespace state of the namespace triptych. It was sized for two
+  // namespaces so the three pictures would line up, and the empty right half
+  // that left was rejected on sight (2026-11-03); sized to what it actually
+  // holds, one namespace under a broker and a card is naturally about 5:4.
+  // The two-namespace states clear the floor comfortably at 2.04.
+  'pubsub-namespace-basic':
+    'One namespace, a broker above it and the consumer group card beside '
+    + 'that. Reaching 16:9 means padding the cluster out to a second, empty '
+    + 'namespace slot, which is what it used to do and what was rejected.',
   'secrets-kubernetes-store':
     'A pod in a cluster with the secret store beside it and the GET beneath. '
     + 'Reaching 16:9 means 236 units of empty line between the sidecar and the '

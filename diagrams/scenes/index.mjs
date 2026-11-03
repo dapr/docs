@@ -41,6 +41,10 @@ import bindingInputKafka from './binding-input-kafka.mjs';
 import serviceInvocationExample from './service-invocation-example.mjs';
 import configurationExample from './configuration-example.mjs';
 import stateManagementExample from './state-management-example.mjs';
+import pubsubDeadletter from './pubsub-deadletter.mjs';
+import pubsubNamespaceBasic from './pubsub-namespace-basic.mjs';
+import pubsubNamespaceWith from './pubsub-namespace-with.mjs';
+import pubsubNamespaceWithout from './pubsub-namespace-without.mjs';
 import pubsubHowtoOverview from './pubsub-howto-overview.mjs';
 import secretsCloudStores from './secrets-cloud-stores.mjs';
 import serviceInvocationExampleDetailed from './service-invocation-example-detailed.mjs';
@@ -102,6 +106,10 @@ export const scenes = {
   'service-invocation-example': serviceInvocationExample,
   'configuration-example': configurationExample,
   'state-management-example': stateManagementExample,
+  'pubsub-deadletter': pubsubDeadletter,
+  'pubsub-namespace-basic': pubsubNamespaceBasic,
+  'pubsub-namespace-with': pubsubNamespaceWith,
+  'pubsub-namespace-without': pubsubNamespaceWithout,
   'pubsub-howto-overview': pubsubHowtoOverview,
   'secrets-cloud-stores': secretsCloudStores,
   'service-invocation-example-detailed': serviceInvocationExampleDetailed,

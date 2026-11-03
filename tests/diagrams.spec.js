@@ -639,6 +639,48 @@ const SCENE_ROWS = [
     ],
   },
   {
+    name: 'pubsub-deadletter',
+    // Replaced /images/pubsub_deadletter.png. The cross is orange, not the
+    // source's red: deny in this set is orange and allow is navy.
+    page: '/developing-applications/building-blocks/pubsub/pubsub-deadletter/',
+    labels: [
+      'Publisher',
+      'Message sent',
+      'orders',
+      'Dapr sidecar',
+      'Delivery fails, after retries',
+      '/checkout',
+      'poisonMessages',
+      'Dead letter topic delivery',
+      '/failedMessages',
+      'Subscriber',
+    ],
+  },
+  {
+    name: 'pubsub-namespace-basic',
+    // Replaced /images/howto-namespace/basic-pubsub.png. One of three states
+    // that share every measurement through diagrams/pubsub-namespace.mjs; the
+    // cluster is sized for two namespaces in all three so nothing moves
+    // between them.
+    page: '/developing-applications/building-blocks/pubsub/howto-namespace/',
+    labels: ['Kubernetes cluster', 'namespace-a', 'App1', 'App2', 'order', 'Message broker', 'Consumer group names', 'subscribe', 'publish'],
+  },
+  {
+    name: 'pubsub-namespace-without',
+    // Replaced /images/howto-namespace/without-namespace.png. Both App1s are
+    // the same app id, so they take one name and one colour - which is the
+    // problem the page is describing.
+    page: '/developing-applications/building-blocks/pubsub/howto-namespace/',
+    labels: ['Kubernetes cluster', 'namespace-a', 'namespace-b', 'App1', 'App2', 'order', 'Consumer group names'],
+  },
+  {
+    name: 'pubsub-namespace-with',
+    // Replaced /images/howto-namespace/with-namespace.png. Nothing moves
+    // between this and the picture before it except the card and the cross.
+    page: '/developing-applications/building-blocks/pubsub/howto-namespace/',
+    labels: ['Kubernetes cluster', 'namespace-a', 'namespace-b', 'App1', 'App2', 'Consumer group names', 'A.App1 A.App2 B.App1 B.App2'],
+  },
+  {
     name: 'pubsub-howto-overview',
     // Replaced /images/pubsub-howto-overview.png. The source had publish and
     // subscribe the wrong way round; the page's prose, its subscription.yaml,
@@ -1508,6 +1550,56 @@ for (const scene of SCENES) {
     // holds its colours, and it is still unreadable. The rule is that text
     // over ANY line - an arrow, a bus, a dashed border - carries ground
     // behind it, and this is what says so.
+    // A CAPTION PILL IS A SHAPE, not just a label, and a line through the
+    // middle of one cuts it in half. The check above does not see this: a
+    // pill is FILLED, so its own background counts as ground behind its own
+    // words and the label is deemed covered while the line crosses the
+    // rounded box around it. On `pubsub-namespace-*` the first app's riser
+    // came up at 174.6 and the cluster's pill ran from 49 to 199 - straight
+    // through the middle of "Kubernetes cluster" - and every other check in
+    // the suite passed.
+    //
+    // A region's name sits ON its border, and every run that leaves the
+    // region crosses that border, so this is a collision the layout has to be
+    // arranged around rather than one that happens by accident.
+    test(`${scene.name} keeps every line clear of a caption pill`, async ({ page }) => {
+      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      await page.evaluate(() => document.fonts.ready);
+      const hits = await page.evaluate((root) => {
+        const svg = document.querySelector(`${root} svg`);
+        // A pill's own rounded rect, and the text inside it, are not lines.
+        const pills = [...svg.querySelectorAll('.d-pill')].map((p) => ({
+          el: p,
+          r: p.getBoundingClientRect(),
+          text: (p.textContent || '').trim(),
+        })).filter((p) => p.r.width && p.r.height);
+        if (!pills.length) return [];
+
+        const found = [];
+        for (const g of svg.querySelectorAll('path, line, polyline')) {
+          if (g.closest('.d-pill')) continue;
+          const cs = getComputedStyle(g);
+          if (cs.fill !== 'none' || cs.stroke === 'none' || parseFloat(cs.strokeWidth) === 0) continue;
+          if (typeof g.getTotalLength !== 'function') continue;
+          let len = 0;
+          try { len = g.getTotalLength(); } catch { continue; }
+          const m = len && g.getScreenCTM();
+          if (!m) continue;
+          const step = Math.max(0.75, len / 4000);
+          for (let d = 0; d <= len; d += step) {
+            const q = g.getPointAtLength(d);
+            const pt = new DOMPoint(q.x, q.y).matrixTransform(m);
+            const hit = pills.find((p) =>
+              pt.x > p.r.left && pt.x < p.r.right && pt.y > p.r.top && pt.y < p.r.bottom);
+            if (hit) { found.push(hit.text); break; }
+          }
+        }
+        return [...new Set(found)];
+      }, sel(scene.name));
+
+      expect(hits, 'a line is drawn through a caption pill - move the run clear of the name on the border').toEqual([]);
+    });
+
     test(`${scene.name} paints ground behind any label a line crosses`, async ({ page }) => {
       await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
       await page.evaluate(() => document.fonts.ready);
