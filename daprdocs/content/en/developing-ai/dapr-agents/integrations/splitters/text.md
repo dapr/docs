@@ -26,6 +26,10 @@ The Text Splitter supports multiple strategies to handle different types of docu
 
 When the primary and fallback separators produce at most one segment, `TextSplitter` falls back to sentence tokenization with NLTK if available, or to `fallback_regex` otherwise. The regex fallback retains unmatched text before, between, and after matches, including trailing text without sentence-ending punctuation. Blank-only segments are omitted; if the pattern has no matches, the original non-blank text is retained as one segment.
 
+For the regex fallback, `chunk_size` minus `reserved_metadata_size` is a merge
+target, not a hard upper bound. The splitter does not hard-split individual
+fallback segments, so a resulting chunk can exceed that target.
+
 #### 1. Character-Based Length
 
 * **How It Works**: Counts the number of characters in each chunk.
