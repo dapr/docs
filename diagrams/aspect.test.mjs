@@ -60,6 +60,19 @@ const EXCEPTIONS = {
     'Thirteen building blocks, each over a column of its components. Laid out '
     + 'for a slide it would be a strip of unreadable marks; it is a reference '
     + 'table that happens to be drawn, and it is read on the page.',
+  // The tallest scene in the set, and the one with the least give. What sets
+  // the height is the picture's own argument: a call ENTERS at the top, is
+  // forwarded DOWN to the host that has the actor, and leaves into the second
+  // service - so the two pods stack, and the call that starts it and the call
+  // that ends it sit above and below. Side by side, the second pod would have
+  // to mirror the first for the hop to be short, and the two services would
+  // face opposite ways. Reaching 16:9 at this height means a canvas nearly
+  // twice as wide as anything in the drawing.
+  'actors-calling-method':
+    'Two pods stacked, with the call that enters above them and the call that '
+    + 'leaves below. The stacking is the argument - the second step is the hop '
+    + 'DOWN to the host that has actor ID 3 - and 16:9 at this height is 1190 '
+    + 'units of canvas for a 640-unit drawing.',
 };
 
 test('every scene fits a 16:9 frame, or is a recorded exception', () => {

@@ -1,4 +1,32 @@
 {
+  "actor-reentrancy": [
+    0,
+    -2.66
+  ],
+  "actors-calling-method": [
+    -0.48,
+    0
+  ],
+  "actors-communication": [
+    0,
+    0
+  ],
+  "actors-concurrency": [
+    -7.27,
+    10.88
+  ],
+  "actors-game-example": [
+    0,
+    0
+  ],
+  "actors-id-hashing": [
+    -0.22,
+    0
+  ],
+  "actors-placement-registration": [
+    2.68,
+    -5.87
+  ],
   "agents-overview": [
     0.45,
     3.75

@@ -71,6 +71,13 @@ import lockMultipleExample from './lock-multiple-example.mjs';
 import stateManagementOutbox from './state-management-outbox.mjs';
 import stateManagementOutboxSteps from './state-management-outbox-steps.mjs';
 import stateManagementOverview from './state-management-overview.mjs';
+import actorReentrancy from './actor-reentrancy.mjs';
+import actorsCallingMethod from './actors-calling-method.mjs';
+import actorsGameExample from './actors-game-example.mjs';
+import actorsCommunication from './actors-communication.mjs';
+import actorsPlacementRegistration from './actors-placement-registration.mjs';
+import actorsIdHashing from './actors-id-hashing.mjs';
+import actorsConcurrency from './actors-concurrency.mjs';
 
 export const scenes = {
   'agents-overview': agentsOverview,
@@ -143,4 +150,11 @@ export const scenes = {
   'state-management-outbox': stateManagementOutbox,
   'state-management-outbox-steps': stateManagementOutboxSteps,
   'state-management-overview': stateManagementOverview,
+  'actor-reentrancy': actorReentrancy,
+  'actors-calling-method': actorsCallingMethod,
+  'actors-game-example': actorsGameExample,
+  'actors-communication': actorsCommunication,
+  'actors-placement-registration': actorsPlacementRegistration,
+  'actors-id-hashing': actorsIdHashing,
+  'actors-concurrency': actorsConcurrency,
 };

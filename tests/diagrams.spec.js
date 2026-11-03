@@ -1223,6 +1223,122 @@ const SCENE_ROWS = [
       '/v1.0-alpha1/state/myStateStore/query',
     ],
   },
+  {
+    name: 'actor-reentrancy',
+    // Replaced /images/actor-reentrancy.png. The two chains the page lists
+    // above the image are named under the halves that draw them.
+    page: '/developing-applications/building-blocks/actors/actor-reentrancy/',
+    labels: [
+      'Coordinator Actor',
+      'Worker Actor 1',
+      'Worker Actor 2',
+      'start work',
+      'work complete',
+      'Actor',
+      'Call local method',
+      'Actor A → Actor B → Actor A',
+      'Actor A → Actor A',
+    ],
+  },
+  {
+    name: 'actors-game-example',
+    // Replaced /images/actor_background_game_example.png. The source's zoom
+    // cone is a dashed leader, and the type's members are in two named
+    // columns rather than scattered round the circle.
+    page: '/developing-applications/building-blocks/actors/actors-overview/',
+    labels: [
+      'Video Game Enemy',
+      'State',
+      'Methods',
+      'Difficulty',
+      'Spawn()',
+      'Attack()',
+      'Actor type',
+      'Host/Pod',
+    ],
+  },
+  {
+    name: 'actors-calling-method',
+    // Replaced /images/actors-calling-method.png. The call in step three is
+    // a PUT - the app-side actor endpoint - not the source's POST.
+    page: '/developing-applications/building-blocks/actors/actors-overview/',
+    labels: [
+      'Machine 1 or Pod 1',
+      'Machine 2 or Pod 2',
+      'Ordering Service',
+      'Actor 1',
+      'Actor 4',
+      'POST',
+      '/v1.0/actors/OrderActor/3/method/ship',
+      'PUT',
+      '/actors/OrderActor/3/method/ship',
+    ],
+  },
+  {
+    name: 'actors-placement-registration',
+    // Replaced /images/actors_background_placement_service_registration.png.
+    // The source labels two different instances "Instance 1", and numbers
+    // its own two steps rather than the page's three.
+    page: '/developing-applications/building-blocks/actors/actors-features-concepts/',
+    labels: [
+      'Instance 1',
+      'Instance 2',
+      'Instance 3',
+      'Service code',
+      'Dapr Placement service',
+      'Actor type',
+      'Partitions',
+      'MyActor1',
+      'MyActor2',
+    ],
+  },
+  {
+    name: 'actors-id-hashing',
+    // Replaced /images/actors_background_id_hashing_calling.png. The lookup
+    // is in the caller's own cache, so the link to Placement is the dashed
+    // broadcast that fills it, not a live round trip.
+    page: '/developing-applications/building-blocks/actors/actors-features-concepts/',
+    labels: [
+      'Caller',
+      'Call ID 123',
+      'Dapr Placement service',
+      'partition table',
+      'Actor ID 123 created',
+      'Client code calls actor ID 123 for actor type MyActor1',
+      'Client call for actor ID 123 sent to the Dapr instance to create the actor',
+    ],
+  },
+  {
+    name: 'actors-communication',
+    // Replaced /images/actors_background_communication.png. Each panel is
+    // captioned with what it shows, and the tick is navy: green is a fill
+    // token assertInk() refuses as glyph ink.
+    page: '/developing-applications/building-blocks/actors/actors-features-concepts/',
+    labels: [
+      'Many clients, one actor',
+      'Many clients, many actors',
+      'One client, many actors',
+      'Client',
+      'Actor',
+    ],
+  },
+  {
+    name: 'actors-concurrency',
+    // Replaced /images/actors_background_concurrency.png. The events sit on
+    // a time grid, so two columns level with each other really are.
+    page: '/developing-applications/building-blocks/actors/actors-features-concepts/',
+    labels: [
+      'Time',
+      'ActorId1 Method1',
+      'ActorId1 Timer',
+      'ActorId2 Reminder',
+      'Request arrived, lock acquired without wait',
+      'Request arrived, waiting for lock asynchronously',
+      'Lock acquired',
+      'Entered callback',
+      'Lock released',
+    ],
+  },
 ];
 
 // One row per (scene, page), which is what every check below reads. The rows
