@@ -16,13 +16,13 @@ The Sentry service Docker container is not started automatically as part of [`da
 
 It can also be run manually as a process if you are running in [slim-init mode]({{% ref self-hosted-no-docker %}}).
 
-<img src="/images/security-mTLS-sentry-selfhosted.png" width=1000>
+{{< diagram name="sentry-selfhosted" width="70" >}}
 
 ## Kubernetes mode
 
 The sentry service is deployed as part of `dapr init -k`, or via the Dapr Helm charts. For more information on running Dapr on Kubernetes, visit the [Kubernetes hosting page]({{% ref kubernetes %}}).
 
-<img src="/images/security-mTLS-sentry-kubernetes.png" width=1000>
+{{< diagram sentry-kubernetes >}}
 
 ## Additional sentry container arguments
 
