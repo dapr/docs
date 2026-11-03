@@ -12,7 +12,7 @@ Now that you've learned what the Dapr pub/sub building block provides, learn how
 - An order processing service using Dapr to publish a message to RabbitMQ.
 
 
-<img src="/images/pubsub-howto-overview.png" width=1000 alt="Diagram showing state management of example service">
+{{< diagram name="pubsub-howto-overview" width="70" >}}
 
 Dapr automatically wraps the user payload in a CloudEvents v1.0 compliant envelope, using `Content-Type` header value for `datacontenttype` attribute. [Learn more about messages with CloudEvents.]({{% ref pubsub-cloudevents %}})
 

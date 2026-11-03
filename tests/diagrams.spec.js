@@ -507,6 +507,24 @@ const SCENE_ROWS = [
     ],
   },
   {
+    name: 'pubsub-howto-overview',
+    // Replaced /images/pubsub-howto-overview.png. The source had publish and
+    // subscribe the wrong way round; the page's prose, its subscription.yaml,
+    // all ten SDK samples and both `dapr run` commands agree that order
+    // processing publishes and checkout subscribes, so that is what is drawn.
+    page: '/developing-applications/building-blocks/pubsub/howto-publish-subscribe/',
+    labels: [
+      'Order processor',
+      'publish',
+      'RabbitMQ',
+      'subscribe',
+      'Checkout',
+      'POST',
+      '/v1.0/publish/order-pub-sub/orders',
+      '{"orderId": "100"}',
+    ],
+  },
+  {
     name: 'pubsub-publish-raw',
     // Replaced /images/pubsub_publish_raw.png. The page's other diagram is
     // this one with the Dapr app on the other side; they share every
