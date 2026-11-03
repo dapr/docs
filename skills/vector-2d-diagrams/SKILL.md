@@ -793,6 +793,54 @@ is `apiTile()` and the definitions behind it are `diagrams/apis.mjs`.
 - **Descriptions stay in the scene.** They are broken to a particular card
   width, so they are layout, not identity.
 
+#### The HTTP call a page documents
+
+**Where a page documents the HTTP call for its building block, the diagram
+shows it.** This is a default, not an option: it was asked for on
+`configuration/howto-manage-configuration`, then on
+`state-management/howto-get-save-state`, then on
+`pubsub/howto-publish-subscribe` - three pages in a row where the drawing had
+been built without it and had to be reopened. A reader who has just been shown
+a `curl` wants to see where it lands.
+
+The source is the page's own `curl` or SDK call, character for character.
+Never reconstruct one from the API reference: if the two disagree, that is a
+fact-check finding to raise, not a thing to quietly resolve.
+
+- **Three lines, one block:** the method above, the path in the middle, the
+  body below, each a line apart at `TEXT * 1.9`. The method is weight 700 in
+  `C.blue`; the path is `richLabel()` with `mono: true`, with the BUILDING
+  BLOCK's own segment picked out in `C.orange` at weight 700; the body is
+  `label()` with `mono: true` at weight 400 - a request and what it carries are
+  the same kind of text, and `label()`'s default of 600 makes the payload the
+  louder of the two. Omit the body where the call sends none.
+- **The path only. Leave the host off.** The reference writes it `<daprPort>`
+  and the pages print `localhost:3601`, which is whatever the reader's
+  `dapr run` chose. It carries no fact the path does not.
+- **It sits under the APP that makes the call, never on the arrow to the
+  component.** The app calls its own sidecar on localhost; the sidecar then
+  speaks the component's protocol. On the arrow it reads as the app calling
+  RabbitMQ or Redis directly, which is the one thing Dapr is there to stop
+  being true. Keep the verb or the caption on the component leg beside it -
+  `component-call.mjs` and `pubsub-howto-overview` both do exactly this.
+- **Clamp it to the margin.** A path is routinely wider than the shape it
+  belongs under, so centre it on that shape but never let it pass the edge:
+  `Math.max(EDGE + width / 2, <shape centre>)`.
+- **The width is measured, not guessed.** The exporter has no font metrics, so
+  render it, read the extent `preview-scene.mjs` prints, and pass that number
+  in. `componentCall()` refuses a call with no measured width, because a call
+  placed from an estimate is the one thing here that runs off the canvas with
+  nothing downstream to see it.
+- **Emit the PATH before the method, though it is drawn under it.** The theme
+  check samples the first text in a scene that is not on a plate or a solid
+  fill, and a method is `C.blue` - a brand colour, the same value in both
+  themes by design - so leading with it makes a scene that re-themes perfectly
+  read as one that does not. Nothing moves; the two do not overlap.
+
+Drawn this way already: `conversation-overview`, `configuration-example`,
+`state-management-example` (all three through `component-call.mjs`) and
+`pubsub-howto-overview`.
+
 ### Grouping and centering
 
 Most "that looks slightly off" notes are one mistake: a part was positioned
