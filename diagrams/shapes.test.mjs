@@ -652,6 +652,61 @@ test('stepMark() renders its number, not the formatter that shares its name', ()
   assert.equal(find(g, (x) => x.tag === 'text')[0].children[0].content, '3');
 });
 
+test('codeCard() sets its code left aligned in the code face, and its name above', () => {
+  // Centred, a block of YAML reads as a picture of YAML rather than as YAML,
+  // and a reader cannot run their eye down the keys. Every line has to start
+  // at the same x, which is what anchor 'start' plus one x per tspan gives.
+  const g = S.codeCard({
+    x: 200, y: 100, w: 240, h: 90,
+    title: 'local-secret-store.yaml',
+    code: 'metadata:\n  name: localsecretstore',
+  });
+  const rect = find(g, (n) => n.tag === 'rect')[0];
+  const texts = find(g, (n) => n.tag === 'text');
+  const name = texts.find((t) => t.children.some((k) => k.content === 'local-secret-store.yaml'));
+  const code = texts.find((t) => t.attrs['font-family'] !== undefined);
+
+  assert.ok(name, 'the artifact is named');
+  // ABOVE the card, not inside it: inside, the name competes with the code for
+  // the same left margin and the two are different kinds of thing.
+  assert.ok(Number(name.attrs.y) < Number(rect.attrs.y), 'the name sits above the card');
+
+  assert.equal(code.attrs['text-anchor'], 'start');
+  assert.ok(Number(code.attrs.x) > Number(rect.attrs.x), 'the code is inset from the border');
+  // Every line starts at the same x, or the block is not left aligned.
+  const xs = new Set(code.children.map((k) => k.attrs?.x).filter((v) => v !== undefined));
+  assert.equal(xs.size, 1);
+});
+
+test('codeCard() keeps indentation, which YAML needs to mean what it says', () => {
+  // Each line is its own tspan, and a space at the start of a tspan is
+  // whitespace at a tag boundary: XML collapses it and the minifier drops the
+  // rest. A component's YAML came out with `value` at the same depth as
+  // `- name`, which is a different document and one that will not load.
+  const g = S.codeCard({
+    x: 0, y: 0, w: 300, h: 90,
+    code: 'metadata:\n  - name: secretsFile\n    value: secrets.json',
+  });
+  const code = find(g, (n) => n.tag === 'text').find((t) => t.attrs['font-family'] !== undefined);
+  const lines = code.children.map((k) => k.children[0].content);
+  assert.equal(lines[0], 'metadata:');
+  // Non-breaking spaces, and the SAME COUNT as the spaces they replace: in a
+  // monospace face that is what keeps the depths apart.
+  assert.equal(lines[1], '  - name: secretsFile');
+  assert.equal(lines[2], '    value: secrets.json');
+  // And nothing inside a line is touched, or the code would read as padded.
+  assert.ok(lines[1].includes('- name: secretsFile'));
+});
+
+test('codeCard() refuses type under the label floor', () => {
+  // Code at nine units is unreadable on the page and shrinks further in the
+  // figure, and nothing downstream measures rendered type.
+  assert.throws(
+    () => S.codeCard({ x: 0, y: 0, w: 100, h: 50, code: 'x', size: 9 }),
+    /below/,
+  );
+});
+
 test('elbowArrow() dashes the run and leaves the head solid', () => {
   // A dashed line says the thing does not happen; a dashed chevron just reads
   // as a badly drawn one, which is the split arrow() already makes.

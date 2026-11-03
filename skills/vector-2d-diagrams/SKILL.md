@@ -837,9 +837,25 @@ fact-check finding to raise, not a thing to quietly resolve.
   themes by design - so leading with it makes a scene that re-themes perfectly
   read as one that does not. Nothing moves; the two do not overlap.
 
+- **The block shows the REQUEST, and nothing else.** A value the call returns
+  is not part of the request or its payload and does not belong in it -
+  maintainer ruling of 2026-11-03, on the three secrets pictures, which had
+  been drawing `mysecret "supersecret"` under the path because their source
+  images do. `body` is the REQUEST body, the thing a `curl -d` sends.
+- **`httpCard()` is the same block with a border round it,** for a call that
+  stands apart from the row rather than directly under it - the secrets
+  pictures put theirs under a cluster, where bare lines would read as loose.
+  It can also carry a status chip and a response, which is what it was built
+  for, but no scene draws one today and the ruling above is why. If you ever
+  do, take both from the page: inventing a `200 OK` puts a fact in the picture
+  that is not on the page. Mind its height either way - it lays its lines out
+  from its own box, so the gap between the URL and whatever is under it is
+  what the height leaves over, and too short a card overlaps them silently.
+
 Drawn this way already: `conversation-overview`, `configuration-example`,
-`state-management-example` (all three through `component-call.mjs`) and
-`pubsub-howto-overview`.
+`state-management-example` (all three through `component-call.mjs`),
+`pubsub-howto-overview` and `secrets-mgmt-overview`; as a card, the three
+`secrets-*` overview scenes.
 
 ### Grouping and centering
 

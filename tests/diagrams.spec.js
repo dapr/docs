@@ -507,6 +507,73 @@ const SCENE_ROWS = [
     ],
   },
   {
+    name: 'secrets-mgmt-overview',
+    // Replaced /images/howto-secrets/secrets-mgmt-overview.png. The source's
+    // component YAML put secretsFile directly under spec with no type, which
+    // would not load, and its secrets.json held a value from another page;
+    // both follow the page here.
+    page: '/developing-applications/building-blocks/secrets/howto-secrets/',
+    labels: [
+      'Order Processor',
+      'Dapr sidecar',
+      'Secret store',
+      'GET',
+      '/v1.0/secrets/localsecretstore/secret',
+      'Order Processor service',
+      'local-secret-store.yaml',
+      'secrets.json',
+    ],
+  },
+  {
+    name: 'secrets-cloud-stores',
+    // Replaced /images/secrets-overview-cloud-stores.png. One of three states
+    // that share every measurement through diagrams/secrets-example.mjs,
+    // because the page's claim is that the call does not change between them.
+    page: '/developing-applications/building-blocks/secrets/secrets-overview/',
+    labels: [
+      'App',
+      'Dapr sidecar',
+      'Cloud secret stores',
+      'AWS Secrets Manager',
+      'Azure Key Vault',
+      'Google Key Management',
+      'HashiCorp Vault',
+      'GET',
+      '/v1.0/secrets/vault/mysecret',
+    ],
+  },
+  {
+    name: 'secrets-kubernetes-store',
+    // Replaced /images/secrets-overview-kubernetes-store.png.
+    page: '/developing-applications/building-blocks/secrets/secrets-overview/',
+    labels: [
+      'Kubernetes cluster',
+      'Pod',
+      'App',
+      'Dapr sidecar',
+      'Kubernetes secret store',
+      'GET',
+      '/v1.0/secrets/kubernetes/mysecret',
+    ],
+  },
+  {
+    name: 'secrets-azure-aks-keyvault',
+    // Replaced /images/secrets-overview-azure-aks-keyvault.png. The store is
+    // still named `vault` in the path: that is the COMPONENT's name, and the
+    // page's point is that it does not change when the store behind it does.
+    page: '/developing-applications/building-blocks/secrets/secrets-overview/',
+    labels: [
+      'AKS cluster',
+      'Pod',
+      'App',
+      'Dapr sidecar',
+      'Pod managed identity',
+      'Azure Key Vault',
+      'GET',
+      '/v1.0/secrets/vault/mysecret',
+    ],
+  },
+  {
     name: 'pubsub-howto-overview',
     // Replaced /images/pubsub-howto-overview.png. The source had publish and
     // subscribe the wrong way round; the page's prose, its subscription.yaml,

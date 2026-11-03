@@ -115,6 +115,22 @@
     16.02,
     1.5
   ],
+  "secrets-azure-aks-keyvault": [
+    -0.18,
+    0
+  ],
+  "secrets-cloud-stores": [
+    -0.21,
+    -0.2
+  ],
+  "secrets-kubernetes-store": [
+    -0.21,
+    0
+  ],
+  "secrets-mgmt-overview": [
+    0,
+    -0.15
+  ],
   "security-capabilities": [
     17.58,
     -6.5

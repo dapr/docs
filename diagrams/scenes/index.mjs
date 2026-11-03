@@ -42,6 +42,10 @@ import serviceInvocationExample from './service-invocation-example.mjs';
 import configurationExample from './configuration-example.mjs';
 import stateManagementExample from './state-management-example.mjs';
 import pubsubHowtoOverview from './pubsub-howto-overview.mjs';
+import secretsCloudStores from './secrets-cloud-stores.mjs';
+import secretsMgmtOverview from './secrets-mgmt-overview.mjs';
+import secretsAzureAksKeyvault from './secrets-azure-aks-keyvault.mjs';
+import secretsKubernetesStore from './secrets-kubernetes-store.mjs';
 import pubsubPublishRaw from './pubsub-publish-raw.mjs';
 import pubsubSubscribeRaw from './pubsub-subscribe-raw.mjs';
 import configurationApiOverview from './configuration-api-overview.mjs';
@@ -94,6 +98,10 @@ export const scenes = {
   'configuration-example': configurationExample,
   'state-management-example': stateManagementExample,
   'pubsub-howto-overview': pubsubHowtoOverview,
+  'secrets-cloud-stores': secretsCloudStores,
+  'secrets-mgmt-overview': secretsMgmtOverview,
+  'secrets-kubernetes-store': secretsKubernetesStore,
+  'secrets-azure-aks-keyvault': secretsAzureAksKeyvault,
   'pubsub-publish-raw': pubsubPublishRaw,
   'pubsub-subscribe-raw': pubsubSubscribeRaw,
   'configuration-api-overview': configurationApiOverview,

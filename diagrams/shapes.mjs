@@ -810,6 +810,65 @@ export function httpCard({
   ]);
 }
 
+// A CONFIGURATION ARTIFACT: a file, or the few lines of code that name one, in
+// a bordered card with the artifact's own name above it.
+//
+// The how-tos keep drawing the same thing - "this name in your code is that
+// name in the component file is that key in the store" - and a chain like that
+// is only checkable if the reader can see the artifacts side by side with
+// their real contents in them. `secrets-mgmt-overview` shows three.
+//
+// The code is LEFT aligned and set in the page's own code font, because that
+// is how the reader meets it everywhere else on the page; a centred block of
+// YAML reads as a picture of YAML rather than as YAML. `\n` breaks the lines
+// and nothing is wrapped for you - where a line breaks is a layout decision,
+// and wrapping would need font metrics the exporter does not have.
+//
+// The name goes ABOVE the card rather than inside it: inside, it competes with
+// the code for the same left margin, and the two are different kinds of thing.
+export function codeCard({
+  x, y, w, h, title = '', code = '', size = 12, titleSize = 13,
+  stroke = C.caption, fill = C.bg, pad = 14, titleDy = 16,
+}) {
+  if (size < MIN_LABEL) throw new RangeError(`codeCard(): size ${size} is below ${MIN_LABEL}px`);
+  const top = y - h / 2;
+  // LEADING SPACES BECOME NON-BREAKING ONES, or the indentation does not
+  // arrive. Each line is its own <tspan>, and a space at the start of a tspan
+  // is whitespace at the boundary of a tag: XML collapses it and Hugo's
+  // minifier drops what is left, which flattened a component's YAML to
+  //
+  //     metadata:
+  //      name: localsecretstore
+  //     spec:
+  //      metadata:
+  //      - name: secretsFile
+  //      value: secrets.json
+  //
+  // where `value` belongs under `- name`. In YAML that is not a cosmetic
+  // difference - it is a different document, and the one on the page would not
+  // load. A non-breaking space is not whitespace to either, and in a monospace
+  // face it is exactly as wide as the space it replaces. richLabel() carries
+  // the same note for the same reason.
+  const indented = String(code)
+    .split('\n')
+    .map((line) => line.replace(/^ +/, (run) => ' '.repeat(run.length)))
+    .join('\n');
+  return el('g', { class: 'd-code-card' }, [
+    title
+      ? label({ x, y: top - titleDy, text: title, size: titleSize, weight: 700 })
+      : null,
+    el('rect', {
+      x: n(x - w / 2), y: n(top), width: n(w), height: n(h), rx: 10,
+      fill, ...outline(stroke),
+    }),
+    code
+      ? label({
+        x: x - w / 2 + pad, y, text: indented, size, weight: 400, mono: true, anchor: 'start',
+      })
+      : null,
+  ]);
+}
+
 export function pill({ x, y, w, h = 26, text: content, color = C.navy, filled = false, size = 15 }) {
   if (filled) assertInk(color, 'pill() filled');
   return el('g', { class: 'd-pill' }, [

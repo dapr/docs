@@ -18,6 +18,25 @@ const SLIDE = 16 / 9;
 const TOLERANCE = 0.9;
 
 const EXCEPTIONS = {
+  // A pod inside a cluster, a store beside it and the call beneath is
+  // naturally about 3:2. These two were laid out to the frame first, and the
+  // only lever that reached 16:9 was the run from the sidecar to the store:
+  // deriving it from the floor made it 236 units on one and stranded Key Vault
+  // 300 units off the cluster edge on the other. The maintainer rejected both
+  // on sight (2026-11-03), so the run is now the length the drawing wants and
+  // the frame is the thing that gives.
+  //
+  // The lever is still there. Put the derived gap back in either scene and it
+  // clears the floor again; what you get for it is a third of the canvas spent
+  // on empty line.
+  'secrets-kubernetes-store':
+    'A pod in a cluster with the secret store beside it and the GET beneath. '
+    + 'Reaching 16:9 means 236 units of empty line between the sidecar and the '
+    + 'store, which reads worse than the short frame does.',
+  'secrets-azure-aks-keyvault':
+    'The same picture with Key Vault outside the cluster and the pod identity '
+    + 'inside it. Reaching 16:9 strands the vault 300 units off the cluster '
+    + 'edge.',
   'components-concept':
     'Thirteen building blocks, each over a column of its components. Laid out '
     + 'for a slide it would be a strip of unreadable marks; it is a reference '
