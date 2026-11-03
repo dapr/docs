@@ -1,0 +1,60 @@
+{{- /*
+  {{< diagram overview >}}
+  {{< diagram name="api-scoping" width="70" >}}
+
+  `width` is an optional whole percentage of the content column, 10 to 100,
+  for a drawing that reads better smaller than the full width. It centres what
+  it narrows, and is ignored below the `md` breakpoint, where the column is
+  already the smallest a drawing can usefully be.
+
+  Hugo refuses to mix positional and named parameters, so a call that passes
+  `width` names the scene as well.
+
+  Inlines daprdocs/assets/diagrams/<name>.svg, which `npm run export:diagrams`
+  generates from diagrams/scenes/<name>.mjs. Inlined rather than linked so the
+  var(--d-*) colours inside it resolve against the page's theme tokens and
+  follow the dark-mode toggle with no JavaScript.
+
+  A missing or misspelled name fails the build instead of rendering nothing.
+*/ -}}
+{{- /* Hugo refuses to mix positional and named parameters, and that includes
+       the TEMPLATE asking: `.Get 0` on a call written with names is itself
+       the error. So look at what the call actually passed before reaching for
+       anything. */ -}}
+{{- $named := reflect.IsMap .Params -}}
+{{- $name := cond $named (.Get "name") (.Get 0) -}}
+{{- $width := cond $named (.Get "width") "" -}}
+{{- with $name -}}
+  {{- /* Same rule the exporter enforces on a scene name (diagrams/export.mjs).
+         Without it the argument is interpolated straight into a resource path,
+         so a typo can reach for any asset and inline it through safeHTML. */ -}}
+  {{- if not (findRE `^[a-z0-9]+(-[a-z0-9]+)*$` . ) -}}
+    {{- errorf "diagram shortcode: %q is not a scene name - lowercase letters, digits and single hyphens only (called from %s)" . $.Position -}}
+  {{- end -}}
+  {{- /* A whole percentage only: the value lands in a style attribute, so it
+         is matched against a pattern rather than trusted. */ -}}
+  {{- $style := "" -}}
+  {{- with $width -}}
+    {{- if not (findRE `^(100|[1-9][0-9])$` .) -}}
+      {{- errorf "diagram shortcode: width %q must be a whole percentage from 10 to 100 (called from %s)" . $.Position -}}
+    {{- end -}}
+    {{- $style = printf ` style="--dapr-diagram-width: %s%%"` . -}}
+  {{- end -}}
+  {{- $path := printf "diagrams/%s.svg" . -}}
+  {{- with resources.Get $path -}}
+    <figure class="dapr-diagram" data-diagram="{{ $name }}"{{ $style | safeHTMLAttr }}>
+      {{- .Content | safeHTML -}}
+      {{- /* The inlined svg paints in var(--d-*) and only resolves on this
+             page, so both actions point at the standalone copy under
+             static/diagrams/, which has the light values baked in. */ -}}
+      <div class="dapr-diagram-actions">
+        <a class="dapr-diagram-action" href="/diagrams/{{ $name }}.svg" download="{{ $name }}.svg">Download SVG</a>
+        <button class="dapr-diagram-action" type="button" data-diagram-copy="/diagrams/{{ $name }}.svg">Copy SVG</button>
+      </div>
+    </figure>
+  {{- else -}}
+    {{- errorf "diagram shortcode: no diagram at assets/%s - run `npm run export:diagrams` or check the scene name (called from %s)" $path $.Position -}}
+  {{- end -}}
+{{- else -}}
+  {{- errorf "diagram shortcode: a scene name is required, as in {{< diagram overview >}} (called from %s)" .Position -}}
+{{- end -}}

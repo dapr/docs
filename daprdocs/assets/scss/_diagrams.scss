@@ -1,0 +1,90 @@
+//
+// diagrams
+//
+// Figures emitted by the {{< diagram >}} shortcode. The SVG is inlined, so its
+// var(--d-*) strokes and fills resolve against the tokens in _tokens.scss and
+// re-theme instantly when the dark-mode toggle flips data-bs-theme.
+//
+
+.dapr-diagram {
+  // `auto` so a figure narrowed by the shortcode's `width` centres in the
+  // column instead of hugging its left edge.
+  margin: 0 auto 1.5rem;
+
+  // The shortcode sets --dapr-diagram-width when a page asks for a diagram to
+  // render at less than the full column. Only above the `md` breakpoint: on a
+  // phone the column is already the smallest the drawing can usefully be, and
+  // taking another third off it makes the labels unreadable.
+  @include media-breakpoint-up(md) {
+    max-width: var(--dapr-diagram-width, 100%);
+  }
+
+  // The scene carries a viewBox and no width/height, so it scales to the
+  // column and never renders larger than the content area (decision 12).
+  svg {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+// The download and copy actions. Quiet by default: the diagram is the content,
+// these are a convenience beside it.
+.dapr-diagram-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.25rem;
+}
+
+// Scoped to the actions row so the site's own anchor colour does not win over
+// the link half of the pair and leave the two looking like different controls.
+.dapr-diagram-actions .dapr-diagram-action {
+  background: none;
+  border: 1px solid var(--d-border);
+  border-radius: 6px;
+  color: var(--d-muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  padding: 0.2rem 0.6rem;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--d-link);
+    color: var(--d-link);
+  }
+
+  &[disabled] {
+    cursor: default;
+    opacity: 0.6;
+  }
+}
+
+// Windows high contrast and friends drop author colours. Redraw the diagram in
+// the system's own ink so it survives, and leave the vendored brand marks
+// (.d-icon and its children) to the UA, which keeps their shapes readable.
+@media (forced-colors: active) {
+  .dapr-diagram svg {
+    color: CanvasText;
+
+    text {
+      fill: currentColor;
+      stroke: none;
+    }
+
+    // Open geometry - a cylinder's back rim, an envelope flap, an arrow head -
+    // is drawn with fill="none". Filling it would close the implied path and
+    // paint a Canvas-coloured region over whatever sits beneath it.
+    :is(rect, circle, ellipse, line, polyline, polygon, path):not(.d-icon *) {
+      stroke: currentColor;
+    }
+
+    :is(rect, circle, ellipse, polygon, path):not(.d-icon *):not([fill='none']) {
+      fill: Canvas;
+    }
+  }
+}
