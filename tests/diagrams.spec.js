@@ -507,6 +507,71 @@ const SCENE_ROWS = [
     ],
   },
   {
+    name: 'service-invocation-non-dapr-endpoint',
+    // Replaced /images/service-invocation-overview-non-dapr-endpoint.png. The
+    // source bakes its title into the drawing; the page's own heading and lead
+    // sentence directly above the figure already carry it.
+    page: '/developing-applications/building-blocks/service-invocation/howto-invoke-non-dapr-endpoints/',
+    labels: ['App A', 'Dapr sidecar', 'App B'],
+  },
+  {
+    name: 'service-invocation-overview',
+    // Replaced /images/service-invocation-overview.png. The source puts step 3
+    // on the return leg beside the padlock; the page's list has 3 as the hop
+    // OUT to Service B's sidecar and 6 as the hop back.
+    page: '/developing-applications/building-blocks/service-invocation/service-invocation-overview/',
+    labels: [
+      'App A',
+      'Dapr sidecar',
+      'App B',
+      'Invoke method',
+      'mTLS',
+      'Name resolution component',
+      'Observability backend',
+      'POST',
+      '/v1.0/invoke/checkout/method/order',
+    ],
+  },
+  {
+    name: 'service-invocation-mdns',
+    // Replaced /images/service-invocation-mdns-round-robin.png. The source has
+    // Service A round-robining across instances of itself; the paragraph above
+    // it says FrontEnd calls three instances of Cart.
+    page: '/developing-applications/building-blocks/service-invocation/service-invocation-overview/',
+    labels: [
+      'FrontEnd',
+      'Dapr sidecar',
+      'Round robin load balancing',
+      'Cart',
+      'Instance 1',
+      'Instance 2',
+      'Instance 3',
+    ],
+  },
+  {
+    name: 'service-invocation-simple',
+    // Replaced /images/service-invocation-simple.webp.
+    page: '/developing-applications/building-blocks/service-invocation/service-invocation-overview/',
+    labels: ['App A', 'Dapr sidecar A', 'Dapr sidecar B', 'App B'],
+  },
+  {
+    name: 'service-invocation-example-detailed',
+    // Replaced /images/service-invocation-overview-example.png. The one scene
+    // in the set that keeps the hosts: localhost:3500 against 10.0.0.2:8000 is
+    // the location mDNS resolved, which is what the picture is about.
+    page: '/developing-applications/building-blocks/service-invocation/service-invocation-overview/',
+    labels: [
+      'Local machine',
+      'pythonapp',
+      'Dapr sidecar',
+      'nodeapp',
+      'mDNS name resolution component',
+      'POST',
+      'http://10.0.0.2:8000/neworder',
+      '{"orderid":"123","data":"item1"}',
+    ],
+  },
+  {
     name: 'secrets-mgmt-overview',
     // Replaced /images/howto-secrets/secrets-mgmt-overview.png. The source's
     // component YAML put secretsFile directly under spec with no type, which

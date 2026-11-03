@@ -43,6 +43,11 @@ import configurationExample from './configuration-example.mjs';
 import stateManagementExample from './state-management-example.mjs';
 import pubsubHowtoOverview from './pubsub-howto-overview.mjs';
 import secretsCloudStores from './secrets-cloud-stores.mjs';
+import serviceInvocationExampleDetailed from './service-invocation-example-detailed.mjs';
+import serviceInvocationMdns from './service-invocation-mdns.mjs';
+import serviceInvocationNonDaprEndpoint from './service-invocation-non-dapr-endpoint.mjs';
+import serviceInvocationOverview from './service-invocation-overview.mjs';
+import serviceInvocationSimple from './service-invocation-simple.mjs';
 import secretsMgmtOverview from './secrets-mgmt-overview.mjs';
 import secretsAzureAksKeyvault from './secrets-azure-aks-keyvault.mjs';
 import secretsKubernetesStore from './secrets-kubernetes-store.mjs';
@@ -99,6 +104,11 @@ export const scenes = {
   'state-management-example': stateManagementExample,
   'pubsub-howto-overview': pubsubHowtoOverview,
   'secrets-cloud-stores': secretsCloudStores,
+  'service-invocation-example-detailed': serviceInvocationExampleDetailed,
+  'service-invocation-mdns': serviceInvocationMdns,
+  'service-invocation-non-dapr-endpoint': serviceInvocationNonDaprEndpoint,
+  'service-invocation-overview': serviceInvocationOverview,
+  'service-invocation-simple': serviceInvocationSimple,
   'secrets-mgmt-overview': secretsMgmtOverview,
   'secrets-kubernetes-store': secretsKubernetesStore,
   'secrets-azure-aks-keyvault': secretsAzureAksKeyvault,
