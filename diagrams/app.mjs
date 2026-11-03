@@ -101,8 +101,17 @@ export function appSidecar({
 }) {
   const name = nameSize(r, size);
   const s = sidecarAt({ x, y, r, size, mirror, sub, subSize });
-  return group([
-    hex({ x, y, r, label, size: name, stroke, fill, ink, solid, sub, subSize }),
-    markHex({ x: s.x, y: s.y, r: s.r, mark: 'logo-blue', stroke: C.blue }),
-  ]);
+  // CLASSED, because the two hexagons OVERLAP BY DESIGN and nothing
+  // downstream could tell. The sidecar is docked onto the app's lower corner,
+  // so the pair reads as one object to a person and as two objects thirty to
+  // sixty units inside each other to anything measuring the drawing - which
+  // is every pair a shape-clearance check would flag first, and the reason
+  // such a check could not be written while this group was anonymous.
+  return group({
+    class: 'd-app-pair',
+    children: [
+      hex({ x, y, r, label, size: name, stroke, fill, ink, solid, sub, subSize }),
+      markHex({ x: s.x, y: s.y, r: s.r, mark: 'logo-blue', stroke: C.blue }),
+    ],
+  });
 }

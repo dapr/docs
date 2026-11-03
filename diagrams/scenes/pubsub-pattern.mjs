@@ -66,7 +66,12 @@ const CHANNEL_H = 30;
 const GAP = 56;
 
 // ---- three subscribers stacked against one publisher ------------------------
-const ROW_GAP = 128;
+// DERIVED from the hexagons it separates, not chosen: a hexagon is 2r tall,
+// so a pitch of 128 against a radius of 62 left the three subscribers six
+// units apart and all but touching. The clearance is what the eye needs to
+// read them as three shapes rather than a column.
+const ROW_CLEAR = 26;
+const ROW_GAP = APP_R * 2 + ROW_CLEAR;
 const ROWS = 3;
 const ROW_T = V_EDGE + APP_R;
 const rowY = (i) => ROW_T + i * ROW_GAP;

@@ -41,7 +41,7 @@
   ],
   "configuration-example": [
     -0.46,
-    0.54
+    -1.46
   ],
   "conversation-overview": [
     -1.91,
@@ -104,7 +104,7 @@
     0
   ],
   "pubsub-deadletter": [
-    -0.47,
+    -0.04,
     -8
   ],
   "pubsub-howto-overview": [
@@ -132,12 +132,12 @@
     0
   ],
   "pubsub-publish-raw": [
-    -0.08,
-    -0.8
+    -0.11,
+    -0.9
   ],
   "pubsub-subscribe-raw": [
-    -0.08,
-    -0.8
+    -0.11,
+    -0.9
   ],
   "resiliency-policies": [
     5,
@@ -188,7 +188,7 @@
     -5
   ],
   "service-invocation-example-detailed": [
-    -0.46,
+    -0.1,
     -0.2
   ],
   "service-invocation-mdns": [
@@ -196,16 +196,16 @@
     -3.69
   ],
   "service-invocation-non-dapr-endpoint": [
-    -0.47,
-    -2.72
+    -0.01,
+    -2.7
   ],
   "service-invocation-overview": [
-    -0.36,
-    0.78
+    -0.4,
+    0.8
   ],
   "service-invocation-simple": [
-    -0.36,
-    -2.8
+    -0.4,
+    -2.78
   ],
   "service-mesh": [
     3.81,
@@ -225,7 +225,7 @@
   ],
   "state-management-example": [
     -0.46,
-    0.9
+    -1.1
   ],
   "workflow-async-http": [
     3.49,

@@ -64,7 +64,12 @@ const V_EDGE = 14;
 const TEXT = 13;
 const NAME = 17;
 
-const APP_R = 60;
+// 64 rather than 60, so the longest NAME clears the outline by half an em
+// each side - the rule `holds every shape's own name inside it` enforces,
+// and the one caption pills have always been held to. At 60 the name sat
+// about five units off the sloping edges, which reads as a shape drawn too
+// small for what it carries.
+const APP_R = 64;
 const SIDE_R = 44;
 
 const PIPE_RY = 30;

@@ -27,7 +27,12 @@ export const V_EDGE = 14;
 // diagrams/type-size.test.mjs.
 export const TEXT = 13;
 
-export const APP_R = 60;
+// 62 rather than 60, so the longest NAME clears the outline by half an em
+// each side - the rule `holds every shape's own name inside it` enforces,
+// and the one caption pills have always been held to. At 60 the name sat
+// about seven units off the sloping edges, which reads as a shape drawn too
+// small for what it carries.
+export const APP_R = 62;
 
 // A shape's NAME scales with the shape, so it is not the scene's body type.
 // 17 is what the longest line here wants: "subscriber" is ten characters and

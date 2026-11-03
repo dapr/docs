@@ -29,7 +29,12 @@ export const TEXT = 13;
 // A shape's NAME scales with the shape rather than with the scene's body type.
 export const NAME = 17;
 
-export const APP_R = 60;
+// 62 rather than 60, so the longest NAME clears the outline by half an em
+// each side - the rule `holds every shape's own name inside it` enforces,
+// and the one caption pills have always been held to. At 60 the name sat
+// about seven units off the sloping edges, which reads as a shape drawn too
+// small for what it carries.
+export const APP_R = 62;
 export const SIDE_R = 44;
 
 // THE REQUEST AND THE RESPONSE RUN AT TWO HEIGHTS, not as one line with a head

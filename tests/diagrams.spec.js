@@ -1378,6 +1378,169 @@ for (const scene of SCENES) {
     // A label wider than the card it sits in is a real defect that every other
     // check here misses: the scene still resolves, still fits the viewBox and
     // still shows every expected label. Only its own box is too small.
+    // TWO DRAWN OBJECTS STANDING TOO CLOSE TOGETHER, which nothing measured
+    // until two HTTP cards shipped overlapping on
+    // `service-invocation-example-detailed` - the left card's URL drawn UNDER
+    // the right card and truncated - and three subscriber hexagons shipped six
+    // units apart on `pubsub-pattern`. Every other check passed both times:
+    // the labels existed, were the right size, were inside the canvas, and
+    // their colours resolved.
+    //
+    // WHY IT COULD NOT BE WRITTEN BEFORE. `appSidecar()` returned an anonymous
+    // group, and the two hexagons in it overlap BY DESIGN - the sidecar is
+    // docked onto the app's lower corner - so every scene using one reported
+    // a pair thirty to sixty units inside each other. Classing that group
+    // `d-app-pair` is what makes the deliberate overlap declarable, and with
+    // it declared the whole set is clean: this check flags nothing at ten
+    // units across all sixty-seven scenes.
+    //
+    // EIGHT UNITS, set just under where the set already sits. The tightest
+    // deliberate spacing anywhere in it is ten - two Component boxes on the
+    // building-block concept pictures - and the next band up is well clear, so
+    // eight separates "drawn close on purpose" from "about to touch" without
+    // picking a number out of the air. Measured in SCENE units: the svg is
+    // scaled to the prose column by a different factor on every page, and a
+    // bar in screen pixels would be a different bar on each.
+    //
+    // Objects inside one named mark are skipped: a mark and its plate, a
+    // store and the glyph on it, are one object drawn in pieces.
+    test(`${scene.name} keeps its shapes clear of each other`, async ({ page }) => {
+      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      const close = await page.evaluate((root) => {
+        const svg = document.querySelector(`${root} svg`);
+        // IN SCENE UNITS, not screen pixels. The svg is scaled to the prose
+        // column, and by a different factor per scene, so a bar set in pixels
+        // would be a different bar on every page - which is how a first run of
+        // this flagged two tile grids whose gutters are identical in the
+        // drawings that define them.
+        const vb = svg.viewBox.baseVal;
+        const scale = (svg.getBoundingClientRect().width || vb.width) / vb.width;
+        const MIN = 8 * scale;
+        const OBJECTS = [
+          'd-box', 'd-node', 'd-decision', 'd-hex', 'd-dapr-app', 'd-cylinder',
+          'd-envelope', 'd-broker', 'd-lock-box', 'd-secure-lock', 'd-tile',
+          'd-pipe', 'd-http-card', 'd-code-card', 'd-mark-hex',
+        ].map((c) => `g.${c}`).join(', ');
+        const all = [...svg.querySelectorAll(OBJECTS)];
+        // A nested object would report one overlap twice, under two names.
+        const outer = all.filter((o) => !all.some((p) => p !== o && p.contains(o)));
+        // One object drawn in pieces, or a pair that overlaps on purpose.
+        const unit = (o) => o.closest('g.d-named-mark') || o.closest('g.d-app-pair');
+        // The object's own body, not its group's box: a callout carries its
+        // dashed leader inside the group, and an arrow's head is not the shape.
+        const body = (o) => {
+          const parts = [...o.querySelectorAll('rect, polygon, circle, ellipse, path')]
+            .filter((p) => !p.closest('g.d-arrow'))
+            .map((p) => p.getBoundingClientRect())
+            .filter((b) => b.width && b.height);
+          if (!parts.length) return null;
+          return {
+            l: Math.min(...parts.map((b) => b.left)),
+            r: Math.max(...parts.map((b) => b.right)),
+            t: Math.min(...parts.map((b) => b.top)),
+            b: Math.max(...parts.map((b) => b.bottom)),
+          };
+        };
+        // Clear when they are apart on EITHER axis, which is what lets a row
+        // of shapes sit at a sensible pitch and a column at another.
+        const gap = (a, b) => Math.max(a.l - b.r, b.l - a.r, a.t - b.b, b.t - a.b);
+        const out = [];
+        for (let i = 0; i < outer.length; i += 1) {
+          for (let j = i + 1; j < outer.length; j += 1) {
+            const A = outer[i]; const B = outer[j];
+            if (unit(A) && unit(A) === unit(B)) continue;
+            const ba = body(A); const bb = body(B);
+            if (!ba || !bb) continue;
+            const g = gap(ba, bb);
+            if (g < MIN) {
+              const name = (o) => (o.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 30)
+                || o.getAttribute('class');
+              out.push(`${name(A)} and ${name(B)} are ${Math.round(g / scale)} apart`);
+            }
+          }
+        }
+        return [...new Set(out)];
+      }, sel(scene.name));
+
+      expect(close, 'two shapes stand closer than eight units - move them apart, or say they are one object').toEqual([]);
+    });
+
+    // THE SAME RULE AS THE TILE CHECK BELOW, ON EVERY OTHER SHAPE THAT CARRIES
+    // ITS OWN NAME. A hexagon, a broker, a store and a box all set their name
+    // INSIDE themselves, and the exporter has no font metrics - so a name that
+    // outgrows its shape is invisible to every numeric test: the text exists,
+    // it is the right size, it is inside the canvas and its colours resolve.
+    //
+    // It kept happening. "Subscriber" ran to 85 units inside a 90-unit hexagon
+    // on `pubsub-pattern` and touched both sloping edges; "poisonMessages"
+    // filled its broker end to end on `pubsub-deadletter`. Both were caught by
+    // looking, which is what this replaces.
+    //
+    // HALF AN EM OF CLEAR SPACE EACH SIDE, the same rule `captionPad()` sets
+    // for a caption pill - a shape whose outline grazes its own letters reads
+    // as a mistake long before it reads as tight.
+    //
+    // A hexagon is measured against its BOUNDING BOX, which is the widest the
+    // shape ever gets. That is lenient at the sloping corners and exact across
+    // the middle, where a one-line name sits; it is the same approximation the
+    // tile check makes, and it still catches the case this exists for.
+    test(`${scene.name} holds every shape's own name inside it`, async ({ page }) => {
+      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      await page.evaluate(() => document.fonts.ready);
+      const tight = await page.evaluate((root) => {
+        const svg = document.querySelector(`${root} svg`);
+        // IN SCENE UNITS. getBoundingClientRect() is scaled to the prose
+        // column but a font-size attribute is not, so comparing the two
+        // directly measures the shortfall in two different units - the same
+        // mistake the shape-clearance check beside this one started with.
+        const vb = svg.viewBox.baseVal;
+        const scale = (svg.getBoundingClientRect().width || vb.width) / vb.width;
+        // The builders that set a name inside the shape. A tile has its own
+        // check; a pill has two of its own; a region's name sits ON its
+        // border by design and is not inside anything.
+        const INSIDE = ['d-hex', 'd-cylinder', 'd-pipe', 'd-box', 'd-lock-box', 'd-node', 'd-decision'];
+        const out = [];
+        for (const sel2 of INSIDE) {
+          for (const g of svg.querySelectorAll(`g.${sel2}`)) {
+            // The shape's own outline, not the group's box: a group may also
+            // carry a name drawn OUTSIDE it, and markHex's mark sits in one.
+            const body = g.querySelector('polygon, rect, path, ellipse, circle');
+            const texts = [...g.querySelectorAll('text')]
+              .filter((t) => t.getAttribute('aria-hidden') !== 'true');
+            if (!body || !texts.length) continue;
+            const r = body.getBoundingClientRect();
+            if (!r.width || !r.height) continue;
+            for (const t of texts) {
+              const b = t.getBoundingClientRect();
+              if (!b.width || !b.height) continue;
+              // A name drawn OUTSIDE the shape - under a store, beside a
+              // hexagon - is a different thing and not this rule's business.
+              const inside = b.left >= r.left - 2 && b.right <= r.right + 2
+                && b.top >= r.top - 2 && b.bottom <= r.bottom + 2;
+              const straddles = b.left < r.right && b.right > r.left
+                && b.top < r.bottom && b.bottom > r.top;
+              if (!inside && !straddles) continue;
+              const pad = parseFloat(getComputedStyle(t).fontSize) * 0.5 * scale;
+              const worst = Math.max(
+                r.left + pad - b.left,
+                b.right - (r.right - pad),
+              );
+              if (worst > 0.5) {
+                out.push({
+                  shape: sel2,
+                  label: (t.textContent || '').replace(/\s+/g, ' ').trim(),
+                  short: Math.round(worst / scale),
+                });
+              }
+            }
+          }
+        }
+        return out;
+      }, sel(scene.name));
+
+      expect(tight, "a shape's own name has less than half an em of clear space inside it").toEqual([]);
+    });
+
     test(`${scene.name} keeps every tile label inside its tile`, async ({ page }) => {
       await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
       const overflowing = await page.$$eval(`${sel(scene.name)} svg .d-tile`, (tiles) =>
