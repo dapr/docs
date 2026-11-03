@@ -861,17 +861,30 @@ fact-check finding to raise, not a thing to quietly resolve.
 - **`httpCard()` is the same block with a border round it,** for a call that
   stands apart from the row rather than directly under it - the secrets
   pictures put theirs under a cluster, where bare lines would read as loose.
-  It can also carry a status chip and a response, which is what it was built
-  for, but no scene draws one today and the ruling above is why. If you ever
-  do, take both from the page: inventing a `200 OK` puts a fact in the picture
-  that is not on the page. Mind its height either way - it lays its lines out
-  from its own box, so the gap between the URL and whatever is under it is
-  what the height leaves over, and too short a card overlaps them silently.
+  The ruling above is about the bare block; a BORDERED card is an EXCHANGE,
+  and it can carry `request` above a status chip and `body` below it, which is
+  what `configuration-api-overview` and `state-management-overview` draw.
+  - **Take the status and both payloads from the page or the reference.**
+    Inventing a `200 OK` puts a fact in the picture that is not in the docs,
+    and it is usually wrong: saving state answers `204 No Content`, which is
+    one of five things the state overview's source image had wrong.
+  - **A payload of several lines sets itself LEFT and keeps its indentation**
+    (`indentCode()` turns leading spaces into non-breaking ones, or XML and
+    Hugo's minifier eat them); one line stays centred.
+  - **Size the box with `httpCardH()`.** The card stacks its lines from the
+    top of a block centred in the box, and refuses a box too shallow for them
+    rather than overflowing it silently. Several cards in a row should share a
+    TOP and each take its own depth: one depth for all of them is the deepest,
+    which strands a short exchange in an empty box, and centring each one's
+    contents in that emptiness puts the method lines at different heights so
+    they stop reading as the headings they are.
 
 Drawn this way already: `conversation-overview`, `configuration-example`,
 `state-management-example` (all three through `component-call.mjs`),
 `pubsub-howto-overview` and `secrets-mgmt-overview`; as a card, the three
-`secrets-*` overview scenes.
+`secrets-*` overview scenes, `service-invocation-example-detailed`, and - with
+a status and payloads on both sides of the divider - `configuration-api-overview`
+and `state-management-overview`.
 
 ### Grouping and centering
 

@@ -227,6 +227,18 @@
     -0.46,
     -1.1
   ],
+  "state-management-outbox": [
+    -0.15,
+    0
+  ],
+  "state-management-outbox-steps": [
+    0,
+    0
+  ],
+  "state-management-overview": [
+    0,
+    0
+  ],
   "workflow-async-http": [
     3.49,
     0

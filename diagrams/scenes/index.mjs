@@ -68,6 +68,9 @@ import distributedLockOverview from './distributed-lock-overview.mjs';
 import lockExample from './lock-example.mjs';
 import lockUnlockExample from './lock-unlock-example.mjs';
 import lockMultipleExample from './lock-multiple-example.mjs';
+import stateManagementOutbox from './state-management-outbox.mjs';
+import stateManagementOutboxSteps from './state-management-outbox-steps.mjs';
+import stateManagementOverview from './state-management-overview.mjs';
 
 export const scenes = {
   'agents-overview': agentsOverview,
@@ -137,4 +140,7 @@ export const scenes = {
   'lock-example': lockExample,
   'lock-unlock-example': lockUnlockExample,
   'lock-multiple-example': lockMultipleExample,
+  'state-management-outbox': stateManagementOutbox,
+  'state-management-outbox-steps': stateManagementOutboxSteps,
+  'state-management-overview': stateManagementOverview,
 };

@@ -700,8 +700,9 @@ const SCENE_ROWS = [
   },
   {
     name: 'pubsub-deadletter',
-    // Replaced /images/pubsub_deadletter.png. The cross is orange, not the
-    // source's red: deny in this set is orange and allow is navy.
+    // Replaced /images/pubsub_deadletter.png. The failed delivery is RED and
+    // dashed with a cross beside it, which is how this set draws a blocked
+    // path; allow stays navy and solid.
     page: '/developing-applications/building-blocks/pubsub/pubsub-deadletter/',
     labels: [
       'Publisher',
@@ -1158,6 +1159,68 @@ const SCENE_ROWS = [
       'Binary Store',
       'Search',
       'Vector',
+    ],
+  },
+  {
+    name: 'state-management-outbox',
+    // Replaced /images/state-management-outbox.png. The store is named State
+    // store rather than the source's "database": the page's own step one
+    // calls it the state store, and the feature needs a transactional one.
+    page: '/developing-applications/building-blocks/state-management/howto-outbox/',
+    labels: [
+      'Transaction',
+      'App A',
+      'Save state',
+      'State store',
+      'Write message',
+      'Message broker',
+      'Deliver message',
+      'App B',
+    ],
+  },
+  {
+    name: 'state-management-outbox-steps',
+    // Replaced /images/state-management-outbox-steps.png. The source's
+    // floating "Transaction" across the top is dropped: it names neither
+    // dashed box, and the page puts the atomic transaction in step three.
+    page: '/developing-applications/building-blocks/state-management/howto-outbox/',
+    labels: [
+      'User request processing (sync)',
+      'Background outbox processing (async)',
+      'My app',
+      'Save state',
+      'Response',
+      'Publish',
+      'Save state & marker',
+      'Internal topic',
+      'Consume',
+      'ACK/NACK',
+      'Read marker',
+      'Delete marker',
+      'External topic',
+      'State store',
+    ],
+  },
+  {
+    name: 'state-management-overview',
+    // Replaced /images/state-management-overview.png. Five corrections to the
+    // source's values are recorded in the scene's own header: the double-pipe
+    // key prefix, 204 on a save, no `query` wrapper, a filter key relative to
+    // the value, and `data` plus `etag` in a result.
+    page: '/developing-applications/building-blocks/state-management/state-management-overview/',
+    labels: [
+      'App',
+      'Dapr sidecar',
+      'State store component',
+      'Key',
+      'Value',
+      'myApp||weapon',
+      'myApp||planet',
+      '/v1.0/state/myStateStore',
+      '204 No Content',
+      '/v1.0/state/myStateStore/planet',
+      '200 OK',
+      '/v1.0-alpha1/state/myStateStore/query',
     ],
   },
 ];

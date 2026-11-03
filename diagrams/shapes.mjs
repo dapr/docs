@@ -749,6 +749,34 @@ export function pod({ x, y, w, h, name = 'Pod', captionW = 56, captionX, size = 
   return region({ x, y, w, h, stroke: C.blue, r: 8, caption: name, captionW, captionX, captionSize: size });
 }
 
+// LEADING SPACES BECOME NON-BREAKING ONES, or the indentation does not
+// arrive. Each line of a block is its own <tspan>, and a space at the start of
+// a tspan is whitespace at the boundary of a tag: XML collapses it and Hugo's
+// minifier drops what is left, which flattened a component's YAML to
+//
+//     metadata:
+//      name: localsecretstore
+//     spec:
+//      metadata:
+//      - name: secretsFile
+//      value: secrets.json
+//
+// where `value` belongs under `- name`. In YAML that is not a cosmetic
+// difference - it is a different document, and the one on the page would not
+// load. A non-breaking space is not whitespace to either, and in a monospace
+// face it is exactly as wide as the space it replaces. richLabel() carries the
+// same note for the same reason.
+//
+// Shared by the two cards that set code: codeCard() shows a file, httpCard()
+// shows a payload, and JSON loses as much to a dropped indent as YAML does to
+// a changed one.
+export function indentCode(code) {
+  return String(code)
+    .split('\n')
+    .map((line) => line.replace(/^ +/, (run) => ' '.repeat(run.length)))
+    .join('\n');
+}
+
 // AN HTTP EXCHANGE: a request over a divider, and the response under it.
 //
 // The configuration, state, secrets and pub/sub overviews all show a call to
@@ -765,24 +793,102 @@ export function pod({ x, y, w, h, name = 'Pod', captionW = 56, captionX, size = 
 // `statusW` is the measured width of the status chip. The exporter has no font
 // metrics, so a caller that cares measures it on the rendered page and writes
 // the number down; the default is an estimate good enough for "200 OK".
+//
+// A PAYLOAD MAY BE SEVERAL LINES, on either side of the divider: `request` is
+// what went up, `body` is what came back. A payload of one line stays CENTRED,
+// which is how every card drawn before this one reads; a payload of several is
+// LEFT ALIGNED, because JSON centred line by line is a picture of JSON rather
+// than JSON - the same reason codeCard() aligns its code left.
+//
+// The blocks are STACKED, and the stack is centred in the card: method, URL,
+// request, divider, response, each a gap below the last, with whatever height
+// is left over split evenly above and below. Anchoring the response to the
+// BOTTOM edge instead - which is what this did while every card held one line
+// - spreads a short exchange across a tall card and strands the divider
+// halfway down empty space, which is exactly what three cards of one size do
+// when one of them has nine lines and another has one.
+//
+// A card shorter than its contents need is refused rather than drawn
+// overflowing: httpCardH() is the number to size it from.
+
+// How tall a payload block of k lines is. It is label() that sets the lines
+// out, so this is label()'s own leading rather than a number of its own:
+// k lines occupy one line of type plus k - 1 steps between them, and label()
+// centres the block on the y it is given, which is what the card places.
+const PAYLOAD_LEAD = 1.2;
+const payloadH = (content, size) => (content
+  ? String(content).split('\n').length * size * PAYLOAD_LEAD - size * (PAYLOAD_LEAD - 1)
+  : 0);
+
+// The LEAST height a card needs to hold what it is given, which is what a
+// scene sizes its canvas from. Typing a height instead is how the pub/sub
+// cards ended up with a divider sitting on a line of JSON.
+export function httpCardH({ size = 13, request = '', body = '', status = '' }) {
+  const pad = size * 1.8;
+  const lead = size * 1.25;
+  const gap = size * 1.1;
+  const reqH = payloadH(request, size);
+  const bodyH = payloadH(body, size);
+  // The divider needs the chip's own depth plus a gap on each side; with no
+  // divider, two blocks still need one gap between them.
+  const mid = status ? size * 1.7 + gap * 2 : ((reqH || bodyH) ? gap : 0);
+  return +(pad * 2 + size + lead * 1.4 + (reqH ? gap + reqH : 0) + mid + bodyH).toFixed(2);
+}
+
 export function httpCard({
-  x, y, w, h, method, url, status = '', body = '', size = 13, statusW,
+  x, y, w, h, method, url, status = '', request = '', body = '', size = 13, statusW,
   stroke = C.caption, fill = C.bg,
 }) {
   if (size < MIN_LABEL) throw new RangeError(`httpCard(): size ${size} is below ${MIN_LABEL}px`);
   if (!method) throw new Error('httpCard(): a method names the request and is required');
+  const natural = httpCardH({ size, request, body, status });
+  if (h < natural) {
+    throw new RangeError(`httpCard(): ${h} deep cannot hold what it is given - it needs ${natural}; httpCardH() is that number`);
+  }
   const top = y - h / 2;
-  const bottom = y + h / 2;
   const pad = size * 1.8;
   const lead = size * 1.25;
-  const methodY = top + pad + size * 0.5;
+  const gap = size * 1.1;
+  const reqH = payloadH(request, size);
+  const bodyH = payloadH(body, size);
+  const chipH = size * 1.7;
+  // The stack runs from the top of the centred block; `cur` is the lower edge
+  // of whatever was laid out last.
+  let cur = y - natural / 2 + pad;
+  const methodY = cur + size * 0.5;
+  cur += size;
   const urlY = methodY + lead * 1.4;
-  const bodyY = bottom - pad - size * 0.5;
-  // Halfway between what was asked and what came back, so the divider moves
-  // with the card instead of sitting at a y somebody picked.
-  const lineY = +((urlY + bodyY) / 2).toFixed(2);
+  cur = urlY + size * 0.5;
+  let reqY = 0;
+  if (request) {
+    reqY = cur + gap + reqH / 2;
+    cur = reqY + reqH / 2;
+  }
+  let lineY = 0;
+  if (status) {
+    lineY = +(cur + gap + chipH / 2).toFixed(2);
+    cur = lineY + chipH / 2 + gap;
+  } else if (body) {
+    cur += gap;
+  }
+  const bodyY = cur + bodyH / 2;
   const chipW = statusW ?? +(String(status).length * size * 0.62 + size).toFixed(2);
   const parts = Array.isArray(url) ? url : [{ text: String(url ?? '') }];
+  // Weight 400, which is what richLabel sets the URL above it in: a payload
+  // and the URL are the same kind of text, and label()'s own default of 600
+  // made the body read as the louder of the two.
+  const payload = (content, cy) => {
+    const many = String(content).includes('\n');
+    return label({
+      x: many ? x - w / 2 + pad : x,
+      y: cy,
+      text: many ? indentCode(content) : content,
+      size,
+      weight: 400,
+      mono: true,
+      anchor: many ? 'start' : 'middle',
+    });
+  };
   return el('g', { class: 'd-http-card' }, [
     el('rect', {
       x: n(x - w / 2), y: n(top), width: n(w), height: n(h), rx: 10,
@@ -790,6 +896,7 @@ export function httpCard({
     }),
     label({ x, y: methodY, text: method, size, weight: 700, color: C.blue }),
     url ? richLabel({ x, y: urlY, parts, size, anchor: 'middle', mono: true }) : null,
+    request ? payload(request, reqY) : null,
     status
       ? group([
         el('line', {
@@ -800,13 +907,10 @@ export function httpCard({
         // the divider striking through the status - the same thing a label's
         // halo does, and what `paints ground behind any label a line crosses`
         // checks for.
-        pill({ x, y: lineY, w: chipW, h: size * 1.7, text: status, color: stroke, size }),
+        pill({ x, y: lineY, w: chipW, h: chipH, text: status, color: stroke, size }),
       ])
       : null,
-    // Weight 400, which is what richLabel sets the URL above it in: the
-    // request and the response are the same kind of text, and label()'s own
-    // default of 600 made the body read as the louder of the two.
-    body ? label({ x, y: bodyY, text: body, size, weight: 400, mono: true }) : null,
+    body ? payload(body, bodyY) : null,
   ]);
 }
 
@@ -832,27 +936,8 @@ export function codeCard({
 }) {
   if (size < MIN_LABEL) throw new RangeError(`codeCard(): size ${size} is below ${MIN_LABEL}px`);
   const top = y - h / 2;
-  // LEADING SPACES BECOME NON-BREAKING ONES, or the indentation does not
-  // arrive. Each line is its own <tspan>, and a space at the start of a tspan
-  // is whitespace at the boundary of a tag: XML collapses it and Hugo's
-  // minifier drops what is left, which flattened a component's YAML to
-  //
-  //     metadata:
-  //      name: localsecretstore
-  //     spec:
-  //      metadata:
-  //      - name: secretsFile
-  //      value: secrets.json
-  //
-  // where `value` belongs under `- name`. In YAML that is not a cosmetic
-  // difference - it is a different document, and the one on the page would not
-  // load. A non-breaking space is not whitespace to either, and in a monospace
-  // face it is exactly as wide as the space it replaces. richLabel() carries
-  // the same note for the same reason.
-  const indented = String(code)
-    .split('\n')
-    .map((line) => line.replace(/^ +/, (run) => ' '.repeat(run.length)))
-    .join('\n');
+  // Leading spaces become non-breaking ones; indentCode() carries the why.
+  const indented = indentCode(code);
   return el('g', { class: 'd-code-card' }, [
     title
       ? label({ x, y: top - titleDy, text: title, size: titleSize, weight: 700 })

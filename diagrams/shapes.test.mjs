@@ -926,6 +926,69 @@ test('httpCard paints ground behind the status so the divider cannot cross it', 
   assert.equal(plate.attrs.fill, C.bg, 'filled with the page ground');
 });
 
+test('httpCard stacks a request payload over the divider and the response under it', () => {
+  const card = S.httpCard({
+    x: 0,
+    y: 0,
+    w: 400,
+    h: S.httpCardH({ request: '{\n  "a": 1\n}', body: '{\n  "b": 2\n}', status: '200 OK' }),
+    method: 'POST',
+    url: '/v1.0/state/store',
+    status: '200 OK',
+    request: '{\n  "a": 1\n}',
+    body: '{\n  "b": 2\n}',
+  });
+  const at = (text) => +find(card, (n) => n.tag === 'text' && said(n).includes(text))[0].attrs.y;
+  const line = +find(card, (n) => n.tag === 'line')[0].attrs.y1;
+  assert.ok(at('"a"') < line, 'the request is above the divider');
+  assert.ok(at('"b"') > line, 'and the response below it');
+});
+
+test('httpCard sets a payload of several lines left, and one line centred', () => {
+  // JSON centred line by line is a picture of JSON rather than JSON, which is
+  // why codeCard() aligns its code left; a one-line response has no shape to
+  // lose, and every card drawn before `request` existed centres it.
+  const many = S.httpCard({
+    x: 0, y: 0, w: 400, h: 240, method: 'GET', url: '/v1.0/x', body: '{\n  "b": 2\n}',
+  });
+  const one = S.httpCard({
+    x: 0, y: 0, w: 400, h: 160, method: 'GET', url: '/v1.0/x', body: '"v"',
+  });
+  const body = (card, text) => find(card, (n) => n.tag === 'text' && said(n).includes(text))[0];
+  assert.equal(body(many, '"b"').attrs['text-anchor'], 'start');
+  assert.equal(body(one, '"v"').attrs['text-anchor'], 'middle');
+});
+
+test('httpCard keeps a payload indented, which JSON needs to be readable', () => {
+  // Same failure codeCard() carries the note for: a space at the start of a
+  // tspan is whitespace at a tag boundary, and Hugo's minifier drops it.
+  const card = S.httpCard({
+    x: 0, y: 0, w: 400, h: 240, method: 'POST', url: '/v1.0/x',
+    request: '{\n    "filter": {}\n}',
+  });
+  const spans = find(card, (n) => n.tag === 'tspan').map(said);
+  assert.ok(spans.some((s) => s.startsWith('    "filter"')), spans.join('|'));
+});
+
+test('httpCard refuses a box too shallow for what it is given', () => {
+  // Drawn, it would overflow the border and nothing but a render could see
+  // it; httpCardH() is the number a scene sizes the box from.
+  assert.throws(() => S.httpCard({
+    x: 0, y: 0, w: 400, h: 90,
+    method: 'POST', url: '/v1.0/x', status: '200 OK', body: '{\n  "b": 2\n}',
+  }), /needs/);
+});
+
+test('httpCardH gives a card room for everything it is asked to hold', () => {
+  // Taller for more lines, and taller again for a divider between them - the
+  // number a scene sizes its canvas from rather than one somebody typed.
+  const bare = S.httpCardH({ body: '"v"' });
+  const deep = S.httpCardH({ body: '{\n  "b": 2\n}' });
+  const both = S.httpCardH({ request: '{\n  "a": 1\n}', body: '{\n  "b": 2\n}', status: '200 OK' });
+  assert.ok(deep > bare, `${deep} > ${bare}`);
+  assert.ok(both > deep, `${both} > ${deep}`);
+});
+
 test('httpCard refuses type below the floor, and a card with no method', () => {
   assert.throws(() => S.httpCard({ x: 0, y: 0, w: 300, h: 160, method: 'GET', size: 4 }), /below/);
   assert.throws(() => S.httpCard({ x: 0, y: 0, w: 300, h: 160 }), /method/);
