@@ -25,6 +25,8 @@ spec:
   - name: keyRing
     value: <replace-with-key-ring-name>
   # See the GCP credentials section below for all authentication options
+  - name: type
+    value: service_account
   - name: private_key_id
     value: <replace-with-private-key-id>
   - name: client_email
@@ -51,15 +53,19 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 
 Since the GCP Cloud KMS component uses the GCP Go Client Libraries, by default it authenticates using **Application Default Credentials**. This is explained further in the [Authenticate to GCP Cloud services using client libraries](https://cloud.google.com/docs/authentication/client-libraries) guide. Also, see how to [Set up Application Default Credentials](https://cloud.google.com/docs/authentication/provide-credentials-adc).
 
-Alternatively, you can provide the fields of a service account JSON document explicitly, using the same metadata property names as the other GCP components: `type`, `private_key_id`, `private_key`, `client_email`, `client_id`, `auth_uri`, `token_uri`, `auth_provider_x509_cert_url`, and `client_x509_cert_url`.
+Alternatively, provide the service account JSON fields explicitly and set `type` to `service_account`. Use the same metadata property names as the other GCP components: `type`, `private_key_id`, `private_key`, `client_email`, `client_id`, `auth_uri`, `token_uri`, `auth_provider_x509_cert_url`, and `client_x509_cert_url`.
 
 The identity used by the component needs the `cloudkms.cryptoKeyVersions.useToEncrypt`, `cloudkms.cryptoKeyVersions.useToDecrypt`, `cloudkms.cryptoKeyVersions.useToSign`, and `cloudkms.cryptoKeyVersions.viewPublicKey` permissions on the keys it uses, depending on the operations your application performs. The predefined `roles/cloudkms.cryptoOperator` role includes all of them.
+
+All asymmetric operations require `cloudkms.cryptoKeyVersions.viewPublicKey`, including signing and asymmetric decryption, because the component checks the requested algorithm against the versioned public key before proceeding. If you use a narrower signing or decryption role, also grant `roles/cloudkms.publicKeyViewer` on the key. `roles/cloudkms.signerVerifier` already includes public-key access. See the [Cloud KMS permissions and roles](https://cloud.google.com/kms/docs/reference/permissions-and-roles) for least-privilege role selection.
 
 ## Referencing keys
 
 Keys are referenced by their name within the configured key ring, optionally followed by a key version: `mykey` or `mykey/1`.
 
-Operations that use an asymmetric key — everything other than encrypting and decrypting with a symmetric key — always require a key version, because Cloud KMS performs them against a specific `CryptoKeyVersion`.
+Symmetric encryption with `mykey` uses the current primary version. Encryption or wrapping with `mykey/3` uses that specific version, even if a different version is primary. Symmetric decryption and unwrapping always select the version embedded in the ciphertext and address the parent CryptoKey; a supplied version suffix does not restrict which ciphertext version can be decrypted.
+
+Asymmetric encryption, decryption, signing, verification, and public-key retrieval always require a key version. Wrapping and unwrapping require a version when the wrapping key is asymmetric; symmetric wrapping follows the symmetric encryption and decryption rules above.
 
 ## Supported algorithms
 
@@ -74,9 +80,12 @@ Operations that use an asymmetric key — everything other than encrypting and d
 | `ES256` / `ES384` | `EC_SIGN_P256_SHA256` / `EC_SIGN_P384_SHA384` |
 | `EdDSA` | `EC_SIGN_ED25519` |
 
+The requested asymmetric algorithm must match the key version's algorithm, including its purpose, padding scheme, and hash. For example, `RSA-OAEP` is rejected for an `RSA_DECRYPT_OAEP_2048_SHA256` key, and `RS256` is rejected for a PSS signing key. Unknown or incompatible algorithms are rejected before the crypto operation.
+
 A few behaviors follow from how Cloud KMS implements these algorithms:
 
-- Symmetric keys use the `GOOGLE_SYMMETRIC_ENCRYPTION` algorithm identifier, which has no JOSE equivalent because Cloud KMS generates the nonce itself and returns the authentication tag as part of the ciphertext. Passing a nonce returns an error, and decryption always resolves the key version from the ciphertext.
+- Symmetric keys use the `GOOGLE_SYMMETRIC_ENCRYPTION` algorithm identifier, which has no JOSE equivalent because Cloud KMS generates the nonce itself and returns the authentication tag as part of the ciphertext. Decryption always resolves the key version from the ciphertext.
+- Non-empty nonces are rejected for encryption, decryption, wrapping, and unwrapping. Separate authentication tags are rejected for decryption and unwrapping; Cloud KMS carries the symmetric authentication tag inside its ciphertext.
 - Encrypting with an asymmetric key happens inside Dapr, using the public key retrieved from Cloud KMS, because Cloud KMS only exposes asymmetric *decryption*. Public keys of a pinned key version are cached, since key versions are immutable.
 - Cloud KMS does not accept an OAEP label, so associated data is rejected when encrypting or decrypting with an asymmetric key.
 - Only symmetric keys can be wrapped, so that the unwrapped key can be reconstructed unambiguously.
