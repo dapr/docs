@@ -68,6 +68,22 @@ const EXCEPTIONS = {
   // to mirror the first for the hop to be short, and the two services would
   // face opposite ways. Reaching 16:9 at this height means a canvas nearly
   // twice as wide as anything in the drawing.
+  // The 16:9 floor and the type-size rule pull opposite ways on this one, and
+  // the type-size rule is the one about whether a reader can read it. The
+  // drawing is four stages deep - two gates that decide whether verification
+  // runs, the seven checks, the gate that asks whether every event is
+  // covered, and the two ends - and the seven checks are one sequence, so
+  // they stack. Laid out across instead, with the seven in a row and the
+  // failure bus beneath them, it measures 1582 wide. MEASURED, not estimated:
+  // at 1582 the width formula returns its cap of 100, and a 13-unit label
+  // lands at 7.4 CSS px in a 900px column. As drawn it is 994 wide, the
+  // formula returns 90, and the same label lands at 10.6 - the size that was
+  // reviewed and accepted. Fitting the frame here costs a third of the type.
+  'workflow-signing-verify':
+    'Two entry gates, seven checks in sequence with a failure bus, a gate on '
+    + 'coverage and two ends. Across instead of down it is 1582 wide, where '
+    + 'the width formula caps at 100 and a 13-unit label renders at 7.4 CSS '
+    + 'px against the house 10.6.',
   'actors-calling-method':
     'Two pods stacked, with the call that enters above them and the call that '
     + 'leaves below. The stacking is the argument - the second step is the hop '

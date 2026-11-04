@@ -81,6 +81,10 @@ import actorsConcurrency from './actors-concurrency.mjs';
 import workflowOverview from './workflow-overview.mjs';
 import workflowStatefulClient from './workflow-stateful-client.mjs';
 import workflowFastPath from './workflow-fast-path.mjs';
+import workflowSigningChain from './workflow-signing-chain.mjs';
+import workflowSigningSteps from './workflow-signing-steps.mjs';
+import workflowSigningVerify from './workflow-signing-verify.mjs';
+import workflowSigningFailure from './workflow-signing-failure.mjs';
 
 export const scenes = {
   'agents-overview': agentsOverview,
@@ -163,4 +167,8 @@ export const scenes = {
   'workflow-overview': workflowOverview,
   'workflow-stateful-client': workflowStatefulClient,
   'workflow-fast-path': workflowFastPath,
+  'workflow-signing-chain': workflowSigningChain,
+  'workflow-signing-steps': workflowSigningSteps,
+  'workflow-signing-verify': workflowSigningVerify,
+  'workflow-signing-failure': workflowSigningFailure,
 };

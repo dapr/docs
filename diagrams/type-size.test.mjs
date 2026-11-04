@@ -81,6 +81,13 @@ const OFF_BODY = {
   // flowchart is a note() - the branch words and the nine questions - and
   // note() is NOTE_SIZE. The shapes it names are all at FLOW.SIZE.
   'workflow-fast-path': 12,
+  // The four history-signing scenes, same again. The chain scene is the
+  // clearest case: eight of its labels are note()s - six cert indices and two
+  // prev digests - and every one is HALOED, which draws the text twice, so
+  // the notes outnumber the fourteen shape names that are at FLOW.SIZE.
+  'workflow-signing-chain': 12,
+  'workflow-signing-verify': 12,
+  'workflow-signing-failure': 12,
 };
 
 // The sizes of the scene's own FREE labels, from the built node tree.

@@ -311,6 +311,22 @@
     -0.15,
     0
   ],
+  "workflow-signing-chain": [
+    0,
+    -6.5
+  ],
+  "workflow-signing-failure": [
+    0,
+    -0.4
+  ],
+  "workflow-signing-steps": [
+    0,
+    0
+  ],
+  "workflow-signing-verify": [
+    0,
+    -0.1
+  ],
   "workflow-stateful-client": [
     0,
     -0.2
