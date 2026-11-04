@@ -1634,6 +1634,70 @@ const SCENE_ROWS = [
       'child workflow',
     ],
   },
+  {
+    name: 'mcp-access-control',
+    // Replaced the page's one `flowchart LR`, under "How OPA gates per-tool MCP traffic".
+    page: '/developing-ai/mcp/mcp-access-control/',
+    labels: [
+      'Dapr sidecar - MCP server side',
+      'accessControl App-ID gate',
+      'allow',
+      'OPA middleware tool-level gate',
+      '403',
+      'Agent / MCP client',
+      'POST',
+      '/method/mcp',
+      'dapr-caller-app-id',
+      'MCP server',
+    ],
+  },
+  {
+    name: 'mcp-service-invocation',
+    // Replaced the page's one `flowchart LR`, under "How it works". Shares every measurement with the scene above it via diagrams/mcp.mjs.
+    page: '/developing-ai/mcp/mcp-service-invocation/',
+    labels: [
+      'Dapr',
+      'Access policy',
+      'allow',
+      'Bearer middleware',
+      'valid JWT',
+      'deny',
+      '401',
+      'Agent / MCP client',
+      'mcp-client App ID',
+      'mcp-server App ID',
+      'MCP server',
+    ],
+  },
+  {
+    name: 'rag-overview',
+    // Replaced the page's one `flowchart TD`. The orchestrator runs across; the scene header says why.
+    page: '/developing-ai/rag/',
+    labels: [
+      'rag_ingest orchestrator (Dapr Workflow)',
+      'done',
+      'valid',
+      'more batches',
+      'download',
+      'parse + chunk',
+      'embed',
+      'write',
+      'count + verify',
+      'flip active pointer',
+      'resolve active version, then search',
+      'discover_and_manifest',
+      'get_manifest_batch',
+      'process_document x N (bounded batch)',
+      'update_status',
+      'validate_version',
+      'activate_version',
+      'Document source S3 / Azure Blob',
+      'Parser + splitter',
+      'Embedder OpenAI / Azure OpenAI',
+      'Vector index pgvector / Pinecone / Azure AI Search',
+      'Query-time reader',
+    ],
+  },
 ];
 
 // One row per (scene, page), which is what every check below reads. The rows
@@ -2155,6 +2219,178 @@ for (const scene of SCENES) {
       }, sel(scene.name));
 
       expect(hits, 'a free label is drawn on top of a shape').toEqual([]);
+    });
+
+    // A WORD DRAWN ON AN ARROWHEAD, which every other check in the suite
+    // reads as fine. The word is haloed, so `paints ground behind any label a
+    // line crosses` is satisfied - and what the halo then hides is the head
+    // itself, which is the one part of a run that says which way it goes. On
+    // `rag-overview` all three runs into the systems row had their word set
+    // the house eleven units above the shape, and eleven units is where the
+    // chevron is: a head is drawn BACK from its tip, seven units along the
+    // line it ends, so the type and the head were in the same place and the
+    // arrows read as plain lines touching boxes.
+    //
+    // WHAT IT CHECKS. No text at all - not a free word, not a shape's own
+    // name - may overlap the chevron arrow() draws at a run's end. There is
+    // no tolerance band and no "mostly clear": a head is eight units of ink
+    // whose whole job is to be seen, and a word over any of it has taken the
+    // direction out of the drawing. The lever is the word's offset, which is
+    // the scene's own number to set; nothing about the head is adjustable.
+    //
+    // WHY THE POLYLINE. arrow() draws its line as a <line> and its head as
+    // the only <polyline> in the group, and elbowArrow() lays its chevron
+    // down with the same arrow(), so one selector finds every head in the
+    // set however the run that carries it was built.
+    test(`${scene.name} keeps every label clear of an arrowhead`, async ({ page }) => {
+      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      await page.evaluate(() => document.fonts.ready);
+      const hits = await page.evaluate((root) => {
+        const svg = document.querySelector(`${root} svg`);
+        const INSET = 1; // a descender grazing the tip is not a collision
+        const heads = [...svg.querySelectorAll('g.d-arrow > polyline')]
+          .map((h) => h.getBoundingClientRect())
+          .filter((r) => r.width || r.height);
+        if (!heads.length) return [];
+
+        const found = [];
+        for (const t of svg.querySelectorAll('text')) {
+          if (t.getAttribute('aria-hidden') === 'true') continue; // the halo copy
+          const r = t.getBoundingClientRect();
+          if (!r.width || !r.height) continue;
+          const box = { l: r.left + INSET, r: r.right - INSET, t: r.top + INSET, b: r.bottom - INSET };
+          if (box.r <= box.l || box.b <= box.t) continue;
+          if (heads.some((h) => box.l < h.right && h.left < box.r && box.t < h.bottom && h.top < box.b)) {
+            found.push(t.textContent.replace(/\s+/g, ' ').trim());
+          }
+        }
+        return [...new Set(found)];
+      }, sel(scene.name));
+
+      expect(hits, 'a label is drawn over an arrowhead - lift the word clear of the head, not of the shape').toEqual([]);
+    });
+
+    // TWO WORDS CROWDING EACH OTHER, and a word lying across a run it does
+    // not name. Both shipped on `rag-overview` at once: `write` sat on the
+    // descent into the vector index AND across validate_version's run to the
+    // same store, three units under `count + verify`. Every check passed. The
+    // word was the right size, inside the canvas, off every shape, haloed
+    // against the lines it crossed, and its colours resolved. What a reader
+    // got was two words in one place naming two different runs.
+    //
+    // WHAT IT CHECKS, for the scene's own FREE labels - the ones it places
+    // itself, told apart by the "no `d-` ancestor" rule type-size.test.mjs
+    // uses, so a shape's own name is somebody else's problem:
+    //
+    //   1. No two of them come within MIN_AIR of each other. Boxes are clear
+    //      when they are apart on EITHER axis, which is what lets a column of
+    //      words run down a bus at a sensible pitch. A BLOCK is exempt - see
+    //      below.
+    //   2. At most ONE run crosses any one of them. A word on a run names
+    //      that run; a word two runs pass through names neither, and no
+    //      offset of a few units will tell a reader which was meant. A run
+    //      here is the whole arrow - elbowArrow() draws a path and lays a
+    //      chevron over its last leg, and those are one line, not two.
+    //
+    // A BLOCK IS TYPE SET AS SEVERAL LABELS, and it is meant to sit at line
+    // spacing. The set writes a name over its own sub-line this way all over
+    // - "Sentry" above "Certificate authority", "Metadata API" above
+    // "Discover capabilities and set attributes", "DAPR_API_TOKEN" above
+    // "APP_API_TOKEN" - and in every one of them the two labels are SET TO
+    // THE SAME EDGE: same left, same right, or same centre, because one call
+    // was written directly under the other. Seven scenes do it, and holding
+    // them to the air below would be telling a reviewed set to stop writing
+    // the way it writes. A pair that agrees on an edge to within ALIGN is
+    // therefore one piece of type and is skipped. A pair that does not is two
+    // words that have drifted into each other, which is the defect: `write`
+    // and `count + verify` agreed on nothing - 18 units apart on the left, 68
+    // on the right, 43 on the centre - and still overlapped.
+    //
+    // SIX UNITS, and measured in SCENE units: the svg is scaled to the prose
+    // column by a different factor on every page, so a bar in screen pixels
+    // would be a different bar on each. Six is under the eight
+    // `keeps its shapes clear of each other` holds two drawn objects to -
+    // type sits closer together than boxes do.
+    test(`${scene.name} keeps every free label clear of the lines and labels around it`, async ({ page }) => {
+      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      await page.evaluate(() => document.fonts.ready);
+      const hits = await page.evaluate((root) => {
+        const svg = document.querySelector(`${root} svg`);
+        const MIN_AIR = 6;
+        // How near two labels' left edges, right edges or centres have to be
+        // for the pair to read as one piece of type set on one axis.
+        const ALIGN = 4;
+        const INSET = 1;
+        // px per scene unit, so the bars above are the same bars on every page.
+        const unit = svg.getScreenCTM()?.a ?? 1;
+        const air = MIN_AIR * unit;
+        const aligned = ALIGN * unit;
+
+        const free = [];
+        for (const t of svg.querySelectorAll('text')) {
+          if (t.getAttribute('aria-hidden') === 'true') continue;
+          if (t.closest('g[class^="d-"]')) continue; // a shape's own name
+          const r = t.getBoundingClientRect();
+          if (!r.width || !r.height) continue;
+          free.push({ el: t, r, text: t.textContent.replace(/\s+/g, ' ').trim() });
+        }
+
+        const found = [];
+
+        // 1. two words too near each other
+        for (let i = 0; i < free.length; i++) {
+          for (let j = i + 1; j < free.length; j++) {
+            const a = free[i].r;
+            const b = free[j].r;
+            // One piece of type set as two labels: skip it.
+            const sameEdge = Math.abs(a.left - b.left) <= aligned
+              || Math.abs(a.right - b.right) <= aligned
+              || Math.abs((a.left + a.right) / 2 - (b.left + b.right) / 2) <= aligned;
+            if (sameEdge) continue;
+            const apartX = b.left - a.right >= air || a.left - b.right >= air;
+            const apartY = b.top - a.bottom >= air || a.top - b.bottom >= air;
+            if (!apartX && !apartY) {
+              found.push(`"${free[i].text}" and "${free[j].text}" are less than ${MIN_AIR} apart`);
+            }
+          }
+        }
+
+        // 2. a word with more than one run through it
+        const runOf = (el) => el.closest('g.d-elbow-arrow') ?? el.closest('g.d-arrow') ?? el;
+        const strokes = [];
+        for (const g of svg.querySelectorAll('g.d-arrow line, g.d-arrow polyline, g.d-elbow-arrow path')) {
+          if (typeof g.getTotalLength !== 'function') continue;
+          let len = 0;
+          try { len = g.getTotalLength(); } catch { continue; }
+          const m = len && g.getScreenCTM();
+          if (!m) continue;
+          const pts = [];
+          const stepLen = Math.max(0.75, len / 4000);
+          for (let d = 0; d <= len; d += stepLen) {
+            const q = g.getPointAtLength(d);
+            pts.push(new DOMPoint(q.x, q.y).matrixTransform(m));
+          }
+          strokes.push({ run: runOf(g), pts });
+        }
+
+        for (const f of free) {
+          const box = {
+            l: f.r.left + INSET, r: f.r.right - INSET, t: f.r.top + INSET, b: f.r.bottom - INSET,
+          };
+          if (box.r <= box.l || box.b <= box.t) continue;
+          const runs = new Set();
+          for (const s of strokes) {
+            if (s.pts.some((q) => q.x > box.l && q.x < box.r && q.y > box.t && q.y < box.b)) {
+              runs.add(s.run);
+            }
+          }
+          if (runs.size > 1) found.push(`"${f.text}" has ${runs.size} runs through it`);
+        }
+
+        return [...new Set(found)];
+      }, sel(scene.name));
+
+      expect(hits, 'a free label is crowded by another label or claimed by two runs').toEqual([]);
     });
 
     // The point of the standalone copy: a file that still looks like the

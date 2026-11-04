@@ -29,6 +29,7 @@ button and no reduced-motion path.
 | Shape builders | `diagrams/shapes.mjs`: hexagons, arrows, cylinders, panels, tiles and the rest |
 | Brand marks and icons | `diagrams/icons.mjs`: reads a vendored SVG, screens it, prefixes its ids, returns nodes |
 | The Dapr API catalogue | `diagrams/apis.mjs`: one definition per API and cross-cutting concern, and `apiTile()`, which draws the block |
+| The two MCP pictures | `diagrams/mcp.mjs`: the measurements `mcp-access-control` and `mcp-service-invocation` agree on, and `ask()`, `word()`, `refusal()` and `sidecarLane()` |
 | The language and cloud marks | `diagrams/brands.mjs`: the rows of vendored marks that name a LANGUAGE or a CLOUD, with the box each draws in, and `scaleMarks()` to take a whole row to another size |
 | One scene per diagram | `diagrams/scenes/<name>.mjs`, registered in `diagrams/scenes/index.mjs` |
 | Exporter | `diagrams/export.mjs`, run as `npm run export:diagrams` |
@@ -480,6 +481,36 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
   annotated: a 78-unit label over a 77-unit run. The rendered test
   `keeps every free label clear of the shapes around it` is the check, and it
   names both the label and the shape it hit.
+- **A word above a shape clears the ARROWHEAD, not the shape.** A head is
+  drawn BACK from its tip - seven units of chevron along the line it ends - so
+  the eleven units a word normally rides above a run put the type exactly
+  where the head is. The halo then hides the one part of a run that says which
+  way it goes, and every other check still passes. On `rag-overview` all three
+  runs into the systems row shipped to review like this and read as plain
+  lines touching boxes. Where a word sits over the END of a run, give it its
+  own constant - `HEAD_DY`, about 24 - and say in the scene why it is not
+  `WORD_DY`. `keeps every label clear of an arrowhead` is the check, and it
+  allows no tolerance: nothing about the head is adjustable, so the lever is
+  always the word.
+- **A word on a run names ONE run, and keeps its distance from the next
+  word.** Two runs through one label name neither of them, and no offset of a
+  few units will tell a reader which was meant - move the word onto a stretch
+  of its own run that nothing else crosses. `rag-overview` had `write` lying
+  across `validate_version`'s run three units under `count + verify`; the fix
+  was to drop it below the bar the last two steps use, where its own descent
+  is the only line anywhere near it. `keeps every free label clear of the
+  lines and labels around it` is the check: six scene units of air between any
+  two free labels, and at most one run through any one of them.
+- **Two runs that share a stretch of path draw it ONCE.** Laying one over the
+  other is not the same picture twice: each path sets its dashes out from its
+  own start, so two DASHED runs at different phases fill in each other's gaps
+  and the shared stretch comes out SOLID - which in this set means traffic
+  that happens, the one thing the dash is there to deny. Both MCP pictures
+  shipped a refusal lane like this. Give the whole run to whichever end is
+  furthest from the destination and let the nearer one stop on it in a T,
+  with `heads: 'none'` so it carries no chevron of its own: it does not
+  arrive anywhere, and the head at the end of the run it joins already says
+  where the traffic goes.
 - **A region's caption is set in the DIAGRAM's text size, not `region()`'s
   default 15.** Every concept scene has a `TEXT` constant and passes
   `captionSize: TEXT`. Left at the default, a lane's name sat two steps above

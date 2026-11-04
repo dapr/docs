@@ -88,6 +88,10 @@ const OFF_BODY = {
   'workflow-signing-chain': 12,
   'workflow-signing-verify': 12,
   'workflow-signing-failure': 12,
+  // The RAG orchestrator, same reason as every flow scene above it: each of
+  // its edge labels is a note() at NOTE_SIZE, each is haloed - which draws
+  // the text twice - and there are more of them than there are activities.
+  'rag-overview': 12,
 };
 
 // The sizes of the scene's own FREE labels, from the built node tree.

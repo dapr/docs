@@ -93,6 +93,9 @@ import workflowStateStoreInteractions from './workflow-state-store-interactions.
 import workflowsArchitectureK8s from './workflows-architecture-k8s.mjs';
 import workflowExecution from './workflow-execution.mjs';
 import workflowActorScaleOut from './workflow-actor-scale-out.mjs';
+import mcpAccessControl from './mcp-access-control.mjs';
+import mcpServiceInvocation from './mcp-service-invocation.mjs';
+import ragOverview from './rag-overview.mjs';
 
 export const scenes = {
   'agents-overview': agentsOverview,
@@ -187,4 +190,7 @@ export const scenes = {
   'workflows-architecture-k8s': workflowsArchitectureK8s,
   'workflow-execution': workflowExecution,
   'workflow-actor-scale-out': workflowActorScaleOut,
+  'mcp-access-control': mcpAccessControl,
+  'mcp-service-invocation': mcpServiceInvocation,
+  'rag-overview': ragOverview,
 };
