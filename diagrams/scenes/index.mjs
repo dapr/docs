@@ -85,6 +85,14 @@ import workflowSigningChain from './workflow-signing-chain.mjs';
 import workflowSigningSteps from './workflow-signing-steps.mjs';
 import workflowSigningVerify from './workflow-signing-verify.mjs';
 import workflowSigningFailure from './workflow-signing-failure.mjs';
+import workflowEngineProtocol from './workflow-engine-protocol.mjs';
+import workflowActorFlowchart from './workflow-actor-flowchart.mjs';
+import workflowActivityActorFlowchart from './workflow-activity-actor-flowchart.mjs';
+import workflowActorReminderFlow from './workflow-actor-reminder-flow.mjs';
+import workflowStateStoreInteractions from './workflow-state-store-interactions.mjs';
+import workflowsArchitectureK8s from './workflows-architecture-k8s.mjs';
+import workflowExecution from './workflow-execution.mjs';
+import workflowActorScaleOut from './workflow-actor-scale-out.mjs';
 
 export const scenes = {
   'agents-overview': agentsOverview,
@@ -171,4 +179,12 @@ export const scenes = {
   'workflow-signing-steps': workflowSigningSteps,
   'workflow-signing-verify': workflowSigningVerify,
   'workflow-signing-failure': workflowSigningFailure,
+  'workflow-engine-protocol': workflowEngineProtocol,
+  'workflow-actor-flowchart': workflowActorFlowchart,
+  'workflow-activity-actor-flowchart': workflowActivityActorFlowchart,
+  'workflow-actor-reminder-flow': workflowActorReminderFlow,
+  'workflow-state-store-interactions': workflowStateStoreInteractions,
+  'workflows-architecture-k8s': workflowsArchitectureK8s,
+  'workflow-execution': workflowExecution,
+  'workflow-actor-scale-out': workflowActorScaleOut,
 };

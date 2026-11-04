@@ -1501,6 +1501,139 @@ const SCENE_ROWS = [
       'State store NOT modified',
     ],
   },
+
+  {
+    name: 'workflows-architecture-k8s',
+    // Replaced workflows-architecture-k8s.png, at the top of the page.
+    page: '/developing-applications/building-blocks/workflow/workflow-architecture/',
+    labels: [
+      'App pod',
+      'Sidecar',
+      'Workflow App',
+      'Workflow code',
+      'inbound Dapr API calls',
+      'outbound Dapr API calls',
+      'Process workflow events',
+      'Invoke activity code',
+      'gRPC stream',
+      '<< Initiate stream State/work items >> << Results/next steps',
+      '<< Initiate stream State/work items >> << Results/next steps',
+      'Workflow actor (internal)',
+      'Activity actor (internal)',
+      'Workflow engine',
+      'Dapr Workflow SDK',
+    ],
+  },
+  {
+    name: 'workflow-engine-protocol',
+    // Replaced workflow-engine-protocol.png, under "Sidecar interactions".
+    page: '/developing-applications/building-blocks/workflow/workflow-architecture/',
+    labels: [
+      '1. Get work item stream',
+      '2. Fetch work items',
+      '3. Send workflow results',
+      'Workflow App',
+      'Workflow and Activity definitions',
+      'Dapr Workflow engine',
+    ],
+  },
+  {
+    name: 'workflow-execution',
+    // Replaced workflow-execution.png, under "Workflow actors".
+    page: '/developing-applications/building-blocks/workflow/workflow-architecture/',
+    labels: [
+      'Pod 1',
+      'Sidecar',
+      'App container',
+      'gRPC',
+      'Actor 1',
+      'Actor 2',
+      'WF 1 (actor 1)',
+      'WF 2 (actor 2)',
+      'Pod 2',
+      'Actor 3',
+      'Actor 4',
+      'WF 3 (actor 3)',
+      'WF 4 (actor 4)',
+      'Placement',
+    ],
+  },
+  {
+    name: 'workflow-actor-flowchart',
+    // Replaced workflow-actor-flowchart.png: the workflow actor lifecycle.
+    page: '/developing-applications/building-blocks/workflow/workflow-architecture/',
+    labels: [
+      'Start',
+      'Message received',
+      'Execute workflow code',
+      'Schedule tasks',
+      'Save state',
+      'Idle',
+    ],
+  },
+  {
+    name: 'workflow-activity-actor-flowchart',
+    // Replaced workflow-activity-actor-flowchart.png: the activity actor lifecycle.
+    page: '/developing-applications/building-blocks/workflow/workflow-architecture/',
+    labels: [
+      'Start',
+      'Invocation message received',
+      'Execute activity code',
+      'Send result to workflow actor',
+      'End',
+    ],
+  },
+  {
+    name: 'workflow-actor-reminder-flow',
+    // Replaced workflow-actor-reminder-flow.png. Step 2 says one-shot, not recurring: the page beats the old picture.
+    page: '/developing-applications/building-blocks/workflow/workflow-architecture/',
+    labels: [
+      '1. Schedule execution',
+      '2. Create one-shot reminder',
+      '3. Reminder fires',
+      '6. Delete reminder',
+      '4. Run workflow step',
+      '5. Send workflow step result',
+      'Actor runtime',
+      'Workflow Actor',
+      'Workflow code',
+    ],
+  },
+  {
+    name: 'workflow-state-store-interactions',
+    // Replaced workflow-state-store-interactions.png, under "State store usage".
+    page: '/developing-applications/building-blocks/workflow/workflow-architecture/',
+    labels: [
+      '1. Load existing history (cached)',
+      '2. Execute next step',
+      '3. Append new history',
+      'State store',
+      'started',
+      'call activity1',
+      'activity1 done',
+      'call activity2',
+      'call activity3',
+      'activity2 done',
+      'activity3 done',
+      'Workflow Actor',
+      'Workflow code',
+    ],
+  },
+  {
+    name: 'workflow-actor-scale-out',
+    // Replaced workflow-actor-scale-out.png, under "Workflow scalability".
+    page: '/developing-applications/building-blocks/workflow/workflow-architecture/',
+    labels: [
+      'Cluster',
+      'Node',
+      'Dapr runtime',
+      'Legend',
+      'workflow actor',
+      'workflow activity actor',
+      'activity call',
+      'child workflow',
+    ],
+  },
 ];
 
 // One row per (scene, page), which is what every check below reads. The rows

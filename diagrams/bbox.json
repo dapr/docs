@@ -267,6 +267,22 @@
     0,
     0
   ],
+  "workflow-activity-actor-flowchart": [
+    0,
+    0
+  ],
+  "workflow-actor-flowchart": [
+    0,
+    0
+  ],
+  "workflow-actor-reminder-flow": [
+    -0.11,
+    -5.7
+  ],
+  "workflow-actor-scale-out": [
+    0,
+    -6.5
+  ],
   "workflow-async-http": [
     3.49,
     0
@@ -278,6 +294,14 @@
   "workflow-cross-app-client": [
     0,
     -2
+  ],
+  "workflow-engine-protocol": [
+    -0.29,
+    -8.43
+  ],
+  "workflow-execution": [
+    -0.3,
+    -6.5
   ],
   "workflow-external-system": [
     4.5,
@@ -327,6 +351,10 @@
     0,
     -0.1
   ],
+  "workflow-state-store-interactions": [
+    -0.3,
+    -0.17
+  ],
   "workflow-stateful-client": [
     0,
     -0.2
@@ -334,5 +362,9 @@
   "workflow-task-chaining": [
     0,
     0
+  ],
+  "workflows-architecture-k8s": [
+    -0.02,
+    -6.8
   ]
 }

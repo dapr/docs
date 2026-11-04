@@ -89,6 +89,17 @@ const IN_SCOPE_IMAGES = [
   'dapr-agents/home_installation_init.png',
   'binding-overview.png',
   'workflow-overview/workflow-overview.png',
+
+  // workflow-architecture.md, converted whole: eight images, eight scenes.
+  // Each was referenced by that page and by no other English page.
+  'workflow-overview/workflows-architecture-k8s.png',
+  'workflow-overview/workflow-engine-protocol.png',
+  'workflow-overview/workflow-execution.png',
+  'workflow-overview/workflow-actor-flowchart.png',
+  'workflow-overview/workflow-activity-actor-flowchart.png',
+  'workflow-overview/workflow-actor-reminder-flow.png',
+  'workflow-overview/workflow-state-store-interactions.png',
+  'workflow-overview/workflow-actor-scale-out.png',
 ];
 
 // IN_SCOPE_IMAGES as the previous conversion froze it. It may GROW - the
@@ -194,6 +205,22 @@ const CONVERTED_PAGES = [
     page: '/developing-applications/building-blocks/workflow/workflow-overview/',
     scene: 'workflow-overview',
   },
+  // workflow-architecture.md: eight images, eight scenes, and the scene name
+  // is the image name in every case.
+  ...[
+    'workflows-architecture-k8s',
+    'workflow-engine-protocol',
+    'workflow-execution',
+    'workflow-actor-flowchart',
+    'workflow-activity-actor-flowchart',
+    'workflow-actor-reminder-flow',
+    'workflow-state-store-interactions',
+    'workflow-actor-scale-out',
+  ].map((name) => ({
+    image: `workflow-overview/${name}.png`,
+    page: '/developing-applications/building-blocks/workflow/workflow-architecture/',
+    scene: name,
+  })),
 ];
 
 const git = (...args) =>
