@@ -766,6 +766,19 @@ test('node() can set its name INSIDE the circle, in a given ink', () => {
   // label() centres on y by dropping the baseline about a third of the size,
   // so the baseline sits just below the centre and nowhere near the rim.
   assert.ok(Math.abs(Number(t.attrs.y) - 200) < 14, `baseline ${t.attrs.y} is not inside the circle`);
+  // And it is marked as type sitting on a fill rather than on the page, the
+  // same as stepMark()'s numeral and a solid hexagon's name. The rendered
+  // theme check reads this class to know which text should follow the theme.
+  assert.ok(
+    find(g, (x) => (x.attrs?.class ?? '') === 'd-on-fill').length,
+    'a name inside the circle is not marked d-on-fill',
+  );
+});
+
+test('node() does NOT mark a name under the circle as sitting on a fill', () => {
+  // That one is on the page and must follow the theme like any other label.
+  const g = S.node({ x: 0, y: 0, r: 16, label: 'Start' });
+  assert.equal(find(g, (x) => (x.attrs?.class ?? '') === 'd-on-fill').length, 0);
 });
 
 test('node() still names itself below the circle when nothing says otherwise', () => {

@@ -72,6 +72,15 @@ const OFF_BODY = {
   'workflow-cross-app-client': 12,
   'workflow-external-system': 12,
   'workflow-monitor': 12,
+  // Every free label it places is a note() - the branch words and the two
+  // questions - and note() is NOTE_SIZE by design. That is the flow kit
+  // working, not a scene drifting, which is why every flow scene above is
+  // here at the same number.
+  'workflow-stateful-client': 12,
+  // Same again, and for the same reason: every free label on the fast-path
+  // flowchart is a note() - the branch words and the nine questions - and
+  // note() is NOTE_SIZE. The shapes it names are all at FLOW.SIZE.
+  'workflow-fast-path': 12,
 };
 
 // The sizes of the scene's own FREE labels, from the built node tree.

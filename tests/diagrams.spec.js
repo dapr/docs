@@ -1339,6 +1339,79 @@ const SCENE_ROWS = [
       'Lock released',
     ],
   },
+  {
+    name: 'workflow-overview',
+    // Replaced /images/workflow-overview/workflow-overview.png. Drawn with
+    // the flow kit, which happens to use the same four colours the source
+    // does for the same four things.
+    page: '/developing-applications/building-blocks/workflow/workflow-overview/',
+    labels: [
+      'Workflow App',
+      'Workflow and Activity definitions',
+      'Start',
+      'Activity 1',
+      'Activity 2',
+      'Activity 3',
+      'End',
+      'Dapr API',
+      'HTTP/gRPC',
+      'Dapr Workflow engine',
+    ],
+  },
+  {
+    name: 'workflow-stateful-client',
+    // Replaced the page's `flowchart TD`. Its `sequenceDiagram` stays
+    // Mermaid, which is the ruling Task 42's check is written to permit.
+    page: '/developing-applications/building-blocks/workflow/workflow-stateful-client/',
+    labels: [
+      'Work item arrives',
+      'Is cachedHistory set?',
+      'No (full send)',
+      'Replay pastEvents as the full history',
+      'Yes (delta send)',
+      'No (cache miss)',
+      'Fetch the full history via GetInstanceHistory',
+      'Replay cached prefix plus the delta',
+      'Replay the fetched history',
+      'Success',
+      'Failure',
+    ],
+  },
+  {
+    name: 'workflow-fast-path',
+    // Replaced the page's one `flowchart TD`. Its five `sequenceDiagram`
+    // blocks stay Mermaid, which is the ruling Task 42's check permits.
+    page: '/developing-applications/building-blocks/workflow/workflow-fast-path/',
+    labels: [
+      'Event committed to the inbox or held for folding',
+      'Fast path on and due now?',
+      'Durable per-event reminder, unchanged',
+      'Janitor reminder asserted?',
+      'Create failed',
+      'Post notification, capacity 1, coalesces',
+      'Drive loop running?',
+      'Running loop consumes it, or the reclaim handshake re-posts it',
+      'Start drive loop',
+      'Run one turn through the reminder path',
+      'Committed',
+      'More notifications?',
+      'Loop exits, actor stays resident',
+      'Failed',
+      'Retry budget left? about 6s, jittered',
+      'Loop exits, the janitor owns recovery',
+      'Janitor fire every 20s',
+      'Load state',
+      'Purged or terminal?',
+      'Settle and delete the janitor',
+      'Inbox rows pending?',
+      'Drive a turn: janitor_recovered',
+      'Held completions with no driver?',
+      'Drive a turn: janitor_fold_recovered',
+      'Unresolved TaskScheduled events?',
+      'Re-dispatch activities',
+      'No-op, actor stays resident',
+    ],
+  },
 ];
 
 // One row per (scene, page), which is what every check below reads. The rows

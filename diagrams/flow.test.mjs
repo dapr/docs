@@ -68,9 +68,15 @@ test('a terminal node names itself INSIDE the circle, like the source flowcharts
   // the ink version of the brand orange rather than a fill meant to carry dark
   // type. Measured, C.appInk on it is 5.5:1 in light and 7.0:1 in dark, which
   // clears the floor both ways, so the name goes where the source puts it.
+  // The name is wrapped in node()'s `d-on-fill` group - it sits on the solid
+  // green or orange, not on the page - so it is one level down from the
+  // terminal's own group rather than a direct child of it.
+  const firstText = (n) => (n.tag === 'text'
+    ? n
+    : (n.children ?? []).reduce((hit, kid) => hit ?? firstText(kid), null));
   for (const terminal of [FLOW.start, FLOW.end]) {
     const g = node({ x: 100, y: 200, r: FLOW.NODE_R, ...terminal, label: 'End' });
-    const text = g.children.find((c) => c.tag === 'text');
+    const text = firstText(g);
     assert.ok(
       Math.abs(Number(text.attrs.y) - 200) < FLOW.NODE_R,
       `the name sits inside the circle (baseline ${text.attrs.y})`,

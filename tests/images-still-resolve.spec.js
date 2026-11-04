@@ -88,6 +88,7 @@ const IN_SCOPE_IMAGES = [
   'buildingblocks-overview.png',
   'dapr-agents/home_installation_init.png',
   'binding-overview.png',
+  'workflow-overview/workflow-overview.png',
 ];
 
 // IN_SCOPE_IMAGES as the previous conversion froze it. It may GROW - the
@@ -185,6 +186,14 @@ const CONVERTED_PAGES = [
     page: '/developing-applications/building-blocks/workflow/workflow-multi-app/',
     scene,
   })),
+  // workflow-overview.md: one image, and this page was the only English page
+  // that referenced it. It carried no PAGES_STILL_SHOWING row, so there is no
+  // page assertion to retire - IN_SCOPE_IMAGES is now the file's only guard.
+  {
+    image: 'workflow-overview/workflow-overview.png',
+    page: '/developing-applications/building-blocks/workflow/workflow-overview/',
+    scene: 'workflow-overview',
+  },
 ];
 
 const git = (...args) =>

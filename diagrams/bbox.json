@@ -287,6 +287,10 @@
     0,
     0
   ],
+  "workflow-fast-path": [
+    0,
+    -0.17
+  ],
   "workflow-monitor": [
     0,
     0.22
@@ -302,6 +306,14 @@
   "workflow-multi-app-complex": [
     0,
     0
+  ],
+  "workflow-overview": [
+    -0.15,
+    0
+  ],
+  "workflow-stateful-client": [
+    0,
+    -0.2
   ],
   "workflow-task-chaining": [
     0,

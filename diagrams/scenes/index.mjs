@@ -78,6 +78,9 @@ import actorsCommunication from './actors-communication.mjs';
 import actorsPlacementRegistration from './actors-placement-registration.mjs';
 import actorsIdHashing from './actors-id-hashing.mjs';
 import actorsConcurrency from './actors-concurrency.mjs';
+import workflowOverview from './workflow-overview.mjs';
+import workflowStatefulClient from './workflow-stateful-client.mjs';
+import workflowFastPath from './workflow-fast-path.mjs';
 
 export const scenes = {
   'agents-overview': agentsOverview,
@@ -157,4 +160,7 @@ export const scenes = {
   'actors-placement-registration': actorsPlacementRegistration,
   'actors-id-hashing': actorsIdHashing,
   'actors-concurrency': actorsConcurrency,
+  'workflow-overview': workflowOverview,
+  'workflow-stateful-client': workflowStatefulClient,
+  'workflow-fast-path': workflowFastPath,
 };

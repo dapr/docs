@@ -429,11 +429,18 @@ export function node({
 }) {
   assertStroke(stroke, name, 'node()');
   assertInk(ink, 'node()');
+  // A name INSIDE the circle sits on the fill, not on the page - FLOW.start
+  // and FLOW.end set it in C.appInk on solid green and solid orange - so it
+  // is marked the way stepMark()'s numeral and a solid hex()'s name are. The
+  // theme check looks for type that SHOULD follow the page and reports a
+  // scene whose first text does not; without the mark, a flow scene whose
+  // first text is its Start terminal failed a rule it was keeping.
+  const named = name
+    ? label({ x, y: labelInside ? y : y + (labelDy ?? r + 14), text: name, size, color: ink })
+    : null;
   return el('g', { class: 'd-node' }, [
     el('circle', { cx: n(x), cy: n(y), r, fill, ...outline(stroke) }),
-    name
-      ? label({ x, y: labelInside ? y : y + (labelDy ?? r + 14), text: name, size, color: ink })
-      : null,
+    labelInside && named ? onFill(named) : named,
   ]);
 }
 
