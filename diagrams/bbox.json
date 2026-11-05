@@ -31,6 +31,10 @@
     0,
     -1.5
   ],
+  "agents-decoupled-infrastructure": [
+    -0.07,
+    7.65
+  ],
   "agents-evaluator-optimizer": [
     0,
     0.59
@@ -38,6 +42,10 @@
   "agents-loop": [
     14.5,
     9
+  ],
+  "agents-message-driven": [
+    -0.22,
+    -0.1
   ],
   "agents-orchestration": [
     0,

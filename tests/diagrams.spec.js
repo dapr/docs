@@ -1150,7 +1150,13 @@ const SCENE_ROWS = [
   },
   {
     name: 'components-concept',
-    page: '/concepts/components-concept/',
+    pages: [
+      '/concepts/components-concept/',
+      // Replaced dapr-agents/home_concepts_principles_modular.png, which drew
+      // the same thing with a shorter component list. See the note in
+      // dapr-agents-why.md's own row about where on that page it sits.
+      '/developing-ai/dapr-agents/dapr-agents-why/',
+    ],
     labels: [
       'App',
       'State management',
@@ -1859,6 +1865,40 @@ const SCENE_ROWS = [
       'Message broker',
       'Start',
       'End',
+    ],
+  },
+  {
+    name: 'agents-message-driven',
+    // Replaced dapr-agents/home_concepts_principles_message.png. The payload
+    // is drawn once where it is sent, not three times over.
+    page: '/developing-ai/dapr-agents/dapr-agents-why/',
+    labels: [
+      'Frodo',
+      'Legolas',
+      'Gandalf',
+      'Message broker',
+      'POST',
+      'v1.0/publish/pubsub/broadcast',
+      'POST /broadcast/legolas',
+      'POST /broadcast/gandalf',
+    ],
+  },
+  {
+    name: 'agents-decoupled-infrastructure',
+    // Replaced dapr-agents/home_concepts_principles_decoupled.png. Three APIs
+    // where the source drew the whole catalogue - the scene header has the
+    // arithmetic, and the page is what chose the three.
+    page: '/developing-ai/dapr-agents/dapr-agents-why/',
+    labels: [
+      'Dapr',
+      'Agent',
+      'Publish & subscribe',
+      'State management',
+      'Service invocation',
+      'Observability',
+      'Security',
+      'Resiliency',
+      'and 13 more building block APIs',
     ],
   },
   {

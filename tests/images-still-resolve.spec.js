@@ -111,6 +111,9 @@ const IN_SCOPE_IMAGES = [
   'dapr-agents/concepts-agents.png',
   'dapr-agents/concepts_agents_toolcall_flow.png',
   'dapr-agents/home_concepts_principles_workflows.png',
+  'dapr-agents/home_concepts_principles_modular.png',
+  'dapr-agents/home_concepts_principles_message.png',
+  'dapr-agents/home_concepts_principles_decoupled.png',
 ];
 
 // IN_SCOPE_IMAGES as the previous conversion froze it. It may GROW - the
@@ -152,6 +155,25 @@ const PAGES_STILL_SHOWING = [
 // IN_SCOPE_IMAGES - which is the whole point: the page stops vouching for the
 // file, so the file list has to.
 const CONVERTED_PAGES = [
+  // dapr-agents-why.md's three principle images. The first is not a new
+  // drawing: components-concept already draws App, Dapr, the building blocks
+  // and the components behind them, from a longer and more current list than
+  // the PNG had.
+  {
+    image: 'dapr-agents/home_concepts_principles_modular.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-why/',
+    scene: 'components-concept',
+  },
+  {
+    image: 'dapr-agents/home_concepts_principles_message.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-why/',
+    scene: 'agents-message-driven',
+  },
+  {
+    image: 'dapr-agents/home_concepts_principles_decoupled.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-why/',
+    scene: 'agents-decoupled-infrastructure',
+  },
   // The core concepts page carried three images and none of them had a
   // PAGES_STILL_SHOWING row, so converting it takes away the only English page
   // that referenced any of the three files. The file-level guard is what

@@ -39,7 +39,7 @@ While Dapr Agents centers around agents, it also recognizes the versatility of u
 Agents can be used standalone and create workflows behind the scene, or act as autonomous steps in deterministic workflows.
 {{% /alert %}}
 
-![Modular Principles](/images/dapr-agents/home_concepts_principles_modular.png)
+{{< diagram name="components-concept" width="80" >}}
 
 ### Backed by Durable Workflows
 
@@ -78,7 +78,7 @@ Dapr Agents emphasizes the use of Pub/Sub messaging for event-driven communicati
 Pub/Sub messaging serves as the backbone for Dapr Agents' event-driven workflows, enabling agents to communicate and collaborate in real time while maintaining loose coupling.
 {{% /alert %}}
 
-![Message Principles](/images/dapr-agents/home_concepts_principles_message.png)
+{{< diagram agents-message-driven >}}
 
 ### Decoupled Infrastructure Design
 
@@ -91,7 +91,7 @@ Dapr Agents ensures a clean separation between agents and the underlying infrast
 Decoupling infrastructure keeps agents focused on tasks while enabling seamless scalability and integration across systems.
 {{% /alert %}}
 
-![Decoupled Principles](/images/dapr-agents/home_concepts_principles_decoupled.png)
+{{< diagram name="agents-decoupled-infrastructure" width="80" >}}
 
 
 ## Dapr Agents Benefits
