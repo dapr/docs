@@ -75,7 +75,7 @@ dapr init -s
 
 **Enable mTLS with Sentry**
 
-In self-hosted mode, `--enable-mtls` also starts the `dapr_sentry` container and sets `spec.mtls.enabled: true` in the default configuration. See [Initialize Dapr with mTLS]({{% ref "self-hosted-with-docker.md#initialize-dapr-with-mtls" %}}).
+In self-hosted mode, `--enable-mtls` also starts the `dapr_sentry` container and sets `spec.mtls.enabled: true` in the default configuration. See [mTLS in self-hosted mode]({{% ref "mtls.md#automated-setup-with-dapr-init" %}}).
 
 ```bash
 dapr init --enable-mtls
