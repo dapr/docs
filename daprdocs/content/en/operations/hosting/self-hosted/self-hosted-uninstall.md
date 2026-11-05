@@ -6,7 +6,7 @@ weight: 60000
 description: "Steps to remove Dapr from your local machine"
 ---
 
-The following CLI command removes the Dapr sidecar binaries and the placement container:
+The following CLI command removes the Dapr sidecar binaries and the placement container, as well as the Sentry container if it was started with `dapr init --enable-mtls`:
 
 ```bash
 dapr uninstall
