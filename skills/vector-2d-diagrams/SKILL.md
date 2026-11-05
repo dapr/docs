@@ -1711,3 +1711,31 @@ before the next one starts. Report visual choices as proposals, not decisions.
   lane-and-terminal diagram and wrong for a concept picture that only wanted
   `FLOW.SIZE`. If a scene is not a flow diagram, do not import flow.mjs for a
   constant - write the number and say what it is.
+- **This set has no lifeline, so most sequence diagrams stay as mermaid.** Two
+  participants whose messages strictly alternate can be drawn without one:
+  parties as columns, every message a straight horizontal run between them,
+  order read top to bottom - which is what `agents-tool-call-flow` and
+  `actor-event-stream` do. Five participants with messages that loop back
+  (`workflow-fast-path`), or notes interleaved with messages to mark time
+  passing (`workflow-stateful-client`), need a real lifeline, and growing one
+  for two drawings is not worth the vocabulary. Check the shape of the mermaid
+  before promising to convert it.
+- **A column is not a tall card.** `card()` derives where its mark and its name
+  sit from its own proportions, which is right for a card and wrong for a
+  shape eleven times taller than it is wide: a 132x1220 card put the glyph a
+  quarter of the way down and the name three quarters, 260 units apart,
+  reading as two things rather than one column. `box()` centres its name,
+  which is what a labelled column wants.
+- **A tall diagram has to earn its width back.** The aspect floor is 1.60, and
+  nine rows of messages at a comfortable row pitch will fail it at a width
+  chosen from the longest label alone. Size the span from the aspect, then
+  check the longest label still fits inside it - not the other way round.
+- **Turn ligatures off wherever code is set, and do it with `style`.** Geist
+  Mono ligates, and a diagram quoting a payload is the one place that must not
+  happen: `data=...` rendered as one wide glyph and a stray full stop, and
+  `!=` would render as a character the API does not accept. `label()` and
+  `richLabel()` now do this for every mono run. The trap inside the trap:
+  `font-variant-ligatures` is a CSS property and NOT an SVG presentation
+  attribute, so setting it as an attribute is silently ignored - the computed
+  value stays `normal` and the drawing does not change. Only a `style`
+  attribute reaches the text. Check the computed value, not the markup.

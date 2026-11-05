@@ -1902,6 +1902,25 @@ const SCENE_ROWS = [
     ],
   },
   {
+    name: 'actor-event-stream',
+    // Replaced the mermaid sequenceDiagram under "Protocol summary". The only
+    // sequence diagram in these docs this set can draw: two participants and
+    // nine messages that strictly alternate. The scene header says why the
+    // other two are left as they are.
+    page: '/developing-applications/building-blocks/actors/howto-actors-app-initiated-streams/',
+    labels: [
+      'App',
+      'daprd (Dapr sidecar)',
+      'Step 1: open the stream and register',
+      'Step 2: handle callbacks',
+      'SubscribeActorEventsAlpha1()',
+      'SubscribeActorEventsResponseInitialAlpha1',
+      'invoke_request (id="abc", method="x")',
+      'reminder_response (id="def")',
+      'deactivate_response (id="ghi")',
+    ],
+  },
+  {
     name: 'agents-patterns-overview',
     // Replaced dapr-agents/agents-patterns-overview.png on both pages that
     // drew it. A map of the eight patterns, not eight readable diagrams -

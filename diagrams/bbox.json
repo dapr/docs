@@ -1,4 +1,8 @@
 {
+  "actor-event-stream": [
+    0,
+    7.5
+  ],
   "actor-reentrancy": [
     0,
     -2.66

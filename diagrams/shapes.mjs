@@ -79,6 +79,12 @@ export function group(arg = {}) {
 // A terminal command set in the body font reads as prose.
 export const MONO = 'var(--font-mono)';
 
+// AS A STYLE, NOT AN ATTRIBUTE. `font-variant-ligatures` is a CSS property and
+// not an SVG presentation attribute, so setting it as one is silently ignored:
+// the first attempt at this left the computed value at `normal` and the
+// drawing unchanged. A style attribute is the one form that reaches the text.
+export const NO_LIGATURES = 'font-variant-ligatures: none';
+
 export function label({
   x, y, text: content, size = 11, weight = 600, color = C.body, halo = false, anchor = 'middle',
   mono = false,
@@ -99,7 +105,12 @@ export function label({
       'text-anchor': anchor,
       'font-size': size,
       'font-weight': weight,
-      ...(mono ? { 'font-family': MONO } : {}),
+      // LIGATURES OFF WHEREVER CODE IS SET. Geist Mono ligates, and a
+      // diagram quoting a payload is the one place that must not happen:
+      // `data=...` came out as one wide glyph and a stray full stop on the
+      // actor event stream, and `!=` would come out as a character the API
+      // does not accept. A label is a quotation, so it is set literally.
+      ...(mono ? { 'font-family': MONO, style: NO_LIGATURES } : {}),
       ...attrs,
     }, kids);
   const fill = mk({ fill: color });
@@ -130,7 +141,10 @@ export function richLabel({
     // method", where only the path is a path. font-family inherits, so setting
     // it on the tspan is all this takes, and a line that is wholly code still
     // takes `mono` on the label rather than on every part.
-    if (part.mono && !mono) attrs['font-family'] = MONO;
+    if (part.mono && !mono) {
+      attrs['font-family'] = MONO;
+      attrs.style = NO_LIGATURES;
+    }
     // A space at the BOUNDARY of a tspan does not survive to the page. Hugo
     // minifies the document this svg is inlined into, and a minifier's whole
     // job is to drop whitespace between tags: "Invoke " + "/orders" + " method"
@@ -153,7 +167,8 @@ export function richLabel({
     'text-anchor': anchor,
     'font-size': size,
     'font-weight': weight,
-    ...(mono ? { 'font-family': MONO } : {}),
+    // Ligatures off wherever code is set - see label().
+    ...(mono ? { 'font-family': MONO, style: NO_LIGATURES } : {}),
     fill: color,
   }, kids);
 }

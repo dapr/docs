@@ -15,6 +15,7 @@ import agentsToolCallFlow from './agents-tool-call-flow.mjs';
 import agentsOrchestration from './agents-orchestration.mjs';
 import agentsMessageDriven from './agents-message-driven.mjs';
 import agentsDecoupledInfrastructure from './agents-decoupled-infrastructure.mjs';
+import actorEventStream from './actor-event-stream.mjs';
 import buildingBlocks from './building-blocks.mjs';
 import buildingBlocksConcept from './building-blocks-concept.mjs';
 import componentsConcept from './components-concept.mjs';
@@ -125,6 +126,7 @@ export const scenes = {
   'agents-orchestration': agentsOrchestration,
   'agents-message-driven': agentsMessageDriven,
   'agents-decoupled-infrastructure': agentsDecoupledInfrastructure,
+  'actor-event-stream': actorEventStream,
   'building-blocks': buildingBlocks,
   'building-blocks-concept': buildingBlocksConcept,
   'components-concept': componentsConcept,
