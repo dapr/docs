@@ -22,26 +22,11 @@ To initialize the Dapr control plane containers and create a default configurati
 dapr init
 ```
 
-### Initialize Dapr with mTLS
-
-To also run the [Sentry service]({{% ref sentry.md %}}) and enable mTLS, use the `--enable-mtls` flag:
+To additionally start the Sentry service and enable mTLS, use the `--enable-mtls` flag. To set up Sentry manually instead, see [mTLS in self-hosted mode]({{% ref "mtls.md#self-hosted" %}}).
 
 ```bash
-dapr init --enable-mtls
+dapr init --enable-mtls # enables mTLS and, in addition, starts the Sentry service
 ```
-
-This command:
-
-- Starts the `dapr_sentry` container with trust domain `cluster.local`.
-- Stores the certificates in the `certs` directory of the Dapr install path, `$HOME/.dapr/certs` by default (`ca.crt`, `issuer.crt`, `issuer.key`).
-- Sets `spec.mtls.enabled: true` in the default configuration file.
-- Reports the running Sentry container in `dapr status`.
-
-When mTLS is enabled in the configuration, `dapr run` automatically sets `DAPR_TRUST_ANCHORS`, `DAPR_CERT_CHAIN`, and `DAPR_CERT_KEY` for the sidecar and application from these certificates.
-
-{{% alert title="Note" color="primary" %}}
-To set up Sentry manually instead, see [Setup & configure mTLS certificates]({{% ref "mtls.md#self-hosted" %}}).
-{{% /alert %}}
 
 ## Run both app and sidecar as a process
 
