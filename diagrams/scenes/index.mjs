@@ -10,6 +10,9 @@ import agentsEvaluatorOptimizer from './agents-evaluator-optimizer.mjs';
 import agentsStatefulLlm from './agents-stateful-llm.mjs';
 import agentsPatternsOverview from './agents-patterns-overview.mjs';
 import agentsOverview from './agents-overview.mjs';
+import agentsLoop from './agents-loop.mjs';
+import agentsToolCallFlow from './agents-tool-call-flow.mjs';
+import agentsOrchestration from './agents-orchestration.mjs';
 import buildingBlocks from './building-blocks.mjs';
 import buildingBlocksConcept from './building-blocks-concept.mjs';
 import componentsConcept from './components-concept.mjs';
@@ -115,6 +118,9 @@ export const scenes = {
   'agents-stateful-llm': agentsStatefulLlm,
   'agents-patterns-overview': agentsPatternsOverview,
   'agents-overview': agentsOverview,
+  'agents-loop': agentsLoop,
+  'agents-tool-call-flow': agentsToolCallFlow,
+  'agents-orchestration': agentsOrchestration,
   'building-blocks': buildingBlocks,
   'building-blocks-concept': buildingBlocksConcept,
   'components-concept': componentsConcept,

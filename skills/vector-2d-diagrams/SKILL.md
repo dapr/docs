@@ -1691,3 +1691,23 @@ before the next one starts. Report visual choices as proposals, not decisions.
   change did not land.** Check that the export actually succeeded before
   concluding a layout fix had no effect: a failed export leaves the previously
   committed SVG in place, and the page keeps serving it.
+- **Only LEADING spaces survive in a `codeCard()`.** `indentCode()` turns a run
+  of leading spaces into non-breaking ones, which is what keeps a nested key
+  indented. A run in the MIDDLE of a line is not touched, and the renderer
+  collapses it to a single space - so padding `name:` out to line up with
+  `content:` below it does nothing but look aligned in the source and ragged on
+  the page. Write the payload with single spaces and let it be ragged in both.
+- **A name set ON a shape's fill has to clear that shape's own ends.** `pipe()`
+  centres its name between `x1` and `x2`, but a broker is drawn with a rounded
+  cap at each end, and the cap is ink the name has to stay out of. At the short
+  end of pipe()'s allowed 2-3x range the left cap clipped the "M" of "Message
+  broker" - caught by the rendered check for ground behind a label, which does
+  not know a cap from an arrow. Pick the length from the NAME, inside whatever
+  range the builder allows.
+- **Importing `flow.mjs` makes a scene a flow scene, and the flow rules then
+  apply to all of it.** `flow.test.mjs` treats any scene that imports from
+  flow.mjs as part of that set, and forbids it to call `region()` directly, to
+  declare its own `PAD`, or to reach for `C.caption`. That is right for a
+  lane-and-terminal diagram and wrong for a concept picture that only wanted
+  `FLOW.SIZE`. If a scene is not a flow diagram, do not import flow.mjs for a
+  constant - write the number and say what it is.

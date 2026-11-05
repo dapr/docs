@@ -14,7 +14,7 @@ Dapr Agents provides a structured way to build and orchestrate applications that
 
 Agents are autonomous units powered by Large Language Models (LLMs), designed to execute tasks, reason through problems, and collaborate within workflows. Acting as intelligent building blocks, agents combine reasoning with tool integration, memory, and collaboration features to get to the desired outcome.
 
-![Concepts Agents](/images/dapr-agents/concepts-agents.png)
+{{< diagram name="agents-loop" width="75" >}}
 
 Dapr Agents provides two agent types, each designed for different use cases:
 
@@ -222,7 +222,7 @@ def get_weather(location: str) -> str:
 
 Each tool has a descriptive docstring that helps the LLM understand when to use it. The `@tool` decorator marks a function as a tool, while the Pydantic model (`GetWeatherSchema`) defines input parameters for structured validation.
 
-![Tool Call Flow](/images/dapr-agents/concepts_agents_toolcall_flow.png)
+{{< diagram name="agents-tool-call-flow" width="80" >}}
 
 1. The user submits a query specifying a task and the available tools.
 2. The LLM analyzes the query and selects the right tool for the task.
@@ -459,7 +459,7 @@ While it's tempting to build a fully autonomous agent capable of handling many t
 
 Multi-agent systems (MAS) distribute workflow execution across multiple coordinated agents to efficiently achieve shared objectives. This approach, called agent orchestration, enables better specialization, scalability, and maintainability compared to monolithic agent designs.
 
-![Agent Orchestration](/images/dapr-agents/home_concepts_principles_workflows.png)
+{{< diagram agents-orchestration >}}
 
 Dapr Agents supports two primary orchestration approaches via [Dapr Workflows](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-overview/) and [Dapr PubSub](https://docs.dapr.io/developing-applications/building-blocks/pubsub/pubsub-overview/):
 

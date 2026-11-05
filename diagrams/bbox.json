@@ -35,6 +35,14 @@
     0,
     0.59
   ],
+  "agents-loop": [
+    14.5,
+    9
+  ],
+  "agents-orchestration": [
+    0,
+    6
+  ],
   "agents-orchestrator-workers": [
     0,
     -0.16
@@ -62,6 +70,10 @@
   "agents-stateful-llm": [
     0,
     -8
+  ],
+  "agents-tool-call-flow": [
+    4.5,
+    5.69
   ],
   "api-scoping": [
     -0.07,

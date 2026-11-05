@@ -108,6 +108,9 @@ const IN_SCOPE_IMAGES = [
   'dapr-agents/agents-evaluator-optimizer.png',
   'dapr-agents/agents-stateful-llm.png',
   'dapr-agents/agents-patterns-overview.png',
+  'dapr-agents/concepts-agents.png',
+  'dapr-agents/concepts_agents_toolcall_flow.png',
+  'dapr-agents/home_concepts_principles_workflows.png',
 ];
 
 // IN_SCOPE_IMAGES as the previous conversion froze it. It may GROW - the
@@ -149,6 +152,25 @@ const PAGES_STILL_SHOWING = [
 // IN_SCOPE_IMAGES - which is the whole point: the page stops vouching for the
 // file, so the file list has to.
 const CONVERTED_PAGES = [
+  // The core concepts page carried three images and none of them had a
+  // PAGES_STILL_SHOWING row, so converting it takes away the only English page
+  // that referenced any of the three files. The file-level guard is what
+  // replaces that.
+  {
+    image: 'dapr-agents/concepts-agents.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-core-concepts/',
+    scene: 'agents-loop',
+  },
+  {
+    image: 'dapr-agents/concepts_agents_toolcall_flow.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-core-concepts/',
+    scene: 'agents-tool-call-flow',
+  },
+  {
+    image: 'dapr-agents/home_concepts_principles_workflows.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-core-concepts/',
+    scene: 'agents-orchestration',
+  },
   // The introduction page's TWO images go together. Converting one of them
   // alone leaves the page both converted and still showing an image, which
   // this file's whole model says cannot happen - and the guard caught exactly

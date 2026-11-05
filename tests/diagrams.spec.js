@@ -1813,6 +1813,55 @@ const SCENE_ROWS = [
     ],
   },
   {
+    name: 'agents-loop',
+    // Replaced dapr-agents/concepts-agents.png. The loop the capabilities on
+    // `agents-overview` run inside - the same page carries both, in different
+    // sections.
+    page: '/developing-ai/dapr-agents/dapr-agents-core-concepts/',
+    labels: [
+      'AI Agent',
+      'User',
+      'Prompt',
+      'Response',
+      'LLM',
+      'Reasoning',
+      'Planning',
+      'Action',
+      'Tools',
+      'Tool result',
+      'Outside world',
+    ],
+  },
+  {
+    name: 'agents-tool-call-flow',
+    // Replaced dapr-agents/concepts_agents_toolcall_flow.png. Five steps where
+    // the source drew four: the scene header has the prose they come from.
+    page: '/developing-ai/dapr-agents/dapr-agents-core-concepts/',
+    labels: [
+      'Chat completion payload',
+      'Assistant message',
+      'Tool message',
+      'User',
+      'AI Agent',
+      'LLM',
+    ],
+  },
+  {
+    name: 'agents-orchestration',
+    // Replaced dapr-agents/home_concepts_principles_workflows.png. Two lanes,
+    // because the paragraph under it names two approaches and then says what
+    // they have in common.
+    page: '/developing-ai/dapr-agents/dapr-agents-core-concepts/',
+    labels: [
+      'Event-driven',
+      'Deterministic workflow',
+      'Agent',
+      'Message broker',
+      'Start',
+      'End',
+    ],
+  },
+  {
     name: 'agents-patterns-overview',
     // Replaced dapr-agents/agents-patterns-overview.png on both pages that
     // drew it. A map of the eight patterns, not eight readable diagrams -
