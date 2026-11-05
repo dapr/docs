@@ -100,6 +100,14 @@ const IN_SCOPE_IMAGES = [
   'workflow-overview/workflow-actor-reminder-flow.png',
   'workflow-overview/workflow-state-store-interactions.png',
   'workflow-overview/workflow-actor-scale-out.png',
+  'dapr-agents/agents-augmented-llm.png',
+  'dapr-agents/agents-prompt-chaining.png',
+  'dapr-agents/agents-routing.png',
+  'dapr-agents/agents-parallelization.png',
+  'dapr-agents/agents-orchestrator-workers.png',
+  'dapr-agents/agents-evaluator-optimizer.png',
+  'dapr-agents/agents-stateful-llm.png',
+  'dapr-agents/agents-patterns-overview.png',
 ];
 
 // IN_SCOPE_IMAGES as the previous conversion froze it. It may GROW - the
@@ -221,6 +229,46 @@ const CONVERTED_PAGES = [
     page: '/developing-applications/building-blocks/workflow/workflow-architecture/',
     scene: name,
   })),
+  {
+    image: 'dapr-agents/agents-augmented-llm.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    scene: 'agents-augmented-llm',
+  },
+  {
+    image: 'dapr-agents/agents-prompt-chaining.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    scene: 'agents-prompt-chaining',
+  },
+  {
+    image: 'dapr-agents/agents-routing.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    scene: 'agents-routing',
+  },
+  {
+    image: 'dapr-agents/agents-parallelization.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    scene: 'agents-parallelization',
+  },
+  {
+    image: 'dapr-agents/agents-orchestrator-workers.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    scene: 'agents-orchestrator-workers',
+  },
+  {
+    image: 'dapr-agents/agents-evaluator-optimizer.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    scene: 'agents-evaluator-optimizer',
+  },
+  {
+    image: 'dapr-agents/agents-stateful-llm.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    scene: 'agents-stateful-llm',
+  },
+  {
+    image: 'dapr-agents/agents-patterns-overview.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    scene: 'agents-patterns-overview',
+  },
 ];
 
 const git = (...args) =>

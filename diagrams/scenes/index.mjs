@@ -1,6 +1,14 @@
 // Registry of diagram scenes: { '<name>': sceneModuleDefaultExport }.
 // <name> becomes daprdocs/assets/diagrams/<name>.svg and the svg() id base.
 // Scenes are added here as they are written.
+import agentsAugmentedLlm from './agents-augmented-llm.mjs';
+import agentsPromptChaining from './agents-prompt-chaining.mjs';
+import agentsRouting from './agents-routing.mjs';
+import agentsParallelization from './agents-parallelization.mjs';
+import agentsOrchestratorWorkers from './agents-orchestrator-workers.mjs';
+import agentsEvaluatorOptimizer from './agents-evaluator-optimizer.mjs';
+import agentsStatefulLlm from './agents-stateful-llm.mjs';
+import agentsPatternsOverview from './agents-patterns-overview.mjs';
 import agentsOverview from './agents-overview.mjs';
 import buildingBlocks from './building-blocks.mjs';
 import buildingBlocksConcept from './building-blocks-concept.mjs';
@@ -98,6 +106,14 @@ import mcpServiceInvocation from './mcp-service-invocation.mjs';
 import ragOverview from './rag-overview.mjs';
 
 export const scenes = {
+  'agents-augmented-llm': agentsAugmentedLlm,
+  'agents-prompt-chaining': agentsPromptChaining,
+  'agents-routing': agentsRouting,
+  'agents-parallelization': agentsParallelization,
+  'agents-orchestrator-workers': agentsOrchestratorWorkers,
+  'agents-evaluator-optimizer': agentsEvaluatorOptimizer,
+  'agents-stateful-llm': agentsStatefulLlm,
+  'agents-patterns-overview': agentsPatternsOverview,
   'agents-overview': agentsOverview,
   'building-blocks': buildingBlocks,
   'building-blocks-concept': buildingBlocksConcept,

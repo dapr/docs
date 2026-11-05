@@ -27,9 +27,41 @@
     2.68,
     -5.87
   ],
+  "agents-augmented-llm": [
+    0,
+    -1.5
+  ],
+  "agents-evaluator-optimizer": [
+    0,
+    0.59
+  ],
+  "agents-orchestrator-workers": [
+    0,
+    -0.16
+  ],
   "agents-overview": [
     0.45,
     3.75
+  ],
+  "agents-parallelization": [
+    0,
+    -1.5
+  ],
+  "agents-patterns-overview": [
+    26,
+    0.67
+  ],
+  "agents-prompt-chaining": [
+    0,
+    -1.5
+  ],
+  "agents-routing": [
+    0,
+    -0.16
+  ],
+  "agents-stateful-llm": [
+    0,
+    -8
   ],
   "api-scoping": [
     -0.07,

@@ -1698,6 +1698,131 @@ const SCENE_ROWS = [
       'Query-time reader',
     ],
   },
+  {
+    name: 'agents-augmented-llm',
+    // Replaced dapr-agents/agents-augmented-llm.png, under "Augmented LLM".
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    labels: [
+      'Query / Results',
+      'Call / Response',
+      'Read / Write',
+      'In',
+      'LLM',
+      'Out',
+      'Retrieval',
+      'Tools',
+      'Memory',
+    ],
+  },
+  {
+    name: 'agents-prompt-chaining',
+    // Replaced dapr-agents/agents-prompt-chaining.png, under "Prompt Chaining".
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    labels: [
+      'Output 1',
+      'Pass',
+      'Output 2',
+      'Output 3',
+      'Fail',
+      'In',
+      'LLM 1',
+      'Gate',
+      'LLM 2',
+      'LLM 3',
+      'Out',
+      'Exit',
+    ],
+  },
+  {
+    name: 'agents-routing',
+    // Replaced dapr-agents/agents-routing.png, under "Routing".
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    labels: [
+      'The router classifies the request; exactly one route runs',
+      'In',
+      'Router',
+      'LLM 1',
+      'LLM 2',
+      'LLM 3',
+      'Out',
+    ],
+  },
+  {
+    name: 'agents-parallelization',
+    // Replaced dapr-agents/agents-parallelization.png, under "Parallelization".
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    labels: [
+      'In',
+      'LLM 1',
+      'LLM 2',
+      'LLM 3',
+      'Aggregator',
+      'Out',
+    ],
+  },
+  {
+    name: 'agents-orchestrator-workers',
+    // Replaced dapr-agents/agents-orchestrator-workers.png, under "Orchestrator-Workers".
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    labels: [
+      'The orchestrator decides how many workers there are; three is an example',
+      'In',
+      'Orchestrator',
+      'LLM 1',
+      'LLM 2',
+      'LLM 3',
+      'Synthesizer',
+      'Out',
+    ],
+  },
+  {
+    name: 'agents-evaluator-optimizer',
+    // Replaced dapr-agents/agents-evaluator-optimizer.png, under "Evaluator-Optimizer".
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    labels: [
+      'Solution',
+      'Rejected + Feedback',
+      'In',
+      'LLM Call Generator',
+      'LLM Call Evaluator',
+      'Out',
+    ],
+  },
+  {
+    name: 'agents-stateful-llm',
+    // Replaced dapr-agents/agents-stateful-llm.png, under "Durable Agent".
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    labels: [
+      'Durable agent',
+      'Query / Results',
+      'Call / Response',
+      'Read / Write',
+      'In',
+      'Workflow',
+      'LLM',
+      'Out',
+      'Retrieval',
+      'Tools',
+      'Memory',
+    ],
+  },
+  {
+    name: 'agents-patterns-overview',
+    // Replaced dapr-agents/agents-patterns-overview.png on both pages that
+    // drew it. A map of the eight patterns, not eight readable diagrams -
+    // the scene header has the measurement that rules the latter out.
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    labels: [
+      'Augmented LLM',
+      'Durable Agent',
+      'Prompt Chaining',
+      'Evaluator-Optimizer',
+      'Autonomous Agent',
+      'Parallelization',
+      'Routing',
+      'Orchestrator-Workers',
+    ],
+  },
 ];
 
 // One row per (scene, page), which is what every check below reads. The rows

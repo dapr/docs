@@ -30,6 +30,7 @@ button and no reduced-motion path.
 | Brand marks and icons | `diagrams/icons.mjs`: reads a vendored SVG, screens it, prefixes its ids, returns nodes |
 | The Dapr API catalogue | `diagrams/apis.mjs`: one definition per API and cross-cutting concern, and `apiTile()`, which draws the block |
 | The two MCP pictures | `diagrams/mcp.mjs`: the measurements `mcp-access-control` and `mcp-service-invocation` agree on, and `ask()`, `word()`, `refusal()` and `sidecarLane()` |
+| The eight agentic patterns | `diagrams/agent-patterns.mjs`: the measurements the pattern pictures agree on, and `llm()`, `workflowStep()`, `step()`, `outside()`, `gate()`, `inNode()`, `outNode()` and `exchange()`. A step that is an LLM call is the flow kit's teal box with the brain mark beside its name; a step with no mark is code. The mark carries the distinction the source images carried in the fill. The name and the mark are one block centred in the box, which is why `NAME_W` holds a measured width for every name a marked box can carry |
 | The language and cloud marks | `diagrams/brands.mjs`: the rows of vendored marks that name a LANGUAGE or a CLOUD, with the box each draws in, and `scaleMarks()` to take a whole row to another size |
 | One scene per diagram | `diagrams/scenes/<name>.mjs`, registered in `diagrams/scenes/index.mjs` |
 | Exporter | `diagrams/export.mjs`, run as `npm run export:diagrams` |
@@ -501,6 +502,15 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
   is the only line anywhere near it. `keeps every free label clear of the
   lines and labels around it` is the check: six scene units of air between any
   two free labels, and at most one run through any one of them.
+- **A shape with NO NAME needs a solid fill, not a tint.** The set's fills are
+  tints at 0.6, and an unlabelled shape has only its outline to carry it -
+  which, by `assertStroke`, has to be the app ink, and the app ink is dark.
+  That pair reads on the light page and all but disappears on the dark one:
+  the agent-pattern map shipped a first draft with eight legible panels in
+  light and eight voids in dark. Pass `solid: true` to `box()` or
+  `decision()`, as `hex()` has always taken it, and the shape reads on either
+  ground the way every app hexagon in the set does. If you are drawing
+  something small enough to have no room for a name, this applies to you.
 - **Two runs that share a stretch of path draw it ONCE.** Laying one over the
   other is not the same picture twice: each path sets its dashes out from its
   own start, so two DASHED runs at different phases fill in each other's gaps

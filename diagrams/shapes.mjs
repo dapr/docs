@@ -309,11 +309,35 @@ export function daprApp({ x, y, r = 42.5, stroke, fill, label: name, size, label
 // ----------------------------------------------------------- workflow shapes
 
 // A workflow activity. Teal outline is fine here: the box always has its label.
-export function box({ x, y, w = 194, h = 30, label: name = '', stroke = C.teal, fill = C.tealFill, size = 11 }) {
+//
+// `labelDx` moves the name off centre, which is what a box sharing its inside
+// with a glyph needs: the agent-pattern set sets an LLM call's name to the
+// left and puts the brain mark in the room that leaves, so the pair is
+// centred rather than the name alone. hex() has carried the same parameter
+// for the same reason since the first app with a sidecar badge. The name
+// stays INSIDE this group whatever the offset, which is what keeps it a
+// shape's own name rather than a free label that has drifted onto a shape.
+//
+// `solid` fills without the tint, which is what a box carrying NO NAME needs.
+// The set's fills are tints at 0.6, and a tint reads as a box on the light
+// page and as very nearly nothing on the dark one - the outline is what
+// carries such a box, and the app ink an unlabelled box has to be outlined in
+// (see assertStroke) is itself dark. The agent-pattern map shipped a first
+// draft like that: eight legible panels in light, eight all but invisible in
+// dark. A solid Dapr fill with the app ink around it is how every hexagon in
+// the set already reads on either ground. hex() has carried the same flag,
+// spelled the same way, since the start.
+export function box({
+  x, y, w = 194, h = 30, label: name = '', stroke = C.teal, fill = C.tealFill,
+  size = 11, labelDx = 0, solid = false,
+}) {
   assertStroke(stroke, name, 'box()');
   return el('g', { class: 'd-box' }, [
-    el('rect', { x: n(x - w / 2), y: n(y - h / 2), width: w, height: h, rx: 6, ...tint(fill), ...outline(stroke) }),
-    name ? label({ x, y, text: name, size }) : null,
+    el('rect', {
+      x: n(x - w / 2), y: n(y - h / 2), width: w, height: h, rx: 6,
+      ...(solid ? { fill } : tint(fill)), ...outline(stroke),
+    }),
+    name ? label({ x: x + labelDx, y, text: name, size }) : null,
   ]);
 }
 
@@ -405,12 +429,19 @@ export function decisionPoints({ x, y, w = 92, h = 64 }) {
   };
 }
 
-export function decision({ x, y, w = 92, h = 64, label: name = '', stroke = C.appInk, fill = C.appGold, size = 11 }) {
+// `solid` fills without the tint. Same reason as box(): see the note there.
+export function decision({
+  x, y, w = 92, h = 64, label: name = '', stroke = C.appInk, fill = C.appGold,
+  size = 11, solid = false,
+}) {
   assertStroke(stroke, name, 'decision()');
   const p = decisionPoints({ x, y, w, h });
   const pts = [p.top, p.right, p.bottom, p.left];
   return el('g', { class: 'd-decision' }, [
-    el('polygon', { points: pts.map(([px, py]) => `${n(px)},${n(py)}`).join(' '), ...tint(fill), ...outline(stroke) }),
+    el('polygon', {
+      points: pts.map(([px, py]) => `${n(px)},${n(py)}`).join(' '),
+      ...(solid ? { fill } : tint(fill)), ...outline(stroke),
+    }),
     name ? label({ x, y, text: name, size }) : null,
   ]);
 }

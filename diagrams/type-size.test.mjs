@@ -92,6 +92,19 @@ const OFF_BODY = {
   // its edge labels is a note() at NOTE_SIZE, each is haloed - which draws
   // the text twice - and there are more of them than there are activities.
   'rag-overview': 12,
+  // The agent patterns, and the same story once more: every free label on one
+  // of these is a note() at NOTE_SIZE - the words on the runs, and the two
+  // scenes that carry a remark about what the picture does not show - and
+  // every one is haloed, which draws it twice. Each outnumbers its own shape
+  // names, all of which are at FLOW.SIZE. `agents-parallelization` is the one
+  // of the seven with no words on its runs at all, and it is the one that is
+  // not here.
+  'agents-augmented-llm': 12,
+  'agents-prompt-chaining': 12,
+  'agents-routing': 12,
+  'agents-orchestrator-workers': 12,
+  'agents-evaluator-optimizer': 12,
+  'agents-stateful-llm': 12,
 };
 
 // The sizes of the scene's own FREE labels, from the built node tree.
