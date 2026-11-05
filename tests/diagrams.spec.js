@@ -206,7 +206,13 @@ const SCENE_ROWS = [
   },
   {
     name: 'agents-overview',
-    page: '/overview/',
+    pages: [
+      '/overview/',
+      // Replaced dapr-agents/concepts-agents-overview.png, the lead image of
+      // the Dapr Agents introduction. Same drawing, same claims - the
+      // introduction's Key Features table names every capability on the bus.
+      '/developing-ai/dapr-agents/dapr-agents-introduction/',
+    ],
     labels: [
       'User',
       'Interaction',
@@ -1811,7 +1817,10 @@ const SCENE_ROWS = [
     // Replaced dapr-agents/agents-patterns-overview.png on both pages that
     // drew it. A map of the eight patterns, not eight readable diagrams -
     // the scene header has the measurement that rules the latter out.
-    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    pages: [
+      '/developing-ai/dapr-agents/dapr-agents-patterns/',
+      '/developing-ai/dapr-agents/dapr-agents-introduction/',
+    ],
     labels: [
       'Augmented LLM',
       'Durable Agent',

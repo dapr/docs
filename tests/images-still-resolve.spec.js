@@ -119,15 +119,12 @@ const FROZEN_IMAGE_BASELINE = [...IN_SCOPE_IMAGES];
 // Pages still asserted to render an image: the file existing on disk is
 // necessary but not sufficient, because a page could also stop referencing it.
 //
-// This list SHRINKS as pages convert. Three of its entries
-// (pluggable-components-overview, dapr-agents-introduction, jobs-overview) are
-// in the scope of the current conversion, and each is the only English page
-// rendering its image, so each will move to CONVERTED_PAGES below.
+// This list SHRINKS as pages convert. The entries the current conversion
+// started with (pluggable-components-overview, dapr-agents-introduction,
+// jobs-overview) have all moved to CONVERTED_PAGES below; each was the only
+// English page rendering its image, so retiring the page assertion handed
+// the file to IN_SCOPE_IMAGES.
 const PAGES_STILL_SHOWING = [
-  {
-    image: 'dapr-agents/concepts-agents-overview.png',
-    page: '/developing-ai/dapr-agents/dapr-agents-introduction/',
-  },
   {
     image: 'observability-app-health.webp',
     page: '/operations/resiliency/health-checks/app-health/',
@@ -152,6 +149,20 @@ const PAGES_STILL_SHOWING = [
 // IN_SCOPE_IMAGES - which is the whole point: the page stops vouching for the
 // file, so the file list has to.
 const CONVERTED_PAGES = [
+  // The introduction page's TWO images go together. Converting one of them
+  // alone leaves the page both converted and still showing an image, which
+  // this file's whole model says cannot happen - and the guard caught exactly
+  // that when the composite was swapped here a task early.
+  {
+    image: 'dapr-agents/concepts-agents-overview.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-introduction/',
+    scene: 'agents-overview',
+  },
+  {
+    image: 'dapr-agents/agents-patterns-overview.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-introduction/',
+    scene: 'agents-patterns-overview',
+  },
   {
     image: 'scheduler/scheduler-architecture.png',
     page: '/developing-applications/building-blocks/jobs/jobs-overview/',
