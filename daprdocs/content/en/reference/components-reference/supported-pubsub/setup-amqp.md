@@ -231,7 +231,7 @@ A subscription can set the keys below in its own metadata. They use standard AMQ
 | durable | Ask the broker to keep the subscription, and the messages it holds, while no consumer is attached. The component sends a durable source that never expires. Defaults to `false`. | `true`
 | shared | Ask for a shared subscription, with the `shared` source capability. Every replica that uses the same `subscriptionName` then consumes from one subscription, so that each message reaches one replica. Defaults to `false`. | `true`
 | selector | A JMS selector, sent as the `apache.org:selector-filter:string` filter, that the broker applies to the subscription. Messages that do not match never enter it. If the broker attaches without the filter, the subscription fails. Can be set without `subscriptionName`. | `eventType = 'invoice'`
-| allowSelectorChange | Let the broker recreate a durable subscription whose selector changed, and drop the messages it holds. Without it, a subscription the broker refuses for a changed selector ends with an error. Defaults to `false`. | `true`
+| allowSelectorChange | Allow the broker to recreate a durable subscription when the selector is changed, and drop the messages it holds. When set to `false` (the default) the broker refuses to recreate the subscription and responds with an error. | `true`
 
 For example:
 
