@@ -39,10 +39,10 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone --depth 1 https://github.com/dapr/quickstarts.git
 ```
 
-In a terminal window, navigate to the `order-processor` directory.
+In a terminal window, from the root of the Quickstarts directory, navigate to the `order-processor` directory.
 
 ```bash
-cd ../state_management/python/sdk/order-processor
+cd state_management/python/sdk/order-processor
 ```
 
 Install dependencies
@@ -210,10 +210,10 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-In a terminal window, navigate to the `order-processor` directory.
+In a terminal window, from the root of the Quickstarts directory, navigate to the `order-processor` directory.
 
 ```bash
-cd ../state_management/javascript/sdk/order-processor
+cd state_management/javascript/sdk/order-processor
 ```
 
 Install dependencies
@@ -379,10 +379,10 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-In a terminal window, navigate to the `order-processor` directory.
+In a terminal window, from the root of the Quickstarts directory, navigate to the `order-processor` directory.
 
 ```bash
-cd ../state_management/csharp/sdk/order-processor
+cd state_management/csharp/sdk/order-processor
 ```
 
 Install dependencies
@@ -551,10 +551,10 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-In a terminal window, navigate to the `order-processor` directory.
+In a terminal window, from the root of the Quickstarts directory, navigate to the `order-processor` directory.
 
 ```bash
-cd ../state_management/java/sdk/order-processor
+cd state_management/java/sdk/order-processor
 ```
 
 Install dependencies
@@ -719,10 +719,10 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-In a terminal window, navigate to the `order-processor` directory.
+In a terminal window, from the root of the Quickstarts directory, navigate to the `order-processor` directory.
 
 ```bash
-cd ../state_management/go/sdk/order-processor
+cd state_management/go/sdk/order-processor
 ```
 
 Install dependencies
