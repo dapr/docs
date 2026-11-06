@@ -27,11 +27,11 @@ the UI changes.
 
 ## Mermaid left as mermaid
 
-Three blocks remain, all under `developing-applications/building-blocks/workflow/`:
+Seven blocks remain, all under `developing-applications/building-blocks/workflow/`:
 
 | Block | Why |
 | --- | --- |
-| `workflow-fast-path.md` (2 sequence diagrams) | five participants, seventeen messages that loop back on each other |
+| `workflow-fast-path.md` (5 sequence diagrams) | five participants, messages that loop back on each other |
 | `workflow-stateful-client.md` (1 sequence diagram) | notes interleaved with messages to mark time passing |
 | `workflow-history-signing.md` (1 gantt) | a gantt is a chart, not a diagram; nothing in this set draws one |
 

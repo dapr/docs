@@ -34,9 +34,11 @@
 //            value: secrets.json
 //
 //    A reader copying the picture gets a component Dapr cannot load. The card
-//    here follows the page. `version: v1` is the one line left out, for room:
-//    it is the same in every component on the site and it is not part of the
-//    chain this diagram is about.
+//    here is the page's own file and is complete enough to paste and run:
+//    apiVersion, kind, type and version are all drawn. The one entry left out
+//    is the optional `nestedSeparator`, which is not part of the chain this
+//    diagram is about. Maintainer's call, 2026-11-06: a drawn component should
+//    be one that would actually load.
 //
 // 2. THE SECRET'S VALUE IS NOT THE PAGE'S. The image shows
 //    `"secret": "YourPasskeyHere"`; the file the page tells you to create is
@@ -110,7 +112,7 @@ const CARDS = [
   },
   {
     title: 'local-secret-store.yaml',
-    code: 'metadata:\n  name: localsecretstore\nspec:\n  type: secretstores.local.file\n  metadata:\n  - name: secretsFile\n    value: secrets.json',
+    code: 'apiVersion: dapr.io/v1alpha1\nkind: Component\nmetadata:\n  name: localsecretstore\nspec:\n  type: secretstores.local.file\n  version: v1\n  metadata:\n  - name: secretsFile\n    value: secrets.json',
     w: 254,
   },
   {

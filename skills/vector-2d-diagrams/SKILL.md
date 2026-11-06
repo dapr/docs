@@ -53,6 +53,15 @@ were weighed and kept (screenshots, vendor UIs, logos), the mermaid blocks this
 set cannot draw (anything needing a lifeline), and the real diagrams that were
 never in the conversion's scope and are still waiting.
 
+What the conversion found WRONG is in
+[reference/fact-check-findings.md](reference/fact-check-findings.md): all
+twenty-five fact-check findings and what became of each. Read it before
+assuming a drawing that disagrees with its old image is a mistake - most
+disagree on purpose, and the scene file says why under its own `DISCREPANCY`
+heading. Seven were carried open to the end and ruled on together; the page
+edits those produced are the only places this conversion changed a page's
+words.
+
 ## Design rules
 
 ### Canvas and style

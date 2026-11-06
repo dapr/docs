@@ -3092,3 +3092,72 @@ test.describe('high contrast', () => {
     });
   }
 });
+
+
+// Where each converted page's source lives, so a check can read what the page
+// actually says rather than what a list remembers about it.
+const SOURCE_FOR_URL = (() => {
+  const map = new Map();
+  for (const file of markdownFiles(CONTENT_DIR)) map.set(urlFor(file), file);
+  return map;
+})();
+
+
+// THE MAINTAINER'S RULING, STATED AS A RULE. A converted page shows the drawing
+// and not the thing it replaced: none of the images this conversion catalogued
+// as a diagram, and no Mermaid except the two families it deliberately does not
+// draw.
+//
+// NOT "keeps no image", which is what this check first said and what the plan
+// asked for. Two converted pages legitimately keep a screenshot - RedisInsight
+// and the dev dashboard on dapr-agents-getting-started - and a screenshot of
+// running software is evidence, not a diagram anyone should redraw. The
+// anti-goal was ever only a page showing the new SVG BESIDE the PNG it
+// replaced.
+//
+// "Catalogued as a diagram" is read from the sibling guard rather than listed
+// here, because that file is where an image path lives by construction: every
+// image this conversion touched is in one of its lists. Reading it as TEXT
+// instead of importing it is deliberate - requiring one spec file from another
+// runs its `test()` calls and registers its whole suite a second time.
+const GUARDED_IMAGES = (() => {
+  const src = fs.readFileSync(path.join(__dirname, 'images-still-resolve.spec.js'), 'utf8');
+  return new Set([...src.matchAll(/['"]([\w./-]+\.(?:png|jpg|jpeg|gif|svg|webp))['"]/g)].map((m) => m[1]));
+})();
+
+// A silently empty extraction would make the check below pass on everything,
+// which is the one way a guard like this fails without anyone noticing.
+test('the diagram-image catalogue was actually read', () => {
+  expect(GUARDED_IMAGES.size, 'no image paths found in images-still-resolve.spec.js').toBeGreaterThan(50);
+});
+
+test('a converted page keeps no image it replaced, and no mermaid but a sequence or gantt', () => {
+  const offences = [];
+  for (const url of new Set(SCENES.map((s) => s.page))) {
+    const file = SOURCE_FOR_URL.get(url);
+    expect(file, `no source file found for converted page ${url}`).toBeTruthy();
+    const body = fs.readFileSync(file, 'utf8');
+
+    // Both syntaxes that reach /images/: a raw tag and a markdown image. The
+    // conversion found 92 of the former and 14 of the latter in the tree, so
+    // checking only one would pass a page that still shows the other.
+    const shown = [
+      ...[...body.matchAll(/<img[^>]+src=["']\/images\/([^"']+)["']/g)].map((m) => m[1]),
+      ...[...body.matchAll(/!\[[^\]]*\]\(\/images\/([^)]+)\)/g)].map((m) => m[1]),
+    ];
+    for (const img of shown) {
+      if (GUARDED_IMAGES.has(img)) offences.push(`${url} still shows the diagram it replaced: ${img}`);
+    }
+
+    // A Mermaid block may stay only if it is a family this set has no shapes
+    // for: a sequence diagram needs a lifeline and a gantt needs a time axis.
+    // Anything else - a flowchart above all - is a diagram that was converted
+    // on every other page and missed here.
+    for (const m of body.matchAll(/\{\{<\s*mermaid\s*>\}\}\s*\n\s*(\w+)/g)) {
+      if (!['sequenceDiagram', 'gantt'].includes(m[1])) {
+        offences.push(`${url} still holds a {{< mermaid >}} "${m[1]}" block`);
+      }
+    }
+  }
+  expect(offences, 'converted pages that still show what the diagram replaced').toEqual([]);
+});

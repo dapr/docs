@@ -20,6 +20,8 @@ The diagram below shows two instances of different applications, acquiring diffe
 
 {{< diagram name="lock-multiple-example" width="75" >}}
 
+Locks are scoped to a Dapr app-id, so these two locks are independent of each other: each one excludes other instances of its own application, not the other application. Two applications cannot use the lock API to exclude one another from the same resource.
+
 ### Configure a lock component
 
 Save the following component file to the [default components folder]({{% ref "install-dapr-selfhost#step-5-verify-components-directory-has-been-initialized" %}}) on your machine.

@@ -18,10 +18,10 @@ Input bindings are ideal for event-driven processing, data pipelines, or general
 
 This guide uses a Kafka binding as an example. You can find your preferred binding spec from [the list of bindings components]({{% ref setup-bindings %}}). In this guide:
 
-1. The example invokes the `/binding` endpoint with `checkout`, the name of the binding to invoke.
-1. The payload goes inside the mandatory `data` field, and can be any JSON serializable value.
-1. The `operation` field tells the binding what action it needs to take. For example, [the Kafka binding supports the `create` operation]({{% ref "kafka#binding-support" %}}).
-   - You can check [which operations (specific to each component) are supported for every output binding]({{% ref supported-bindings %}}).
+1. Dapr connects to the external resource on your behalf, using the settings in the binding component. For the Kafka binding named `checkout`, that is the `topics` it consumes and the `consumerGroup` it joins.
+1. When an event arrives, Dapr invokes a `POST` endpoint on your application named after the binding - `/checkout` - and delivers the event payload as the request body.
+1. The `direction` field tells Dapr which way the binding runs. An input binding triggers your application, so it is set to `input`.
+   - A component can support both directions; [specify the supported `direction` of the binding]({{% ref "bindings_api#binding-direction-optional" %}}) so Dapr knows which to use.
 
 {{% alert title="Note" color="primary" %}}
  If you haven't already, [try out the bindings quickstart]({{% ref bindings-quickstart %}}) for a quick walk-through on how to use the bindings API.

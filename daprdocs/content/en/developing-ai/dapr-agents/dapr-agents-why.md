@@ -39,8 +39,6 @@ While Dapr Agents centers around agents, it also recognizes the versatility of u
 Agents can be used standalone and create workflows behind the scene, or act as autonomous steps in deterministic workflows.
 {{% /alert %}}
 
-{{< diagram name="components-concept" width="80" >}}
-
 ### Backed by Durable Workflows
 
 Dapr Agents places durability at the core of its architecture, leveraging [Dapr Workflows]({{% ref workflow-overview.md %}}) as the foundation for durable agent execution and deterministic multi-agent orchestration.
@@ -65,6 +63,8 @@ Dapr Agents utilizes [Dapr's pluggable component framework]({{% ref components-c
 {{% alert title="Note" color="info" %}}
 Developers can easily switch between different components (e.g., Redis to DynamoDB, OpenAI to Anthropic) based on their deployment environment, ensuring portability and adaptability.
 {{% /alert %}}
+
+{{< diagram name="components-concept" width="80" >}}
 
 ### Message-Driven Communication
 
