@@ -118,7 +118,7 @@ export default {
   height: H,
   title: 'Diagrid between an AI agent and what it uses',
   desc:
-    'A user on the left talks to an AI agent, drawn as a dashed region holding the agent frameworks CrewAI, LangGraph, OpenAI Agents and Pydantic AI. The agent calls Diagrid, drawn below it as a dashed region labelled "Diagrid, built on Dapr", which provides durable execution, verifiable execution, and identity and access. Diagrid connects the agent to LLMs from model providers on the right, and to tools and MCP servers, and infrastructure and databases, below.',
+    'A user on the left talks to an AI agent, drawn as a dashed region holding the agent frameworks CrewAI, LangGraph, OpenAI Agents and Pydantic AI. The agent calls Diagrid, drawn below it as a dashed region labelled "Diagrid, built on Dapr", which provides durable execution, verifiable execution, and identity and access. The agent runs outside Diagrid and calls it over its APIs. Diagrid connects the agent to LLMs from model providers on the right, and to tools and MCP servers, and infrastructure and databases, below.',
 
   build() {
     return [

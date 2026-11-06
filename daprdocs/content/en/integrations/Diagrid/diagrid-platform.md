@@ -31,7 +31,7 @@ Works with existing agent frameworks such as CrewAI, LangGraph, OpenAI Agents, a
 
 **Flexible deployment**
 
-Available as Diagrid Cloud, a fully managed multi-tenant platform; Dedicated Cloud, a single-tenant environment operated by Diagrid; BYOC, managed or self-managed in your own cloud; or Enterprise Server, for self-hosted and air-gapped environments.
+Available as Diagrid Cloud, a fully managed multi-tenant platform; Dedicated Cloud, a single-tenant environment operated by Diagrid; BYOC, managed or self-managed in your own cloud; or Enterprise Server, self-hosted on your own infrastructure, which can be air-gapped.
 
 {{< button text="Learn more about Diagrid" link="https://www.diagrid.io/catalyst" >}}
 {{< button text="Compare Dapr and Diagrid" link="https://docs.diagrid.io/dapr-open-source/dapr-vs-diagrid/" color="secondary" >}}
