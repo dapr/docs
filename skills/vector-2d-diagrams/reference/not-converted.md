@@ -5,8 +5,10 @@ NOT move, which is the half that gets lost: without it, the next person reads
 a remaining `<img>` as an oversight and either converts something that was
 weighed and rejected, or leaves something that really was missed.
 
-As of the close-out: **109 scenes** drawn across **54 pages**, with 60 files and
-23 page assertions in the guard in `tests/images-still-resolve.spec.js`.
+As of the close-out: **109 scenes** drawn across **57 pages**. The guard in
+`tests/images-still-resolve.spec.js` holds 60 files and 26 converted-page
+rows, and `PAGES_STILL_SHOWING` is down to a single page - `sidecar-health.md`,
+for the reason given below.
 
 ## Not a diagram
 
@@ -42,26 +44,35 @@ straight horizontal run, order read top to bottom - which is what
 real lifeline, and growing one for three drawings is not worth the vocabulary.
 Check the SHAPE of a mermaid block before promising to convert it.
 
-## Already drawn, but the page does not point at it yet
+## Already drawn, and now pointed at - except one
 
-The cheapest four in the whole list. Each of these pages still carries an
-image whose subject is ALREADY a scene, drawn on a sibling page - so
-converting them is a shortcode, not a drawing, the way `components-concept`
-was reused on `dapr-agents-why.md`. They sit in `PAGES_STILL_SHOWING` because
-they came from the PREVIOUS conversion's guard, not this one's task list.
+Four pages carried an image whose subject was ALREADY a scene, drawn on a
+sibling page. **Three of them have been converted**, as a shortcode and no
+drawing, the way `components-concept` was reused on `dapr-agents-why.md`:
 
-| Page still showing an image | The scene that already draws it | Drawn today on |
+| Page | The scene it now draws | Also drawn on |
 | --- | --- | --- |
 | `operations/resiliency/health-checks/app-health.md` | `app-health` | `concepts/resiliency-concept.md` |
-| `operations/resiliency/health-checks/sidecar-health.md` | `sidecar-health` | `concepts/resiliency-concept.md` |
 | `operations/observability/tracing/tracing-overview.md` | `observability-tracing` | `concepts/observability-concept.md` |
 | `operations/hosting/kubernetes/kubernetes-overview.md` | `hosting-kubernetes` | `overview.md` |
 
-Check each image against its scene before swapping - a scene drawn for a
-concept page makes the claims THAT page's prose makes, and an operations page
-may need something the concept page did not say. `sidecar-health.md` also
-carries `healthz-outbound.png`, which nothing draws, so that page needs both
-halves before it can move (a page in both guard lists fails the check).
+Each was checked against the new page's prose before the swap, not assumed - a
+scene drawn for a concept page makes the claims THAT page's prose makes. All
+three turned out to have been fact-checked against the OPERATIONS page in the
+first place: `app-health` against app-health.md's own four-item list of what
+Dapr stops doing when an app is unhealthy, and `hosting-kubernetes` against
+kubernetes-overview.md's own table of control-plane services. The concept page
+was the one getting the borrowed drawing.
+
+**`sidecar-health.md` is the one that did not move.** Its second image,
+`security-mTLS-dapr-system-services.png`, is already drawn by
+`mtls-system-services` - but it also carries `healthz-outbound.png`, which
+nothing in this set draws: three init steps inside daprd, two healthz
+endpoints (`/v1.0/healthz` and `/v1.0/healthz/outbound`), the app's webserver
+and its WaitForServer, and two notes. That is a real drawing, not a shortcode.
+Converting one image and leaving the other would make the page exactly the
+mixed page this conversion set out to avoid, so it keeps both images until
+somebody draws the outbound one.
 
 ## Diagrams that were never in the plan's scope
 

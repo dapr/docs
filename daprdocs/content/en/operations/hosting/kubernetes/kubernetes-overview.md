@@ -16,7 +16,7 @@ Dapr can be configured to run on any supported versions of Kubernetes. To achiev
 | `dapr-sentry`           | Manages mTLS between services and acts as a certificate authority. For more information read the [security overview]({{% ref "security-concept.md" %}})                                                                                                                   |
 | `dapr-scheduler`        | Provides distributed job scheduling capabilities used by the Jobs API, Workflow API, and Actor Reminders. Can also serve [actor placement]({{% ref "placement#serving-placement-from-the-scheduler-service" %}}) in place of `dapr-placement`                             |
 
-<img src="/images/overview-kubernetes.png" width=1000>
+{{< diagram hosting-kubernetes >}}
 
 ## Supported versions
 Dapr support for Kubernetes is aligned with [Kubernetes Version Skew Policy](https://kubernetes.io/releases/version-skew-policy).

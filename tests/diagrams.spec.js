@@ -160,7 +160,10 @@ const SCENE_ROWS = [
   },
   {
     name: 'hosting-kubernetes',
-    page: '/overview/',
+    pages: [
+      '/overview/',
+      '/operations/hosting/kubernetes/kubernetes-overview/',
+    ],
     labels: [
       'Pod',
       'App',
@@ -1042,7 +1045,10 @@ const SCENE_ROWS = [
   },
   {
     name: 'app-health',
-    page: '/concepts/resiliency-concept/',
+    pages: [
+      '/concepts/resiliency-concept/',
+      '/operations/resiliency/health-checks/app-health/',
+    ],
     labels: [
       'my-app',
       '/healthz',
@@ -1110,7 +1116,10 @@ const SCENE_ROWS = [
   },
   {
     name: 'observability-tracing',
-    page: '/concepts/observability-concept/',
+    pages: [
+      '/concepts/observability-concept/',
+      '/operations/observability/tracing/tracing-overview/',
+    ],
     labels: [
       'App A',
       'App B',

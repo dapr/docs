@@ -131,18 +131,12 @@ const FROZEN_IMAGE_BASELINE = [...IN_SCOPE_IMAGES];
 // English page rendering its image, so retiring the page assertion handed
 // the file to IN_SCOPE_IMAGES.
 const PAGES_STILL_SHOWING = [
-  {
-    image: 'observability-app-health.webp',
-    page: '/operations/resiliency/health-checks/app-health/',
-  },
-  {
-    image: 'observability-tracing.png',
-    page: '/operations/observability/tracing/tracing-overview/',
-  },
-  {
-    image: 'overview-kubernetes.png',
-    page: '/operations/hosting/kubernetes/kubernetes-overview/',
-  },
+  // sidecar-health.md is the last of the four pages this list started with,
+  // and it stays because it cannot move yet: besides this image it carries
+  // healthz-outbound.png, which nothing in the set draws - three init steps
+  // inside daprd, two healthz endpoints and the app's WaitForServer. Giving
+  // the page a shortcode for one image while the other is still an <img>
+  // would make it exactly the mixed page this conversion set out to avoid.
   {
     image: 'security-mTLS-dapr-system-services.png',
     page: '/operations/resiliency/health-checks/sidecar-health/',
@@ -155,6 +149,28 @@ const PAGES_STILL_SHOWING = [
 // IN_SCOPE_IMAGES - which is the whole point: the page stops vouching for the
 // file, so the file list has to.
 const CONVERTED_PAGES = [
+  // The three pages that needed no new drawing at all. Each one's subject was
+  // ALREADY a scene, drawn on a sibling page, and each scene had already been
+  // fact-checked against THIS page rather than the one it shipped on:
+  // `app-health` against app-health.md's own four-item list of what Dapr stops
+  // doing, and `hosting-kubernetes` against kubernetes-overview.md's own table
+  // of control-plane services. Converting them was a shortcode, the way
+  // components-concept was reused on dapr-agents-why.md.
+  {
+    image: 'observability-app-health.webp',
+    page: '/operations/resiliency/health-checks/app-health/',
+    scene: 'app-health',
+  },
+  {
+    image: 'observability-tracing.png',
+    page: '/operations/observability/tracing/tracing-overview/',
+    scene: 'observability-tracing',
+  },
+  {
+    image: 'overview-kubernetes.png',
+    page: '/operations/hosting/kubernetes/kubernetes-overview/',
+    scene: 'hosting-kubernetes',
+  },
   // dapr-agents-why.md's three principle images. The first is not a new
   // drawing: components-concept already draws App, Dapr, the building blocks
   // and the components behind them, from a longer and more current list than
