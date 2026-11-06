@@ -196,6 +196,8 @@ If you want to inspect the value in the state store, and you know it's not binar
 SELECT *, convert_from(value, 'utf-8') FROM state;
 ```
 
+Workflow state is binary. The Dapr workflow engine stores workflow history, custom status and metadata as Protocol Buffers, so this query fails on those rows with an `invalid byte sequence for encoding "UTF8"` error. To read workflow data, use the [`dapr workflow` CLI commands]({{% ref dapr-workflow.md %}}), for example `dapr workflow history <instance-id> --app-id <app-id>`.
+
 ### TTLs and cleanups
 
 This state store supports [Time-To-Live (TTL)]({{% ref state-store-ttl.md %}}) for records stored with Dapr. When storing data using Dapr, you can set the `ttlInSeconds` metadata property to indicate after how many seconds the data should be considered "expired".
