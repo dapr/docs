@@ -46,6 +46,30 @@ dapr workflow run OrderProcessingWorkflow \
   --start-time "2024-12-25T10:00:00Z"
 ```
 
+#### Run a Workflow on a Schedule
+
+A [workflow schedule]({{% ref workflow-schedules.md %}}) starts a workflow repeatedly on a cron schedule.
+
+```bash
+# Start the ReconcileOrders workflow at 02:00 UTC every day
+dapr workflow schedule create nightly-reconcile \
+  --app-id orderprocessing \
+  --workflow ReconcileOrders \
+  --schedule "0 0 2 * * *"
+
+# List the app's schedules with their next run, last run and how it went
+dapr workflow schedule list --app-id orderprocessing -o wide
+
+# Start a run now, without moving the next scheduled run
+dapr workflow schedule trigger nightly-reconcile --app-id orderprocessing
+
+# List the runs of the schedule
+dapr workflow list --app-id orderprocessing --instance-id-prefix nightly-reconcile_
+
+# Delete the schedule; runs it started are kept
+dapr workflow schedule delete nightly-reconcile --app-id orderprocessing
+```
+
 #### List Workflow Instances
 
 ```bash

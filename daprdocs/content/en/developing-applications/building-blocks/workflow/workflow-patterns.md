@@ -735,7 +735,7 @@ The following diagram provides a rough illustration of this pattern.
 
 <img src="/images/workflow-overview/workflow-monitor-pattern.png" width=800 alt="Diagram showing how the monitor pattern works"/>
 
-Depending on the business needs, there may be a single monitor or there may be multiple monitors, one for each business entity (for example, a stock). Furthermore, the amount of time to sleep may need to change, depending on the circumstances. These requirements make using cron-based scheduling systems impractical.
+Depending on the business needs, there may be a single monitor or there may be multiple monitors, one for each business entity (for example, a stock). Furthermore, the amount of time to sleep may need to change, depending on the circumstances. When a check runs at fixed times and each check is independent, a [workflow schedule]({{% ref workflow-schedules.md %}}) starts it on a cron schedule with no extra code. When the sleep depends on what the last check found, or the checks share state, use an eternal workflow as shown below.
 
 Dapr Workflow supports this pattern natively by allowing you to implement _eternal workflows_. Rather than writing infinite while-loops ([which is an anti-pattern]({{% ref "workflow-features-concepts.md#infinite-loops-and-eternal-workflows" %}})), Dapr Workflow exposes a _continue-as-new_ API that workflow authors can use to restart a workflow function from the beginning with a new input.
 
