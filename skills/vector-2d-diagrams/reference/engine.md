@@ -25,7 +25,7 @@ pure: the same input always gives byte-identical output.
 | --- | --- | --- |
 | `group(children)` | an array, or `{ children }` | a `<g>`, for positioning or grouping |
 | `slots(x0, x1, n)` | — | `n` evenly spaced centers across the span (returns numbers, not a node) |
-| `label(o)` | `x, y, text, size` (11), `weight` (600), `color` (`C.body`), `halo`, `anchor`, `mono` | text; `\n` starts a second line, vertically centered. `mono: true` sets the page's code font, for a command or a path |
+| `label(o)` | `x, y, text, size` (11), `weight` (600), `color` (`C.body`), `halo`, `anchor`, `mono` | text; `\n` starts a second line, vertically centered. `mono: true` sets the page's code font, for a command or a path, with LIGATURES OFF - a diagram quoting a payload must not turn `!=` into a character the API does not accept |
 | `hex(o)` | `x, y, r` (42.5), `stroke, fill, label, size, labelDx` | a pointy-top app hexagon with its name |
 | `hexPoints(x, y, r)` | — | the six points, for an arrow descriptor |
 | `hexHalfWidth(r)` | — | half a pointy-top hexagon's width, for aligning one shape to another's edge |

@@ -46,6 +46,13 @@ button and no reduced-motion path.
 
 The engine's API is in [reference/engine.md](reference/engine.md).
 
+What is still an image, and why, is in
+[reference/not-converted.md](reference/not-converted.md). Read it before
+converting anything that looks like an oversight: it separates the images that
+were weighed and kept (screenshots, vendor UIs, logos), the mermaid blocks this
+set cannot draw (anything needing a lifeline), and the real diagrams that were
+never in the conversion's scope and are still waiting.
+
 ## Design rules
 
 ### Canvas and style
