@@ -25,6 +25,7 @@ import apiScoping from './api-scoping.mjs';
 import securityCapabilities from './security-capabilities.mjs';
 import securityThreatModel from './security-threat-model.mjs';
 import sidecarModel from './sidecar-model.mjs';
+import diagridPlatform from './diagrid-platform.mjs';
 
 export const scenes = {
   'agents-overview': agentsOverview,
@@ -51,4 +52,5 @@ export const scenes = {
   'security-capabilities': securityCapabilities,
   'security-threat-model': securityThreatModel,
   'sidecar-model': sidecarModel,
+  'diagrid-platform': diagridPlatform,
 };
