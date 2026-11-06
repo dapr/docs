@@ -1,20 +1,25 @@
 ---
 type: docs
-title: "Diagrid Catalyst"
-linkTitle: "Catalyst"
-description: "An agentic durable execution platform for governing, securing, and running agents and durable workflows in production"
+title: "Diagrid"
+linkTitle: "Diagrid platform"
+description: "A durable execution platform for agents, workflows, MCP servers and apps, built on Dapr"
 weight: 3000
 aliases:
+  - /integrations/diagrid/catalyst/
   - /integrations/diagrid/diagrid-catalyst/
 ---
 
-[Catalyst](https://www.diagrid.io/catalyst) is an agentic durable execution platform that brings reliability to AI agents and workflows. Built on open source Dapr, it adds production-grade governance, security, and durability for AI workloads while remaining compatible with popular agent frameworks.
+[Diagrid](https://www.diagrid.io/catalyst) is a durable execution platform built on open source Dapr. It gives agents, workflows, MCP servers and apps durable execution, verifiable execution and a cryptographic identity with policy-based access, and works with any agent framework.
 
-<br /><img src="/images/integrations/diagrid/catalyst-diagram.png" alt="Diagrid Catalyst" width="800">
+{{< diagram name="diagrid-platform" width="85" >}}
 
 **Durable execution**
 
-Agents and workflows automatically resume from failures — from simple restarts to complete system outages — with checkpointing and self-recovery built in.
+Agents and workflows recover automatically from failures, from simple restarts to complete system outages, and resume where they stopped.
+
+**Verifiable execution**
+
+Signed workflow history is tamper-evident, so you can prove what ran.
 
 **Zero-trust security**
 
@@ -26,7 +31,7 @@ Works with existing agent frameworks such as CrewAI, LangGraph, OpenAI Agents, a
 
 **Flexible deployment**
 
-Available as Catalyst Cloud, a fully managed serverless platform, or Catalyst Enterprise for self-hosted and air-gapped environments.
+Available as Diagrid Cloud, a fully managed multi-tenant platform; Dedicated Cloud, a single-tenant environment operated by Diagrid; BYOC, managed or self-managed in your own cloud; or Enterprise Server, for self-hosted and air-gapped environments.
 
-{{< button text="Learn more about Diagrid Catalyst" link="https://www.diagrid.io/catalyst" >}}
-{{< button text="Compare Dapr and Catalyst" link="https://docs.diagrid.io/dapr-open-source/dapr-vs-catalyst" color="secondary" >}}
+{{< button text="Learn more about Diagrid" link="https://www.diagrid.io/catalyst" >}}
+{{< button text="Compare Dapr and Diagrid" link="https://docs.diagrid.io/dapr-open-source/dapr-vs-diagrid/" color="secondary" >}}
