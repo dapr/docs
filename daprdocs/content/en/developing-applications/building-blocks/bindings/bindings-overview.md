@@ -12,8 +12,8 @@ Using Dapr's bindings API, you can trigger your app with events coming in from e
 - Focus on business logic, instead of the implementation details of interacting with a system.
 - Keep your code free from SDKs or libraries.
 - Handle retries and failure recovery.
-- Switch between bindings at runtime.
-- Build portable applications with environment-specific bindings set-up and no required code changes.
+- Switch between external resources by configuring binding components.
+- Use environment-specific binding configurations without changing your application code, when the bindings support the operations, data, and metadata your application uses.
 
 For example, with bindings, your application can respond to incoming Twilio/SMS messages without:
 
@@ -31,6 +31,27 @@ Bindings are developed independently of Dapr runtime. You can [view and contribu
 {{% alert title="Note" color="primary" %}}
 If you are using the HTTP Binding, then it is preferable to use [service invocation]({{% ref service_invocation_api %}}) instead. Read [How-To: Invoke Non-Dapr Endpoints using HTTP]({{% ref "howto-invoke-non-dapr-endpoints" %}}) for more information.
 {{% /alert %}}
+
+## When to use bindings
+
+Use bindings when you need to receive events from an external system or invoke operations on that system without adding its SDK to your application. Each binding component defines the operations, data, and metadata it supports.
+
+### Bindings and state management
+
+Some external systems have both a binding component and a state store component. Choose the building block based on what your application needs to do:
+
+| Your application needs to | Use |
+| --- | --- |
+| Save, retrieve, or delete application state by key through a common API across supported stores | [State management]({{% ref state-management-overview.md %}}) |
+| Invoke operations specific to an external system, such as listing blobs or sending an SMS | An output binding that supports those operations |
+| React to events from an external system | An input binding that supports those events |
+
+For example, Azure Blob Storage has both a [state store component]({{% ref setup-azure-blobstorage.md %}}) and a [binding component]({{% ref blobstorage.md %}}):
+
+- Use the state store to save and retrieve application state by key through the Dapr state management API.
+- Use the output binding to perform blob operations, such as listing blobs by prefix or generating a presigned SAS URL.
+
+The bindings API provides a common way to invoke components, but it does not make their capabilities interchangeable. Before switching binding types, compare their supported operations, payloads, and metadata. You may need to update your application code. State stores provide a common key-value API, although optional features also vary between components.
 
 ## Input bindings
 
