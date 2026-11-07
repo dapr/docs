@@ -19,8 +19,8 @@ You can also use [Podman](https://podman.io/) in place of Docker as container ru
 {{% /alert %}}
 
 The default Docker setup provides out of the box functionality with the following containers and configuration:
-- A Redis container configured to serve as the default component for both state management and publish/subscribe.
-- A Zipkin container for diagnostics and tracing.
+- A Redis container configured to serve as the default component for both state management and publish/subscribe (skip with `--no-redis`).
+- A Zipkin container for diagnostics and tracing (skip with `--no-zipkin`).
 - A default Dapr configuration and components installed in `$HOME/.dapr/` (Mac/Linux) or `%USERPROFILE%\.dapr\` (Windows).
 
 The `dapr-placement` service is responsible for managing the actor distribution scheme and key range settings. This service is not launched as a container and is only required if you are using Dapr actors. For more information on the actor `Placement` service read [actor overview]({{% ref "actors-overview.md" %}}).
