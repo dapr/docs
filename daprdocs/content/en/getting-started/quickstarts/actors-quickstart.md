@@ -249,7 +249,7 @@ For full context of the sample, take a look at the following code:
 
 ## Inspect actors with the Dapr Dev Dashboard
 
-While the service and client apps are running, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to see the registered `SmokeDetectorActor` and `ControllerActor` types and their active actor instances. The dashboard also shows the actor state stored in the state store, so you can follow how each device's status changes when the alarm goes off and the reminders clear it.
+While the service and client apps are running, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to see the registered `SmokeDetectorActor` and `ControllerActor` types and the number of active actors per type. The dashboard also shows the actor state stored in the state store when you select **Show internal keys** on the **State** page, so you can follow how each device's status changes when the alarm goes off and the reminders clear it.
 
 ## Tell us what you think!
 

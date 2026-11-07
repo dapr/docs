@@ -43,6 +43,8 @@ Style and tone conventions should be followed throughout all Dapr documentation 
 
 Diagrams and images are invaluable visual aids for documentation pages. Use the diagram style and icons in the [Dapr Diagrams template deck](https://github.com/dapr/docs/tree/v1.14/daprdocs/static/presentations). 
 
+Some diagrams are generated from code instead of drawn in the deck. If you are adding or changing one of those, see [Generated diagrams](#generated-diagrams) below.
+
 The process for creating diagrams for your documentation:
 
 1. Download the [Dapr Diagrams template deck](https://github.com/dapr/docs/tree/v1.14/daprdocs/static/presentations) to use the icons and colors.
@@ -53,6 +55,62 @@ The process for creating diagrams for your documentation:
   - For more information on calling out images using shortcode, see the [Images guidance](#images) section below.
 1. Add the diagram to the appropriate section in your documentation using the HTML `<image>` tag.
 1. In your PR, comment the diagram slide (not the screen capture) so it can be reviewed and added to the diagram deck by maintainers.
+
+## Generated diagrams
+
+Some diagrams in these docs are not images at all. They are generated SVG
+scenes: a small JavaScript file describes the drawing, a build step renders
+it, and the page inlines the result. A generated diagram paints in the site's
+own theme tokens, so it follows the light and dark toggle; its text is real
+text, so it can be selected, searched and read aloud by a screen reader; and a
+change to it is reviewed as a diff rather than as a replacement screenshot.
+
+**Follow the diagram skill** at
+[`skills/vector-2d-diagrams/SKILL.md`](https://github.com/dapr/docs/blob/v1.19/skills/vector-2d-diagrams/SKILL.md)
+whenever you add or change one. It is the design system for these drawings:
+the canvas, colour and line rules, the shape vocabulary, where labels and
+arrows go, how brand marks are sourced and licensed, the accessibility rules,
+the workflow to follow, and a list of the traps already hit. Read it yourself,
+or point your coding agent at it. Diagrams drawn to it look like one another,
+which is the whole point of having it.
+
+The workflow, in short:
+
+1. Write the scene in `diagrams/scenes/<name>.mjs` and register it in
+   `diagrams/scenes/index.mjs`.
+1. Run `npm run export:diagrams`. It writes the inlined drawing to
+   `daprdocs/assets/diagrams/<name>.svg` and a standalone copy to
+   `daprdocs/static/diagrams/<name>.svg`. Commit both.
+1. Place it on the page with the `diagram` shortcode:
+
+   ```
+   {{</* diagram service-invocation */>}}
+   ```
+
+   A drawing that reads better below the full column width takes an optional
+   `width`, a whole percentage from 10 to 100. Hugo does not allow positional
+   and named parameters in the same call, so a call that passes `width` names
+   the scene as well:
+
+   ```
+   {{</* diagram name="api-scoping" width="70" */>}}
+   ```
+
+   A missing or misspelled scene name fails the build instead of rendering
+   nothing.
+1. Add the scene to `SCENES` in `tests/diagrams.spec.js` with every label it
+   must draw. That spec fails on a scene or a call site that has no row, so no
+   diagram ships untested.
+1. Render it and look at it in **both** themes before opening your PR. The
+   numeric tests pass on a mark that is invisible and on a label drawn twice
+   in the same place.
+1. Run `npm run test:diagrams`, `npm run export:diagrams -- --check` and
+   `npm run test:layout`. CI runs all three, so a committed SVG that no longer
+   matches a fresh render fails the build.
+
+Pages that have not been converted still use the template deck process above.
+The two sit side by side; there is no need to convert a diagram just because
+you are editing the page it sits on.
 
 ## Contributing a new docs page
 

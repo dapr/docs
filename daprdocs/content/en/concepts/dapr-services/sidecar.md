@@ -16,10 +16,10 @@ The Dapr sidecar exposes:
 
 The Dapr sidecar will reach readiness state once the application is accessible on its configured port. The application cannot access the Dapr components during application start up/initialization. 
 
-<img src="/images/overview-sidecar-apis.png" width=700>
+{{< diagram name="sidecar-apis" width="65" >}}
 
 The sidecar APIs are called from your application over local http or gRPC endpoints. 
-<img src="/images/overview-sidecar-model.png" width=700>
+{{< diagram name="sidecar-model" width="65" >}}
 
 ## Self-hosted with `dapr run`
 

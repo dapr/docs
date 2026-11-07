@@ -1129,7 +1129,7 @@ Because of how replay-based workflows execute, you'll write logic that does thin
 
 Start the workflow application via your IDE or the Dapr CLI ([Dapr multi-app run]({{%  ref multi-app-overview.md %}}) if you want to start multiple applications, or regular [Dapr run command](#testing-the-workflow-via-the-dapr-cli) for one application, and schedule a new workflow instance.
 
-Use the local [Diagrid Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to visualize and inspect your workflow state, and drill down to see detailed workflow execution history. The dashboard runs as a standalone tool and is connected to the state store that is used by Dapr workflows (by default a local Redis instance).
+Use the local [Diagrid Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to visualize and inspect your workflow state, and drill down to see detailed workflow execution history. The dashboard runs as a standalone tool and reads workflows from the state store that is used by Dapr workflows (by default a local Redis instance). Redis, PostgreSQL, SQLite, and MongoDB are read directly; other state stores are read through the sidecar's workflow API, which requires Dapr 1.17 or later.
 
 <img src="/images/workflow-overview/workflow-diagrid-dashboard.png" width=800 alt="Diagrid Dev Dashboard showing local workflow executions"/><br/>
 
