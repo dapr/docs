@@ -50,10 +50,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # These three are seconds of pure Node and need no browser, so they run
-      # before the Chromium install: a stale SVG, a stale PNG or a broken
-      # builder fails the job in under a minute instead of after the browser
-      # download.
+      # These two are seconds of pure Node and need no browser, so they run
+      # before the Chromium install: a stale SVG or a stale PNG fails the job
+      # in under a minute instead of after the browser download. The unit
+      # tests cannot join them - see below.
 
       # The committed SVG and its scene source can drift silently - that is the
       # one failure the whole generated-diagram approach has to rule out, so a
@@ -69,13 +69,18 @@ jobs:
       - name: Check diagram PNGs are up to date
         run: npm run check:pngs
 
-      - name: Run diagram unit tests
-        run: npm run test:diagrams
-
       # Only Chromium is needed; the invariants are layout-engine level and the
       # other browsers would triple install time for no extra signal.
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
+
+      # After the install, not before it. These were pure Node until the PNG
+      # exporter arrived: render-png.test.mjs rasterises through the same
+      # browser harness the exporter uses, because asserting on real pixels is
+      # the only way to catch a trim or scale regression. Run them earlier and
+      # every one of those tests fails on a missing executable.
+      - name: Run diagram unit tests
+        run: npm run test:diagrams
 
       # playwright.config.js starts Hugo itself via `webServer`, so there is no
       # separate build or serve step here.
