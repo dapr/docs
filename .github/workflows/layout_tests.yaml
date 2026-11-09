@@ -50,15 +50,24 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Both of these are seconds of pure Node and need no browser, so they run
-      # before the Chromium install: a stale SVG or a broken builder fails the
-      # job in under a minute instead of after the browser download.
+      # These three are seconds of pure Node and need no browser, so they run
+      # before the Chromium install: a stale SVG, a stale PNG or a broken
+      # builder fails the job in under a minute instead of after the browser
+      # download.
 
       # The committed SVG and its scene source can drift silently - that is the
       # one failure the whole generated-diagram approach has to rule out, so a
       # fresh render has to match byte for byte.
       - name: Check diagrams are up to date
         run: npm run export:diagrams -- --check
+
+      # The PNG download is rendered from the SVG and committed beside it.
+      # This belongs on the pure-Node side too: check:pngs only hashes files
+      # and never launches a browser, so a contributor who edited a scene
+      # without re-rendering finds out in under a minute, not after the
+      # Chromium download.
+      - name: Check diagram PNGs are up to date
+        run: npm run check:pngs
 
       - name: Run diagram unit tests
         run: npm run test:diagrams
