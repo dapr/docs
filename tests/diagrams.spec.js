@@ -3012,6 +3012,87 @@ for (const scene of SCENES) {
   });
 }
 
+// The two accessibility properties of the actions row, checked ONCE rather than
+// per scene. The shortcode is a single template, so one page proves what 109
+// navigations would prove 109 times on a suite that already runs 12 minutes.
+//
+// `service-invocation-example` is the page because its figure is the narrowest
+// in the content - the call passes `width="50"` - so it is where the row has
+// least room to lay itself out.
+const ACTIONS_SCENE = 'service-invocation-example';
+const ACTIONS_ROW = SCENE_ROWS.find((s) => s.name === ACTIONS_SCENE);
+
+// Label in Name. A speech-input user says "click Download SVG", and the browser
+// matches what they said against the ACCESSIBLE name, not against the words
+// painted on the control. The aria-label is there because the same three words
+// repeat beside every diagram on a page - so it has to OPEN with those three
+// words, or the control cannot be operated by voice at all (WCAG 2.5.3,
+// failure F96). Nothing else on this branch holds the ordering: write the scene
+// name first and every one of the other 3116 tests still passes.
+test('each download control opens its accessible name with the words on it', async ({ page }) => {
+  expect(ACTIONS_ROW, `no SCENE_ROWS row for ${ACTIONS_SCENE}`).toBeTruthy();
+  await page.goto(ACTIONS_ROW.page, { waitUntil: 'domcontentloaded' });
+
+  const controls = await page.$$eval(`${sel(ACTIONS_SCENE)} a[data-diagram-download]`, (nodes) =>
+    nodes.map((n) => ({
+      kind: n.dataset.diagramDownload,
+      text: (n.textContent || '').replace(/\s+/g, ' ').trim(),
+      label: (n.getAttribute('aria-label') || '').replace(/\s+/g, ' ').trim(),
+    })),
+  );
+
+  expect(controls.map((c) => c.kind).sort(), 'the two download controls').toEqual(['png', 'svg']);
+  // Without this an empty visible string would satisfy startsWith() and the
+  // check below would pass on a control nobody can see the name of.
+  expect(controls.filter((c) => !c.text || !c.label), 'a control missing its text or its label').toEqual([]);
+  expect(
+    controls.filter((c) => !c.label.startsWith(c.text)),
+    'an aria-label that does not OPEN with the control\'s visible text - a speech-input'
+    + ' user cannot operate it (WCAG 2.5.3, failure F96)',
+  ).toEqual([]);
+});
+
+// `.dapr-diagram-actions` wraps, and this is the reproduction that made it
+// wrap: a phone-width viewport with the reader's default text size doubled,
+// which is a setting people actually use and which widens three controls that
+// sit in a row at the end of a narrow figure.
+//
+// Containment, not pixel positions. Where exactly the controls land is a
+// layout detail that may move; that they are INSIDE the figure, and that the
+// page does not scroll sideways, is the property. Without `flex-wrap: wrap`
+// the first control's left edge goes negative here and both assertions fail.
+test('the download controls stay inside the narrowest figure at double text size', async ({ page }) => {
+  expect(ACTIONS_ROW, `no SCENE_ROWS row for ${ACTIONS_SCENE}`).toBeTruthy();
+  await page.setViewportSize({ width: 375, height: 800 });
+  await page.goto(ACTIONS_ROW.page, { waitUntil: 'domcontentloaded' });
+  await page.evaluate(() => {
+    document.documentElement.style.fontSize = '32px';
+  });
+
+  const out = await page.evaluate((root) => {
+    const figure = document.querySelector(root);
+    const f = figure.getBoundingClientRect();
+    const controls = [...figure.querySelectorAll('.dapr-diagram-action')];
+    // Sub-pixel slack: a border can round a fraction of a pixel past its box.
+    const escaped = controls
+      .map((el) => ({ el, r: el.getBoundingClientRect() }))
+      .filter(({ r }) => r.left < f.left - 0.5 || r.right > f.right + 0.5)
+      .map(({ el, r }) =>
+        `"${(el.textContent || '').trim()}" spans ${r.left.toFixed(0)}-${r.right.toFixed(0)},`
+        + ` figure ${f.left.toFixed(0)}-${f.right.toFixed(0)}`);
+    const scroller = document.scrollingElement;
+    return { count: controls.length, escaped, overflow: scroller.scrollWidth - scroller.clientWidth };
+  }, sel(ACTIONS_SCENE));
+
+  expect(out.count, 'two downloads and a copy button').toBe(3);
+  expect(
+    out.escaped,
+    'a diagram action sticks out of its figure at 375px with a 32px root font'
+    + ' - `.dapr-diagram-actions` needs `flex-wrap: wrap`',
+  ).toEqual([]);
+  expect(out.overflow, 'the page scrolls sideways at 375px with a 32px root font').toBe(0);
+});
+
 // Where the call sites actually are, read from the repo rather than from SCENES.
 // Building the page list out of SCENES (as this guard used to) can only ever see
 // pages that already have a row, so the failure it exists to prevent - a scene
