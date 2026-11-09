@@ -56,12 +56,23 @@
              An aria-label on each link because the same three words repeat
              beside every diagram on a page, and "Download SVG" eleven times in
              a row tells a screen-reader user nothing about which drawing they
-             are on. The copy button is left alone deliberately: it rewrites its
-             own text to report "Copied" or "Copy failed", and an aria-label
-             would swallow that. */ -}}
+             are on.
+
+             The label OPENS with the visible text, and that order is the whole
+             point: a speech-input user says "click Download SVG", and the
+             browser matches what they said against the accessible name, not
+             against what is painted on screen. Name the scene first and the
+             visible string stops being a prefix of the name, the match fails,
+             and the control cannot be operated by voice at all (WCAG 2.5.3,
+             failure F96).
+
+             The copy button is left alone deliberately: accname stops at the
+             first thing it finds, so a label would pin its name for good and
+             the "Copied" / "Copy failed" it writes into its own text would
+             never reach a screen reader. */ -}}
       <div class="dapr-diagram-actions">
-        <a class="dapr-diagram-action" href="/diagrams/{{ $name }}.svg" download="{{ $name }}.svg" data-diagram-download="svg" aria-label="Download the {{ $name }} diagram as SVG">Download SVG</a>
-        <a class="dapr-diagram-action" href="/diagrams/{{ $name }}.png" download="{{ $name }}.png" data-diagram-download="png" aria-label="Download the {{ $name }} diagram as PNG">Download PNG</a>
+        <a class="dapr-diagram-action" href="/diagrams/{{ $name }}.svg" download="{{ $name }}.svg" data-diagram-download="svg" aria-label="Download SVG of the {{ $name }} diagram">Download SVG</a>
+        <a class="dapr-diagram-action" href="/diagrams/{{ $name }}.png" download="{{ $name }}.png" data-diagram-download="png" aria-label="Download PNG of the {{ $name }} diagram">Download PNG</a>
         <button class="dapr-diagram-action" type="button" data-diagram-copy="/diagrams/{{ $name }}.svg">Copy SVG</button>
       </div>
     </figure>
