@@ -27,12 +27,13 @@ flowchart LR
         S["Schedule workflow<br/>dapr-internal-schedule-nightly-report"]
     end
     S <-->|"durable timer<br/>for the next time"| J["Scheduler service"]
-    S -->|"starts a detached run"| R["Run<br/>nightly-report_20261030T020000Z"]
+    S -->|"starts a detached run"| R["Run<br/>nightly-report_8bfcbd_20261030T020000Z"]
     R -->|"executes on"| A["Your app's<br/>workflow worker"]
 {{< /mermaid >}}
 
-- **Runs are ordinary workflow instances.** Each run has the instance ID `<schedule name>_<time>`, where the time is when the run was due, in UTC, formatted as `20060102T150405Z`. A run started by [triggering](#trigger-a-run-now) the schedule has the ID `<schedule name>_<time>_manual`. List every run of a schedule by listing the instance IDs that start with `<schedule name>_`.
+- **Runs are ordinary workflow instances.** Each run has the instance ID `<schedule name>_<owner>_<time>`. The owner is a tag of the app that owns the schedule: the first 6 hex characters of the SHA-256 of `<namespace>/<app ID>`. It keeps apart the runs of same-named schedules in two apps that target one app. The time is when the run was due, in UTC, formatted as `20060102T150405Z`. A run started by [triggering](#trigger-a-run-now) the schedule has the ID `<schedule name>_<owner>_<time>_manual`, where the time has milliseconds. List every run of a schedule by listing the instance IDs that start with `<schedule name>_`.
 - **Runs are independent of the schedule.** A run that fails does not stop the schedule, and deleting a schedule does not touch the runs it already started. Use the workflow APIs to manage runs as you would any other workflow instance.
+- **Runs are detached, not child workflows.** The schedule's workflow continues as new after every run, so it could not receive a child's result, and terminating it would reach only the runs of its latest generation. A child workflow also can't be rerun on its own. Instead, the schedule's status carries the last run's status, output and failure, and the `<schedule name>_` prefix of the instance IDs ties every run to its schedule.
 - **The schedule needs a connected worker.** Like starting any workflow, creating a schedule needs your app's workflow worker to be connected to its Dapr sidecar. While no worker is connected, the schedule waits.
 - **A schedule never misses a time.** After downtime, every time the schedule missed starts its own run. See [Missed times](#missed-times).
 - **The schedule lives with your app.** The schedule belongs to the app ID whose sidecar you create it on. Its runs start on the same app unless you set a target app ID, as with [multi-app workflows]({{% ref workflow-multi-app.md %}}).
@@ -52,10 +53,10 @@ sequenceDiagram
     Note over D: status: next run 02:00
     J-->>D: timer fires at 02:00
     D->>D: continue as new
-    D->>A: start run nightly-report_20261030T020000Z
+    D->>A: start run nightly-report_8bfcbd_20261030T020000Z
     D->>J: durable timer for 02:00 the next day
     C->>D: trigger nightly-report
-    D->>A: start run nightly-report_20261030T091512Z_manual
+    D->>A: start run nightly-report_8bfcbd_20261030T091512347Z_manual
     Note over D,J: the timer for the next run does not move
     C->>D: get nightly-report
     D-->>C: next run, last run, run count,<br/>and the last run's status and output
@@ -76,13 +77,13 @@ sequenceDiagram
     J--xD: 10:00 timer held, no worker connected
     Note over D,A: app back at 13:30
     J-->>D: 10:00 timer delivered
-    D->>A: run hourly_20261030T100000Z
-    D->>A: run hourly_20261030T110000Z
-    D->>A: run hourly_20261030T120000Z
-    D->>A: run hourly_20261030T130000Z
+    D->>A: run hourly_8bfcbd_20261030T100000Z
+    D->>A: run hourly_8bfcbd_20261030T110000Z
+    D->>A: run hourly_8bfcbd_20261030T120000Z
+    D->>A: run hourly_8bfcbd_20261030T130000Z
     D->>J: durable timer for 14:00
     J-->>D: timer fires at 14:00
-    D->>A: run hourly_20261030T140000Z
+    D->>A: run hourly_8bfcbd_20261030T140000Z
 {{< /mermaid >}}
 
 To start one run for the missed times instead, and carry on from the next time after now, set the [skip missed](#options) option. The same outage then starts a single run:
@@ -96,11 +97,11 @@ sequenceDiagram
     J--xD: 10:00 timer held, no worker connected
     Note over D,A: app back at 13:30
     J-->>D: 10:00 timer delivered
-    D->>A: run hourly_20261030T100000Z
+    D->>A: run hourly_8bfcbd_20261030T100000Z
     Note over D: 11:00, 12:00 and 13:00 are skipped
     D->>J: durable timer for 14:00
     J-->>D: timer fires at 14:00
-    D->>A: run hourly_20261030T140000Z
+    D->>A: run hourly_8bfcbd_20261030T140000Z
 {{< /mermaid >}}
 
 ## Schedule format
@@ -119,7 +120,7 @@ The six fields of a cron expression are seconds, minutes, hours, day of month, m
 
 | Option | Description |
 | --- | --- |
-| Name | Identifies the schedule within the app. Up to 40 letters, digits or `-`. |
+| Name | Identifies the schedule within the app. Up to 30 letters, digits or `-`. |
 | Workflow | The name of the workflow each run starts. |
 | Schedule | When runs start. See [Schedule format](#schedule-format). |
 | Input | The input every run is given. |
@@ -158,18 +159,18 @@ if err != nil {
 	log.Fatal(err)
 }
 
-err = wfClient.CreateWorkflowSchedule(ctx, "nightly-report", "GenerateReport", "0 0 2 * * *",
+_, err = wfClient.CreateWorkflowSchedule(ctx, "nightly-report", "GenerateReport", "0 0 2 * * *",
 	workflow.WithScheduleInput(ReportRequest{Region: "eu"}),
 )
 if err != nil {
 	log.Fatal(err)
 }
 
-schedule, err := wfClient.GetWorkflowSchedule(ctx, "nightly-report")
+resp, err := wfClient.GetWorkflowSchedule(ctx, "nightly-report")
 if err != nil {
 	log.Fatal(err)
 }
-status := schedule.GetStatus()
+status := resp.GetSchedule().GetStatus()
 fmt.Println("next run:", status.GetNextRunTime().AsTime())
 if run := status.GetLastRun(); run != nil {
 	fmt.Println("last run:", run.GetInstanceId(), run.GetRuntimeStatus())
