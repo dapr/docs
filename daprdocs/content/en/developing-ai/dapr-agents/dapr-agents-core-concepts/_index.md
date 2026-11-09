@@ -6,6 +6,7 @@ weight: 40
 description: "Learn about the core concepts of Dapr Agents"
 aliases:
   - /developing-applications/dapr-agents/dapr-agents-core-concepts
+  - /developing-ai/dapr-agents/dapr-agents-core-concepts
 ---
 
 Dapr Agents provides a structured way to build and orchestrate applications that use LLMs without getting bogged down in infrastructure details and with durability guarantees. The primary goal is to enable AI development by abstracting away the complexities of working with LLMs, tools, memory management, and distributed systems, allowing developers to focus on the business logic of their AI applications. Agents in this framework are the fundamental building blocks.
@@ -256,17 +257,7 @@ travel_planner = DurableAgent(
 
 
 ### MCP Support
-Dapr Agents includes built-in support for the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/), enabling agents to dynamically discover and invoke external tools through a standardized interface. Using the provided MCPClient, agents can connect to MCP servers via three transport options: stdio for local development, sse for remote or distributed environments, and via streamable HTTP transport.
-
-```python
-client = MCPClient()
-await client.connect_sse("local", url="http://localhost:8000/sse")
-
-# Convert MCP tools to AgentTool list
-tools = client.get_all_tools()
-```
-
-Once connected, the MCP client fetches all available tools from the server and prepares them for immediate use within the agent’s toolset. This allows agents to incorporate capabilities exposed by external processes—such as local Python scripts or remote services without hardcoding or preloading them. Agents can invoke these tools at runtime, expanding their behavior based on what’s offered by the active MCP server.
+Dapr Agents includes built-in support for the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/), enabling agents to discover and invoke external tools through a standardized interface. See the [MCP documentation]({{% ref dapr-agents-mcp %}}).
 
 
 ### Memory
