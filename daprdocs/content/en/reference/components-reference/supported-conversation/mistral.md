@@ -38,6 +38,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `maxTokens` | N | Default maximum number of tokens the model may generate per request. A request-level `maxTokens` value overrides this default. When unset, no cap is sent and the provider's own default applies. | `2048` |
 | `responseCacheTTL` | N | Time-to-live for the in-memory response cache. When set, identical requests are served from cache until they expire. | `10m` |
 
+The Mistral component does not support the `headers` field. Other conversation components use this field to send [custom HTTP headers]({{% ref "conversation-overview.md#custom-http-headers" %}}). The Mistral component fails to initialize when `headers` is set.
+
 ## Related links
 
 - [Conversation API overview]({{% ref conversation-overview.md %}})

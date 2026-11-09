@@ -37,6 +37,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `model` | N | The Anthropic LLM to use. Defaults to `claude-sonnet-4-6`. If the `ANTHROPIC_MODEL` environment variable is set on the Dapr sidecar, its value overrides this field. | `claude-sonnet-4-6` |
 | `maxTokens` | N | Default maximum number of tokens the model may generate per request. A request-level `maxTokens` value overrides this default. When unset, no cap is sent and the provider's own default applies. | `2048` |
 | `responseCacheTTL` | N | Time-to-live for the in-memory response cache. When set, identical requests are served from cache until they expire. | `10m` |
+| `headers` | N | HTTP headers to send on every request to the model endpoint, as a JSON object of header names to string values. A header in this field replaces the header of the same name that the component sets. This includes the `x-api-key` header that the component builds from `key`. See [Custom HTTP headers]({{% ref "conversation-overview.md#custom-http-headers" %}}). | `{"X-Tenant-ID": "tenant-a"}` |
 
 ## Related links
 
