@@ -328,7 +328,7 @@ client.terminate_workflow(instance_id, app_id='app2')
 client.purge_workflow(instance_id, app_id='app2')
 ```
 
-The async client in `dapr.ext.workflow.aio` takes the same argument. [See the Python workflow examples.](https://github.com/dapr/python-sdk/tree/master/examples/workflow)
+The async client in `dapr.ext.workflow.aio` takes the same argument. [See the Python workflow examples.](https://github.com/dapr/python-sdk/tree/main/examples/workflow)
 
 {{% /tab %}}
 
@@ -435,7 +435,7 @@ Read [How-To: Apply workflow access policies]({{% ref workflow-access-policy %}}
 - [Workflow API reference]({{% ref workflow_api.md %}})
 - [Multi-application workflows in .NET]({{% ref "dotnet-workflow-multi-app.md" %}})
 - Try out the following examples:
-   - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
+   - [Python](https://github.com/dapr/python-sdk/tree/main/examples/workflow)
    - [JavaScript](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
    - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
    - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
