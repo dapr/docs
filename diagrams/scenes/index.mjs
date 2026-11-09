@@ -110,6 +110,7 @@ import workflowActorScaleOut from './workflow-actor-scale-out.mjs';
 import mcpAccessControl from './mcp-access-control.mjs';
 import mcpServiceInvocation from './mcp-service-invocation.mjs';
 import ragOverview from './rag-overview.mjs';
+import diagridPlatform from './diagrid-platform.mjs';
 
 export const scenes = {
   'agents-augmented-llm': agentsAugmentedLlm,
@@ -221,4 +222,5 @@ export const scenes = {
   'mcp-access-control': mcpAccessControl,
   'mcp-service-invocation': mcpServiceInvocation,
   'rag-overview': ragOverview,
+  'diagrid-platform': diagridPlatform,
 };

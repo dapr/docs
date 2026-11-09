@@ -233,6 +233,26 @@ const SCENE_ROWS = [
     ],
   },
   {
+    name: 'diagrid-platform',
+    page: '/integrations/diagrid/diagrid-platform/',
+    labels: [
+      'AI agent, on any framework',
+      'CrewAI',
+      'LangGraph',
+      'OpenAI Agents',
+      'Pydantic AI',
+      'User',
+      'Diagrid, built on Dapr',
+      'Durable execution',
+      'Verifiable execution',
+      'Identity and access',
+      'LLMs',
+      'Model providers',
+      'Tools and MCP servers',
+      'Infrastructure and databases',
+    ],
+  },
+  {
     name: 'building-blocks-concept',
     pages: [
       '/concepts/building-blocks-concept/',
@@ -3110,7 +3130,9 @@ function markdownFiles(dir) {
 // content/en/overview.md -> /overview/ ; .../_index.md -> that directory's url
 function urlFor(file) {
   const rel = path.relative(CONTENT_DIR, file).split(path.sep).join('/');
-  const stem = rel.replace(/\.md$/, '').replace(/(^|\/)_index$/, '');
+  // Hugo lowercases URLs (disablePathToLower is off), so integrations/Diagrid/
+  // is served at /integrations/diagrid/.
+  const stem = rel.replace(/\.md$/, '').replace(/(^|\/)_index$/, '').toLowerCase();
   return `/${stem}${stem.endsWith('/') || stem === '' ? '' : '/'}`;
 }
 
