@@ -38,7 +38,8 @@ button and no reduced-motion path.
 | Standalone SVGs, for download and copy | `daprdocs/static/diagrams/<name>.svg`, written by the same export |
 | PNGs, for download | `daprdocs/static/diagrams/<name>.png`, committed, rendered from the standalone SVG by `diagrams/render-png.mjs` (`npm run export:pngs`; `npm run check:pngs` checks them without a browser). `diagrams/png-manifest.json` records a hash per scene and the render settings |
 | Shortcode | `daprdocs/layouts/shortcodes/diagram.html` |
-| Download SVG, Download PNG and copy buttons | `daprdocs/assets/js/diagram-actions.js`, loaded per page by `_partials/hooks/body-end.html` |
+| Download SVG and Download PNG | plain `<a download>` anchors written by the shortcode, `daprdocs/layouts/shortcodes/diagram.html`. No JavaScript is involved |
+| Copy SVG button | `daprdocs/assets/js/diagram-actions.js`, loaded per page by `_partials/hooks/body-end.html`. It binds `[data-diagram-copy]` and nothing else |
 | Figure styles | `daprdocs/assets/scss/_diagrams.scss` |
 | Color tokens | `daprdocs/assets/scss/_tokens.scss`, light and `[data-bs-theme="dark"]` |
 | Vendored marks | `daprdocs/assets/icons/<name>.svg`, with sources and terms in `daprdocs/assets/icons/README.md` |

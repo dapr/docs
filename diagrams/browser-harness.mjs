@@ -1,7 +1,10 @@
-// A headless page with the site's real faces loaded, for the tools that need
-// one: measure-bbox.mjs and measure-ink.mjs measure text, which has no width
-// until a font renders it, and the PNG exporter rasterises it. A label measured
-// or drawn against a fallback face is a drawing nobody sees.
+// A headless page with the site's real faces loaded, for the two tools that
+// need one: measure-bbox.mjs measures text, which has no width until a font
+// renders it, and render-png.mjs rasterises it. A label measured or drawn
+// against a fallback face is a drawing nobody sees.
+//
+// measure-ink.mjs needs no fonts and does not use this module: it measures
+// vendored mark geometry, which is path data and the same width everywhere.
 //
 // The faces are served from the repo (daprdocs/static) rather than from a
 // build, so nothing needs building first.
