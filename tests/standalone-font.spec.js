@@ -25,15 +25,23 @@
 //     machine - Segoe UI, the stack's second name - rather than Arial's
 //     556.16, so the rule is demonstrably the one that applies.
 //   * A MONO label needs a rule of its own. `standalone()` resolves
-//     `var(--font-mono)` onto the `<text>` itself, and a presentation
-//     attribute on an element beats an INHERITED value - it loses only to a
-//     rule that matches that same element. `svg{...}` reaches the root and
-//     nothing else, so the set's 104 mono labels kept whatever monospace the
-//     machine owned: Cascadia Mono here at 585.94, Consolas at 549.81,
-//     something else again on a runner. The second rule below matches the
-//     `<text>` and pins them to Courier New's metric, which Liberation Mono
+//     `var(--font-mono)` onto the element that carries the code, and a
+//     presentation attribute on an element beats an INHERITED value - it loses
+//     only to a rule that matches that same element. `svg{...}` reaches the
+//     root and nothing else, so the set's 104 mono labels kept whatever
+//     monospace the machine owned: Cascadia Mono here at 585.94, Consolas at
+//     549.81, something else again on a runner. The second rule below matches
+//     them and pins them to Courier New's metric, which Liberation Mono
 //     matches; it moves the measured width of 55 labels that sit in a shape,
 //     the widest of them from 0.938 of its room to 0.960.
+//
+//     103 of those 104 are a whole `<text>`. The other is a `<tspan>`:
+//     `richLabel()` in `diagrams/shapes.mjs` marks up one RUN of a mixed line
+//     as code - "Invoke `/orders` method", where only the path is a path - and
+//     that run's own font-family beats the face its parent `<text>` was pinned
+//     to. So the rule and the scan below both have to reach a `tspan`, or a
+//     label like that is read in the machine's own monospace while every test
+//     here stays green.
 //   * The page loads NO webfonts at all, so "Inter" and "Geist Mono" in those
 //     stacks can never resolve, whatever the machine has installed.
 
@@ -60,8 +68,9 @@ const FALLBACK_MONO_STACK = '"Courier New", "Liberation Mono", monospace';
 
 // Every mono stack `standalone()` bakes ends in the generic `monospace`
 // keyword, and no other label carries a font-family of its own - which the
-// last test in this file holds to.
-const MONO_LABEL = 'text[font-family*="monospace"]';
+// last test in this file holds to. `tspan` as well as `text`, because a mixed
+// line wears the mono stack on the run rather than on the whole label.
+const MONO_LABEL = ':is(text, tspan)[font-family*="monospace"]';
 
 // A label fails above this much of the room its shape leaves it.
 //
@@ -232,18 +241,21 @@ test("the pinned fallback face reaches a mono label's own font-family", async ({
 
 // What keeps the two rules above a COMPLETE account of the file: the root
 // carries a face, mono labels carry a face, and nothing else does. The day
-// `standalone()` bakes a stack onto some other `<text>`, that label stops
+// `standalone()` bakes a stack onto some other label, that label stops
 // being pinned and starts being measured in the machine's own sans - silently,
 // because every test here would still pass. This is the test that would not.
 test('no label carries a baked face the harness leaves unpinned', () => {
   const unpinned = [];
   for (const scene of SCENES) {
     const svg = fs.readFileSync(path.join(STANDALONE_DIR, `${scene}.svg`), 'utf8');
-    for (const [, face] of svg.matchAll(/<text\b[^>]*\sfont-family="([^"]*)"/g)) {
+    for (const [, face] of svg.matchAll(/<(?:text|tspan)\b[^>]*\sfont-family="([^"]*)"/g)) {
       if (!face.includes('monospace')) unpinned.push({ scene, face });
     }
   }
-  expect(unpinned, `a <text> carries a face no rule in harness() matches - pin it or widen ${MONO_LABEL}`).toEqual([]);
+  expect(
+    unpinned,
+    `a <text> or <tspan> carries a face no rule in harness() matches - pin it or widen ${MONO_LABEL}`,
+  ).toEqual([]);
 });
 
 // A disk-driven suite with an empty list is a green run that measured
