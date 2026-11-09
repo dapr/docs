@@ -13,6 +13,14 @@
 // when the width or a baked font stack moves. Without the settings, changing
 // either leaves every png stale with every hash still matching.
 //
+// It also sets the limit of what --check can say. The manifest answers "was a
+// render with these settings performed from this drawing", not "is this file
+// that render": --check hashes freshly rendered scene SVGs and checks that a
+// png EXISTS beside each one; it never opens a png. So a hand-edited or
+// truncated png passes here. What catches that is the per-scene test in
+// tests/diagrams.spec.js, which asks the server for the file and reads the
+// 8-byte PNG signature off the front of what comes back.
+//
 // And it exists at all because the pngs are skipped when they are current.
 // Chromium's raster output is byte-stable run to run on one version, but not
 // guaranteed across versions, so re-rendering an unchanged scene on an updated

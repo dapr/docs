@@ -62,10 +62,10 @@ jobs:
         run: npm run export:diagrams -- --check
 
       # The PNG download is rendered from the SVG and committed beside it.
-      # This belongs on the pure-Node side too: check:pngs only hashes files
-      # and never launches a browser, so a contributor who edited a scene
-      # without re-rendering finds out in under a minute, not after the
-      # Chromium download.
+      # This belongs on the pure-Node side too: check:pngs hashes scenes and
+      # never launches a browser, so a contributor who edited a scene without
+      # re-rendering finds out in under a minute, not after the Chromium
+      # download.
       - name: Check diagram PNGs are up to date
         run: npm run check:pngs
 

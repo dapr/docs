@@ -182,6 +182,11 @@ test('a rendered png is 1440 wide, trimmed to the drawing, and carries an alpha 
   // middle - identical dimensions, a completely different picture.
   const gap = (PNG_WIDTH * PNG_MARGIN) / (INK.w + PNG_MARGIN * 2);
   const { minX, minY, maxX, maxY } = await inkExtent(join(dir, 'alpha.png'));
+  // There IS a gap. Every expectation below is computed from PNG_MARGIN, so
+  // setting it to zero moves both sides of each comparison and leaves the test
+  // green on a png cropped flush to the ink - which is the crop that shaves the
+  // outer half off every stroke, and the reason the margin is not zero.
+  assert.ok(minX > 0, `the drawing is flush with the left edge: PNG_MARGIN is ${PNG_MARGIN}`);
   near(minX, gap);
   near(maxX, PNG_WIDTH - 1 - gap);
   near(minY, gap);
