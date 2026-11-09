@@ -237,3 +237,41 @@ export default {
 The exporter validates the scene before writing: the name, a non-empty `title`
 and `desc`, positive dimensions, that `build()` returns an array, and that no
 two elements share an id.
+
+## What a scene produces
+
+Two exporters read the same scene registry and write three committed files per
+scene. All three are checkable byte for byte, which is what lets CI prove a
+committed file still matches the source it was drawn from.
+
+| File | Written by | What it is |
+| --- | --- | --- |
+| `daprdocs/assets/diagrams/<name>.svg` | `diagrams/export.mjs` | the inlined copy; keeps `var(--d-*)` so it follows the theme |
+| `daprdocs/static/diagrams/<name>.svg` | `diagrams/export.mjs` | the download; every token resolved to its light value |
+| `daprdocs/static/diagrams/<name>.png` | `diagrams/render-png.mjs` | the raster download, for slides and blog posts |
+
+| Command | Does |
+| --- | --- |
+| `npm run export:diagrams` | writes both SVG copies; pure Node, no browser |
+| `npm run export:pngs` | writes the PNGs; needs Chromium, and renders only scenes whose SVG moved |
+| `npm run export:diagrams -- --check` | fails if a committed SVG differs from a fresh render |
+| `npm run check:pngs` | fails if a PNG is missing, orphaned, or older than its scene |
+
+Both SVG copies carry an explicit `font-family`. A standalone SVG that declares
+no font renders in serif once it leaves the browser - in Figma, in a slide
+deck - which is not what the site looks like.
+
+The PNG is rendered from the standalone SVG, trimmed to the drawing's ink box
+plus a uniform margin, then scaled to 1440px wide. The width therefore measures
+the drawing and not the canvas, so a scene drawn on a roomy canvas does not
+come out smaller than a tight one. The background is transparent; the white
+plates inside a drawing are painted fills and stay opaque.
+
+`diagrams/png-manifest.json` records the render settings and a hash of each
+scene's standalone SVG. It hashes the SVG rather than the PNG on purpose:
+raster output is not byte-stable across Chromium versions, so hashing the image
+would turn every browser upgrade into a hundred-odd false failures. The cost is
+that a hand-edited PNG passes `check:pngs`; a corrupt one is caught instead by
+the per-scene PNG signature assertion in `tests/diagrams.spec.js`. Changing a
+setting invalidates every scene at once, which is the intent - a new margin or
+width means every PNG is wrong, not just the ones whose drawings moved.
