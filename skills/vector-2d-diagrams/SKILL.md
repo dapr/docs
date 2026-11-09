@@ -36,13 +36,15 @@ button and no reduced-motion path.
 | Exporter | `diagrams/export.mjs`, run as `npm run export:diagrams` |
 | Generated SVGs, committed | `daprdocs/assets/diagrams/<name>.svg` |
 | Standalone SVGs, for download and copy | `daprdocs/static/diagrams/<name>.svg`, written by the same export |
+| PNGs, for download | `daprdocs/static/diagrams/<name>.png`, committed, rendered from the standalone SVG by `diagrams/render-png.mjs` (`npm run export:pngs`; `npm run check:pngs` checks them without a browser). `diagrams/png-manifest.json` records a hash per scene and the render settings |
 | Shortcode | `daprdocs/layouts/shortcodes/diagram.html` |
-| Download and copy buttons | `daprdocs/assets/js/diagram-actions.js`, loaded per page by `_partials/hooks/body-end.html` |
+| Download SVG, Download PNG and copy buttons | `daprdocs/assets/js/diagram-actions.js`, loaded per page by `_partials/hooks/body-end.html` |
 | Figure styles | `daprdocs/assets/scss/_diagrams.scss` |
 | Color tokens | `daprdocs/assets/scss/_tokens.scss`, light and `[data-bs-theme="dark"]` |
 | Vendored marks | `daprdocs/assets/icons/<name>.svg`, with sources and terms in `daprdocs/assets/icons/README.md` |
 | Unit tests | `diagrams/*.test.mjs`, run as `npm run test:diagrams` |
 | Rendered tests | `tests/diagrams.spec.js`, run as `npm run test:layout` |
+| Fallback-font guard | `tests/standalone-font.spec.js`, run as part of `npm run test:layout`: measures every standalone SVG against Arial and Courier New |
 
 The engine's API is in [reference/engine.md](reference/engine.md).
 
@@ -1460,7 +1462,12 @@ Register it in `diagrams/scenes/index.mjs`, then export and place it:
 
 ```bash
 npm run export:diagrams
+npm run export:pngs
 ```
+
+A scene therefore produces three committed files: the inlined SVG, the
+standalone SVG, and a trimmed, transparent PNG of the standalone one. The
+export is plain Node; `export:pngs` drives a browser, so it needs Chromium.
 
 Put `{{< diagram <name> >}}` on the page, replacing the `<img>` it supersedes.
 Match on the image's `src` string rather than a line number: line numbers drift.
@@ -1533,11 +1540,28 @@ Look at **both themes** before you commit.
 ### 5. Test
 
 ```bash
+npm run export:diagrams -- --check     # the committed SVGs match a fresh render
+npm run check:pngs                     # the committed PNGs match their scenes and settings
 npm run test:diagrams                  # unit tests
-npm run export:diagrams -- --check     # the committed SVG matches a fresh render
-npm run test:layout                    # rendered tests
+npm run test:layout                    # rendered tests, including the font guard below
 npm run build                          # Hugo builds clean
 ```
+
+This is the order CI runs the first four in. The first three are pure Node and
+run before Chromium is installed; `test:layout` needs the browser.
+
+**Labels are guarded against a substitute face, not only against Inter.** The
+downloaded SVG has no webfonts, so on a reader's machine its text falls back to
+whatever their system has. `tests/standalone-font.spec.js` renders every
+standalone SVG with Inter forced out - Arial for body text, Courier New for
+monospace - and compares each label with the shape it sits in; a label wider
+than 1.05 of the room its shape leaves fails. Today nothing fails: the worst
+label in the set is the callout in `resiliency-policies`, at 1.013, and
+single-digit step badges measure about 0.57, because Arial's digits are
+narrower than Inter's at that size. The consequence for a new scene is that the
+guard judges against the substitute, so a shape sized to Inter's exact metrics
+with no slack is a latent failure even though nothing fails today. Leave
+headroom for a face that is not Inter.
 
 Add the scene to `SCENE_ROWS` in `tests/diagrams.spec.js`, with every label it
 must draw. The spec fails if an exported scene or a `{{< diagram >}}` call site
