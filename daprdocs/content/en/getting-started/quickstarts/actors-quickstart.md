@@ -247,11 +247,15 @@ For full context of the sample, take a look at the following code:
 
 {{< /tabpane >}}
 
+## Inspect actors with the Dapr Dev Dashboard
+
+While the service and client apps are running, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to see the registered `SmokeDetectorActor` and `ControllerActor` types and their active actor instances. The dashboard also shows the actor state stored in the state store, so you can follow how each device's status changes when the alarm goes off and the reminders clear it.
+
 ## Tell us what you think!
 
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this Quickstart helpful? Do you have suggestions for improvement?
 
-Join the discussion in our [discord channel](https://discord.com/channels/778680217417809931/953427615916638238).
+Join our [Discord Server](https://diagrid.ws/dapr-discord) and share your thoughts.
 
 ## Next steps
 

@@ -32,6 +32,10 @@ To use actors, your state store must support multi-item transactions. This means
 
 [See the list of components that support transactions/actors]({{% ref supported-state-stores %}}). Only a single state store component can be used as the state store for all actors.
 
+## Inspect actors locally
+
+When developing locally, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to see the actor types your apps register, the active actor instances, and the actor state that is stored in the state store. This helps to verify that your actor methods save state as expected.
+
 ## Next steps
 
 {{< button text="Actor reentrancy >>" page="actor-reentrancy.md" >}}

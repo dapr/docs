@@ -60,6 +60,10 @@ In the above file definition:
 - `type: secretstores.local.file` tells Dapr to use the local file component as a secret store.
 - The metadata fields provide component-specific information needed to work with this component. In this case, the secret store JSON path is relative to where you call `dapr run`.
 
+{{% alert title="Tip" color="primary" %}}
+Rather than writing component YAML by hand, you can use the component builder in the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}). The wizard guides you through the component type and metadata fields and generates the YAML file for you. Once the sidecar is running, the dashboard also shows which components Dapr loaded, so you can verify that `my-secret-store` is available.
+{{% /alert %}}
+
 ## Step 3: Run the Dapr sidecar
 
 Launch a Dapr sidecar that will listen on port 3500 for a blank application named `myapp`:

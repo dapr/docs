@@ -3,7 +3,7 @@ type: docs
 title: "Workflow"
 linkTitle: "Workflow"
 weight: 5
-description: "Orchestrate logic across various microservices" 
+description: "Durable execution for long-running workflows and AI agents, written as code"
 ---
 
 {{% alert title="More about Dapr Workflow" color="primary" %}}

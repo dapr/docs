@@ -565,7 +565,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](hhttps://github.com/dapr/quickstarts/tree/master/state_management/go/sdk).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management/go/sdk).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -1287,10 +1287,14 @@ In the YAML file:
 
 {{< /tabpane >}}
 
+## Inspect the state store with the Dapr Dev Dashboard
+
+While the quickstart is running, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to see the `order-processor` app and its `statestore` component. You can browse the order records the app saves in the state store, decode their values, and add or delete records to see how the app behaves.
+
 ## Tell us what you think!
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this quickstart helpful? Do you have suggestions for improvement?
 
-Join the discussion in our [discord channel](https://discord.com/channels/778680217417809931/953427615916638238).
+Join our [Discord Server](https://diagrid.ws/dapr-discord) and share your thoughts.
 
 ## Next steps
 

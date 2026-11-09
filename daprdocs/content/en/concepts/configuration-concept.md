@@ -50,6 +50,8 @@ By default, there is a single configuration file called `daprsystem` installed w
 
 [Learn more about configuration options.]({{% ref "configuration-overview" %}})
 
+When running Dapr locally, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to view the configuration that each of your apps uses, which is useful to verify settings such as tracing, feature flags, and access control policies.
+
 {{% alert title="Important" color="warning" %}}
 Dapr application and control plane configurations should not be confused with the [configuration building block API]({{% ref configuration-api-overview %}}), which enables applications to retrieve key/value data from configuration store components. 
 {{% /alert %}}

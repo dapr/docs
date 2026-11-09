@@ -83,6 +83,10 @@ Logs for application and `daprd` are captured in separate files. These log files
 
 Even if you've decided to rename your resources folder to something other than `.dapr`, the log files are written only to the `.dapr/logs` folder (created in the application directory).
 
+## Inspect your apps with the Dapr Dev Dashboard
+
+When you start multiple apps with Multi-App Run, the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) automatically discovers them and gives you one place to see all apps and sidecars, their health and ports, the components they loaded, and the application and `daprd` logs per app. This saves you from searching through the individual log files in each `.dapr/logs` folder.
+
 ## Watch the demo
 
 Watch [this video for an overview on Multi-App Run](https://youtu.be/s1p9MNl4VGo?t=2456):
