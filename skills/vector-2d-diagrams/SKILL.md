@@ -1559,10 +1559,15 @@ monospace - and compares each label with the shape it sits in; a label wider
 than 1.05 of the room its shape leaves fails. Today nothing fails: the worst
 label in the set is the callout in `resiliency-policies`, at 1.013, and
 single-digit step badges measure about 0.57, because Arial's digits are
-narrower than Inter's at that size. The consequence for a new scene is that the
-guard judges against the substitute, so a shape sized to Inter's exact metrics
-with no slack is a latent failure even though nothing fails today. Leave
-headroom for a face that is not Inter.
+narrower than Inter's at that size.
+
+The guard tests **one** substitution - Arial for body text, Courier New for
+monospace - chosen because those two have metric-compatible stand-ins on Linux,
+so the verdict is the same on a laptop and on a CI runner. Passing it is
+therefore not proof that a scene survives every face a reader's machine might
+pick. In practice Inter is the wider of the two here, so a shape fitted to
+Inter has room to spare under the pin; the advice is to leave that slack rather
+than to size a shape to the exact width of its label.
 
 Add the scene to `SCENE_ROWS` in `tests/diagrams.spec.js`, with every label it
 must draw. The spec fails if an exported scene or a `{{< diagram >}}` call site
