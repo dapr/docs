@@ -69,7 +69,7 @@ var daprEncryptionClient = new DaprEncryptionClientBuilder()
 See the .NET [documentation here]({{< ref dotnet-client >}}) for more information about the options available when configuring the Dapr client via the builder.
 
 ## Try it out
-Put the Dapr AI .NET SDK to the test. Walk through the samples to see Dapr in action:
+Put the Dapr Cryptography .NET SDK to the test. Walk through the samples to see Dapr in action:
 
 | SDK Samples                                                                         | Description |
 |-------------------------------------------------------------------------------------| ----------- |

@@ -120,18 +120,9 @@ The following example shows you how to create a Kubernetes secret to hold the co
 
 ## Updating referenced secrets
 
-### Kubernetes secrets are hot reloaded
+On each reconcile (every 60 seconds), Dapr re-resolves the secrets a component references with `secretKeyRef` and compares them against the running component. When the value of a referenced secret changes, [hot reloading]({{% ref "component-updates.md#hot-reloading" %}}) closes the component and re-initializes it with the new value. No restart of the application pod or the Dapr sidecar is required, and the Component manifest does not need to change.
 
-When running in Kubernetes and referencing secrets from the default `kubernetes` secret store (when `auth.secretStore` is set to `kubernetes` or left empty), Dapr automatically detects changes to the referenced Kubernetes secrets and reloads the affected components. No restart of the application pod or the Dapr sidecar is required.
-
-Dapr reconciles components every 60 seconds. When the value of a referenced Kubernetes secret changes, [hot reloading]({{% ref "component-updates.md#hot-reloading" %}}) closes the component and re-initializes it using the new secret value.
-
-For example, if the Redis state store from [Referencing secrets](#referencing-secrets) was deployed to Kubernetes, then updating the referenced secret with the following command causes the state store component to be closed and re-initialized with the new password within 60 seconds. The same happens when the Kubernetes secret is updated by an external secret manager that keeps it in sync with an external source.
-
-```bash
-kubectl patch secret redis-secret --type merge -p '{"stringData":{"redis-password":"my-new-password"}}'
-```
-
+This applies to every secret store. For the built-in `kubernetes` secret store, the Dapr operator resolves the reference. For any other store, such as HashiCorp Vault or Azure Key Vault configured through `auth.secretStore`, the sidecar resolves it directly. The behavior and timing are the same in both cases.
 
 {{% alert title="Note" color="primary" %}}
 Keep in mind the following when relying on this behavior:
@@ -140,12 +131,6 @@ Keep in mind the following when relying on this behavior:
 - This requires [hot reloading]({{% ref "component-updates.md#hot-reloading" %}}) to be enabled, which is the default. If the `HotReload` feature is disabled, secret changes are only picked up when the Dapr sidecar is restarted.
 - In Dapr 1.18.2 and earlier, the actor state store is [excluded from hot reloading]({{% ref "component-updates.md#components-and-subscriptions" %}}), does not pick up secret changes, and requires a Dapr sidecar restart. Since Dapr 1.18.3, the actor state store is reloaded like any other component, and a secret rotation swaps the store instance without interrupting actor hosting.
 {{% /alert %}}
-
-### Other secret stores
-
-Secrets referenced from any other secret store, for example HashiCorp Vault or Azure Key Vault configured through `auth.secretStore`, are resolved by the Dapr sidecar only once at start-up, when the component is initialized. Rotating a secret in these stores does not modify the Component definition, so the change is not detected by hot reloading and the component keeps using the value that was read at initialization time. To apply the new secret value, restart the Dapr sidecar, or trigger a hot reload by applying a change to the component manifest file.
-
-To automatically pick up rotated secrets from an external secret manager when running in Kubernetes, sync the secrets into native Kubernetes secrets and reference them through the built-in `kubernetes` secret store as described above.
 
 ## Scoping access to secrets
 
