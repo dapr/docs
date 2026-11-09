@@ -45,10 +45,23 @@
     <figure class="dapr-diagram" data-diagram="{{ $name }}"{{ $style | safeHTMLAttr }}>
       {{- .Content | safeHTML -}}
       {{- /* The inlined svg paints in var(--d-*) and only resolves on this
-             page, so both actions point at the standalone copy under
-             static/diagrams/, which has the light values baked in. */ -}}
+             page, so every action points at a standalone copy under
+             static/diagrams/, which has the light values baked in.
+
+             The PNG is a committed file rather than something Hugo builds, so
+             there is no `resources.Get` to guard it with: `npm run check:pngs`
+             is what keeps it in step with its scene, and the layout suite is
+             what notices if it stops serving.
+
+             An aria-label on each link because the same three words repeat
+             beside every diagram on a page, and "Download SVG" eleven times in
+             a row tells a screen-reader user nothing about which drawing they
+             are on. The copy button is left alone deliberately: it rewrites its
+             own text to report "Copied" or "Copy failed", and an aria-label
+             would swallow that. */ -}}
       <div class="dapr-diagram-actions">
-        <a class="dapr-diagram-action" href="/diagrams/{{ $name }}.svg" download="{{ $name }}.svg">Download SVG</a>
+        <a class="dapr-diagram-action" href="/diagrams/{{ $name }}.svg" download="{{ $name }}.svg" data-diagram-download="svg" aria-label="Download the {{ $name }} diagram as SVG">Download SVG</a>
+        <a class="dapr-diagram-action" href="/diagrams/{{ $name }}.png" download="{{ $name }}.png" data-diagram-download="png" aria-label="Download the {{ $name }} diagram as PNG">Download PNG</a>
         <button class="dapr-diagram-action" type="button" data-diagram-copy="/diagrams/{{ $name }}.svg">Copy SVG</button>
       </div>
     </figure>

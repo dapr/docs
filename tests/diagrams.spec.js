@@ -2650,7 +2650,7 @@ for (const scene of SCENES) {
     test(`${scene.name} offers a standalone svg that resolves on its own`, async ({ page }) => {
       await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
 
-      const href = await page.locator(`${sel(scene.name)} a[download]`).getAttribute('href');
+      const href = await page.locator(`${sel(scene.name)} a[data-diagram-download="svg"]`).getAttribute('href');
       expect(href).toBe(`/diagrams/${scene.name}.svg`);
 
       const res = await page.request.get(href);
@@ -2661,6 +2661,28 @@ for (const scene of SCENES) {
         body.match(/\bvar\(--d-[a-z-]+\)/g) ?? [],
         'the standalone copy still refers to page tokens, so it will not paint elsewhere',
       ).toEqual([]);
+    });
+
+    // The PNG beside it, for the places an SVG does not go: a slide, a chat
+    // window, an issue comment. It is a committed file under static/, not
+    // something Hugo builds, so nothing here would notice it missing - which
+    // is why this asks the server for it and reads the signature off the
+    // front rather than trusting the href.
+    test(`${scene.name} offers a png download`, async ({ page }) => {
+      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+
+      const href = await page
+        .locator(`${sel(scene.name)} a[data-diagram-download="png"]`)
+        .getAttribute('href');
+      expect(href).toBe(`/diagrams/${scene.name}.png`);
+
+      const res = await page.request.get(href);
+      expect(res.status(), `${href} did not serve`).toBe(200);
+      expect(res.headers()['content-type'], `${href} is not served as a PNG`).toContain('image/png');
+      expect(
+        [...(await res.body()).subarray(0, 8)],
+        `${href} does not start with the PNG signature`,
+      ).toEqual([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
     });
 
     test(`${scene.name} has no element outside its viewBox`, async ({ page }) => {
