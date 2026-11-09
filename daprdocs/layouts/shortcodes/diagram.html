@@ -72,8 +72,8 @@
              never reach a screen reader. */ -}}
       <div class="dapr-diagram-actions">
         <a class="dapr-diagram-action" href="/diagrams/{{ $name }}.svg" download="{{ $name }}.svg" data-diagram-download="svg" aria-label="Download SVG of the {{ $name }} diagram">Download SVG</a>
-        <a class="dapr-diagram-action" href="/diagrams/{{ $name }}.png" download="{{ $name }}.png" data-diagram-download="png" aria-label="Download PNG of the {{ $name }} diagram">Download PNG</a>
         <button class="dapr-diagram-action" type="button" data-diagram-copy="/diagrams/{{ $name }}.svg">Copy SVG</button>
+        <a class="dapr-diagram-action" href="/diagrams/{{ $name }}.png" download="{{ $name }}.png" data-diagram-download="png" aria-label="Download PNG of the {{ $name }} diagram">Download PNG</a>
       </div>
     </figure>
   {{- else -}}
