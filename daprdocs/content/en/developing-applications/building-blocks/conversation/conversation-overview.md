@@ -72,6 +72,47 @@ The conversation API supports advanced tool calling capabilities that allow LLMs
 
 Tool calling follows [OpenAI's function calling format](https://platform.openai.com/docs/guides/function-calling), making it easy to integrate with existing AI development workflows and tools.
 
+### Custom HTTP headers
+
+Some LLM gateways and proxies require extra HTTP headers, for example a tenant ID or a gateway key. Use the `headers` component metadata field to send these headers on every request to the model endpoint. The field holds a JSON object of header names to string values.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: llm-gateway
+spec:
+  type: conversation.openai
+  metadata:
+  - name: endpoint
+    value: https://llm-gateway.example.com/v1
+  - name: key
+    value: mykey
+  - name: headers
+    value: '{"X-Tenant-ID": "tenant-a", "X-Gateway-Route": "eu"}'
+```
+
+If a header value is a credential, keep the complete JSON object in a secret store and reference it with `secretKeyRef`. See [Reference secrets in components]({{% ref component-secrets.md %}}).
+
+The [Anthropic]({{% ref "/reference/components-reference/supported-conversation/anthropic.md" %}}), [DeepSeek]({{% ref "/reference/components-reference/supported-conversation/deepseek.md" %}}), [GoogleAI]({{% ref "/reference/components-reference/supported-conversation/googleai.md" %}}), [Hugging Face]({{% ref "/reference/components-reference/supported-conversation/hugging-face.md" %}}), [Ollama]({{% ref "/reference/components-reference/supported-conversation/ollama.md" %}}) and [OpenAI]({{% ref "/reference/components-reference/supported-conversation/openai.md" %}}) components support the `headers` field. For OpenAI, this includes Azure OpenAI and the Responses API. The Mistral component fails to initialize when the field is set. The AWS Bedrock and Echo components do not support the field.
+
+The component applies these rules:
+
+- A header in `headers` replaces the header of the same name that the component sets. This includes the header that the component builds from `key`: `Authorization`, `x-api-key` for Anthropic, or `api-key` for Azure OpenAI.
+- A component that requires `key` still requires it when `headers` is set. If the gateway does its own authentication, set `key` to any non-empty value.
+- Some components can get an access token through workload identity federation (Anthropic, GoogleAI and OpenAI) or Microsoft Entra ID (Azure OpenAI). The access token then sets the `Authorization` header, and the component removes the `api-key` and `x-api-key` headers.
+- The component does not send `headers` to the token endpoint, except for Anthropic. The Anthropic token endpoint is on the same origin as the model endpoint, so it gets the headers too.
+- When `headers` is set, the component does not follow a redirect to a different origin. This prevents the headers from reaching another host.
+
+The component fails to initialize when:
+
+- The field is not a JSON object of header names to string values.
+- A header name or a header value is not valid.
+- A header name occurs more than once. The check ignores case.
+- The field sets `Host`, `Content-Length` or a hop-by-hop header: `Connection`, `Keep-Alive`, `Proxy-Connection`, `Te`, `Trailer`, `Transfer-Encoding` or `Upgrade`.
+
+The error messages do not contain header values.
+
 ## Demo
 
 Watch the demo presented during [Diagrid's Dapr v1.15 celebration](https://www.diagrid.io/videos/dapr-1-15-deep-dive) to see how the conversation API works using the .NET SDK.

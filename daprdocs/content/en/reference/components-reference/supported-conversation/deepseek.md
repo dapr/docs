@@ -33,6 +33,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|---------|---------|
 | `key`   | Y | API key for DeepSeek. | `mykey` |
 | `maxTokens` | N | Default maximum number of tokens the model may generate per request. A request-level `maxTokens` value overrides this default. When unset, no cap is sent and the provider's own default applies. | `2048` |
+| `headers` | N | HTTP headers to send on every request to the model endpoint, as a JSON object of header names to string values. A header in this field replaces the header of the same name that the component sets. This includes the `Authorization` header that the component builds from `key`. See [Custom HTTP headers]({{% ref "conversation-overview.md#custom-http-headers" %}}). | `{"X-Tenant-ID": "tenant-a"}` |
 
 ## Related links
 
