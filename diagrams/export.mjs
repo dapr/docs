@@ -57,9 +57,21 @@ export function standalone(svgText, tokens = lightTokens()) {
   // Mono text sets its own font-family, which wins over the root attribute
   // below, so the root only has to cover the body text that sets none.
   const fonted = out.replaceAll('var(--font-mono)', attr(MONO_STACK));
-  const fonts = new Set(fonted.match(/var\(--font-[a-z-]+\)/g));
+  // Both shapes a token reference can take: the bare var(--font-x) a scene
+  // writes today, and the fallback form var(--font-x, y). A pattern ending in
+  // [a-z-]+\) reads the second as no match at all and ships the token.
+  const fonts = new Set(fonted.match(/var\(--font-[^")]*\)?/g));
   if (fonts.size) throw new Error(`standalone svg: no font for ${[...fonts].join(', ')}`);
-  return fonted.replace(/^<svg(?=[ >])/, `<svg font-family="${attr(BODY_STACK)}"`);
+  // The body font is a presentation attribute on the ROOT, so it only lands if
+  // the document really starts with `<svg`. A BOM, an XML prolog or a leading
+  // newline would make this replace a silent no-op and hand over a file with no
+  // body font at all - the serif download this copy exists to prevent. Every
+  // other step in this function throws rather than shrug; so does this one.
+  const rooted = fonted.replace(/^<svg(?=[ >])/, `<svg font-family="${attr(BODY_STACK)}"`);
+  if (rooted === fonted) {
+    throw new Error('standalone svg: document does not start with <svg, so no body font was set');
+  }
+  return rooted;
 }
 
 // No doubled or trailing hyphens: those slug to the same svg id as their tidy twin.

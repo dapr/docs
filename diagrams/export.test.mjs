@@ -272,3 +272,27 @@ test('standalone does not touch a font-family that is already a literal', () => 
   const out = standalone('<svg><text font-family="Comic Sans">x</text></svg>');
   assert.ok(out.includes('<text font-family="Comic Sans">'));
 });
+
+// The fallback form is a token reference too, and the narrower pattern this
+// guard used to carry - var(--font-[a-z-]+\) - saw no match at all in it, so
+// the file shipped with a token no reader's browser can resolve.
+test('standalone leaves no var(--font-*) unresolved in its fallback form either', () => {
+  assert.throws(
+    () => standalone('<svg><text font-family="var(--font-head, serif)">x</text></svg>'),
+    /no font for var\(--font-head, serif\)/,
+  );
+});
+
+// The one step here that used to fail silently. `String.replace` with a
+// non-matching pattern returns its input, so a document that stops starting
+// with `<svg` came out with no body font and no complaint - which is the serif
+// download the standalone copy exists to abolish.
+test('standalone throws when the document does not start with <svg', () => {
+  for (const doc of [
+    '﻿<svg viewBox="0 0 1 1"><text>x</text></svg>', // byte-order mark
+    '<?xml version="1.0"?><svg viewBox="0 0 1 1"><text>x</text></svg>', // xml prolog
+    '\n<svg viewBox="0 0 1 1"><text>x</text></svg>', // leading newline
+  ]) {
+    assert.throws(() => standalone(doc), /does not start with <svg/, doc.slice(0, 20));
+  }
+});
