@@ -7,15 +7,15 @@
 // against Inter's metrics, and every other test in this suite measures them
 // with Inter loaded on a real page. Nobody has ever measured the download.
 //
-// This guard pins the substitute face rather than taking the machine's. A
+// This guard pins the substitute faces rather than taking the machine's. A
 // guard that merely blocked Inter would measure Segoe UI on Windows and
 // Liberation Sans on an Ubuntu runner - two different verdicts from one
 // assertion, which is the worst possible shape for a guard. `Arial,
 // "Liberation Sans", sans-serif` resolves to the same METRICS on both: the
-// two faces are metric-compatible by design, and the test below proves the
-// one in use really is that metric rather than a third face.
+// two faces are metric-compatible by design, and the tests below prove the
+// faces in use really are those metrics rather than a third face.
 //
-// Two things make the pin work:
+// Three things make the pin work:
 //
 //   * `standalone()` writes the stack as a PRESENTATION ATTRIBUTE on the root
 //     `<svg>`, and any CSS rule beats a presentation attribute. A stylesheet
@@ -24,8 +24,18 @@
 //     drop the rule and the same probe measures 539.06 on this Windows
 //     machine - Segoe UI, the stack's second name - rather than Arial's
 //     556.16, so the rule is demonstrably the one that applies.
-//   * The page loads NO webfonts at all, so "Inter" in the stack can never
-//     resolve, whatever the machine has installed.
+//   * A MONO label needs a rule of its own. `standalone()` resolves
+//     `var(--font-mono)` onto the `<text>` itself, and a presentation
+//     attribute on an element beats an INHERITED value - it loses only to a
+//     rule that matches that same element. `svg{...}` reaches the root and
+//     nothing else, so the set's 104 mono labels kept whatever monospace the
+//     machine owned: Cascadia Mono here at 585.94, Consolas at 549.81,
+//     something else again on a runner. The second rule below matches the
+//     `<text>` and pins them to Courier New's metric, which Liberation Mono
+//     matches; it moves the measured width of 55 labels that sit in a shape,
+//     the widest of them from 0.938 of its room to 0.960.
+//   * The page loads NO webfonts at all, so "Inter" and "Geist Mono" in those
+//     stacks can never resolve, whatever the machine has installed.
 
 const { test, expect } = require('@playwright/test');
 const fs = require('fs');
@@ -40,6 +50,18 @@ const SCENES = fs.readdirSync(STANDALONE_DIR)
   .filter((f) => f.endsWith('.svg')).map((f) => f.slice(0, -4)).sort();
 
 const FALLBACK_STACK = 'Arial, "Liberation Sans", sans-serif';
+
+// Courier New is the widest of the monospaces a machine is likely to hand
+// over (0.600 em a character, against Cascadia Mono's 0.586 and Consolas'
+// 0.550), so a mono label that fits under this pin fits under the others too.
+// Liberation Mono is its metric-compatible stand-in where it is absent, the
+// same pairing the sans stack makes.
+const FALLBACK_MONO_STACK = '"Courier New", "Liberation Mono", monospace';
+
+// Every mono stack `standalone()` bakes ends in the generic `monospace`
+// keyword, and no other label carries a font-family of its own - which the
+// last test in this file holds to.
+const MONO_LABEL = 'text[font-family*="monospace"]';
 
 // A label fails above this much of the room its shape leaves it.
 //
@@ -61,12 +83,19 @@ const TOLERANCE = 1.05;
 // else - Segoe UI runs 539.06, DejaVu Sans wider again - is a different face,
 // and measuring the set against it would prove nothing about either machine.
 const ARIAL_DIGIT_RUN = 556.16;
+
+// Courier New's digits advance 1229/2048 em, so the same ten run 600.11.
+// Liberation Mono matches it; DejaVu Sans Mono, the other common Linux
+// monospace, runs 602 and so clears the slack below as well.
+const COURIER_DIGIT_RUN = 600.11;
+
 const DIGIT_RUN_SLACK = 0.01; // 1%, which no metric-compatible pair exceeds
 
 function harness(body) {
   return `<!doctype html><html><head><meta charset="utf-8"><style>
 body{margin:0}
 svg{font-family:${FALLBACK_STACK}}
+svg ${MONO_LABEL}{font-family:${FALLBACK_MONO_STACK}}
 </style></head><body>${body}</body></html>`;
 }
 
@@ -175,6 +204,46 @@ test('the pinned fallback face displaces the baked font stack', async ({ page })
     + ' baked font-family attribute beat the stylesheet, or this machine has neither'
     + ' Arial nor Liberation Sans and fell through to a third face',
   ).toBeLessThan(DIGIT_RUN_SLACK);
+});
+
+// The same claim for the mono path, which the rule above does NOT reach: a
+// code label carries its own font-family, and a presentation attribute on the
+// element beats an inherited value. Without the second rule this probe
+// measures 585.94 - Cascadia Mono, whatever `ui-monospace` happens to mean
+// here - and every mono label inside a measured shape is judged in a face that
+// differs from machine to machine, which is the one thing this file exists to
+// rule out.
+test("the pinned fallback face reaches a mono label's own font-family", async ({ page }) => {
+  await page.setContent(harness(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="900" height="200">'
+    + '<text id="probe" x="10" y="100" font-size="100"'
+    + ' font-family="&quot;Geist Mono&quot;, ui-monospace, &quot;Cascadia Mono&quot;, Consolas, monospace">'
+    + '0123456789</text></svg>',
+  ));
+  const run = await page.evaluate(() => document.getElementById('probe').getComputedTextLength());
+
+  expect(
+    Math.abs(run - COURIER_DIGIT_RUN) / COURIER_DIGIT_RUN,
+    `ten mono digits ran ${run.toFixed(2)} units, not Courier New's ${COURIER_DIGIT_RUN}:`
+    + ' either the baked font-family attribute beat the stylesheet, or this machine has'
+    + ' neither Courier New nor Liberation Mono and fell through to a third face',
+  ).toBeLessThan(DIGIT_RUN_SLACK);
+});
+
+// What keeps the two rules above a COMPLETE account of the file: the root
+// carries a face, mono labels carry a face, and nothing else does. The day
+// `standalone()` bakes a stack onto some other `<text>`, that label stops
+// being pinned and starts being measured in the machine's own sans - silently,
+// because every test here would still pass. This is the test that would not.
+test('no label carries a baked face the harness leaves unpinned', () => {
+  const unpinned = [];
+  for (const scene of SCENES) {
+    const svg = fs.readFileSync(path.join(STANDALONE_DIR, `${scene}.svg`), 'utf8');
+    for (const [, face] of svg.matchAll(/<text\b[^>]*\sfont-family="([^"]*)"/g)) {
+      if (!face.includes('monospace')) unpinned.push({ scene, face });
+    }
+  }
+  expect(unpinned, `a <text> carries a face no rule in harness() matches - pin it or widen ${MONO_LABEL}`).toEqual([]);
 });
 
 // A disk-driven suite with an empty list is a green run that measured
