@@ -4,7 +4,7 @@ import { mkdtempSync, readFileSync, readdirSync, writeFileSync, rmSync, existsSy
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { el, text } from './engine.mjs';
-import { run, renderScene, OUT_DIR } from './export.mjs';
+import { run, renderScene, standalone, BODY_STACK, MONO_STACK, OUT_DIR } from './export.mjs';
 import { scenes } from './scenes/index.mjs';
 import ORIGINS from './bbox.json' with { type: 'json' };
 
@@ -244,4 +244,31 @@ test('every scene has a measured viewBox origin, and the exporter uses it', () =
     const [ox, oy] = ORIGINS[name];
     assert.match(renderScene(name, scenes[name]), new RegExp(`viewBox="${ox} ${oy} `));
   }
+});
+
+// The stacks hold double quotes, so inside an attribute they are written &quot;.
+const q = (stack) => stack.replaceAll('"', '&quot;');
+
+test('standalone puts the body stack on the root svg', () => {
+  const out = standalone('<svg viewBox="0 0 1 1"><text>x</text></svg>');
+  assert.ok(out.startsWith(`<svg font-family="${q(BODY_STACK)}" viewBox="0 0 1 1">`), out);
+  assert.equal(out.split('font-family=').length, 2);
+});
+
+test('standalone resolves var(--font-mono) to the mono stack', () => {
+  const out = standalone('<svg><text font-family="var(--font-mono)">x</text></svg>');
+  assert.ok(!out.includes('var(--font-'));
+  assert.ok(out.includes(`<text font-family="${q(MONO_STACK)}">`), out);
+});
+
+test('standalone leaves no var(--font-*) unresolved', () => {
+  assert.throws(
+    () => standalone('<svg><text font-family="var(--font-head)">x</text></svg>'),
+    /no font for var\(--font-head\)/,
+  );
+});
+
+test('standalone does not touch a font-family that is already a literal', () => {
+  const out = standalone('<svg><text font-family="Comic Sans">x</text></svg>');
+  assert.ok(out.includes('<text font-family="Comic Sans">'));
 });
