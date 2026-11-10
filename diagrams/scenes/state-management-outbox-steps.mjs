@@ -73,10 +73,20 @@ const ACK_W = 78;         // "ACK/NACK"
 const READ_W = 84;        // "Read marker"
 const DELETE_W = 92;      // "Delete marker"
 // A caption pill has to leave half an em clear of its text at each end, which
-// is what `keeps every caption pill's text clear of its own ends` checks; both
-// of these are the measured text plus thirteen.
-const SYNC_W = 212;       // "User request processing (sync)"
-const ASYNC_W = 262;      // "Background outbox processing (async)"
+// is what `keeps every caption pill's text clear of its own ends` checks.
+//
+// The text is measured, and the measurement is not the same everywhere: the
+// same Inter 600 at 13px renders the async caption 249 units wide on Windows
+// and 255.1 on Linux. These were set from the Windows number plus exactly the
+// thirteen the rule asks for, which left the async pill failing on an Ubuntu
+// runner by three units and the sync pill by a tenth of one.
+//
+// So they are set from the WIDER measurement plus the thirteen plus an
+// allowance of about two percent, which is the spread seen between those two
+// platforms. The pills sit 20 units inside regions 508 and 590 wide, so the
+// extra width costs the drawing nothing.
+const SYNC_W = 218;       // "User request processing (sync)", 199.2 widest
+const ASYNC_W = 274;      // "Background outbox processing (async)", 255.1 widest
 
 // How much air a step block keeps from whatever stands beside it.
 const CLEAR = 22;

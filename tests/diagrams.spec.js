@@ -2004,6 +2004,23 @@ const EDGE_MARGIN = 10;
 // little differently on another platform.
 const CENTRE_TOLERANCE = 6;
 
+// How far an edge SET BY TEXT may move between platforms, as a fraction of
+// the width of the label that sets it.
+//
+// An edge set by a shape is exact: the same numbers go into the same path on
+// every machine. An edge set by text is only as good as that machine's text
+// layout, and the same Inter and Geist Mono - loaded, applied, no fallback -
+// lay out WIDER on Linux than on Windows: measured on four scenes at +2.0%,
+// +2.4%, +3.7% and +4.3% of the label. In each of the three that failed, the
+// outermost ink on the left was a mono run inside a mixed label while the
+// right edge was a path, a polygon or a rect, so only one side moved and the
+// whole difference landed in this assertion.
+//
+// 6% is about 1.4x the worst of those. It applies ONLY where text sets an
+// edge: the scenes whose extent is shapes keep the flat tolerance, which is
+// where it means anything.
+const TEXT_METRIC_SLACK = 0.06;
+
 /**
  * The air on each side of the drawing, in scene units.
  *
@@ -2024,6 +2041,87 @@ function margins(root) {
 }
 
 const sel = (name) => `.dapr-diagram[data-diagram="${name}"]`;
+
+/**
+ * What sets each edge of the drawing, how far off centre it sits, and how
+ * much of that is the machine rather than the scene.
+ *
+ * A measurement that disagrees between two machines is nearly always a TEXT
+ * measurement, so this answers the three questions that follow every time:
+ * which element reaches furthest, is it text, and was it drawn in the face
+ * the page asked for. `report` is for the failure message; the numbers above
+ * it decide the verdict.
+ *
+ * Leaves only: a <g> reports the union of its children, so it would stand in
+ * for the label that actually reaches the edge. The slack, though, comes from
+ * the whole <text> that owns the leaf - a centred label lays itself out as
+ * one unit, so a run inside it moves with the width of all of it.
+ */
+function edgeFacts(root) {
+  const svg = document.querySelector(`${root} svg`);
+  const box = svg.getBBox();
+  const v = svg.viewBox.baseVal;
+  const inv = svg.getScreenCTM().inverse();
+  const extent = (el) => {
+    const b = el.getBBox();
+    const m = inv.multiply(el.getScreenCTM());
+    const ps = [[b.x, b.y], [b.x + b.width, b.y], [b.x, b.y + b.height], [b.x + b.width, b.y + b.height]]
+      .map(([x, y]) => new DOMPoint(x, y).matrixTransform(m));
+    const xs = ps.map((p) => p.x);
+    const ys = ps.map((p) => p.y);
+    return { x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: Math.max(...ys) };
+  };
+  const leaves = [];
+  for (const n of svg.querySelectorAll('*')) {
+    if (n.firstElementChild || typeof n.getBBox !== 'function' || !n.getScreenCTM()) continue;
+    let e;
+    try { e = extent(n); } catch { continue; }
+    if (e.x1 === e.x0 && e.y1 === e.y0) continue;
+    leaves.push(Object.assign({ n }, e));
+  }
+  const m = {
+    left: box.x - v.x,
+    top: box.y - v.y,
+    right: (v.x + v.width) - (box.x + box.width),
+    bottom: (v.y + v.height) - (box.y + box.height),
+  };
+  if (!leaves.length) {
+    return Object.assign(m, { slackX: 0, slackY: 0, report: 'nothing measurable to report' });
+  }
+  const pick = (key, better) => leaves.reduce((a, b) => (better(b[key], a[key]) ? b : a));
+  const edges = {
+    left: pick('x0', (b, a) => b < a),
+    right: pick('x1', (b, a) => b > a),
+    top: pick('y0', (b, a) => b < a),
+    bottom: pick('y1', (b, a) => b > a),
+  };
+  const owner = (e) => {
+    const t = e.n.closest('text');
+    if (!t) return null;
+    try { return extent(t); } catch { return null; }
+  };
+  const spanX = (e) => { const o = owner(e); return o ? o.x1 - o.x0 : 0; };
+  const spanY = (e) => { const o = owner(e); return o ? o.y1 - o.y0 : 0; };
+  const describe = (e) => {
+    const w = `w=${(e.x1 - e.x0).toFixed(1)}`;
+    const words = (e.n.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 28);
+    if (!words) return `<${e.n.tagName}> ${w}`;
+    const cs = getComputedStyle(e.n);
+    const family = cs.fontFamily.split(',')[0].replace(/["']/g, '').trim();
+    const has = document.fonts.check(`${cs.fontWeight} ${cs.fontSize} "${family}"`);
+    return `"${words}" ${w} in ${family} ${cs.fontWeight} ${cs.fontSize}${has ? '' : ' NOT LOADED'}`;
+  };
+  const faces = [...document.fonts].map((x) => `${x.family}/${x.weight}:${x.status}`).join(' ');
+  return Object.assign(m, {
+    slackX: Math.max(spanX(edges.left), spanX(edges.right)),
+    slackY: Math.max(spanY(edges.top), spanY(edges.bottom)),
+    report: [
+      `left edge ${describe(edges.left)}`,
+      `right edge ${describe(edges.right)}`,
+      `faces ${faces}`,
+    ].join('\n  '),
+  });
+}
 
 /**
  * Opens a page and waits for the webfonts to settle.
@@ -2431,6 +2529,15 @@ for (const scene of SCENES) {
                   pad: +pad.toFixed(1),
                   need: +need.toFixed(1),
                   captionW: +r.width.toFixed(1),
+                  textW: +b.width.toFixed(1),
+                  // Which face actually drew it: a pill that fits on one
+                  // machine and not another is a font question first.
+                  face: (() => {
+                    const cs = getComputedStyle(t);
+                    const family = cs.fontFamily.split(',')[0].replace(/["']/g, '').trim();
+                    const has = document.fonts.check(`${cs.fontWeight} ${cs.fontSize} "${family}"`);
+                    return `${family} ${cs.fontWeight} ${cs.fontSize}${has ? '' : ' NOT LOADED'}`;
+                  })(),
                   useAtLeast: Math.ceil(b.width + 2 * need),
                 }
                 : null;
@@ -2741,16 +2848,22 @@ for (const scene of SCENES) {
     // and `npm run measure:bbox` regenerates it after a scene moves.
     test(`${scene.name} centres its drawing in its canvas`, async ({ page }) => {
       await openScene(page, scene.page);
-      const m = await page.evaluate(margins, sel(scene.name));
+      const m = await page.evaluate(edgeFacts, sel(scene.name));
+      const across = Math.abs(m.left - m.right);
+      const down = Math.abs(m.top - m.bottom);
+      // Flat where a shape sets the edge, wider where a label does.
+      const allowX = CENTRE_TOLERANCE + m.slackX * TEXT_METRIC_SLACK;
+      const allowY = CENTRE_TOLERANCE + m.slackY * TEXT_METRIC_SLACK;
+      const why = across > allowX || down > allowY ? `\n  ${m.report}` : '';
 
       expect(
-        Math.abs(m.left - m.right),
-        `off-centre across: ${m.left.toFixed(1)} left against ${m.right.toFixed(1)} right - run \`npm run measure:bbox\``,
-      ).toBeLessThanOrEqual(CENTRE_TOLERANCE);
+        across,
+        `off-centre across: ${m.left.toFixed(1)} left against ${m.right.toFixed(1)} right${why}`,
+      ).toBeLessThanOrEqual(allowX);
       expect(
-        Math.abs(m.top - m.bottom),
-        `off-centre down: ${m.top.toFixed(1)} top against ${m.bottom.toFixed(1)} bottom - run \`npm run measure:bbox\``,
-      ).toBeLessThanOrEqual(CENTRE_TOLERANCE);
+        down,
+        `off-centre down: ${m.top.toFixed(1)} top against ${m.bottom.toFixed(1)} bottom${why}`,
+      ).toBeLessThanOrEqual(allowY);
     });
 
     // A region's caption is centred ON its border, so half of it hangs INSIDE
