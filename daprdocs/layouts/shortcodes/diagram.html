@@ -45,11 +45,35 @@
     <figure class="dapr-diagram" data-diagram="{{ $name }}"{{ $style | safeHTMLAttr }}>
       {{- .Content | safeHTML -}}
       {{- /* The inlined svg paints in var(--d-*) and only resolves on this
-             page, so both actions point at the standalone copy under
-             static/diagrams/, which has the light values baked in. */ -}}
+             page, so every action points at a standalone copy under
+             static/diagrams/, which has the light values baked in.
+
+             The PNG is a committed file rather than something Hugo builds, so
+             there is no `resources.Get` to guard it with: `npm run check:pngs`
+             is what keeps it in step with its scene, and the layout suite is
+             what notices if it stops serving.
+
+             An aria-label on each link because the same three words repeat
+             beside every diagram on a page, and "Download SVG" eleven times in
+             a row tells a screen-reader user nothing about which drawing they
+             are on.
+
+             The label OPENS with the visible text, and that order is the whole
+             point: a speech-input user says "click Download SVG", and the
+             browser matches what they said against the accessible name, not
+             against what is painted on screen. Name the scene first and the
+             visible string stops being a prefix of the name, the match fails,
+             and the control cannot be operated by voice at all (WCAG 2.5.3,
+             failure F96).
+
+             The copy button is left alone deliberately: accname stops at the
+             first thing it finds, so a label would pin its name for good and
+             the "Copied" / "Copy failed" it writes into its own text would
+             never reach a screen reader. */ -}}
       <div class="dapr-diagram-actions">
-        <a class="dapr-diagram-action" href="/diagrams/{{ $name }}.svg" download="{{ $name }}.svg">Download SVG</a>
+        <a class="dapr-diagram-action" href="/diagrams/{{ $name }}.svg" download="{{ $name }}.svg" data-diagram-download="svg" aria-label="Download SVG of the {{ $name }} diagram">Download SVG</a>
         <button class="dapr-diagram-action" type="button" data-diagram-copy="/diagrams/{{ $name }}.svg">Copy SVG</button>
+        <a class="dapr-diagram-action" href="/diagrams/{{ $name }}.png" download="{{ $name }}.png" data-diagram-download="png" aria-label="Download PNG of the {{ $name }} diagram">Download PNG</a>
       </div>
     </figure>
   {{- else -}}

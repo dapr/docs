@@ -15,6 +15,19 @@
 // It is the counterweight to the conversion, and it is why
 // `daprdocs/static/images` is listed as never-modified in the plan's Global
 // Constraints.
+//
+// The developing-applications / developing-ai conversion (2026-10-31) extends
+// that decision rather than replacing it. Three pages this file pins are in
+// that scope, and each is the only English page rendering its image, so the
+// page-level assertion cannot survive the conversion. The trade is explicit:
+//
+//   IN_SCOPE_IMAGES    grows, never shrinks  - the file must survive
+//   PAGES_STILL_SHOWING shrinks as pages convert - the page need not
+//   CONVERTED_PAGES    grows - records which page gave up which assertion
+//
+// An image loses its page-level guard only by gaining a file-level one. The
+// tests in "the guard stays honest as pages convert" enforce exactly that, so
+// the trade cannot be made by half.
 
 const { test, expect } = require('@playwright/test');
 const fs = require('fs');
@@ -58,40 +71,274 @@ const IN_SCOPE_IMAGES = [
   'security-dapr-API-scoping.png',
   'security-overview-capabilities-example.png',
   'security-threat-model.png',
+
+  // Added by the developing-applications / developing-ai conversion. Each of
+  // these had its page-level guard retired when its page converted, so this
+  // list is now their only protection.
+  'scheduler/scheduler-architecture.png',
+  'workflow-overview/workflows-chaining.png',
+  'workflow-overview/workflows-fanin-fanout.png',
+  'workflow-overview/workflow-async-request-response.png',
+  'workflow-overview/workflow-monitor-pattern.png',
+  'workflow-overview/workflow-human-interaction-pattern.png',
+  'workflow-overview/workflows-compensation.png',
+  'workflow-overview/workflow-multi-app-complex.png',
+  'workflow-overview/workflow-multi-app-callactivity.png',
+  'workflow-overview/workflow-multi-app-child-workflow.png',
+  'buildingblocks-overview.png',
+  'dapr-agents/home_installation_init.png',
+  'binding-overview.png',
+  'workflow-overview/workflow-overview.png',
+
+  // workflow-architecture.md, converted whole: eight images, eight scenes.
+  // Each was referenced by that page and by no other English page.
+  'workflow-overview/workflows-architecture-k8s.png',
+  'workflow-overview/workflow-engine-protocol.png',
+  'workflow-overview/workflow-execution.png',
+  'workflow-overview/workflow-actor-flowchart.png',
+  'workflow-overview/workflow-activity-actor-flowchart.png',
+  'workflow-overview/workflow-actor-reminder-flow.png',
+  'workflow-overview/workflow-state-store-interactions.png',
+  'workflow-overview/workflow-actor-scale-out.png',
+  'dapr-agents/agents-augmented-llm.png',
+  'dapr-agents/agents-prompt-chaining.png',
+  'dapr-agents/agents-routing.png',
+  'dapr-agents/agents-parallelization.png',
+  'dapr-agents/agents-orchestrator-workers.png',
+  'dapr-agents/agents-evaluator-optimizer.png',
+  'dapr-agents/agents-stateful-llm.png',
+  'dapr-agents/agents-patterns-overview.png',
+  'dapr-agents/concepts-agents.png',
+  'dapr-agents/concepts_agents_toolcall_flow.png',
+  'dapr-agents/home_concepts_principles_workflows.png',
+  'dapr-agents/home_concepts_principles_modular.png',
+  'dapr-agents/home_concepts_principles_message.png',
+  'dapr-agents/home_concepts_principles_decoupled.png',
 ];
 
-// The seven images an out-of-scope English page shares with an in-scope one,
-// each with the page that keeps needing it after the in-scope page converts.
-// These are visited for real: the file existing on disk is necessary but not
-// sufficient, because the page could also stop referencing it.
-const SHARED_WITH_PAGES_OUTSIDE_SCOPE = [
+// IN_SCOPE_IMAGES as the previous conversion froze it. It may GROW - the
+// developing-applications / developing-ai conversion adds every image whose
+// page it converts - but an entry that disappears is an image that silently
+// stopped being guarded, which is what the baseline test catches.
+const FROZEN_IMAGE_BASELINE = [...IN_SCOPE_IMAGES];
+
+// Pages still asserted to render an image: the file existing on disk is
+// necessary but not sufficient, because a page could also stop referencing it.
+//
+// This list SHRINKS as pages convert. The entries the current conversion
+// started with (pluggable-components-overview, dapr-agents-introduction,
+// jobs-overview) have all moved to CONVERTED_PAGES below; each was the only
+// English page rendering its image, so retiring the page assertion handed
+// the file to IN_SCOPE_IMAGES.
+const PAGES_STILL_SHOWING = [
+  // sidecar-health.md is the last of the four pages this list started with,
+  // and it stays because it cannot move yet: besides this image it carries
+  // healthz-outbound.png, which nothing in the set draws - three init steps
+  // inside daprd, two healthz endpoints and the app's WaitForServer. Giving
+  // the page a shortcode for one image while the other is still an <img>
+  // would make it exactly the mixed page this conversion set out to avoid.
   {
-    image: 'concepts-building-blocks.png',
-    page: '/developing-applications/develop-components/pluggable-components/pluggable-components-overview/',
+    image: 'security-mTLS-dapr-system-services.png',
+    page: '/operations/resiliency/health-checks/sidecar-health/',
   },
-  {
-    image: 'dapr-agents/concepts-agents-overview.png',
-    page: '/developing-ai/dapr-agents/dapr-agents-introduction/',
-  },
+];
+
+// Pages the current conversion has converted to `{{< diagram >}}`. Moving an
+// entry here from PAGES_STILL_SHOWING is the ONE edit that retires a page
+// assertion, and the tests below then require its image to be in
+// IN_SCOPE_IMAGES - which is the whole point: the page stops vouching for the
+// file, so the file list has to.
+const CONVERTED_PAGES = [
+  // The three pages that needed no new drawing at all. Each one's subject was
+  // ALREADY a scene, drawn on a sibling page, and each scene had already been
+  // fact-checked against THIS page rather than the one it shipped on:
+  // `app-health` against app-health.md's own four-item list of what Dapr stops
+  // doing, and `hosting-kubernetes` against kubernetes-overview.md's own table
+  // of control-plane services. Converting them was a shortcode, the way
+  // components-concept was reused on dapr-agents-why.md.
   {
     image: 'observability-app-health.webp',
     page: '/operations/resiliency/health-checks/app-health/',
+    scene: 'app-health',
   },
   {
     image: 'observability-tracing.png',
     page: '/operations/observability/tracing/tracing-overview/',
+    scene: 'observability-tracing',
   },
   {
     image: 'overview-kubernetes.png',
     page: '/operations/hosting/kubernetes/kubernetes-overview/',
+    scene: 'hosting-kubernetes',
+  },
+  // dapr-agents-why.md's three principle images. The first is not a new
+  // drawing: components-concept already draws App, Dapr, the building blocks
+  // and the components behind them, from a longer and more current list than
+  // the PNG had.
+  {
+    image: 'dapr-agents/home_concepts_principles_modular.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-why/',
+    scene: 'components-concept',
+  },
+  {
+    image: 'dapr-agents/home_concepts_principles_message.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-why/',
+    scene: 'agents-message-driven',
+  },
+  {
+    image: 'dapr-agents/home_concepts_principles_decoupled.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-why/',
+    scene: 'agents-decoupled-infrastructure',
+  },
+  // The core concepts page carried three images and none of them had a
+  // PAGES_STILL_SHOWING row, so converting it takes away the only English page
+  // that referenced any of the three files. The file-level guard is what
+  // replaces that.
+  {
+    image: 'dapr-agents/concepts-agents.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-core-concepts/',
+    scene: 'agents-loop',
+  },
+  {
+    image: 'dapr-agents/concepts_agents_toolcall_flow.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-core-concepts/',
+    scene: 'agents-tool-call-flow',
+  },
+  {
+    image: 'dapr-agents/home_concepts_principles_workflows.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-core-concepts/',
+    scene: 'agents-orchestration',
+  },
+  // The introduction page's TWO images go together. Converting one of them
+  // alone leaves the page both converted and still showing an image, which
+  // this file's whole model says cannot happen - and the guard caught exactly
+  // that when the composite was swapped here a task early.
+  {
+    image: 'dapr-agents/concepts-agents-overview.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-introduction/',
+    scene: 'agents-overview',
+  },
+  {
+    image: 'dapr-agents/agents-patterns-overview.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-introduction/',
+    scene: 'agents-patterns-overview',
   },
   {
     image: 'scheduler/scheduler-architecture.png',
     page: '/developing-applications/building-blocks/jobs/jobs-overview/',
+    scene: 'scheduler-architecture',
   },
   {
-    image: 'security-mTLS-dapr-system-services.png',
-    page: '/operations/resiliency/health-checks/sidecar-health/',
+    image: 'concepts-building-blocks.png',
+    page: '/developing-applications/develop-components/pluggable-components/pluggable-components-overview/',
+    scene: 'building-blocks-concept',
+  },
+  // This page carried no PAGES_STILL_SHOWING row - the earlier conversion
+  // never pinned it - but converting it still takes away the only English
+  // page that referenced the file, so the file-level guard is what replaces
+  // it. A converted page earns its image a place in IN_SCOPE_IMAGES whether
+  // or not the page guard happened to name it.
+  {
+    image: 'buildingblocks-overview.png',
+    page: '/developing-applications/building-blocks/',
+    scene: 'building-blocks',
+  },
+  {
+    image: 'dapr-agents/home_installation_init.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-getting-started/',
+    scene: 'hosting-standalone',
+  },
+  {
+    image: 'binding-overview.png',
+    page: '/developing-applications/building-blocks/bindings/bindings-overview/',
+    scene: 'bindings-overview',
+  },
+  // workflow-patterns.md, converted whole: six images, six scenes.
+  ...[
+    ['workflow-overview/workflows-chaining.png', 'workflow-task-chaining'],
+    ['workflow-overview/workflows-fanin-fanout.png', 'workflow-fan-out-fan-in'],
+    ['workflow-overview/workflow-async-request-response.png', 'workflow-async-http'],
+    ['workflow-overview/workflow-monitor-pattern.png', 'workflow-monitor'],
+    ['workflow-overview/workflow-human-interaction-pattern.png', 'workflow-external-system'],
+    ['workflow-overview/workflows-compensation.png', 'workflow-compensation'],
+  ].map(([image, scene]) => ({
+    image,
+    page: '/developing-applications/building-blocks/workflow/workflow-patterns/',
+    scene,
+  })),
+  // workflow-multi-app.md: three images and the page's one Mermaid flowchart.
+  ...[
+    ['workflow-overview/workflow-multi-app-complex.png', 'workflow-multi-app-complex'],
+    ['workflow-overview/workflow-multi-app-callactivity.png', 'workflow-multi-app-activity'],
+    ['workflow-overview/workflow-multi-app-child-workflow.png', 'workflow-multi-app-child-workflow'],
+  ].map(([image, scene]) => ({
+    image,
+    page: '/developing-applications/building-blocks/workflow/workflow-multi-app/',
+    scene,
+  })),
+  // workflow-overview.md: one image, and this page was the only English page
+  // that referenced it. It carried no PAGES_STILL_SHOWING row, so there is no
+  // page assertion to retire - IN_SCOPE_IMAGES is now the file's only guard.
+  {
+    image: 'workflow-overview/workflow-overview.png',
+    page: '/developing-applications/building-blocks/workflow/workflow-overview/',
+    scene: 'workflow-overview',
+  },
+  // workflow-architecture.md: eight images, eight scenes, and the scene name
+  // is the image name in every case.
+  ...[
+    'workflows-architecture-k8s',
+    'workflow-engine-protocol',
+    'workflow-execution',
+    'workflow-actor-flowchart',
+    'workflow-activity-actor-flowchart',
+    'workflow-actor-reminder-flow',
+    'workflow-state-store-interactions',
+    'workflow-actor-scale-out',
+  ].map((name) => ({
+    image: `workflow-overview/${name}.png`,
+    page: '/developing-applications/building-blocks/workflow/workflow-architecture/',
+    scene: name,
+  })),
+  {
+    image: 'dapr-agents/agents-augmented-llm.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    scene: 'agents-augmented-llm',
+  },
+  {
+    image: 'dapr-agents/agents-prompt-chaining.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    scene: 'agents-prompt-chaining',
+  },
+  {
+    image: 'dapr-agents/agents-routing.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    scene: 'agents-routing',
+  },
+  {
+    image: 'dapr-agents/agents-parallelization.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    scene: 'agents-parallelization',
+  },
+  {
+    image: 'dapr-agents/agents-orchestrator-workers.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    scene: 'agents-orchestrator-workers',
+  },
+  {
+    image: 'dapr-agents/agents-evaluator-optimizer.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    scene: 'agents-evaluator-optimizer',
+  },
+  {
+    image: 'dapr-agents/agents-stateful-llm.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    scene: 'agents-stateful-llm',
+  },
+  {
+    image: 'dapr-agents/agents-patterns-overview.png',
+    page: '/developing-ai/dapr-agents/dapr-agents-patterns/',
+    scene: 'agents-patterns-overview',
   },
 ];
 
@@ -138,7 +385,7 @@ test.describe('images outside this scope keep resolving', () => {
     ).toEqual([]);
   });
 
-  for (const { image, page } of SHARED_WITH_PAGES_OUTSIDE_SCOPE) {
+  for (const { image, page } of PAGES_STILL_SHOWING) {
     test(`pages outside this scope still reference an existing image file: ${image}`, async ({
       page: pw,
     }) => {
@@ -172,6 +419,56 @@ test.describe('images outside this scope keep resolving', () => {
     expect(
       dirty === '' ? [] : dirty.split('\n'),
       `${IMAGES_REL} has uncommitted changes`,
+    ).toEqual([]);
+  });
+});
+
+// The bookkeeping that lets a page leave PAGES_STILL_SHOWING without the image
+// it used to show losing its guard.
+//
+// Three of the pages this file pins are inside the scope of the
+// developing-applications / developing-ai conversion, and each is the ONLY
+// English page rendering its image. When such a page converts, the page-level
+// assertion must go - and at that moment IN_SCOPE_IMAGES becomes the image's
+// only remaining protection. So the list does not merely never shrink: it has
+// to GROW by exactly the image whose page entry was removed. These tests are
+// what make that trade explicit rather than remembered.
+test.describe('the guard stays honest as pages convert', () => {
+  test('every page still asserted to show an image names a guarded file', () => {
+    const unguarded = PAGES_STILL_SHOWING
+      .filter(({ image }) => !IN_SCOPE_IMAGES.includes(image))
+      .map(({ image, page }) => `${page} -> ${image}`);
+    expect(
+      unguarded,
+      'a page is asserted to render an image that no file-existence check covers',
+    ).toEqual([]);
+  });
+
+  test('a converted page is no longer asserted to render its image', () => {
+    const stillPinned = PAGES_STILL_SHOWING
+      .filter(({ page }) => CONVERTED_PAGES.some((c) => c.page === page))
+      .map(({ page }) => page);
+    expect(
+      stillPinned,
+      'a converted page is in both lists; remove it from PAGES_STILL_SHOWING',
+    ).toEqual([]);
+  });
+
+  test('every image a converted page used to show is still guarded as a file', () => {
+    const dropped = CONVERTED_PAGES
+      .filter(({ image }) => !IN_SCOPE_IMAGES.includes(image))
+      .map(({ image, page }) => `${image} (was shown by ${page})`);
+    expect(
+      dropped,
+      'converting a page removed the only guard on its image; add it to IN_SCOPE_IMAGES',
+    ).toEqual([]);
+  });
+
+  test('the guarded file list has not shrunk below the previous conversion baseline', () => {
+    const lost = FROZEN_IMAGE_BASELINE.filter((img) => !IN_SCOPE_IMAGES.includes(img));
+    expect(
+      lost,
+      'IN_SCOPE_IMAGES may grow, never shrink: translations/docs-zh still references these',
     ).toEqual([]);
   });
 });

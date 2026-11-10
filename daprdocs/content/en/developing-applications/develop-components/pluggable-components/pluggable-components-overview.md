@@ -8,7 +8,7 @@ description: "Overview of pluggable component anatomy and supported component ty
 
 Pluggable components are components that are not included as part the runtime, as opposed to the built-in components included with `dapr init`. You can configure Dapr to use pluggable components that leverage the building block APIs, but are registered differently from the [built-in Dapr components](https://github.com/dapr/components-contrib). 
 
-<img src="/images/concepts-building-blocks.png" width=400>
+{{< diagram name="building-blocks-concept" width="75" >}}
 
 ## Pluggable components vs. built-in components
 
