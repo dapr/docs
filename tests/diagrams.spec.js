@@ -2026,6 +2026,27 @@ function margins(root) {
 const sel = (name) => `.dapr-diagram[data-diagram="${name}"]`;
 
 /**
+ * Opens a page and waits for the webfonts to settle.
+ *
+ * Nearly every measurement in this file is made of text. A label's width sets
+ * where its shape's contents end, and a label that overhangs the shape it sits
+ * under sets the DRAWING's own extent. Until Inter has swapped in, the browser
+ * is laying that text out in whatever the stack falls back to - on an Ubuntu
+ * runner the system UI face, which is wider than Inter - and `domcontentloaded`
+ * fires before the font request has even been made.
+ *
+ * Three scenes failed `centres its drawing in its canvas` in CI by 7 to 13
+ * units while passing here, with their RIGHT edges, set by shapes, agreeing to
+ * the hundredth and their LEFT edges, set by a label wider than the shape above
+ * it, disagreeing. Six tests in this file already waited for the fonts; the
+ * rest measured whatever happened to be on screen. They all wait now.
+ */
+async function openScene(page, url) {
+  await page.goto(url, { waitUntil: 'domcontentloaded' });
+  await page.evaluate(() => document.fonts.ready);
+}
+
+/**
  * Collects the drawn text of every <text>.
  *
  * A tspan is used for two different things. label() starts each LINE of a
@@ -2102,7 +2123,7 @@ function readPaint(page, name) {
 for (const scene of SCENES) {
   test.describe(`${scene.name} on ${scene.page}`, () => {
     test(`${scene.name} renders an inline svg with a title and desc`, async ({ page }) => {
-      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      await openScene(page, scene.page);
 
       const figure = page.locator(sel(scene.name));
       await expect(figure).toHaveCount(1);
@@ -2132,7 +2153,7 @@ for (const scene of SCENES) {
     });
 
     test(`${scene.name} shows every expected label`, async ({ page }) => {
-      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      await openScene(page, scene.page);
       const drawn = await readLabels(page, scene.name);
       for (const label of scene.labels) {
         expect(drawn, `missing label "${label}"`).toContain(label);
@@ -2141,7 +2162,7 @@ for (const scene of SCENES) {
 
     if (scene.alpha) {
       test(`${scene.name} tags exactly the alpha APIs`, async ({ page }) => {
-        await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+        await openScene(page, scene.page);
         // A tile's tag and its label are two <text> nodes in the same .d-tile
         // group, so read each tile whole and keep the ones carrying "alpha".
         // A card's description is excluded: it is prose, not the tile's name.
@@ -2176,7 +2197,7 @@ for (const scene of SCENES) {
       // ESM, so the constant comes in dynamically rather than as a literal
       // that could drift from the one the builders enforce.
       const { MIN_LABEL } = await import('../diagrams/shapes.mjs');
-      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      await openScene(page, scene.page);
       const sizes = await page.$$eval(`${sel(scene.name)} svg text`, (nodes) =>
         nodes.map((n) => parseFloat(getComputedStyle(n).fontSize)),
       );
@@ -2214,7 +2235,7 @@ for (const scene of SCENES) {
     // Objects inside one named mark are skipped: a mark and its plate, a
     // store and the glyph on it, are one object drawn in pieces.
     test(`${scene.name} keeps its shapes clear of each other`, async ({ page }) => {
-      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      await openScene(page, scene.page);
       const close = await page.evaluate((root) => {
         const svg = document.querySelector(`${root} svg`);
         // IN SCENE UNITS, not screen pixels. The svg is scaled to the prose
@@ -2294,8 +2315,7 @@ for (const scene of SCENES) {
     // the middle, where a one-line name sits; it is the same approximation the
     // tile check makes, and it still catches the case this exists for.
     test(`${scene.name} holds every shape's own name inside it`, async ({ page }) => {
-      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
-      await page.evaluate(() => document.fonts.ready);
+      await openScene(page, scene.page);
       const tight = await page.evaluate((root) => {
         const svg = document.querySelector(`${root} svg`);
         // IN SCENE UNITS. getBoundingClientRect() is scaled to the prose
@@ -2351,7 +2371,7 @@ for (const scene of SCENES) {
     });
 
     test(`${scene.name} keeps every tile label inside its tile`, async ({ page }) => {
-      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      await openScene(page, scene.page);
       const overflowing = await page.$$eval(`${sel(scene.name)} svg .d-tile`, (tiles) =>
         tiles
           .map((t) => {
@@ -2388,7 +2408,7 @@ for (const scene of SCENES) {
     // units WIDER than the pill it sits in.
     test(`${scene.name} keeps every caption pill's text clear of its own ends`, async ({ page }) => {
       const { CAPTION_PAD_EM } = await import('../diagrams/shapes.mjs');
-      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      await openScene(page, scene.page);
       const tight = await page.$$eval(
         `${sel(scene.name)} svg g.d-region > g.d-pill`,
         (pills, em) =>
@@ -2434,8 +2454,7 @@ for (const scene of SCENES) {
     // halo is for, and `paints ground behind any label a line crosses` owns
     // that question. This one is only about the filled, named objects.
     test(`${scene.name} keeps every free label clear of the shapes around it`, async ({ page }) => {
-      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
-      await page.evaluate(() => document.fonts.ready);
+      await openScene(page, scene.page);
       const hits = await page.evaluate((root) => {
         const svg = document.querySelector(`${root} svg`);
         // Every builder that draws an object carrying its own name. A region,
@@ -2514,8 +2533,7 @@ for (const scene of SCENES) {
     // down with the same arrow(), so one selector finds every head in the
     // set however the run that carries it was built.
     test(`${scene.name} keeps every label clear of an arrowhead`, async ({ page }) => {
-      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
-      await page.evaluate(() => document.fonts.ready);
+      await openScene(page, scene.page);
       const hits = await page.evaluate((root) => {
         const svg = document.querySelector(`${root} svg`);
         const INSET = 1; // a descender grazing the tip is not a collision
@@ -2583,8 +2601,7 @@ for (const scene of SCENES) {
     // `keeps its shapes clear of each other` holds two drawn objects to -
     // type sits closer together than boxes do.
     test(`${scene.name} keeps every free label clear of the lines and labels around it`, async ({ page }) => {
-      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
-      await page.evaluate(() => document.fonts.ready);
+      await openScene(page, scene.page);
       const hits = await page.evaluate((root) => {
         const svg = document.querySelector(`${root} svg`);
         const MIN_AIR = 6;
@@ -2668,7 +2685,7 @@ for (const scene of SCENES) {
     // diagram once it is away from this page's tokens. Without this the
     // download and copy buttons hand over something that paints black.
     test(`${scene.name} offers a standalone svg that resolves on its own`, async ({ page }) => {
-      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      await openScene(page, scene.page);
 
       const href = await page.locator(`${sel(scene.name)} a[data-diagram-download="svg"]`).getAttribute('href');
       expect(href).toBe(`/diagrams/${scene.name}.svg`);
@@ -2689,7 +2706,7 @@ for (const scene of SCENES) {
     // is why this asks the server for it and reads the signature off the
     // front rather than trusting the href.
     test(`${scene.name} offers a png download`, async ({ page }) => {
-      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      await openScene(page, scene.page);
 
       const href = await page
         .locator(`${sel(scene.name)} a[data-diagram-download="png"]`)
@@ -2706,7 +2723,7 @@ for (const scene of SCENES) {
     });
 
     test(`${scene.name} has no element outside its viewBox`, async ({ page }) => {
-      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      await openScene(page, scene.page);
       const m = await page.evaluate(margins, sel(scene.name));
 
       expect(m.left).toBeGreaterThanOrEqual(EDGE_MARGIN);
@@ -2723,7 +2740,7 @@ for (const scene of SCENES) {
     // white space. `bbox.json` holds the viewBox origin that squares it up,
     // and `npm run measure:bbox` regenerates it after a scene moves.
     test(`${scene.name} centres its drawing in its canvas`, async ({ page }) => {
-      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      await openScene(page, scene.page);
       const m = await page.evaluate(margins, sel(scene.name));
 
       expect(
@@ -2746,7 +2763,7 @@ for (const scene of SCENES) {
     // Lines are not checked: a run is SUPPOSED to cross a pod's border. This
     // is about the shapes and marks a caption can land on.
     test(`${scene.name} keeps every caption clear of the contents it names`, async ({ page }) => {
-      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      await openScene(page, scene.page);
       const hits = await page.evaluate((root) => {
         const svg = document.querySelector(`${root} svg`);
         // getBoundingClientRect, NOT getBBox: a mark is a <g> under a
@@ -2789,8 +2806,7 @@ for (const scene of SCENES) {
     // region crosses that border, so this is a collision the layout has to be
     // arranged around rather than one that happens by accident.
     test(`${scene.name} keeps every line clear of a caption pill`, async ({ page }) => {
-      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
-      await page.evaluate(() => document.fonts.ready);
+      await openScene(page, scene.page);
       const hits = await page.evaluate((root) => {
         const svg = document.querySelector(`${root} svg`);
         // A pill's own rounded rect, and the text inside it, are not lines.
@@ -2827,8 +2843,7 @@ for (const scene of SCENES) {
     });
 
     test(`${scene.name} paints ground behind any label a line crosses`, async ({ page }) => {
-      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
-      await page.evaluate(() => document.fonts.ready);
+      await openScene(page, scene.page);
       const hits = await page.evaluate((root) => {
         const svg = document.querySelector(`${root} svg`);
         const INSET = 1; // a stroke grazing the box's own corner is not a crossing
@@ -2889,7 +2904,7 @@ for (const scene of SCENES) {
     });
 
     test(`${scene.name} resolves its token colors in light and in dark`, async ({ page }) => {
-      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      await openScene(page, scene.page);
       await page.evaluate(() => document.documentElement.setAttribute('data-bs-theme', 'light'));
       const light = await readPaint(page, scene.name);
 
@@ -2919,7 +2934,7 @@ for (const scene of SCENES) {
     for (const width of PHONE_WIDTHS) {
       test(`${scene.name} does not overflow at ${width}px`, async ({ page }) => {
         await page.setViewportSize({ width, height: 780 });
-        await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+        await openScene(page, scene.page);
 
         const figure = page.locator(sel(scene.name));
         const svgBox = await figure.locator('> svg').boundingBox();
@@ -2960,7 +2975,7 @@ for (const scene of SCENES) {
       // left edge, so those stay aligned to the prose's left edge and this
       // test checks that instead.
       await page.setViewportSize({ width: 1600, height: 1000 });
-      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      await openScene(page, scene.page);
 
       const geom = await page.evaluate((root) => {
         const fig = document.querySelector(root);
@@ -3001,7 +3016,7 @@ for (const scene of SCENES) {
     });
 
     test(`${scene.name} runs no engine in the browser`, async ({ page }) => {
-      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      await openScene(page, scene.page);
 
       // Decision 3 stands where it matters: the SVG is the artifact and the
       // browser never runs the engine that drew it. What the page MAY now
@@ -3042,6 +3057,31 @@ for (const scene of SCENES) {
 const ACTIONS_SCENE = 'service-invocation-example';
 const ACTIONS_ROW = SCENE_ROWS.find((s) => s.name === ACTIONS_SCENE);
 
+// `document.fonts.ready` makes every measurement here wait for the swap, but a
+// font that never ARRIVES settles too: the promise resolves and the labels are
+// laid out in a fallback face. That failure reaches this suite as geometry - a
+// drawing reported off-centre because the label under its leftmost shape grew
+// wider than the shape. Name it here, once, so the next time it is the font the
+// suite says so instead of sending somebody to `npm run measure:bbox`.
+test('the page really draws its diagram labels in Inter', async ({ page }) => {
+  expect(ACTIONS_ROW, `no SCENE_ROWS row for ${ACTIONS_SCENE}`).toBeTruthy();
+  await openScene(page, ACTIONS_ROW.page);
+
+  const face = await page.evaluate((root) => {
+    const text = document.querySelector(`${root} svg text`);
+    if (!text) return null;
+    const { fontFamily, fontSize } = getComputedStyle(text);
+    return { stack: fontFamily, size: fontSize, loaded: document.fonts.check(`${fontSize} Inter`) };
+  }, sel(ACTIONS_SCENE));
+
+  expect(face, `no <text> in ${ACTIONS_SCENE} to read a face from`).not.toBeNull();
+  expect(face.stack, 'the diagram labels no longer name Inter at all').toContain('Inter');
+  expect(
+    face.loaded,
+    `Inter is not loaded at ${face.size} - every measurement in this file is of a fallback face`,
+  ).toBe(true);
+});
+
 // Label in Name. A speech-input user says "click Download SVG", and the browser
 // matches what they said against the ACCESSIBLE name, not against the words
 // painted on the control. The aria-label is there because the same three words
@@ -3051,7 +3091,7 @@ const ACTIONS_ROW = SCENE_ROWS.find((s) => s.name === ACTIONS_SCENE);
 // name first and every one of the other 3116 tests still passes.
 test('each download control opens its accessible name with the words on it', async ({ page }) => {
   expect(ACTIONS_ROW, `no SCENE_ROWS row for ${ACTIONS_SCENE}`).toBeTruthy();
-  await page.goto(ACTIONS_ROW.page, { waitUntil: 'domcontentloaded' });
+  await openScene(page, ACTIONS_ROW.page);
 
   const controls = await page.$$eval(`${sel(ACTIONS_SCENE)} a[data-diagram-download]`, (nodes) =>
     nodes.map((n) => ({
@@ -3084,7 +3124,7 @@ test('each download control opens its accessible name with the words on it', asy
 test('the download controls stay inside the narrowest figure at double text size', async ({ page }) => {
   expect(ACTIONS_ROW, `no SCENE_ROWS row for ${ACTIONS_SCENE}`).toBeTruthy();
   await page.setViewportSize({ width: 375, height: 800 });
-  await page.goto(ACTIONS_ROW.page, { waitUntil: 'domcontentloaded' });
+  await openScene(page, ACTIONS_ROW.page);
   await page.evaluate(() => {
     document.documentElement.style.fontSize = '32px';
   });
@@ -3180,7 +3220,7 @@ test('every .dapr-diagram on a visited page is listed in SCENES', async ({ page 
   const known = SCENES.map((s) => s.name);
   const pages = new Set([...SCENES.map((s) => s.page), ...diagramCallSites().map((c) => c.page)]);
   for (const url of pages) {
-    await page.goto(url, { waitUntil: 'domcontentloaded' });
+    await openScene(page, url);
     const found = await page.$$eval('.dapr-diagram', (nodes) =>
       nodes.map((n) => n.dataset.diagram ?? '(no data-diagram)'),
     );
@@ -3202,7 +3242,7 @@ test.describe('high contrast', () => {
       // make the media query match in this Chromium, so the test silently
       // measured the ordinary light theme instead of high contrast.
       await page.emulateMedia({ forcedColors: 'active' });
-      await page.goto(scene.page, { waitUntil: 'domcontentloaded' });
+      await openScene(page, scene.page);
       expect(
         await page.evaluate(() => matchMedia('(forced-colors: active)').matches),
         'forced-colors emulation did not take effect; this test would prove nothing',
