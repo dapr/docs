@@ -127,7 +127,7 @@ The six fields of a cron expression are seconds, minutes, hours, day of month, m
 | Due time | The time of the first run. Without it, the first run is at the first time the schedule matches. |
 | Expiration time | No run starts after this time. The schedule then completes. |
 | Repeats | The number of runs, scheduled or triggered, after which the schedule completes. |
-| Target app ID and namespace | The app that hosts the workflow each run starts, when it is not the app that owns the schedule. |
+| Target app ID and namespace | The app that hosts the workflow each run starts, when it is not the app that owns the schedule. The namespace can only be the owning app's own. |
 | Overwrite | Replace an existing schedule of the same name. Without it, creating a schedule whose name is taken fails with `ALREADY_EXISTS`. |
 | Skip missed | Start one run for the times the schedule missed while the app was down, rather than one run for each, and carry on from the next time after now. Off by default. |
 
@@ -305,7 +305,7 @@ The SDKs offer the same filter on their instance ID listing. Each schedule is it
 
 ## Trigger a run now
 
-Triggering a schedule starts a run at once, without changing when the next scheduled run starts. The call returns the instance ID of the run. A triggered run counts towards the schedule's repeats, and triggering a schedule that has completed fails with `FAILED_PRECONDITION`.
+Triggering a schedule starts a run at once, without changing when the next scheduled run starts. The call returns the instance ID of the run. A triggered run counts towards the schedule's repeats, and triggering a schedule that has completed fails with `FAILED_PRECONDITION`. Triggers in the same millisecond return the same instance ID and start one run.
 
 ```bash
 dapr workflow schedule trigger nightly-report --app-id reports
