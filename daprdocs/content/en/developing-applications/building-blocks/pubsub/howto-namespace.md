@@ -12,15 +12,17 @@ Dapr solves multi-tenancy at-scale with its pub/sub namespace consumer groups co
 
 ## Without namespace consumer groups
 
-Let's say you have a Kubernetes cluster, with two applications (App1 and App2) deployed to the same namespace (namespace-a). App2 publishes to a topic called `order`, while App1 subscribes to the topic called `order`. This will create two consumer groups, named after your applications (App1 and App2).
+Let's say you have a Kubernetes cluster, with two applications (App1 and App2) deployed to the same namespace (namespace-a). App1 publishes to a topic called `order`, while App2 subscribes to the topic called `order`. This will create two consumer groups, named after your applications (App1 and App2).
 
-<img src="/images/howto-namespace/basic-pubsub.png" width=1000 alt="Diagram showing basic pubsub process.">
+{{< diagram name="pubsub-namespace-basic" width="60" >}}
 
 In order to perform simple testing and deployments while using a centralized message broker, you create another namespace with two applications of the same `app-id`, App1 and App2. 
 
 Dapr creates consumer groups using the `app-id` of individual applications, so the consumer group names will remain App1 and App2. 
 
-<img src="/images/howto-namespace/without-namespace.png" width=1000 alt="Diagram showing complications around multi-tenancy without Dapr namespace consumer groups.">
+{{< diagram pubsub-namespace-without >}}
+
+Both namespaces now run an App2, and Dapr names a consumer group after the `app-id` alone. The two subscribers therefore join the *same* consumer group, and a message broker delivers each message to only one member of a group. The two compete: a message published in namespace-a can be handed to the App2 in namespace-b, and a message published in namespace-b can be handed to the App2 in namespace-a. Neither namespace can rely on receiving its own messages, which is what the crossed-out delivery in the diagram above stands for.
 
 To avoid this, you'd then need to have something "creep" into your code to change the `app-id`, depending on the namespace on which you're running. This workaround is cumbersome and a significant painpoint.
 
@@ -47,9 +49,9 @@ spec:
 
 By configuring `consumerID` with the `{namespace}` value, you'll be able to use the same `app-id` with the same topics from different namespaces.
 
-<img src="/images/howto-namespace/with-namespace.png" width=1000 alt="Diagram showing how namespace consumer groups help with multi-tenancy.">
+{{< diagram pubsub-namespace-with >}}
 
-In the diagram above, you have two namespaces, each with applications of the same `app-id`, publishing and subscribing to the same logical topic `orders`. Dapr namespaces the underlying broker entities so the two namespaces do not interfere with each other.
+In the diagram above, you have two namespaces, each with applications of the same `app-id`, publishing and subscribing to the same logical topic `order`. Dapr namespaces the underlying broker entities so the two namespaces do not interfere with each other.
 
 Without you needing to change your code/`app-id`, the namespace consumer group allows you to:
 - Add more namespaces
@@ -62,8 +64,8 @@ Simply include the `"{namespace}"` consumer group construct in your component me
 {{% alert title="Important: how namespacing appears on the broker" color="warning" %}}
 When `{namespace}` appears anywhere in a pub/sub component's metadata, Dapr namespace-scopes the **whole component** — not just the `consumerID` field. The Kubernetes namespace is prefixed onto **both** the topic and the subscription/consumer-group on every publish and subscribe.
 
-For example, with namespace `team-a` and a logical topic `orders`, the entities created on the broker are:
-- Topic: `team-aorders`
+For example, with namespace `team-a` and a logical topic `order`, the entities created on the broker are:
+- Topic: `team-aorder`
 - Subscription / consumer group: `team-a.<appID>`
 
 From your application code's perspective the topic name is preserved end-to-end — Dapr strips the prefix on the receive path before delivering messages to your app, and the `app is subscribed to the following topics: [...]` sidecar log line also shows the un-prefixed name. The prefix only exists on the wire and on the broker.

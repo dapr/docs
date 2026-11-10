@@ -35,12 +35,12 @@ When using service invocation, the Dapr runtime follows a precedence order:
 ## Service invocation and non-Dapr HTTP endpoint
 The diagram below is an overview of how Dapr's service invocation works when invoking non-Dapr endpoints.
 
-<img src="/images/service-invocation-overview-non-dapr-endpoint.png" width=800 alt="Diagram showing the steps of service invocation to non-Dapr endpoints">
+{{< diagram name="service-invocation-non-dapr-endpoint" width="55" >}}
 
-1. Service A makes an HTTP call targeting Service B, a non-Dapr endpoint. The call goes to the local Dapr sidecar.
-2. Dapr discovers Service B's location using the `HTTPEndpoint` or FQDN URL then forwards the message to Service B.
-3. Service B sends a response to Service A's Dapr sidecar.
-4. Service A receives the response.
+1. App A makes an HTTP call targeting App B, a non-Dapr endpoint. The call goes to the local Dapr sidecar.
+2. Dapr discovers App B's location using the `HTTPEndpoint` or FQDN URL then forwards the message to App B.
+3. App B sends a response to App A's Dapr sidecar.
+4. App A receives the response.
 
 ## Using an HTTPEndpoint resource or FQDN URL for non-Dapr endpoints
 There are two ways to invoke a non-Dapr endpoint when communicating either to Dapr applications or non-Dapr applications. A Dapr application can invoke a non-Dapr endpoint by providing one of the following:

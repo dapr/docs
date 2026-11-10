@@ -13,7 +13,7 @@ Publish and subscribe (pub/sub) enables microservices to communicate with each o
 
 An intermediary message broker copies each message from a publisher's input channel to an output channel for all subscribers interested in that message. This pattern is especially useful when you need to decouple microservices from one another.
 
-<img src="/images/pubsub-overview-pattern.png" width=1000 style="padding-bottom:25px;">
+{{< diagram pubsub-pattern >}}
 
 <br></br>
 
@@ -36,13 +36,13 @@ When using pub/sub in Dapr:
 
 {{< youtube id=0y7ne6teHT4 start=5384 >}}
 
-In the diagram below, a "shipping" service and an "email" service have both subscribed to topics published by a "cart" service. Each service loads pub/sub component configuration files that point to the same pub/sub message broker component; for example: Redis Streams, NATS Streaming, Azure Service Bus, or GCP pub/sub.
+In the diagram below, a "shipping" service and an "email" service have both subscribed to topics published by a "cart" service. Each service loads pub/sub component configuration files that point to the same pub/sub message broker component; for example: Redis Streams, NATS Streaming, Azure Service Bus, or RabbitMQ.
 
-<img src="/images/pubsub-overview-components.png" width=1000 style="padding-bottom:25px;">
+{{< diagram pubsub-components >}}
 
 In the diagram below, the Dapr API posts an "order" topic from the publishing "cart" service to "order" endpoints on the "shipping" and "email" subscribing services.
 
-<img src="/images/pubsub-overview-publish-API.png" width=1000 style="padding-bottom:25px;">
+{{< diagram pubsub-publish-api >}}
 
 [View the complete list of pub/sub components that Dapr supports]({{% ref supported-pubsub %}}).
 
@@ -131,7 +131,7 @@ Dapr handles the burden of dealing with consumer groups and the competing consum
 
 When multiple instances of the same application (with same `app-id`) subscribe to a topic, Dapr delivers each message to *only one instance of **that** application*. This concept is illustrated in the diagram below.
 
-<img src="/images/pubsub-overview-pattern-competing-consumers.png" width=1000>
+{{< diagram name="pubsub-competing-consumers" width="65" >}}
 <br></br>
 
 Similarly, if two different applications (with different `app-id`) subscribe to the same topic, Dapr delivers each message to *only one instance of **each** application*.

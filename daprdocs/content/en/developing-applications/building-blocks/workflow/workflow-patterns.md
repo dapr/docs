@@ -12,7 +12,7 @@ Dapr Workflows simplify complex, stateful coordination requirements in microserv
 
 In the task chaining pattern, multiple steps in a workflow are run in succession, and the output of one step may be passed as the input to the next step. Task chaining workflows typically involve creating a sequence of operations that need to be performed on some data, such as filtering, transforming, and reducing.
 
-<img src="/images/workflow-overview/workflows-chaining.png" width=800 alt="Diagram showing how the task chaining workflow pattern works">
+{{< diagram name="workflow-task-chaining" width="85" >}}
 
 In some cases, the steps of the workflow may need to be orchestrated across multiple microservices. For increased reliability and scalability, you're also likely to use queues to trigger the various steps.
 
@@ -316,7 +316,7 @@ To run this pattern, try the task chaining tutorial in [Python](https://github.c
 
 In the fan-out/fan-in design pattern, you execute multiple tasks simultaneously across potentially multiple workers, wait for them to finish, and perform some aggregation on the result.
 
-<img src="/images/workflow-overview/workflows-fanin-fanout.png" width=800 alt="Diagram showing how the fan-out/fan-in workflow pattern works">
+{{< diagram name="workflow-fan-out-fan-in" width="65" >}}
 
 In addition to the challenges mentioned in [the previous pattern]({{% ref "workflow-patterns.md#task-chaining" %}}), there are several important questions to consider when implementing the fan-out/fan-in pattern manually:
 
@@ -682,7 +682,7 @@ Asynchronous HTTP APIs are typically implemented using the [Asynchronous Request
 
 The end-to-end flow is illustrated in the following diagram.
 
-<img src="/images/workflow-overview/workflow-async-request-response.png" width=800 alt="Diagram showing how the async request response pattern works"/>
+{{< diagram name="workflow-async-http" width="80" >}}
 
 The challenge with implementing the asynchronous request-reply pattern is that it involves the use of multiple APIs and state stores. It also involves implementing the protocol correctly so that the client knows how to automatically poll for status and know when the operation is complete.
 
@@ -756,7 +756,7 @@ The monitor pattern is recurring process that typically:
 
 The following diagram provides a rough illustration of this pattern.
 
-<img src="/images/workflow-overview/workflow-monitor-pattern.png" width=800 alt="Diagram showing how the monitor pattern works"/>
+{{< diagram workflow-monitor >}}
 
 Depending on the business needs, there may be a single monitor or there may be multiple monitors, one for each business entity (for example, a stock). Furthermore, the amount of time to sleep may need to change, depending on the circumstances. These requirements make using cron-based scheduling systems impractical.
 
@@ -999,7 +999,7 @@ Here's an example workflow for a purchase order involving a human:
 
 The following diagram illustrates this flow.
 
-<img src="/images/workflow-overview/workflow-human-interaction-pattern.png" width=800 alt="Diagram showing how the external system interaction pattern works with a human involved"/>
+{{< diagram name="workflow-external-system" width="85" >}}
 
 The following example code shows how this pattern can be implemented using Dapr Workflow.
 
@@ -1459,7 +1459,7 @@ Here's an example workflow for an e-commerce process:
 
 The following diagram illustrates this flow.
 
-<img src="/images/workflow-overview/workflows-compensation.png" width=600 alt="Diagram showing how the compensation pattern."/>
+{{< diagram name="workflow-compensation" width="75" >}}
 
 {{< tabpane text=true >}}
 

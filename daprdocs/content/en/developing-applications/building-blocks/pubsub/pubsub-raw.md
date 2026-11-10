@@ -12,7 +12,7 @@ When adding Dapr to your application, some services may still need to communicat
 
 Dapr apps are able to publish raw events to pub/sub topics without CloudEvent encapsulation, for compatibility with non-Dapr apps.
 
-<img src="/images/pubsub_publish_raw.png" alt="Diagram showing how to publish with Dapr when subscriber does not use Dapr or CloudEvent" width=1000>
+{{< diagram name="pubsub-publish-raw" width="65" >}}
 
 {{% alert title="Warning" color="warning" %}}
 Not using CloudEvents disables support for tracing, event deduplication per messageId, content-type metadata, and any other features built using the CloudEvent schema.
@@ -137,7 +137,7 @@ public class PublishController {
 
 Dapr apps can subscribe to raw messages from pub/sub topics, even if they weren’t published as CloudEvents. However, the subscribing Dapr process still wraps these raw messages in a CloudEvent before delivering them to the subscribing application.
 
-<img src="/images/pubsub_subscribe_raw.png" alt="Diagram showing how to subscribe with Dapr when publisher does not use Dapr or CloudEvent" width=1000>
+{{< diagram name="pubsub-subscribe-raw" width="65" >}}
 
 ### Programmatically subscribe to raw events
 
