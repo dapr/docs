@@ -504,7 +504,7 @@ Do this:
 
 ```python
 # Inside a workflow generator function:
-configuration = workflow_input["configuration"]
+configuration = workflow_input["configuration"]  # imaginary workflow input argument
 data = yield ctx.call_activity(make_http_call, input="https://example.com/api/data")
 ```
 
