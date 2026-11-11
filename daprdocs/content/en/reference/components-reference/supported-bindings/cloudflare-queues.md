@@ -70,11 +70,11 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|-------|--------|---------|
 | `queueName` | Y | Input/Output | Name of the existing Cloudflare Queue | `"mydaprqueue"`
-| `key` | Y | Input/Output | Ed25519 private key, PEM-encoded | *See example above*
+| `key` | Y | Input/Output | Ed25519 private key, PEM-encoded. Required during component initialization, including when only the input binding is used. It signs requests to the Worker, not Cloudflare pull requests. | *See example above*
 | `cfAccountID` | Y/N | Input/Output | Cloudflare account ID. Required to have Dapr manage the worker, and required for the input binding. | `"456789abcdef8b5588f3d134f74ac"def`
 | `cfAPIToken` | Y/N | Input/Output | API token for Cloudflare. Required to have Dapr manage the Worker, and required for the input binding. | `"secret-key"`
-| `workerUrl` | Y/N | Input/Output | URL of the Worker. Required if the Worker has been pre-provisioned outside of Dapr. | `"https://mydaprqueue.mydomain.workers.dev"`
-| `queueID` | N | Input | ID of the Cloudflare Queue to receive messages from. When empty, Dapr looks the ID up by name, which requires the API token to have the `queues#read` permission. | `"8ceb4b1b5b6f4f8fa54b8b0dd7c4a6d9"`
+| `workerUrl` | Y/N | Input/Output | URL of the Worker. Required if the Worker has been pre-provisioned outside of Dapr. Component initialization checks this Worker for both binding interfaces; input polling uses the Cloudflare API instead. | `"https://mydaprqueue.mydomain.workers.dev"`
+| `queueID` | N | Input | ID of the Cloudflare Queue to receive messages from. When empty, Dapr looks the ID up by name. | `"8ceb4b1b5b6f4f8fa54b8b0dd7c4a6d9"`
 | `batchSize` | N | Input | Maximum number of messages to receive with each pull, between `1` and `100`. Default: `5` | `10`
 | `visibilityTimeout` | N | Input | How long the received messages stay invisible to other consumers, between `1s` and `12h`. It must be longer than the time your application needs to process a full batch, otherwise the messages are delivered again. Default: `30s` | `"1m"`
 | `pollingInterval` | N | Input | How long Dapr waits before pulling again after the Queue came back empty. Default: `10s` | `"5s"`
@@ -96,6 +96,7 @@ This component supports **output binding** with the following operations:
 The input binding receives messages with a Cloudflare [HTTP pull consumer](https://developers.cloudflare.com/queues/configuration/pull-consumers/), which is served by the Cloudflare API rather than by the Worker. As a consequence:
 
 - The input binding requires `cfAccountID` and `cfAPIToken` to be set; the API token must have both the `queues#read` and `queues#write` permissions. A component configured with `workerUrl` only cannot be used as an input binding.
+- Component initialization still requires `key` and a Worker, even when only the input binding is used. Dapr checks the Worker with a signed request before input polling starts. If `workerUrl` is omitted, Dapr manages the Worker and also needs the Worker-management permissions described below. These initialization requirements are separate from authentication of pull and acknowledgement requests.
 - The Queue must have an HTTP pull consumer enabled, which you can add with the Wrangler CLI:
 
   ```sh
