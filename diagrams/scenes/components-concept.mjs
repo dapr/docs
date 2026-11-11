@@ -83,20 +83,26 @@ const NAME_SIZE = 10;
 const markTop = (cardY) => cardY + CARD / 2 + MARK_GAP;
 const markBottom = (cardY, count) => markTop(cardY) + (count - 1) * MARK_PITCH + NAME_DY + NAME_SIZE * 1.2;
 
+// CONVERSATION IS DELIBERATELY SHORT HERE. This column shows four LLMs while
+// conversation-overview draws all nine the reference supports. That is a
+// maintainer ruling of 2026-11-02, not drift: this page would grow too large
+// to read if every block listed every component, and it says so in its own
+// caption - "These are examples, not the full list". Do not reconcile the two.
+//
 // [api key, the marks of its components]. The lists are the source image's,
 // except for the last three blocks, which the source predates.
 const STABLE = [
-  ['state', [['aws-dynamodb', 'AWS\nDynamoDB'], ['azure-cosmos-db', 'Azure\nCosmos DB'], ['firebase', 'GCP Firebase'], ['redis-color', 'Redis']]],
-  ['pubsub', [['aws-sqs', 'AWS SQS'], ['azure-service-bus', 'Azure\nService Bus'], ['redis-color', 'Redis'], ['rabbitmq', 'RabbitMQ']]],
+  ['state', [['aws-dynamodb', 'AWS\nDynamoDB'], ['azure-cosmos-db', 'Azure\nCosmos DB'], ['firebase', 'GCP Firebase'], ['redis', 'Redis', C.redisBrand]]],
+  ['pubsub', [['aws-sqs', 'AWS SQS'], ['azure-service-bus', 'Azure\nService Bus'], ['redis', 'Redis', C.redisBrand], ['rabbitmq', 'RabbitMQ']]],
   ['bindings', [['aws-s3', 'AWS S3'], ['azure-storage', 'Azure Storage'], ['gcp-cloud-storage', 'GCP\nCloud Storage'], ['kafka', 'Kafka']]],
   ['secrets', [['aws-secrets-manager', 'AWS Secrets\nManager'], ['azure-key-vault', 'Azure\nKey Vault'], ['kubernetes-color', 'Kubernetes\nSecrets'], ['vault', 'HashiCorp\nVault']]],
-  ['actors', [['aws-dynamodb', 'AWS\nDynamoDB'], ['azure-cosmos-db', 'Azure\nCosmos DB'], ['redis-color', 'Redis'], ['postgresql', 'Postgres']]],
-  ['configuration', [['redis-color', 'Redis'], ['azure-app-configuration', 'Azure App\nConfiguration'], ['postgresql', 'Postgres']]],
+  ['actors', [['aws-dynamodb', 'AWS\nDynamoDB'], ['azure-cosmos-db', 'Azure\nCosmos DB'], ['redis', 'Redis', C.redisBrand], ['postgresql', 'Postgres']]],
+  ['configuration', [['redis', 'Redis', C.redisBrand], ['azure-app-configuration', 'Azure App\nConfiguration'], ['postgresql', 'Postgres']]],
   ['middleware', [['oauth', 'OAuth2'], ['openid', 'OpenID\nConnect'], ['opa', 'OPA'], ['webassembly', 'Wasm']]],
 ];
 
 const ALPHA = [
-  ['distributed-lock', [['redis-color', 'Redis']]],
+  ['distributed-lock', [['redis', 'Redis', C.redisBrand]]],
   ['cryptography', [['azure-key-vault', 'Azure\nKey Vault'], ['kubernetes-color', 'Kubernetes\nSecrets'], ['fluent-key-multiple', 'JSON Web\nKey Sets'], ['fluent-document-multiple', 'Local files']]],
   ['conversation', [['anthropic', 'Anthropic'], ['aws-bedrock', 'AWS Bedrock'], ['mistral-ai', 'Mistral'], ['openai', 'OpenAI']]],
   ['binary-store', [['aws-s3', 'AWS S3'], ['azure-storage', 'Azure\nBlob Storage'], ['gcp-cloud-storage', 'GCP\nCloud Storage']]],
@@ -180,7 +186,7 @@ export default {
             // Every block on a row here is tagged or none is, so dropping the
             // glyph on the tagged ones cannot misalign a row.
             apiTile({ key, wrap: true, x, y: cardY, w: CARD, h: CARD, tagPush: 8 }),
-            marks.map(([mark, name], j) => {
+            marks.map(([mark, name, tint], j) => {
               const y = markTop(cardY) + j * MARK_PITCH;
               const generic = GENERIC.has(mark);
               return group([
@@ -196,7 +202,11 @@ export default {
                   // one - Anthropic and OpenAI are both black wordless symbols
                   // - would otherwise be tinted with the body colour, which is
                   // light in the dark theme and so invisible on a light plate.
-                  color: generic ? C.navy : C.plateInk,
+                  // A mark may name its OWN colour, and Redis does: the 2024
+                  // rebrand mark is published single-colour only, so left to
+                  // plate ink it would be the one grey logo in a row of
+                  // full-colour ones. Same treatment as the pub/sub overview.
+                  color: tint ?? (generic ? C.navy : C.plateInk),
                 }),
                 // The name sits BELOW the plate, so it is ordinary body ink
                 // rather than plate ink even for the plated marks.

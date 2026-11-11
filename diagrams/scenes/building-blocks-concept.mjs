@@ -78,6 +78,11 @@ const COMPONENTS = ['Component', 'Component'];
 export default {
   width: W,
   height: H,
+  // Pinned rather than computed. The canvas asks for 60%, which is what the
+  // rest of the set is sized against, but this drawing carries a hexagon, a
+  // ball-and-socket connector and a card of components across one line, and
+  // the maintainer asked for it larger on both pages that draw it: 75%.
+  renderWidth: 75,
   title: 'A building block, its API and its components',
   desc:
     'Your code, drawn as a hexagon on the left, calls a building block over HTTP or gRPC. The arrow ends on a filled circle on the edge of the building block, which is the public API the block exposes. The building block is a card with two component boxes inside it, because a building block uses one or more Dapr components to implement its capability. Two more cards are stacked behind it: this is one building block of a set.',

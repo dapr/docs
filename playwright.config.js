@@ -20,7 +20,15 @@ module.exports = defineConfig({
   workers: process.env.CI ? 2 : undefined,
   fullyParallel: true,
   reporter: process.env.CI ? [['github'], ['list']] : [['list']],
-  timeout: 30_000,
+  // 60s, not 30s. Every test here finishes in about a second on its own; what
+  // spends the budget is `page.goto` under a cold server and a full set of
+  // parallel workers, which on this machine intermittently pushed a single
+  // navigation past 30s. Three separate runs lost one or two tests that way
+  // and every one of them passed alone, which is the signature of contention
+  // rather than a defect - and a flake that looks like a failure is worse than
+  // a slow test, because the next real failure gets waved through as "probably
+  // the flake". 60s is still a ceiling a genuinely hung page cannot pass.
+  timeout: 60_000,
   expect: { timeout: 10_000 },
 
   use: {

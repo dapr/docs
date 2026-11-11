@@ -84,7 +84,7 @@ openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:4096 -out keys/rsa-priva
 openssl rand -out keys/symmetric-key-256 32
 ```
 
-Run the Go service app with Dapr:
+Run the JavaScript app with Dapr:
 
 ```bash
 dapr run --app-id crypto-quickstart --resources-path ../../../components/ -- npm start
@@ -111,7 +111,7 @@ dapr run --app-id crypto-quickstart --resources-path ../../../components/ -- npm
 
 #### `local-storage.yaml`
 
-Earlier, you created a directory inside `crypto-quickstarts` called `keys`. In [the `local-storage` component YAML](https://github.com/dapr/quickstarts/tree/master/cryptography/components/local-storage.yaml), the `path` metadata maps to the newly created `keys` directory.
+Earlier, you created a directory inside `crypto-quickstarts` called `keys`. In [the `local-storage` component YAML](https://github.com/dapr/quickstarts/blob/master/cryptography/components/local-storage.yaml), the `path` metadata maps to the newly created `keys` directory.
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -301,7 +301,7 @@ dapr run --app-id crypto-quickstart --resources-path ../../../components/ -- go 
 
 #### `local-storage.yaml`
 
-Earlier, you created a directory inside `crypto-quickstarts` called `keys`. In [the `local-storage` component YAML](https://github.com/dapr/quickstarts/tree/master/cryptography/components/local-storage.yaml), the `path` metadata maps to the newly created `keys` directory.
+Earlier, you created a directory inside `crypto-quickstarts` called `keys`. In [the `local-storage` component YAML](https://github.com/dapr/quickstarts/blob/master/cryptography/components/local-storage.yaml), the `path` metadata maps to the newly created `keys` directory.
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -319,7 +319,7 @@ spec:
 
 #### `app.go`
 
-[The application file](https://github.com/dapr/quickstarts/tree/master/cryptography/go/sdk/crypto-quickstart/app.go) encrypts and decrypts messages and files using the RSA and AES keys that you generated. The application creates a new Dapr SDK client:
+[The application file](https://github.com/dapr/quickstarts/blob/master/cryptography/go/sdk/crypto-quickstart/app.go) encrypts and decrypts messages and files using the RSA and AES keys that you generated. The application creates a new Dapr SDK client:
 
 ```go
 func main() {

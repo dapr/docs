@@ -25,7 +25,7 @@ pure: the same input always gives byte-identical output.
 | --- | --- | --- |
 | `group(children)` | an array, or `{ children }` | a `<g>`, for positioning or grouping |
 | `slots(x0, x1, n)` | — | `n` evenly spaced centers across the span (returns numbers, not a node) |
-| `label(o)` | `x, y, text, size` (11), `weight` (600), `color` (`C.body`), `halo`, `anchor`, `mono` | text; `\n` starts a second line, vertically centered. `mono: true` sets the page's code font, for a command or a path |
+| `label(o)` | `x, y, text, size` (11), `weight` (600), `color` (`C.body`), `halo`, `anchor`, `mono` | text; `\n` starts a second line, vertically centered. `mono: true` sets the page's code font, for a command or a path, with LIGATURES OFF - a diagram quoting a payload must not turn `!=` into a character the API does not accept |
 | `hex(o)` | `x, y, r` (42.5), `stroke, fill, label, size, labelDx` | a pointy-top app hexagon with its name |
 | `hexPoints(x, y, r)` | — | the six points, for an arrow descriptor |
 | `hexHalfWidth(r)` | — | half a pointy-top hexagon's width, for aligning one shape to another's edge |
@@ -48,6 +48,10 @@ pure: the same input always gives byte-identical output.
 | `lineWidth()` | the stroke for arrows, buses and dashed borders, derived from the canvas the exporter set so every diagram renders at `LINE_TARGET` |
 | `roundedPath(o)` | `points` ([[x,y],…]), `r` (10), `color, width` (2) | a connector that turns each corner with an arc; the radius clamps to half the shortest leg |
 | `arrow(o)` | `from, to, head` (true), `color` (`C.navy`), `gap` (2) | a static arrow with an open head, stopping at each shape's edge |
+| `elbowArrow(o)` | `points` ([[x,y],…]), `r` (12), `color` (`C.navy`), `heads` (`'end'`, `'start'`, `'both'`, `'none'`) | a turning line with its chevron: one path, not a `roundedPath()` with an `arrow()` laid over it. A feeder running INTO a bus takes `heads: 'none'` |
+| `pod(o)` | `x, y, w, h` (top-left, like `panel()`), `name` (`'Pod'`), `captionW` (56), `captionX`, `size` (13) | a Kubernetes pod: a dashed sky `region()` with rounded corners and the pod's name on its top edge |
+| `CAPTION_H` | — | a caption pill's height, 26 |
+| `captionReach()` | — | how far a caption pill hangs INSIDE its region, `CAPTION_H / 2`. Pad a region's contents from this, not from the border |
 | `MIN_LABEL` | — | the smallest type anywhere, 10; `label()` throws below it |
 | `richLabel(o)` | `x, y, parts, size, weight, color, anchor, mono` | one line of text whose segments take different colours or weights |
 | `MONO` | — | the page's code font, the one font-family a scene may set |
@@ -68,6 +72,8 @@ such as `{ x, y, r, hex: true }`, so the arrow and the shape cannot drift apart.
 | `appSidecar(o)` | `x, y, r` (54), `label, size, stroke, fill` | the app hexagon with the Dapr sidecar overlapping it |
 | `sidecarAt(o)` | the sidecar as an arrow descriptor `{ x, y, r, hex }`, so a scene's arrows cannot drift from the drawing |
 | `sidecarDx(r)` | how far right of the app's centre the sidecar sits, for placing the app from a wanted sidecar position |
+| `pairExtent(o)` | `r` (54), `size, mirror` | the pair's `{ left, right, top, bottom }` about the app's centre. The sidecar hangs off one side and below, so the pair's extent is not the app's |
+| `appSidecarCentre(o)` | `x, y, r` (54), `size, mirror` | where to put the APP so the whole pair is centred on `x, y`. Centring on the app hexagon instead leaves the pair off-centre |
 | `SIDECAR_R` | the sidecar's radius as a multiple of the app's, 0.75 |
 | `SIDECAR_CLEARANCE` | how far below the app's lowest point the sidecar's centre sits, 0.15 of `r` |
 | `SIDECAR_GAP` | the floor between the app's name and the sidecar's top, 7 |
@@ -134,6 +140,31 @@ import { APIS, apiTile } from '../apis.mjs';
 APIS.map((a, i) => apiTile({ key: a.key, wrap: true, x: slot[i], y: 100, w: 112, h: 118 }));
 apiTile({ key: 'secrets', x: 300, y: 100, w: 96, h: 96, glyph: 28, glyphSize: 28 });
 ```
+
+## The language and cloud marks
+
+`diagrams/brands.mjs` holds the rows of vendored marks that name a LANGUAGE or
+a CLOUD, so a scene drawing either row names the module rather than carrying
+its own copy. Two scenes carry these rows - the overview and the service mesh
+comparison - and before the module each had its own list; the copies had
+already diverged, one listing six languages in a different order at sizes
+picked by eye.
+
+| Export | Returns |
+| --- | --- |
+| `LANGUAGES` | the seven SDK languages in the website's order; each `{ name, w, h, content }`, where `w` and `h` bound the mark and `content` is the ink the plate is sized around |
+| `CLOUDS` | azure, aws, google-cloud, kubernetes; each `{ name, size or w/h, text, color, backed }`. `backed` marks a dark wordmark that may not be recoloured, so it gets a light backing in dark mode |
+| `scaleMarks(marks, k)` | every number in a row scaled by one factor, so a row drawn smaller is the same row rather than a new set of sizes |
+| `cloudMark(o)` | `mark, x, y, k` (1), `textDx` (`CLOUD_TEXT_DX`), `backingH` (`MARK_PLATE_H`) | one cloud mark the way the overview draws it: the backing where the mark needs one, the mark, and its name beside it where the file carries none. `x` is the MARK's centre |
+| `LANG_PLATE_H` | the plate height that goes with `LANGUAGES` at scale 1, 80 |
+| `CLOUD_LABEL`, `CLOUD_TEXT_DX` | a cloud name's size, 15, and the gap from the mark's centre to the start of its name, 21 |
+| `MARK_PLATE_H`, `MARK_PLATE_PAD` | the shared backing height, 56, and its padding, 16 |
+
+A row scales by ONE factor through `scaleMarks()`, which is what keeps the
+marks in proportion to each other - the Go wordmark is two and a half times the
+width of the Java cup and has to stay that way. The backing does not scale with
+it: it is a margin round a dark wordmark, and a margin scaled down stops being
+one.
 
 ## The Dapr control plane services
 
@@ -206,3 +237,41 @@ export default {
 The exporter validates the scene before writing: the name, a non-empty `title`
 and `desc`, positive dimensions, that `build()` returns an array, and that no
 two elements share an id.
+
+## What a scene produces
+
+Two exporters read the same scene registry and write three committed files per
+scene. All three are checkable byte for byte, which is what lets CI prove a
+committed file still matches the source it was drawn from.
+
+| File | Written by | What it is |
+| --- | --- | --- |
+| `daprdocs/assets/diagrams/<name>.svg` | `diagrams/export.mjs` | the inlined copy; keeps `var(--d-*)` so it follows the theme |
+| `daprdocs/static/diagrams/<name>.svg` | `diagrams/export.mjs` | the download; every token resolved to its light value |
+| `daprdocs/static/diagrams/<name>.png` | `diagrams/render-png.mjs` | the raster download, for slides and blog posts |
+
+| Command | Does |
+| --- | --- |
+| `npm run export:diagrams` | writes both SVG copies; pure Node, no browser |
+| `npm run export:pngs` | writes the PNGs; needs Chromium, and renders only scenes whose SVG moved |
+| `npm run export:diagrams -- --check` | fails if a committed SVG differs from a fresh render |
+| `npm run check:pngs` | fails if a PNG is missing, orphaned, or older than its scene |
+
+Both SVG copies carry an explicit `font-family`. A standalone SVG that declares
+no font renders in serif once it leaves the browser - in Figma, in a slide
+deck - which is not what the site looks like.
+
+The PNG is rendered from the standalone SVG, trimmed to the drawing's ink box
+plus a uniform margin, then scaled to 1440px wide. The width therefore measures
+the drawing and not the canvas, so a scene drawn on a roomy canvas does not
+come out smaller than a tight one. The background is transparent; the white
+plates inside a drawing are painted fills and stay opaque.
+
+`diagrams/png-manifest.json` records the render settings and a hash of each
+scene's standalone SVG. It hashes the SVG rather than the PNG on purpose:
+raster output is not byte-stable across Chromium versions, so hashing the image
+would turn every browser upgrade into a hundred-odd false failures. The cost is
+that a hand-edited PNG passes `check:pngs`; a corrupt one is caught instead by
+the per-scene PNG signature assertion in `tests/diagrams.spec.js`. Changing a
+setting invalidates every scene at once, which is the intent - a new margin or
+width means every PNG is wrong, not just the ones whose drawings moved.
