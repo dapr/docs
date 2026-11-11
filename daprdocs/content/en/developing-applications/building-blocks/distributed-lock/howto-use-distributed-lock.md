@@ -10,15 +10,17 @@ Now that you've learned what the Dapr distributed lock API building block provid
 
 In the diagram below, two instances of the same application acquire a lock, where one instance is successful and the other is denied.
 
-<img src="/images/building-block-lock-example.png" width=1000 alt="The diagram below shows two instances of the same application acquiring a lock, where one instance is successful and the other is denied">
+{{< diagram name="lock-example" width="75" >}}
 
 The diagram below shows two instances of the same application, where one instance releases the lock and the other instance is then able to acquire the lock.
 
-<img src="/images/building-block-lock-unlock-example.png" width=1000 alt="Diagram showing releasing a lock from multiple instances of same application">
+{{< diagram name="lock-unlock-example" width="75" >}}
 
 The diagram below shows two instances of different applications, acquiring different locks on the same resource.
 
-<img src="/images/building-block-lock-multiple-example.png" width=1000 alt="The diagram below shows two instances of different applications, acquiring different locks on the same resource">
+{{< diagram name="lock-multiple-example" width="75" >}}
+
+Locks are scoped to a Dapr app-id, so these two locks are independent of each other: each one excludes other instances of its own application, not the other application. Two applications cannot use the lock API to exclude one another from the same resource.
 
 ### Configure a lock component
 

@@ -16,12 +16,12 @@ Examples of chains that reentrancy allows are shown below:
 
 ```
 Actor A -> Actor A
-ActorA -> Actor B -> Actor A
+Actor A -> Actor B -> Actor A
 ```
 
 With reentrancy, you can perform more complex actor calls, without sacrificing the single-threaded behavior of virtual actors.
 
-<img src="/images/actor-reentrancy.png" width=1000 height=500 alt="Diagram showing reentrancy for a coordinator workflow actor calling worker actors or an actor calling an method on itself">
+{{< diagram name="actor-reentrancy" width="85" >}}
 
 The `maxStackDepth` parameter sets a value that controls how many reentrant calls can be made to the same actor. By default, this is set to **32**, which is more than sufficient in most cases.
 
