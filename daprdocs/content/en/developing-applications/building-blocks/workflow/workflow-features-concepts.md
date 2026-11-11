@@ -198,7 +198,7 @@ For the comparison with child workflows, guidance on when to use them, and a cod
 
 ## Workflow schedules
 
-A _workflow schedule_ starts a workflow repeatedly on a cron schedule, such as every night at 02:00 or every 5 minutes. Each run is a new, detached instance of the workflow, with the instance ID `<schedule name>_<time>`. You create, list, trigger and delete schedules with the workflow client or the Dapr CLI, and each schedule reports when it runs next and how its last run went.
+A _workflow schedule_ starts a workflow repeatedly on a cron schedule, such as every night at 02:00 or every 5 minutes. Each run is a new, detached instance of the workflow, with the instance ID `<schedule name>_<owner>_<time>`. You create, list, trigger and delete schedules with the workflow client or the Dapr CLI, and each schedule reports when it runs next and how its last run went.
 
 For the schedule format, the options and examples in each SDK, see [Workflow schedules]({{% ref workflow-schedules.md %}}).
 

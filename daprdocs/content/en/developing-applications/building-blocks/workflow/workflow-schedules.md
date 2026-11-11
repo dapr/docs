@@ -11,7 +11,7 @@ A _workflow schedule_ starts a workflow repeatedly on a cron schedule, for examp
 Before workflow schedules, a recurring workflow needed a [job]({{% ref jobs-overview.md %}}) whose handler in your app started the workflow, or an [eternal workflow]({{% ref "workflow-features-concepts.md#infinite-loops-and-eternal-workflows" %}}) that slept between iterations. A workflow schedule replaces both with one call, and the schedule is visible to every tool that works with workflows.
 
 {{% alert title="Note" color="primary" %}}
-Workflow schedules are an alpha feature. They need a Dapr runtime and an SDK release with workflow schedule support. A runtime without it answers schedule calls with an `UNIMPLEMENTED` error.
+Workflow schedules are an alpha feature. They need Dapr 1.20 or later, and an SDK release with workflow schedule support. A runtime without it answers schedule calls with an `UNIMPLEMENTED` error.
 {{% /alert %}}
 
 ## How workflow schedules work
@@ -36,7 +36,7 @@ flowchart LR
 - **Runs are detached, not child workflows.** The schedule's workflow continues as new after every run, so it could not receive a child's result, and terminating it would reach only the runs of its latest generation. A child workflow also can't be rerun on its own. Instead, the schedule's status carries the last run's status, output and failure, and the `<schedule name>_` prefix of the instance IDs ties every run to its schedule.
 - **The schedule needs a connected worker.** Like starting any workflow, creating a schedule needs your app's workflow worker to be connected to its Dapr sidecar. While no worker is connected, the schedule waits.
 - **A schedule never misses a time.** After downtime, every time the schedule missed starts its own run. See [Missed times](#missed-times).
-- **The schedule lives with your app.** The schedule belongs to the app ID whose sidecar you create it on. Its runs start on the same app unless you set a target app ID, as with [multi-app workflows]({{% ref workflow-multi-app.md %}}).
+- **The schedule lives with your app.** The schedule belongs to the app ID whose sidecar you create it on. Its runs start on the same app unless you set a target app ID, as with [multi-app workflows]({{% ref workflow-multi-app.md %}}). A target app with a [workflow access policy]({{% ref workflow-access-policy.md %}}) must grant the owning app `schedule` on the workflow. A run the policy refuses never starts, but still counts as a run, and the schedule carries on. Reading the last run's status needs `get`; without it, the schedule's status shows only the run's instance ID.
 
 ### The life of a schedule
 
@@ -120,7 +120,7 @@ The six fields of a cron expression are seconds, minutes, hours, day of month, m
 
 | Option | Description |
 | --- | --- |
-| Name | Identifies the schedule within the app. Up to 30 letters, digits or `-`. |
+| Name | Identifies the schedule within the app. Up to 30 letters, digits or `-`, not starting with `dapr-internal-schedule-`. |
 | Workflow | The name of the workflow each run starts. |
 | Schedule | When runs start. See [Schedule format](#schedule-format). |
 | Input | The input every run is given. |
@@ -141,6 +141,7 @@ Getting or listing schedules returns each schedule with its status:
 | Next run time | When the next run starts, unless the schedule is triggered sooner. |
 | Last run time | The time the last run was started for. |
 | Run count | How many runs the schedule has started. |
+| Created at | When the schedule was created. |
 | Last run | The last run's instance ID, runtime status, created and last updated times, and its output or failure details. |
 
 ## Create a schedule
@@ -301,11 +302,11 @@ To list the runs of a schedule, list the workflow instances whose ID starts with
 dapr workflow list --app-id reports --instance-id-prefix nightly-report_
 ```
 
-The SDKs offer the same filter on their instance ID listing. Each schedule is itself a workflow instance, named `dapr.internal.schedule` with the ID `dapr-internal-schedule-<schedule name>`, and it is listed like any other workflow. `dapr workflow history dapr-internal-schedule-nightly-report` shows its steps.
+The SDKs offer the same filter on their instance ID listing. Each schedule is itself a workflow instance, named `dapr.internal.schedule` with the ID `dapr-internal-schedule-<schedule name>`, and it is listed like any other workflow. The workflow name `dapr.internal.schedule` and instance IDs starting with `dapr-internal-schedule-` are reserved: starting or rerunning such a workflow from a client fails with `INVALID_ARGUMENT`. `dapr workflow history dapr-internal-schedule-nightly-report` shows its steps.
 
 ## Trigger a run now
 
-Triggering a schedule starts a run at once, without changing when the next scheduled run starts. The call returns the instance ID of the run. A triggered run counts towards the schedule's repeats, and triggering a schedule that has completed fails with `FAILED_PRECONDITION`. Triggers in the same millisecond return the same instance ID and start one run.
+Triggering a schedule starts a run at once, without changing when the next scheduled run starts. The call returns the instance ID of the run. A triggered run counts towards the schedule's repeats, and triggering a schedule that has completed or failed fails with `FAILED_PRECONDITION`. Triggers in the same millisecond return the same instance ID and start one run.
 
 ```bash
 dapr workflow schedule trigger nightly-report --app-id reports
@@ -329,10 +330,10 @@ Schedule calls return gRPC status codes:
 
 | Code | When |
 | --- | --- |
-| `INVALID_ARGUMENT` | The name, workflow name, schedule, repeats or expiration time is not valid. |
-| `ALREADY_EXISTS` | Creating a schedule whose name is taken, without overwrite. |
+| `INVALID_ARGUMENT` | The name, workflow name, schedule, repeats, expiration time or target app namespace is not valid. |
+| `ALREADY_EXISTS` | Creating a schedule whose name is taken, without overwrite. Also, with or without overwrite, when another workflow runs under the instance ID `dapr-internal-schedule-<name>`. |
 | `NOT_FOUND` | Getting, triggering or deleting a schedule that does not exist. |
-| `FAILED_PRECONDITION` | Triggering a completed schedule, or no workflow worker is connected for the app. |
+| `FAILED_PRECONDITION` | Triggering a completed or failed schedule, or no workflow worker is connected for the app. |
 | `UNIMPLEMENTED` | The Dapr runtime does not support workflow schedules. |
 
 ## Related links

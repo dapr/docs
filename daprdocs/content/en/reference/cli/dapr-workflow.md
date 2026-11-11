@@ -157,7 +157,7 @@ dapr workflow purge wf-12345 --app-id myapp --force
 
 ## Manage workflow schedules
 
-A [workflow schedule]({{% ref workflow-schedules.md %}}) starts a workflow repeatedly on a cron schedule. Each run is a new workflow instance with the ID `<schedule name>_<time>`.
+A [workflow schedule]({{% ref workflow-schedules.md %}}) starts a workflow repeatedly on a cron schedule. Each run is a new workflow instance with the ID `<schedule name>_<owner>_<time>`.
 
 ## Usage
 
