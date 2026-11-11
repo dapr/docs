@@ -51,7 +51,7 @@ For example, Azure Blob Storage has both a [state store component]({{% ref setup
 - Use the state store to save and retrieve application state by key through the Dapr state management API.
 - Use the output binding to perform blob operations, such as listing blobs by prefix or generating a presigned SAS URL.
 
-The bindings API provides a common way to invoke components, but it does not make their capabilities interchangeable. Before switching binding types, compare their supported operations, payloads, and metadata. You may need to update your application code. State stores provide a common key-value API, although optional features also vary between components.
+The bindings API provides a common way to invoke components, but it does not make their capabilities interchangeable. Before switching binding types, compare their supported operations, payloads, and metadata. You may need to update your application code. State stores provide a common key-value API, although [optional features]({{% ref supported-state-stores %}}) also vary between components.
 
 ## Input bindings
 
