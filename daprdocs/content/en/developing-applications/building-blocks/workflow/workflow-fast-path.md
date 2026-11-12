@@ -4,6 +4,7 @@ title: "Workflow fast path"
 linkTitle: "Fast path"
 weight: 4500
 description: "Drive workflow turns and activities locally and fold activity completions into a single state commit, removing scheduler round trips and state store commits from the workflow hot path"
+is_preview: true
 ---
 
 The workflow fast path is a set of three optimizations inside the Dapr sidecar that remove the per-event Scheduler reminders and most of the state store commits from every workflow turn, while keeping the same at-least-once execution guarantees as the default path. Workflows and activities are driven on the host that already holds the work, and activity completions are persisted inside the next turn's single state store commit instead of in a commit of their own.
@@ -173,36 +174,7 @@ On every fire the janitor loads the instance state and does the least work neede
 
 An idle janitor also guards against a stale in-memory cache: a peer host could have written an inbox row after this host loaded its state. Re-reading the store on every fire for every idle instance would be the dominant janitor cost, so the probe backs off across consecutive idle fires (the first, second, fourth and eighth fire, then every eighth). Recovery of that rare double failure therefore takes at most eight periods instead of one. Any real activity resets the cadence.
 
-{{< mermaid >}}
-flowchart TD
-    E[Event committed to the inbox or held for folding] --> G{Fast path on and due now?}
-    G -->|No| R[Durable per-event reminder, unchanged]
-    G -->|Yes| EJ{Janitor reminder asserted?}
-    EJ -->|Create failed| R
-    EJ -->|Yes| N[Post notification, capacity 1, coalesces]
-    N --> L{Drive loop running?}
-    L -->|Yes| X[Running loop consumes it, or the reclaim handshake re-posts it]
-    L -->|No| SP[Start drive loop]
-    SP --> T[Run one turn through the reminder path]
-    T -->|Committed| M{More notifications?}
-    M -->|Yes| T
-    M -->|No| I[Loop exits, actor stays resident]
-    T -->|Failed| RT{Retry budget left? about 6s, jittered}
-    RT -->|Yes| T
-    RT -->|No| JW[Loop exits, the janitor owns recovery]
-    JW -.-> JF
-    subgraph Janitor fire every 20s
-        JF[Load state] --> C1{Purged or terminal?}
-        C1 -->|Yes| D[Settle and delete the janitor]
-        C1 -->|No| C2{Inbox rows pending?}
-        C2 -->|Yes| RUN[Drive a turn: janitor_recovered]
-        C2 -->|No| C3{Held completions with no driver?}
-        C3 -->|Yes| RUN2[Drive a turn: janitor_fold_recovered]
-        C3 -->|No| C4{Unresolved TaskScheduled events?}
-        C4 -->|Yes| RD[Re-dispatch activities]
-        C4 -->|No| NOP[No-op, actor stays resident]
-    end
-{{< /mermaid >}}
+{{< diagram workflow-fast-path >}}
 
 ### Leg 2: local activity drive
 

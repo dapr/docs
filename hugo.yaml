@@ -112,10 +112,17 @@ outputFormats:
     baseName: sidebar-nav
     isHTML: true
     notAlternative: true
+  # Renders /llms.txt from daprdocs/layouts/home.llms.txt: a plain-text
+  # Markdown index of the docs for AI assistants, workflow pages first.
+  LLMS:
+    mediaType: text/plain
+    baseName: llms
+    isPlainText: true
+    notAlternative: true
 
 # Comment out if you don't want the "print entire section" link enabled.
 outputs:
-  home: [HTML, RSS, SidebarNav]
+  home: [HTML, RSS, SidebarNav, LLMS]
   section: [HTML, print, RSS]
 
 params:
