@@ -183,8 +183,7 @@ The following rules apply for all the paths present in the template file:
  - If the path is absolute, it is used as is.
  - All relative paths under common section should be provided relative to the template file path.
  - `appDirPath` under apps section should be provided relative to the template file path.
- - All other relative paths under apps section should be provided relative to the `appDirPath`.
- - Relative `envFile` paths in both the `common` and app sections are resolved from the current working directory where you run the `dapr run` command, not from the template file or the app's `appDirPath`.
+ - All other relative paths under apps section should be provided relative to the `appDirPath`, except `envFile`, which resolves from the working directory where you run `dapr run`.
 
 For environment variables, `env` and `envFile` are mutually exclusive within the same section (`common` or an app). Precedence, highest first: app `envFile` or `env`, then `common` `env` or `envFile`. The CLI reads `envFile` locally and includes its variables in the generated Kubernetes Deployment when using `dapr run -k`.
 
@@ -224,7 +223,9 @@ apps:
 The following rules apply for all the paths present in the template file:
  - If the path is absolute, it is used as is.
  - `appDirPath` under apps section should be provided relative to the template file path.
- - All relative paths under app section should be provided relative to the `appDirPath`.
+ - All other relative paths under app section should be provided relative to the `appDirPath`, except `envFile`, which resolves from the working directory where you run `dapr run -k`.
+
+For environment variables, `env` and `envFile` are mutually exclusive within the same section (`common` or an app). Precedence, highest first: app `envFile` or `env`, then `common` `env` or `envFile`. The CLI reads `envFile` locally and includes its variables in the generated Kubernetes Deployment when using `dapr run -k`.
 
 {{% /tab %}}
 
@@ -239,7 +240,9 @@ The following rules apply for all the paths present in the template file:
 
 The properties for the Multi-App Run template align with the `dapr run` CLI flags, [listed in the CLI reference documentation]({{% ref "dapr-run.md#flags" %}}).
 
-The `envFile` property is supported by the CLI change in [dapr/cli#1740](https://github.com/dapr/cli/pull/1740), which addresses [dapr/cli#1369](https://github.com/dapr/cli/issues/1369). Use a CLI version that includes this change.
+{{% alert title="Note" color="primary" %}}
+`envFile` is available from Dapr CLI v1.20.
+{{% /alert %}}
 
 {{% table "table table-white table-striped table-bordered" %}}
 
@@ -294,6 +297,10 @@ Watch [this video for an overview on Multi-App Run](https://youtu.be/s1p9MNl4VGo
 <!--kubernetes-->
 
 The properties for the Multi-App Run template align with the `dapr run -k` CLI flags, [listed in the CLI reference documentation]({{% ref "dapr-run.md#flags" %}}).
+
+{{% alert title="Note" color="primary" %}}
+`envFile` is available from Dapr CLI v1.20.
+{{% /alert %}}
 
 {{% table "table table-white table-striped table-bordered" %}}
 
