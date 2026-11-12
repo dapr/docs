@@ -42,6 +42,7 @@ POST http://localhost:<daprPort>/v1.0-alpha2/conversation/<llm-name>/converse
 | `toolChoice` | Controls which (if any) tool is called by the model. Values: `auto`, `required`, or specific tool name. Defaults to `auto` if tools are present. Optional |
 | `responseFormat` | Structured output described using a JSON Schema object. Use this when you want typed structured output. Supported by Deepseek, Google AI, Hugging Face, OpenAI, and Anthropic components. Optional |
 | `promptCacheRetention` | Retention duration for the prompt cache. When set, enables extended prompt caching so cached prefixes stay active longer. With OpenAI, supports up to 24 hours. See [OpenAI prompt caching](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention). Optional |
+| `reasoningEffort` | How much effort a reasoning model spends before answering, trading cost and latency against quality: for example `low`, `medium`, or `high`. Passed through as is to the component, which maps it to its provider's parameter. A component that doesn't support it, or doesn't support the given value, ignores it and logs a warning. Must not be empty when set. See [Reasoning](#reasoning). Available from Dapr 1.20. Optional |
 
 #### Input body
 
@@ -59,7 +60,7 @@ The API supports different message types:
 | `ofDeveloper` | Developer role messages with optional name and content |
 | `ofSystem` | System role messages with optional name and content |
 | `ofUser` | User role messages with optional name and content |
-| `ofAssistant` | Assistant role messages with optional name, content, and tool calls |
+| `ofAssistant` | Assistant role messages with optional name, content, tool calls, and reasoning |
 | `ofTool` | Tool role messages with tool ID, name, and content |
 
 
@@ -82,6 +83,14 @@ The `toolChoice` is an optional parameter that controls how the model can use av
 - **`auto`**: The model can pick between generating a message or calling one or more tools (default when tools are present)
 - **`required`**: Requires one or more functions to be called
 - **`{tool_name}`**: Forces the model to call a specific tool by name
+
+#### Reasoning
+
+Reasoning models work through a problem before they answer. The conversation API lets you set how much effort they spend on it, and returns the reasoning text when the provider exposes it. Available from Dapr 1.20.
+
+- **Effort**: set `reasoningEffort` on the request. The [OpenAI component]({{% ref "reference/components-reference/supported-conversation/openai.md" %}}) maps `low`, `medium`, and `high` to OpenAI's reasoning effort, with both Chat Completions and the Responses API. Other components ignore it.
+- **Reasoning text**: when the provider returns its reasoning, it comes back in the choice's `message.reasoning`, separate from `content`. When the request sets `scrubPii`, the reasoning is scrubbed like the content. With the OpenAI component, set `useResponsesAPI` and `reasoningSummary` to get a summary of the model's reasoning.
+- **Sending reasoning back**: an `ofAssistant` message accepts a `reasoning` field, to return the reasoning from an earlier turn together with its content. It is scrubbed when the input sets `scrubPii`. The provider components available today drop it before calling the model, because their underlying clients have no field for it, so each request reasons afresh from the visible conversation.
 
 
 #### Metadata
@@ -203,6 +212,31 @@ curl -X POST http://localhost:3500/v1.0-alpha2/conversation/openai/converse \
       }'
 ```
 
+#### Conversation with reasoning
+
+```json
+curl -X POST http://localhost:3500/v1.0-alpha2/conversation/openai/converse \
+  -H "Content-Type: application/json" \
+  -d '{
+        "inputs": [
+          {
+            "messages": [
+              {
+                "ofUser": {
+                  "content": [
+                    {
+                      "text": "Is 1009 a prime number?"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        "reasoningEffort": "high"
+      }'
+```
+
 ### HTTP response codes
 
 Code | Description
@@ -311,6 +345,37 @@ When present, `usage` contains:
           "audioTokens": 0,
           "reasoningTokens": 0,
           "rejectedPredictionTokens": 0
+        }
+      }
+    }
+  ]
+}
+```
+
+#### Reasoning response
+
+When the provider exposes the model's reasoning, the message carries it in `reasoning`:
+
+```json
+{
+  "outputs": [
+    {
+      "choices": [
+        {
+          "finishReason": "stop",
+          "message": {
+            "content": "Yes, 1009 is a prime number.",
+            "reasoning": "1009 is not divisible by any prime up to its square root (about 31.8), so it is prime."
+          }
+        }
+      ],
+      "model": "gpt-5-mini",
+      "usage": {
+        "promptTokens": 14,
+        "completionTokens": 210,
+        "totalTokens": 224,
+        "completionTokensDetails": {
+          "reasoningTokens": 192
         }
       }
     }
