@@ -184,8 +184,9 @@ The following rules apply for all the paths present in the template file:
  - All relative paths under common section should be provided relative to the template file path.
  - `appDirPath` under apps section should be provided relative to the template file path.
  - All other relative paths under apps section should be provided relative to the `appDirPath`.
+ - Relative `envFile` paths in both the `common` and app sections are resolved from the current working directory where you run the `dapr run` command, not from the template file or the app's `appDirPath`.
 
-For environment variables, `env` and `envFile` are mutually exclusive within the same section (`common` or an app). Precedence, highest first: app `envFile` or `env`, then `common` `env` or `envFile`.
+For environment variables, `env` and `envFile` are mutually exclusive within the same section (`common` or an app). Precedence, highest first: app `envFile` or `env`, then `common` `env` or `envFile`. The CLI reads `envFile` locally and includes its variables in the generated Kubernetes Deployment when using `dapr run -k`.
 
 {{% /tab %}}
 
@@ -195,8 +196,9 @@ For environment variables, `env` and `envFile` are mutually exclusive within the
 ```yaml
 version: 1
 common: # optional section for variables shared across apps
-  env:  # any environment variable shared across apps
+  env: # any environment variable shared across apps. Cannot be combined with envFile.
     DEBUG: true
+  # envFile: ./common.env # alternative to env: load shared environment variables from a .env file
 apps:
   - appID: webapp # optional
     appDirPath: .dapr/webapp/ # REQUIRED
@@ -214,8 +216,9 @@ apps:
     appProtocol: grpc
     appPort: 3000
     unixDomainSocket: "/tmp/test-socket"
-    env:
+    env: # per-app environment variables. Cannot be combined with envFile.
       DEBUG: false
+    # envFile: ./backend.env # alternative to env: load this app's environment variables from a .env file
 ```
 
 The following rules apply for all the paths present in the template file:
@@ -235,6 +238,8 @@ The following rules apply for all the paths present in the template file:
 <!--selfhosted-->
 
 The properties for the Multi-App Run template align with the `dapr run` CLI flags, [listed in the CLI reference documentation]({{% ref "dapr-run.md#flags" %}}).
+
+The `envFile` property is supported by the CLI change in [dapr/cli#1740](https://github.com/dapr/cli/pull/1740), which addresses [dapr/cli#1369](https://github.com/dapr/cli/issues/1369). Use a CLI version that includes this change.
 
 {{% table "table table-white table-striped table-bordered" %}}
 
@@ -271,7 +276,7 @@ The properties for the Multi-App Run template align with the `dapr run` CLI flag
 | `enableApiLogging`       | N        | Enable the logging of all API calls from application to Dapr |  |
 | `runtimePath`            | N        | Dapr runtime install path |  |
 | `env`                    | N        | Map to environment variable; environment variables applied per application will overwrite environment variables shared across applications | `DEBUG`, `DAPR_HOST_ADD` |
-| `envFile`                | N        | Path to a `.env` file containing environment variables. Cannot be used together with `env` in the same section. Environment variables applied per application will overwrite those shared across applications | `./app.env` |
+| `envFile`                | N        | Path to a `.env` file containing environment variables. Relative paths resolve from the current working directory. Cannot be used together with `env` in the same section. Environment variables applied per application will overwrite those shared across applications | `./app.env` |
 | `appLogDestination`                    | N        | Log destination for outputting app logs; Its value can be file, console or fileAndConsole. Default is fileAndConsole | `file`, `console`, `fileAndConsole` |
 | `daprdLogDestination`                    | N        | Log destination for outputting daprd logs; Its value can be file, console or fileAndConsole. Default is file | `file`, `console`, `fileAndConsole` |
 
@@ -321,7 +326,7 @@ The properties for the Multi-App Run template align with the `dapr run -k` CLI f
 | `appHealthThreshold`       |    N     | Number of consecutive failures for the app to be considered unhealthy                                                                                                                                                   |                                                |
 | `enableApiLogging`         |    N     | Enable the logging of all API calls from application to Dapr                                                                                                                                                            |                                                |
 | `env`                      |    N     | Map to environment variable; environment variables applied per application will overwrite environment variables shared across applications                                                                              | `DEBUG`, `DAPR_HOST_ADD`                       |
-| `envFile`                  |    N     | Path to a `.env` file containing environment variables. Cannot be used together with `env` in the same section. Environment variables applied per application will overwrite those shared across applications           | `./app.env`                                    |
+| `envFile`                  |    N     | Path to a `.env` file containing environment variables. Relative paths resolve from the current working directory. Cannot be used together with `env` in the same section. Environment variables applied per application will overwrite those shared across applications           | `./app.env`                                    |
 | `appLogDestination`        |    N     | Log destination for outputting app logs; Its value can be file, console or fileAndConsole. Default is fileAndConsole                                                                                                    | `file`, `console`, `fileAndConsole`            |
 | `daprdLogDestination`      |    N     | Log destination for outputting daprd logs; Its value can be file, console or fileAndConsole. Default is file                                                                                                            | `file`, `console`, `fileAndConsole`            |
 | `containerImage`           |    N     | URI of the container image to be used when deploying to Kubernetes dev/test environment.                                                                                                                                | `ghcr.io/dapr/samples/hello-k8s-python:latest` |
