@@ -11,7 +11,7 @@ Your application can use Dapr's state management API to save, read, and query ke
 - Use **HTTP POST** to save or query key/value pairs.
 - Use **HTTP GET** to read a specific key and have its value returned.
 
-<img src="/images/state-management-overview.png" width=1000 style="padding-bottom:25px;">
+{{< diagram state-management-overview >}}
 
 [The following overview video and demo](https://www.youtube.com/live/0y7ne6teHT4?si=2_xX6mkU3UCy2Plr&t=6607) demonstrates how Dapr state management works. 
 

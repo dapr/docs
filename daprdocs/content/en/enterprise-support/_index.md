@@ -14,11 +14,11 @@ Diagrid provides [Dapr Support](https://www.diagrid.io/dapr-support) for open so
 
 {{< button text="Learn more about Dapr Support" link="https://www.diagrid.io/dapr-support" >}}
 
-## Diagrid Catalyst
+## Diagrid
 
-[Diagrid Catalyst]({{< ref catalyst.md >}}) is an agentic durable execution platform that brings reliability, zero-trust security, and governance to AI agents and workflows, built on Dapr.
+[Diagrid]({{< ref diagrid-platform.md >}}) is a durable execution platform, built on Dapr, that makes AI agents and workflows durable, verifiable and secure.
 
-{{< button text="Learn more about Diagrid Catalyst" page="catalyst.md" >}}
+{{< button text="Learn more about Diagrid" page="diagrid-platform.md" >}}
 
 ## Diagrid Dapr Distribution for Enterprise (D3E)
 

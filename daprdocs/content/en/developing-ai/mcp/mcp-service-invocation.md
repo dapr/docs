@@ -33,27 +33,7 @@ The service invocation path reuses Dapr primitives you almost certainly already 
 
 Both the agent and the MCP server run as Dapr apps, each with its own App ID. The MCP client directs requests to its local sidecar and sets the `dapr-app-id` header (or uses the full service-invocation URL). Dapr resolves the target by App ID, applies the policies attached to the MCP server's App ID, and forwards the request.
 
-```mermaid
-flowchart LR
-  CLIENT(Agent / MCP client)
-  subgraph Dapr
-    CID(mcp-client App ID)
-    POLICY{Access policy}:::decision
-    BEARER{Bearer middleware}:::decision
-    SID(mcp-server App ID)
-  end
-  SERVER(MCP server)
-
-  CLIENT-->CID
-  CID-->POLICY
-  POLICY-- allow -->BEARER
-  POLICY-. deny .->CID
-  BEARER-- valid JWT -->SID
-  BEARER-. 401 .->CID
-  SID-->SERVER
-
-  classDef decision stroke:#ed8936
-```
+{{< diagram mcp-service-invocation >}}
 
 For each call, Dapr can:
 

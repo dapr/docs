@@ -22,7 +22,7 @@ Most observability tools support OTEL, including:
 
 The following diagram demonstrates how Dapr (using OTEL and Zipkin protocols) integrates with multiple observability tools.
 
-<img src="/images/observability-tracing.png" width=1000 alt="Distributed tracing with Dapr">
+{{< diagram observability-tracing >}}
 
 ## Scenarios
 

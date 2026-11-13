@@ -1,7 +1,12 @@
 // Dapr Agents: what a user gets from the framework, and what it is built on.
 //
-// Replaces dapr-agents/concepts-agents-overview.png on overview.md, under
-// "Dapr Agents".
+// Replaces dapr-agents/concepts-agents-overview.png on BOTH pages that drew
+// it: overview.md, under "Dapr Agents", and the lead image of
+// developing-ai/dapr-agents/dapr-agents-introduction.md. The fact-check below
+// is against overview.md's paragraph; the introduction's Key Features table
+// names the same five capabilities (Tool Selection, MCP Support, Memory
+// Management, Agents as Tools, Agent Orchestration) and its Operational
+// support section names the same three things it is built on.
 //
 // Fact-check, against the paragraph this diagram sits above and the
 // Dapr Agents concept pages:
