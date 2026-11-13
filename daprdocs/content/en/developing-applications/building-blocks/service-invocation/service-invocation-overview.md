@@ -174,6 +174,10 @@ Invoke services using:
 For quick testing, try using the Dapr CLI for service invocation:
 - **Dapr CLI command** - Once the Dapr CLI is set up, use `dapr invoke --method <method-name>` command along with the method flag and the method of interest. Read more on this in [Dapr CLI]({{% ref dapr-invoke %}}). 
 
+### Inspect service invocation locally
+
+During local development, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to see the applications running on your machine with their health, app and sidecar ports, and process IDs. This is a quick way to confirm that a service is registered with Dapr before you invoke it. The dashboard also streams the app and sidecar logs of each application, so you can follow a failing invocation on both sides of the call.
+
 ## Next steps
 - Read the [service invocation API specification]({{% ref service_invocation_api %}}). This reference guide for service invocation describes how to invoke methods on other services.
 - Understand the [service invocation performance numbers](https://github.com/dapr/dapr/tree/release-1.16/tests/perf/report/charts/).
