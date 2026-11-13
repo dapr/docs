@@ -12,8 +12,8 @@ Dapr Agents uses `AgentObservabilityConfig` to configure OpenTelemetry logging a
 
 The **Constructor default** and **Resolved default** columns are defined as follows:
 
-- **Constructor default:** The value used when the configuration object is created without an override.
-- **Resolved default:** The value used when no configuration source provides an override.
+- **Constructor default:** The value assigned to a field when its configuration object is created without an explicit value.
+- **Resolved default:** The value applied during `DurableAgent` construction when no supported configuration source provides an override.
 
 | Field | Type | Constructor default | Resolved default | Description |
 |---|---|---:|---:|---|
