@@ -209,6 +209,9 @@ if schedule.status.last_run:
 <!--csharp-->
 
 ```csharp
+using Dapr.Workflow;
+using Dapr.Workflow.Client;
+
 await daprWorkflowClient.CreateWorkflowScheduleAsync(
     "nightly-report",
     nameof(GenerateReportWorkflow),
@@ -258,8 +261,9 @@ await client.createWorkflowSchedule("nightly-report", generateReport, "0 0 2 * *
 
 const schedule = await client.getWorkflowSchedule("nightly-report");
 console.log("next run:", schedule.status?.nextRunTime);
-if (schedule.status?.lastRun) {
-  console.log("last run:", schedule.status.lastRun.instanceId, schedule.status.lastRun.runtimeStatus);
+const lastRun = schedule.status?.lastRun;
+if (lastRun) {
+  console.log("last run:", lastRun.instanceId, lastRun.runtimeStatus);
 }
 ```
 
@@ -332,7 +336,7 @@ Schedule calls return gRPC status codes:
 | --- | --- |
 | `INVALID_ARGUMENT` | The name, workflow name, schedule, repeats, expiration time or target app namespace is not valid. |
 | `ALREADY_EXISTS` | Creating a schedule whose name is taken, without overwrite. Also, with or without overwrite, when another workflow runs under the instance ID `dapr-internal-schedule-<name>`. |
-| `NOT_FOUND` | Getting, triggering or deleting a schedule that does not exist. |
+| `NOT_FOUND` | Getting, triggering or deleting a schedule that does not exist. In .NET, `GetWorkflowScheduleAsync` returns `null` instead. |
 | `FAILED_PRECONDITION` | Triggering a completed or failed schedule, or no workflow worker is connected for the app. |
 | `UNIMPLEMENTED` | The Dapr runtime does not support workflow schedules. |
 
