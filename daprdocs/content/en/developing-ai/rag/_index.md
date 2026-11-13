@@ -27,24 +27,7 @@ come from that foundation:
 
 ## How it works
 
-```mermaid
-flowchart TD
-    subgraph Orchestrator["rag_ingest orchestrator (Dapr Workflow)"]
-        A[discover_and_manifest] --> B[get_manifest_batch]
-        B --> C["process_document x N (bounded batch)"]
-        C --> D[update_status]
-        D -->|more batches| B
-        D -->|done| E[validate_version]
-        E -->|valid| F[activate_version]
-    end
-    C -->|download| Source[(Document source\nS3 / Azure Blob)]
-    C -->|parse + chunk| Parser[Parser + splitter]
-    C -->|embed| Embedder[(Embedder\nOpenAI / Azure OpenAI)]
-    C -->|write| Store[(Vector index\npgvector / Pinecone / Azure AI Search)]
-    E -->|count + verify| Store
-    F -->|flip active pointer| Store
-    Reader[Query-time reader] -->|resolve active version, then search| Store
-```
+{{< diagram rag-overview >}}
 
 Every step that touches the network or the filesystem — listing a bucket, downloading a document,
 calling an embedding API, writing a vector — runs inside a Dapr Workflow activity, never in the

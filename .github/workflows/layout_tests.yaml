@@ -22,6 +22,10 @@ concurrency:
 jobs:
   layout-tests:
     name: Layout tests
+    # Pinned, not ubuntu-latest: the runner moved to Ubuntu 26.04, which
+    # Playwright 1.56.1 has no browser build for, so `playwright install`
+    # fails before any test runs ("Playwright does not support chromium on
+    # ubuntu26.04-x64"). Drop the pin once Playwright supports it.
     runs-on: ubuntu-24.04
     env:
       NODE_VER: 22.x
@@ -46,10 +50,37 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # These two are seconds of pure Node and need no browser, so they run
+      # before the Chromium install: a stale SVG or a stale PNG fails the job
+      # in under a minute instead of after the browser download. The unit
+      # tests cannot join them - see below.
+
+      # The committed SVG and its scene source can drift silently - that is the
+      # one failure the whole generated-diagram approach has to rule out, so a
+      # fresh render has to match byte for byte.
+      - name: Check diagrams are up to date
+        run: npm run export:diagrams -- --check
+
+      # The PNG download is rendered from the SVG and committed beside it.
+      # This belongs on the pure-Node side too: check:pngs hashes scenes and
+      # never launches a browser, so a contributor who edited a scene without
+      # re-rendering finds out in under a minute, not after the Chromium
+      # download.
+      - name: Check diagram PNGs are up to date
+        run: npm run check:pngs
+
       # Only Chromium is needed; the invariants are layout-engine level and the
       # other browsers would triple install time for no extra signal.
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
+
+      # After the install, not before it. These were pure Node until the PNG
+      # exporter arrived: render-png.test.mjs rasterises through the same
+      # browser harness the exporter uses, because asserting on real pixels is
+      # the only way to catch a trim or scale regression. Run them earlier and
+      # every one of those tests fails on a missing executable.
+      - name: Run diagram unit tests
+        run: npm run test:diagrams
 
       # playwright.config.js starts Hugo itself via `webServer`, so there is no
       # separate build or serve step here.
