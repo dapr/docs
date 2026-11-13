@@ -78,3 +78,19 @@
   features:
     bulkPublish: false
     bulkSubscribe: false
+- component: DaprMQ Queues
+  link: setup-daprmq-queues
+  state: Alpha
+  version: v1
+  since: "1.20"
+  features:
+    bulkPublish: true
+    bulkSubscribe: false
+- component: DaprMQ Topics
+  link: setup-daprmq-topics
+  state: Alpha
+  version: v1
+  since: "1.20"
+  features:
+    bulkPublish: true
+    bulkSubscribe: false
