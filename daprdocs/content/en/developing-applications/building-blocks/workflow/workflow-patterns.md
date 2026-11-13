@@ -1133,7 +1133,7 @@ async function start() {
     const timeoutEvent = ctx.createTimer(24 * 60 * 60);
     tasks.push(approvalEvent);
     tasks.push(timeoutEvent);
-    const winner = ctx.whenAny(tasks);
+    const winner = yield ctx.whenAny(tasks);
 
     if (winner == timeoutEvent) {
       return "Cancelled";
