@@ -18,6 +18,8 @@ For the full list, visit the [Docs repo](https://github.com/dapr/docs#branch-gui
 
 Read the [contributor's guide]({{% ref "contributing-docs#branch-guidance" %}}) for more information about release branches.
 
+The git commands in this guide assume `upstream` is the remote for the `dapr/docs` repo and `origin` is the remote for your fork.
+
 ## Upmerge from current release branch to the pre-release branch
 
 As a docs approver or maintainer, you need to perform routine upmerges to keep the pre-release branch aligned with updates to the current release branch. It is recommended to upmerge the current branch into the pre-release branch on a weekly basis.
@@ -121,6 +123,9 @@ These steps will prepare the latest release branch for archival.
    ```
 
 1. In VS Code, navigate to `hugo.yaml` located in the root.
+1. Update line 1 to `baseURL: https://v1-0.docs.dapr.io`.
+
+   The branch stops serving `docs.dapr.io` once it is archived, so `baseURL` has to follow it to the version-specific host. Hugo bakes this value into every absolute URL it generates, and `.github/workflows/website-v1-0.yml` builds with a plain `hugo --minify` and no `-b` override, so whatever `hugo.yaml` says is what ships. Left at `https://docs.dapr.io`, each archived page advertises the latest site's URL as its own: `<meta property="og:url">` on `v1-0.docs.dapr.io/concepts/overview/` would read `https://docs.dapr.io/concepts/overview/`, so sharing an archived page sends readers to a different version of the docs. In-page navigation is unaffected either way, because those links are host-relative — which is why the mistake is easy to miss.
 1. Add the following configuration to the `# Versioning` section (around line 121 and onwards):
 
    ```yaml
@@ -239,26 +244,21 @@ These steps will prepare the upcoming release branch for promotion to latest rel
 ##### Configure preview branch
 
 1. In a terminal window, navigate to the `docs` repo.
-1. Switch to the upcoming release branch (`v1.1`) and synchronize changes:
+1. Fetch the new preview branch (`v1.2`) and create a working branch based on it:
 
    ```bash
-   git pull upstream v1.1
-   git push origin v1.1
+   git fetch upstream v1.2
+   git checkout -b configure_v1.2 upstream/v1.2
    ```
 
-1. Create a new branch based on `v1.1` and name it `v1.2`:
-
-  ```bash
-  git checkout -b release_v1.1
-  ```
-
 1. Rename `.github/workflows/website-v1-1.yml` to `.github/workflows/website-v1-2.yml`.
-1. Open `.github/workflows/website-v1-2.yml` in VS Code and update the name, trigger, and deployment target to 1.2:
+1. Open `.github/workflows/website-v1-2.yml` in VS Code and update the name, triggers, and both secret references to 1.2. Leave the `check_state` job and the rest of the file unchanged:
 
    ```yml
    name: Azure Static Web App v1.2
-   
+
    on:
+     workflow_dispatch:
      push:
        branches:
          - v1.2
@@ -266,54 +266,53 @@ These steps will prepare the upcoming release branch for promotion to latest rel
        types: [opened, synchronize, reopened, closed]
        branches:
          - v1.2
-   
+
     ...
-   
+
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_V1_2 }}
+          skip_deploy_on_missing_secrets: true
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-   
+
     ...
-   
+
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_V1_2 }}
           skip_deploy_on_missing_secrets: true
    ```
 
-1. Navigate to `daprdocs/config.toml` and update the `baseURL` to point to the new preview website:
+1. Delete `.github/workflows/website-root.yml`. This workflow deploys `docs.dapr.io` and must only be present on the live "latest" branch (see [How deploys are gated by branch state](#how-deploys-are-gated-by-branch-state)).
+1. In VS Code, navigate to `hugo.yaml` located in the root.
+1. Update line 1 to `baseURL: https://v1-2.docs.dapr.io`.
+1. Update the versioning settings under `params` (around line 150 and onwards) to display the correct versions and tags:
 
-   ```toml
-   baseURL = "https://v1-2.docs.dapr.io"
-   ```
-
-1. Update the `# GitHub Information` and `# Versioning` sections (around line 148) to display the correct versions and tags:
-
-   ```toml
-   # GitHub Information
-   github_repo = "https://github.com/dapr/docs"
-   github_project_repo = "https://github.com/dapr/dapr"
-   github_subdir = "daprdocs"
-   github_branch = "v1.2"
-   
+   ```yaml
    # Versioning
-   version_menu = "v1.2 (preview)"
-   version = "v1.2"
-   archived_version = false
-   url_latest_version = "https://docs.dapr.io"
-   
-   [[params.versions]]
-     version = "v1.2 (preview)"
-     url = "#"
-   [[params.versions]]
-     version = "v1.1 (latest)"
-     url = "https://docs.dapr.io"
-   [[params.versions]]
-     version = "v1.0"
-     url = "https://v1-0.docs.dapr.io"
+   # NOTE: version_menu must not contain "(latest)" on a preview branch,
+   # otherwise the check_state job in website-v1-2.yml skips the deploy.
+   version_menu: v1.2 (preview)
+   archived_version: false
+   version: v1.2
+   url_latest_version: https://docs.dapr.io
+
+   github_branch: v1.2
+
+   versions:
+     - version: v1.2 (preview)
+       url: "#"
+     - version: v1.1 (latest)
+       url: https://docs.dapr.io
+     - version: v1.0
+       url: https://v1-0.docs.dapr.io
    ```
 
-1. Commit the staged changes and push to a new PR against the v1.2 branch.
-1. Hold on merging the PR until after release and the other `v1.0` and `v1.1` PRs have been merged.
+1. Commit the changes and push your working branch (`configure_v1.2`) to your fork.
+1. Open a PR from `configure_v1.2` to `v1.2`.
+1. If you're creating the preview branch ahead of the release, wait to merge the PR until after release and after the `v1.0` and `v1.1` PRs have been merged. If the release has already happened, you can merge it right away.
+
+{{% alert title="Note" color="primary" %}}
+The `v1.2` workflow only deploys once the `AZURE_STATIC_WEB_APPS_V1_2` repository secret exists. Until then, `skip_deploy_on_missing_secrets` makes it skip the deploy without failing. See [Add the deployment token as a repository secret](#add-the-deployment-token-as-a-repository-secret).
+{{% /alert %}}
 
 ### Create new website for future release
 
@@ -349,11 +348,29 @@ Deploy a new Azure Static Web App for the future Dapr release. For this example,
 
 1. In the same terminal, set these environment variables:
 
+   {{< tabpane text=true >}}
+
+   {{% tab header="Linux/macOS" %}}
+
    ```bash
    export AZURE_RESOURCE_GROUP=docs-website
    export IDENTITY_RESOURCE_GROUP=dapr-identities
-   export AZURE_STATICWEBSITE_NAME==daprdocs-v1-1
+   export AZURE_STATICWEBSITE_NAME=daprdocs-v1-1
    ```
+
+   {{% /tab %}}
+
+   {{% tab header="Windows (PowerShell)" %}}
+
+   ```powershell
+   $env:AZURE_RESOURCE_GROUP = "docs-website"
+   $env:IDENTITY_RESOURCE_GROUP = "dapr-identities"
+   $env:AZURE_STATICWEBSITE_NAME = "daprdocs-v1-1"
+   ```
+
+   {{% /tab %}}
+
+   {{< /tabpane >}}
 
 Where `daprdocs-v1-1` should be updated with the new preview version.
 
@@ -371,7 +388,7 @@ Where `daprdocs-v1-1` should be updated with the new preview version.
    azd up
    ```
 
-1. When prompted, select an Azure subscription (Dapr Tests) and deployment location (West US 2).
+1. When prompted, select an Azure subscription (Azure subscription 1) and deployment location (West US 2).
 
 #### Configure the SWA in the Azure portal
 
@@ -379,11 +396,26 @@ Head over to the Dapr subscription in the [Azure portal](https://portal.azure.co
 
 Optionally, grant the correct minimal permissions for inbound publishing and outbound access to dependencies using the **Static Web App** > **Access control (IAM)** blade in the portal.
 
+#### Add the deployment token as a repository secret
+
+The version-specific workflow (`.github/workflows/website-v1-1.yml`) authenticates to the new SWA with a deployment token stored as a repository secret.
+
+1. In the Azure portal, open the new SWA and select **Overview** > **Manage deployment token**.
+1. Copy the deployment token.
+1. Add it as a secret to the `dapr/docs` repo, either via **Settings** > **Secrets and variables** > **Actions** > **New repository secret** in the GitHub UI, or with the GitHub CLI:
+
+   ```bash
+   gh secret set AZURE_STATIC_WEB_APPS_V1_1 -R dapr/docs
+   ```
+
+   The secret name must match the name used in the workflow file.
+1. Run the workflow manually from the **Actions** tab, or push a change to the branch, to trigger the first deploy.
+
 #### Configure DNS
 
-1. In the Azure portal, from the new SWA you just created, naviage to **Custom domains** from the left side menu.
+1. In the Azure portal, from the new SWA you just created, navigate to **Custom domains** from the left side menu.
 1. Copy the "CNAME" value of the web app.
-1. Using your own account, [submit a CNCF ticket](https://jira.linuxfoundation.org/secure/Dashboard.jspa) to create a new domain name mapped to the CNAME value you copied. For this example, to create a new domain for Dapr v1.1, you'd request to map to `v1-1.docs.dapr.io`.
+1. Using your own account, [submit a CNCF ticket](https://cncfservicedesk.atlassian.net/servicedesk/customer/portals) to create a new domain name mapped to the CNAME value you copied. For this example, to create a new domain for Dapr v1.1, you'd request to map to `v1-1.docs.dapr.io`.
 
    Request resolution may take some time.
 

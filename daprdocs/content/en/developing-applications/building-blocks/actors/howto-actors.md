@@ -34,7 +34,7 @@ To use actors, your state store must support multi-item transactions. This means
 
 ## Inspect actors locally
 
-When developing locally, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to see the actor types your apps register, the active actor instances, and the actor state that is stored in the state store. This helps to verify that your actor methods save state as expected.
+When developing locally, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to see the actor types your apps register and the number of active actors per type. On the **State** page, select **Show internal keys** to see the actor state that is stored in the state store. This helps to verify that your actor methods save state as expected.
 
 ## Next steps
 

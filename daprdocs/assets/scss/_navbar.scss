@@ -181,3 +181,18 @@
 [data-bs-theme="dark"] .navbar-logo--dark {
     display: inline-flex;
 }
+
+// ── Below lg: single-row navbar ─────────────────────────────────────────────
+// The main menu links are hidden here and surfaced inside the hamburger menu
+// instead (see home.sidebarnav.html), so the navbar is just brand + theme
+// toggle and fits on one row. Previously `flex-column` stacked brand / links /
+// toggle into three rows — a ~147px header on a 780px-tall phone screen.
+// Specificity note: `.navbar-expand` sets `justify-content: space-around`
+// later in the bundle, so this needs the two-class selector to win.
+@include media-breakpoint-down(lg) {
+    .td-navbar.navbar-expand {
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: space-between;
+    }
+}

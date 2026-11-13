@@ -31,16 +31,16 @@ Dapr uses a sidecar architecture. To invoke an application using Dapr:
 
 The diagram below is an overview of how Dapr's service invocation works between two Dapr-ized applications.
 
-<img src="/images/service-invocation-overview.png" width=800 alt="Diagram showing the steps of service invocation">
+{{< diagram name="service-invocation-overview" width="75" >}}
 
-1. Service A makes an HTTP or gRPC call targeting Service B. The call goes to the local Dapr sidecar.
-2. Dapr discovers Service B's location using the [name resolution component]({{% ref supported-name-resolution %}}) which is running on the given [hosting platform]({{% ref "hosting" %}}).
-3. Dapr forwards the message to Service B's Dapr sidecar
+1. App A makes an HTTP or gRPC call targeting App B. The call goes to the local Dapr sidecar.
+2. Dapr discovers App B's location using the [name resolution component]({{% ref supported-name-resolution %}}) which is running on the given [hosting platform]({{% ref "hosting" %}}).
+3. Dapr forwards the message to App B's Dapr sidecar
    - **Note**: All calls between Dapr sidecars go over gRPC for performance. Only calls between services and Dapr sidecars can be either HTTP or gRPC.
-4. Service B's Dapr sidecar forwards the request to the specified endpoint (or method) on Service B.  Service B then runs its business logic code.
-5. Service B sends a response to Service A.  The response goes to Service B's sidecar.
-6. Dapr forwards the response to Service A's Dapr sidecar.
-7. Service A receives the response.
+4. App B's Dapr sidecar forwards the request to the specified endpoint (or method) on App B.  App B then runs its business logic code.
+5. App B sends a response to App A.  The response goes to App B's sidecar.
+6. Dapr forwards the response to App A's Dapr sidecar.
+7. App A receives the response.
 
 You can also call non-Dapr HTTP endpoints using the service invocation API. For example, you may only use Dapr in part of an overall application, may not have access to the code to migrate an existing application to use Dapr, or simply need to call an external HTTP service. Read ["How-To: Invoke Non-Dapr Endpoints using HTTP"]({{% ref howto-invoke-non-dapr-endpoints %}}) for more information.
 
@@ -90,7 +90,7 @@ Dapr provides round robin load balancing of service invocation requests with the
 
 The diagram below shows an example of how this works. If you have 1 instance of an application with app ID `FrontEnd` and 3 instances of application with app ID `Cart` and you call from `FrontEnd` app to `Cart` app, Dapr round robins' between the 3 instances. These instance can be on the same machine or on different machines. .
 
-<img src="/images/service-invocation-mdns-round-robin.png" width=600 alt="Diagram showing the steps of service invocation" style="padding-bottom:25px;">
+{{< diagram name="service-invocation-mdns" width="70" >}}
 
 **Note**: App ID is unique per _application_, not application instance. Regardless how many instances of that application exist (due to scaling), all of them will share the same app ID.
 
@@ -114,7 +114,7 @@ You can handle data as a stream in HTTP service invocation. This can offer impro
 
 The diagram below demonstrates the six steps of data flow.
 
-<img src="/images/service-invocation-simple.webp" width=600 alt="Diagram showing the steps of service invocation described in the table below" />
+{{< diagram name="service-invocation-simple" width="65" >}}
 
 1. Request: "App A" to "Dapr sidecar A"
 1. Request: "Dapr sidecar A" to "Dapr sidecar B"
@@ -135,11 +135,11 @@ Dapr automatically detects streaming HTTP requests — those using chunked trans
 
 ## Example Architecture
 
-Following the above call sequence, suppose you have the applications as described in the [Hello World tutorial](https://github.com/dapr/quickstarts/blob/master/tutorials/hello-world/README), where a python app invokes a node.js app. In such a scenario, the python app would be "Service A" , and a Node.js app would be "Service B".
+Following the above call sequence, suppose you have the applications as described in the [Hello World tutorial](https://github.com/dapr/quickstarts/blob/master/tutorials/hello-world/README), where a python app invokes a node.js app. In such a scenario, the python app would be "App A" , and a Node.js app would be "App B".
 
 The diagram below shows sequence 1-7 again on a local machine showing the API calls:
 
-<img src="/images/service-invocation-overview-example.png" width=800 style="padding-bottom:25px;">
+{{< diagram name="service-invocation-example-detailed" width="85" >}}
 
 1. The Node.js app has a Dapr app ID of `nodeapp`. The python app invokes the Node.js app's `neworder` method by POSTing `http://localhost:3500/v1.0/invoke/nodeapp/method/neworder`, which first goes to the python app's local Dapr sidecar.
 2. Dapr discovers the Node.js app's location using name resolution component (in this case mDNS while self-hosted) which runs on your local machine.
@@ -173,6 +173,10 @@ Invoke services using:
 
 For quick testing, try using the Dapr CLI for service invocation:
 - **Dapr CLI command** - Once the Dapr CLI is set up, use `dapr invoke --method <method-name>` command along with the method flag and the method of interest. Read more on this in [Dapr CLI]({{% ref dapr-invoke %}}). 
+
+### Inspect service invocation locally
+
+During local development, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to see the applications running on your machine with their health, app and sidecar ports, and process IDs. This is a quick way to confirm that a service is registered with Dapr before you invoke it. The dashboard also streams the app and sidecar logs of each application, so you can follow a failing invocation on both sides of the call.
 
 ## Next steps
 - Read the [service invocation API specification]({{% ref service_invocation_api %}}). This reference guide for service invocation describes how to invoke methods on other services.

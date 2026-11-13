@@ -1413,6 +1413,10 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 
 {{< /tabpane >}}
 
+## Inspect the apps with the Dapr Dev Dashboard
+
+While the quickstart is running, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to see the `checkout` and `order-processor` apps with their health, ports, and process IDs, which confirms that both are registered with Dapr. The dashboard also streams the app and sidecar logs of each app, so you can follow the requests on both sides of the call.
+
 ## Tell us what you think!
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this Quickstart helpful? Do you have suggestions for improvement?
 

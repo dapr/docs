@@ -14,6 +14,7 @@ The following table lists the components supported by the [Binary Store building
 | Component | Component type | Status | Description |
 |-----------|----------------|--------|-------------|
 | [In-memory]({{% ref "reference/components-reference/supported-binarystores/binarystore-in-memory.md" %}}) | `binarystore.in-memory` | Alpha | Volatile store for local development and testing. |
+| [Local Storage]({{% ref "reference/components-reference/supported-binarystores/binarystore-localstorage.md" %}}) | `binarystore.localstorage` | Alpha | Local filesystem storage that persists across sidecar restarts. |
 | [AWS S3]({{% ref "reference/components-reference/supported-binarystores/binarystore-s3.md" %}}) | `binarystore.aws.s3` | Alpha | Amazon S3 and S3-compatible object storage. |
 | [Azure Blob Storage]({{% ref "reference/components-reference/supported-binarystores/binarystore-azure-blobstorage.md" %}}) | `binarystore.azure.blobstorage` | Alpha | Azure Blob Storage containers. |
 | [Azure Data Lake Storage Gen2]({{% ref "reference/components-reference/supported-binarystores/binarystore-azure-datalake.md" %}}) | `binarystore.azure.datalake` | Alpha | Azure Data Lake Storage Gen2 filesystems. |
