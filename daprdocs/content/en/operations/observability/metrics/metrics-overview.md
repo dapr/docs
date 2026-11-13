@@ -20,7 +20,7 @@ The default metrics port is `9090`. You can override this by passing the command
 
 ## Configuring metrics in Kubernetes
 
-You can also enable/disable the metrics for a specific application by setting the `dapr.io/enable-metrics: "false"` annotation on your application deployment. With the metrics exporter disabled, daprd does not open the metrics listening port.
+You can also enable/disable the metrics exporter for a specific application by setting the `dapr.io/enable-metrics: "false"` annotation on your application deployment. With the metrics exporter disabled, daprd does not open the metrics listening port, but it still records metrics in memory. To stop recording metrics, disable them in the [application configuration](#configuring-metrics-using-application-configuration).
 
 The following Kubernetes deployment example shows how metrics are explicitly enabled with the port specified as "9090".
 
