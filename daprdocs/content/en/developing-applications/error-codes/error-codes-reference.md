@@ -18,6 +18,7 @@ An effort is underway to enrich all gRPC error responses according to the [Riche
 | `ERR_ACTOR_INVOKE_METHOD`          |           | Error invoking actor method                                             |
 | `ERR_ACTOR_RUNTIME_NOT_FOUND`      |           | Actor runtime not found                                                 |
 | `ERR_ACTOR_STATE_GET`              |           | Error getting actor state                                               |
+| `ERR_ACTOR_STATE_STORE_NOT_FOUND`  |           | The state store bound to the actor type in `spec.actors.stateStores` is not loaded |
 | `ERR_ACTOR_STATE_TRANSACTION_SAVE` |           | Error saving actor transaction                                          |
 | `ERR_ACTOR_REMINDER_CREATE`        |           | Error creating actor reminder                                           |
 | `ERR_ACTOR_REMINDER_DELETE`        |           | Error deleting actor reminder                                           |
