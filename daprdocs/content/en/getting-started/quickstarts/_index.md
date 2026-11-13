@@ -17,6 +17,7 @@ Hit the ground running with our Dapr quickstarts, complete with code samples aim
 #### Before you begin
 
 - [Set up your local Dapr environment]({{% ref "install-dapr-cli" %}}).
+- Optional: [install the Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to inspect the applications, workflows, state, and subscriptions these quickstarts create while they run.
 
 ## Quickstarts
 
