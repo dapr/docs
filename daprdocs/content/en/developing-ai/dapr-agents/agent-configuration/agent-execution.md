@@ -46,6 +46,8 @@ Configuration sources are resolved from highest to lowest priority:
 2. Instantiation values
 3. Environment variables
 
+Observability configuration uses a different precedence order; see the [Observability configuration sources]({{< ref "agent-observability#configuration-sources" >}}).
+
 ### Configuration support
 
 | Field | Runtime configuration | Instantiation | Environment variables | Hot-reloadable |

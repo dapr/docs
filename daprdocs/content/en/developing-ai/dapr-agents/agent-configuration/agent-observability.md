@@ -39,6 +39,8 @@ Configuration sources are resolved from highest to lowest priority:
 2. Environment variables
 3. State store runtime configuration
 
+Execution configuration uses a different precedence order; see the [Execution configuration sources]({{< ref "agent-execution#configuration-sources" >}}).
+
 ### Configuration support
 
 | Field | Instantiation | Environment variables | Runtime configuration | Hot-reloadable |
