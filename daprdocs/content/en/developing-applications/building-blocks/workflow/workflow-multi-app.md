@@ -61,6 +61,7 @@ By default, the full workflow execution is hosted on the app ID that started the
 
 It is possible to execute activities and child workflows on different app IDs by specifying the target app ID parameter, inside the workflow execution code.
 Upon execution, the target app ID executes the activity or child workflow, and returns the result to the parent workflow of the originating app ID.
+Because the target application runs the activity, the target application's Configuration decides its [concurrency limits and activity dispatch mode]({{% ref workflow-concurrency.md %}}), not the Configuration of the application hosting the parent workflow.
 
 The entire Workflow execution may be distributed across multiple app IDs with no limit, with each activity or child workflow specifying the target app ID.
 The final history of the workflow will be saved by the app ID that hosts the very parent (or can consider it the root) workflow.

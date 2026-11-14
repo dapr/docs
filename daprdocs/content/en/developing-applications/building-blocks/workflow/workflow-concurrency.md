@@ -1,9 +1,9 @@
 ---
 type: docs
-title: Workflow Concurrency Limits
-linkTitle: Concurrency Limits
+title: Workflow Concurrency Limits and Activity Dispatch
+linkTitle: Concurrency and Dispatch
 weight: 9000
-description: "Configure concurrency limits for Dapr Workflows to control how many workflows and activities run simultaneously."
+description: "Configure how many workflows and activities run simultaneously, and how activities are distributed across replicas."
 ---
 
 Dapr provides concurrency limits for workflows and activities at two levels:
@@ -14,6 +14,8 @@ Dapr provides concurrency limits for workflows and activities at two levels:
 Both levels can be configured independently and work together. Global limits enforce namespace-wide capacity constraints, for example, to respect rate limits on downstream services. Per-sidecar limits protect individual instances from resource exhaustion.
 
 Prefer global limits when you want to express a true concurrency limit. Because a per-sidecar limit applies to each instance independently, the effective namespace-wide limit is the per-sidecar value multiplied by the number of replicas, so it drifts every time you scale up or down. A global limit holds the same total regardless of how many replicas are running, which is usually what you mean when you say "at most N at a time".
+
+Separately from the limits, the [activity dispatch mode](#activity-dispatch-modes) decides *which* replica runs an activity. The default hashes each activity to a replica; the opt-in pull mode lets the scheduler hand each activity to a replica with a free slot. Limits and dispatch mode are configured together in the `workflow` section of the application's [Configuration]({{% ref configuration-overview.md %}}), and a pull-dispatched activity still passes every configured limit before it runs.
 
 ## Global limits
 
@@ -26,8 +28,8 @@ express a true concurrency limit. This is the recommended starting point for mos
 {{% alert title="Note" color="primary" %}}
 Global and per-name limits are enforced by the Scheduler when it delivers each job. When any of them is configured, 
 the [`WorkflowsFastPath` preview feature]({{% ref "workflow-fast-path.md#concurrency-limits" %}}) disables itself at
-sidecar startup (an Info log is emitted) so that the limits remain effective. Per-sidecar limits are compatible with
-the fast path.
+sidecar startup (an Info log is emitted) so that the limits remain effective. [Pull activity dispatch](#activity-dispatch-modes)
+disables the fast path the same way. Per-sidecar limits are compatible with the fast path.
 {{% /alert %}}
 
 
@@ -73,14 +75,17 @@ spec:
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `activityConcurrencyLimits` | array | Per-activity-name concurrency limits. |
+| `activityConcurrencyLimits` | array | Per-activity-name settings. |
 | `workflowConcurrencyLimits` | array | Per-workflow-name concurrency limits. |
-| `activityConcurrencyLimits[].name` | string | Activity name to limit. |
-| `activityConcurrencyLimits[].maxConcurrent` | int32 | Max concurrent executions across all replicas for this activity. |
-| `workflowConcurrencyLimits[].name` | string | Workflow name to limit. |
+| `activityConcurrencyLimits[].name` | string | Activity name the entry applies to. Names are matched exactly. |
+| `activityConcurrencyLimits[].maxConcurrent` | int32 | Max concurrent executions across all replicas for this activity. Optional when the entry only sets `dispatchMode`. |
+| `activityConcurrencyLimits[].dispatchMode` | string | See [Configuring the dispatch mode](#configuring-the-dispatch-mode). |
+| `workflowConcurrencyLimits[].name` | string | Workflow name to limit. Names are matched exactly. |
 | `workflowConcurrencyLimits[].maxConcurrent` | int32 | Max concurrent executions across all replicas for this workflow. |
 
 A trigger must satisfy **all** applicable limits. For example, if `globalMaxConcurrentActivityInvocations` is 200 and `SendEmail` has a per-name limit of 5, then at most 5 `SendEmail` activities can run, and all activities combined cannot exceed 200.
+
+An activity name whose entry sets `dispatchMode` may appear only once in `activityConcurrencyLimits`; a second entry for it is rejected when the Configuration is loaded.
 
 ## Per-sidecar limits
 
@@ -100,9 +105,141 @@ spec:
 | Property | Type | Description |
 |----------|------|-------------|
 | `maxConcurrentWorkflowInvocations` | int32 | Max concurrent workflow executions per sidecar. Default: unlimited. |
-| `maxConcurrentActivityInvocations` | int32 | Max concurrent activity executions per sidecar. Default: unlimited. |
+| `maxConcurrentActivityInvocations` | int32 | Max concurrent activity executions per sidecar. Default: unlimited. Also the number of activity slots a replica offers to the scheduler under [pull dispatch](#activity-dispatch-modes). |
 
 These limits do not distinguish between different workflow or activity names. They apply to all workflows and activities running in the sidecar.
+
+## Activity dispatch modes
+
+### Why a dispatch mode exists
+
+By default, every activity is placed on a replica by the actor placement service: the activity's ID is hashed and the replica it hashes to runs it. This is the `hashed` mode. It is cheap and spreads work evenly *in aggregate*, which is what you want when an application runs many short activities.
+
+Hashing has two properties that matter when activities are few and long:
+
+- **It is blind to load.** The hash does not know what a replica is already running. With three one-hour activities across three replicas it is common for one replica to receive two of them while another receives none.
+- **It is sticky.** Once an activity is delivered to a replica it stays there, even while it waits for a free local slot. Nothing moves it to an idle peer, and a replica added later cannot take work already waiting on another replica.
+
+Concurrency limits do not fix this. `maxConcurrentActivityInvocations` makes an overloaded replica queue its surplus locally instead of spilling it to an idle replica, so the imbalance shows up as latency. Global limits cap the cluster total, which protects a downstream service but does not redistribute anything.
+
+### How pull dispatch works
+
+`pull` mode moves the decision of which replica runs an activity from the placement hash to the scheduler, which already delivers every activity as a job and already enforces the global and per-name limits:
+
+1. Each replica reports its free activity slots to every scheduler instance: `maxConcurrentActivityInvocations` minus the activities it is running, hashed ones included. This is why that field is required whenever pull is used. The replica updates the count as activities start and finish. A replica offers slots only while it hosts the activity actor type, so a replica whose application worker has disconnected receives nothing.
+1. When an activity becomes due, the scheduler picks the replica with the most free slots and delivers the activity there. Equally loaded replicas take turns. The receiving replica runs the activity itself instead of forwarding it to the replica the ID hashes to. If the replica has no slot left when the activity arrives, for example because another scheduler instance filled it a moment earlier, it refuses the activity and the scheduler puts it back in its queue.
+1. If no replica has a free slot, or a global or per-name limit is at its cap, the activity waits in the scheduler. Waiting activities are grouped by workflow instance and served round robin across instances, so one workflow with a large fan-out cannot starve other workflows.
+1. When the activity finishes, the replica reports the freed slot and the next waiting activity is dispatched into it.
+
+The following diagram shows three activities scheduled for an application with two replicas that offer one slot each:
+
+```mermaid
+sequenceDiagram
+    participant A as Replica A (1 slot)
+    participant S as Scheduler
+    participant B as Replica B (1 slot)
+    A->>S: 1 free slot
+    B->>S: 1 free slot
+    Note over S: Activities 1, 2 and 3 become due
+    S->>A: Activity 1
+    A->>S: 0 free slots
+    S->>B: Activity 2
+    B->>S: 0 free slots
+    Note over S: Activity 3 waits (backlog = 1, inflight = 2)
+    A->>S: Activity 1 result, 1 free slot
+    S->>A: Activity 3
+    A->>S: 0 free slots
+    Note over S: backlog = 0, inflight = 2
+```
+
+Because the waiting work is held centrally, the scheduler can report how much of it there is. See [Autoscaling on the backlog](#autoscaling-on-the-backlog).
+
+### Choosing a mode
+
+| Workload | Recommended mode | Reason |
+|----------|------------------|--------|
+| Many short activities (milliseconds to seconds), high rate | `hashed` (default) | Hashing already spreads the work evenly, with no scheduler round trip per placement decision. |
+| Few long activities (minutes to hours), low rate, expensive to run | `pull` | Each replica should run exactly as many as it has capacity for, and idle replicas should pick up waiting work. |
+| A mix: a couple of expensive activity names in an otherwise high-volume application | `hashed` app-wide with `dispatchMode: pull` on the expensive names | Keeps cheap activities on the default path and pulls only the ones that benefit. |
+| Applications you want to autoscale on waiting work | `pull` | Only pull produces a backlog number, and only pull lets new replicas take work that is already waiting. |
+
+### Configuring the dispatch mode
+
+The application-wide default is set with `activityDispatchMode`. A per-name entry in `activityConcurrencyLimits` can override it in either direction with `dispatchMode`, and may carry a `maxConcurrent` limit at the same time or omit it.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: appconfig
+spec:
+  workflow:
+    maxConcurrentActivityInvocations: 4    # slots each replica offers
+    activityDispatchMode: hashed           # application default: hashed | pull
+    activityConcurrencyLimits:
+      - name: Transcode
+        dispatchMode: pull                 # pulled; no global limit on this name
+      - name: RenderPreview
+        maxConcurrent: 40                  # global limit across all replicas
+        dispatchMode: pull                 # and pulled
+      - name: SendEmail
+        maxConcurrent: 5                   # global limit, default (hashed) dispatch
+```
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `activityDispatchMode` | string | Application-wide dispatch mode: `hashed` (default) or `pull`. |
+| `activityConcurrencyLimits[].dispatchMode` | string | Overrides `activityDispatchMode` for one activity name, in either direction. Unset inherits the application value. Requires `name`. |
+
+To pull every activity of an application, set `activityDispatchMode: pull` and omit the per-name overrides:
+
+```yaml
+spec:
+  workflow:
+    maxConcurrentActivityInvocations: 1
+    activityDispatchMode: pull
+```
+
+With one slot per replica, as above, every replica runs at most one activity at a time and the scheduler keeps the rest waiting until a replica is free.
+
+### Behaviour to be aware of
+
+- **`maxConcurrentActivityInvocations` is required for pull.** It is the slot count each replica offers. Without it the sidecar refuses to start with `workflow activity dispatchMode pull requires maxConcurrentActivityInvocations to be set to a positive value`. This is deliberate: with no slot count the scheduler would deliver everything on arrival and pull would silently degrade to hashed with extra hops.
+- **`maxConcurrent` keeps its meaning.** On an `activityConcurrencyLimits` entry it is a limit across all replicas, exactly as without pull. It is not the per-replica slot count.
+- **Global and per-name limits still apply.** A pull activity takes a slot and passes the global and per-name gates together, all or nothing, so pull never runs more than the limits allow. The one case where the total can exceed a configured limit is the same as without pull: a limit smaller than the number of scheduler replicas, see [How global limits work with multiple scheduler replicas](#how-global-limits-work-with-multiple-scheduler-replicas). Activities held back by a limit also wait in the scheduler and count towards the backlog.
+- **Slots count all activity work.** A replica's free slots are `maxConcurrentActivityInvocations` minus every activity it is running, pull or hashed. In an application that mixes modes, hashed work on a replica reduces the pull work the scheduler sends it.
+- **Cross-application activities.** For an activity scheduled on [another application]({{% ref workflow-multi-app.md %}}), the *target* application's Configuration decides the dispatch mode, because the target application creates and runs the activity.
+- **Changing the mode requires a sidecar restart.** Switching to `pull` applies to activities scheduled after the restart; activities scheduled before it stay on hashed dispatch. Switching back to `hashed` applies to all activities: once no replica offers pull slots, activities scheduled under pull fall back to hashed routing.
+- **The fast path is disabled.** Enabling pull turns off the `WorkflowsFastPath` preview for that application, the same as configuring a global limit does, because the fast path runs activities on the replica the ID hashes to. The sidecar logs this at startup.
+- **A dropped scheduler connection does not restart a running activity.** If a replica's connection to a scheduler instance drops while it runs a pull activity, the activity keeps running, and the scheduler reattaches it when the replica reconnects within 30 seconds. Only if the replica does not reconnect in that time, for example because it crashed, does the scheduler deliver the activity to another replica. The same holds across a scheduler restart: the replica reports the activities it is running when it reconnects, and the restarted scheduler hands their jobs back to that replica instead of queueing them.
+- **Execution stays at-least-once.** If a replica dies while running a pull activity, the scheduler delivers the activity to another replica once the 30 second reattach window has passed, and a late result from the first run is discarded. Expensive activities should be idempotent.
+- **Replicas can come and go.** A replica that joins receives waiting work as soon as it connects. A replica that leaves has its in-flight pull activities redelivered after the reattach window and its slots removed from consideration. If no replica offers slots, or while any scheduler instance runs a version without pull support (for example, during a control plane upgrade), pull activities fall back to hashed routing.
+- **Orchestrations are unaffected.** Dispatch modes apply to activities only. Workflow (orchestrator) turns always run on the replica the workflow instance hashes to.
+
+### Autoscaling on the backlog
+
+Under hashed dispatch there is no single number that says how much activity work an application has waiting: waiting activities are scattered across the replicas they hashed to, and scaling out does not help because they are already on the existing replicas. Under pull the scheduler holds the waiting work, so it can report it, and new replicas take it as soon as they connect.
+
+The scheduler exports two gauges:
+
+| Gauge | Value |
+|-------|-------|
+| `dapr_scheduler_workflow_activity_backlog` | Pull activities waiting for a free slot. |
+| `dapr_scheduler_workflow_activity_inflight` | Pull activities handed to a replica and not yet finished. |
+
+Both carry the labels:
+
+| Label | Value |
+|-------|-------|
+| `namespace` | The application's namespace. A Prometheus scrape job that sets its own `namespace` label, like the `dapr` job in the [Prometheus how-to]({{% ref prometheus.md %}}), renames this one to `exported_namespace`. |
+| `app_id` | The application ID. |
+| `activity_name` | The activity name. |
+
+Each scheduler instance reports the activities it holds, and each activity is held by exactly one instance, so sum across instances when querying. Both gauges fall to `0` when the work is done, and neither is reported for applications in hashed mode.
+
+The scheduler also counts `dapr_scheduler_workflow_activity_refused_total`, with the same labels: pull activities a replica refused because its last slot was already taken. Each scheduler counts a replica's free slots on its own, so with more than one scheduler replica two of them can hand a replica the same last slot, and a low rate here is normal. A refused activity goes back to the backlog and runs when a slot frees.
+
+With one slot per replica, scaling on `sum({__name__=~"dapr_scheduler_workflow_activity_(backlog|inflight)", app_id="<app>"})` with a threshold of `1` sizes the fleet to one replica per activity, running or waiting. For a complete walkthrough, including the Prometheus and KEDA setup and the scale-in caveats, see [How to: Autoscale workflow activities with KEDA]({{% ref autoscale-keda-workflow.md %}}).
 
 ## How the levels interact
 
@@ -114,9 +251,13 @@ These limits do not distinguish between different workflow or activity names. Th
 
 When both per-sidecar and global limits are configured, both apply. The global limit prevents the namespace-wide total from exceeding the configured value, while the per-sidecar limit prevents any single instance from consuming too much local resources.
 
+The dispatch mode is not a limit. It decides which replica runs an activity within whatever the limits allow: under pull, the per-sidecar activity limit becomes each replica's slot supply and the global limits become the cluster-wide ceiling above it.
+
 ## How global limits work with multiple scheduler replicas
 
-The scheduler divides global limits evenly among its instances using floor division. With a global limit of 100 and 3 scheduler replicas, each scheduler enforces a local limit of 33, for an effective namespace max of 99. This ensures the configured limit is never exceeded.
+The scheduler divides a global limit among its instances. Each instance gets the limit divided by the instance count, and the remainder goes to the lowest-numbered instances, so the namespace-wide total equals the configured limit. With a global limit of 100 and 3 scheduler replicas, the instances enforce 34, 33 and 33. When the limit is smaller than the number of scheduler replicas, each instance allows 1 so that no instance is starved, and the namespace-wide total then exceeds the configured limit.
+
+Pull slots are not divided. Each replica reports its free slots to every scheduler instance and updates them as activities start and finish, so every instance works from the replica's own count. If two instances hand a replica its last free slot at the same moment, the replica refuses the second activity and that instance puts it back in its queue.
 
 ## Comparison with other rate limiting options
 
@@ -130,9 +271,12 @@ Dapr provides several ways to control concurrency and rate limiting:
 
 ## Related links
 
+- [How to: Autoscale workflow activities with KEDA]({{% ref autoscale-keda-workflow.md %}})
 - [Dapr Configuration reference]({{% ref configuration-overview.md %}})
 - [Control concurrency and rate limit applications]({{% ref control-concurrency.md %}})
 - [Rate limit middleware]({{% ref middleware-rate-limit.md %}})
 - [Workflow overview]({{% ref workflow-overview.md %}})
 - [Workflow fast path]({{% ref workflow-fast-path.md %}})
+- [Workflow architecture]({{% ref workflow-architecture.md %}})
+- [Multi-application workflows]({{% ref workflow-multi-app.md %}})
 - [Workflow API reference]({{% ref workflow_api.md %}})
