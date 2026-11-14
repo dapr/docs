@@ -39,7 +39,7 @@ Durability moves from "one Scheduler job per event" to one repeating *janitor* r
 
 - Dapr v1.19 or later on every sidecar of the application. Older sidecars ignore the fast path signals and keep using reminders, so a mixed-version rollout is safe, but only upgraded hosts take the fast path.
 - The [Scheduler service]({{% ref "scheduler.md" %}}) must be running. The janitor backstop is a Scheduler reminder.
-- No Scheduler-enforced [workflow concurrency limits]({{% ref "workflow-concurrency.md" %}}) configured. See [Concurrency limits](#concurrency-limits).
+- No Scheduler-enforced [workflow concurrency limits]({{% ref "workflow-concurrency.md" %}}) and no [pull activity dispatch]({{% ref "workflow-concurrency.md#activity-dispatch-modes" %}}) configured. See [Concurrency limits](#concurrency-limits).
 - Any actor state store that supports Dapr Workflow. The fast path adds one small `execution-claim` key under the activity actor's state prefix, written only during placement changes.
 
 ## Configuration
@@ -367,6 +367,8 @@ Scheduler-enforced concurrency limits gate each job delivery, and local drives b
 - `globalMaxConcurrentActivityInvocations`
 - Any `workflowConcurrencyLimits` or `activityConcurrencyLimits` entry with a name and a positive `maxConcurrent`
 
+It also disables itself when [pull activity dispatch]({{% ref "workflow-concurrency.md#activity-dispatch-modes" %}}) is configured, through `activityDispatchMode: pull` or a per-name `dispatchMode: pull`: the fast path runs activities on the replica the ID hashes to, while pull lets the Scheduler pick the replica.
+
 The per-sidecar limits `maxConcurrentWorkflowInvocations` and `maxConcurrentActivityInvocations` are enforced by the sidecar itself and are fully compatible with the fast path. See [Workflow concurrency limits]({{% ref "workflow-concurrency.md" %}}).
 
 ## Composition and rollout
@@ -451,7 +453,7 @@ The gains come from removing work rather than from doing it faster: fewer fsync'
 ## Limitations
 
 - The fast path is a preview feature and is disabled by default.
-- It disables itself when Scheduler-enforced concurrency limits are configured. See [Concurrency limits](#concurrency-limits).
+- It disables itself when Scheduler-enforced concurrency limits or pull activity dispatch are configured. See [Concurrency limits](#concurrency-limits).
 - Workflows scheduled with a future start time, and activities with a future due time, keep the Scheduler path so that their timing is honoured.
 - External events raised through the API and child workflow completions always take the durable inbox path; only activity completions fold.
 - Under sustained overload the completion wait can reach its two-minute cap, after which the activity actor retries. The `fold_nacked` ratio shows when this happens.
@@ -470,7 +472,7 @@ Yes, at any time, by setting the gate to `false` and restarting the sidecars. Th
 
 ### Why does my sidecar log that the fast path is disabled?
 
-Because the Configuration sets Scheduler-enforced concurrency limits. Remove the global or per-name limits, or keep the limits and accept the default path. See [Concurrency limits](#concurrency-limits).
+Because the Configuration sets Scheduler-enforced concurrency limits or pull activity dispatch, and the log line names which. Remove the global or per-name limits, or switch activities back to `hashed` dispatch, or keep them and accept the default path. See [Concurrency limits](#concurrency-limits).
 
 ### Why did activity completions start taking longer to be acknowledged?
 
