@@ -25,6 +25,10 @@ You can also pair the conversation API with Dapr functionalities, like:
 - Observability with metrics and distributed tracing using OpenTelemetry and Zipkin
 - Middleware to authenticate requests to and from the LLM
 
+## Authentication
+
+Conversation components for Anthropic, OpenAI, Azure OpenAI, AWS Bedrock, and Google AI can authenticate with the app's Dapr SPIFFE identity instead of an API key. This is the recommended way to authenticate: no key is stored, and the LLM provider grants access to your app's own Dapr identity. See [SPIFFE authentication]({{% ref spiffe-authentication.md %}}).
+
 ## Features
 
 The following features are out-of-the-box for [all the supported conversation components]({{% ref supported-conversation %}}).

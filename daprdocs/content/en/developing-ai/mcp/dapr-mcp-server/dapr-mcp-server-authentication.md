@@ -65,9 +65,9 @@ export SPIFFE_ALLOWED_CLIENTS=spiffe://example.org/ns/agents/sa/planner
 
 ## Dapr Sentry
 
-Use `dapr-sentry` when the callers are Dapr apps. Dapr Sentry can issue each app a JWT whose subject is the app's SPIFFE ID, and publish the signing keys as a JWKS. To turn this on in Sentry, enable JWT issuing and the OIDC server, using the Sentry Helm values shown in [Authenticating with a Federated Identity Credential]({{% ref "authenticating-azure.md#authenticating-with-a-federated-identity-credential" %}}). The Microsoft Entra ID steps on that page don't apply. The JWKS is served at `/jwks.json` on the Sentry OIDC port. Each calling app requests a token for the audience you set in `DAPR_SENTRY_AUDIENCE` with the `dapr.io/sentry-request-jwt-audiences` annotation, or the `--sentry-request-jwt-audiences` flag in self-hosted mode.
+Use `dapr-sentry` when the callers are Dapr apps. Dapr Sentry can issue each app a JWT whose subject is the app's SPIFFE ID, and publish the signing keys as a JWKS. To turn this on in Sentry, enable JWT issuing and the OIDC server, using the Sentry Helm values shown in [Authenticating with a Federated Identity Credential]({{% ref "authenticating-azure.md#authenticating-with-a-federated-identity-credential" %}}). The Microsoft Entra ID steps on that page don't apply. The JWKS is served at `/jwks.json` on the Sentry OIDC port.
 
-An [`MCPServer` resource]({{% ref "mcp-server-resource.md#spiffe-workload-identity" %}}) with `auth.spiffe.jwt` sends such a token on every call, so this mode pairs naturally with declaring the Dapr MCP server as an `MCPServer`.
+An [`MCPServer` resource]({{% ref "mcp-server-resource.md#spiffe-workload-identity" %}}) with `auth.spiffe.jwt` sends such a token on every call, so this mode pairs naturally with declaring the Dapr MCP server as an `MCPServer`. Set `auth.spiffe.jwt.audience` to the value of `DAPR_SENTRY_AUDIENCE`; Dapr mints the token for that audience on demand.
 
 | Variable | Required | Description |
 |---|---|---|

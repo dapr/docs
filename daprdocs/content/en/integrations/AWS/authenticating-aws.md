@@ -13,6 +13,10 @@ Dapr components leveraging AWS services (for example, DynamoDB, SQS, S3) utilize
 
 You can configure authentication using the AWS SDK’s default provider chain or one of the predefined AWS authentication profiles outlined below. Verify your component configuration by testing and inspecting Dapr runtime logs to confirm proper initialization.
 
+{{% alert title="Recommended" color="primary" %}}
+Authenticate with the app's Dapr SPIFFE identity, using [IAM Roles Anywhere](#iam-roles-anywhere) (X.509 SVID) or [web identity federation](#web-identity-federation) (JWT SVID). SPIFFE authentication is secretless: no AWS access keys are stored, and IAM grants access to your app's own Dapr identity. See [SPIFFE authentication]({{% ref spiffe-authentication.md %}}).
+{{% /alert %}}
+
 ### Terminology
 - **ARN (Amazon Resource Name):** A unique identifier used to specify AWS resources. Format: `arn:partition:service:region:account-id:resource`. Example: `arn:aws:iam::123456789012:role/example-role`.
 - **IAM (Identity and Access Management):** AWS's service for managing access to AWS resources securely.
@@ -20,7 +24,7 @@ You can configure authentication using the AWS SDK’s default provider chain or
 ### Authentication Profiles
 
 #### Access Key ID and Secret Access Key
-Use static Access Key and Secret Key credentials, either through component metadata fields or via [default AWS configuration](https://docs.aws.amazon.com/sdkref/latest/guide/creds-config-files.html). 
+Use static Access Key and Secret Key credentials, either through component metadata fields or via [default AWS configuration](https://docs.aws.amazon.com/sdkref/latest/guide/creds-config-files.html). These are long-lived secrets; prefer [SPIFFE authentication]({{% ref spiffe-authentication.md %}}) where the component supports it.
 
 {{% alert title="Important" color="warning" %}}
 Prefer loading credentials via the default AWS configuration in scenarios such as:
@@ -50,7 +54,9 @@ Authenticate using [environment variables](https://docs.aws.amazon.com/sdkref/la
 There are no metadata fields required for this authentication profile.
 
 #### IAM Roles Anywhere
-[IAM Roles Anywhere](https://aws.amazon.com/iam/roles-anywhere/) extends IAM role-based authentication to external workloads. It eliminates the need for long-term credentials by using cryptographically signed certificates, anchored in a trust relationship using Dapr PKI. Dapr SPIFFE identity X.509 certificates are used to authenticate to AWS services, and Dapr handles credential rotation at half the session lifespan.
+This is the recommended profile for AWS components. [IAM Roles Anywhere](https://aws.amazon.com/iam/roles-anywhere/) extends IAM role-based authentication to external workloads. It eliminates the need for long-term credentials by using cryptographically signed certificates, anchored in a trust relationship using Dapr PKI. Dapr SPIFFE identity X.509 certificates are used to authenticate to AWS services, and Dapr handles credential rotation at half the session lifespan.
+
+IAM Roles Anywhere does not accept the Ed25519 workload keys that Dapr generates by default. Set the `dapr.io/workload-key-algorithm: "ecdsa"` annotation, or the `--workload-key-algorithm ecdsa` flag in self-hosted mode, so the app's X.509 SVID uses an ECDSA key.
 
 To configure this authentication profile:
 1. Create a Trust Anchor in the trusting AWS account using the Dapr certificate bundle as an `External certificate bundle`.
@@ -62,6 +68,20 @@ To configure this authentication profile:
 | `trustAnchorArn` | Y | ARN of the Trust Anchor in the AWS account granting trust to the Dapr Certificate Authority. | arn:aws:rolesanywhere:us-west-1:012345678910:trust-anchor/01234568-0123-0123-0123-012345678901 |
 | `trustProfileArn` | Y | ARN of the AWS IAM Profile in the trusting AWS account. | arn:aws:rolesanywhere:us-west-1:012345678910:profile/01234568-0123-0123-0123-012345678901 |
 | `assumeRoleArn` | Y | ARN of the AWS IAM role to assume in the trusting AWS account. | arn:aws:iam:012345678910:role/exampleIAMRoleName |
+
+#### Web identity federation
+This profile assumes an IAM role with `AssumeRoleWithWebIdentity`, using a JWT SVID minted by Sentry for the app's SPIFFE identity. No AWS credentials are stored. Currently supported by the [AWS Bedrock conversation component]({{% ref "aws-bedrock.md#spiffe-authentication-recommended" %}}).
+
+To configure this authentication profile:
+1. Create an IAM OpenID Connect identity provider with the Sentry JWT issuer as the provider URL, and `sts.amazonaws.com` as the audience. See [SPIFFE authentication]({{% ref spiffe-authentication.md %}}) for the Sentry configuration.
+2. Create an IAM role with the resource permissions policy necessary, and a trust policy allowing `sts:AssumeRoleWithWebIdentity` for the identity provider, with conditions on the `aud` and `sub` claims. Set `sub` to the app's SPIFFE ID.
+
+| Attribute | Required | Description | Example |
+| --------- | ----------- | ----------- | ----------- |
+| `region` | Y | AWS region to connect to. | "us-east-1" |
+| `assumeRoleArn` | Y | ARN of the IAM role to assume. | "arn:aws:iam::123456789012:role/dapr-bedrock" |
+| `webIdentityAudience` | Y | Audience of the JWT SVID. Must be an audience of the IAM OIDC identity provider. | "sts.amazonaws.com" |
+| `assumeRoleSessionName` | N | Session name for role assumption. | "MyAppSession" |
 
 ### Additional Fields
 

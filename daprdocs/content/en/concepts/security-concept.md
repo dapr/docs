@@ -77,6 +77,8 @@ When a new Dapr sidecar initializes, it checks if mTLS is enabled. If so, a priv
 
 Starting with Dapr **1.18**, Sentry generates workload identity keys using **Ed25519** instead of ECDSA P-256.
 
+Some systems do not accept Ed25519 keys, such as AWS IAM Roles Anywhere. From Dapr **1.20**, apps that authenticate to them with their X.509 SVID can generate an ECDSA P-256 workload key instead: set the `dapr.io/workload-key-algorithm: "ecdsa"` annotation, or the `--workload-key-algorithm ecdsa` flag in self-hosted mode.
+
 | Scope | Algorithm (pre-1.18) | Algorithm (1.18+) |
 |---|---|---|
 | Root CA and issuer CA keys | ECDSA P-256 (`ECDSAWithSHA256`) | Ed25519 (`PureEd25519`) |
@@ -274,6 +276,12 @@ Dapr components can be namespaced. That means a Dapr sidecar instance can only a
 Dapr provides application-level scoping for components by allowing you to specify which applications can consume specific components and deny others. Read [restricting application access to components with scopes]({{% ref "component-scopes#application-access-to-components-with-scopes" %}}) for more details.
 
 Dapr components can use Dapr's built-in secret management capability to manage secrets. Read the [secret store overview]({{% ref secrets-overview %}}) and [How-To: Reference secrets in components]({{% ref component-secrets %}}) for more details.
+
+## Secretless authentication to third-party services
+
+Components can authenticate to third-party services, such as cloud providers and LLM providers, with the app's Dapr SPIFFE identity instead of API keys or passwords. The component presents a credential signed by Sentry: either a short-lived JWT SVID, or the app's X.509 SVID. The service grants access to the app's SPIFFE ID, `spiffe://<trust-domain>/ns/<namespace>/<app-id>`.
+
+This is the recommended way to authenticate components. No secret is stored, credentials are short-lived and renewed automatically, and the service's access control and audit logs refer to your app's own Dapr identity. Read [Authenticate components with the Dapr SPIFFE identity]({{% ref spiffe-authentication.md %}}) for the supported components and how to configure them.
 
 ## Workflow access control
 
