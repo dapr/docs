@@ -251,7 +251,7 @@ Exiting DemoWorkflowClient.
 
 ### Ordering keys
 
-Pass `new NewWorkflowOptions().setOrdering(new WorkflowOrdering(key, policy))` to `scheduleNewWorkflow` to queue a workflow behind the others of its key. See [ordering keys]({{% ref workflow-ordering.md %}}).
+Pass `new NewWorkflowOptions().setOrdering(new WorkflowOrdering(key, policy))` to `scheduleNewWorkflow` to queue a workflow behind the others of its key. See [ordering keys]({{% ref workflow-ordering.md %}}). Ordering needs a Dapr 1.20 runtime and an SDK release with ordering support.
 
 ### Task Execution Keys
 

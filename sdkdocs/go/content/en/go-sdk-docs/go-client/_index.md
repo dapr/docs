@@ -164,7 +164,7 @@ func main() {
 
 #### Ordering keys
 
-Pass `workflow.WithOrdering(workflow.Ordering{Key: key, OnPredecessorFailure: policy})` to `ScheduleWorkflow` to queue a workflow behind the others of its key. See [ordering keys]({{% ref workflow-ordering.md %}}).
+Pass `workflow.WithOrdering(workflow.Ordering{Key: key, OnPredecessorFailure: policy})` to `ScheduleWorkflow` to queue a workflow behind the others of its key. See [ordering keys]({{% ref workflow-ordering.md %}}). Ordering needs a Dapr 1.20 runtime and a durabletask-go release with ordering support.
 
 #### Managing workflows
 

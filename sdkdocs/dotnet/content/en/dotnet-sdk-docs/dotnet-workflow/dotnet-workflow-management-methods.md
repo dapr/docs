@@ -31,7 +31,8 @@ Cancellation stops the client request; it does not terminate an instance that wa
 
 `ScheduleNewWorkflowWithOptionsAsync` takes a `StartWorkflowOptions` (instance ID, start time and `Ordering`) in place
 of the positional arguments. Set `Ordering` to queue the workflow behind the others of its
-[ordering key]({{% ref workflow-ordering.md %}}).
+[ordering key]({{% ref workflow-ordering.md %}}). Ordering needs a Dapr 1.20 runtime and an SDK release with
+ordering support.
 
 When [name-based versioning]({{% ref dotnet-workflow-versioning.md %}}) is enabled, prefer the canonical name for
 new instances so the target app can choose its latest registered version.

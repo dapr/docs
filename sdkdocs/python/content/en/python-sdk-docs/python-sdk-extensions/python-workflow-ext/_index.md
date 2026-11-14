@@ -124,7 +124,7 @@ state = wf_client.wait_for_workflow_completion(instance_id, timeout_in_seconds=6
 
 ## Ordering keys
 
-Pass `ordering=WorkflowOrdering(key, on_predecessor_failure)` to `schedule_new_workflow` to queue a workflow behind the others of its key. See [ordering keys]({{% ref workflow-ordering.md %}}).
+Pass `ordering=WorkflowOrdering(key, on_predecessor_failure)` to `schedule_new_workflow` to queue a workflow behind the others of its key. See [ordering keys]({{% ref workflow-ordering.md %}}). Ordering needs a Dapr 1.20 runtime and an SDK release with ordering support.
 
 ## Next steps
 
