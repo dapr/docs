@@ -18,12 +18,13 @@ Microsoft Entra ID is Azure's identity and access management (IAM) solution, whi
 
 Applications can authenticate with Microsoft Entra ID and obtain an access token to make requests to Azure services through several methods:
 
- - [Workload identity federation]({{< ref howto-wif.md >}}) - The recommended way to configure your Microsoft Entra ID tenant to trust an external identity provider.  This includes service accounts from Kubernetes or AKS clusters. [Learn more about workload identity federation](https://learn.microsoft.com/entra/workload-id/workload-identities-overview).
+ - [SPIFFE workload identity](#authenticating-with-a-federated-identity-credential) - The recommended way. Microsoft Entra ID trusts your app's own Dapr SPIFFE identity through a federated identity credential. It is secretless, grants access per Dapr app ID, and works the same wherever Dapr runs, on Azure or elsewhere. [Learn more about SPIFFE authentication]({{% ref spiffe-authentication.md %}}).
+ - [Workload identity federation]({{< ref howto-wif.md >}}) - Configure your Microsoft Entra ID tenant to trust an external identity provider, such as service accounts from Kubernetes or AKS clusters. [Learn more about workload identity federation](https://learn.microsoft.com/entra/workload-id/workload-identities-overview).
  - [System and user assigned managed identities]({{< ref howto-mi.md >}}) - Less granular than workload identity federation, but retains some of the benefits.  [Learn more about system and user assigned managed identities](https://learn.microsoft.com/azure/aks/use-managed-identity).
  - [Client ID and secret]({{ < ref howto-aad.md >}}) - Not recommended as it requires you to maintian and associate credentials at the application level.
  - Pod Identities - [Deprecated approach for authenticating applications running on Kubernetes pods](https://learn.microsoft.com/azure/aks/use-azure-ad-pod-identity) at a pod level.  This should no longer be used.
 
-If you are just getting started, it is recommended to use workload identity federation.
+If you are just getting started, it is recommended to use [SPIFFE workload identity](#authenticating-with-a-federated-identity-credential).
 
 ## Managed identities and workload identity federation
 
@@ -43,7 +44,7 @@ While some Dapr Azure components offer alternative authentication methods, such 
 - [Auditing](#auditing)
 - [(Optional) Authentication using certificates](#optional-authentication-using-certificates)
 
-It's recommended that applications running on Azure Kubernetes Service leverage [workload identity federation](https://learn.microsoft.com/entra/workload-id/workload-identity-federation) to automatically provide an identity to individual pods.
+On Azure Kubernetes Service, if you do not use [SPIFFE workload identity](#authenticating-with-a-federated-identity-credential), use [workload identity federation](https://learn.microsoft.com/entra/workload-id/workload-identity-federation) to provide an identity to individual pods.
 
 ### Role-Based Access Control
 
@@ -119,6 +120,10 @@ When running on Azure Kubernetes Service (AKS), you can authenticate components 
 
 #### Authenticating with a Federated Identity Credential
 
+{{% alert title="Recommended" color="primary" %}}
+This is the recommended way to authenticate Azure components. It is secretless, and Microsoft Entra ID grants access to your app's own Dapr identity. Set `azureAuthMethods: spiffe` so that no other method is tried. See [SPIFFE authentication]({{% ref spiffe-authentication.md %}}).
+{{% /alert %}}
+
 You can use a [Federated Identity Credential](https://learn.microsoft.com/graph/api/resources/federatedidentitycredentials-overview?view=graph-rest-1.0) in Microsoft Entra ID to federate trust directly to your Dapr installation regardless of where it is running. This allows you to easily configure access rules against your Dapr application's [SPIFFE](https://spiffe.io/) ID consistently across different clouds.
 
 In order to federate trust, you must be running Dapr Sentry with JWT issuing and OIDC discovery enabled. These can be configured using the following Dapr Sentry helm values:
@@ -154,10 +159,7 @@ Providing these settings exposes the following endpoints on your Dapr Sentry ins
 /jwks.json
 ```
 
-You also need to provide the Dapr runtime configuration to request a JWT token with the Azure audience `api://AzureADTokenExchange`.
-When running in standalone mode, this can be provided using the flag `--sentry-request-jwt-audiences=api://AzureADTokenExchange`.
-When running in Kubernetes, this can be provided by decorating the application Kubernetes manifest with the annotations `"dapr.io/sentry-request-jwt-audiences": "api://AzureADTokenExchange"`.
-This ensures Sentry service issues a JWT token with the correct audience, which is required for Microsoft Entra ID to validate the token.
+Dapr mints a JWT SVID from Sentry with the Azure audience `api://AzureADTokenExchange` whenever the component needs a new Microsoft Entra ID token. This requires daprd and Sentry from Dapr v1.20 or later. Earlier versions needed the `--sentry-request-jwt-audiences=api://AzureADTokenExchange` flag or the `dapr.io/sentry-request-jwt-audiences` annotation, which are now deprecated and no longer needed.
 
 In order for Microsoft Entra ID to be able to access the OIDC endpoints, you must expose them on a public address. You must ensure that the domain that you are serving these endpoints via is the same as the issuer you provided when configuration Dapr Sentry.
 

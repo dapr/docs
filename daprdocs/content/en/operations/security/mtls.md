@@ -16,6 +16,8 @@ For detailed information on mTLS, read the [security concepts section]({{% ref "
 
 Starting with Dapr **1.18**, Sentry generates workload identity keys using **Ed25519** instead of ECDSA P-256. On a normal install or upgrade this is transparent — no configuration change is needed.
 
+From Dapr **1.20**, an app can use an ECDSA P-256 workload key instead, for systems that do not accept Ed25519 keys, such as AWS IAM Roles Anywhere. Set the `dapr.io/workload-key-algorithm: "ecdsa"` annotation, or the `--workload-key-algorithm ecdsa` flag in self-hosted mode. See [Arguments and annotations]({{% ref "arguments-annotations-overview.md" %}}).
+
 For a full explanation of what changed, why, and the compatibility matrix (including FIPS requirements and the 1.17.7 downgrade floor, which also applies to 1.19), see [Workload identity key algorithm]({{% ref "security-concept.md#workload-identity-key-algorithm" %}}) in the security concepts page.
 
 {{% alert title="Bringing your own CA" color="primary" %}}

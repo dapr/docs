@@ -24,6 +24,10 @@ The sentry service is deployed as part of `dapr init -k`, or via the Dapr Helm c
 
 <img src="/images/security-mTLS-sentry-kubernetes.png" width=1000>
 
+## JWT SVIDs
+
+When JWT issuing is enabled, Sentry can also sign JWT SVIDs, short-lived JWTs whose subject is the app's SPIFFE ID. From Dapr 1.20, daprd requests a JWT SVID from Sentry on demand, for the audience a component or `MCPServer` resource needs, and authenticates the request with the app's X.509 SVID. Components use JWT SVIDs to authenticate to third-party services without secrets. See [SPIFFE authentication]({{% ref spiffe-authentication.md %}}) to enable JWT issuing.
+
 ## Additional sentry container arguments
 
 Use the `dapr_sentry.extraArgs` Helm value to pass extra command-line arguments to the sentry container. Use this value for sentry flags that have no dedicated Helm value. The value is a list of strings. It defaults to `[]`. Dapr appends each argument after the built-in sentry container arguments.
