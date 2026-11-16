@@ -18,6 +18,7 @@ Use the following resource settings as a starting point. Requirements vary depen
 | **Sidecar Injector** | Limit: 1, Request: 100m  | Request: 30Mi
 | **Sentry**    | Limit: 1, Request: 100m  | Request: 30Mi
 | **Placement** | Limit: 1, Request: 250m  | Request: 75Mi
+| **Scheduler** | Request: 250m  | Request: 250Mi
 
 {{% alert title="Note" color="primary" %}}
 For more information, refer to the Kubernetes documentation on [CPU and Memory resource units and their meaning](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes).
@@ -26,6 +27,16 @@ For more information, refer to the Kubernetes documentation on [CPU and Memory r
 ### Helm
 
 When installing Dapr using Helm, no default limit/request values are set. Each component has a `resources` option (for example, `dapr_dashboard.resources`), which you can use to tune the Dapr control plane to fit your environment.
+
+For example, to set the starting requests for the Scheduler:
+
+```yaml
+dapr_scheduler:
+  resources:
+    requests:
+      memory: 250Mi
+      cpu: 250m
+```
 
 The [Helm chart readme](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md) has detailed information and examples.
 

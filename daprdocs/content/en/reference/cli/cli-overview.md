@@ -9,6 +9,10 @@ aliases: [/reference/cli/dapr-dashboard/]
 
 The Dapr CLI allows you to setup Dapr on your local dev machine or on a Kubernetes cluster, provides debugging support, and launches and manages Dapr instances.
 
+{{% alert title="Looking for `dapr dashboard`?" color="primary" %}}
+The `dapr dashboard` command is no longer part of the Dapr CLI. For a local view of the applications, sidecars, workflows, actors, subscriptions, components, state, and logs on your machine, use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}).
+{{% /alert %}}
+
 ```bash
 
          __

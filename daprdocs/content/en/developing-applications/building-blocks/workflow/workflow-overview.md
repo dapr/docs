@@ -17,7 +17,7 @@ The durable, resilient Dapr Workflow capability:
 - Provides SDKs for authoring workflows in code. See the [supported SDKs](#supported-sdks).
 - Provides HTTP and gRPC APIs for managing workflows (start, query, pause/resume, raise event, terminate, purge).
 
-<img src="/images/workflow-overview/workflow-overview.png" width=800 alt="Diagram showing basics of Dapr Workflow">
+{{< diagram name="workflow-overview" width="80" >}}
 
 Some example scenarios that Dapr Workflow can perform are:
 

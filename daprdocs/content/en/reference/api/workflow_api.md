@@ -2,6 +2,7 @@
 type: docs
 title: "Workflow API reference"
 linkTitle: "Workflow API"
+description: "Detailed documentation on the workflow API"
 weight: 1600
 ---
 

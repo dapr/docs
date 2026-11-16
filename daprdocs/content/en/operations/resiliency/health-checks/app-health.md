@@ -26,7 +26,7 @@ App health checks are disabled by default. Once you enable app health checks, th
 
 These changes are meant to be temporary, and Dapr resumes normal operations once it detects that the application is responsive again.
 
-<img src="/images/observability-app-health.webp" width="800" alt="Diagram showing the app health feature. Running Dapr with app health enabled causes Dapr to periodically probe the app for its health.">
+{{< diagram name="app-health" width="85" >}}
 
 ## App health checks vs platform-level health checks
 

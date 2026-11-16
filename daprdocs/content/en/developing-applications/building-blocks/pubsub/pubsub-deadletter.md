@@ -18,7 +18,7 @@ Dapr enables dead letter topics for all of it's pub/sub components, even if the 
 
 The diagram below is an example of how dead letter topics work. First a message is sent from a publisher on an `orders` topic. Dapr receives the message on behalf of a subscriber application, however the orders topic message fails to be delivered to the `/checkout` endpoint on the application, even after retries. As a result of the failure to deliver, the message is forwarded to the `poisonMessages` topic which delivers this to the `/failedMessages` endpoint to be processed, in this case on the same application. The `failedMessages` processing code could drop the message or resend a new message.
 
-<img src="/images/pubsub_deadletter.png" width=1200>
+{{< diagram pubsub-deadletter >}}
 
 ## Configuring a dead letter topic with a declarative subscription
 

@@ -25,7 +25,7 @@ In the diagram below, two instances of the same application, `App1`, use the [Re
    - Explicitly by the application through the unlock API, or 
    - After a period of time, due to a lease timeout. 
 
-<img src="/images/lock-overview.png" width=900>
+{{< diagram name="distributed-lock-overview" width="85" >}}
 
 *This API is currently in `Alpha` state.
 
