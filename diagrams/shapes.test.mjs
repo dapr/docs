@@ -11,6 +11,10 @@ const find = (node, pred, out = []) => {
   return out;
 };
 const byClass = (node, cls) => find(node, (x) => x.attrs.class === cls);
+// Everything a <text> says, tspans joined, for asserting on what a card reads.
+const said = (t) => find(t, (x) => x.tag === 'tspan').length
+  ? find(t, (x) => x.tag === 'tspan').map((x) => x.children[0].content).join('')
+  : t.children.map((c) => c.content).join('');
 const polyPts = (g) => find(g, (x) => x.tag === 'polygon')[0].attrs.points.split(' ').map((p) => p.split(',').map(Number));
 const mid = (vals) => (Math.min(...vals) + Math.max(...vals)) / 2;
 
@@ -35,6 +39,78 @@ const samples = () => ({
   tile: S.tile({ x: 100, y: 100, label: 'State\nstore', tag: 'alpha', icon: S.badge({ x: 100, y: 85 }) }),
   tileInline: S.tile({ x: 100, y: 100, w: 150, h: 40, inline: true, label: 'Jobs', icon: (cx, cy) => S.badge({ x: cx, y: cy, r: 8 }) }),
   arrow: S.arrow({ from: [0, 0], to: [50, 0] }),
+  decision: S.decision({ x: 100, y: 100, label: 'Gate', ...APP[2] }),
+});
+
+test('a lollipop on a purely vertical stalk needs no elbowX and draws the stalk', () => {
+  // The builder was written for a stalk leaving a vertical face sideways. A
+  // flow diagram hangs the mark above a box instead, so the stalk runs
+  // straight down. Before this, every point shared an x, the path collapsed to
+  // zero length, and the scene rendered a bare ring with nothing joining it to
+  // the shape - which no geometric test could see.
+  const g = S.lollipop({ x: 100, y: 60, to: 100, toY: 100 });
+  const [line] = find(g, (x) => x.tag === 'line');
+  assert.ok(line, 'a vertical stalk is drawn as a line');
+  assert.deepEqual(
+    [line.attrs.x1, line.attrs.y1, line.attrs.x2, line.attrs.y2].map(Number),
+    [100, 60, 100, 100],
+  );
+});
+
+test('a lollipop that changes BOTH x and y still demands elbowX', () => {
+  assert.throws(() => S.lollipop({ x: 100, y: 60, to: 160, toY: 100 }), /elbowX/);
+});
+
+test('decision draws a diamond centred on x, y', () => {
+  const g = S.decision({ x: 100, y: 200, w: 90, h: 60, label: 'Gate' });
+  const pts = polyPts(g);
+  assert.equal(pts.length, 4);
+  // top, right, bottom, left - in that order, so the points read as a path
+  assert.deepEqual(pts, [[100, 170], [145, 200], [100, 230], [55, 200]]);
+  assert.equal(mid(pts.map((p) => p[0])), 100);
+  assert.equal(mid(pts.map((p) => p[1])), 200);
+});
+
+test('decision takes the shared line weight, like every other outline', () => {
+  const [poly] = find(S.decision({ x: 0, y: 0, label: 'Gate' }), (x) => x.tag === 'polygon');
+  assert.equal(poly.attrs['stroke-width'], S.lineWidth());
+});
+
+test('decision centres its label on the widest part of the diamond', () => {
+  // The diamond is widest at its vertical centre, so that is the only row
+  // where a label has the full w to sit in. A label placed anywhere else
+  // overflows a shape that still passes every geometric check.
+  const g = S.decision({ x: 100, y: 200, w: 90, h: 60, label: 'Gate' });
+  const [t] = find(g, (x) => x.tag === 'text');
+  assert.equal(Number(t.attrs.x), 100);
+  assert.equal(Number(t.attrs.y) - 200 < 6, true, 'label sits on the centre row');
+});
+
+// hexHalfWidthAt() answers "how wide is the shape at this height", which is
+// what a label beside a hexagon needs. A VERTICAL arrow meeting a hexagon off
+// its centre line needs the other question - "how low is the boundary at this
+// horizontal offset" - and the hexagon's own polygon is what that has to
+// agree with, or the arrow stops in mid air or buries its head in the shape.
+test('hexEdgeAt() lands on the lower edge of the polygon hex() draws', () => {
+  const r = 60;
+  const w = S.hexHalfWidth(r);
+  assert.equal(S.hexEdgeAt(r, 0), r, 'straight below the centre: the bottom vertex');
+  assert.ok(Math.abs(S.hexEdgeAt(r, w) - r / 2) < 1e-9, 'at the widest point: the lower corner');
+  assert.equal(S.hexEdgeAt(r, -24), S.hexEdgeAt(r, 24), 'the same on either side');
+  // The lower-right edge of the drawn polygon runs from the bottom vertex to
+  // the lower-right corner; every answer has to sit on that segment.
+  const pts = polyPts(S.hex({ x: 0, y: 0, r }));
+  const [bx, by] = pts[3];
+  const [cx2, cy2] = pts[2];
+  // Distance FROM that segment, in scene units: hexPoints() rounds its
+  // vertices to two places, so the drawn edge is not exactly the ideal one
+  // and an exact-equality check here would be measuring the rounding.
+  const edge = Math.hypot(cx2 - bx, cy2 - by);
+  for (const dx of [12, 24, 36, 48]) {
+    const dy = S.hexEdgeAt(r, dx);
+    const off = Math.abs((cx2 - bx) * (dy - by) - (cy2 - by) * (dx - bx)) / edge;
+    assert.ok(off < 0.01, `dx ${dx} is ${off} off the drawn edge`);
+  }
 });
 
 test('hex draws a pointy-top hexagon with 6 points at radius r', () => {
@@ -83,6 +159,47 @@ test('hex defaults to APP[0] colours and a label of a third of r, never under th
   assert.equal(+find(S.hex({ x: 0, y: 0, r: 36 }), (x) => x.tag === 'text')[0].attrs['font-size'], 12);
   assert.equal(+find(S.hex({ x: 0, y: 0, r: 24 }), (x) => x.tag === 'text')[0].attrs['font-size'], S.MIN_LABEL);
   assert.ok(Math.abs(Math.hypot(polyPts(g)[0][0], polyPts(g)[0][1]) - 42.5) < 0.02);
+});
+
+// An app hexagon can name the endpoint it answers on - `/method`, a port -
+// and that second line is CODE, so it is set in the code font and smaller.
+// It belongs inside the hexagon's own group: a text node laid over a shape
+// from outside is what the free-label check in tests/diagrams.spec.js exists
+// to catch, and it cannot tell a deliberate one from the defect.
+test('hex sets an optional sub-line under the name, in the code font', () => {
+  const g = S.hex({ x: 10, y: 20, r: 62, label: 'App', sub: '/method' });
+  const ts = find(g, (x) => x.tag === 'text');
+  assert.equal(ts.length, 2, 'the name and the sub-line');
+  assert.equal(ts[1].attrs['font-family'], S.MONO, 'a path is code, and set in the code font');
+  assert.ok(+ts[1].attrs.y > +ts[0].attrs.y, 'the sub-line is under the name');
+  assert.ok(+ts[1].attrs['font-size'] < +ts[0].attrs['font-size'], 'and smaller than it');
+  assert.equal(ts[1].attrs.fill, ts[0].attrs.fill, 'both take the name ink');
+});
+
+test('the name and its sub-line straddle the hexagon the way label() sets two lines', () => {
+  const g = S.hex({ x: 0, y: 0, r: 60, label: 'App', sub: 'App', size: 20, subSize: 20 });
+  const ts = find(g, (x) => x.tag === 'text');
+  const two = S.label({ x: 0, y: 0, text: ['App', 'App'].join(String.fromCharCode(10)), size: 20 });
+  assert.equal(+ts[0].attrs.y, +two.attrs.y, 'the name sits where a two-line label puts its first line');
+  assert.equal(+ts[1].attrs.y - +ts[0].attrs.y, 24, 'and the sub-line one line height below it');
+});
+
+// A hexagon whose contents are a MARK and a name has to centre the pair, not
+// the name: the name alone on the centre row leaves the block sitting high.
+// labelDy moves the whole name block, sub-line included, the way labelDx
+// moves it sideways - and the name stays inside the hexagon's own group,
+// which a scene positioning the text itself could not manage.
+test('hex drops its name off the centre row with labelDy, sub-line and all', () => {
+  const at = { x: 0, y: 100, r: 60, label: 'App', sub: '/method' };
+  const plain = find(S.hex(at), (x) => x.tag === 'text');
+  const moved = find(S.hex({ ...at, labelDy: 18 }), (x) => x.tag === 'text');
+  assert.equal(+moved[0].attrs.y - +plain[0].attrs.y, 18, 'the name moves down');
+  assert.equal(+moved[1].attrs.y - +plain[1].attrs.y, 18, 'and the sub-line with it');
+});
+
+test('a hex sub-line never falls under the label floor', () => {
+  const ts = find(S.hex({ x: 0, y: 0, r: 36, label: 'App', sub: '/x' }), (x) => x.tag === 'text');
+  assert.equal(+ts[1].attrs['font-size'], S.MIN_LABEL);
 });
 
 test('daprApp docks the badge bottom-right by default, bottom-left with badgeLeft', () => {
@@ -513,6 +630,97 @@ test('elbowArrow() draws one run and puts the head at the end of it', () => {
   assert.deepEqual(tip, [200, 100]);
 });
 
+test('stepMark() puts its number on a fill that is the same in both themes', () => {
+  // C.navy and C.bg would look right on the light theme and inverted on the
+  // dark one: --d-blue is a deep navy in light and a pale blue in dark, while
+  // the page ground goes the other way. The app tokens are fixed across both,
+  // which is what a numeral sitting ON a shape needs.
+  const g = S.stepMark({ x: 40, y: 40, step: 2 });
+  const disc = find(g, (n) => n.tag === 'circle')[0];
+  assert.equal(disc.attrs.fill, C.appBlue);
+  const text = find(g, (n) => n.tag === 'text')[0];
+  assert.equal(text.attrs.fill, C.paper);
+  // And the theme check is told to look past it.
+  assert.ok(find(g, (n) => (n.attrs?.class ?? '') === 'd-on-fill').length);
+});
+
+test('stepMark() renders its number, not the formatter that shares its name', () => {
+  // `n` is this module's number formatter; a parameter called `n` shadowed it
+  // and cx came out as "n is not a function".
+  const g = S.stepMark({ x: 7, y: 9, step: 3 });
+  assert.equal(find(g, (x) => x.tag === 'circle')[0].attrs.cx, '7');
+  assert.equal(find(g, (x) => x.tag === 'text')[0].children[0].content, '3');
+});
+
+test('codeCard() sets its code left aligned in the code face, and its name above', () => {
+  // Centred, a block of YAML reads as a picture of YAML rather than as YAML,
+  // and a reader cannot run their eye down the keys. Every line has to start
+  // at the same x, which is what anchor 'start' plus one x per tspan gives.
+  const g = S.codeCard({
+    x: 200, y: 100, w: 240, h: 90,
+    title: 'local-secret-store.yaml',
+    code: 'metadata:\n  name: localsecretstore',
+  });
+  const rect = find(g, (n) => n.tag === 'rect')[0];
+  const texts = find(g, (n) => n.tag === 'text');
+  const name = texts.find((t) => t.children.some((k) => k.content === 'local-secret-store.yaml'));
+  const code = texts.find((t) => t.attrs['font-family'] !== undefined);
+
+  assert.ok(name, 'the artifact is named');
+  // ABOVE the card, not inside it: inside, the name competes with the code for
+  // the same left margin and the two are different kinds of thing.
+  assert.ok(Number(name.attrs.y) < Number(rect.attrs.y), 'the name sits above the card');
+
+  assert.equal(code.attrs['text-anchor'], 'start');
+  assert.ok(Number(code.attrs.x) > Number(rect.attrs.x), 'the code is inset from the border');
+  // Every line starts at the same x, or the block is not left aligned.
+  const xs = new Set(code.children.map((k) => k.attrs?.x).filter((v) => v !== undefined));
+  assert.equal(xs.size, 1);
+});
+
+test('codeCard() keeps indentation, which YAML needs to mean what it says', () => {
+  // Each line is its own tspan, and a space at the start of a tspan is
+  // whitespace at a tag boundary: XML collapses it and the minifier drops the
+  // rest. A component's YAML came out with `value` at the same depth as
+  // `- name`, which is a different document and one that will not load.
+  const g = S.codeCard({
+    x: 0, y: 0, w: 300, h: 90,
+    code: 'metadata:\n  - name: secretsFile\n    value: secrets.json',
+  });
+  const code = find(g, (n) => n.tag === 'text').find((t) => t.attrs['font-family'] !== undefined);
+  const lines = code.children.map((k) => k.children[0].content);
+  assert.equal(lines[0], 'metadata:');
+  // Non-breaking spaces, and the SAME COUNT as the spaces they replace: in a
+  // monospace face that is what keeps the depths apart.
+  assert.equal(lines[1], '  - name: secretsFile');
+  assert.equal(lines[2], '    value: secrets.json');
+  // And nothing inside a line is touched, or the code would read as padded.
+  assert.ok(lines[1].includes('- name: secretsFile'));
+});
+
+test('codeCard() refuses type under the label floor', () => {
+  // Code at nine units is unreadable on the page and shrinks further in the
+  // figure, and nothing downstream measures rendered type.
+  assert.throws(
+    () => S.codeCard({ x: 0, y: 0, w: 100, h: 50, code: 'x', size: 9 }),
+    /below/,
+  );
+});
+
+test('elbowArrow() dashes the run and leaves the head solid', () => {
+  // A dashed line says the thing does not happen; a dashed chevron just reads
+  // as a badly drawn one, which is the split arrow() already makes.
+  const pts = [[0, 0], [0, 100], [200, 100]];
+  const g = S.elbowArrow({ points: pts, dash: true });
+  const run = find(g, (n) => (n.attrs?.class ?? '') === 'd-run')[0];
+  assert.equal(run.attrs['stroke-dasharray'], '6 5');
+  const head = find(g, (n) => n.tag === 'polyline')[0];
+  assert.equal(head.attrs['stroke-dasharray'], undefined);
+  // And the default stays solid, so nothing already drawn changes.
+  const plain = find(S.elbowArrow({ points: pts }), (n) => (n.attrs?.class ?? '') === 'd-run')[0];
+  assert.equal(plain.attrs['stroke-dasharray'], undefined);
+});
+
 test('elbowArrow() can put a head on both ends, and on neither', () => {
   const pts = [[0, 0], [0, 100], [200, 100]];
   assert.equal(find(S.elbowArrow({ points: pts, heads: 'both' }), (n) => n.tag === 'polyline').length, 2);
@@ -540,4 +748,261 @@ test('pod() is a dashed sky box that carries its own name', () => {
   assert.equal(panel.attrs.stroke, C.blue, 'every pod in the set is sky');
   assert.equal(+panel.attrs.width, 200);
   assert.match(serialize(g), />Pod A</, 'the pod says which pod it is');
+});
+
+// ------------------------------------------- the maintainer's review of page 2
+
+test('node() can set its name INSIDE the circle, in a given ink', () => {
+  // The source flowcharts put "Start" and "End" inside their terminals. The
+  // first draft hung them underneath because C.orange is the ink version of
+  // the brand orange; measured, C.appInk on it is 5.5:1 in light and 7.0:1 in
+  // dark, so the name can go where the source puts it.
+  const g = S.node({
+    x: 100, y: 200, r: 28, fill: C.orange, stroke: C.appInk,
+    label: 'End', labelInside: true, ink: C.appInk,
+  });
+  const t = find(g, (x) => x.tag === 'text')[0];
+  assert.equal(t.attrs.fill, C.appInk);
+  // label() centres on y by dropping the baseline about a third of the size,
+  // so the baseline sits just below the centre and nowhere near the rim.
+  assert.ok(Math.abs(Number(t.attrs.y) - 200) < 14, `baseline ${t.attrs.y} is not inside the circle`);
+  // And it is marked as type sitting on a fill rather than on the page, the
+  // same as stepMark()'s numeral and a solid hexagon's name. The rendered
+  // theme check reads this class to know which text should follow the theme.
+  assert.ok(
+    find(g, (x) => (x.attrs?.class ?? '') === 'd-on-fill').length,
+    'a name inside the circle is not marked d-on-fill',
+  );
+});
+
+test('node() does NOT mark a name under the circle as sitting on a fill', () => {
+  // That one is on the page and must follow the theme like any other label.
+  const g = S.node({ x: 0, y: 0, r: 16, label: 'Start' });
+  assert.equal(find(g, (x) => (x.attrs?.class ?? '') === 'd-on-fill').length, 0);
+});
+
+test('node() still names itself below the circle when nothing says otherwise', () => {
+  const g = S.node({ x: 0, y: 0, r: 16, label: 'Start' });
+  const t = find(g, (x) => x.tag === 'text')[0];
+  assert.ok(Number(t.attrs.y) > 16, 'the default is still a name under the marker');
+});
+
+test('decisionPoints() names the four vertices decision() actually draws', () => {
+  // A diamond means a decision, and each way out leaves from its OWN point.
+  // The scene was computing `x + w / 2` by hand, which is how three branches
+  // ended up leaving the gate from one vertex.
+  const spec = { x: 300, y: 200, w: 104, h: 68 };
+  const p = S.decisionPoints(spec);
+  const drawn = polyPts(S.decision(spec));
+  assert.deepEqual(p.top, [300, 166]);
+  assert.deepEqual(p.right, [352, 200]);
+  assert.deepEqual(p.bottom, [300, 234]);
+  assert.deepEqual(p.left, [248, 200]);
+  for (const v of [p.top, p.right, p.bottom, p.left]) {
+    assert.ok(drawn.some(([dx, dy]) => dx === v[0] && dy === v[1]), `${v} is not a corner of the polygon`);
+  }
+});
+
+test('roundedPath() refuses a repeated point rather than emitting NaN', () => {
+  // The corner cut divides by the leg length, so a repeated point makes that
+  // 0/0 and every coordinate downstream of it is NaN in the `d` attribute - an
+  // invalid path the exporter accepted and the browser drew as a truncated run.
+  assert.throws(
+    () => S.roundedPath({ points: [[0, 0], [100, 0], [100, 0], [200, 0]] }),
+    /a leg has no length/,
+  );
+  assert.ok(!S.roundedPath({ points: [[0, 0], [100, 0], [100, 80]] }).attrs.d.includes('NaN'));
+});
+
+test('elbowArrow() rejects a zero-length leg anywhere, not only under a head', () => {
+  // The guard used to live inside the chevron helper, so it only ever saw the
+  // legs that carry a head. A repeated point in the middle of a run, or
+  // anywhere in a headless bus feeder, reached roundedPath() and exported clean.
+  const repeated = [[0, 0], [100, 0], [100, 0], [200, 0]];
+  assert.throws(() => S.elbowArrow({ points: repeated }), /a leg has no length/);
+  assert.throws(() => S.elbowArrow({ points: repeated, heads: 'none' }), /a leg has no length/);
+});
+
+test('richLabel() sets the code font on a part that asks for it', () => {
+  // "Invoke /orders method" is prose with a path inside it. The path has to be
+  // recognisable as one, and the rest must not turn into code.
+  const node = S.richLabel({
+    x: 0, y: 0, size: 13,
+    parts: [{ text: 'Invoke ' }, { text: '/orders', mono: true }, { text: ' method' }],
+  });
+  const fonts = node.children.map((c) => c.attrs['font-family']);
+  assert.equal(fonts[0], undefined);
+  assert.equal(fonts[1], S.MONO);
+  assert.equal(fonts[2], undefined);
+  assert.equal(node.attrs['font-family'], undefined, 'the line itself is not code');
+});
+
+test('richLabel() does not repeat the code font on a line that is wholly code', () => {
+  const node = S.richLabel({
+    x: 0, y: 0, size: 13, mono: true,
+    parts: [{ text: 'GET ' }, { text: '/v1.0/state', mono: true }],
+  });
+  assert.equal(node.attrs['font-family'], S.MONO);
+  for (const kid of node.children) assert.equal(kid.attrs['font-family'], undefined);
+});
+
+test('richLabel() keeps a space that sits at the edge of a part', () => {
+  // The page this svg is inlined into is minified, and a minifier drops
+  // whitespace between tags: "Invoke " + "/orders" + " method" was served as
+  // <tspan>Invoke</tspan><tspan>/orders</tspan><tspan>method</tspan> and the
+  // page read "Invoke/ordersmethod". The exported FILE was correct the whole
+  // time, which is why only the rendered page showed it. xml:space="preserve"
+  // is no use - the minifier strips that attribute too.
+  const node = S.richLabel({
+    x: 0, y: 0, size: 13,
+    parts: [{ text: 'Invoke ' }, { text: '/orders', mono: true }, { text: ' method' }],
+  });
+  const texts = node.children.map((c) => c.children[0].content);
+  assert.equal(texts[0], 'Invoke ', 'the trailing space became non-breaking');
+  assert.equal(texts[1], '/orders', 'and a part with no edge space is untouched');
+  assert.equal(texts[2], ' method', 'as did the leading one');
+
+  // Spaces INSIDE a part are ordinary: nothing can collapse them, because they
+  // are not at a tag boundary.
+  const inner = S.richLabel({ x: 0, y: 0, size: 13, parts: [{ text: 'two words' }] });
+  assert.equal(inner.children[0].children[0].content, 'two words');
+});
+
+test('hexNameBlock leaves a one-line name exactly where it was', () => {
+  // This fix must not move a single committed SVG, and `bindings-overview` is
+  // the one scene already drawing a sub-line. The old spacing was
+  // (size + subSize) * 0.6 from the name's centre; for one line the new
+  // formula has to reduce to that same number.
+  const size = 20;
+  const sub = Math.max(S.MIN_LABEL, +(size * 0.7).toFixed(2));
+  const block = S.hexNameBlock({ size, sub: '/method' });
+  assert.equal(block.lead, +((size + sub) * 0.6).toFixed(2));
+});
+
+test('hex clears a two-line name before its sub-line', () => {
+  // A sub spaced from the name's CENTRE runs into a name that has a second
+  // line, because label() centres multi-line text on its own y. Both sit
+  // inside the hexagon's group, so the rendered free-label check cannot see
+  // it - it only catches text that has drifted onto a shape from outside.
+  // This is the only thing that can.
+  const texts = (g) => find(g, (x) => x.tag === 'text');
+  const [, oneSub] = texts(S.hex({ x: 0, y: 0, r: 60, label: 'App', sub: '/orders' }));
+  const [twoName, twoSub] = texts(
+    S.hex({ x: 0, y: 0, r: 60, label: 'Order\nProcessor', sub: '/orders' }),
+  );
+
+  // label() sets the second line a line height below the first.
+  const secondLine = +twoName.attrs.y + 20 * 1.2;
+  assert.ok(+twoSub.attrs.y > secondLine, 'the sub-line clears the second line of the name');
+  assert.ok(+twoSub.attrs.y > +oneSub.attrs.y, 'and sits lower than a one-line name puts it');
+});
+
+// AN HTTP EXCHANGE CARD. The configuration, state, secrets and pub/sub
+// overviews all show a call to the Dapr API this way, so the card is one
+// drawing rather than four scenes stacking their own text at their own
+// offsets.
+test('httpCard draws the request, the status and the response', () => {
+  const card = S.httpCard({
+    x: 0, y: 0, w: 300, h: 160,
+    method: 'GET', url: '/v1.0/configuration/store', status: '200 OK', body: '"value"',
+  });
+  const lines = find(card, (n) => n.tag === 'text').map(said);
+  assert.deepEqual(lines, ['GET', '/v1.0/configuration/store', '200 OK', '"value"']);
+});
+
+test('httpCard puts its divider between the request and the response', () => {
+  // Derived, not picked: the line has to move with the card rather than sit
+  // at a y somebody chose for one size of it.
+  const card = S.httpCard({
+    x: 0, y: 0, w: 300, h: 160,
+    method: 'GET', url: '/v1.0/x', status: '200 OK', body: '"v"',
+  });
+  const line = find(card, (n) => n.tag === 'line')[0];
+  const urlY = +find(card, (n) => n.tag === 'text' && said(n) === '/v1.0/x')[0].attrs.y;
+  const bodyY = +find(card, (n) => n.tag === 'text' && said(n) === '"v"')[0].attrs.y;
+  assert.ok(+line.attrs.y1 > urlY, 'under the url');
+  assert.ok(+line.attrs.y1 < bodyY, 'and over the body');
+  assert.equal(line.attrs.y1, line.attrs.y2, 'and level');
+});
+
+test('httpCard paints ground behind the status so the divider cannot cross it', () => {
+  // The rendered check `paints ground behind any label a line crosses` fails a
+  // label a line runs through with nothing painted behind it, and the divider
+  // runs straight through this one.
+  const card = S.httpCard({
+    x: 0, y: 0, w: 300, h: 160,
+    method: 'GET', url: '/v1.0/x', status: '200 OK', body: '"v"',
+  });
+  const chip = find(card, (n) => n.attrs && n.attrs.class === 'd-pill')[0];
+  assert.ok(chip, 'the status sits on a pill');
+  const plate = find(chip, (n) => n.tag === 'rect')[0];
+  assert.equal(plate.attrs.fill, C.bg, 'filled with the page ground');
+});
+
+test('httpCard stacks a request payload over the divider and the response under it', () => {
+  const card = S.httpCard({
+    x: 0,
+    y: 0,
+    w: 400,
+    h: S.httpCardH({ request: '{\n  "a": 1\n}', body: '{\n  "b": 2\n}', status: '200 OK' }),
+    method: 'POST',
+    url: '/v1.0/state/store',
+    status: '200 OK',
+    request: '{\n  "a": 1\n}',
+    body: '{\n  "b": 2\n}',
+  });
+  const at = (text) => +find(card, (n) => n.tag === 'text' && said(n).includes(text))[0].attrs.y;
+  const line = +find(card, (n) => n.tag === 'line')[0].attrs.y1;
+  assert.ok(at('"a"') < line, 'the request is above the divider');
+  assert.ok(at('"b"') > line, 'and the response below it');
+});
+
+test('httpCard sets a payload of several lines left, and one line centred', () => {
+  // JSON centred line by line is a picture of JSON rather than JSON, which is
+  // why codeCard() aligns its code left; a one-line response has no shape to
+  // lose, and every card drawn before `request` existed centres it.
+  const many = S.httpCard({
+    x: 0, y: 0, w: 400, h: 240, method: 'GET', url: '/v1.0/x', body: '{\n  "b": 2\n}',
+  });
+  const one = S.httpCard({
+    x: 0, y: 0, w: 400, h: 160, method: 'GET', url: '/v1.0/x', body: '"v"',
+  });
+  const body = (card, text) => find(card, (n) => n.tag === 'text' && said(n).includes(text))[0];
+  assert.equal(body(many, '"b"').attrs['text-anchor'], 'start');
+  assert.equal(body(one, '"v"').attrs['text-anchor'], 'middle');
+});
+
+test('httpCard keeps a payload indented, which JSON needs to be readable', () => {
+  // Same failure codeCard() carries the note for: a space at the start of a
+  // tspan is whitespace at a tag boundary, and Hugo's minifier drops it.
+  const card = S.httpCard({
+    x: 0, y: 0, w: 400, h: 240, method: 'POST', url: '/v1.0/x',
+    request: '{\n    "filter": {}\n}',
+  });
+  const spans = find(card, (n) => n.tag === 'tspan').map(said);
+  assert.ok(spans.some((s) => s.startsWith('    "filter"')), spans.join('|'));
+});
+
+test('httpCard refuses a box too shallow for what it is given', () => {
+  // Drawn, it would overflow the border and nothing but a render could see
+  // it; httpCardH() is the number a scene sizes the box from.
+  assert.throws(() => S.httpCard({
+    x: 0, y: 0, w: 400, h: 90,
+    method: 'POST', url: '/v1.0/x', status: '200 OK', body: '{\n  "b": 2\n}',
+  }), /needs/);
+});
+
+test('httpCardH gives a card room for everything it is asked to hold', () => {
+  // Taller for more lines, and taller again for a divider between them - the
+  // number a scene sizes its canvas from rather than one somebody typed.
+  const bare = S.httpCardH({ body: '"v"' });
+  const deep = S.httpCardH({ body: '{\n  "b": 2\n}' });
+  const both = S.httpCardH({ request: '{\n  "a": 1\n}', body: '{\n  "b": 2\n}', status: '200 OK' });
+  assert.ok(deep > bare, `${deep} > ${bare}`);
+  assert.ok(both > deep, `${both} > ${deep}`);
+});
+
+test('httpCard refuses type below the floor, and a card with no method', () => {
+  assert.throws(() => S.httpCard({ x: 0, y: 0, w: 300, h: 160, method: 'GET', size: 4 }), /below/);
+  assert.throws(() => S.httpCard({ x: 0, y: 0, w: 300, h: 160 }), /method/);
 });

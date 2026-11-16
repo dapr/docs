@@ -31,7 +31,7 @@ Make sure you have [Docker](https://docs.docker.com/get-started/get-docker/) alr
 
 Initialize Dapr locally to set up a self-hosted environment for development. This process fetches and installs the Dapr sidecar binaries, runs essential services as Docker containers, and prepares a default components folder for your application. For detailed steps, see the official [guide on initializing Dapr locally]({{% ref install-dapr-selfhost.md %}}).
 
-![Dapr Initialization](/images/dapr-agents/home_installation_init.png)
+{{< diagram hosting-standalone >}}
 
 To initialize the Dapr control plane containers and create a default configuration file, run:
 

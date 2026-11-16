@@ -74,32 +74,7 @@ When signing is active, Dapr:
 On every subsequent load of that workflow's state, Dapr walks the full
 signature chain and verifies every link before allowing execution to continue.
 
-{{< mermaid >}}
-flowchart LR
-    subgraph History["Workflow History"]
-        E0["Event 0"] --- E1["Event 1"] --- E2["Event 2"] --- E3["Event 3"] --- E4["Event 4"] --- E5["Event 5"]
-    end
-
-    subgraph Signatures["Signature Chain"]
-        S0["Sig 0<br/>Events [0,2)"]
-        S1["Sig 1<br/>Events [2,4)"]
-        S2["Sig 2<br/>Events [4,6)"]
-        S0 -->|prev digest| S1 -->|prev digest| S2
-    end
-
-    E0 & E1 -.-> S0
-    E2 & E3 -.-> S1
-    E4 & E5 -.-> S2
-
-    subgraph Certs["Certificate Table"]
-        C0["Cert 0<br/>SVID from Boot 1"]
-        C1["Cert 1<br/>SVID from Boot 2"]
-    end
-
-    S0 -.->|cert index 0| C0
-    S1 -.->|cert index 0| C0
-    S2 -.->|cert index 1| C1
-{{< /mermaid >}}
+{{< diagram workflow-signing-chain >}}
 
 Each signature covers a contiguous range of events and references the previous
 signature's digest, forming a hash chain. A certificate table stores the
@@ -302,11 +277,7 @@ verification for any signed workflow that was issued under the old root.
 After each workflow execution step, Dapr signs the newly appended
 history events.
 
-{{< mermaid >}}
-flowchart LR
-    A["Marshal events<br/>(deterministic<br/>protobuf)"] --> B["Compute digests<br/>& chain to<br/>previous signature"] --> C["Sign with<br/>SVID private key"]
-    C --> D["Persist signature<br/>+ certificate<br/>+ history events"]
-{{< /mermaid >}}
+{{< diagram name="workflow-signing-steps" width="80" >}}
 
 The signing process works as follows:
 
@@ -346,31 +317,7 @@ The signing process works as follows:
 Every time workflow state is loaded (whether for execution or a metadata query)
 the full signature chain is verified.
 
-{{< mermaid >}}
-flowchart TD
-    A["Load workflow state<br/>from state store"] --> B{"Signatures<br/>present?"}
-    B -->|"No, but signer<br/>configured and<br/>history exists"| N["FAIL: unsigned<br/>history cannot<br/>be loaded with<br/>signing enabled"]
-    B -->|"No, signer not<br/>configured"| C["Continue without<br/>verification"]
-    B -->|Yes| D{"Signer<br/>configured?"}
-    D -->|No| W["FAIL: signed<br/>history cannot<br/>be loaded without<br/>a signer"]
-    D -->|Yes| E["Verify chain<br/>linkage"]
-    E --> F["Verify event<br/>range contiguity"]
-    F --> G["Recompute events<br/>digest from raw bytes"]
-    G --> H["Verify cryptographic<br/>signature"]
-    H --> I["Validate certificate<br/>time window"]
-    I --> J["Verify certificate<br/>chain-of-trust to CA"]
-    J --> K["Verify SPIFFE<br/>app identity"]
-    K --> L["All events<br/>covered?"]
-    L -->|Yes| P["Verification<br/>passed ✓"]
-    L -->|No| M["Verification<br/>failed ✗"]
-    E -->|Mismatch| M
-    F -->|Gap| M
-    G -->|Mismatch| M
-    H -->|Failed| M
-    I -->|Expired| M
-    J -->|Untrusted| M
-    K -->|Wrong app| M
-{{< /mermaid >}}
+{{< diagram workflow-signing-verify >}}
 
 The verification steps for each signature in the chain are:
 
@@ -599,19 +546,7 @@ directly to the caller. The error message contains the specific reason for
 failure (for example, digest mismatch, attestation verification failure, or
 certificate trust failure).
 
-{{< mermaid >}}
-flowchart TD
-    A["Load workflow state"] --> B["Verify signature chain<br/>+ attestations + lineage"]
-    B -->|Pass| C["Continue normal<br/>execution"]
-    B -->|Fail| D{"Failure type"}
-    D -->|Tamper, in-flight| E["Append unsigned<br/>terminal event<br/>(DAPR_WORKFLOW_HISTORY_TAMPERED)<br/>+ delete reminders"]
-    D -->|Tamper, completed| F["Return error<br/>to reader"]
-    D -->|ConfigurationError| G["Return error<br/>to reader<br/>(no terminal append)"]
-    D -->|Metadata query path| F
-    E --> H["Workflow surfaces<br/>as FAILED on<br/>next read"]
-    F --> I["State store<br/>NOT modified"]
-    G --> I
-{{< /mermaid >}}
+{{< diagram workflow-signing-failure >}}
 
 ### Common failure causes
 

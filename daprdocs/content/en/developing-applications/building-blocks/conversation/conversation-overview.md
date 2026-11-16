@@ -12,7 +12,7 @@ The conversation API is currently in [alpha]({{% ref "certification-lifecycle#ce
 
 Dapr's conversation API reduces the complexity of securely and reliably interacting with Large Language Models (LLM) at scale. Whether you're a developer who doesn't have the necessary native SDKs or a polyglot shop who just wants to focus on the prompt aspects of LLM interactions, the conversation API provides one consistent API entry point to talk to underlying LLM providers. 
 
-<img src="/images/conversation-overview.png" width=800 alt="Diagram showing the flow of a user's app communicating with Dapr's LLM components.">
+{{< diagram name="conversation-overview" width="75" >}}
 
 In addition to enabling critical performance and security functionality (like [caching]({{% ref "#caching" %}}) and [PII scrubbing]({{% ref "#personally-identifiable-information-pii-obfuscation" %}})), the conversation API also provides:
 

@@ -16,6 +16,10 @@ export const FILL_OPACITY = 0.6;
 // checks against THIS constant rather than carrying its own copy, so the
 // floor can only ever be in one place.
 export const MIN_LABEL = 10;
+
+// Survives the page minifier, which an ordinary space at a tspan boundary
+// does not. See richLabel().
+const NBSP = ' ';
 const HIDDEN = { 'stroke-dasharray': '3 3', 'stroke-opacity': 0.35 };
 
 const n = (v) => String(+Number(v).toFixed(2));
@@ -75,6 +79,12 @@ export function group(arg = {}) {
 // A terminal command set in the body font reads as prose.
 export const MONO = 'var(--font-mono)';
 
+// AS A STYLE, NOT AN ATTRIBUTE. `font-variant-ligatures` is a CSS property and
+// not an SVG presentation attribute, so setting it as one is silently ignored:
+// the first attempt at this left the computed value at `normal` and the
+// drawing unchanged. A style attribute is the one form that reaches the text.
+export const NO_LIGATURES = 'font-variant-ligatures: none';
+
 export function label({
   x, y, text: content, size = 11, weight = 600, color = C.body, halo = false, anchor = 'middle',
   mono = false,
@@ -95,7 +105,12 @@ export function label({
       'text-anchor': anchor,
       'font-size': size,
       'font-weight': weight,
-      ...(mono ? { 'font-family': MONO } : {}),
+      // LIGATURES OFF WHEREVER CODE IS SET. Geist Mono ligates, and a
+      // diagram quoting a payload is the one place that must not happen:
+      // `data=...` came out as one wide glyph and a stray full stop on the
+      // actor event stream, and `!=` would come out as a character the API
+      // does not accept. A label is a quotation, so it is set literally.
+      ...(mono ? { 'font-family': MONO, style: NO_LIGATURES } : {}),
       ...attrs,
     }, kids);
   const fill = mk({ fill: color });
@@ -122,7 +137,28 @@ export function richLabel({
       attrs.fill = part.color;
     }
     if (part.weight !== undefined && part.weight !== weight) attrs['font-weight'] = part.weight;
-    return el('tspan', attrs, [text(String(part.text))]);
+    // A PART may be code while the line around it is prose - "Invoke /orders
+    // method", where only the path is a path. font-family inherits, so setting
+    // it on the tspan is all this takes, and a line that is wholly code still
+    // takes `mono` on the label rather than on every part.
+    if (part.mono && !mono) {
+      attrs['font-family'] = MONO;
+      attrs.style = NO_LIGATURES;
+    }
+    // A space at the BOUNDARY of a tspan does not survive to the page. Hugo
+    // minifies the document this svg is inlined into, and a minifier's whole
+    // job is to drop whitespace between tags: "Invoke " + "/orders" + " method"
+    // was served as <tspan>Invoke</tspan><tspan>/orders</tspan><tspan>method
+    // </tspan> and the page read "Invoke/ordersmethod". xml:space="preserve"
+    // does not help - the attribute is stripped too. A non-breaking space is
+    // not whitespace to a minifier, so it is the one that arrives.
+    //
+    // Done here rather than in the scenes: a caller writing an ordinary space
+    // is right, and should not have to know what happens to it downstream.
+    // tests/diagrams.spec.js reads labels through a whitespace run, which matches NBSP,
+    // so the expected labels stay written with ordinary spaces too.
+    const content = String(part.text).replace(/^ +| +$/g, (run) => NBSP.repeat(run.length));
+    return el('tspan', attrs, [text(content)]);
   });
   if (!kids.length) throw new Error('richLabel(): parts is required');
   return el('text', {
@@ -131,7 +167,8 @@ export function richLabel({
     'text-anchor': anchor,
     'font-size': size,
     'font-weight': weight,
-    ...(mono ? { 'font-family': MONO } : {}),
+    // Ligatures off wherever code is set - see label().
+    ...(mono ? { 'font-family': MONO, style: NO_LIGATURES } : {}),
     fill: color,
   }, kids);
 }
@@ -157,6 +194,18 @@ export function hexHalfWidthAt(r, dy) {
   return d <= r / 2 ? w : (w * (r - d)) / (r / 2);
 }
 
+// The other question: how far BELOW the centre the boundary sits at a given
+// horizontal offset - the same number above it, the shape being symmetric.
+// This is what a VERTICAL arrow meeting a hexagon off its centre line has to
+// stop at: aimed at the centre's depth instead it buries its head in the
+// shape, and aimed at the corner's it stops in mid air. Straight below the
+// centre that is the bottom vertex, r; at the full half width it is the lower
+// corner, r/2; and it runs straight between them, as the drawn polygon does.
+export function hexEdgeAt(r, dx) {
+  const d = Math.min(Math.abs(dx), hexHalfWidth(r));
+  return r - (d / hexHalfWidth(r)) * (r / 2);
+}
+
 export function hexPoints(x, y, r) {
   const pts = [];
   for (let k = 0; k < 6; k++) {
@@ -168,19 +217,60 @@ export function hexPoints(x, y, r) {
 
 // `solid` fills without the tint and `ink` colours the name - the pair the
 // first app needs, because its name sits on the fill rather than on the page.
+// The name block inside a hexagon: how far apart its two lines sit and how far
+// the lower one reaches below the centre. hex() draws from this and app.mjs
+// clears the sidecar past it, so the two cannot disagree about how tall a name
+// with a code sub-line is. The lead reduces to label()'s own 1.2x line height
+// when the two sizes match, so a name with a sub-line sits exactly where a
+// two-line label() would put it.
+export function hexNameBlock({ size, sub = '', subSize, lines = 1 }) {
+  if (!sub) {
+    return { lead: 0, size: 0, bottom: +(((lines - 1) * size * 1.2 + size) * 0.5).toFixed(2) };
+  }
+  const ss = subSize ?? Math.max(MIN_LABEL, +(size * 0.7).toFixed(2));
+  // label() centres a name on its own y, so a SECOND line reaches a line
+  // height further down than a one-line name does. Spacing the sub-line from
+  // the name's centre without counting those lines is what drew `/orders`
+  // straight through the second line of "Order Processor" - and nothing saw
+  // it, because both are inside the hexagon's own group and so are not free
+  // labels for the rendered check to catch.
+  const nameSpan = (lines - 1) * size * 1.2 + size;
+  const lead = +((nameSpan + ss) * 0.6).toFixed(2);
+  return { lead, size: ss, bottom: +(lead / 2 + ss * 0.6).toFixed(2) };
+}
+
 export function hex({
   x, y, r = 42.5, stroke = APP[0].stroke, fill = APP[0].fill, ink, solid = false,
-  label: name = 'App', size, labelDx = 0,
+  label: name = 'App', size, labelDx = 0, labelDy = 0, sub = '', subSize,
 }) {
   assertStroke(stroke, name, 'hex()');
   const poly = el('polygon', { points: hexPoints(x, y, r), ...(solid ? { fill } : tint(fill)), ...outline(stroke) });
   const s = size ?? Math.max(MIN_LABEL, +(r / 3).toFixed(2));
+  // A second line, for an app that answers on a named endpoint or port. It is
+  // CODE, so it takes the page's code font at the weight code is set in, and
+  // it is drawn INSIDE this group: a text node laid over a hexagon from the
+  // scene is indistinguishable from a label that has drifted onto a shape,
+  // which is the defect the free-label check in tests/diagrams.spec.js catches.
+  const block = hexNameBlock({ size: s, sub, subSize, lines: String(name).split('\n').length });
+  const ss = block.size;
+  const lead = block.lead;
+  // labelDy moves the whole name block. A hexagon holding a MARK as well as a
+  // name centres the PAIR, so the name sits below the centre row by however
+  // much the mark takes above it - and it still has to be inside this group,
+  // or the free-label check cannot tell it from a label that has drifted.
+  const ny = y + labelDy;
   // A solid hexagon carries its name ON the fill, so that name's colour belongs
   // to the SHAPE and is the same in both themes - the class says so, and the
   // theme test skips it when looking for type that should follow the page.
   return el('g', { class: solid ? 'd-hex d-hex-solid' : 'd-hex' }, [
     poly,
-    name ? label({ x: x + labelDx, y, text: name, size: s, color: ink ?? C.body }) : null,
+    name ? label({ x: x + labelDx, y: ny - lead / 2, text: name, size: s, color: ink ?? C.body }) : null,
+    sub
+      ? label({
+        x: x + labelDx, y: ny + lead / 2, text: sub, size: ss,
+        color: ink ?? C.body, weight: 400, mono: true,
+      })
+      : null,
   ]);
 }
 
@@ -191,6 +281,34 @@ export function badge({ x, y, r = 19, mark = null }) {
   return el('g', { class: 'd-badge' }, [
     el('polygon', { points: hexPoints(x, y, r), fill: C.navy, stroke: C.navy, 'stroke-width': lineWidth(), 'stroke-linejoin': 'round' }),
     mark,
+  ]);
+}
+
+// A NUMBERED STEP: a filled disc with its number on it, for a diagram that
+// says "this happens, then this". The source images on the distributed lock
+// how-to put one beside each run, and nothing in this set drew one before.
+//
+// It is `--d-app-blue` with `--d-app-paper` on it, not C.navy with C.bg. Those
+// two look identical on the light theme and fail on the dark one: `--d-blue`
+// is #0D2192 in light and #6f9fe8 in dark, so the disc goes pale while the
+// numeral - the page's own ground - goes almost black, and the marker ends up
+// dark-on-light instead of light-on-dark. The app tokens are the ones that are
+// the SAME in both themes, which is exactly the property a number sitting on a
+// fill needs, and they are the colours the source used anyway.
+//
+// `d-on-fill` tells the theme check this type is meant not to follow the page.
+export const STEP_R = 15;
+
+// `step` rather than `n`: this module's number formatter is called `n`, and a
+// parameter of that name shadows it inside the function - cx came out as
+// "n is not a function" on the first call.
+export function stepMark({ x, y, step, r = STEP_R, size }) {
+  const s = size ?? Math.max(MIN_LABEL, +(r * 0.95).toFixed(2));
+  return el('g', { class: 'd-step' }, [
+    el('circle', {
+      cx: n(x), cy: n(y), r: n(r), fill: C.appBlue, ...outline(C.appBlue),
+    }),
+    onFill(label({ x, y, text: String(step), size: s, color: C.paper })),
   ]);
 }
 
@@ -206,11 +324,35 @@ export function daprApp({ x, y, r = 42.5, stroke, fill, label: name, size, label
 // ----------------------------------------------------------- workflow shapes
 
 // A workflow activity. Teal outline is fine here: the box always has its label.
-export function box({ x, y, w = 194, h = 30, label: name = '', stroke = C.teal, fill = C.tealFill, size = 11 }) {
+//
+// `labelDx` moves the name off centre, which is what a box sharing its inside
+// with a glyph needs: the agent-pattern set sets an LLM call's name to the
+// left and puts the brain mark in the room that leaves, so the pair is
+// centred rather than the name alone. hex() has carried the same parameter
+// for the same reason since the first app with a sidecar badge. The name
+// stays INSIDE this group whatever the offset, which is what keeps it a
+// shape's own name rather than a free label that has drifted onto a shape.
+//
+// `solid` fills without the tint, which is what a box carrying NO NAME needs.
+// The set's fills are tints at 0.6, and a tint reads as a box on the light
+// page and as very nearly nothing on the dark one - the outline is what
+// carries such a box, and the app ink an unlabelled box has to be outlined in
+// (see assertStroke) is itself dark. The agent-pattern map shipped a first
+// draft like that: eight legible panels in light, eight all but invisible in
+// dark. A solid Dapr fill with the app ink around it is how every hexagon in
+// the set already reads on either ground. hex() has carried the same flag,
+// spelled the same way, since the start.
+export function box({
+  x, y, w = 194, h = 30, label: name = '', stroke = C.teal, fill = C.tealFill,
+  size = 11, labelDx = 0, solid = false,
+}) {
   assertStroke(stroke, name, 'box()');
   return el('g', { class: 'd-box' }, [
-    el('rect', { x: n(x - w / 2), y: n(y - h / 2), width: w, height: h, rx: 6, ...tint(fill), ...outline(stroke) }),
-    name ? label({ x, y, text: name, size }) : null,
+    el('rect', {
+      x: n(x - w / 2), y: n(y - h / 2), width: w, height: h, rx: 6,
+      ...(solid ? { fill } : tint(fill)), ...outline(stroke),
+    }),
+    name ? label({ x: x + labelDx, y, text: name, size }) : null,
   ]);
 }
 
@@ -275,11 +417,76 @@ export function callout({
 }
 
 // A workflow start or end. Label sits under the circle unless labelDy says otherwise.
-export function node({ x, y, r = 16, stroke = C.navy, fill = C.bg, label: name = '', labelDy }) {
+// A DECISION: the diamond a flow branches at. The one shape the workflow and
+// agent pattern sets needed that the library did not already have.
+//
+// `w` and `h` are the full width and height, not half, so a diamond is sized
+// against the box() beside it rather than by its half-diagonals.
+//
+// The label sits on the VERTICAL CENTRE and nowhere else. A diamond is widest
+// exactly there, so that row is the only one with the full `w` to set a name
+// in; a label nudged up or down overflows a shape that still passes every
+// geometric check, because the polygon itself is the right size. Keep names
+// here to one short word - "Gate", "Yes/No" - and put the condition in the
+// arrow labels, which is what the source diagrams do.
+// The four points of the diamond, by name. A decision means "which way out",
+// and in a flowchart each way out leaves from its OWN point - the source
+// images do this and it is what makes the shape read as a decision rather than
+// a junction. Exported because a scene that works the vertices out for itself
+// gets them subtly wrong: the external-system gate had all three branches
+// leaving the right-hand point, which drew as one arrow splitting into three.
+export function decisionPoints({ x, y, w = 92, h = 64 }) {
+  return {
+    top: [x, y - h / 2],
+    right: [x + w / 2, y],
+    bottom: [x, y + h / 2],
+    left: [x - w / 2, y],
+  };
+}
+
+// `solid` fills without the tint. Same reason as box(): see the note there.
+export function decision({
+  x, y, w = 92, h = 64, label: name = '', stroke = C.appInk, fill = C.appGold,
+  size = 11, solid = false,
+}) {
+  assertStroke(stroke, name, 'decision()');
+  const p = decisionPoints({ x, y, w, h });
+  const pts = [p.top, p.right, p.bottom, p.left];
+  return el('g', { class: 'd-decision' }, [
+    el('polygon', {
+      points: pts.map(([px, py]) => `${n(px)},${n(py)}`).join(' '),
+      ...(solid ? { fill } : tint(fill)), ...outline(stroke),
+    }),
+    name ? label({ x, y, text: name, size }) : null,
+  ]);
+}
+
+// A terminal marker. By default it names itself BELOW the circle, which is
+// right for a small marker beside a line.
+//
+// `labelInside` puts the name in the circle instead, the way a flowchart's
+// Start and End terminals are drawn, and `ink` is the colour it is set in -
+// which on a solid fill has to be the fill's own ink, not the page's body
+// colour. The caller states the ink rather than this deriving it: the fill is
+// a token here, not a value, so there is nothing to measure at build time.
+export function node({
+  x, y, r = 16, stroke = C.navy, fill = C.bg,
+  label: name = '', labelDy, labelInside = false, ink = C.body, size = 11,
+}) {
   assertStroke(stroke, name, 'node()');
+  assertInk(ink, 'node()');
+  // A name INSIDE the circle sits on the fill, not on the page - FLOW.start
+  // and FLOW.end set it in C.appInk on solid green and solid orange - so it
+  // is marked the way stepMark()'s numeral and a solid hex()'s name are. The
+  // theme check looks for type that SHOULD follow the page and reports a
+  // scene whose first text does not; without the mark, a flow scene whose
+  // first text is its Start terminal failed a rule it was keeping.
+  const named = name
+    ? label({ x, y: labelInside ? y : y + (labelDy ?? r + 14), text: name, size, color: ink })
+    : null;
   return el('g', { class: 'd-node' }, [
     el('circle', { cx: n(x), cy: n(y), r, fill, ...outline(stroke) }),
-    name ? label({ x, y: y + (labelDy ?? r + 14), text: name }) : null,
+    labelInside && named ? onFill(named) : named,
   ]);
 }
 
@@ -470,8 +677,20 @@ export const lineWidth = () => {
 // the original point, so the line still passes where the coordinates say it
 // does. A corner never eats more than half of either leg, or a short leg would
 // fold the line back on itself.
-export function roundedPath({ points, r = 10, color = C.navy, width }) {
+export function roundedPath({ points, r = 10, color = C.navy, width, dash = false }) {
   const len = (from, to) => Math.hypot(to[0] - from[0], to[1] - from[1]);
+  // Every leg, not just the ones that end up carrying a chevron. The corner
+  // cut divides by the leg length, so a repeated point makes that 0/0 and
+  // writes NaN into `d` - an invalid path the exporter accepts and the browser
+  // draws as a truncated run with a mark at the junction. The guard that was
+  // supposed to catch this lived in elbowArrow()'s chevron helper, which only
+  // ever saw the first and last legs, so a headless bus feeder got no check at
+  // all. It belongs here, where the division happens.
+  for (let i = 1; i < points.length; i += 1) {
+    if (len(points[i - 1], points[i]) === 0) {
+      throw new Error(`roundedPath(): a leg has no length (point ${i} repeats point ${i - 1})`);
+    }
+  }
   const back = (from, to, d) => {
     const l = len(from, to);
     return [+(from[0] + ((to[0] - from[0]) / l) * d).toFixed(2), +(from[1] + ((to[1] - from[1]) / l) * d).toFixed(2)];
@@ -488,7 +707,17 @@ export function roundedPath({ points, r = 10, color = C.navy, width }) {
   }
   const last = points[points.length - 1];
   d += ` L${n(last[0])},${n(last[1])}`;
-  return el('path', { class: 'd-run', d, fill: 'none', stroke: color, 'stroke-width': width ?? lineWidth(), 'stroke-linecap': 'round' });
+  return el('path', {
+    class: 'd-run',
+    d,
+    fill: 'none',
+    stroke: color,
+    'stroke-width': width ?? lineWidth(),
+    'stroke-linecap': 'round',
+    // The same pattern arrow() dashes with, so a straight run and an elbowed
+    // one that mean the same thing look the same.
+    ...(dash ? { 'stroke-dasharray': '6 5' } : {}),
+  });
 }
 
 // An elbowed run with a chevron on one or both ends. Five scenes had already
@@ -500,18 +729,23 @@ export function roundedPath({ points, r = 10, color = C.navy, width }) {
 // and the two read as one line.
 export const HEAD_RUN = 26;
 
-export function elbowArrow({ points, r = 12, color = C.navy, heads = 'end' }) {
+export function elbowArrow({ points, r = 12, color = C.navy, heads = 'end', dash = false }) {
   if (!Array.isArray(points) || points.length < 2) throw new Error('elbowArrow(): needs at least two points');
   const chevron = (tip, prev) => {
     const dx = prev[0] - tip[0];
     const dy = prev[1] - tip[1];
     const l = Math.hypot(dx, dy);
+    // roundedPath() has already checked every leg by the time a head is placed;
+    // this stays as the guard on the arithmetic immediately below it.
     if (l === 0) throw new Error('elbowArrow(): a leg has no length');
     // Never longer than half the leg, or the head outruns the corner before it.
     const d = Math.min(HEAD_RUN, l / 2);
     return arrow({ from: [+(tip[0] + (dx / l) * d).toFixed(2), +(tip[1] + (dy / l) * d).toFixed(2)], to: tip, color });
   };
-  const kids = [roundedPath({ points, r, color })];
+  // `dash` dashes the LINE and not the head, which is what arrow() does and
+  // for the same reason: a dashed line says the thing does not happen, and a
+  // dashed chevron just reads as a badly drawn one.
+  const kids = [roundedPath({ points, r, color, dash })];
   if (heads === 'end' || heads === 'both') kids.push(chevron(points[points.length - 1], points[points.length - 2]));
   if (heads === 'start' || heads === 'both') kids.push(chevron(points[0], points[1]));
   return el('g', { class: 'd-elbow-arrow' }, kids);
@@ -525,6 +759,20 @@ export const CAPTION_INSET = 20;
 // the first thing it touches is whatever stands under the name.
 export const CAPTION_H = 26;
 export const captionReach = () => CAPTION_H / 2;
+
+// The least clear space a caption pill leaves between its text and its own
+// rounded end, as a fraction of the caption's type size: half an em each side.
+//
+// `captionW` is measured, because the exporter has no font metrics and cannot
+// derive it. What it CANNOT do is tell you that the number you measured was
+// the text's own width with nothing left over - and a pill whose ends graze
+// its letters reads as a mistake long before it reads as tight. The scenes
+// that predate this all clear the rule, the tightest by 0.8 units; the first
+// five workflow scenes to use region() all failed it, one of them by drawing
+// the text 0.4 units WIDER than the pill around it. The rendered test
+// `keeps every caption pill's text clear of its own ends` is the check.
+export const CAPTION_PAD_EM = 0.5;
+export const captionPad = (size) => +(size * CAPTION_PAD_EM).toFixed(2);
 
 export function region({ x, y, w, h, stroke = C.caption, r = 10, caption = '', captionW, captionX, captionH = CAPTION_H, captionSize = 15 }) {
   return el('g', { class: 'd-region' }, [
@@ -552,6 +800,211 @@ export function region({ x, y, w, h, stroke = C.caption, r = 10, caption = '', c
 // no font metrics, so it cannot be derived from the name.
 export function pod({ x, y, w, h, name = 'Pod', captionW = 56, captionX, size = 13 }) {
   return region({ x, y, w, h, stroke: C.blue, r: 8, caption: name, captionW, captionX, captionSize: size });
+}
+
+// LEADING SPACES BECOME NON-BREAKING ONES, or the indentation does not
+// arrive. Each line of a block is its own <tspan>, and a space at the start of
+// a tspan is whitespace at the boundary of a tag: XML collapses it and Hugo's
+// minifier drops what is left, which flattened a component's YAML to
+//
+//     metadata:
+//      name: localsecretstore
+//     spec:
+//      metadata:
+//      - name: secretsFile
+//      value: secrets.json
+//
+// where `value` belongs under `- name`. In YAML that is not a cosmetic
+// difference - it is a different document, and the one on the page would not
+// load. A non-breaking space is not whitespace to either, and in a monospace
+// face it is exactly as wide as the space it replaces. richLabel() carries the
+// same note for the same reason.
+//
+// Shared by the two cards that set code: codeCard() shows a file, httpCard()
+// shows a payload, and JSON loses as much to a dropped indent as YAML does to
+// a changed one.
+export function indentCode(code) {
+  return String(code)
+    .split('\n')
+    .map((line) => line.replace(/^ +/, (run) => ' '.repeat(run.length)))
+    .join('\n');
+}
+
+// AN HTTP EXCHANGE: a request over a divider, and the response under it.
+//
+// The configuration, state, secrets and pub/sub overviews all show a call to
+// the Dapr API this way - a verb, the URL it goes to, a status, and what comes
+// back - so the card is one drawing rather than four scenes stacking their own
+// text at their own offsets.
+//
+// The method and the URL follow what `sidecar-model` already draws for a call
+// to the Dapr API: the verb in blue at the weight code is set in, and the URL
+// in the page's code font with the part that names the building block picked
+// out. `url` takes richLabel parts for that, or a plain string where nothing
+// needs picking out.
+//
+// `statusW` is the measured width of the status chip. The exporter has no font
+// metrics, so a caller that cares measures it on the rendered page and writes
+// the number down; the default is an estimate good enough for "200 OK".
+//
+// A PAYLOAD MAY BE SEVERAL LINES, on either side of the divider: `request` is
+// what went up, `body` is what came back. A payload of one line stays CENTRED,
+// which is how every card drawn before this one reads; a payload of several is
+// LEFT ALIGNED, because JSON centred line by line is a picture of JSON rather
+// than JSON - the same reason codeCard() aligns its code left.
+//
+// The blocks are STACKED, and the stack is centred in the card: method, URL,
+// request, divider, response, each a gap below the last, with whatever height
+// is left over split evenly above and below. Anchoring the response to the
+// BOTTOM edge instead - which is what this did while every card held one line
+// - spreads a short exchange across a tall card and strands the divider
+// halfway down empty space, which is exactly what three cards of one size do
+// when one of them has nine lines and another has one.
+//
+// A card shorter than its contents need is refused rather than drawn
+// overflowing: httpCardH() is the number to size it from.
+
+// How tall a payload block of k lines is. It is label() that sets the lines
+// out, so this is label()'s own leading rather than a number of its own:
+// k lines occupy one line of type plus k - 1 steps between them, and label()
+// centres the block on the y it is given, which is what the card places.
+const PAYLOAD_LEAD = 1.2;
+const payloadH = (content, size) => (content
+  ? String(content).split('\n').length * size * PAYLOAD_LEAD - size * (PAYLOAD_LEAD - 1)
+  : 0);
+
+// The LEAST height a card needs to hold what it is given, which is what a
+// scene sizes its canvas from. Typing a height instead is how the pub/sub
+// cards ended up with a divider sitting on a line of JSON.
+export function httpCardH({ size = 13, request = '', body = '', status = '' }) {
+  const pad = size * 1.8;
+  const lead = size * 1.25;
+  const gap = size * 1.1;
+  const reqH = payloadH(request, size);
+  const bodyH = payloadH(body, size);
+  // The divider needs the chip's own depth plus a gap on each side; with no
+  // divider, two blocks still need one gap between them.
+  const mid = status ? size * 1.7 + gap * 2 : ((reqH || bodyH) ? gap : 0);
+  return +(pad * 2 + size + lead * 1.4 + (reqH ? gap + reqH : 0) + mid + bodyH).toFixed(2);
+}
+
+export function httpCard({
+  x, y, w, h, method, url, status = '', request = '', body = '', size = 13, statusW,
+  stroke = C.caption, fill = C.bg,
+}) {
+  if (size < MIN_LABEL) throw new RangeError(`httpCard(): size ${size} is below ${MIN_LABEL}px`);
+  if (!method) throw new Error('httpCard(): a method names the request and is required');
+  const natural = httpCardH({ size, request, body, status });
+  if (h < natural) {
+    throw new RangeError(`httpCard(): ${h} deep cannot hold what it is given - it needs ${natural}; httpCardH() is that number`);
+  }
+  const top = y - h / 2;
+  const pad = size * 1.8;
+  const lead = size * 1.25;
+  const gap = size * 1.1;
+  const reqH = payloadH(request, size);
+  const bodyH = payloadH(body, size);
+  const chipH = size * 1.7;
+  // The stack runs from the top of the centred block; `cur` is the lower edge
+  // of whatever was laid out last.
+  let cur = y - natural / 2 + pad;
+  const methodY = cur + size * 0.5;
+  cur += size;
+  const urlY = methodY + lead * 1.4;
+  cur = urlY + size * 0.5;
+  let reqY = 0;
+  if (request) {
+    reqY = cur + gap + reqH / 2;
+    cur = reqY + reqH / 2;
+  }
+  let lineY = 0;
+  if (status) {
+    lineY = +(cur + gap + chipH / 2).toFixed(2);
+    cur = lineY + chipH / 2 + gap;
+  } else if (body) {
+    cur += gap;
+  }
+  const bodyY = cur + bodyH / 2;
+  const chipW = statusW ?? +(String(status).length * size * 0.62 + size).toFixed(2);
+  const parts = Array.isArray(url) ? url : [{ text: String(url ?? '') }];
+  // Weight 400, which is what richLabel sets the URL above it in: a payload
+  // and the URL are the same kind of text, and label()'s own default of 600
+  // made the body read as the louder of the two.
+  const payload = (content, cy) => {
+    const many = String(content).includes('\n');
+    return label({
+      x: many ? x - w / 2 + pad : x,
+      y: cy,
+      text: many ? indentCode(content) : content,
+      size,
+      weight: 400,
+      mono: true,
+      anchor: many ? 'start' : 'middle',
+    });
+  };
+  return el('g', { class: 'd-http-card' }, [
+    el('rect', {
+      x: n(x - w / 2), y: n(top), width: n(w), height: n(h), rx: 10,
+      fill, ...outline(stroke),
+    }),
+    label({ x, y: methodY, text: method, size, weight: 700, color: C.blue }),
+    url ? richLabel({ x, y: urlY, parts, size, anchor: 'middle', mono: true }) : null,
+    request ? payload(request, reqY) : null,
+    status
+      ? group([
+        el('line', {
+          x1: n(x - w / 2 + pad), y1: n(lineY), x2: n(x + w / 2 - pad), y2: n(lineY),
+          ...outline(stroke, { 'stroke-dasharray': '2 4' }),
+        }),
+        // The chip is FILLED with the page's own ground, which is what stops
+        // the divider striking through the status - the same thing a label's
+        // halo does, and what `paints ground behind any label a line crosses`
+        // checks for.
+        pill({ x, y: lineY, w: chipW, h: chipH, text: status, color: stroke, size }),
+      ])
+      : null,
+    body ? payload(body, bodyY) : null,
+  ]);
+}
+
+// A CONFIGURATION ARTIFACT: a file, or the few lines of code that name one, in
+// a bordered card with the artifact's own name above it.
+//
+// The how-tos keep drawing the same thing - "this name in your code is that
+// name in the component file is that key in the store" - and a chain like that
+// is only checkable if the reader can see the artifacts side by side with
+// their real contents in them. `secrets-mgmt-overview` shows three.
+//
+// The code is LEFT aligned and set in the page's own code font, because that
+// is how the reader meets it everywhere else on the page; a centred block of
+// YAML reads as a picture of YAML rather than as YAML. `\n` breaks the lines
+// and nothing is wrapped for you - where a line breaks is a layout decision,
+// and wrapping would need font metrics the exporter does not have.
+//
+// The name goes ABOVE the card rather than inside it: inside, it competes with
+// the code for the same left margin, and the two are different kinds of thing.
+export function codeCard({
+  x, y, w, h, title = '', code = '', size = 12, titleSize = 13,
+  stroke = C.caption, fill = C.bg, pad = 14, titleDy = 16,
+}) {
+  if (size < MIN_LABEL) throw new RangeError(`codeCard(): size ${size} is below ${MIN_LABEL}px`);
+  const top = y - h / 2;
+  // Leading spaces become non-breaking ones; indentCode() carries the why.
+  const indented = indentCode(code);
+  return el('g', { class: 'd-code-card' }, [
+    title
+      ? label({ x, y: top - titleDy, text: title, size: titleSize, weight: 700 })
+      : null,
+    el('rect', {
+      x: n(x - w / 2), y: n(top), width: n(w), height: n(h), rx: 10,
+      fill, ...outline(stroke),
+    }),
+    code
+      ? label({
+        x: x - w / 2 + pad, y, text: indented, size, weight: 400, mono: true, anchor: 'start',
+      })
+      : null,
+  ]);
 }
 
 export function pill({ x, y, w, h = 26, text: content, color = C.navy, filled = false, size = 15 }) {
@@ -662,8 +1115,14 @@ export const SOCKET_R = 21;
 // their names and the stalks elbow across to the face. `elbowX` is where the
 // turn happens, and it is required rather than guessed - halfway is rarely
 // right, and a turn in the wrong place reads as a routing mistake.
+// A stalk that only changes height is VERTICAL: it leaves a horizontal face,
+// which is how a flow diagram hangs the mark above a step. There is no turn to
+// place, so elbowX is neither needed nor asked for. Without this the three
+// points collapse onto one x, the path has zero length, and the scene renders
+// a ring joined to nothing - a mark no geometric test can see.
 export function lollipop({ x, y, to, toY = y, elbowX, elbowR = 10, r = BALL_R, color = C.navy }) {
-  const bend = toY !== y;
+  const straightDown = to === x && toY !== y;
+  const bend = toY !== y && !straightDown;
   if (bend && !fin(elbowX)) throw new Error('lollipop(): a stalk that changes height needs elbowX, the x it turns at');
   const stalk = bend
     ? roundedPath({
@@ -671,7 +1130,10 @@ export function lollipop({ x, y, to, toY = y, elbowX, elbowR = 10, r = BALL_R, c
       r: elbowR,
       color,
     })
-    : el('line', { x1: n(x), y1: n(y), x2: n(to), y2: n(y), stroke: color, 'stroke-width': lineWidth() });
+    : el('line', {
+      x1: n(x), y1: n(y), x2: n(to), y2: n(straightDown ? toY : y),
+      stroke: color, 'stroke-width': lineWidth(),
+    });
   return el('g', { class: 'd-lollipop' }, [
     stalk,
     el('circle', { cx: n(x), cy: n(y), r: n(r), fill: C.bg, ...outline(color) }),

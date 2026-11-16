@@ -34,7 +34,7 @@ You can call the secrets API in your application code to retrieve and use secret
 
 For example, the diagram below shows an application requesting the secret called "mysecret" from a secret store called "vault" from a configured cloud secret store.
 
-<img src="/images/secrets-overview-cloud-stores.png" width=600>
+{{< diagram name="secrets-cloud-stores" width="65" >}}
 
 Applications can also use the secrets API to access secrets from a Kubernetes secret store. By default, Dapr enables a built-in [Kubernetes secret store in Kubernetes mode]({{% ref "kubernetes-secret-store" %}}), deployed via:
 
@@ -45,14 +45,14 @@ If you are using another secret store, you can disable (not configure) the Dapr 
 
 In the example below, the application retrieves the same secret "mysecret" from a Kubernetes secret store.
 
-<img src="/images/secrets-overview-kubernetes-store.png" width=600>
+{{< diagram name="secrets-kubernetes-store" width="55" >}}
 
 In Azure, you can configure Dapr to retrieve secrets using managed identities to authenticate with Azure Key Vault. In the example below:
 
 1. An [Azure Kubernetes Service (AKS) cluster](https://docs.microsoft.com/azure/aks) is configured to use managed identities. 
 1. Dapr uses [pod identities](https://docs.microsoft.com/azure/aks/operator-best-practices-identity#use-pod-identities) to retrieve secrets from Azure Key Vault on behalf of the application.
 
-<img src="/images/secrets-overview-azure-aks-keyvault.png" width=600>
+{{< diagram name="secrets-azure-aks-keyvault" width="55" >}}
 
 In the examples above, the application code did not have to change to get the same secret. Dapr uses the secret management components via the secrets management building block API.
 

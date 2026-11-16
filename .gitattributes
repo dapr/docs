@@ -5,3 +5,5 @@
 daprdocs/assets/icons/*.svg -text
 # Generated diagrams are compared byte-for-byte by --check, so a CRLF checkout on Windows must not alter them.
 daprdocs/assets/diagrams/*.svg text eol=lf
+# Rendered diagram pngs: the root rule above leaves binary detection to a heuristic, and a png that gets eol-normalised on checkout is a corrupt png.
+daprdocs/static/diagrams/*.png binary

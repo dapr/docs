@@ -20,7 +20,7 @@ Configuration data is read-only from the application API perspective, with updat
 - Consume configuration items that are returned as read-only key/value pairs
 - Subscribe to changes whenever a configuration item changes
 
-<img src="/images/configuration-api-overview.png" width=900>
+{{< diagram configuration-api-overview >}}
 
 {{% alert title="Note" color="primary" %}}
  The Configuration API should not be confused with the [Dapr sidecar and control plane configuration]({{% ref "configuration-overview" %}}), which is used to set policies and settings on Dapr sidecar instances or the installed Dapr control plane.

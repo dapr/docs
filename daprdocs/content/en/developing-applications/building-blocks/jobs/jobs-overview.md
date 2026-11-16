@@ -16,7 +16,7 @@ Jobs in Dapr consist of:
 
 [See example scenarios.]({{% ref "#scenarios" %}})
 
-<img src="/images/scheduler/scheduler-architecture.png" alt="Diagram showing the Scheduler control plane service and the jobs API">
+{{< diagram name="scheduler-architecture" width="85" >}}
 
 ## How it works
 

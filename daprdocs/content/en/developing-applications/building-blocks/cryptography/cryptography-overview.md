@@ -26,7 +26,7 @@ Alternatively, you can configure Dapr to manage the cryptographic keys for you, 
 
 With Dapr, you can perform cryptographic operations without exposing cryptographic keys to your application.
 
-<img src="/images/cryptography-overview.png" width=1000 style="padding-bottom:15px;" alt="Diagram showing how Dapr cryptography works with your app">
+{{< diagram name="cryptography-overview" width="70" >}}
 
 
 By using the cryptography building block, you can:

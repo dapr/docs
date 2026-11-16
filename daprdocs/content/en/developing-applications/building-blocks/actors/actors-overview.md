@@ -20,7 +20,7 @@ Dapr includes a runtime that specifically implements the [Virtual Actor pattern]
 
 Every actor is defined as an instance of an actor type, identical to the way an object is an instance of a class. For example, there may be an actor type that implements the functionality of a calculator and there could be many actors of that type that are distributed on various nodes across a cluster. Each such actor is uniquely identified by an actor ID.
 
-<img src="/images/actor_background_game_example.png" width=400 style="padding-bottom:25px;">
+{{< diagram name="actors-game-example" width="65" >}}
 
 [The following overview video and demo](https://www.youtube.com/live/0y7ne6teHT4?si=dWNgtsp61f3Sjq0n&t=10797) demonstrates how actors in Dapr work. 
 
@@ -87,7 +87,7 @@ To provide scalability and reliability, actors instances are  throughout the clu
 
 You can invoke actor methods by calling them over HTTP, as shown in the general example below.
 
-<img src="/images/actors-calling-method.png" width=900>
+{{< diagram name="actors-calling-method" width="60" >}}
 
 1. The service calls the actor API on the sidecar.
 1. With the cached partitioning information from the placement service, the sidecar determines which actor service instance will host actor ID **3**. The call is forwarded to the appropriate sidecar.
