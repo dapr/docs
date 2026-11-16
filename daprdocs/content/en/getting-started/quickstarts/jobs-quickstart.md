@@ -48,7 +48,7 @@ git clone https://github.com/dapr/quickstarts.git
 From the root of the Quickstarts directory, navigate into the jobs directory:
 
 ```bash
-cd jobs/go/sdk
+cd jobs/go/sdk/job-service
 ```
 
 ### Step 3: Schedule jobs
@@ -471,7 +471,7 @@ cd jobs/go/sdk
 In the terminal, run the `job-service` app:
 
 ```bash
-dapr run --app-id job-service --app-port 6200 --dapr-grpc-port 6281 --app-protocol grpc -- go run .
+dapr run --app-id job-service-sdk --app-port 6200 --dapr-grpc-port 6281 --app-protocol grpc -- go run .
 ```
 
 **Expected output**
@@ -484,10 +484,11 @@ dapr run --app-id job-service --app-port 6200 --dapr-grpc-port 6281 --app-protoc
 == APP == Starting server on port: 6200
 ```
 
-In a new terminal window, run the `job-scheduler` app:
+In a new terminal window, from the root of the Quickstarts directory, navigate to the `job-scheduler` directory and run the `job-scheduler` app:
 
 ```bash
-dapr run --app-id job-scheduler --app-port 6300 -- go run .
+cd jobs/go/sdk/job-scheduler
+dapr run --app-id job-scheduler-sdk --app-port 6300 -- go run .
 ```
 
 **Expected output**

@@ -40,11 +40,11 @@ The Dapr actor runtime manages distribution scheme and key range settings for yo
 
 This partition data table for each actor type is updated and stored in each Dapr instance running in the environment and can change dynamically as new instances of actor services are created and destroyed.
 
-<img src="/images/actors_background_placement_service_registration.png" width=600>
+{{< diagram actors-placement-registration >}}
 
 When a client calls an actor with a particular id (for example, actor id 123), the Dapr instance for the client hashes the actor type and id, and uses the information to call onto the corresponding Dapr instance that can serve the requests for that particular actor id. As a result, the same partition (or service instance) is always called for any given actor id. This is shown in the diagram below.
 
-<img src="/images/actors_background_id_hashing_calling.png" width=600>
+{{< diagram actors-id-hashing >}}
 
 This simplifies some choices, but also carries some consideration:
 
@@ -77,7 +77,7 @@ A single actor instance cannot process more than one request at a time. An actor
 
 Actors can deadlock on each other if there is a circular request between two actors while an external request is made to one of the actors simultaneously. The Dapr actor runtime automatically times out on actor calls and throw an exception to the caller to interrupt possible deadlock situations.
 
-<img src="/images/actors_background_communication.png" width=600>
+{{< diagram name="actors-communication" width="80" >}}
 
 #### Reentrancy
 
@@ -91,7 +91,7 @@ The Dapr actor runtime enforces turn-based concurrency by acquiring a per-actor 
 
 The following example illustrates the above concepts. Consider an actor type that implements two asynchronous methods (say, Method1 and Method2), a timer, and a reminder. The diagram below shows an example of a timeline for the execution of these methods and callbacks on behalf of two actors (ActorId1 and ActorId2) that belong to this actor type.
 
-<img src="/images/actors_background_concurrency.png" width=600>
+{{< diagram actors-concurrency >}}
 
 ## Next steps
 

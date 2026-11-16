@@ -80,7 +80,13 @@ The workflow, in short:
    `diagrams/scenes/index.mjs`.
 1. Run `npm run export:diagrams`. It writes the inlined drawing to
    `daprdocs/assets/diagrams/<name>.svg` and a standalone copy to
-   `daprdocs/static/diagrams/<name>.svg`. Commit both.
+   `daprdocs/static/diagrams/<name>.svg`. Then run `npm run export:pngs`,
+   which renders the standalone copy to `daprdocs/static/diagrams/<name>.png`,
+   the file behind the page's "Download PNG" button. Commit all three. The
+   two steps are not alike: the SVG export is plain Node, but the PNG step
+   drives a browser, so it needs Chromium installed (`npx playwright install
+   chromium`). It only re-renders the scenes that changed, so an unchanged
+   diagram's PNG does not churn in git. `--force` re-renders everything.
 1. Place it on the page with the `diagram` shortcode:
 
    ```
@@ -98,15 +104,29 @@ The workflow, in short:
 
    A missing or misspelled scene name fails the build instead of rendering
    nothing.
-1. Add the scene to `SCENES` in `tests/diagrams.spec.js` with every label it
+1. Add the scene to `SCENE_ROWS` in `tests/diagrams.spec.js` with every label it
    must draw. That spec fails on a scene or a call site that has no row, so no
    diagram ships untested.
 1. Render it and look at it in **both** themes before opening your PR. The
    numeric tests pass on a mark that is invisible and on a label drawn twice
    in the same place.
-1. Run `npm run test:diagrams`, `npm run export:diagrams -- --check` and
-   `npm run test:layout`. CI runs all three, so a committed SVG that no longer
-   matches a fresh render fails the build.
+1. Run the four checks CI runs, in this order:
+
+   ```
+   npm run export:diagrams -- --check
+   npm run check:pngs
+   npm run test:diagrams
+   npm run test:layout
+   ```
+
+   The first three are plain Node and finish in seconds; CI runs them before
+   it installs a browser. `test:layout` needs Chromium and runs the full
+   Playwright suite, which takes several minutes. A committed SVG that no
+   longer matches a fresh render fails the first, and a committed PNG that no
+   longer matches its scene fails the second, so a scene edited without
+   re-running `npm run export:diagrams` and `npm run export:pngs` does not
+   get through. `npm run check:pngs` only compares hashes, so it needs no
+   browser even though regenerating the PNGs does.
 
 Pages that have not been converted still use the template deck process above.
 The two sit side by side; there is no need to convert a diagram just because

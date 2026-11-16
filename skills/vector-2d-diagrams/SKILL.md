@@ -29,19 +29,41 @@ button and no reduced-motion path.
 | Shape builders | `diagrams/shapes.mjs`: hexagons, arrows, cylinders, panels, tiles and the rest |
 | Brand marks and icons | `diagrams/icons.mjs`: reads a vendored SVG, screens it, prefixes its ids, returns nodes |
 | The Dapr API catalogue | `diagrams/apis.mjs`: one definition per API and cross-cutting concern, and `apiTile()`, which draws the block |
+| The two MCP pictures | `diagrams/mcp.mjs`: the measurements `mcp-access-control` and `mcp-service-invocation` agree on, and `ask()`, `word()`, `refusal()` and `sidecarLane()` |
+| The eight agentic patterns | `diagrams/agent-patterns.mjs`: the measurements the pattern pictures agree on, and `llm()`, `workflowStep()`, `step()`, `outside()`, `gate()`, `inNode()`, `outNode()` and `exchange()`. A step that is an LLM call is the flow kit's teal box with the brain mark beside its name; a step with no mark is code. The mark carries the distinction the source images carried in the fill. The name and the mark are one block centred in the box, which is why `NAME_W` holds a measured width for every name a marked box can carry |
+| The language and cloud marks | `diagrams/brands.mjs`: the rows of vendored marks that name a LANGUAGE or a CLOUD, with the box each draws in, and `scaleMarks()` to take a whole row to another size |
 | One scene per diagram | `diagrams/scenes/<name>.mjs`, registered in `diagrams/scenes/index.mjs` |
 | Exporter | `diagrams/export.mjs`, run as `npm run export:diagrams` |
 | Generated SVGs, committed | `daprdocs/assets/diagrams/<name>.svg` |
 | Standalone SVGs, for download and copy | `daprdocs/static/diagrams/<name>.svg`, written by the same export |
+| PNGs, for download | `daprdocs/static/diagrams/<name>.png`, committed, rendered from the standalone SVG by `diagrams/render-png.mjs` (`npm run export:pngs`; `npm run check:pngs` checks them without a browser). `diagrams/png-manifest.json` records a hash per scene and the render settings |
 | Shortcode | `daprdocs/layouts/shortcodes/diagram.html` |
-| Download and copy buttons | `daprdocs/assets/js/diagram-actions.js`, loaded per page by `_partials/hooks/body-end.html` |
+| Download SVG and Download PNG | plain `<a download>` anchors written by the shortcode, `daprdocs/layouts/shortcodes/diagram.html`. No JavaScript is involved |
+| Copy SVG button | `daprdocs/assets/js/diagram-actions.js`, loaded per page by `_partials/hooks/body-end.html`. It binds `[data-diagram-copy]` and nothing else |
 | Figure styles | `daprdocs/assets/scss/_diagrams.scss` |
 | Color tokens | `daprdocs/assets/scss/_tokens.scss`, light and `[data-bs-theme="dark"]` |
 | Vendored marks | `daprdocs/assets/icons/<name>.svg`, with sources and terms in `daprdocs/assets/icons/README.md` |
 | Unit tests | `diagrams/*.test.mjs`, run as `npm run test:diagrams` |
 | Rendered tests | `tests/diagrams.spec.js`, run as `npm run test:layout` |
+| Fallback-font guard | `tests/standalone-font.spec.js`, run as part of `npm run test:layout`: measures every standalone SVG against Arial and Courier New |
 
 The engine's API is in [reference/engine.md](reference/engine.md).
+
+What is still an image, and why, is in
+[reference/not-converted.md](reference/not-converted.md). Read it before
+converting anything that looks like an oversight: it separates the images that
+were weighed and kept (screenshots, vendor UIs, logos), the mermaid blocks this
+set cannot draw (anything needing a lifeline), and the real diagrams that were
+never in the conversion's scope and are still waiting.
+
+What the conversion found WRONG is in
+[reference/fact-check-findings.md](reference/fact-check-findings.md): all
+twenty-five fact-check findings and what became of each. Read it before
+assuming a drawing that disagrees with its old image is a mistake - most
+disagree on purpose, and the scene file says why under its own `DISCREPANCY`
+heading. Seven were carried open to the end and ruled on together; the page
+edits those produced are the only places this conversion changed a page's
+words.
 
 ## Design rules
 
@@ -112,10 +134,11 @@ The engine's API is in [reference/engine.md](reference/engine.md).
 - **Label sizes are canvas-relative.** `_diagrams.scss` sets `svg { width: 100% }`,
   so a label's rendered size is `size x columnWidth / viewBoxWidth`. On a
   1512-wide canvas a 12-unit label lands near 6 to 7 CSS px in a docs column.
-  The 11-unit floor the tests enforce is therefore a floor in **user units**,
-  not in pixels a reader sees. Do not answer this by sizing a scene's labels
-  against its canvas, which fights every rule about keeping one type size
-  across the set: answer it with how wide the figure RENDERS, below.
+  The `MIN_LABEL` floor the tests enforce - 10 units - is therefore a floor
+  in **user units**, not in pixels a reader sees. Do not answer this by
+  sizing a scene's labels against its canvas, which fights every rule about
+  keeping one type size across the set: answer it with how wide the figure
+  RENDERS, below.
 - **A small canvas renders BIG, and the shortcode's `width` is the lever - set
   from a calculation, not by eye.** A scene unit renders at
   `columnWidth / canvasWidth`, so the narrower the canvas, the further it is
@@ -134,12 +157,17 @@ The engine's API is in [reference/engine.md](reference/engine.md).
   width = round(canvasWidth / 1100 * 20) * 5     // nearest 5, capped at 100
   ```
 
-  Leave it out above 85: the difference is not worth the markup. The divisor is
-  not a taste: the canvases in this set fall into two groups with a clear gap
-  between 1050 and 1122 - full-page architecture diagrams above it, set-pieces
-  below - and 1100 sits in that gap. It puts a 13-unit label near 10.6 CSS px
-  in a 900px column, which is `sentry-selfhosted` at 70%, the size that was
-  reviewed and accepted.
+  Note the form: a call that passes `width` names the scene as well. Hugo
+  refuses to mix positional and named parameters, so
+  `{{< diagram sidecar-apis width="65" >}}` is an error rather than the
+  obvious shorthand - the shortcode says so in its own header.
+
+  Leave `width` out above 85: the difference is not worth the markup. The
+  divisor is not a taste: the canvases in this set fall into two groups with
+  a clear gap between 1050 and 1122 - full-page architecture diagrams above
+  it, set-pieces below - and 1100 sits in that gap. It puts a 13-unit label
+  near 10.6 CSS px in a 900px column, which is `sentry-selfhosted` at 70%,
+  the size that was reviewed and accepted.
 
   | canvas | width | | canvas | width |
   | --- | --- | --- | --- | --- |
@@ -153,6 +181,29 @@ The engine's API is in [reference/engine.md](reference/engine.md).
   set. Shrinking the canvas instead does nothing at all; see the rule on that
   under Gotchas. `width` is ignored below the `md` breakpoint, where the column
   is already the smallest a drawing can usefully be.
+
+  **A scene may overrule the formula, once, on the scene.** A maintainer who
+  has looked at a drawing on the page can want it bigger than its canvas asks
+  for: `building-blocks-concept` computes 60 and is pinned at 75. Say it as
+  `renderWidth: 75` beside `width` and `height` in the scene module, with a
+  comment saying who asked and why, and then EVERY call site passes that value
+  - which is the point of putting it on the scene rather than on one page. Do
+  not pin a scene because you think it looks too big or too small: that is the
+  formula doing its job, keeping the type one size across the set. A pin is a
+  decision someone made about one drawing, not a second rule.
+
+  **You do not have to remember this, and you should not try.** `renderWidth()`
+  in `diagrams/render-width.mjs` is the formula, and
+  `diagrams/render-width.test.mjs` sweeps every `{{< diagram >}}` call in the
+  docs against it, naming the file, the line, the canvas and the value to use.
+  Run `npm run test:diagrams` after adding a call site.
+
+  That check exists because this section was read and then not applied: seven
+  diagrams were converted in one branch and all seven shortcodes went in
+  without a width - six on one page, which rendered at six different type
+  sizes, and one calling a scene whose other call site already narrowed it to
+  85. Nothing failed. The scenes exported, the pages built, the rendered suite
+  passed. A rule that is only prose is a rule that gets skipped.
 
 ### Colors
 
@@ -209,12 +260,28 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
   theme test only samples the FIRST panel in a scene, so a scene whose only
   region is sky fails it and a scene whose second region is sky does not.
   That is the test being thin, not permission.
+- **A BLOCKED PATH IS RED AND DASHED, with `fluent-dismiss-circle` beside it.**
+  House default, set by the maintainer on 2026-11-03. The dashing is what
+  carries the meaning - a dashed line says the thing does not happen - and the
+  colour says it a second time, so neither signal is working alone. The mark
+  goes BESIDE the run, not on top of it, so the line still reads whole
+  underneath. An allowed path beside it stays solid navy, and where one is
+  marked at all it takes `fluent-checkmark-circle`.
+
+  This was orange until that ruling, on the reasoning that red-and-green
+  carries nothing for a reader who cannot tell the two apart. That reasoning
+  still stands and is why nothing here pairs red WITH green: an allowed path
+  is solid and navy, never green, so red is never the only thing separating
+  two states. Drawn this way: `api-scoping`, `distributed-lock-overview`,
+  `lock-example`, `pubsub-deadletter` and the three `pubsub-namespace-*`
+  scenes.
 - **A large Dapr hexagon** is navy with the logo inside it.
 - **What the other colors mean:**
   - `C.navy` for arrows and Dapr badges
   - `C.mint` for a workflow start
-  - `C.orange` for a workflow end and failure marks
-  - `C.red` for a failed call
+  - `C.orange` for a workflow end, and for the building block's own segment
+    inside a documented path
+  - `C.red` for a blocked or failed path - see the rule below
   - `C.blue` for secure communication and resiliency
   - `C.caption` for section captions
   - `C.body` for labels
@@ -316,6 +383,21 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
   so the theme test knows to look past their names. Which ink goes on which
   fill is in the colour rules above; a name set in the wrong one is the
   failure those rules exist to stop.
+- **The apps in one scene take `APP` entries IN ORDER, and a colour names one
+  application.** First app `APP[0]`, second `APP[1]`, and so on: when two
+  hexagons are the same size with short names on them, the fill is how a
+  reader tells them apart, and `service-invocation-example` and
+  `pubsub-publish-raw` both lean on it. The exception is a scene that draws
+  the SAME application more than once - two instances competing for a lock,
+  one service at two moments. Then they share a colour *and* share a name,
+  and a caption beside each says which instance it is;
+  `distributed-lock-overview` is the one scene in the set doing this, and
+  giving its two hexagons different names would say two app ids, which for a
+  lock means no contention at all. `diagrams/app-colour.test.mjs` holds the
+  line: **two app hexagons may share a fill only when they carry the same
+  name.** An unnamed hexagon is skipped, because a blank swatch in an app's
+  colour - `observability-tracing` ends with a row of them - is the colour
+  doing its job rather than a second app.
 - **Spread a whole palette entry; never pick properties off it.** Write
   `hex({ x, y, label, ...APP[0] })`, not `stroke: APP[0].stroke, fill:
   APP[0].fill`: the entry carries four properties and picking two silently
@@ -400,6 +482,99 @@ Defined once, as `C` and `APP` in `engine.mjs`. Every one resolves to a
   and both app hexagons are drawn through their own pod names. That shipped
   through a review round here, which is why there is now a rendered test,
   `keeps every caption clear of the contents it names`.
+- **A measured `captionW` is the TEXT's width; the pill needs half an em more
+  at each end.** `captionPad(size)` is that number and the rendered test
+  `keeps every caption pill's text clear of its own ends` enforces it. Measure
+  with `preview-scene.mjs`, then add `2 * captionPad(captionSize)`. Taking the
+  measurement as the width is the whole mistake: it draws a pill whose rounded
+  ends graze its own letters, and nothing else notices - the scene exports, the
+  bbox fits, the caption is clear of the contents it names, the label is drawn.
+  Five workflow scenes shipped it to review; one drew `Main Orchestration
+  Workflow` 0.4 units WIDER than the pill around it.
+- **A free label is measured against the shapes beside it, not placed near
+  them.** A name INSIDE a shape is the builder's problem; a label you position
+  yourself - an arrow's condition, a note under a hexagon - is yours, and its
+  width is the one thing the exporter cannot tell you. Take it from
+  `preview-scene.mjs`, which prints the measured box of every label, and derive
+  the label's x from the run it rides on rather than from a midpoint you
+  eyeballed. On `workflow-external-system` two labels landed on what they
+  annotated: a 78-unit label over a 77-unit run. The rendered test
+  `keeps every free label clear of the shapes around it` is the check, and it
+  names both the label and the shape it hit.
+- **A word above a shape clears the ARROWHEAD, not the shape.** A head is
+  drawn BACK from its tip - seven units of chevron along the line it ends - so
+  the eleven units a word normally rides above a run put the type exactly
+  where the head is. The halo then hides the one part of a run that says which
+  way it goes, and every other check still passes. On `rag-overview` all three
+  runs into the systems row shipped to review like this and read as plain
+  lines touching boxes. Where a word sits over the END of a run, give it its
+  own constant - `HEAD_DY`, about 24 - and say in the scene why it is not
+  `WORD_DY`. `keeps every label clear of an arrowhead` is the check, and it
+  allows no tolerance: nothing about the head is adjustable, so the lever is
+  always the word.
+- **A word on a run names ONE run, and keeps its distance from the next
+  word.** Two runs through one label name neither of them, and no offset of a
+  few units will tell a reader which was meant - move the word onto a stretch
+  of its own run that nothing else crosses. `rag-overview` had `write` lying
+  across `validate_version`'s run three units under `count + verify`; the fix
+  was to drop it below the bar the last two steps use, where its own descent
+  is the only line anywhere near it. `keeps every free label clear of the
+  lines and labels around it` is the check: six scene units of air between any
+  two free labels, and at most one run through any one of them.
+- **A shape with NO NAME needs a solid fill, not a tint.** The set's fills are
+  tints at 0.6, and an unlabelled shape has only its outline to carry it -
+  which, by `assertStroke`, has to be the app ink, and the app ink is dark.
+  That pair reads on the light page and all but disappears on the dark one:
+  the agent-pattern map shipped a first draft with eight legible panels in
+  light and eight voids in dark. Pass `solid: true` to `box()` or
+  `decision()`, as `hex()` has always taken it, and the shape reads on either
+  ground the way every app hexagon in the set does. If you are drawing
+  something small enough to have no room for a name, this applies to you.
+- **Two runs that share a stretch of path draw it ONCE.** Laying one over the
+  other is not the same picture twice: each path sets its dashes out from its
+  own start, so two DASHED runs at different phases fill in each other's gaps
+  and the shared stretch comes out SOLID - which in this set means traffic
+  that happens, the one thing the dash is there to deny. Both MCP pictures
+  shipped a refusal lane like this. Give the whole run to whichever end is
+  furthest from the destination and let the nearer one stop on it in a T,
+  with `heads: 'none'` so it carries no chevron of its own: it does not
+  arrive anywhere, and the head at the end of the run it joins already says
+  where the traffic goes.
+- **A region's caption is set in the DIAGRAM's text size, not `region()`'s
+  default 15.** Every concept scene has a `TEXT` constant and passes
+  `captionSize: TEXT`. Left at the default, a lane's name sat two steps above
+  the activity names underneath it and read as a heading for the page rather
+  than a name for the lane. In a flow diagram you do not pass it at all: draw
+  the lane with `flowLane()` and it is already right.
+- **A flow diagram's lane is `flowLane()` and its annotations are `note()`,
+  both from `flow.mjs`.** A lane is the dashed band a row sits in - an
+  application, a workflow, a `try`. A note is a remark ON the flow rather than
+  the name OF a shape: "allowed", "denied", "caller identity over mTLS", set
+  one step below `FLOW.SIZE` and lighter so the two are told apart at a glance;
+  `halo: true` when it sits on a line. `FLOW.PAD` stands a lane off its
+  contents and `FLOW.LANE_TERMINAL_H` / `FLOW.LANE_ACTIVITY_H` are the two lane
+  heights, because a row of circles is taller than a row of boxes. Before
+  these, ten workflow scenes carried five copies of the pad, five hand-written
+  note labels and four hand-rolled lane helpers, and the caption size above was
+  missing from every one of them.
+- **Prefer a builder that OWNS an arrangement over one that only names colours.**
+  `app.mjs`, `services.mjs`, `cards.mjs`, `pod()` and now `flowLane()` exist
+  because the arrangement they hold had already drifted between scenes before
+  anyone looked - three hosting diagrams with three different sidecar offsets,
+  five workflow scenes with no caption size. A constant stops two scenes
+  disagreeing about a number. A builder stops them disagreeing about a
+  decision, which is the kind of drift a reviewer sees and no test does. When
+  you find yourself writing the same call in a second scene, that is where the
+  next one goes - and the cheapest way to make it stick is a unit test that
+  reads the scene sources and fails on the copy, as `flow.test.mjs`'s
+  `no flow scene carries its own copy of any of this` does.
+- **A row of shapes between two fixed ends is `slots()`, not accumulated
+  offsets.** `slots(x0, x1, n)` gives n centres evenly spread between them, and
+  one item is the midpoint. `workflow-multi-app-child-workflow` laid its second
+  lane out by adding gaps from the left instead, which put the lane's single
+  activity 54 units off centre - under the call box in the lane ABOVE it rather
+  than between its own Start and End. Nothing catches that; using `slots()`
+  means it cannot happen.
 - **A Kubernetes pod is `pod()`.** A dashed sky box with rounded corners and
   the pod's name on its top edge, the same everywhere. The caption width is
   measured, like every pill in the set, and `captionX` moves it along the top
@@ -625,7 +800,11 @@ cannot disagree with itself on another page.
   These three diagrams run 58.9, 58.9 and 62.4 units wide with names at 13, 13
   and 13.76.
 - **A component too small to carry a legible name is refused.** The floor is
-  11px. Clamping silently would ship an unreadable label; throwing says the
+  `MIN_LABEL`, 10 units - the same one `label()` enforces, imported rather
+  than repeated. Do not confuse it with `label()`'s DEFAULT size, which is
+  11: this skill stated the floor as 11 in two places before anyone checked
+  it against `shapes.mjs`, which is exactly the drift this rule exists to
+  stop. Clamping silently would ship an unreadable label; throwing says the
   block has to be drawn larger. Note that this makes "half the size" an
   invalid test case for a small component - scale UP to prove the ratio.
 - **A text baseline does not scale in the same ratio as the shape** around it,
@@ -689,6 +868,83 @@ is `apiTile()` and the definitions behind it are `diagrams/apis.mjs`.
   A square tile with a two-line name wants both; a wide one wants only `glyph`.
 - **Descriptions stay in the scene.** They are broken to a particular card
   width, so they are layout, not identity.
+
+#### The HTTP call a page documents
+
+**Where a page documents the HTTP call for its building block, the diagram
+shows it.** This is a default, not an option: it was asked for on
+`configuration/howto-manage-configuration`, then on
+`state-management/howto-get-save-state`, then on
+`pubsub/howto-publish-subscribe` - three pages in a row where the drawing had
+been built without it and had to be reopened. A reader who has just been shown
+a `curl` wants to see where it lands.
+
+The source is the page's own `curl` or SDK call, character for character.
+Never reconstruct one from the API reference: if the two disagree, that is a
+fact-check finding to raise, not a thing to quietly resolve.
+
+- **Three lines, one block:** the method above, the path in the middle, the
+  body below, each a line apart at `TEXT * 1.9`. The method is weight 700 in
+  `C.blue`; the path is `richLabel()` with `mono: true`, with the BUILDING
+  BLOCK's own segment picked out in `C.orange` at weight 700; the body is
+  `label()` with `mono: true` at weight 400 - a request and what it carries are
+  the same kind of text, and `label()`'s default of 600 makes the payload the
+  louder of the two. Omit the body where the call sends none.
+- **The path only. Leave the host off.** The reference writes it `<daprPort>`
+  and the pages print `localhost:3601`, which is whatever the reader's
+  `dapr run` chose. It carries no fact the path does not.
+- **It sits under the APP that makes the call, never on the arrow to the
+  component.** The app calls its own sidecar on localhost; the sidecar then
+  speaks the component's protocol. On the arrow it reads as the app calling
+  RabbitMQ or Redis directly, which is the one thing Dapr is there to stop
+  being true. Keep the verb or the caption on the component leg beside it -
+  `component-call.mjs` and `pubsub-howto-overview` both do exactly this.
+- **Clamp it to the margin.** A path is routinely wider than the shape it
+  belongs under, so centre it on that shape but never let it pass the edge:
+  `Math.max(EDGE + width / 2, <shape centre>)`.
+- **The width is measured, not guessed.** The exporter has no font metrics, so
+  render it, read the extent `preview-scene.mjs` prints, and pass that number
+  in. `componentCall()` refuses a call with no measured width, because a call
+  placed from an estimate is the one thing here that runs off the canvas with
+  nothing downstream to see it.
+- **Emit the PATH before the method, though it is drawn under it.** The theme
+  check samples the first text in a scene that is not on a plate or a solid
+  fill, and a method is `C.blue` - a brand colour, the same value in both
+  themes by design - so leading with it makes a scene that re-themes perfectly
+  read as one that does not. Nothing moves; the two do not overlap.
+
+- **The block shows the REQUEST, and nothing else.** A value the call returns
+  is not part of the request or its payload and does not belong in it -
+  maintainer ruling of 2026-11-03, on the three secrets pictures, which had
+  been drawing `mysecret "supersecret"` under the path because their source
+  images do. `body` is the REQUEST body, the thing a `curl -d` sends.
+- **`httpCard()` is the same block with a border round it,** for a call that
+  stands apart from the row rather than directly under it - the secrets
+  pictures put theirs under a cluster, where bare lines would read as loose.
+  The ruling above is about the bare block; a BORDERED card is an EXCHANGE,
+  and it can carry `request` above a status chip and `body` below it, which is
+  what `configuration-api-overview` and `state-management-overview` draw.
+  - **Take the status and both payloads from the page or the reference.**
+    Inventing a `200 OK` puts a fact in the picture that is not in the docs,
+    and it is usually wrong: saving state answers `204 No Content`, which is
+    one of five things the state overview's source image had wrong.
+  - **A payload of several lines sets itself LEFT and keeps its indentation**
+    (`indentCode()` turns leading spaces into non-breaking ones, or XML and
+    Hugo's minifier eat them); one line stays centred.
+  - **Size the box with `httpCardH()`.** The card stacks its lines from the
+    top of a block centred in the box, and refuses a box too shallow for them
+    rather than overflowing it silently. Several cards in a row should share a
+    TOP and each take its own depth: one depth for all of them is the deepest,
+    which strands a short exchange in an empty box, and centring each one's
+    contents in that emptiness puts the method lines at different heights so
+    they stop reading as the headings they are.
+
+Drawn this way already: `conversation-overview`, `configuration-example`,
+`state-management-example` (all three through `component-call.mjs`),
+`pubsub-howto-overview` and `secrets-mgmt-overview`; as a card, the three
+`secrets-*` overview scenes, `service-invocation-example-detailed`, and - with
+a status and payloads on both sides of the divider - `configuration-api-overview`
+and `state-management-overview`.
 
 ### Grouping and centering
 
@@ -1132,6 +1388,52 @@ eyeballing will not give you:
 A reference is not automatically right. Measure contrast on anything you copy,
 and keep a departure only with its reason written next to it in the scene.
 
+#### Converting a Mermaid block
+
+The step above assumes a source image. A Mermaid block is a different source,
+and the difference is the whole of this section: **there is no arrangement to
+match.** The positions in a rendered Mermaid diagram are its layout engine's
+output, not anybody's decision, so "keep the source's arrangement" has nothing
+to bind to. What the source gives you is the graph; the layout comes from the
+page.
+
+**First, decide whether it converts at all.** A Mermaid **flowchart** that
+draws a mechanism - participants, the calls between them, a decision with
+outcomes - is the same kind of picture as the rest of this set, and on a page
+whose other diagrams are generated it is the only thing rendering in a
+different hand. Convert it. A **sequence diagram** stays Mermaid: its lifelines
+and activations are a notation this set does not have and should not grow one
+for. A gantt chart stays too. A page carrying both kinds is not yours to
+settle while drawing - ask the maintainer how that page should read before you
+start.
+
+Then:
+
+1. **Read the graph, not the picture.** Node ids with their text, every edge
+   with its label and direction, and the `subgraph` blocks. A subgraph is a
+   lane: `flowLane()`.
+2. **Take the axis from the declaration.** `flowchart LR` means the lanes sit
+   side by side; `TD` stacks them. A subgraph may override it with its own
+   `direction TB`, which is the author saying that this lane runs down while
+   the diagram runs across - `workflow-cross-app-client` is two columns, each
+   read downwards, for exactly that reason. That much of the arrangement IS a
+   decision somebody made.
+3. **Take the order from the prose.** The paragraphs around the block say what
+   happens in what order, and they outrank the Mermaid: see step 1. Where the
+   two disagree, that is a factual discrepancy to raise, not to resolve.
+4. **Mermaid's shapes are what Mermaid can draw.** `[]` and `{}` are a box and
+   a diamond because those are the glyphs it has, so map each node to the house
+   shape for what the thing IS, not for the bracket it was written in. A box
+   labelled "Dapr sidecar" is `markHex()`. Mermaid gives every node the same
+   fill; a refusal gets the palette's colour for one.
+5. **The house constraints still apply, and Mermaid's do not.** Mermaid will
+   set three lines inside a diamond quite happily. `decision()` holds one short
+   word, with the condition carried above the shape as a `note()`.
+
+The replacement is the same shortcode as any other scene. The whole block goes,
+`{{< mermaid >}}` and `{{< /mermaid >}}` included - a stranded opening tag
+builds clean and renders an empty figure.
+
 ### 3. Build the scene
 
 A scene module default-exports `{ width, height, title, desc, build() }`, where
@@ -1161,7 +1463,12 @@ Register it in `diagrams/scenes/index.mjs`, then export and place it:
 
 ```bash
 npm run export:diagrams
+npm run export:pngs
 ```
+
+A scene therefore produces three committed files: the inlined SVG, the
+standalone SVG, and a trimmed, transparent PNG of the standalone one. The
+export is plain Node; `export:pngs` drives a browser, so it needs Chromium.
 
 Put `{{< diagram <name> >}}` on the page, replacing the `<img>` it supersedes.
 Match on the image's `src` string rather than a line number: line numbers drift.
@@ -1234,15 +1541,46 @@ Look at **both themes** before you commit.
 ### 5. Test
 
 ```bash
+npm run export:diagrams -- --check     # the committed SVGs match a fresh render
+npm run check:pngs                     # the committed PNGs match their scenes and settings
 npm run test:diagrams                  # unit tests
-npm run export:diagrams -- --check     # the committed SVG matches a fresh render
-npm run test:layout                    # rendered tests
+npm run test:layout                    # rendered tests, including the font guard below
 npm run build                          # Hugo builds clean
 ```
 
-Add the scene to `SCENES` in `tests/diagrams.spec.js`, with every label it must
-draw. The spec fails if an exported scene or a `{{< diagram >}}` call site in
-the content has no row, so no diagram can ship untested.
+This is the order CI runs the first four in. The first three are pure Node and
+run before Chromium is installed; `test:layout` needs the browser.
+
+**Labels are guarded against a substitute face, not only against Inter.** The
+downloaded SVG has no webfonts, so on a reader's machine its text falls back to
+whatever their system has. `tests/standalone-font.spec.js` renders every
+standalone SVG with Inter forced out - Arial for body text, Courier New for
+monospace - and compares each label with the shape it sits in; a label wider
+than 1.05 of the room its shape leaves fails. Today nothing fails: the worst
+label in the set is the callout in `resiliency-policies`, at 1.013, and
+single-digit step badges measure about 0.57, because Arial's digits are
+narrower than Inter's at that size.
+
+The guard tests **one** substitution - Arial for body text, Courier New for
+monospace - chosen because those two have metric-compatible stand-ins on Linux,
+so the verdict is the same on a laptop and on a CI runner. Passing it is
+therefore not proof that a scene survives every face a reader's machine might
+pick. In practice Inter is the wider of the two here, so a shape fitted to
+Inter has room to spare under the pin; the advice is to leave that slack rather
+than to size a shape to the exact width of its label.
+
+Add the scene to `SCENE_ROWS` in `tests/diagrams.spec.js`, with every label it
+must draw. The spec fails if an exported scene or a `{{< diagram >}}` call site
+in the content has no row, so no diagram can ship untested.
+
+**One scene, one row.** A scene drawn on a second page lists both in `pages`;
+it does not get a second row. The labels belong to the drawing and the page
+does not change them, so a copied row is two label lists for one scene, and the
+day the scene gains a word only one of them learns it. That had already
+happened twice before the rule existed: `sentry-selfhosted` and
+`sentry-kubernetes` each had a full list on one page and a five-label stub on
+the other. `each scene has exactly one row, however many pages draw it` is the
+check.
 
 ### 6. Get it signed off
 
@@ -1253,6 +1591,17 @@ before the next one starts. Report visual choices as proposals, not decisions.
 
 - **A green suite is not a correct diagram.** Structural tests are necessary
   and not sufficient. Render and look.
+- **Git Bash rewrites a leading-slash argument into a Windows path.** Pass a
+  page path to `render-scene.mjs` from Git Bash and the script is handed
+  `C:/Program Files/Git/developing-applications/...`, which fails as an invalid
+  URL rather than as a path. Prefix the command with `MSYS_NO_PATHCONV=1`. This
+  is the maintainer's shell, so it bites on every page that names one.
+- **Hugo does not always serve on 1313.** With the port taken it binds to
+  another one and says so in its own "Web Server is available at" line. Until
+  `DIAGRAM_PORT` is set to match, `render-scene.mjs` fetches from 1313 and gets
+  a 500 - which looks exactly like the "a NEW svg needs the dev server
+  restarted" trap below and will be misdiagnosed as one. Read the server's line
+  before diagnosing anything.
 - **Check that a label still fits by measuring it,** not by looking at it. Run
   `getBBox` over every tile's rect and its text in the browser and compare the
   edges. Raising a label size or a glyph size is exactly the change that pushes
@@ -1388,3 +1737,51 @@ before the next one starts. Report visual choices as proposals, not decisions.
   change did not land.** Check that the export actually succeeded before
   concluding a layout fix had no effect: a failed export leaves the previously
   committed SVG in place, and the page keeps serving it.
+- **Only LEADING spaces survive in a `codeCard()`.** `indentCode()` turns a run
+  of leading spaces into non-breaking ones, which is what keeps a nested key
+  indented. A run in the MIDDLE of a line is not touched, and the renderer
+  collapses it to a single space - so padding `name:` out to line up with
+  `content:` below it does nothing but look aligned in the source and ragged on
+  the page. Write the payload with single spaces and let it be ragged in both.
+- **A name set ON a shape's fill has to clear that shape's own ends.** `pipe()`
+  centres its name between `x1` and `x2`, but a broker is drawn with a rounded
+  cap at each end, and the cap is ink the name has to stay out of. At the short
+  end of pipe()'s allowed 2-3x range the left cap clipped the "M" of "Message
+  broker" - caught by the rendered check for ground behind a label, which does
+  not know a cap from an arrow. Pick the length from the NAME, inside whatever
+  range the builder allows.
+- **Importing `flow.mjs` makes a scene a flow scene, and the flow rules then
+  apply to all of it.** `flow.test.mjs` treats any scene that imports from
+  flow.mjs as part of that set, and forbids it to call `region()` directly, to
+  declare its own `PAD`, or to reach for `C.caption`. That is right for a
+  lane-and-terminal diagram and wrong for a concept picture that only wanted
+  `FLOW.SIZE`. If a scene is not a flow diagram, do not import flow.mjs for a
+  constant - write the number and say what it is.
+- **This set has no lifeline, so most sequence diagrams stay as mermaid.** Two
+  participants whose messages strictly alternate can be drawn without one:
+  parties as columns, every message a straight horizontal run between them,
+  order read top to bottom - which is what `agents-tool-call-flow` and
+  `actor-event-stream` do. Five participants with messages that loop back
+  (`workflow-fast-path`), or notes interleaved with messages to mark time
+  passing (`workflow-stateful-client`), need a real lifeline, and growing one
+  for two drawings is not worth the vocabulary. Check the shape of the mermaid
+  before promising to convert it.
+- **A column is not a tall card.** `card()` derives where its mark and its name
+  sit from its own proportions, which is right for a card and wrong for a
+  shape eleven times taller than it is wide: a 132x1220 card put the glyph a
+  quarter of the way down and the name three quarters, 260 units apart,
+  reading as two things rather than one column. `box()` centres its name,
+  which is what a labelled column wants.
+- **A tall diagram has to earn its width back.** The aspect floor is 1.60, and
+  nine rows of messages at a comfortable row pitch will fail it at a width
+  chosen from the longest label alone. Size the span from the aspect, then
+  check the longest label still fits inside it - not the other way round.
+- **Turn ligatures off wherever code is set, and do it with `style`.** Geist
+  Mono ligates, and a diagram quoting a payload is the one place that must not
+  happen: `data=...` rendered as one wide glyph and a stray full stop, and
+  `!=` would render as a character the API does not accept. `label()` and
+  `richLabel()` now do this for every mono run. The trap inside the trap:
+  `font-variant-ligatures` is a CSS property and NOT an SVG presentation
+  attribute, so setting it as an attribute is silently ignored - the computed
+  value stays `normal` and the drawing does not change. Only a `style`
+  attribute reaches the text. Check the computed value, not the markup.

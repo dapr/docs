@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { APP, C } from './engine.mjs';
+import { APP, C, serialize } from './engine.mjs';
 import { hexHalfWidth } from './shapes.mjs';
 import { SIDECAR_CLEARANCE, SIDECAR_R, appSidecar, appSidecarCentre, pairExtent, sidecarAt } from './app.mjs';
 
@@ -103,4 +103,25 @@ test('the pair reaches further on the sidecar side than on the app side', () => 
   const m = pairExtent({ r: 48, size: 16, mirror: true });
   assert.equal(m.right, -e.left);
   assert.equal(-m.left, e.right);
+});
+
+// An app that answers on a named endpoint says so inside its own hexagon, and
+// the pair is what a scene draws - so the sub-line has to reach hex() through
+// appSidecar(), or a scene would be laying text over the drawing itself.
+test('appSidecar passes a code sub-line through to the app hexagon', () => {
+  const node = appSidecar({ x: 100, y: 100, r: 60, label: 'App', sub: '/method' });
+  assert.ok(
+    serialize(node).includes('>' + '/method' + '<'),
+    'the endpoint is drawn inside the pair',
+  );
+});
+
+// SIDECAR_GAP is measured from the lower edge of the app name, and a name
+// with a code sub-line under it reaches further down than the name alone.
+// Without this the sidecar sits a unit or two INTO the sub-line, which no
+// numeric test would see: both shapes are exactly where they were asked to be.
+test('the sidecar clears the whole name block, sub-line included', () => {
+  const plain = sidecarAt({ x: 0, y: 0, r: 40 });
+  const withSub = sidecarAt({ x: 0, y: 0, r: 40, sub: '/method' });
+  assert.ok(withSub.y > plain.y, `sub-line ignored: ${withSub.y} is not below ${plain.y}`);
 });

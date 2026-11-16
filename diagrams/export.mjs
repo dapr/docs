@@ -31,6 +31,15 @@ function lightTokens() {
   return out;
 }
 
+// The faces the standalone copy declares. Scenes set no font-family on body
+// text so the inlined copy inherits the page's face, and code labels point at
+// var(--font-mono), which only exists on a Dapr page. Outside it both fall back
+// to the browser's serif, so the download copy names them outright.
+export const BODY_STACK = 'Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+export const MONO_STACK = '"Geist Mono", ui-monospace, "Cascadia Mono", Consolas, monospace';
+// Both stacks sit inside a double-quoted attribute, so their quotes are escaped.
+const attr = (stack) => stack.replaceAll('"', '&quot;');
+
 // Replace every var(--d-*) with its light value. Throws on a token the
 // stylesheet does not define, because a silently unresolved one is exactly the
 // broken file this exists to prevent.
@@ -45,7 +54,24 @@ export function standalone(svgText, tokens = lightTokens()) {
     return value;
   });
   if (missing.size) throw new Error(`standalone svg: no light value for ${[...missing].join(', ')}`);
-  return out;
+  // Mono text sets its own font-family, which wins over the root attribute
+  // below, so the root only has to cover the body text that sets none.
+  const fonted = out.replaceAll('var(--font-mono)', attr(MONO_STACK));
+  // Both shapes a token reference can take: the bare var(--font-x) a scene
+  // writes today, and the fallback form var(--font-x, y). A pattern ending in
+  // [a-z-]+\) reads the second as no match at all and ships the token.
+  const fonts = new Set(fonted.match(/var\(--font-[^")]*\)?/g));
+  if (fonts.size) throw new Error(`standalone svg: no font for ${[...fonts].join(', ')}`);
+  // The body font is a presentation attribute on the ROOT, so it only lands if
+  // the document really starts with `<svg`. A BOM, an XML prolog or a leading
+  // newline would make this replace a silent no-op and hand over a file with no
+  // body font at all - the serif download this copy exists to prevent. Every
+  // other step in this function throws rather than shrug; so does this one.
+  const rooted = fonted.replace(/^<svg(?=[ >])/, `<svg font-family="${attr(BODY_STACK)}"`);
+  if (rooted === fonted) {
+    throw new Error('standalone svg: document does not start with <svg, so no body font was set');
+  }
+  return rooted;
 }
 
 // No doubled or trailing hyphens: those slug to the same svg id as their tidy twin.

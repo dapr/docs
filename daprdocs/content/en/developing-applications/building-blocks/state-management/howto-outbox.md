@@ -18,17 +18,17 @@ With Dapr's outbox support, you can notify subscribers when an application's sta
 
 The diagram below is an overview of how the outbox feature works at a high level:
 
-1) Service A saves/updates state to the state store using a transaction.
+1) App A saves/updates state to the state store using a transaction.
 2) A message is written to the broker under the same transaction. When the message is successfully delivered to the message broker, the transaction completes, ensuring the state and message are transacted together.
-3) The message broker delivers the message topic to any subscribers - in this case, Service B.
+3) The message broker delivers the message topic to any subscribers - in this case, App B.
 
-<img src="/images/state-management-outbox.png" width=800 alt="Diagram showing the overview of outbox pattern">
+{{< diagram name="state-management-outbox" width="85" >}}
 
 ## How outbox works under the hood
 
 Dapr outbox processes requests in two flows: the user request flow and the background message flow. Together, they guarantee that state and events stay consistent.
 
-<img src="/images/state-management-outbox-steps.png" width=800 alt="Diagram showing the steps of the outbox pattern">
+{{< diagram state-management-outbox-steps >}}
 
 This is the sequence of interactions:
 

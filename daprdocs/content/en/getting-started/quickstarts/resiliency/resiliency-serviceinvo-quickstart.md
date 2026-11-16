@@ -978,7 +978,7 @@ go build .
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-port 6001 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- go run .
+dapr run --app-port 6006 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- go run .
 ```
 
 ### Step 3: Run the `checkout` service application 
@@ -1142,7 +1142,7 @@ Once you restart the `order-processor` service, the application will recover sea
 In the `order-processor` service terminal, restart the application:
 
 ```bash
-dapr run --app-port 6001 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- go run .
+dapr run --app-port 6006 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- go run .
 ```
 
 `checkout` service output:

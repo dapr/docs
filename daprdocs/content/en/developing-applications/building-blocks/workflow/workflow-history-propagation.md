@@ -277,5 +277,5 @@ Discover [how to apply workflow history signing]({{% ref "workflow-history-signi
 - [Workflow API reference]({{< ref workflow_api.md >}})
 - Try out the example code in each SDK:
   - [Python example](https://github.com/dapr/python-sdk/blob/main/examples/workflow/history_propagation.py)
-  - [.NET quickstart](https://github.com/dapr/quickstarts/tree/master/workflows/csharp/sdk-context-propagation)
+  - [.NET tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/csharp/history-propagation)
   - [Go example](https://github.com/dapr/go-sdk/tree/main/examples/workflow-history-propagation)

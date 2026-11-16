@@ -97,7 +97,7 @@ apps:
 
 #### Echo mock LLM component
 
-In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components) directly of the quickstart, the [`conversation.yaml` file](https://github.com/dapr/quickstarts/tree/master/conversation/components/conversation.yaml) configures the echo LLM component. 
+In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components) directly of the quickstart, the [`conversation.yaml` file](https://github.com/dapr/quickstarts/blob/master/conversation/components/conversation.yaml) configures the echo LLM component. 
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -153,6 +153,7 @@ For this example, you will need:
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
+- [Ollama](https://ollama.com/) installed and running, with the `llama3.2:latest` model pulled (`ollama pull llama3.2:latest`). The sample sends its input to the `ollama` conversation component, so the response comes from the model. It differs from the expected output below, which comes from the echo mock LLM.
 
 ### Step 2: Set up the environment
 
@@ -214,7 +215,7 @@ apps:
 
 #### Echo mock LLM component
 
-In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components) directly of the quickstart, the [`conversation.yaml` file](https://github.com/dapr/quickstarts/tree/master/conversation/components/conversation.yaml) configures the echo LLM component. 
+In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components) directly of the quickstart, the [`conversation.yaml` file](https://github.com/dapr/quickstarts/blob/master/conversation/components/conversation.yaml) configures the echo LLM component. 
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -436,7 +437,7 @@ apps:
 
 #### Echo mock LLM component
 
-In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components), the [`conversation.yaml` file](https://github.com/dapr/quickstarts/tree/master/conversation/components/conversation.yaml) configures the echo mock LLM component. 
+In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components), the [`conversation.yaml` file](https://github.com/dapr/quickstarts/blob/master/conversation/components/conversation.yaml) configures the echo mock LLM component. 
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -642,7 +643,7 @@ apps:
 
 #### Echo mock LLM component
 
-In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components) directly of the quickstart, the [`conversation.yaml` file](https://github.com/dapr/quickstarts/tree/master/conversation/components/conversation.yaml) configures the echo LLM component.
+In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components) directly of the quickstart, the [`conversation.yaml` file](https://github.com/dapr/quickstarts/blob/master/conversation/components/conversation.yaml) configures the echo LLM component.
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -713,6 +714,7 @@ For this example, you will need:
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
+- [Ollama](https://ollama.com/) installed and running, with the `llama3.2:latest` model pulled (`ollama pull llama3.2:latest`). The sample sends its input to the `ollama` conversation component, so the response comes from the model. It differs from the expected output below, which comes from the echo mock LLM.
 
 ### Step 2: Set up the environment
 
@@ -767,7 +769,7 @@ apps:
 
 #### Echo mock LLM component
 
-In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components) directly of the quickstart, the [`conversation.yaml` file](https://github.com/dapr/quickstarts/tree/master/conversation/components/conversation.yaml) configures the echo LLM component. 
+In [`conversation/components`](https://github.com/dapr/quickstarts/tree/master/conversation/components) directly of the quickstart, the [`conversation.yaml` file](https://github.com/dapr/quickstarts/blob/master/conversation/components/conversation.yaml) configures the echo LLM component. 
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -1019,6 +1021,7 @@ For this example, you will need:
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
+- [Ollama](https://ollama.com/) installed and running, with the `llama3.2:latest` model pulled (`ollama pull llama3.2:latest`). The sample sends its input to the `ollama` conversation component, so the response comes from the model. It differs from the expected output below, which comes from the echo mock LLM.
 
 ### Step 2: Set up the environment
 
@@ -1183,6 +1186,7 @@ For this example, you will need:
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
+- [Ollama](https://ollama.com/) installed and running, with the `llama3.2:latest` model pulled (`ollama pull llama3.2:latest`). The sample sends its input to the `ollama` conversation component, so the response comes from the model. It differs from the expected output below, which comes from the echo mock LLM.
 
 ### Step 2: Set up the environment
 

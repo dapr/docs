@@ -19,9 +19,11 @@ Some scenarios where this is useful include:
 - Implementation of a workflow spans different programming languages based on team expertise or existing codebases.
 - Different team boundaries or microservice ownership.
 
-<img src="/images/workflow-overview/workflow-multi-app-complex.png" width=800 alt="Diagram showing multi-application complex workflow">
+The diagram below shows an example scenario of a complex workflow that orchestrates across multiple applications that are written in different languages.
 
-The diagram below shows an example scenario of a complex workflow that orchestrates across multiple applications that are written in different languages. Each applications' main steps and activities are:
+{{< diagram workflow-multi-app-complex >}}
+
+Each applications' main steps and activities are:
 
 • **App1: Main Workflow Service** - Top-level orchestrator that coordinates the entire ML pipeline
 - Starts the process
@@ -112,7 +114,7 @@ As of 1.18 it is _**enabled** by default_. In 1.17 it was disabled by default fo
 
 ## Multi-application activity example
 
-<img src="/images/workflow-overview/workflow-multi-app-callactivity.png" width=800 alt="Diagram showing multi-application call activity workflow pattern">
+{{< diagram name="workflow-multi-app-activity" width="75" >}}
 
 The following example shows how to execute the activity `ActivityA` on the target app `App2`.
 
@@ -191,7 +193,7 @@ public sealed class BusinessWorkflow : Workflow<string, string>
 
 ## Multi-application child workflow example
 
-<img src="/images/workflow-overview/workflow-multi-app-child-workflow.png" width=800 alt="Diagram showing multi-application child workflow pattern">
+{{< diagram name="workflow-multi-app-child-workflow" width="70" >}}
 
 The following example shows how to execute the child workflow `Workflow2` on the target app `App2`.
 
@@ -261,25 +263,7 @@ This means the application that owns a workflow does not have to build and maint
 
 Take an application `app-a` that terminates the workflow instance `order-1`, which is owned by `app-b`:
 
-{{< mermaid >}}
-flowchart LR
-    subgraph A["app-a"]
-        direction TB
-        AC["Your code<br/>terminate order-1<br/>appID: app-b"]
-        AS["Dapr sidecar"]
-        AC --> AS
-    end
-    subgraph B["app-b"]
-        direction TB
-        BS["Dapr sidecar"]
-        P{"WorkflowAccessPolicy<br/>may app-a terminate<br/>OrderWF?"}
-        W["order-1<br/>an OrderWF instance"]
-        BS --> P
-        P -->|allowed| W
-        P -->|denied| X["PermissionDenied"]
-    end
-    AS -->|"caller identity over mTLS"| BS
-{{< /mermaid >}}
+{{< diagram workflow-cross-app-client >}}
 
 `app-a` hosts no workflow code at all. It names the owning application, and its sidecar does the rest: it stamps `app-a` as the caller, and `app-b`'s sidecar checks that identity against its own [access policy]({{% ref workflow-access-policy.md %}}) before the operation reaches the instance. Only `app-b` ever runs the workflow.
 
@@ -328,7 +312,7 @@ client.terminate_workflow(instance_id, app_id='app2')
 client.purge_workflow(instance_id, app_id='app2')
 ```
 
-The async client in `dapr.ext.workflow.aio` takes the same argument. [See the Python workflow examples.](https://github.com/dapr/python-sdk/tree/master/examples/workflow)
+The async client in `dapr.ext.workflow.aio` takes the same argument. [See the Python workflow examples.](https://github.com/dapr/python-sdk/tree/main/examples/workflow)
 
 {{% /tab %}}
 
@@ -435,7 +419,7 @@ Read [How-To: Apply workflow access policies]({{% ref workflow-access-policy %}}
 - [Workflow API reference]({{% ref workflow_api.md %}})
 - [Multi-application workflows in .NET]({{% ref "dotnet-workflow-multi-app.md" %}})
 - Try out the following examples:
-   - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
+   - [Python](https://github.com/dapr/python-sdk/tree/main/examples/workflow)
    - [JavaScript](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
    - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
    - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
