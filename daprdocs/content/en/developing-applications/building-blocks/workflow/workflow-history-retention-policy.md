@@ -21,6 +21,8 @@ The duration is defined as a [Go duration string](https://pkg.go.dev/time#ParseD
 It can be useful to configure a short retention duration for `Completed` workflows, while retaining `Failed` and `Terminated` workflows for longer periods to allow for investigation.
 {{% /alert %}}
 
+A retention purge of a `Failed` or `Terminated` workflow also releases the workflows waiting on it under an [ordering key]({{% ref "workflow-ordering.md#when-a-workflow-fails" %}}) with the `BLOCK` policy, so such a workflow waits at most for the retention period.
+
 {{% alert title="Important" color="warning" %}}
 When adding or changing a retention policy, the policy only applies to workflows that **newly reach** a configured terminal state after the policy is in effect. It does **not** retroactively clean up workflows that are already in a terminal state.
 

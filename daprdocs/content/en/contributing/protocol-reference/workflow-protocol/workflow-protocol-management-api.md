@@ -27,7 +27,7 @@ Starts a new instance of a workflow.
 | `instance_id` | `string` | Optional. A unique identifier for the workflow instance. If not provided, Dapr will generate a random UUID. |
 | `workflow_component` | `string` | The name of the workflow component to use. Currently, Dapr uses the built-in engine. |
 | `workflow_name` | `string` | The name of the workflow definition to execute. |
-| `options` | `map<string, string>` | Optional. Component-specific options. |
+| `options` | `map<string, string>` | Optional. Engine options: `dapr.workflow.start_time` (an RFC 3339 time to start the workflow at), `dapr.workflow.ordering_key` and `dapr.workflow.ordering_on_predecessor_failure` (`continue`, `block` or `cancel`), see [ordering keys]({{% ref workflow-ordering.md %}}). |
 | `input` | `bytes` | Optional. Input data for the workflow instance, typically a JSON-serialized string. |
 
 **Response (`StartWorkflowResponse`):**

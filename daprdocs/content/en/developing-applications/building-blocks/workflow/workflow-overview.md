@@ -53,6 +53,12 @@ You can also schedule a new workflow as a _detached workflow_: a fire-and-forget
 
 [Learn more about detached workflows.]({{% ref "workflow-detached.md" %}})
 
+### Ordering keys
+
+An _ordering key_ runs the workflows of an app that share the key one at a time, in the order they were started, so related work such as the steps of one deployment runs strictly in sequence while unrelated workflows run in parallel. Each keyed workflow also sets its behavior when the workflow before it did not complete successfully: run anyway, wait, or cancel.
+
+[Learn more about ordering keys.]({{% ref "workflow-ordering.md" %}})
+
 ### Multi-application workflows
 
 Multi-application workflows, enable you to orchestrate complex business processes that span across multiple applications. This allows a workflow to call activities or start child workflows in different applications, distributing the workflow execution while maintaining the security, reliability and durability guarantees of Dapr's workflow engine.

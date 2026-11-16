@@ -33,6 +33,7 @@ Stores high-level information about the instance:
 *   `last_updated_at`: Last activity timestamp.
 *   `input`: Original input data.
 *   `output`: Final output data (if completed).
+*   `ordering`: For a workflow started with an ordering key: the execution ID of the start that queued it, whether its key has released it, and whether the key has been told that it finished.
 
 ### 2. History
 A sequence of `HistoryEvent` objects that record everything that has happened in the workflow.
