@@ -56,7 +56,7 @@ Retrieves the current status and metadata of a workflow instance.
 | `created_at` | `Timestamp` | The time the instance was created. |
 | `last_updated_at` | `Timestamp` | The time the instance was last updated. |
 | `runtime_status` | `string` | The status (e.g., `RUNNING`, `COMPLETED`, `FAILED`, `TERMINATED`, `PENDING`). |
-| `properties` | `map<string, string>` | Additional component-specific metadata. |
+| `properties` | `map<string, string>` | Additional component-specific metadata. | The `dapr.workflow.termination_reason` entry is present when a termination reason was supplied.
 
 ### TerminateWorkflow
 
@@ -68,6 +68,7 @@ Forcefully terminates a running workflow instance.
 | :--- | :--- | :--- |
 | `instance_id` | `string` | The ID of the workflow instance to terminate. |
 | `workflow_component` | `string` | The name of the workflow component. |
+| `reason` | `string` (optional) | Human-readable reason for terminating the workflow. The runtime records it in the termination history event and exposes it in the `dapr.workflow.termination_reason` workflow property. |
 
 ### RaiseEventWorkflow
 

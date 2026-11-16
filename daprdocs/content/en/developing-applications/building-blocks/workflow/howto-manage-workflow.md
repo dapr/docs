@@ -616,10 +616,10 @@ The app that owns the workflow must be running with its workflow worker connecte
 
 ### Terminate workflow
 
-To terminate your workflow with an ID `12345678`, run:
+To terminate your workflow with an ID `12345678`, run. The optional `reason` query parameter is URL-encoded and recorded separately from the workflow output:
 
 ```shell
-curl -X POST "http://localhost:3500/v1.0/workflows/dapr/12345678/terminate"
+curl -X POST "http://localhost:3500/v1.0/workflows/dapr/12345678/terminate?reason=Cancelled%20by%20customer"
 ```
 
 ### Raise an event
