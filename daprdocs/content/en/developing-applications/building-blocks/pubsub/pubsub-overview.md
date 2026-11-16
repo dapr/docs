@@ -175,6 +175,10 @@ Want to put the Dapr pub/sub API to the test? Walk through the following quickst
 Want to skip the quickstarts? Not a problem. You can try out the pub/sub building block directly in your application to publish messages and subscribe to a topic. After [Dapr is installed]({{% ref "getting-started/_index" %}}), you can begin using the pub/sub API starting with [the pub/sub how-to guide]({{% ref howto-publish-subscribe %}}).
 
 
+### Inspect pub/sub locally
+
+During local development, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to see the subscriptions each of your applications registered, including the pub/sub component, topic, and route. You can also publish test messages to a subscription from the dashboard, which is a quick way to exercise a subscriber without running a publisher.
+
 ## Next steps
 
 - Learn about [messaging with CloudEvents]({{% ref pubsub-cloudevents %}}) and when you might want to [send messages without CloudEvents]({{% ref pubsub-raw %}}).
