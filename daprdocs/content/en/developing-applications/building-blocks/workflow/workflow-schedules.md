@@ -31,7 +31,7 @@ flowchart LR
     R -->|"executes on"| A["Your app's<br/>workflow worker"]
 {{< /mermaid >}}
 
-- **Runs are ordinary workflow instances.** Each run has the instance ID `<schedule name>_<owner>_<time>`. The owner is a tag of the app that owns the schedule: the first 6 hex characters of the SHA-256 of `<namespace>/<app ID>`. It keeps apart the runs of same-named schedules in two apps that target one app. The time is when the run was due, in UTC, formatted as `20060102T150405Z`. A run started by [triggering](#trigger-a-run-now) the schedule has the ID `<schedule name>_<owner>_<time>_manual`, where the time has milliseconds. List every run of a schedule by listing the instance IDs that start with `<schedule name>_`.
+- **Runs are ordinary workflow instances.** Each run has the instance ID `<schedule name>_<owner>_<time>`. The owner is a tag of the app that owns the schedule: the first 6 hex characters of the SHA-256 of `<namespace>/<app ID>`. It keeps apart the runs of same-named schedules in two apps that target one app. The time is when the run was due, in UTC, formatted as `20060102T150405Z`. A run started by [triggering](#trigger-a-run-now) the schedule has the ID `<schedule name>_<owner>_<time>_manual`, where the time has milliseconds. To list a schedule's runs, see [List schedules](#list-schedules).
 - **Runs are independent of the schedule.** A run that fails does not stop the schedule, and deleting a schedule does not touch the runs it already started. Use the workflow APIs to manage runs as you would any other workflow instance.
 - **Runs are detached, not child workflows.** The schedule's workflow continues as new after every run, so it could not receive a child's result, and terminating it would reach only the runs of its latest generation. A child workflow also can't be rerun on its own. Instead, the schedule's status carries the last run's status, output and failure, and the `<schedule name>_` prefix of the instance IDs ties every run to its schedule.
 - **The schedule needs a connected worker.** Like starting any workflow, creating a schedule needs your app's workflow worker to be connected to its Dapr sidecar. While no worker is connected, the schedule waits.
@@ -304,6 +304,14 @@ To list the runs of a schedule, list the workflow instances whose ID starts with
 
 ```bash
 dapr workflow list --app-id reports --instance-id-prefix nightly-report_
+```
+
+A schedule with a target app starts its runs on the target app, so list them with the target's app ID. Other apps can own a schedule of the same name that targets the same app, so add the owning app's tag to the prefix. For `nightly-report`, owned by `reports` in the `default` namespace and targeting `billing`:
+
+```bash
+printf 'default/reports' | sha256sum | cut -c1-6
+# 8bfcbd
+dapr workflow list --app-id billing --instance-id-prefix nightly-report_8bfcbd_
 ```
 
 The SDKs offer the same filter on their instance ID listing. Each schedule is itself a workflow instance, named `dapr.internal.schedule` with the ID `dapr-internal-schedule-<schedule name>`, and it is listed like any other workflow. The workflow name `dapr.internal.schedule` and instance IDs starting with `dapr-internal-schedule-` are reserved: starting or rerunning such a workflow from a client fails with `INVALID_ARGUMENT`. `dapr workflow history dapr-internal-schedule-nightly-report` shows its steps.
