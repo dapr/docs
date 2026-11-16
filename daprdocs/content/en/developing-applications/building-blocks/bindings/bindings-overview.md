@@ -20,7 +20,7 @@ For example, with bindings, your application can respond to incoming Twilio/SMS 
 - Adding or configuring a third-party Twilio SDK
 - Worrying about polling from Twilio (or using WebSockets, etc.)
 
-<img src="/images/binding-overview.png" width=1000 alt="Diagram showing bindings" style="padding-bottom:25px;">
+{{< diagram name="bindings-overview" width="65" >}}
 
 In the above diagram:
 - The input binding triggers a method on your application. 

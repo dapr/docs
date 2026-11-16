@@ -20,7 +20,7 @@
 // takes the next entry in APP - but the sidecar is always the Dapr hexagon.
 
 import { APP, C } from './engine.mjs';
-import { group, hex, hexHalfWidth, MIN_LABEL } from './shapes.mjs';
+import { group, hex, hexHalfWidth, hexNameBlock, MIN_LABEL } from './shapes.mjs';
 import { markHex } from './icons.mjs';
 
 // The sidecar's radius, as a multiple of the app's. The three hosting diagrams
@@ -54,11 +54,14 @@ const nameSize = (r, size) => size ?? Math.max(MIN_LABEL, +(r / 3).toFixed(2));
 // centre, and it still drops below the app's lowest point by the same
 // clearance. Without it the two apps in `sentry-kubernetes` would talk to
 // each other through the right-hand app hexagon.
-export function sidecarAt({ x, y, r = 54, size, mirror = false }) {
+export function sidecarAt({ x, y, r = 54, size, mirror = false, sub = '', subSize }) {
   const rs = +(r * SIDECAR_R).toFixed(2);
   const name = nameSize(r, size);
   const clear = y + r + r * SIDECAR_CLEARANCE;
-  const belowName = y + name * 0.5 + SIDECAR_GAP + rs;
+  // Past the whole name BLOCK, not past the name: an app that answers on a
+  // named endpoint carries a code line under its name, and the gap is measured
+  // from the lowest type in the hexagon.
+  const belowName = y + hexNameBlock({ size: name, sub, subSize }).bottom + SIDECAR_GAP + rs;
   return {
     x: +(x + (mirror ? -1 : 1) * sidecarDx(r)).toFixed(2),
     y: +Math.max(clear, belowName).toFixed(2),
@@ -72,8 +75,8 @@ export function sidecarAt({ x, y, r = 54, size, mirror = false }) {
 // that centres the pair in a box - a pod, a card - needs this rather than the
 // app's own radius, and `hosting-kubernetes` worked it out inline before this
 // existed.
-export function pairExtent({ r = 54, size, mirror = false }) {
-  const s = sidecarAt({ x: 0, y: 0, r, size, mirror });
+export function pairExtent({ r = 54, size, mirror = false, sub = '', subSize }) {
+  const s = sidecarAt({ x: 0, y: 0, r, size, mirror, sub, subSize });
   const half = hexHalfWidth(s.r);
   return {
     left: mirror ? s.x - half : -hexHalfWidth(r),
@@ -84,8 +87,8 @@ export function pairExtent({ r = 54, size, mirror = false }) {
 }
 
 // Where to put the APP so that the whole pair is centred on (x, y).
-export function appSidecarCentre({ x, y, r = 54, size, mirror = false }) {
-  const e = pairExtent({ r, size, mirror });
+export function appSidecarCentre({ x, y, r = 54, size, mirror = false, sub = '', subSize }) {
+  const e = pairExtent({ r, size, mirror, sub, subSize });
   return {
     x: +(x - (e.left + e.right) / 2).toFixed(2),
     y: +(y - (e.top + e.bottom) / 2).toFixed(2),
@@ -93,13 +96,22 @@ export function appSidecarCentre({ x, y, r = 54, size, mirror = false }) {
 }
 
 export function appSidecar({
-  x, y, r = 54, label = 'App', size, mirror = false,
+  x, y, r = 54, label = 'App', size, mirror = false, sub = '', subSize,
   stroke = APP[0].stroke, fill = APP[0].fill, ink = APP[0].ink, solid = APP[0].solid,
 }) {
   const name = nameSize(r, size);
-  const s = sidecarAt({ x, y, r, size, mirror });
-  return group([
-    hex({ x, y, r, label, size: name, stroke, fill, ink, solid }),
-    markHex({ x: s.x, y: s.y, r: s.r, mark: 'logo-blue', stroke: C.blue }),
-  ]);
+  const s = sidecarAt({ x, y, r, size, mirror, sub, subSize });
+  // CLASSED, because the two hexagons OVERLAP BY DESIGN and nothing
+  // downstream could tell. The sidecar is docked onto the app's lower corner,
+  // so the pair reads as one object to a person and as two objects thirty to
+  // sixty units inside each other to anything measuring the drawing - which
+  // is every pair a shape-clearance check would flag first, and the reason
+  // such a check could not be written while this group was anonymous.
+  return group({
+    class: 'd-app-pair',
+    children: [
+      hex({ x, y, r, label, size: name, stroke, fill, ink, solid, sub, subSize }),
+      markHex({ x: s.x, y: s.y, r: s.r, mark: 'logo-blue', stroke: C.blue }),
+    ],
+  });
 }

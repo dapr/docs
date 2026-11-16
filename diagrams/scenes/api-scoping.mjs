@@ -114,7 +114,7 @@ export default {
   height: H,
   title: 'An API allow list, and the sidecar APIs it permits',
   desc:
-    'On the left, a configuration headed "Sidecar configuration" holds a Dapr Configuration resource whose spec allows two APIs over gRPC: invoke and publish. An arrow runs from it to the Dapr sidecar beside MyApp in the middle. From the sidecar a line reaches a column of four Dapr APIs on the right. Service invocation and Publish and subscribe are reached by a solid arrow with a tick, because the allow list names them. State management and Bindings are reached by a dashed orange arrow with a cross, because it does not.',
+    'On the left, a configuration headed "Sidecar configuration" holds a Dapr Configuration resource whose spec allows two APIs over gRPC: invoke and publish. An arrow runs from it to the Dapr sidecar beside MyApp in the middle. From the sidecar a line reaches a column of four Dapr APIs on the right. Service invocation and Publish and subscribe are reached by a solid arrow with a tick, because the allow list names them. State management and Bindings are reached by a dashed red arrow with a cross, because it does not.',
 
   build() {
     return [
@@ -151,14 +151,14 @@ export default {
           arrow({
             from: [SPINE_X, y],
             to: [TILE_LEFT - 2, y],
-            color: allowed ? C.navy : C.orange,
+            color: allowed ? C.navy : C.red,
             dash: !allowed,
           }),
           // Above the run it marks, never on it.
           icon({
             name: allowed ? 'fluent-checkmark-circle' : 'fluent-dismiss-circle',
             x: MARK_X, y: y - MARK, size: MARK,
-            color: allowed ? C.navy : C.orange,
+            color: allowed ? C.navy : C.red,
           }),
           apiTile({ key, wrap: true, x: TILE_CX, y, w: CARD, h: CARD }),
         ];

@@ -1,9 +1,10 @@
 // Dapr on Kubernetes: the control plane services, the sidecar injected beside
 // an application pod, and the components it uses.
 //
-// Shown on overview.md ("Kubernetes"). The page at
-// operations/hosting/kubernetes/kubernetes-overview.md shares this image and is
-// OUTSIDE this conversion's scope, so it keeps the PNG.
+// Shown on overview.md ("Kubernetes") and on
+// operations/hosting/kubernetes/kubernetes-overview.md, which shared the same
+// PNG. That second page is the one the fact-check below runs against, so the
+// scene says what that page's own table says.
 //
 // Fact-checked against that page's own table of Kubernetes services, which is
 // the authority for what each one does. Two things the source image understates

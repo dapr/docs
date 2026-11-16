@@ -12,7 +12,7 @@ Dapr Workflows simplify complex, stateful coordination requirements in microserv
 
 In the task chaining pattern, multiple steps in a workflow are run in succession, and the output of one step may be passed as the input to the next step. Task chaining workflows typically involve creating a sequence of operations that need to be performed on some data, such as filtering, transforming, and reducing.
 
-<img src="/images/workflow-overview/workflows-chaining.png" width=800 alt="Diagram showing how the task chaining workflow pattern works">
+{{< diagram name="workflow-task-chaining" width="85" >}}
 
 In some cases, the steps of the workflow may need to be orchestrated across multiple microservices. For increased reliability and scalability, you're also likely to use queues to trigger the various steps.
 
@@ -67,7 +67,24 @@ def error_handler(ctx, error):
     # Add logic here to undo partial changes (e.g., release inventory)
 ```
 
-> **Note** Workflow retry policies will be available in a future version of the Python SDK.
+To retry an activity that fails, create a `RetryPolicy` and pass it in the `retry_policy` argument of `call_activity`. The Dapr runtime runs the activity again after the retry interval, up to the maximum number of attempts.
+
+```python
+from datetime import timedelta
+import dapr.ext.workflow as wf
+
+
+def task_chain_workflow(ctx: wf.DaprWorkflowContext, wf_input: int):
+    retry_policy = wf.RetryPolicy(
+        max_number_of_attempts=3,
+        first_retry_interval=timedelta(seconds=2),
+        backoff_coefficient=2.0,
+        max_retry_interval=timedelta(seconds=30),
+    )
+    result1 = yield ctx.call_activity(step1, input=wf_input, retry_policy=retry_policy)
+    result2 = yield ctx.call_activity(step2, input=result1, retry_policy=retry_policy)
+    return [result1, result2]
+```
 
 {{% /tab %}}
 
@@ -293,11 +310,13 @@ Behind the scenes, the Dapr Workflow runtime:
 - Enables error handling to be expressed naturally in your target programming language, allowing you to implement compensation logic easily.
 - Provides built-in retry configuration primitives to simplify the process of configuring complex retry policies for individual steps in the workflow.
 
+To run this pattern, try the task chaining tutorial in [Python](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/python/task-chaining), [.NET](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/csharp/task-chaining) or [Java](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/java/task-chaining).
+
 ## Fan-out/fan-in
 
 In the fan-out/fan-in design pattern, you execute multiple tasks simultaneously across potentially multiple workers, wait for them to finish, and perform some aggregation on the result.
 
-<img src="/images/workflow-overview/workflows-fanin-fanout.png" width=800 alt="Diagram showing how the fan-out/fan-in workflow pattern works">
+{{< diagram name="workflow-fan-out-fan-in" width="65" >}}
 
 In addition to the challenges mentioned in [the previous pattern]({{% ref "workflow-patterns.md#task-chaining" %}}), there are several important questions to consider when implementing the fan-out/fan-in pattern manually:
 
@@ -649,6 +668,8 @@ await context.CallActivityAsync("PostResults", sum);
 
 Limiting the degree of concurrency in this way can be useful for limiting contention against shared resources. For example, if the activities need to call into external resources that have their own concurrency limits, like a databases or external APIs, it can be useful to ensure that no more than a specified number of activities call that resource concurrently.
 
+To run this pattern, try the fan-out/fan-in tutorial in [Python](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/python/fan-out-fan-in), [.NET](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/csharp/fan-out-fan-in) or [Java](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/java/fan-out-fan-in).
+
 ## Async HTTP APIs
 
 Asynchronous HTTP APIs are typically implemented using the [Asynchronous Request-Reply pattern](https://learn.microsoft.com/azure/architecture/patterns/async-request-reply). Implementing this pattern traditionally involves the following:
@@ -661,7 +682,7 @@ Asynchronous HTTP APIs are typically implemented using the [Asynchronous Request
 
 The end-to-end flow is illustrated in the following diagram.
 
-<img src="/images/workflow-overview/workflow-async-request-response.png" width=800 alt="Diagram showing how the async request response pattern works"/>
+{{< diagram name="workflow-async-http" width="80" >}}
 
 The challenge with implementing the asynchronous request-reply pattern is that it involves the use of multiple APIs and state stores. It also involves implementing the protocol correctly so that the client knows how to automatically poll for status and know when the operation is complete.
 
@@ -722,6 +743,8 @@ If the workflow has completed, the status might look as follows.
 
 As you can see from the previous example, the runtime status of the workflow is now `COMPLETED`, which means the client can stop polling for updates.
 
+To run this pattern, try the workflow management tutorial, which starts a workflow and reads its status, in [Python](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/python/workflow-management), [.NET](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/csharp/workflow-management) or [Java](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/java/workflow-management).
+
 ## Monitor
 
 The monitor pattern is recurring process that typically:
@@ -733,7 +756,7 @@ The monitor pattern is recurring process that typically:
 
 The following diagram provides a rough illustration of this pattern.
 
-<img src="/images/workflow-overview/workflow-monitor-pattern.png" width=800 alt="Diagram showing how the monitor pattern works"/>
+{{< diagram workflow-monitor >}}
 
 Depending on the business needs, there may be a single monitor or there may be multiple monitors, one for each business entity (for example, a stock). Furthermore, the amount of time to sleep may need to change, depending on the circumstances. These requirements make using cron-based scheduling systems impractical.
 
@@ -958,6 +981,8 @@ A workflow implementing the monitor pattern can loop forever or it can terminate
 This pattern can also be expressed using actors and reminders. The difference is that this workflow is expressed as a single function with inputs and state stored in local variables. Workflows can also execute a sequence of actions with stronger reliability guarantees, if necessary.
 {{% /alert %}}
 
+To run this pattern, try the monitor pattern tutorial in [Python](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/python/monitor-pattern), [.NET](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/csharp/monitor-pattern) or [Java](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/java/monitor-pattern).
+
 ## External system interaction
 
 In some cases, a workflow may need to pause and wait for an external system to perform some action. For example, a workflow may need to pause and wait for a payment to be received. In this case, a payment system might publish an event to a pub/sub topic on receipt of a payment, and a listener on that topic can raise an event to the workflow using the [raise event workflow API]({{% ref "howto-manage-workflow.md#raise-an-event" %}}).
@@ -974,7 +999,7 @@ Here's an example workflow for a purchase order involving a human:
 
 The following diagram illustrates this flow.
 
-<img src="/images/workflow-overview/workflow-human-interaction-pattern.png" width=800 alt="Diagram showing how the external system interaction pattern works with a human involved"/>
+{{< diagram name="workflow-external-system" width="85" >}}
 
 The following example code shows how this pattern can be implemented using Dapr Workflow.
 
@@ -1397,6 +1422,8 @@ func raiseEvent() {
 
 External events don't have to be directly triggered by humans. They can also be triggered by other systems. For example, a workflow may need to pause and wait for a payment to be received. In this case, a payment system might publish an event to a pub/sub topic on receipt of a payment, and a listener on that topic can raise an event to the workflow using the raise event workflow API.
 
+To run this pattern, try the external system interaction tutorial in [Python](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/python/external-system-interaction), [.NET](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/csharp/external-system-interaction) or [Java](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/java/external-system-interactions).
+
 ## Compensation
 
 The compensation pattern (also known as the saga pattern) provides a mechanism for rolling back or undoing operations that have already been executed when a workflow fails partway through. This pattern is particularly important for long-running workflows that span multiple microservices where traditional database transactions are not feasible.
@@ -1432,7 +1459,7 @@ Here's an example workflow for an e-commerce process:
 
 The following diagram illustrates this flow.
 
-<img src="/images/workflow-overview/workflows-compensation.png" width=600 alt="Diagram showing how the compensation pattern."/>
+{{< diagram name="workflow-compensation" width="75" >}}
 
 {{< tabpane text=true >}}
 
@@ -1600,6 +1627,8 @@ The key benefits of using Dapr Workflow's compensation pattern include:
 
 The compensation pattern ensures that your distributed workflows can maintain consistency and recover gracefully from failures, making it an essential tool for building reliable microservice architectures.
 
+To run this pattern, try the resiliency and compensation tutorial, which also shows retry policies, in [Python](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/python/resiliency-and-compensation), [.NET](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/csharp/resiliency-and-compensation) or [Java](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow/java/resiliency-and-compensation).
+
 ## Next steps
 
 {{< button text="Workflow architecture >>" page="workflow-architecture.md" >}}
@@ -1609,8 +1638,9 @@ The compensation pattern ensures that your distributed workflows can maintain co
 - [Try out Dapr Workflows using the quickstart]({{% ref workflow-quickstart.md %}})
 - [Workflow overview]({{% ref workflow-overview.md %}})
 - [Workflow API reference]({{% ref workflow_api.md %}})
+- Run the [workflow tutorials](https://github.com/dapr/quickstarts/tree/master/tutorials/workflow) in the Quickstarts repo, which have a runnable sample for each pattern on this page
 - Try out the following examples:
-   - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
+   - [Python](https://github.com/dapr/python-sdk/tree/main/examples/workflow)
    - [JavaScript](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
    - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
    - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)

@@ -113,23 +113,7 @@ App-ID gating is coarse — it controls whether an agent may reach an MCP server
 
 ### How OPA gates per-tool MCP traffic
 
-```mermaid
-flowchart LR
-  AGENT(Agent / MCP client)
-  subgraph DAPR[Dapr sidecar - MCP server side]
-    ACL{accessControl<br/>App-ID gate}:::decision
-    OPA{OPA middleware<br/>tool-level gate}:::decision
-  end
-  SERVER(MCP server)
-
-  AGENT -- POST /method/mcp<br/>+ dapr-caller-app-id --> ACL
-  ACL -- allow --> OPA
-  ACL -. 403 .-> AGENT
-  OPA -- allow --> SERVER
-  OPA -. 403 .-> AGENT
-
-  classDef decision stroke:#ed8936
-```
+{{< diagram mcp-access-control >}}
 
 The two layers compose:
 

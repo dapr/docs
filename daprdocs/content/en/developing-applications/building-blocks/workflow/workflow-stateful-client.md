@@ -69,16 +69,7 @@ This warm-up repeats whenever a worker starts cold, including after a reconnect.
 
 The worker validates every delta before using it: the number of events it has cached must exactly match the count the sidecar says it omitted. If it does not match, or nothing is cached at all, the worker treats it as a cache miss and fetches the full history from the sidecar with a `GetInstanceHistory` call.
 
-{{< mermaid >}}
-flowchart TD
-    A["Work item arrives"] --> B{"Is cachedHistory set?"}
-    B -->|"No (full send)"| C["Replay pastEvents<br/>as the full history"]
-    B -->|"Yes (delta send)"| D{"Do the cached events match<br/>cachedHistory.eventCount?"}
-    D -->|Yes| E["Replay cached prefix<br/>plus the delta"]
-    D -->|"No (cache miss)"| F["Fetch the full history<br/>via GetInstanceHistory"]
-    F -->|Success| G["Replay the fetched history"]
-    F -->|Failure| H["Drop the stream so the turn<br/>is redelivered to a cold stream"]
-{{< /mermaid >}}
+{{< diagram name="workflow-stateful-client" width="75" >}}
 
 A cache miss costs one extra call and is always safe, which is what lets the cache be evicted freely.
 

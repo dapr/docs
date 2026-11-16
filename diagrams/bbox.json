@@ -1,7 +1,91 @@
 {
+  "actor-event-stream": [
+    0,
+    7.5
+  ],
+  "actor-reentrancy": [
+    0,
+    -2.66
+  ],
+  "actors-calling-method": [
+    -0.48,
+    0
+  ],
+  "actors-communication": [
+    0,
+    0
+  ],
+  "actors-concurrency": [
+    -7.27,
+    10.88
+  ],
+  "actors-game-example": [
+    0,
+    0
+  ],
+  "actors-id-hashing": [
+    -0.22,
+    0
+  ],
+  "actors-placement-registration": [
+    2.68,
+    -5.87
+  ],
+  "agents-augmented-llm": [
+    0,
+    -1.5
+  ],
+  "agents-decoupled-infrastructure": [
+    -0.07,
+    7.65
+  ],
+  "agents-evaluator-optimizer": [
+    0,
+    0.59
+  ],
+  "agents-loop": [
+    14.5,
+    9
+  ],
+  "agents-message-driven": [
+    -0.22,
+    -0.1
+  ],
+  "agents-orchestration": [
+    0,
+    6
+  ],
+  "agents-orchestrator-workers": [
+    0,
+    -0.16
+  ],
   "agents-overview": [
     0.45,
     3.75
+  ],
+  "agents-parallelization": [
+    0,
+    -1.5
+  ],
+  "agents-patterns-overview": [
+    26,
+    0.67
+  ],
+  "agents-prompt-chaining": [
+    0,
+    -1.5
+  ],
+  "agents-routing": [
+    0,
+    -0.16
+  ],
+  "agents-stateful-llm": [
+    0,
+    -8
+  ],
+  "agents-tool-call-flow": [
+    4.5,
+    5.69
   ],
   "api-scoping": [
     -0.07,
@@ -10,6 +94,18 @@
   "app-health": [
     -30,
     25
+  ],
+  "binding-input-kafka": [
+    -0.02,
+    -2.04
+  ],
+  "binding-output-kafka": [
+    0.02,
+    -2.03
+  ],
+  "bindings-overview": [
+    0,
+    0
   ],
   "building-blocks": [
     0,
@@ -23,6 +119,30 @@
     2,
     4.28
   ],
+  "configuration-api-overview": [
+    0,
+    0
+  ],
+  "configuration-example": [
+    -0.46,
+    -1.46
+  ],
+  "conversation-overview": [
+    -1.91,
+    0
+  ],
+  "cryptography-overview": [
+    0,
+    -9.06
+  ],
+  "diagrid-platform": [
+    20.64,
+    -6.16
+  ],
+  "distributed-lock-overview": [
+    0,
+    0
+  ],
   "hosting-kubernetes": [
     -12,
     0
@@ -34,6 +154,26 @@
   "hosting-vms": [
     -16.68,
     -4.47
+  ],
+  "lock-example": [
+    0,
+    -2.84
+  ],
+  "lock-multiple-example": [
+    0,
+    -9
+  ],
+  "lock-unlock-example": [
+    0,
+    -2.84
+  ],
+  "mcp-access-control": [
+    -0.18,
+    -6.9
+  ],
+  "mcp-service-invocation": [
+    -0.18,
+    -6.9
   ],
   "mtls-system-services": [
     -12,
@@ -51,6 +191,54 @@
     0,
     0
   ],
+  "pubsub-competing-consumers": [
+    -0.23,
+    0
+  ],
+  "pubsub-components": [
+    -0.15,
+    0
+  ],
+  "pubsub-deadletter": [
+    -0.04,
+    -8
+  ],
+  "pubsub-howto-overview": [
+    -0.08,
+    7.72
+  ],
+  "pubsub-namespace-basic": [
+    0,
+    0
+  ],
+  "pubsub-namespace-with": [
+    0,
+    0
+  ],
+  "pubsub-namespace-without": [
+    0,
+    0
+  ],
+  "pubsub-pattern": [
+    -0.11,
+    0
+  ],
+  "pubsub-publish-api": [
+    0,
+    0
+  ],
+  "pubsub-publish-raw": [
+    -0.11,
+    -0.9
+  ],
+  "pubsub-subscribe-raw": [
+    -0.11,
+    -0.9
+  ],
+  "rag-overview": [
+    0,
+    -6.67
+  ],
   "resiliency-policies": [
     5,
     25
@@ -58,6 +246,22 @@
   "scheduler-architecture": [
     16.02,
     1.5
+  ],
+  "secrets-azure-aks-keyvault": [
+    -0.18,
+    0
+  ],
+  "secrets-cloud-stores": [
+    -0.21,
+    -0.2
+  ],
+  "secrets-kubernetes-store": [
+    -0.21,
+    0
+  ],
+  "secrets-mgmt-overview": [
+    0,
+    -0.05
   ],
   "security-capabilities": [
     17.58,
@@ -79,6 +283,30 @@
     0,
     4.49
   ],
+  "service-invocation-example": [
+    0,
+    -5
+  ],
+  "service-invocation-example-detailed": [
+    -0.1,
+    -0.2
+  ],
+  "service-invocation-mdns": [
+    -0.18,
+    -3.69
+  ],
+  "service-invocation-non-dapr-endpoint": [
+    -0.01,
+    -2.7
+  ],
+  "service-invocation-overview": [
+    -0.4,
+    0.8
+  ],
+  "service-invocation-simple": [
+    -0.4,
+    -2.78
+  ],
   "service-mesh": [
     3.81,
     2.01
@@ -94,5 +322,121 @@
   "sidecar-model": [
     -7.32,
     -0.17
+  ],
+  "state-management-example": [
+    -0.46,
+    -1.1
+  ],
+  "state-management-outbox": [
+    -0.15,
+    0
+  ],
+  "state-management-outbox-steps": [
+    0,
+    0
+  ],
+  "state-management-overview": [
+    0,
+    0
+  ],
+  "workflow-activity-actor-flowchart": [
+    0,
+    0
+  ],
+  "workflow-actor-flowchart": [
+    0,
+    0
+  ],
+  "workflow-actor-reminder-flow": [
+    -0.11,
+    -5.7
+  ],
+  "workflow-actor-scale-out": [
+    0,
+    -6.5
+  ],
+  "workflow-async-http": [
+    3.49,
+    0
+  ],
+  "workflow-compensation": [
+    0,
+    8
+  ],
+  "workflow-cross-app-client": [
+    0,
+    -2
+  ],
+  "workflow-engine-protocol": [
+    -0.29,
+    -8.43
+  ],
+  "workflow-execution": [
+    -0.3,
+    -6.5
+  ],
+  "workflow-external-system": [
+    4.5,
+    0
+  ],
+  "workflow-fan-out-fan-in": [
+    0,
+    0
+  ],
+  "workflow-fast-path": [
+    0,
+    -0.17
+  ],
+  "workflow-monitor": [
+    0,
+    0.22
+  ],
+  "workflow-multi-app-activity": [
+    0,
+    -4.5
+  ],
+  "workflow-multi-app-child-workflow": [
+    0,
+    -4.5
+  ],
+  "workflow-multi-app-complex": [
+    0,
+    0
+  ],
+  "workflow-overview": [
+    -0.15,
+    0
+  ],
+  "workflow-signing-chain": [
+    0,
+    -6.5
+  ],
+  "workflow-signing-failure": [
+    0,
+    -0.4
+  ],
+  "workflow-signing-steps": [
+    0,
+    0
+  ],
+  "workflow-signing-verify": [
+    0,
+    -0.1
+  ],
+  "workflow-state-store-interactions": [
+    -0.3,
+    -0.17
+  ],
+  "workflow-stateful-client": [
+    0,
+    -0.2
+  ],
+  "workflow-task-chaining": [
+    0,
+    0
+  ],
+  "workflows-architecture-k8s": [
+    -0.02,
+    -6.8
   ]
 }

@@ -71,7 +71,14 @@ const INNER_R = CLUSTER.x + CLUSTER.w - 32;
 
 // ---- the control plane, one pod each ----------------------------------------
 const SERVICE_R = 30;
-const CP = { x: INNER_L, y: 72, w: 818, h: 200 };
+// The top edge is at 66 rather than 72, and the height carries the six units
+// so the bottom - and the namespace label measured off it - does not move.
+// "Dapr control plane" and the first pod's "Pod" are both caption pills, each
+// centred on its own border and reaching CAPTION_H / 2 each side, and at 72
+// they cleared each other by eight units: near enough to read as one smudge
+// rather than two names. diagrams/caption-clear.test.mjs found it, in a scene
+// that had already shipped.
+const CP = { x: INNER_L, y: 66, w: 818, h: 206 };
 const CP_POD = { w: 140, h: 116 };
 const CP_GAP = 24;
 const CP_PITCH = CP_POD.w + CP_GAP;

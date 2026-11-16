@@ -3,8 +3,9 @@
 // The diagram on the page is an inlined svg painted in var(--d-*), which only
 // resolves against this page's tokens. Copying THAT would hand someone a file
 // that comes out black or blank anywhere else, so this fetches the standalone
-// copy under /diagrams/, which has the light values baked in. The download link
-// beside it needs no JavaScript at all and points at the same file.
+// copy under /diagrams/, which has the light values baked in. The two download
+// links beside it need no JavaScript at all: Download SVG points at this same
+// file, Download PNG at the committed raster next to it.
 (function () {
   'use strict';
 
@@ -37,7 +38,7 @@
       })
       .catch(function () {
         // Never leave the button in a lie: if it did not copy, say so and let
-        // the reader fall back to the download link next to it.
+        // the reader fall back to the download links next to it.
         say(button, 'Copy failed');
       })
       .finally(function () {

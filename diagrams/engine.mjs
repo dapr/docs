@@ -109,6 +109,7 @@ export const C = Object.freeze({
   // A vendor's own brand colour, for tinting a single-colour brand mark. Not a
   // theme colour: it is the same in light and dark, because the mark is.
   kubernetes: 'var(--d-brand-kubernetes)',
+  redisBrand: 'var(--d-brand-redis)',
   // Shows only in dark: see --d-mark-plate.
   markPlate: 'var(--d-mark-plate)',
   body: 'var(--d-body)',

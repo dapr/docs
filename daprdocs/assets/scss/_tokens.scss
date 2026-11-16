@@ -54,6 +54,7 @@
      so its ink must not follow --d-body, which inverts. */
   --d-diagram-ink:   #1c2330;
   --d-brand-kubernetes: #326CE5; // the mark's own blue, so identical in both themes
+  --d-brand-redis: #FF4438;      // the mark's own red, so identical in both themes
 }
 [data-bs-theme="dark"] {
   --d-blue:   #6f9fe8;
@@ -96,4 +97,5 @@
   --d-mark-plate: var(--d-diagram-plate);
   --d-diagram-ink:   #1c2330;
   --d-brand-kubernetes: #326CE5; // the mark's own blue, so identical in both themes
+  --d-brand-redis: #FF4438;      // the mark's own red, so identical in both themes
 }
