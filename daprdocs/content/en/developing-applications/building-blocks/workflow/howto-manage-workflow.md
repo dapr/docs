@@ -572,6 +572,7 @@ type PurgeWorkflowRequest struct {
 type TerminateWorkflowRequest struct {
 	InstanceID        string
 	WorkflowComponent string
+	Reason            *string // Optional reason, kept separate from termination output
 }
 
 // Pause workflow
