@@ -148,3 +148,35 @@ dapr workflow purge --app-id myapp --all
 ```bash
 dapr workflow purge wf-12345 --app-id myapp --force
 ```
+
+
+## Terminate a workflow
+
+Terminate a running workflow instance. The optional `--reason` flag records a human-readable explanation separately from the workflow's termination output.
+
+### Usage
+
+```bash
+dapr workflow terminate <instance-id> [flags]
+```
+
+### Flags
+
+| Name | Type | Description |
+|------|------|-------------|
+| `--app-id`, `-a` | string | (Required) The app ID that owns the workflow instance |
+| `--output`, `-o` | string | Optional workflow termination output, in JSON string format |
+| `--reason` | string | Optional human-readable reason recorded with the termination event and exposed in workflow metadata |
+| `--kubernetes`, `-k` | bool | Target a Kubernetes Dapr installation |
+| `--namespace`, `-n` | string | Kubernetes namespace (default `default`) |
+
+### Example
+
+```bash
+dapr workflow terminate order-12345 \\
+  --app-id orderprocessing \\
+  --output '{"status":"cancelled"}' \\
+  --reason "Cancelled by customer"
+```
+
+The reason is available from workflow history and as the `dapr.workflow.termination_reason` property returned by the get workflow API. It does not replace or modify the `--output` value.
