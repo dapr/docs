@@ -155,10 +155,12 @@ With the [workflow fast path]({{% ref "workflow-fast-path.md#leg-2-local-activit
 ### Ordering actors
 
 An app that starts workflows with [ordering keys]({{% ref workflow-ordering.md %}}) uses one ordering actor per key in use, with the key as the actor ID.
-The ordering actor holds the key's queue in a single `queue` record in the actor state store: the workflow at the head of the queue, the workflows waiting behind it, and the last failure that has not been resolved.
-It never runs workflow code.
+The ordering actor holds the key's queue in a single `queue` record in the actor state store, not in memory, so a queue survives a restart or a placement move: the workflow at the head of the queue, the workflows waiting behind it, and the last failure that has not been resolved.
+The record grows by one small entry (instance ID, execution ID, workflow name, start time and failure policy) per queued workflow and shrinks as they run.
+The ordering actor never runs workflow code. The workflow actor does, once released.
 It releases the workflow at the head by creating a one-shot `ordering-release-<id>` reminder on that workflow's actor, or an `ordering-cancel-<id>` reminder when the workflow's failure policy cancels it, where `<id>` is the execution ID of the start that queued the workflow.
-The workflow actor reports back to the ordering actor when the workflow finishes or is purged, which releases the next workflow.
+The workflow actor reports back to the ordering actor when the workflow reaches a terminal status (`COMPLETED`, `FAILED` or `TERMINATED`) or is purged, which releases the next workflow.
+Nothing else releases the key: a suspended workflow, or one waiting on an event or a timer, holds it.
 The `queue` record is deleted once the key has no workflow queued and no unresolved failure.
 
 ### Reminder usage and execution guarantees

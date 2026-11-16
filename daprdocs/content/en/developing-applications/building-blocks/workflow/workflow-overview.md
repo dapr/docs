@@ -55,7 +55,7 @@ You can also schedule a new workflow as a _detached workflow_: a fire-and-forget
 
 ### Ordering keys
 
-An _ordering key_ runs the workflows of an app that share the key one at a time, in the order they were started, so related work such as the steps of one deployment runs strictly in sequence while unrelated workflows run in parallel. Each keyed workflow also sets what it does when the workflow before it did not complete successfully: run anyway, wait, or cancel.
+An _ordering key_ runs the workflows of an app that share the key one at a time, in the order they were started, so related work such as the steps of one deployment runs strictly in sequence while unrelated workflows run in parallel. Each keyed workflow also sets its behavior when the workflow before it did not complete successfully: run anyway, wait, or cancel.
 
 [Learn more about ordering keys.]({{% ref "workflow-ordering.md" %}})
 

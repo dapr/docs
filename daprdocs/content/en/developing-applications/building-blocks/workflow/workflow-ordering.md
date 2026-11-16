@@ -6,7 +6,7 @@ weight: 2650
 description: "Run workflows that share a key one at a time, in start order"
 ---
 
-An _ordering key_ runs the workflows of an app that share the key one at a time, in the order they were started: a queued workflow runs no code until the ones before it have finished.
+An _ordering key_ runs the workflows of an app that share the same key one at a time, in the order they were started. A queued workflow will not run until the ones before it have finished.
 
 Ordering keys let you process related work strictly in sequence, such as the orders of one customer or the steps of one deployment, without putting a message broker in front of your workflows. Workflows with different keys, and workflows without a key, run in parallel as usual.
 
@@ -14,7 +14,7 @@ Ordering keys let you process related work strictly in sequence, such as the ord
 Ordering keys are available in Dapr v1.20 and later. The ordering option needs an SDK release that supports it.
 {{% /alert %}}
 
-The following diagram shows three workflows started with the same key. The first runs at once; the other two queue behind it. The first one fails, so the second, started with the `BLOCK` [failure policy](#when-a-workflow-fails), waits and holds up the third until the failed workflow is run again under its instance ID and completes.
+The following diagram shows three workflows started with the same key. The first runs at once, and the other two queue behind it. The first one fails, so the second, started with the `BLOCK` [failure policy](#when-a-workflow-fails), waits and holds up the third until the failed workflow is run again under its instance ID and completes.
 
 {{< mermaid >}}
 sequenceDiagram
@@ -40,25 +40,27 @@ sequenceDiagram
 
 ## How ordering keys work
 
-- **Queue per key and app.** A key names a queue within the app that runs the workflow. A workflow started on another app with the [cross-app]({{% ref workflow-multi-app.md %}}) target queues in the target app.
+- **Queue per key and app.** A key names a queue within the app that runs the workflow, shared by all of the app's workflow types: workflows of different types that use the same key are ordered together. A workflow started on another app with the [cross-app]({{% ref workflow-multi-app.md %}}) target queues in the target app.
 - **Start order.** Workflows run in the order their starts reach the queue. Two starts sent at the same time have no defined order between them.
 - **Release.** The next workflow starts once the previous one has finished or is force purged. If the previous one did not complete successfully, the next one's [failure policy](#when-a-workflow-fails) decides what it does. A workflow that continues as new keeps the key until its last generation finishes.
 - **Queued workflows exist at once.** A queued workflow reports the `PENDING` status, and you can get, wait for, raise events to, or terminate it like any other workflow. Events raised to it are delivered when it starts. The start call returns as soon as the workflow is queued. List the queued workflows of an app with `dapr workflow list --app-id <app-id> --filter-status PENDING`.
 - **Terminating a queued workflow.** It completes as `TERMINATED` without running any of its code, and leaves the queue.
 - **Start time.** A queued workflow with a start time takes its place in the queue when it is started, and once it reaches the front, starts no earlier than its start time. It holds the key while it waits.
-- **Instance IDs.** You can reuse the ID of a finished keyed workflow; it queues again.
+- **Instance IDs.** Starting a workflow again under the instance ID of a finished keyed workflow queues it again, which is how a failed workflow is [retried in place](#when-a-workflow-fails). The ID of a queued workflow is taken until it finishes.
 - **Stalls.** A workflow that stalls, for example because its version is not registered, holds its key until it is fixed or terminated.
 - **Not ordered.** [Re-runs]({{% ref "howto-manage-workflow.md" %}}) of a keyed workflow use a new instance ID and do not take part in its key's queue, and neither do its child and detached workflows.
-
-A key may hold letters, digits, `-` and `_`, and is at most 64 characters long. Keys need no setup: a key's queue exists while it holds workflows.
 
 {{% alert title="Warning" color="warning" %}}
 During a rolling upgrade from a Dapr version without ordering keys, an older sidecar that takes over a queued workflow runs it at once. Upgrade every sidecar of an app before you start keyed workflows on it.
 {{% /alert %}}
 
+### Key format
+
+A key is 1 to 64 characters of letters, digits, `-` and `_`, in any mix: `42`, `customer-42` and `env_prod` are all valid keys. Keys need no setup: a key's queue exists while it holds workflows.
+
 ## When a workflow fails
 
-Each keyed workflow can set what it does when the workflow before it under its key ran and did not complete successfully, that is, ended `FAILED` or `TERMINATED`:
+Each keyed workflow can set its behavior when the workflow before it with the same ordering key ran and did not complete successfully (ended `FAILED` or `TERMINATED`):
 
 | Policy | The workflow |
 | --- | --- |
@@ -70,9 +72,9 @@ The policy belongs to the waiting workflow, so steps of one key can differ: a de
 
 - **Workflows that never ran are skipped.** A workflow cancelled by its policy, or terminated while queued, is nobody's predecessor: the next workflow applies its own policy to the same failure, so a run of `CANCEL` workflows cancels in turn until a `CONTINUE` or `BLOCK` workflow.
 - **Failures are remembered.** A workflow started after a failure, when nothing else is queued, still sees it.
-- **Resolving a failure.** A `BLOCK` workflow waits until the failed workflow is either:
-  - started again under the same instance ID: the new run goes first, ahead of the waiting workflows, and its outcome then decides; or
-  - [purged]({{% ref "workflow_api.md#purge-workflow-request" %}}), explicitly or by a [retention policy]({{% ref workflow-history-retention-policy.md %}}): that skips it, and the blocked workflow runs. With a retention policy on failed workflows, a `BLOCK` workflow waits at most for the retention period.
+- **Resolving a failure.** A `BLOCK` workflow waits until the failed workflow is resolved in one of two ways:
+  - It is started again under the same instance ID. The new run goes first, ahead of the waiting workflows, and its outcome then decides.
+  - It is [purged]({{% ref "workflow_api.md#purge-workflow-request" %}}), explicitly or by a [retention policy]({{% ref workflow-history-retention-policy.md %}}). That skips it, and the blocked workflow runs. With a retention policy on failed workflows, a `BLOCK` workflow waits at most for the retention period.
 
   Starting the failed workflow under another ordering key, or with none, also skips it.
 

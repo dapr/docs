@@ -198,7 +198,7 @@ For the comparison with child workflows, guidance on when to use them, and a cod
 
 ## Ordering keys
 
-A workflow can be started with an _ordering key_. The workflows of an app that share a key run one at a time, in the order they were started: a queued workflow reports `PENDING` and runs no code until the ones before it have finished. Each keyed workflow sets what it does when the workflow before it did not complete successfully: run anyway (the default), stay queued until the failure is resolved, or complete as `TERMINATED` without running.
+A workflow can be started with an _ordering key_. The workflows of an app that share a key run one at a time, in the order they were started: a queued workflow reports `PENDING` and runs no code until the ones before it have finished. When the workflow before it did not complete successfully, a keyed workflow does one of three things, chosen when it is started: run anyway (the default), stay queued until the failure is resolved, or complete as `TERMINATED` without running.
 
 Learn more about [ordering keys]({{% ref workflow-ordering.md %}}).
 
