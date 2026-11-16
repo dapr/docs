@@ -8,5 +8,3 @@ description: "Dapr capabilities that solve common development challenges for dis
 
 Get a high-level [overview of Dapr building blocks]({{% ref building-blocks-concept %}}) in the **Concepts** section.
 
-{{< diagram building-blocks >}}
-

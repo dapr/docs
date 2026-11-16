@@ -4,6 +4,7 @@ title: "Binary Store"
 linkTitle: "Binary Store"
 weight: 45
 description: "Store, retrieve, and manage binary files through Dapr"
+status: alpha
 ---
 
 {{% alert title="More about the Dapr Binary Store" color="primary" %}}
