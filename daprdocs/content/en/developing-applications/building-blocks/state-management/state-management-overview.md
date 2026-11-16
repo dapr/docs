@@ -182,6 +182,10 @@ Want to put the Dapr state management API to the test? Walk through the followin
 
 Want to skip the quickstarts? Not a problem. You can try out the state management building block directly in your application. After [Dapr is installed]({{% ref "getting-started/_index.md" %}}), you can begin using the state management API starting with [the state management how-to guide]({{% ref howto-get-save-state.md %}}).
 
+### Inspect state locally
+
+During local development, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to browse the records in your state store, including the `<app-id>||<key>` prefixes Dapr writes, decode base64-encoded values, and add or delete records without writing any code.
+
 ## Next steps
 
 - Start working through the state management how-to guides, starting with:
