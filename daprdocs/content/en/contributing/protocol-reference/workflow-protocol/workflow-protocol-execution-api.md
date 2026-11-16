@@ -58,13 +58,19 @@ Reports the results of an orchestration execution.
 *   `actions`: A list of `OrchestratorAction` messages.
 *   `custom_status`: Optional string for user-defined status.
 
-**OrchestratorAction Types:**
-*   `ScheduleTask`: Schedule a new activity.
-*   `CreateTimer`: Schedule a durable timer.
-*   `CreateSubOrchestration`: Start a child workflow.
-*   `CompleteOrchestration`: Mark the workflow as completed (success or failure).
-*   `TerminateOrchestration`: Forcefully terminate the instance.
-*   `SendEvent`: Send an event to another workflow.
+**WorkflowAction Types:**
+*   `ScheduleTaskAction`: Schedule an activity.
+*   `CreateTimerAction`: Schedule a durable timer.
+*   `CreateChildWorkflowAction`: Start a child workflow.
+*   `CreateDetachedWorkflowAction`: Start a detached workflow.
+*   `CompleteWorkflowAction`: Complete or fail the current workflow.
+*   `TerminateWorkflowAction`: Terminate another workflow instance.
+*   `SendEventAction`: Send an external event to another workflow.
+*   `WorkflowVersionNotAvailableAction`: Report that the requested workflow version is unavailable.
+
+#### TerminateWorkflowAction
+
+The `TerminateWorkflowAction` message contains the target `instanceId`, an optional `reason` (`google.protobuf.StringValue`), and a `recurse` flag. The Dapr durabletask runtime converts this action into an `ExecutionTerminatedEvent` for the target workflow. The action's reason is written to both `ExecutionTerminatedEvent.input` and `ExecutionTerminatedEvent.reason`: the former preserves the action's existing termination-input behavior, while the latter is the dedicated reason field used by workflow metadata and history consumers.
 
 ### CompleteActivityTask
 
@@ -91,7 +97,17 @@ Common event types:
 *   `TaskFailed`: An activity failed.
 *   `TimerCreated`: A timer was scheduled.
 *   `TimerFired`: A timer expired.
-*   `OrchestrationCompleted`: The workflow finished.
+*   `ExecutionTerminated`: The workflow was terminated.
+
+#### ExecutionTerminatedEvent
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `input` | `google.protobuf.StringValue` | Optional termination input/output. For compatibility, workflow-issued `TerminateWorkflowAction` messages continue to copy their reason into this field. |
+| `recurse` | `bool` | Whether termination must be propagated to child workflows. |
+| `reason` | `google.protobuf.StringValue` | Optional dedicated explanation for the termination. This is persisted separately from the input/output and exposed as `dapr.workflow.termination_reason`. |
+
+When recursive termination is applied, both `input` and `reason` are copied into each child workflow's `ExecutionTerminatedEvent`. This applies to same-app actor reminders, durabletask backend messages, and cross-app workflow routing. Do not derive the reason from `input`: a client can supply an output and a reason independently.
 
 #### Timer origin
 

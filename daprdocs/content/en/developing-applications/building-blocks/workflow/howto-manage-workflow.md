@@ -106,6 +106,16 @@ dapr workflow raise-event order-12345/PaymentReceived \
   --input '{"paymentId": "pay-67890", "amount": 100.50}'
 ```
 
+Raising an external event does not terminate the workflow. To request graceful cancellation, use an application-defined event and include the cancellation context in its payload. The workflow can then perform compensation or other cleanup before completing:
+
+```bash
+dapr workflow raise-event order-12345/CancellationRequested \
+  --app-id orderprocessing \
+  --input '{"reason": "Customer cancelled the order"}'
+```
+
+To terminate the workflow immediately instead, use `dapr workflow terminate` with `--reason`. The terminate operation records that reason in workflow history and metadata; it does not read or infer it from an external event.
+
 #### Re-run Workflows
 
 ```bash
