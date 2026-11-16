@@ -8,6 +8,8 @@ description: Manage and run workflows
 
 Now that you've [authored the workflow and its activities in your application]({{% ref howto-author-workflow.md %}}), you can start, terminate, rerun, and get information about the workflow using the CLI or API calls.
 
+The CLI's `--reason` option records a human-readable termination reason separately from `--output`, which remains the workflow's termination output. The reason is retained in workflow history and is available from workflow metadata as `dapr.workflow.termination_reason`.
+
 The SDK clients and the HTTP API can also target a workflow owned by *another* application in the same namespace, by sending that application's ID with the request. (The CLI's `--app-id` flag is different: it selects which sidecar to talk to, so those calls stay local to that application.) The target application's [workflow access policy]({{% ref workflow-access-policy.md %}}) decides whether the call is permitted. See [Multi Application Workflows]({{% ref workflow-multi-app.md %}}) for the full picture.
 
 {{< tabpane text=true >}}
@@ -91,7 +93,8 @@ dapr workflow resume order-12345 \
 # Terminate a workflow
 dapr workflow terminate order-12345 \
   --app-id orderprocessing \
-  --output '{"reason": "Cancelled by customer"}'
+  --output '{"status": "cancelled"}' \
+  --reason "Cancelled by customer"
 ```
 
 #### Raise External Events
@@ -668,7 +671,7 @@ curl -X GET "http://localhost:3500/v1.0/workflows/dapr/12345678"
 Add the `appID` query parameter to any of the calls above to act on a workflow owned by another application. Every operation in the [workflow API reference]({{% ref workflow_api.md %}}) accepts it, and the target's [workflow access policy]({{% ref workflow-access-policy.md %}}) decides whether the call is allowed:
 
 ```shell
-curl -X POST "http://localhost:3500/v1.0/workflows/dapr/12345678/terminate?appID=app2"
+curl -X POST "http://localhost:3500/v1.0/workflows/dapr/12345678/terminate?appID=app2&reason=Cancelled%20by%20customer"
 ```
 
 {{% /tab %}}
