@@ -36,12 +36,14 @@ Using the OpenTelemetry Collector Datadog exporter, you can configure Dapr to cr
 
    ```sh
    kubectl apply -f ./deploy/collector-config.yaml
+   ```
 
 1. Apply the `appconfig` configuration by adding a `dapr.io/config` annotation to the container that you want to participate in the distributed tracing.
 
    ```yml
    annotations:
       dapr.io/config: "appconfig"
+   ```
 
 1. Create and configure the application. Once running, telemetry data is sent to Datadog and visible in Datadog APM.
 
