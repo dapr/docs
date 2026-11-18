@@ -72,7 +72,7 @@ POST http://localhost:<daprPort>/v1.0/workflows/<workflowComponentName>/<instanc
 {{% alert title="Note" color="primary" %}}
  Terminating a workflow terminates all of the child workflows created by the workflow instance.
 
-The optional `reason` query parameter records why the workflow was terminated. The reason is stored with workflow history and is exposed by the get workflow API in the `dapr.workflow.termination_reason` property. When a workflow is terminated recursively, the reason is also recorded for its child workflows.
+The optional `reason` query parameter records why the workflow was terminated. Dapr maps it to the existing termination input and exposes it through the get workflow API in the `dapr.workflow.custom_status` property. When a workflow is terminated recursively, the same input is recorded for its child workflows. A supplied reason takes the place of the workflow's previous custom status.
 
 Terminating a workflow has no effect on any in-flight activity executions that were started by the terminated instance. 
 
@@ -85,7 +85,7 @@ Parameter | Description
 `workflowComponentName` | Use `dapr` for Dapr Workflows
 `instanceId` | Unique value created for each run of a specific workflow
 `appID` | (Optional) App ID of the application hosting the workflow instance. Defaults to the local app. The target app must be in the same namespace and its [workflow access policy]({{% ref workflow-access-policy %}}) governs whether the call is permitted.
-`reason` | (Optional) Human-readable explanation for terminating the workflow. URL-encode the value when it contains characters that are not valid in a URL. The reason is persisted in workflow history and exposed as `dapr.workflow.termination_reason` by the get workflow request.
+`reason` | (Optional) Human-readable explanation for terminating the workflow. URL-encode the value when it contains characters that are not valid in a URL. The reason is persisted in the existing termination input and exposed as `dapr.workflow.custom_status` by the get workflow request. It cannot be supplied independently of the termination output.
 
 ### HTTP response codes
 
@@ -273,4 +273,4 @@ Parameter | Description
 `dapr.workflow.failure.error_type` | The error type for a workflow with `runtimeStatus` `"FAILED"`.
 `dapr.workflow.failure.error_message` | The error message for a workflow with `runtimeStatus` `"FAILED"`.
 `dapr.workflow.failure.stack_trace` | The stack trace for a workflow with `runtimeStatus` `"FAILED"`, when available.
-`dapr.workflow.termination_reason` | The human-readable reason supplied when a workflow was terminated. This property is present only when a termination reason was supplied.
+`dapr.workflow.custom_status` | The workflow's custom status. When a termination reason is supplied, this property contains that reason; otherwise the workflow's existing custom status is returned.
