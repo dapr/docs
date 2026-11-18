@@ -70,7 +70,7 @@ Reports the results of an orchestration execution.
 
 #### TerminateWorkflowAction
 
-The `TerminateWorkflowAction` message contains the target `instanceId`, an optional `reason` (`google.protobuf.StringValue`), and a `recurse` flag. The Dapr durabletask runtime converts this action into an `ExecutionTerminatedEvent` for the target workflow. The action's reason is written to both `ExecutionTerminatedEvent.input` and `ExecutionTerminatedEvent.reason`: the former preserves the action's existing termination-input behavior, while the latter is the dedicated reason field used by workflow metadata and history consumers.
+The existing `TerminateWorkflowAction` message contains the target `instanceId` and a `recurse` flag. It does not add a termination-reason field. The Dapr public workflow termination API accepts the optional reason and maps it through the existing Durable Task termination payload.
 
 ### CompleteActivityTask
 
@@ -103,11 +103,11 @@ Common event types:
 
 | Field | Type | Description |
 | :--- | :--- | :--- |
-| `input` | `google.protobuf.StringValue` | Optional termination input/output. For compatibility, workflow-issued `TerminateWorkflowAction` messages continue to copy their reason into this field. |
+| `input` | `google.protobuf.StringValue` | The existing termination payload. Dapr maps a supplied termination reason to this field through `TerminateRequest.output`. |
 | `recurse` | `bool` | Whether termination must be propagated to child workflows. |
-| `reason` | `google.protobuf.StringValue` | Optional dedicated explanation for the termination. This is persisted separately from the input/output and exposed as `dapr.workflow.termination_reason`. |
 
-When recursive termination is applied, both `input` and `reason` are copied into each child workflow's `ExecutionTerminatedEvent`. This applies to same-app actor reminders, durabletask backend messages, and cross-app workflow routing. Do not derive the reason from `input`: a client can supply an output and a reason independently.
+
+When recursive termination is applied, the existing `input` field is copied into each child workflow's `ExecutionTerminatedEvent`. No additional reason field is required.
 
 #### Timer origin
 
