@@ -152,7 +152,7 @@ dapr workflow purge wf-12345 --app-id myapp --force
 
 ## Terminate a workflow
 
-Terminate a running workflow instance. The optional `--reason` flag records a human-readable explanation separately from the workflow's termination output.
+Terminate a running workflow instance. The optional `--reason` flag uses the existing termination input and is exposed as `dapr.workflow.custom_status`. It cannot be combined with `--output`.
 
 ### Usage
 
@@ -166,7 +166,7 @@ dapr workflow terminate <instance-id> [flags]
 |------|------|-------------|
 | `--app-id`, `-a` | string | (Required) The app ID that owns the workflow instance |
 | `--output`, `-o` | string | Optional workflow termination output, in JSON string format |
-| `--reason` | string | Optional human-readable reason recorded with the termination event and exposed in workflow metadata |
+| `--reason` | string | Optional human-readable reason recorded as the termination input and exposed as `dapr.workflow.custom_status` |
 | `--kubernetes`, `-k` | bool | Target a Kubernetes Dapr installation |
 | `--namespace`, `-n` | string | Kubernetes namespace (default `default`) |
 
@@ -175,8 +175,7 @@ dapr workflow terminate <instance-id> [flags]
 ```bash
 dapr workflow terminate order-12345 \\
   --app-id orderprocessing \\
-  --output '{"status":"cancelled"}' \\
   --reason "Cancelled by customer"
 ```
 
-The reason is available from workflow history and as the `dapr.workflow.termination_reason` property returned by the get workflow API. It does not replace or modify the `--output` value.
+The reason is available from workflow history and as the `dapr.workflow.custom_status` property returned by the get workflow API. Because the reason uses the existing termination input, it cannot be combined with `--output`.
