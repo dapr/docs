@@ -8,7 +8,7 @@ description: Manage and run workflows
 
 Now that you've [authored the workflow and its activities in your application]({{% ref howto-author-workflow.md %}}), you can start, terminate, rerun, and get information about the workflow using the CLI or API calls.
 
-The CLI's `--reason` option records a human-readable termination reason separately from `--output`, which remains the workflow's termination output. The reason is retained in workflow history and is available from workflow metadata as `dapr.workflow.termination_reason`.
+The CLI's `--reason` option records a human-readable termination reason in the existing termination input and exposes it through `dapr.workflow.custom_status`. Because Durable Task has one termination payload, `--reason` and `--output` cannot be used together.
 
 The SDK clients and the HTTP API can also target a workflow owned by *another* application in the same namespace, by sending that application's ID with the request. (The CLI's `--app-id` flag is different: it selects which sidecar to talk to, so those calls stay local to that application.) The target application's [workflow access policy]({{% ref workflow-access-policy.md %}}) decides whether the call is permitted. See [Multi Application Workflows]({{% ref workflow-multi-app.md %}}) for the full picture.
 
@@ -114,7 +114,7 @@ dapr workflow raise-event order-12345/CancellationRequested \
   --input '{"reason": "Customer cancelled the order"}'
 ```
 
-To terminate the workflow immediately instead, use `dapr workflow terminate` with `--reason`. The terminate operation records that reason in workflow history and metadata; it does not read or infer it from an external event.
+To terminate the workflow immediately instead, use `dapr workflow terminate` with `--reason`. The terminate operation records that reason in workflow history and exposes it through `dapr.workflow.custom_status`; it does not read or infer it from an external event.
 
 #### Re-run Workflows
 
@@ -572,7 +572,7 @@ type PurgeWorkflowRequest struct {
 type TerminateWorkflowRequest struct {
 	InstanceID        string
 	WorkflowComponent string
-	Reason            *string // Optional reason, kept separate from termination output
+	TerminateReason   *string // Optional termination reason, mapped to the existing termination input
 }
 
 // Pause workflow
@@ -630,7 +630,7 @@ The app that owns the workflow must be running with its workflow worker connecte
 
 ### Terminate workflow
 
-To terminate your workflow with an ID `12345678`, run. The optional `reason` query parameter is URL-encoded and recorded separately from the workflow output:
+To terminate your workflow with an ID `12345678`, run. The optional `reason` query parameter is URL-encoded, mapped to the existing termination input, and exposed through `dapr.workflow.custom_status`:
 
 ```shell
 curl -X POST "http://localhost:3500/v1.0/workflows/dapr/12345678/terminate?reason=Cancelled%20by%20customer"
