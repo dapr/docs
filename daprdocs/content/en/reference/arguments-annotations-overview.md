@@ -33,7 +33,7 @@ This table is meant to help users understand the equivalent options for running 
 | `--unix-domain-socket` | `--unix-domain-socket` | `-u` | `dapr.io/unix-domain-socket-path`  | The parent directory of socket file. On Linux, when communicating with the Dapr sidecar, use unix domain sockets for lower latency and greater throughput compared to TCP ports. Not available on Windows OS. |
 | `--log-as-json` | not supported | | `dapr.io/log-as-json` | Setting this parameter to `true` outputs [logs in JSON format]({{% ref logs %}}). Default is `false` |
 | `--log-level` | `--log-level` | | `dapr.io/log-level` | Sets the [log level]({{% ref logs-troubleshooting %}}) for the Dapr sidecar. Allowed values are `debug`, `info`, `warn`, `error`. Default is `info` |
-| `--log-file` | not supported | | not supported | Path to a file where logs are written. Merged with `--log-outputs` when both are set. See [log destinations and file rotation]({{% ref "logs.md#log-destinations-and-file-rotation" %}}) |
+| `--log-file` | not supported | | not supported | Path to one file where logs are written. If you also set `--log-outputs`, Dapr adds this path to that list. If you set only `--log-file`, logs go to the file and not to stdout |
 | `--log-outputs` | not supported | | not supported | Comma-separated list of log destinations: `stdout`, `stderr` or a file path. Default is `stdout`. Added in v1.19 |
 | `--log-file-max-size` | not supported | | not supported | Maximum size in megabytes of a log file before it is rotated. Added in v1.19 |
 | `--log-file-max-backups` | not supported | | not supported | Maximum number of rotated log files to keep. `0` keeps all. Added in v1.19 |
