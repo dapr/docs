@@ -269,6 +269,23 @@ This is enabled by default, requires no configuration or code changes, and never
 
 Learn more about [the stateful workflow client]({{< ref workflow-stateful-client.md >}}).
 
+## Rerunning workflows
+
+Rerunning a workflow creates a **new** workflow instance from one of the history events of a finished instance. The source instance is left unchanged. Use it to retry a failed workflow from the step that failed, optionally with a new input, without repeating the work that already succeeded.
+
+Work that finished (completed or failed) and was recorded in the history before the target event is replayed from history, and is not executed again. Everything else is executed again in the new instance: activities that were still in flight, timers that had not fired, and child workflows that had not finished. In a workflow that runs activities in parallel, this includes an activity that succeeded but whose completion was recorded *after* the target event, so a fan-out can rerun more than you expect. Child workflows that are executed again get new instance IDs. Rerunning is not compensation: side effects of the source instance remain, so make activities idempotent.
+
+### Rerun limitations
+
+- The source instance must be in a terminal state (`COMPLETED`, `FAILED`, or `TERMINATED`). A running instance cannot be rerun.
+- The source instance cannot be a child workflow. Rerun the parent workflow instead.
+- Only three event types can be rerun from: an activity being scheduled (`TaskScheduled`), a timer being created (`TimerCreated`), and a child workflow being created (`ChildWorkflowInstanceCreated`). Any other event is rejected, including the creation of a [detached workflow]({{% ref workflow-detached.md %}}).
+- The event ID is the event's own ID as shown in the workflow history, not its position in the list of events.
+- A new input replaces the input of the target event only, and cannot be given for a timer event. A new child workflow instance ID can only be given for a child workflow event.
+- A new instance ID, if given, must differ from the source instance ID and must not belong to an instance that already has state. If it is omitted, the runtime generates one.
+
+Rerun is available through the [Dapr CLI]({{% ref "howto-manage-workflow.md#re-run-workflows" %}}) and the SDK workflow clients, not through the HTTP API. It can also [target a workflow owned by another application]({{% ref workflow-multi-app.md %}}).
+
 ## Purging
 
 Workflow state can be purged from a state store, purging all its history and removing all metadata related to a specific workflow instance. The purge capability is used for workflows that have run to a `COMPLETED`, `FAILED`, or `TERMINATED` state.
