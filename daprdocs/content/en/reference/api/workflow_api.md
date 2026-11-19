@@ -266,7 +266,7 @@ Parameter | Description
 --------- | -----------
 `runtimeStatus` | The status of the workflow instance. Values include: `"RUNNING"`, `"COMPLETED"`, `"CONTINUED_AS_NEW"`, `"FAILED"`, `"CANCELED"`, `"TERMINATED"`, `"PENDING"`, `"SUSPENDED"`  
 
-The `properties` map does not include `dapr.workflow.output` when `runtimeStatus` is `"FAILED"`. A failed workflow has no successful output. Instead, the `properties` map carries the failure in these keys:
+The `properties` map does not include `dapr.workflow.output` when `runtimeStatus` is `"FAILED"` or `"TERMINATED"`, because neither state has a successful workflow output. A failed workflow exposes its failure in these keys: A terminated workflow exposes a supplied termination reason in the separate `terminate_reason` property described below.
 
 Parameter | Description
 --------- | -----------
