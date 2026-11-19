@@ -116,16 +116,7 @@ dapr workflow rerun order-12345 --event-id 5
 dapr workflow rerun order-12345 --new-instance-id order-12345-retry
 ```
 
-A rerun creates a **new** workflow instance from the history of a finished one, and leaves the source instance unchanged. The following limitations apply, whether you rerun from the CLI or from an SDK workflow client:
-
-- The source instance must be in a terminal state (`COMPLETED`, `FAILED`, or `TERMINATED`). A running instance cannot be rerun.
-- The source instance cannot be a child workflow. Rerun the parent workflow instead.
-- Only three event types can be rerun from: an activity being scheduled (`TaskScheduled`), a timer being created (`TimerCreated`), and a child workflow being created (`ChildWorkflowInstanceCreated`). Any other event is rejected, including the creation of a [detached workflow]({{% ref workflow-detached.md %}}).
-- The event ID is the event's own ID as shown in the workflow history, not its position in the list of events.
-- A new input replaces the input of the target event only, and cannot be given for a timer event. A new child workflow instance ID can only be given for a child workflow event.
-- A new instance ID, if given, must differ from the source instance ID and must not belong to an instance that already has state. If it is omitted, the runtime generates one.
-
-Activities that had not completed before the target event are executed again. See [Rerunning workflows]({{% ref "workflow-features-concepts.md#rerunning-workflows" %}}) for what is replayed and what is re-executed.
+A rerun creates a **new** workflow instance from the history of a finished one, and leaves the source instance unchanged. Not every workflow or history event can be rerun: see the [rerun limitations]({{% ref "workflow-features-concepts.md#rerun-limitations" %}}) before using it, and [Rerunning workflows]({{% ref "workflow-features-concepts.md#rerunning-workflows" %}}) for what is replayed and what is executed again.
 
 #### Purge Completed Workflows
 
