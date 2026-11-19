@@ -37,7 +37,7 @@
   link: openrouter
   state: Alpha
   version: v1
-  since: "1.18"
+  since: "1.20"
 - component: Local echo
   link: local-echo
   state: Stable
