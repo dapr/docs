@@ -33,7 +33,7 @@ Stores high-level information about the instance:
 *   `last_updated_at`: Last activity timestamp.
 *   `input`: Original input data.
 *   `output`: Final output data (if completed).
-*   `custom_status`: The workflow's custom status. When Dapr terminates a workflow with a reason, the supplied reason is exposed through this existing property (`dapr.workflow.custom_status`).
+*   `custom_status`: The custom status set by the workflow. A termination reason is exposed separately through the Dapr workflow metadata property `terminate_reason` and does not replace this value.
 
 ### 2. History
 A sequence of `HistoryEvent` objects that record everything that has happened in the workflow.
@@ -44,7 +44,7 @@ To optimize for large histories, Dapr often stores history events in chunks or a
     `TimerCreated` events record an `origin` that identifies why the timer was scheduled (see
     [Execution API]({{% ref "workflow-protocol-execution-api.md" %}})).
 
-Termination is recorded as an `ExecutionTerminatedEvent` using its existing `input` and `recurse` fields. Dapr maps a supplied termination reason to `input` and exposes it through the existing `customStatus` metadata. Recursive propagation copies the same `input` to each child workflow. The reason and termination output cannot be supplied independently through this Durable Task payload. See the [Execution API]({{% ref "workflow-protocol-execution-api.md" %}}).
+Termination is recorded as an `ExecutionTerminatedEvent` using its existing `input` and `recurse` fields. Dapr maps a supplied termination reason to `input` and exposes it through the separate `terminate_reason` workflow metadata property; the workflow's `customStatus` remains unchanged. Recursive propagation copies the same `input` to each child workflow. The reason and termination output cannot be supplied independently through this Durable Task payload. See the [Execution API]({{% ref "workflow-protocol-execution-api.md" %}}).
 
 ### 3. Inbox (Pending Events)
 A collection of events that have occurred but have not yet been processed by the orchestrator (replayed). This includes:
