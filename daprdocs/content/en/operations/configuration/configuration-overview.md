@@ -70,6 +70,7 @@ The following menu includes all of the configuration settings you can set:
 - [Middleware](#middleware)
 - [Name resolution](#name-resolution)
 - [Workflow](#workflow)
+- [Actors](#actors)
 - [Scope secret store access](#scope-secret-store-access)
 - [Access Control allow lists for building block APIs](#access-control-allow-lists-for-building-block-apis)
 - [Access Control allow lists for service invocation API](#access-control-allow-lists-for-service-invocation-api)
@@ -285,6 +286,24 @@ The `workflow` section contains properties for configuring [Workflows]({{% ref "
 | `globalMaxConcurrentActivityInvocations` | int32 | Maximum concurrent activity executions across all replicas, enforced by the scheduler. Default is unlimited. |
 | `workflowConcurrencyLimits` | array | Per-workflow-name concurrency limits across all replicas. Each entry has `name` (string) and `maxConcurrent` (int32). |
 | `activityConcurrencyLimits` | array | Per-activity-name concurrency limits across all replicas. Each entry has `name` (string) and `maxConcurrent` (int32). |
+
+#### Actors
+
+The `actors` section contains properties for configuring [Actors]({{% ref "actors-overview.md" %}}).
+
+| Property | Type   | Description |
+|------------------|--------|-----|
+| `stateStores` | array | Binds actor types to state stores other than the default actor state store. Each entry has `name` (string, the state store component) and `actorTypes` (array of strings). See [Bind actor types to state stores]({{% ref "actors-state-store-binding.md" %}}). |
+
+```yaml
+spec:
+  actors:
+    stateStores:
+    - name: wallet-transactions
+      actorTypes: ["TransactionActor", "AuditActor"]
+    - name: wallet-balance
+      actorTypes: ["BalanceActor"]
+```
 
 #### Scope secret store access
 
