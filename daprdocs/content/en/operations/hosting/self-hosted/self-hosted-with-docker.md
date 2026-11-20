@@ -22,6 +22,12 @@ To initialize the Dapr control plane containers and create a default configurati
 dapr init
 ```
 
+To additionally start the Sentry service and enable mTLS, use the `--enable-mtls` flag. To set up Sentry manually instead, see [mTLS in self-hosted mode]({{% ref "mtls.md#self-hosted" %}}).
+
+```bash
+dapr init --enable-mtls # enables mTLS and, in addition, starts the Sentry service
+```
+
 ## Run both app and sidecar as a process
 
 The [`dapr run` CLI command]({{% ref dapr-run.md %}}) can be used to launch a Dapr sidecar along with your application:
