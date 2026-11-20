@@ -284,7 +284,7 @@ curl -X POST "http://localhost:3500/v1.0-beta1/workflows/dapr/OrderWF/start?appI
 # Inspect it, raise an event, and terminate it on app2
 curl "http://localhost:3500/v1.0-beta1/workflows/dapr/order-1?appID=app2"
 curl -X POST "http://localhost:3500/v1.0-beta1/workflows/dapr/order-1/raiseEvent/approval?appID=app2" -d '"approved"'
-curl -X POST "http://localhost:3500/v1.0-beta1/workflows/dapr/order-1/terminate?appID=app2"
+curl -X POST "http://localhost:3500/v1.0-beta1/workflows/dapr/order-1/terminate?appID=app2&reason=Cancelled%20by%20customer"
 ```
 
 ### gRPC

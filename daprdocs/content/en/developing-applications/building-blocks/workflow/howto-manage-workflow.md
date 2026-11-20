@@ -8,6 +8,8 @@ description: Manage and run workflows
 
 Now that you've [authored the workflow and its activities in your application]({{% ref howto-author-workflow.md %}}), you can start, terminate, rerun, and get information about the workflow using the CLI or API calls.
 
+The CLI's `--reason` option records a human-readable termination reason and exposes it through the `terminate_reason` property in workflow metadata. It is separate from `dapr.workflow.custom_status`, which retains the value set by the workflow. Because Durable Task has one termination payload, `--reason` and `--output` cannot be used together.
+
 The SDK clients and the HTTP API can also target a workflow owned by *another* application in the same namespace, by sending that application's ID with the request. (The CLI's `--app-id` flag is different: it selects which sidecar to talk to, so those calls stay local to that application.) The target application's [workflow access policy]({{% ref workflow-access-policy.md %}}) decides whether the call is permitted. See [Multi Application Workflows]({{% ref workflow-multi-app.md %}}) for the full picture.
 
 {{< tabpane text=true >}}
@@ -88,10 +90,10 @@ dapr workflow resume order-12345 \
   --app-id orderprocessing \
   --reason "Approved by manager"
 
-# Terminate a workflow
+# Terminate a workflow with a reason
 dapr workflow terminate order-12345 \
   --app-id orderprocessing \
-  --output '{"reason": "Cancelled by customer"}'
+  --reason "Cancelled by customer"
 ```
 
 #### Raise External Events
@@ -102,6 +104,16 @@ dapr workflow raise-event order-12345/PaymentReceived \
   --app-id orderprocessing \
   --input '{"paymentId": "pay-67890", "amount": 100.50}'
 ```
+
+Raising an external event does not terminate the workflow. To request graceful cancellation, use an application-defined event and include the cancellation context in its payload. The workflow can then perform compensation or other cleanup before completing:
+
+```bash
+dapr workflow raise-event order-12345/CancellationRequested \
+  --app-id orderprocessing \
+  --input '{"reason": "Customer cancelled the order"}'
+```
+
+To terminate the workflow immediately instead, use `dapr workflow terminate` with `--reason`. The terminate operation records that reason in workflow history and exposes it through the `terminate_reason` metadata property, without replacing the workflow's custom status. It does not read or infer the reason from an external event.
 
 #### Re-run Workflows
 
@@ -561,6 +573,7 @@ type PurgeWorkflowRequest struct {
 type TerminateWorkflowRequest struct {
 	InstanceID        string
 	WorkflowComponent string
+	TerminateReason   *string // Optional reason, returned in workflow metadata as terminate_reason
 }
 
 // Pause workflow
@@ -618,10 +631,10 @@ The app that owns the workflow must be running with its workflow worker connecte
 
 ### Terminate workflow
 
-To terminate your workflow with an ID `12345678`, run:
+To terminate your workflow with an ID `12345678`, run. The optional `reason` query parameter is URL-encoded and exposed through the `terminate_reason` property in workflow metadata. The workflow's `dapr.workflow.custom_status` remains unchanged:
 
 ```shell
-curl -X POST "http://localhost:3500/v1.0/workflows/dapr/12345678/terminate"
+curl -X POST "http://localhost:3500/v1.0/workflows/dapr/12345678/terminate?reason=Cancelled%20by%20customer"
 ```
 
 ### Raise an event
@@ -670,7 +683,7 @@ curl -X GET "http://localhost:3500/v1.0/workflows/dapr/12345678"
 Add the `appID` query parameter to any of the calls above to act on a workflow owned by another application. Every operation in the [workflow API reference]({{% ref workflow_api.md %}}) accepts it, and the target's [workflow access policy]({{% ref workflow-access-policy.md %}}) decides whether the call is allowed:
 
 ```shell
-curl -X POST "http://localhost:3500/v1.0/workflows/dapr/12345678/terminate?appID=app2"
+curl -X POST "http://localhost:3500/v1.0/workflows/dapr/12345678/terminate?appID=app2&reason=Cancelled%20by%20customer"
 ```
 
 {{% /tab %}}
