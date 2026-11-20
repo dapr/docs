@@ -149,7 +149,7 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
    - If you're running a sample, add the host and key to the provided `redis.yaml`. 
    - If you're creating a project from the ground up, create a `redis.yaml` file as specified in [the Component format section](#component-format). 
    
-1. Set the `redisHost` key to `[HOST NAME FROM PREVIOUS STEP]:6379` and the `redisPassword` key to the key you saved earlier. 
+1. Set the `redisHost` key to `[HOST NAME FROM PREVIOUS STEP]:6380` and the `redisPassword` key to the key you saved earlier. Azure Cache for Redis only accepts TLS connections on port 6380 by default (the non-TLS port 6379 is disabled), so make sure to also set `enableTLS` to `"true"` as described below. 
    
    **Note:** In a production-grade application, follow [secret management]({{% ref component-secrets.md %}}) instructions to securely manage your secrets.
 
