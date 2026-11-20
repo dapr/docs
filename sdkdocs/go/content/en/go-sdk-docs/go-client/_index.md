@@ -237,14 +237,10 @@ purged.
 `RerunWorkflowFromEvent` reruns ("rewinds") a completed workflow from one of its
 history events into a **new** instance. The source instance is left untouched.
 
-Work that had already completed and been recorded before the target event is
-replayed from history rather than executed again. Everything else from before the
-target event is **re-executed** in the new instance: activities that were still
-in flight, timers that had not fired, and child workflows that had not finished.
-Note that in a parallel workflow this includes an activity that succeeded but
-whose completion was recorded *after* the target event — so a fan-out reruns more
-than you might expect. Plan for re-execution if your activities are not
-idempotent.
+Activities that had not completed before the target event are executed again in
+the new instance. See [Rerunning workflows]({{% ref "workflow-features-concepts.md#rerunning-workflows" %}})
+for what is replayed, what is re-executed, and the limitations that apply to
+every rerun.
 
 ```go
 newID, err := client.RerunWorkflowFromEvent(ctx, id, eventID,
@@ -262,22 +258,18 @@ if err != nil {
 fmt.Println(metadata.String())
 ```
 
-Things to know:
+Go-specific notes:
 
-- The source instance must be in a terminal state. Rerunning a running instance
-  fails with `InvalidArgument`.
-- The source cannot itself be a child workflow — that also fails with
-  `InvalidArgument`.
-- Only three event types can be rerun: `TaskScheduled` (a scheduled activity),
-  `TimerCreated` and `ChildWorkflowInstanceCreated`. Any other event is rejected
-  with `NotFound`.
-- `eventID` is the event's own ID, not its index in the history slice.
-- `WithRerunInput` replaces the input of the target event only. It is invalid on
-  a timer event.
-- `WithRerunNewChildInstanceID` is only valid on a child-workflow event.
-- If `WithRerunNewInstanceID` is omitted, the runtime generates a new instance ID.
-  If it is given, it must differ from the source ID and must not already have
-  state, otherwise the call fails with `InvalidArgument` or `AlreadyExists`.
+- `eventID` is a `uint32` and is the event's own ID, not its index in the
+  history slice.
+- `WithRerunInput` replaces the input of the target event.
+- `WithRerunNewChildInstanceID` sets the instance ID of the rerun child workflow.
+- `WithRerunNewInstanceID` sets the new instance ID. If omitted, the runtime
+  generates one.
+- A request that breaks one of the [rerun limitations]({{% ref "workflow-features-concepts.md#rerun-limitations" %}})
+  fails with `InvalidArgument`, `NotFound` (the source instance or event does
+  not exist, or the event type cannot be rerun from) or `AlreadyExists` (the new
+  instance ID is taken).
 
 - For a more comprehensive guide on workflows visit these How-To guides:
   - [How-To: Author a workflow]({{% ref howto-author-workflow.md %}}).
