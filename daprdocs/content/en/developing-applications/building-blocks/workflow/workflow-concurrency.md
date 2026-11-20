@@ -82,6 +82,10 @@ spec:
 
 A trigger must satisfy **all** applicable limits. For example, if `globalMaxConcurrentActivityInvocations` is 200 and `SendEmail` has a per-name limit of 5, then at most 5 `SendEmail` activities can run, and all activities combined cannot exceed 200.
 
+### Priority
+
+A limit decides how many activities run at once, not which ones. By default, activities waiting for a slot go in arrival order. To put important work first, and to share the remaining slots between workflow names in a fixed proportion, see [Workflow Priority and Fairness]({{% ref workflow-priority.md %}}).
+
 ## Per-sidecar limits
 
 Per-sidecar limits restrict concurrency within a single Dapr sidecar. Because they apply to each instance independently, the effective namespace-wide capacity scales with the number of replicas: if you have 10 replicas with a per-sidecar limit of 100, the effective namespace-wide capacity is up to 1000. For this reason, reach for per-sidecar limits to protect individual instances from resource exhaustion rather than to enforce a true namespace-wide concurrency limit.
@@ -101,6 +105,8 @@ spec:
 |----------|------|-------------|
 | `maxConcurrentWorkflowInvocations` | int32 | Max concurrent workflow executions per sidecar. Default: unlimited. |
 | `maxConcurrentActivityInvocations` | int32 | Max concurrent activity executions per sidecar. Default: unlimited. |
+
+Under [pull dispatch]({{% ref "workflow-priority#pull-dispatch" %}}) these two limits are also the slots each sidecar offers to the Scheduler, and both are required.
 
 These limits do not distinguish between different workflow or activity names. They apply to all workflows and activities running in the sidecar.
 
