@@ -99,6 +99,10 @@ When calling multi-application activities or child workflows:
 
 It is paramount that there is coordination between the teams owning the different app IDs to ensure that the activities and child workflows are defined and available when needed.
 
+## Priority across apps
+
+A workflow's [priority level and fairness weight]({{% ref workflow-priority.md %}}) travel with every activity and child workflow it calls on another app. The target app's own Configuration entry for that name wins, what the caller sent comes next, and the target's `default` applies only when the caller sent nothing. See [Priority across applications]({{% ref "workflow-priority.md#priority-across-applications" %}}) for the full order.
+
 ## Durable Activity Results
 
 It is often the case that Activities take some amount of time to complete, or similarly are expensive to execute in resource or dollar cost.
