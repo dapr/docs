@@ -4,6 +4,7 @@ title: "Cryptography"
 linkTitle: "Cryptography"
 weight: 100
 description: "Perform cryptographic operations without exposing keys to your application"  
+status: alpha
 ---
 
 {{% alert title="More about Dapr Cryptography" color="primary" %}}

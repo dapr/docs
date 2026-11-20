@@ -15,6 +15,16 @@
 .d-card:hover { transform:translateY(-2px); box-shadow:0 4px 14px rgba(15,21,34,.08); text-decoration:none; }
 [data-bs-theme="dark"] .d-card:hover { box-shadow:0 4px 16px rgba(0,0,0,.4); }
 .d-card .d-card-title { font-family:var(--font-head); font-weight:600; font-size:.9rem; color:var(--d-heading); }
+// Release status (front matter `status`, e.g. alpha), pinned top-right. The
+// title gives up the tag's width so a long title wraps instead of running
+// under it.
+.d-card:has(.d-card-tag) { position:relative; }
+.d-card .d-card-tag {
+  position:absolute; top:12px; right:12px;
+  font-family:var(--font-head); font-size:.7rem; font-weight:600; line-height:1;
+  color:var(--d-muted); border:1px solid var(--d-border); border-radius:999px; padding:3px 7px;
+}
+.d-card:has(.d-card-tag) .d-card-title { padding-right:56px; }
 .d-card .d-card-desc { font-size:.8rem; color:var(--d-muted); flex:1; }
 .d-card .d-card-more { font-family:var(--font-head); font-size:.76rem; font-weight:600; color:var(--d-link); }
 // Optional icon slot. When present it's grouped with the title in .d-card-head

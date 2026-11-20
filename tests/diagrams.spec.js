@@ -81,9 +81,10 @@ const SCENE_ROWS = [
     pages: [
       '/overview/',
       '/concepts/building-blocks-concept/',
-      // Replaced /images/buildingblocks-overview.png, a single row of twelve
-      // icon-and-name tiles with no descriptions.
-      '/developing-applications/building-blocks/',
+      // Not /developing-applications/building-blocks/: its tiles looked like
+      // the clickable cards below them, so that page shows only the cards,
+      // tagged alpha from front matter (dapr/docs#5494,
+      // tests/section-cards.spec.js).
     ],
     labels: [
       'Workflows',

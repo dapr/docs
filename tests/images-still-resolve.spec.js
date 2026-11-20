@@ -238,6 +238,10 @@ const CONVERTED_PAGES = [
   // page that referenced the file, so the file-level guard is what replaces
   // it. A converted page earns its image a place in IN_SCOPE_IMAGES whether
   // or not the page guard happened to name it.
+  //
+  // The page later dropped the scene too and now shows only its card grid
+  // (dapr/docs#5494). The row stays: the page still must not show the PNG,
+  // and the file still needs its guard.
   {
     image: 'buildingblocks-overview.png',
     page: '/developing-applications/building-blocks/',
