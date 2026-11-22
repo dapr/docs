@@ -54,14 +54,6 @@
   features:
     input: true
     output: true
-- component: Kitex
-  link: kitex
-  state: Alpha
-  version: v1
-  since: "1.11"
-  features:
-    input: false
-    output: true
 - component: Kubernetes Events
   link: kubernetes-binding
   state: Alpha
