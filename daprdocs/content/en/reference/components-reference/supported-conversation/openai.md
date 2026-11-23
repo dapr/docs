@@ -48,6 +48,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `apiType` | N | Specifies the API provider type. Required when using a provider that does not follow the default OpenAI API endpoint conventions. | `azure` |
 | `apiVersion`| N | The API version to use. Required when the `apiType` is set to `azure`. | `2025-04-01-preview` |
 | `useResponsesAPI` | N | Send requests to the OpenAI Responses API (`/v1/responses`) instead of the Chat Completions API. Set this to use function tools with reasoning models that reject tools on Chat Completions. Requests are sent with `store: false`, so OpenAI keeps no conversation state. Not supported when `apiType` is set to `azure`: the component fails to initialize. Defaults to `false`. | `true` |
+| `headers` | N | HTTP headers to send on every request to the model endpoint, as a JSON object of header names to string values. A header in this field replaces the header of the same name that the component sets. This includes the header that the component builds from `key`: `Authorization`, or `api-key` when `apiType` is `azure`. See [Custom HTTP headers]({{% ref "conversation-overview.md#custom-http-headers" %}}). | `{"X-Tenant-ID": "tenant-a"}` |
 
 ## Azure OpenAI Configuration
 
