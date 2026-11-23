@@ -60,6 +60,17 @@ The API call will provide a response similar to this:
 }
 ```
 
+When the start was [staged]({{% ref "workflow-staged-operations.md" %}}) because no workflow worker was connected, the response also has `"staged": true`:
+
+```json
+{
+    "instanceID": "12345678",
+    "staged": true
+}
+```
+
+The `staged` field is left out when the start was not staged.
+
 ## Terminate workflow request
 
 Terminate a running workflow instance with the given name and instance ID.
@@ -93,7 +104,7 @@ Code | Description
 
 ### Response content
 
-This API does not return any content.
+The response body is `{}`. When the operation was [staged]({{% ref "workflow-staged-operations.md" %}}) because no workflow worker was connected, the body is `{"staged": true}`.
 
 ## Raise Event request
 
@@ -127,7 +138,7 @@ Code | Description
 
 ### Response content
 
-None.
+The response body is `{}`. When the operation was [staged]({{% ref "workflow-staged-operations.md" %}}) because no workflow worker was connected, the body is `{"staged": true}`.
 
 ## Pause workflow request
 
@@ -155,7 +166,7 @@ Code | Description
 
 ### Response content
 
-None.
+The response body is `{}`. When the operation was [staged]({{% ref "workflow-staged-operations.md" %}}) because no workflow worker was connected, the body is `{"staged": true}`.
 
 ## Resume workflow request
 
@@ -183,7 +194,7 @@ Code | Description
 
 ### Response content
 
-None.
+The response body is `{}`. When the operation was [staged]({{% ref "workflow-staged-operations.md" %}}) because no workflow worker was connected, the body is `{"staged": true}`.
 
 ## Purge workflow request
 

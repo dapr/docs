@@ -76,6 +76,12 @@ The `WorkflowsFastPath` preview feature drives workflow turns and activity bodie
 
 [Learn more about the workflow fast path.]({{% ref "workflow-fast-path.md" %}})
 
+### Staged operations
+
+The `WorkflowsStagedOperations` preview feature lets Dapr accept workflow operations while no workflow worker of the application is connected. A start, raise event, terminate, suspend, resume or rerun is saved and returns at once, and runs once a worker connects. Status reads and purges complete at once. The response tells the caller whether the operation was staged.
+
+[Learn more about workflow staged operations.]({{% ref "workflow-staged-operations.md" %}})
+
 ### Timers and reminders
 
 Same as Dapr actors, you can schedule reminder-like durable delays for any time range.
