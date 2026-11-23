@@ -162,6 +162,93 @@ Now that the `ScaledObject` KEDA object is configured, your deployment will scal
 
 As defined in the KEDA scaler manifest, you can now start publishing messages to your Kafka topic `demo-topic` and watch the pods autoscale when the lag threshold is higher than `5` topics. Publish messages to the Kafka Dapr component by using the Dapr [Publish]({{% ref dapr-publish %}}) CLI command.
 
+## Autoscale a workflow or jobs app with Scheduler metrics
+
+Apps that run [workflows]({{% ref workflow-overview.md %}}) or receive [jobs]({{% ref jobs-overview.md %}}) can scale on the Scheduler's [scaling metrics]({{% ref "scheduler.md#scaling-metrics" %}}) instead of a broker's backlog:
+
+- `dapr_scheduler_undeliverable_jobs` rises when jobs are due but no replica of the app is running, so it scales the app from zero replicas to one.
+- `dapr_scheduler_inflight_jobs` counts the jobs the app is working on, so it scales the app from one replica to many.
+
+KEDA reads these metrics from Prometheus with its [Prometheus scaler](https://keda.sh/docs/latest/scalers/prometheus/).
+
+### Scrape the scaling metrics with Prometheus
+
+The Dapr Helm chart's `prometheus.io/*` annotations point Prometheus at the root path of the Scheduler's metrics port, not at `/metrics/scaling`. Add a scrape job for the scaling path to your Prometheus configuration:
+
+```yaml
+scrape_configs:
+  - job_name: dapr-scheduler-scaling
+    metrics_path: /metrics/scaling
+    kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names:
+            - dapr-system
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_label_app]
+        regex: dapr-scheduler-server
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_container_port_name]
+        regex: metrics
+        action: keep
+```
+
+Change `dapr-system` if you installed Dapr in another namespace. If you use the Prometheus Operator, a `PodMonitor` with the same path, label selector and port works too. Set `honorLabels: true` on it, so the metric's own `namespace` label (the app's namespace) isn't overwritten with the Scheduler's namespace.
+
+### Deploy the KEDA scaler
+
+Paste the following into a file named `scheduler_scaler.yaml`, and replace the deployment name, app ID, namespace and Prometheus address with your own:
+
+```yaml
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: order-processor-scaler
+spec:
+  scaleTargetRef:
+    name: <REPLACE-WITH-DAPR-DEPLOYMENT-NAME>
+  pollingInterval: 15
+  cooldownPeriod: 300
+  minReplicaCount: 0
+  maxReplicaCount: 10
+  triggers:
+  - type: prometheus
+    metadata:
+      serverAddress: http://prometheus-server.monitoring.svc.cluster.local
+      query: clamp_max(sum(dapr_scheduler_undeliverable_jobs{namespace="default", app_id="order-processor"}), 1)
+      threshold: "1"
+  - type: prometheus
+    metadata:
+      serverAddress: http://prometheus-server.monitoring.svc.cluster.local
+      query: sum(dapr_scheduler_inflight_jobs{namespace="default", app_id="order-processor"})
+      threshold: "10"
+```
+
+Let's review a few values in the file above:
+
+| Values | Description |
+| ------ | ----------- |
+| `query` | Sums the gauge over every Scheduler replica. Each replica reports only the jobs it owns, so a query for a single replica undercounts. |
+| `threshold` (undeliverable) | Any undeliverable job starts a replica. The query caps the sum at `1`, so a backlog of undeliverable jobs starts one replica rather than one per job, and the in-flight trigger decides any further scale-out. |
+| `threshold` (in flight) | The number of in-flight jobs one replica handles. KEDA adds replicas as the total grows past multiples of this value. Set it to what one replica of your app can work on at once, for example its [workflow concurrency limit]({{% ref workflow-concurrency.md %}}). |
+| `cooldownPeriod` | How long, in seconds, both gauges must read `0` before KEDA scales the app back to zero. |
+
+KEDA scales to the largest replica count either trigger asks for.
+
+{{% alert title="Workflow fast path" color="warning" %}}
+With the [`WorkflowsFastPath`]({{% ref workflow-fast-path.md %}}) preview feature enabled, the sidecar runs workflow turns and activities without per-event Scheduler jobs, so `dapr_scheduler_inflight_jobs` doesn't count that work. The app can then scale in, or to zero, while workflows are still running. Leave the fast path disabled on apps you scale with this recipe, or add a trigger on a metric that also counts work the sidecar drives itself.
+{{% /alert %}}
+
+{{% alert title="Scaling to zero" color="warning" %}}
+The Scheduler holds these counts in memory. After a Scheduler restart or a rebalance between its replicas, `dapr_scheduler_undeliverable_jobs` can read `0` until overdue jobs trigger again, so a gauge reading `0` doesn't prove no work is waiting. Keep `cooldownPeriod` long enough to cover that gap, or set `minReplicaCount: 1` if your app can't wait for the gauge to recover.
+{{% /alert %}}
+
+Deploy the KEDA scaler to Kubernetes:
+
+```bash
+kubectl apply -f scheduler_scaler.yaml
+```
+
 ## Next steps
 
 [Learn about scaling your Dapr pub/sub or binding application with KEDA in Azure Container Apps](https://learn.microsoft.com/azure/container-apps/dapr-keda-scaling)
