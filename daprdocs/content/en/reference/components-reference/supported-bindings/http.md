@@ -56,7 +56,7 @@ spec:
 | `MTLSClientCert`     | N | Output | Path to client certificate or PEM-encoded string  |
 | `MTLSClientKey`      | N | Output | Path client private key or PEM-encoded string |
 | `MTLSRenegotiation`  | N | Output | Type of mTLS renegotiation to be used | `RenegotiateOnceAsClient`
-| `insecureSkipVerify` | N | Output | If `true`, the binding does not verify the TLS certificate chain or the host name of the server. This is insecure. Use it only for testing. To trust a server certificate signed by a custom CA, use `MTLSRootCA`. Defaults to `false` | `"true"`, `"false"` |
+| `insecureSkipVerify` | N | Output | If `true`, the binding does not verify the TLS certificate chain or the host name of the server. This is insecure and is to be used only for testing. To trust a server certificate signed by a custom CA, use `MTLSRootCA`. Defaults to `false` | `"true"`, `"false"` |
 | `securityToken`      | N | Output | The value of a token to be added to a HTTP request as a header. Used together with `securityTokenHeader` |
 | `securityTokenHeader` | N | Output | The name of the header for `securityToken` on a HTTP request |
 | `errorIfNot2XX`      | N | Output | If a binding error should be thrown when the response is not in the 2xx range. Defaults to `true` |
