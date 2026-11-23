@@ -285,6 +285,7 @@ The `workflow` section contains properties for configuring [Workflows]({{% ref "
 | `globalMaxConcurrentActivityInvocations` | int32 | Maximum concurrent activity executions across all replicas, enforced by the scheduler. Default is unlimited. |
 | `workflowConcurrencyLimits` | array | Per-workflow-name concurrency limits across all replicas. Each entry has `name` (string) and `maxConcurrent` (int32). |
 | `activityConcurrencyLimits` | array | Per-activity-name concurrency limits across all replicas. Each entry has `name` (string) and `maxConcurrent` (int32). |
+| `stateRetentionPolicy` | object | How long workflow state is kept after a terminal state, app-wide and per workflow name through its `workflows` list. See [History Retention Policy]({{% ref workflow-history-retention-policy.md %}}). |
 
 #### Scope secret store access
 
