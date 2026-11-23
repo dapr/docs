@@ -11,7 +11,7 @@ Your application can use Dapr's state management API to save, read, and query ke
 - Use **HTTP POST** to save or query key/value pairs.
 - Use **HTTP GET** to read a specific key and have its value returned.
 
-<img src="/images/state-management-overview.png" width=1000 style="padding-bottom:25px;">
+{{< diagram state-management-overview >}}
 
 [The following overview video and demo](https://www.youtube.com/live/0y7ne6teHT4?si=2_xX6mkU3UCy2Plr&t=6607) demonstrates how Dapr state management works. 
 
@@ -181,6 +181,10 @@ Want to put the Dapr state management API to the test? Walk through the followin
 ### Start using state management directly in your app
 
 Want to skip the quickstarts? Not a problem. You can try out the state management building block directly in your application. After [Dapr is installed]({{% ref "getting-started/_index.md" %}}), you can begin using the state management API starting with [the state management how-to guide]({{% ref howto-get-save-state.md %}}).
+
+### Inspect state locally
+
+During local development, you can use the [Dapr Dev Dashboard]({{% ref dapr-dev-dashboard.md %}}) to browse the records in your state store, including the `<app-id>||<key>` prefixes Dapr writes, decode base64-encoded values, and add or delete records without writing any code.
 
 ## Next steps
 

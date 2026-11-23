@@ -1,29 +1,25 @@
 ---
 type: docs
-title: "Dapr Enterprise Support"
-linkTitle: "Dapr Enterprise Support"
+title: "Dapr Support"
+linkTitle: "Dapr Support"
 description: "Commercial support for open source Dapr from the project's lead maintainers"
 weight: 4000
 aliases:
   - /integrations/diagrid/diagrid-dapr-support/
 ---
 
-[Dapr Enterprise Support](https://docs.diagrid.io/dapr-open-source/dapr-support) from Diagrid provides commercial support for open source Dapr, delivered by the project's lead maintainers. It is available across three tiers, with 24×7 coverage on the Premium tier, so you can match the level of support to your production needs.
+[Dapr Support](https://www.diagrid.io/dapr-support) from Diagrid provides commercial support for unmodified open source Dapr, delivered by the project's lead maintainers. It covers Dapr on any cloud, including self-managed Kubernetes, managed Kubernetes, and on-premises. Two plans are available, so you can match the level of support to your stage, from development to mission-critical production.
 
-**Guaranteed response times**
+**Dapr Support Pro**
 
-A one-hour response time for critical production issues, with severity-based service-level agreements.
+Cost-efficient support for teams in development, for $99/month, billed monthly. Includes unlimited email tickets, best-practice guidance, US and EU business-hours coverage, and a P0 response within one business day. Cancel anytime.
 
-**Security patching**
+**Enterprise Dapr Support**
 
-CVE patching prioritized by CVSS score, including custom builds with fixes backported to your version.
+24x7 support for mission-critical production, with custom pricing for your deployment. Includes a one-hour P0 response, support for the Diagrid Dapr Distribution for Enterprise (D3E), feature prioritization for Dapr OSS, temporary Dapr versions for P0 issues, and bi-weekly check-ins.
 
-**Support tiers**
+**Structured onboarding**
 
-Choose from Standard, Select, and Premium. Premium adds 24×7 coverage and support for the Diagrid Dapr Distribution for Enterprise (D3E).
+Both plans include ten hours of structured onboarding with the Diagrid team. Many teams start on Pro and move to Enterprise before a production launch.
 
-**Expert guidance**
-
-Architecture reviews and tailored training sessions from the engineers who build Dapr.
-
-{{< button text="Learn more about Dapr enterprise support" link="https://docs.diagrid.io/dapr-open-source/dapr-support" >}}
+{{< button text="Learn more about Dapr Support" link="https://www.diagrid.io/dapr-support" >}}

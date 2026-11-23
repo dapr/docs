@@ -19,7 +19,7 @@ For more information on how to author Dapr Workflows in your application, see [H
 
 The Dapr Workflow engine is internally powered by Dapr's actor runtime. The following diagram illustrates the Dapr Workflow architecture in Kubernetes mode:
 
-<img src="/images/workflow-overview/workflows-architecture-k8s.png" width=800 alt="Diagram showing how the workflow architecture works in Kubernetes mode">
+{{< diagram workflows-architecture-k8s >}}
 
 To use the Dapr Workflow building block, you write workflow code in your application using the Dapr Workflow SDK, which internally connects to the sidecar using a gRPC stream. This registers the workflow and any workflow activities, or tasks that workflows can schedule.
 
@@ -31,7 +31,7 @@ When a workflow application starts up, it uses a workflow authoring SDK to send 
 
 The workflow app executes the appropriate workflow code and then sends a gRPC request back to the sidecar with the execution results.
 
-<img src="/images/workflow-overview/workflow-engine-protocol.png" width=500 alt="Dapr Workflow Engine Protocol" />
+{{< diagram name="workflow-engine-protocol" width="55" >}}
 
 All interactions happen over a single gRPC channel and are initiated by the application, which means the application doesn't need to open any inbound ports.
 The details of these interactions are internally handled by the language-specific Dapr Workflow authoring SDK.
@@ -73,7 +73,7 @@ For example, if you have a workflow app named "wfapp", then the type of the work
 
 The following diagram demonstrates how workflow actors operate in a Kubernetes scenario:
 
-<img src="/images/workflow-overview/workflow-execution.png" alt="Diagram demonstrating internally registered actors across a cluster" />
+{{< diagram workflow-execution >}}
 
 Just like user-defined actors, workflow actors are distributed across the cluster by the hashing lookup table provided by the actor placement service.
 They also maintain their own state and make use of reminders.
@@ -116,7 +116,7 @@ To address this, purge workflows using the [purge API]({{% ref "workflow_api.md#
 
 The following diagram illustrates the typical lifecycle of a workflow actor.
 
-<img src="/images/workflow-overview/workflow-actor-flowchart.png" width=600 alt="Dapr Workflow Actor Flowchart"/>
+{{< diagram name="workflow-actor-flowchart" width="70" >}}
 
 To summarize:
 
@@ -139,7 +139,7 @@ Activity actors store no state of their own, and instead all resulting data is s
 
 The following diagram illustrates the typical lifecycle of an activity actor.
 
-<img src="/images/workflow-overview/workflow-activity-actor-flowchart.png" width=600 alt="Workflow Activity Actor Flowchart"/>
+{{< diagram name="workflow-activity-actor-flowchart" width="85" >}}
 
 Activity actors are short-lived:
 
@@ -164,7 +164,7 @@ With the [workflow fast path]({{% ref "workflow-fast-path.md" %}}) preview featu
 
 An instance whose state was saved but whose start can never be processed (for example because its committed start event was lost) is failed with the error type `DAPR_WORKFLOW_UNSTARTABLE_STATE` instead of remaining `PENDING` forever, and a pending start whose reminder is overdue is re-driven when the instance's status is read.
 
-<img src="/images/workflow-overview/workflow-actor-reminder-flow.png" width=600 alt="Diagram showing the process of invoking workflow actors"/>
+{{< diagram name="workflow-actor-reminder-flow" width="85" >}}
 
 ### State store usage
 
@@ -182,7 +182,7 @@ The size of each checkpoint is determined by the number of concurrent actions sc
 [Sequential workflows]({{% ref "workflow-overview.md#task-chaining" %}}) will therefore make smaller batch updates to the state store, while [fan-out/fan-in workflows]({{% ref "workflow-overview.md#fan-outfan-in" %}}) will require larger batches.
 The size of the batch is also impacted by the size of inputs and outputs when workflows [invoke activities]({{% ref "workflow-features-concepts.md#workflow-activities" %}}) or [child workflows]({{% ref "workflow-features-concepts.md#child-workflows" %}}).
 
-<img src="/images/workflow-overview/workflow-state-store-interactions.png" width=600 alt="Diagram of workflow actor state store interactions"/>
+{{< diagram workflow-state-store-interactions >}}
 
 Different state store implementations may implicitly put restrictions on the types of workflows you can author.
 For example, the Azure Cosmos DB state store limits item sizes to 2 MB of UTF-8 encoded JSON ([source](https://learn.microsoft.com/azure/cosmos-db/concepts-limits#per-item-limits)).
@@ -267,7 +267,7 @@ Workflows don't control the specifics of how load is distributed across the clus
 For example, if a workflow schedules 10 activity tasks to run in parallel, all 10 tasks may run on as many as 10 different compute nodes or as few as a single compute node.
 The actual scale behavior is determined by the actor placement service, which manages the distribution of the actors that represent each of the workflow's tasks.
 
-<img src="/images/workflow-overview/workflow-actor-scale-out.png" width=800 alt="Diagram of workflow and activity actors scaled out across multiple Dapr instances"/>
+{{< diagram workflow-actor-scale-out >}}
 
 ## Workflow latency
 
@@ -322,7 +322,7 @@ The `dapr_runtime_workflow_completion_route_count` metric, tagged with `task_typ
 - [Workflow API reference]({{% ref workflow_api.md %}})
 - [Try out the Workflow quickstart]({{% ref workflow-quickstart.md %}})
 - Try out the following examples: 
-   - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
+   - [Python](https://github.com/dapr/python-sdk/tree/main/examples/workflow)
    - [JavaScript example](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
    - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
    - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)

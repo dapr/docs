@@ -46,8 +46,12 @@ spec:
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `globalMaxConcurrentWorkflowInvocations` | int32 | Max concurrent workflow executions across all replicas. Default: unlimited. |
+| `globalMaxConcurrentWorkflowInvocations` | int32 | Max concurrent workflow operations processed by the workflow scheduler actor across all replicas. Default: unlimited. |
 | `globalMaxConcurrentActivityInvocations` | int32 | Max concurrent activity executions across all replicas. Default: unlimited. |
+
+{{% alert title="Note" color="primary" %}}
+`globalMaxConcurrentWorkflowInvocations` (and `maxConcurrentWorkflowInvocations`) limits the number of concurrent workflow operations actively processed by the Workflow Scheduler Actor, **not** the total number of active (in-flight) workflow instances. Workflows waiting on activities, timers, or external events do not count toward this limit while suspended. As a result, this setting is not intended for throttling the total number of active workflow instances or applying instance-level back-pressure.
+{{% /alert %}}
 
 ### Per-name limits
 

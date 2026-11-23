@@ -8,7 +8,7 @@ weight: 20
 
 This article demonstrates how to deploy services each with an unique application ID for other services to discover and call endpoints on them using service invocation over HTTP.
 
-<img src="/images/building-block-service-invocation-example.png" width=1000 height=500 alt="Diagram showing service invocation of example service">
+{{< diagram name="service-invocation-example" width="50" >}}
 
 {{% alert title="Note" color="primary" %}}
  If you haven't already, [try out the service invocation quickstart]({{% ref serviceinvocation-quickstart %}}) for a quick walk-through on how to use the service invocation API.

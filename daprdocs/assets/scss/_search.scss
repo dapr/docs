@@ -63,3 +63,32 @@
   --docsearch-footer-background: var(--d-panel);
   --docsearch-key-gradient: linear-gradient(-225deg, var(--d-panel), var(--d-ground));
 }
+
+// ── Mobile menu bar search ──────────────────────────────────────────────────
+// #docsearch-mobile is the below-lg search mount in the sidebar menu bar (see
+// _partials/sidebar.html). DocSearch's own stylesheet collapses .DocSearch-Button
+// to a 40px icon-only circle under 750px, which left the menu bar looking empty.
+// Let it fill the bar instead, so the strip reads as a search field with the
+// hamburger beside it. The ⌘K hint stays hidden — there is no physical keyboard.
+#docsearch-mobile {
+  flex: 1 1 auto;
+  min-width: 0;
+
+  .DocSearch-Button {
+    width: 100%;
+    height: 2.25rem;
+    margin: 0;
+    padding: 0 .625rem;
+    border-radius: 7px;
+  }
+
+  .DocSearch-Button-Placeholder {
+    display: inline-block;
+    font-size: .875rem;
+    padding: 0 0 0 .5rem;
+  }
+
+  .DocSearch-Button-Keys {
+    display: none;
+  }
+}

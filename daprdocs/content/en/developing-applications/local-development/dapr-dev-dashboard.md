@@ -6,7 +6,7 @@ weight: 100
 description: "Inspect and debug the Dapr applications running on your machine"
 ---
 
-The free [Diagrid Dapr Dev Dashboard](https://github.com/diagridio/dev-dashboard) is a companion for local Dapr development. It inspects the apps you start with `dapr run` / `dapr run -f`, Aspire, Docker Compose, or Dapr Testcontainers, and surfaces everything about them: sidecars, workflows, actors, state stores, subscriptions, components, resiliency policies, configurations, and logs. It also helps you author Dapr resources. The **Component Builder** walks you through picking a component type from the full Dapr catalog, filling in its metadata fields, and choosing an authentication profile. The **Resiliency Builder** composes resiliency policies (timeouts, retries, circuit breakers) and applies them to targets (apps, actors, components). Both builders end in a YAML preview you can copy or download into your project.
+The free and open source (Apache-2.0) [Diagrid Dapr Dev Dashboard](https://github.com/diagridio/dev-dashboard) is a companion for local Dapr development. It inspects the apps you start with `dapr run` / `dapr run -f`, Aspire, Docker Compose, or Dapr Testcontainers, and surfaces everything about them: sidecars, workflows, actors, state stores, subscriptions, components, resiliency policies, configurations, and logs. It also helps you author Dapr resources. The **Component Builder** walks you through picking a component type from the full Dapr catalog, filling in its metadata fields, and choosing an authentication profile. The **Resiliency Builder** composes resiliency policies (timeouts, retries, circuit breakers) and applies them to targets (apps, actors, components). Both builders end in a YAML preview you can copy or download into your project.
 
 <img src="/images/dev-dashboard/applications.png" width=800 alt="Dapr Dev Dashboard showing the Dapr applications running on the local machine"/><br/>
 
@@ -110,11 +110,31 @@ Open a workflow instance to watch its live event history, input and output, and 
 
 <img src="/images/dev-dashboard/workflow-detail.png" width=800 alt="Dapr Dev Dashboard showing the event history of a workflow instance"/><br/>
 
-### Review actors, subscriptions, and state
+The dashboard reads workflows directly from local Redis, PostgreSQL, SQLite, and MongoDB state stores. For other state stores, such as the in-memory store, it reads workflows through the sidecar's workflow API, which requires Dapr 1.17 or later.
 
-The **Actors** and **Subscriptions** pages aggregate the active actor types and pub/sub subscriptions across all apps, each linked back to the owning application. The **State** page lists the records in a connected state store, and lets you add and delete records.
+### Copy Dapr CLI commands
 
-<img src="/images/dev-dashboard/actors.png" width=800 alt="Dapr Dev Dashboard showing the actor types and active actors"/><br/>
+The **CLI** drawer lists the Dapr CLI commands that match what you're looking at, such as viewing the history of a workflow instance, raising an external event, or terminating, purging, and re-running it. Each command links to its docs and has a **Copy** button. The drawer is available on the Applications, Workflows, Actors, and Subscriptions pages, and lists self-hosted commands only.
+
+<img src="/images/dev-dashboard/cli-drawer.png" width=800 alt="Dapr Dev Dashboard showing the CLI drawer with Dapr CLI commands for a workflow instance"/><br/>
+
+### Review actors
+
+The **Actors** page aggregates the actor types across all apps, with the number of active actors per type, their host app, and the placement status.
+
+<img src="/images/dev-dashboard/actors.png" width=800 alt="Dapr Dev Dashboard showing the actor types and the number of active actors per type"/><br/>
+
+### Review subscriptions and publish test messages
+
+The **Subscriptions** page lists the pub/sub subscriptions across all apps, including the pub/sub component, topic, routes, and subscription type (declarative, programmatic, or streaming). Use the **Publish** button on a subscription to send a test message through the app's sidecar, so you can test a subscriber without running a publisher app.
+
+<img src="/images/dev-dashboard/publish-message.png" width=800 alt="Dapr Dev Dashboard showing the dialog to publish a test message to a subscription"/><br/>
+
+### Browse state records
+
+The **State** page lists the records in a connected state store, including the key, app, value, size, version (ETag), and TTL. Expand a record to see its full value, and use the *Decode base64* toggle for encoded values. Use **+ New record** to add a record, and delete records individually or by multi-select. Workflow history and actor state are hidden by default; select **Show internal keys** to reveal them.
+
+<img src="/images/dev-dashboard/state-records.png" width=800 alt="Dapr Dev Dashboard showing the records in a Redis state store"/><br/>
 
 ### Read and build components
 
