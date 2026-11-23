@@ -285,6 +285,10 @@ The `workflow` section contains properties for configuring [Workflows]({{% ref "
 | `globalMaxConcurrentActivityInvocations` | int32 | Maximum concurrent activity executions across all replicas, enforced by the scheduler. Default is unlimited. |
 | `workflowConcurrencyLimits` | array | Per-workflow-name concurrency limits across all replicas. Each entry has `name` (string) and `maxConcurrent` (int32). |
 | `activityConcurrencyLimits` | array | Per-activity-name concurrency limits across all replicas. Each entry has `name` (string) and `maxConcurrent` (int32). |
+| `dispatchMode` | string | How workflow turns and activities are delivered to replicas: `hashed` (default) sends each straight to the replica its ID hashes to, `pull` lets the scheduler hold work in one priority-ordered queue and deliver it to a replica with a free slot. `pull` requires `maxConcurrentWorkflowInvocations` and `maxConcurrentActivityInvocations`, the slots each replica offers. Per-name `dispatchMode` entries in `activityConcurrencyLimits` override it for an activity. See [Workflow Priority and Fairness]({{% ref "workflow-priority#pull-dispatch" %}}). |
+| `priority.default` | object | Priority level and fairness weight for every workflow and activity without an entry of its own. Has `priorityLevel` (one of `critical`, `high`, `normal`, `low`, `background`) and `fairnessWeight` (1 to 1000), both optional. See [Workflow Priority and Fairness]({{% ref "workflow-priority.md" %}}). |
+| `priority.workflows` | array | Per-workflow-name priority. Each entry has `name`, `priorityLevel` and `fairnessWeight`. Inherited by the workflow's activities and child workflows. |
+| `priority.activities` | array | Per-activity-name priority. Each entry has `name`, `priorityLevel` and `fairnessWeight`. Beats the calling workflow's values. |
 
 #### Scope secret store access
 
