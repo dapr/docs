@@ -230,7 +230,7 @@ spec:
 
 ### SPIFFE workload identity
 
-Dapr injects a SPIFFE JWT SVID per request. No secrets needed — Sentry issues the SVID automatically. The SVID is fetched fresh on every outbound request rather than cached in-process, so there's no in-memory token cache, no refresh races, and no stale-credential window.
+Dapr injects a SPIFFE JWT SVID for the configured audience into every request. No secrets are needed, and no audience has to be registered with Sentry in advance: Dapr mints the SVID from Sentry on demand, and reuses it until half of its 5 minute lifetime has passed. This is the recommended way to authenticate to MCP servers. See [SPIFFE authentication]({{% ref spiffe-authentication.md %}}).
 
 ```yaml
 spec:
