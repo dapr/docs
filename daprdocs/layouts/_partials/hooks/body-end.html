@@ -31,7 +31,10 @@
 {{ if .Store.Get "hasMermaid" }}
 <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs';
-    mermaid.initialize({ startOnLoad: true });
+    const root = document.documentElement;
+    mermaid.initialize({ startOnLoad: true, theme: root.getAttribute('data-bs-theme') === 'dark' ? 'dark' : 'default' });
+    // The theme toggle flips data-bs-theme in place and a rendered diagram keeps its colours, so reload, as Docsy's mermaid partial does.
+    new MutationObserver(() => location.reload()).observe(root, { attributeFilter: ['data-bs-theme'] });
 </script>
 {{ end }}
 

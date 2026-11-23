@@ -70,6 +70,7 @@ Upon the workflow client connecting to the sidecar, there are two types of actor
 The `{namespace}` value is the Dapr namespace and defaults to `default` if no namespace is configured.
 The `{appID}` value is the app's ID.
 For example, if you have a workflow app named "wfapp", then the type of the workflow actor would be `dapr.internal.default.wfapp.workflow` and the type of the activity actor would be `dapr.internal.default.wfapp.activity`.
+An app that starts workflows with [ordering keys]({{% ref workflow-ordering.md %}}) also registers `dapr.internal.{namespace}.{appID}.ordering`, described in [ordering actors](#ordering-actors).
 
 The following diagram demonstrates how workflow actors operate in a Kubernetes scenario:
 
@@ -151,6 +152,17 @@ Activity actors are short-lived:
 
 With the [workflow fast path]({{% ref "workflow-fast-path.md#leg-2-local-activity-drive" %}}) enabled, the activity body runs as soon as the dispatch arrives, without the one-shot reminder, whenever the workflow actor certifies that its janitor backstop is armed. During a placement change the activity actor may write a small `execution-claim` record so that the new owner can tell a live execution from one that died with its host.
 
+### Ordering actors
+
+An app that starts workflows with [ordering keys]({{% ref workflow-ordering.md %}}) uses one ordering actor per key in use, with the key as the actor ID.
+The ordering actor holds the key's queue in a single `queue` record in the actor state store, not in memory, so a queue survives a restart or a placement move: the workflow at the head of the queue, the workflows waiting behind it, and the last failure that has not been resolved.
+The record grows by one small entry (instance ID, execution ID, workflow name, start time and failure policy) per queued workflow and shrinks as they run.
+The ordering actor never runs workflow code. The workflow actor does, once released.
+It releases the workflow at the head by creating a one-shot `ordering-release-<id>` reminder on that workflow's actor, or an `ordering-cancel-<id>` reminder when the workflow's failure policy cancels it, where `<id>` is the execution ID of the start that queued the workflow.
+The workflow actor reports back to the ordering actor when the workflow reaches a terminal status (`COMPLETED`, `FAILED` or `TERMINATED`) or is purged, which releases the next workflow.
+Nothing else releases the key: a suspended workflow, or one waiting on an event or a timer, holds it.
+The `queue` record is deleted once the key has no workflow queued and no unresolved failure.
+
 ### Reminder usage and execution guarantees
 
 The Dapr Workflow ensures workflow fault-tolerance by using [actor reminders]({{% ref "../actors/actors-timers-reminders.md##actor-reminders" %}}) to recover from transient system failures.
@@ -207,7 +219,7 @@ This number may be larger or smaller depending on retries or concurrency.
 | Raise event | 3 records |
 | Start child workflow | 8 records |
 
-Every instance also carries the `metadata` and `customStatus` keys, which do not grow with the history. Child workflows additionally carry a transient `parent-notify` marker between their terminal commit and the parent's acknowledgement, and, when history signing is enabled, a `creation-input` row.
+Every instance also carries the `metadata` and `customStatus` keys, which do not grow with the history. Child workflows additionally carry a transient `parent-notify` marker between their terminal commit and the parent's acknowledgement, and, when history signing is enabled, a `creation-input` row. Each ordering key in use adds one `queue` record, held by its ordering actor and deleted when the key is idle.
 
 #### Query Workflow History
 

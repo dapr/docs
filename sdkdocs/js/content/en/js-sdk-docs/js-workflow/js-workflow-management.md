@@ -55,13 +55,19 @@ if (state.runtimeStatus === WorkflowRuntimeStatus.COMPLETED) {
 }
 ```
 
-The positional scheduling arguments are `(workflow, input?, instanceId?, startAt?, signal?)`.
+The positional scheduling arguments are `(workflow, input?, instanceId?, startAt?, signal?, ordering?)`.
 `workflow` can be a registered name or a function; omitted instance IDs are generated. `startAt` is an optional
 absolute `Date`. Using wall-clock time here is safe because this is client code, not replayed workflow code.
 
 Both wait methods accept `(instanceId, fetchPayloads = true, timeoutInSeconds = 60, signal?)`.
 A wait deadline or RPC failure rejects the promise. A workflow that reaches a failed or terminated state
 can return a state rather than throw: check `runtimeStatus`, not just whether the wait resolved.
+
+## Ordering keys
+
+Pass an ordering `{ key, onPredecessorFailure }` as the last argument of `scheduleNewWorkflow` to queue a workflow
+behind the others of its key. See [ordering keys]({{% ref workflow-ordering.md %}}). Ordering needs a Dapr 1.20
+runtime and an SDK release with ordering support.
 
 ## Inspect state and failure details
 
