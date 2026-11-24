@@ -31,3 +31,8 @@
   since: "1.0"
   features:
     multipleKeyValuesPerSecret: true
+- component: Infisical
+  link: infisical
+  state: Alpha
+  version: v1
+  since: "1.20"
