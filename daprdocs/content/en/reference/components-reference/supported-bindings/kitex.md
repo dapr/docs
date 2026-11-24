@@ -7,6 +7,10 @@ aliases:
 - "/operations/components/setup-bindings/supported-bindings/kitex/"
 ---
 
+{{% alert title="Warning" color="warning" %}}
+The Kitex binding is no longer included in Dapr. It was disabled in the Dapr runtime starting with v1.17 because of excessive memory consumption ([dapr/dapr#9324](https://github.com/dapr/dapr/pull/9324)), so a component of type `bindings.kitex` fails to load in Dapr v1.17 and later. This page is kept for reference only.
+{{% /alert %}}
+
 ## Overview
 
 The binding for Kitex mainly utilizes the generic-call feature in Kitex. Learn more from the official documentation around [Kitex generic-call](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/).
