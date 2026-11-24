@@ -25,7 +25,7 @@ dapr init [flags]
 | Name                  | Environment Variable | Default       | Description                                                                          |
 | --------------------- | -------------------- | ------------- | ------------------------------------------------------------------------------------ |
 | `--enable-ha`         |                      | `false`       | Enable high availability (HA) mode                                                   |
-| `--enable-mtls`       |                      | `true`        | Enable mTLS in your cluster                                                          |
+| `--enable-mtls`       |                      | `true` (Kubernetes), `false` (self-hosted) | Enable mTLS. In self-hosted mode, starts the Sentry service container and enables mTLS in the default configuration |
 | `--from-dir`          |                      |               | Path to a local directory containing a downloaded "Dapr Installer Bundle" release which is used to `init` the airgap environment      |
 | `--help`, `-h`        |                      |               | Print this help message                                                              |
 | `--image-registry`    |                      |               | Pulls container images required by Dapr from the given image registry                    |
@@ -72,6 +72,15 @@ dapr init -s
 ```
 
 > To switch to Dapr Github container registry as the default registry, set the `DAPR_DEFAULT_IMAGE_REGISTRY` environment variable value to be `GHCR`. To switch back to Docker Hub as default registry, unset this environment variable.
+
+**Enable mTLS with Sentry**
+
+In self-hosted mode, `--enable-mtls` also starts the `dapr_sentry` container and sets `spec.mtls.enabled: true` in the default configuration. See [mTLS in self-hosted mode]({{% ref "mtls.md#automated-setup-with-dapr-init" %}}).
+
+```bash
+dapr init --enable-mtls
+```
+
 
 **Specify a runtime version**
 

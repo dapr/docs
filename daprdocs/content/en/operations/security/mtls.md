@@ -415,6 +415,18 @@ dapr status -k
 ```
 
 ## Self hosted
+
+### Automated setup with `dapr init`
+
+Initialize Dapr with the `--enable-mtls` flag to automate the steps below:
+
+```bash
+dapr init --enable-mtls
+```
+
+This starts the `dapr_sentry` Docker container (trust domain `cluster.local`), generates the certificates in `$HOME/.dapr/certs`, and enables mTLS in the default configuration (`$HOME/.dapr/config.yaml`). `dapr run` then sets the `DAPR_TRUST_ANCHORS`, `DAPR_CERT_CHAIN` and `DAPR_CERT_KEY` environment variables for you, and `dapr uninstall` removes the Sentry container.
+
+If you omit `--enable-mtls`, or want to run Sentry yourself, follow the manual steps below.
 ### Running the control plane Sentry service
 
 In order to run the Sentry service, you can either build from source, or download a release binary from [here](https://github.com/dapr/dapr/releases).
