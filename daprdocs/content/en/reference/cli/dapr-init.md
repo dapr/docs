@@ -32,6 +32,8 @@ dapr init [flags]
 | `--kubernetes`, `-k`  |                      | `false`       | Deploy Dapr to a Kubernetes cluster                                                  |
 | `--namespace`, `-n`   |                      | `dapr-system` | The Kubernetes namespace to install Dapr in                                          |
 | `--network`           |                      |               | The Docker network on which to install and deploy the Dapr runtime                                          |
+| `--no-redis`          |                      | `false`       | Self-hosted only. Skip the Redis container and the default state store and pub/sub components |
+| `--no-zipkin`         |                      | `false`       | Self-hosted only. Skip the Zipkin container                                          |
 | `--runtime-version`   |                      | `latest`      | The version of the Dapr runtime to install, for example: `1.0.0`                     |
 | `--image-variant`   |                      |                 | The image variant to use for the Dapr runtime, for example: `mariner`               |
 | `--set`               |                      |               | Configure options on the command line to be passed to the Dapr Helm chart and the Kubernetes cluster upon install. Can specify multiple values in a comma-separated list, for example: `key1=val1,key2=val2`                     |
@@ -72,6 +74,15 @@ dapr init -s
 ```
 
 > To switch to Dapr Github container registry as the default registry, set the `DAPR_DEFAULT_IMAGE_REGISTRY` environment variable value to be `GHCR`. To switch back to Docker Hub as default registry, unset this environment variable.
+
+**Skip Redis and Zipkin**
+
+Skip the default Redis and Zipkin containers if you bring your own state store, pub/sub, or tracing backend. `--no-redis` also skips the default `statestore.yaml` and `pubsub.yaml` components.
+
+```bash
+dapr init --no-redis --no-zipkin
+```
+
 
 **Specify a runtime version**
 

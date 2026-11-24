@@ -22,6 +22,13 @@ To initialize the Dapr control plane containers and create a default configurati
 dapr init
 ```
 
+To skip the default Redis and Zipkin containers, use `--no-redis` and `--no-zipkin`:
+
+```bash
+dapr init --no-redis --no-zipkin
+```
+
+
 ## Run both app and sidecar as a process
 
 The [`dapr run` CLI command]({{% ref dapr-run.md %}}) can be used to launch a Dapr sidecar along with your application:
