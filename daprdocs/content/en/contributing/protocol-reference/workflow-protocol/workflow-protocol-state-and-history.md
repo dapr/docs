@@ -33,6 +33,7 @@ Stores high-level information about the instance:
 *   `last_updated_at`: Last activity timestamp.
 *   `input`: Original input data.
 *   `output`: Final output data (if completed).
+*   `custom_status`: The custom status set by the workflow. A termination reason is exposed separately through the Dapr workflow metadata property `terminate_reason` and does not replace this value.
 
 ### 2. History
 A sequence of `HistoryEvent` objects that record everything that has happened in the workflow.
@@ -43,6 +44,8 @@ To optimize for large histories, Dapr often stores history events in chunks or a
     `TimerCreated` events record an `origin` that identifies why the timer was scheduled (see
     [Execution API]({{% ref "workflow-protocol-execution-api.md" %}})).
 
+Termination is recorded as an `ExecutionTerminatedEvent` using its existing `input` and `recurse` fields. Dapr maps a supplied termination reason to `input` and exposes it through the separate `terminate_reason` workflow metadata property; the workflow's `customStatus` remains unchanged. Recursive propagation copies the same `input` to each child workflow. The reason and termination output cannot be supplied independently through this Durable Task payload. See the [Execution API]({{% ref "workflow-protocol-execution-api.md" %}}).
+
 ### 3. Inbox (Pending Events)
 A collection of events that have occurred but have not yet been processed by the orchestrator (replayed). This includes:
 *   External events raised to the workflow.
@@ -50,6 +53,8 @@ A collection of events that have occurred but have not yet been processed by the
 *   Fired timers.
 
 When the orchestrator next runs, it "drains" the inbox, moves those events into the history, and then replays the logic.
+
+External events are not termination events. They are added to the inbox and replayed as signals for the workflow to handle. A cancellation reason embedded in an external event payload remains application data; it becomes a workflow termination reason only when a terminate operation explicitly records it.
 
 With the `WorkflowsFastPath` preview feature enabled, activity completions that the activity actor delivers with retry-forever semantics may skip the inbox: the sidecar holds them in memory and persists them straight into the history inside the next turn's commit, acknowledging the activity actor only after that commit. External events, fired timers and child workflow completions always go through the inbox. See [Workflow fast path]({{% ref "workflow-fast-path.md" %}}).
 

@@ -56,7 +56,7 @@ Retrieves the current status and metadata of a workflow instance.
 | `created_at` | `Timestamp` | The time the instance was created. |
 | `last_updated_at` | `Timestamp` | The time the instance was last updated. |
 | `runtime_status` | `string` | The status (e.g., `RUNNING`, `COMPLETED`, `FAILED`, `TERMINATED`, `PENDING`). |
-| `properties` | `map<string, string>` | Additional component-specific metadata. |
+| `properties` | `map<string, string>` | Additional component-specific metadata, including `dapr.workflow.custom_status` and the optional `terminate_reason` supplied when the workflow was terminated. |
 
 ### TerminateWorkflow
 
@@ -68,10 +68,12 @@ Forcefully terminates a running workflow instance.
 | :--- | :--- | :--- |
 | `instance_id` | `string` | The ID of the workflow instance to terminate. |
 | `workflow_component` | `string` | The name of the workflow component. |
+| `app_id` | `string` (optional) | ID of the application hosting the workflow instance. |
+| `terminate_reason` (`terminateReason` in JSON) | `string` (optional) | Human-readable reason for terminating the workflow. The runtime records it in the existing termination input and exposes it as the `terminate_reason` property in workflow metadata, independently of `dapr.workflow.custom_status`. |
 
 ### RaiseEventWorkflow
 
-Sends an event to a running workflow instance.
+Sends an event to a running workflow instance. The event name and payload are application-defined. Raising an event does not terminate the workflow or set a `terminate_reason` metadata property; use `TerminateWorkflow` when the instance must be stopped.
 
 **Request (`RaiseEventWorkflowRequest`):**
 

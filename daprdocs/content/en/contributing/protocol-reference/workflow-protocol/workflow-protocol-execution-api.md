@@ -58,13 +58,19 @@ Reports the results of an orchestration execution.
 *   `actions`: A list of `OrchestratorAction` messages.
 *   `custom_status`: Optional string for user-defined status.
 
-**OrchestratorAction Types:**
-*   `ScheduleTask`: Schedule a new activity.
-*   `CreateTimer`: Schedule a durable timer.
-*   `CreateSubOrchestration`: Start a child workflow.
-*   `CompleteOrchestration`: Mark the workflow as completed (success or failure).
-*   `TerminateOrchestration`: Forcefully terminate the instance.
-*   `SendEvent`: Send an event to another workflow.
+**WorkflowAction Types:**
+*   `ScheduleTaskAction`: Schedule an activity.
+*   `CreateTimerAction`: Schedule a durable timer.
+*   `CreateChildWorkflowAction`: Start a child workflow.
+*   `CreateDetachedWorkflowAction`: Start a detached workflow.
+*   `CompleteWorkflowAction`: Complete or fail the current workflow.
+*   `TerminateWorkflowAction`: Terminate another workflow instance.
+*   `SendEventAction`: Send an external event to another workflow.
+*   `WorkflowVersionNotAvailableAction`: Report that the requested workflow version is unavailable.
+
+#### TerminateWorkflowAction
+
+The existing `TerminateWorkflowAction` message contains the target `instanceId` and a `recurse` flag. It does not add a termination-reason field. The Dapr public workflow termination API accepts the optional reason and maps it through the existing Durable Task termination payload.
 
 ### CompleteActivityTask
 
@@ -91,7 +97,17 @@ Common event types:
 *   `TaskFailed`: An activity failed.
 *   `TimerCreated`: A timer was scheduled.
 *   `TimerFired`: A timer expired.
-*   `OrchestrationCompleted`: The workflow finished.
+*   `ExecutionTerminated`: The workflow was terminated.
+
+#### ExecutionTerminatedEvent
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `input` | `google.protobuf.StringValue` | The existing termination payload. Dapr maps a supplied termination reason to this field through `TerminateRequest.output`. |
+| `recurse` | `bool` | Whether termination must be propagated to child workflows. |
+
+
+When recursive termination is applied, the existing `input` field is copied into each child workflow's `ExecutionTerminatedEvent`. No additional reason field is required.
 
 #### Timer origin
 
