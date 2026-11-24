@@ -56,7 +56,7 @@ More info on pprof can be found [here](https://github.com/google/pprof).
 
 ### Kubernetes
 
-First, find the pod containing the Dapr runtime. If you don't already know the the pod name, type `kubectl get pods`:
+First, find the pod containing the Dapr runtime. If you don't already know the pod name, type `kubectl get pods`:
 
 ```bash
 NAME                                        READY     STATUS    RESTARTS   AGE
