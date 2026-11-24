@@ -72,6 +72,8 @@ To provide more granular control on access to secrets, Dapr provides the ability
 
 ## Try out secrets management
 
+{{< dapr-university-track track="dapr-secrets" position="middle" >}}
+
 ### Quickstarts and tutorials
 
 Want to put the Dapr secrets management API to the test? Walk through the following quickstart and tutorials to see Dapr secrets in action:
@@ -80,8 +82,6 @@ Want to put the Dapr secrets management API to the test? Walk through the follow
 | ------------------- | ----------- |
 | [Secrets management quickstart]({{% ref secrets-quickstart %}}) | Retrieve secrets in the application code from a configured secret store using the secrets management API. |
 | [Secret Store tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/secretstore) | Demonstrates the use of Dapr Secrets API to access secret stores. |
-
-{{< dapr-university-track track="dapr-secrets" position="middle" >}}
 
 ### Start managing secrets directly in your app
 

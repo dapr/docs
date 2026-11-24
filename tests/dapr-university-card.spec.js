@@ -21,6 +21,7 @@ const PLACEMENTS = [
     topic: 'pub/sub',
     title: 'Dapr Pub/Sub',
     content: 'pubsub-overview-middle',
+    beforeQuickstarts: true,
   },
   {
     path: '/developing-applications/building-blocks/secrets/secrets-overview/',
@@ -28,6 +29,7 @@ const PLACEMENTS = [
     topic: 'secrets management',
     title: 'Dapr Secrets',
     content: 'secrets-overview-middle',
+    beforeQuickstarts: true,
   },
   {
     path: '/developing-applications/building-blocks/bindings/bindings-overview/',
@@ -35,6 +37,7 @@ const PLACEMENTS = [
     topic: 'bindings',
     title: 'Dapr Bindings',
     content: 'bindings-overview-middle',
+    beforeQuickstarts: true,
   },
   {
     path: '/getting-started/quickstarts/pubsub-quickstart/',
@@ -63,6 +66,7 @@ const PLACEMENTS = [
     topic: 'Dapr Workflow',
     title: 'Dapr Workflow',
     content: 'workflow-overview-middle',
+    beforeQuickstarts: true,
   },
   {
     path: '/developing-applications/building-blocks/workflow/workflow-patterns/',
@@ -126,6 +130,28 @@ for (const p of PLACEMENTS) {
       const params = Object.fromEntries(url.searchParams.entries());
       expect(params).toEqual({ ...UTM, utm_content: p.content });
     });
+
+    if (p.beforeQuickstarts) {
+      // A Dapr University lab needs no local setup, so on pages that list
+      // quickstarts the card comes first: directly under the "Try out"
+      // heading, before the quickstarts table.
+      test('card comes before the quickstarts table', async ({ page }) => {
+        await page.goto(p.path, { waitUntil: 'domcontentloaded' });
+        const order = await page.locator(CARD).evaluate((card) => {
+          const h2 = document.querySelector('.td-content h2[id^="try-out"]');
+          let table = h2;
+          while (table && table.tagName !== 'TABLE') table = table.nextElementSibling;
+          const follows = (a, b) => !!(a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING);
+          return {
+            hasHeading: !!h2,
+            hasTable: !!table,
+            afterHeading: !!h2 && follows(h2, card),
+            beforeTable: !!table && follows(card, table),
+          };
+        });
+        expect(order).toEqual({ hasHeading: true, hasTable: true, afterHeading: true, beforeTable: true });
+      });
+    }
 
     test('card sits in page flow', async ({ page }) => {
       await page.goto(p.path, { waitUntil: 'domcontentloaded' });

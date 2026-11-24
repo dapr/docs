@@ -161,6 +161,8 @@ When running on Kubernetes, subscribers can have a sticky `consumerID` per insta
 
 ## Try out pub/sub
 
+{{< dapr-university-track track="dapr-pubsub" position="middle" >}}
+
 ### Quickstarts and tutorials
 
 Want to put the Dapr pub/sub API to the test? Walk through the following quickstart and tutorials to see pub/sub in action:
@@ -169,8 +171,6 @@ Want to put the Dapr pub/sub API to the test? Walk through the following quickst
 | ------------------- | ----------- |
 | [Pub/sub quickstart]({{% ref pubsub-quickstart %}}) | Send and receive messages using the publish and subscribe API. |
 | [Pub/sub tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/pub-sub) | Demonstrates how to use Dapr to enable pub-sub applications. Uses Redis as a pub-sub component. |
-
-{{< dapr-university-track track="dapr-pubsub" position="middle" >}}
 
 ### Start using pub/sub directly in your app
 

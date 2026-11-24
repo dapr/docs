@@ -92,6 +92,8 @@ It is highly recommended that all input bindings should include the `direction` 
 
 ## Try out bindings
 
+{{< dapr-university-track track="dapr-bindings" position="middle" >}}
+
 ### Quickstarts and tutorials
 
 Want to put the Dapr bindings API to the test? Walk through the following quickstart and tutorials to see bindings in action:
@@ -100,8 +102,6 @@ Want to put the Dapr bindings API to the test? Walk through the following quicks
 | ------------------- | ----------- |
 | [Bindings quickstart]({{% ref bindings-quickstart %}}) | Work with external systems using input bindings to respond to events and output bindings to call operations. |
 | [Bindings tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/bindings) | Demonstrates how to use Dapr to create input and output bindings to other components. Uses bindings to Kafka. |
-
-{{< dapr-university-track track="dapr-bindings" position="middle" >}}
 
 ### Start using bindings directly in your app
 

@@ -132,6 +132,8 @@ You can use the following SDKs to author a workflow.
 
 ## Try out workflows
 
+{{< dapr-university-track track="dapr-workflow" position="middle" >}}
+
 ### Quickstarts and tutorials
 
 Want to put workflows to the test? Walk through the following quickstart and tutorials to see workflows in action:
@@ -145,8 +147,6 @@ Want to put workflows to the test? Walk through the following quickstart and tut
 | [Workflow .NET SDK example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow) | Learn how to create a Dapr Workflow and invoke it using ASP.NET Core web APIs. |
 | [Workflow Java SDK example](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows) | Learn how to create a Dapr Workflow and invoke it using the Java `io.dapr.workflows` package. |
 | [Workflow Go SDK example](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md) | Learn how to create a Dapr Workflow and invoke it using the Go `workflow` package. |
-
-{{< dapr-university-track track="dapr-workflow" position="middle" >}}
 
 ### Start using workflows directly in your app
 
