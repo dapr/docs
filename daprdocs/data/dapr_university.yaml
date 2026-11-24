@@ -1,0 +1,19 @@
+# Dapr University tracks promoted in the docs with the `dapr-university-track`
+# shortcode. The key is the track slug on diagrid.io. `topic` is the building
+# block as the docs name it, lowercase, and is used in the card's lead line
+# ("Learn pub/sub hands-on."). `description` is one sentence.
+dapr-pubsub:
+  topic: "pub/sub"
+  title: "Dapr Pub/Sub"
+  description: "Go beyond publish and subscribe: subscription types, CloudEvents, bulk messages, routing and dead letters, then swap Redis for RabbitMQ without touching your code."
+  url: "https://www.diagrid.io/university/dapr-pubsub"
+dapr-secrets:
+  topic: "secrets management"
+  title: "Dapr Secrets"
+  description: "Read secrets through the Dapr Secrets API, see an app refused by secret scoping, then swap to HashiCorp Vault without touching your code."
+  url: "https://www.diagrid.io/university/dapr-secrets"
+dapr-bindings:
+  topic: "bindings"
+  title: "Dapr Bindings"
+  description: "Trigger an app on a schedule with a cron input binding, run SQL through the PostgreSQL output binding, and see when a binding beats the State API."
+  url: "https://www.diagrid.io/university/dapr-bindings"

@@ -41,3 +41,31 @@
     color:var(--d-heading);
   }
 }
+
+// Dapr University track card (shortcode `dapr-university-track`, partial
+// `_partials/dapr-university-track.html`). A block in the normal page flow
+// that promotes one track. Same tokens as .d-card so it reads as part of the
+// docs; the left accent and spacing follow the .alert callouts.
+.td-content .d-promo-card {
+  display:flex; gap:14px; align-items:flex-start;
+  margin:1.25rem 0; padding:15px 16px;
+  border:1px solid var(--d-border); border-left:3px solid var(--d-blue);
+  border-radius:0 var(--d-radius) var(--d-radius) 0;
+  background:color-mix(in srgb, var(--d-blue) 5%, var(--d-ground));
+  color:var(--d-body);
+}
+.td-content .d-promo-card .d-promo-card-icon { width:40px; height:40px; flex:0 0 auto; margin:2px 0 0; }
+// The logo SVG is dark blue; render it white on the dark card background.
+[data-bs-theme="dark"] .td-content .d-promo-card .d-promo-card-icon { filter:brightness(0) invert(1); }
+.td-content .d-promo-card .d-promo-card-body { display:flex; flex-direction:column; gap:6px; min-width:0; }
+.td-content .d-promo-card .d-promo-card-eyebrow {
+  font-family:var(--font-head); font-size:.72rem; font-weight:600;
+  letter-spacing:.04em; text-transform:uppercase; color:var(--d-muted);
+}
+.td-content .d-promo-card .d-promo-card-lead { margin:0; color:var(--d-body); }
+.td-content .d-promo-card .d-promo-card-title { font-family:var(--font-head); font-weight:600; font-size:1rem; color:var(--d-heading); }
+.td-content .d-promo-card .d-promo-card-desc { margin:0; font-size:.9rem; color:var(--d-muted); }
+.td-content .d-promo-card .d-promo-card-btn { align-self:flex-start; margin-top:4px; }
+@media (max-width:560px){
+  .td-content .d-promo-card { flex-direction:column; }
+}

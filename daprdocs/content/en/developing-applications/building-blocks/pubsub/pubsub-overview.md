@@ -170,6 +170,8 @@ Want to put the Dapr pub/sub API to the test? Walk through the following quickst
 | [Pub/sub quickstart]({{% ref pubsub-quickstart %}}) | Send and receive messages using the publish and subscribe API. |
 | [Pub/sub tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/pub-sub) | Demonstrates how to use Dapr to enable pub-sub applications. Uses Redis as a pub-sub component. |
 
+{{< dapr-university-track track="dapr-pubsub" position="middle" >}}
+
 ### Start using pub/sub directly in your app
 
 Want to skip the quickstarts? Not a problem. You can try out the pub/sub building block directly in your application to publish messages and subscribe to a topic. After [Dapr is installed]({{% ref "getting-started/_index" %}}), you can begin using the pub/sub API starting with [the pub/sub how-to guide]({{% ref howto-publish-subscribe %}}).
