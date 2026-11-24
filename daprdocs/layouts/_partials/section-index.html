@@ -27,6 +27,7 @@
                 {{ if eq .Parent $parent }}
                     {{ $c := index $colors (mod $i 4) }}
                     <a class="d-card {{ $c }}" href="{{ .RelPermalink }}">
+                        {{ with .Params.status }}<span class="d-card-tag">{{ . }}</span>{{ end }}
                         <span class="d-card-title">{{ or .LinkTitle .Title }}</span>
                         {{ with .Description }}<span class="d-card-desc">{{ . | markdownify }}</span>{{ end }}
                         <span class="d-card-more">Learn more &rarr;</span>
