@@ -19,6 +19,18 @@ Run Dapr and (optionally) your application side by side. A full list comparing d
 dapr run [flags] [command]
 ```
 
+### Detached mode
+
+Use the `--detach` flag (or `-D`) to run Dapr and your application in the background without keeping the terminal attached. The CLI returns after launching the detached process and prints its process ID and the path to a log file containing the process output.
+
+For example, run a Node.js application in detached mode:
+
+```bash
+dapr run --detach --app-id myapp -- node myapp.js
+```
+
+Use [dapr list]({{% ref "dapr-list.md" %}}) to check the running instance and [dapr stop]({{% ref "dapr-stop.md" %}}) to stop it.
+
 ### Flags
 
 | Name                           | Environment Variable | Default                                                                            | Description                                                                                          |
@@ -52,6 +64,7 @@ dapr run [flags] [command]
 | `--unix-domain-socket`, `-u`   |                      |                                                                                    |  Path to a unix domain socket dir mount. If specified, communication with the Dapr sidecar uses unix domain sockets for lower latency and greater throughput when compared to using TCP ports. Not available on Windows. |
 | `--dapr-http-max-request-size` |                      | `4`                                                                                | Max size of the request body in MB. |
 | `--dapr-http-read-buffer-size` |                      | `4`                                                                                | Max size of the HTTP read buffer in KB. This also limits the maximum size of HTTP headers. The default 4 KB |
+| `--detach`, `-D`            |                      | `false`                                                                            | Run Dapr and your application in the background. The CLI prints the detached process ID and log file path. |
 | `--kubernetes`, `-k`             |            |                                                                                    | Running Dapr on Kubernetes, and used for [Multi-App Run template files on Kubernetes]({{% ref multi-app-dapr-run %}}).                                                            |
 | `--components-path`, `-d`      |                      | Linux/Mac: `$HOME/.dapr/components` <br/>Windows: `%USERPROFILE%\.dapr\components` | **Deprecated** in favor of `--resources-path`                                                      |
 

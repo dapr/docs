@@ -73,6 +73,25 @@ dapr run -f ./path/to/<your-preferred-file-name>.yaml -k
 
 {{< /tabpane >}}
 
+### Run the template in detached mode
+
+For self-hosted runs on Linux or macOS, add `--detach` to start the Multi-App Run template in the background without keeping the terminal attached:
+
+{{< tabpane text=true >}}
+
+{{% tab "Self-hosted" %}}
+<!--selfhosted-->
+
+```cmd
+dapr run --detach -f <dir_path>
+```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
+
+The CLI prints the detached process ID and the path to its log file. Use the following sections to view the started applications and stop the template.
+
 ## View the started applications
 
 Once the multi-app template is running, you can view the started applications with the following command:
