@@ -415,14 +415,14 @@ Follow the [JavaScript conversation setup guide]({{% ref js-conversation-howto.m
 <!-- Go -->
 {{% tab "Go" %}}
 
-[Dapr conversation example with the Go SDK](https://github.com/dapr/go-sdk/tree/main/examples/conversation)
+[Dapr conversation example with the Go SDK](https://github.com/dapr/go-sdk/tree/main/examples/conversation-alpha1)
 
 {{% /tab %}}
 
  <!-- Rust -->
 {{% tab "Rust" %}}
 
-[Dapr conversation example with the Rust SDK](https://github.com/dapr/rust-sdk/tree/main/examples/src/conversation)
+[Dapr conversation example with the Rust SDK](https://github.com/dapr/rust-sdk/tree/main/examples/src/conversation-alpha1)
 
 {{% /tab %}}
 
