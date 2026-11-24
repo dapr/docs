@@ -66,6 +66,10 @@
 .td-content .d-promo-card .d-promo-card-title { font-family:var(--font-head); font-weight:600; font-size:1rem; color:var(--d-heading); }
 .td-content .d-promo-card .d-promo-card-desc { margin:0; font-size:.9rem; color:var(--d-muted); }
 .td-content .d-promo-card .d-promo-card-btn { align-self:flex-start; margin-top:4px; }
+// White on the dark-theme --d-blue (#6f9fe8) is 2.7:1, below WCAG AA; the dark
+// ground colour on it is about 7:1.
+[data-bs-theme="dark"] .td-content .d-promo-card .d-promo-card-btn,
+[data-bs-theme="dark"] .td-content .d-promo-card .d-promo-card-btn:hover { color:var(--d-ground); }
 @media (max-width:560px){
   .td-content .d-promo-card { flex-direction:column; }
 }

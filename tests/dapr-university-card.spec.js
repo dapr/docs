@@ -61,6 +61,16 @@ const PLACEMENTS = [
 
 const CARD = '.d-promo-card';
 
+// Load a page in a theme the way a reader gets it: the pre-paint script in
+// hooks/head-end.html picks the theme from prefers-color-scheme. Switching
+// data-bs-theme after load would read colours mid-transition (Bootstrap's
+// .btn animates background-color), so the theme is set before navigation.
+async function gotoInTheme(page, path, theme) {
+  await page.emulateMedia({ colorScheme: theme });
+  await page.goto(path, { waitUntil: 'load' });
+  await expect(page.locator('html')).toHaveAttribute('data-bs-theme', theme);
+}
+
 for (const p of PLACEMENTS) {
   test.describe(`university card on ${p.path}`, () => {
     test('renders one card with the spec copy', async ({ page }) => {
@@ -118,9 +128,8 @@ for (const p of PLACEMENTS) {
 
     for (const theme of ['light', 'dark']) {
       test(`legible in ${theme} theme`, async ({ page }) => {
-        await page.goto(p.path, { waitUntil: 'domcontentloaded' });
-        const colors = await page.locator(CARD).evaluate((el, t) => {
-          document.documentElement.setAttribute('data-bs-theme', t);
+        await gotoInTheme(page, p.path, theme);
+        const colors = await page.locator(CARD).evaluate((el) => {
           const c = (sel) => getComputedStyle(el.querySelector(sel)).color;
           return {
             bg: getComputedStyle(el).backgroundColor,
@@ -128,13 +137,32 @@ for (const p of PLACEMENTS) {
             lead: c('.d-promo-card-lead'),
             iconFilter: getComputedStyle(el.querySelector('.d-promo-card-icon')).filter,
           };
-        }, theme);
+        });
         expect(colors.bg).not.toBe('rgba(0, 0, 0, 0)');
         expect(colors.title).not.toBe(colors.bg);
         expect(colors.lead).not.toBe(colors.bg);
         // The logo SVG is dark blue, which disappears on the dark card
         // background, so dark mode must recolour it.
         if (theme === 'dark') expect(colors.iconFilter).not.toBe('none');
+      });
+
+      test(`button text meets WCAG AA contrast in ${theme} theme`, async ({ page }) => {
+        await gotoInTheme(page, p.path, theme);
+        const ratio = await page.locator(`${CARD} .d-promo-card-btn`).evaluate((el) => {
+          const rgb = (s) => s.match(/[\d.]+/g).slice(0, 3).map(Number);
+          const lum = ([r, g, b]) => {
+            const c = [r, g, b].map((v) => {
+              v /= 255;
+              return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+            });
+            return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+          };
+          const cs = getComputedStyle(el);
+          const [a, b] = [lum(rgb(cs.color)), lum(rgb(cs.backgroundColor))];
+          return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+        });
+        // 4.5:1 is WCAG AA for normal-size text; the button text is .86rem.
+        expect(ratio).toBeGreaterThanOrEqual(4.5);
       });
     }
   });
