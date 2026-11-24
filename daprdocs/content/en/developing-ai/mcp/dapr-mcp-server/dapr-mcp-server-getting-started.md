@@ -147,7 +147,7 @@ spec:
   version: v1
 ```
 
-With these two components the server registers the three core tools plus the state and pub/sub tools. Add components of other types (`bindings.*`, `secretstores.*`, `lock.*`, `crypto.*`, `conversation.*`) to expose their tools. See the [tool reference]({{% ref dapr-mcp-server-tool-reference.md %}}) for the full mapping.
+With these two components the server registers the core tools plus the state and pub/sub tools. Add components of other types (`bindings.*`, `secretstores.*`, `lock.*`, `crypto.*`, `conversation.*`) to expose their tools. See the [tool reference]({{% ref dapr-mcp-server-tool-reference.md %}}) for the full mapping.
 
 ## Step 3: Run and connect
 
