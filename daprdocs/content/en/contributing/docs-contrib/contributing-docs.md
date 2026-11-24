@@ -400,6 +400,23 @@ You can customize the colors using the Bootstrap colors:
 {{% button text="My Button" link="https://example.com" color="warning" %}}
 {{% button text="My Button" link="https://example.com" color="info" %}}
 
+### Dapr University track cards
+
+To point readers to a free, hands-on [Dapr University](https://www.diagrid.io/university?utm_source=dapr-docs&utm_medium=referral&utm_campaign=dapr-university&utm_content=contributing-docs) track about the topic of the page, use the `dapr-university-track` shortcode. It renders a card with a short introduction, the track title and description, and a button to the track page.
+
+```
+{{</* dapr-university-track track="dapr-pubsub" position="middle" */>}}
+```
+
+- `track` (required): the track to promote. Use one of the keys in `daprdocs/data/dapr_university.yaml`, for example `dapr-pubsub`, `dapr-secrets` or `dapr-bindings`.
+- `position` (optional): where the card sits on the page: `intro` (after the introduction), `middle` or `end`. The default is `end`. The card looks the same in every position. The value goes into the link's `utm_content`, so we can see which placements people click.
+
+The build fails if `track` isn't in the data file or `position` isn't one of the three values.
+
+Put the shortcode on its own line, with an empty line before and after it, and not inside a list. Use at most one card per page.
+
+To add a track, add an entry to `daprdocs/data/dapr_university.yaml` with a `topic`, `title`, `description` and `url`. The `topic` is the building block name as the docs use it, in lowercase, because the card says "Learn {topic} hands-on."
+
 ### References
 
 [Docsy authoring guide](https://www.docsy.dev/docs/adding-content/)

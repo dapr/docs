@@ -584,4 +584,6 @@ Join our [Discord Server](https://diagrid.ws/dapr-discord) and share your though
   - [Go](https://github.com/dapr/quickstarts/tree/master/secrets_management/go/http)
 - Learn more about the [Secrets Management building block]({{% ref secrets-overview %}})
 
+{{< dapr-university-track track="dapr-secrets" position="end" >}}
+
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}
