@@ -92,6 +92,8 @@ It is highly recommended that all input bindings should include the `direction` 
 
 ## Try out bindings
 
+{{< dapr-university-track track="dapr-bindings" position="middle" >}}
+
 ### Quickstarts and tutorials
 
 Want to put the Dapr bindings API to the test? Walk through the following quickstart and tutorials to see bindings in action:

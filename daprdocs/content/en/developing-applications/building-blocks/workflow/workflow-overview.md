@@ -132,6 +132,8 @@ You can use the following SDKs to author a workflow.
 
 ## Try out workflows
 
+{{< dapr-university-track track="dapr-workflow" position="middle" >}}
+
 ### Quickstarts and tutorials
 
 Want to put workflows to the test? Walk through the following quickstart and tutorials to see workflows in action:

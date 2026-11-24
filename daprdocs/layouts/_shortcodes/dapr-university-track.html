@@ -1,0 +1,17 @@
+{{- /*
+  Promotes one Dapr University track inside a docs page.
+  Usage: {{< dapr-university-track track="dapr-pubsub" position="middle" >}}
+  track:    a key in daprdocs/data/dapr_university.yaml (required)
+  position: intro, middle or end (default end). Only feeds utm_content.
+  See daprdocs/layouts/_partials/dapr-university-track.html for the markup.
+*/ -}}
+{{- $track := .Get "track" -}}
+{{- $position := .Get "position" | default "end" -}}
+{{- $entry := index site.Data.dapr_university $track -}}
+{{- if not $entry -}}
+  {{- errorf "dapr-university-track: unknown track %q in %s" $track .Position -}}
+{{- else if not (in (slice "intro" "middle" "end") $position) -}}
+  {{- errorf "dapr-university-track: position must be intro, middle or end, got %q in %s" $position .Position -}}
+{{- else -}}
+  {{- partial "dapr-university-track.html" (dict "track" $entry "page" .Page "position" $position) -}}
+{{- end -}}

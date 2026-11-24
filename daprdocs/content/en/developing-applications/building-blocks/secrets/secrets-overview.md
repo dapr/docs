@@ -72,6 +72,8 @@ To provide more granular control on access to secrets, Dapr provides the ability
 
 ## Try out secrets management
 
+{{< dapr-university-track track="dapr-secrets" position="middle" >}}
+
 ### Quickstarts and tutorials
 
 Want to put the Dapr secrets management API to the test? Walk through the following quickstart and tutorials to see Dapr secrets in action:
