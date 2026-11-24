@@ -57,6 +57,34 @@ const PLACEMENTS = [
     title: 'Dapr Bindings',
     content: 'bindings-quickstart-end',
   },
+  {
+    path: '/developing-applications/building-blocks/workflow/workflow-overview/',
+    url: 'https://www.diagrid.io/university/dapr-workflow',
+    topic: 'Dapr Workflow',
+    title: 'Dapr Workflow',
+    content: 'workflow-overview-middle',
+  },
+  {
+    path: '/developing-applications/building-blocks/workflow/workflow-patterns/',
+    url: 'https://www.diagrid.io/university/dapr-workflow',
+    topic: 'Dapr Workflow',
+    title: 'Dapr Workflow',
+    content: 'workflow-patterns-end',
+  },
+  {
+    path: '/getting-started/quickstarts/workflow-quickstart/',
+    url: 'https://www.diagrid.io/university/dapr-workflow',
+    topic: 'Dapr Workflow',
+    title: 'Dapr Workflow',
+    content: 'workflow-quickstart-end',
+  },
+  {
+    path: '/developing-applications/sdks/dotnet/dotnet-workflow/dotnet-workflow-examples/',
+    url: 'https://www.diagrid.io/university/dapr-workflow',
+    topic: 'Dapr Workflow',
+    title: 'Dapr Workflow',
+    content: 'dotnet-workflow-examples-end',
+  },
 ];
 
 const CARD = '.d-promo-card';
@@ -167,3 +195,28 @@ for (const p of PLACEMENTS) {
     }
   });
 }
+
+// The homepage "Dapr University" card links to the University hub, not a
+// track, so it keeps its homepage card layout, but its link must carry the
+// same UTMs as the track cards.
+test('homepage University card link carries the UTMs', async ({ page }) => {
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  const card = page.locator('a.d-card', { hasText: 'Dapr University' });
+  await expect(card).toHaveCount(1);
+  const url = new URL(await card.getAttribute('href'));
+  expect(url.origin + url.pathname).toBe('https://www.diagrid.io/university');
+  expect(Object.fromEntries(url.searchParams.entries())).toEqual({ ...UTM, utm_content: 'home' });
+});
+
+// No page may link to Dapr University without the UTMs (catches plain links
+// added later, like the one the .NET workflow examples page used to have).
+test('no untagged Dapr University links on placement pages', async ({ page }) => {
+  for (const p of PLACEMENTS) {
+    await page.goto(p.path, { waitUntil: 'domcontentloaded' });
+    const hrefs = await page.$$eval('a[href*="diagrid.io/"]', (as) =>
+      as.map((a) => a.href).filter((h) => /university/.test(h)));
+    for (const h of hrefs) {
+      expect(new URL(h).searchParams.get('utm_source'), `${p.path}: ${h}`).toBe('dapr-docs');
+    }
+  }
+});

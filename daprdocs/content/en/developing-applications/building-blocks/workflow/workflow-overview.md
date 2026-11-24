@@ -146,6 +146,8 @@ Want to put workflows to the test? Walk through the following quickstart and tut
 | [Workflow Java SDK example](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows) | Learn how to create a Dapr Workflow and invoke it using the Java `io.dapr.workflows` package. |
 | [Workflow Go SDK example](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md) | Learn how to create a Dapr Workflow and invoke it using the Go `workflow` package. |
 
+{{< dapr-university-track track="dapr-workflow" position="middle" >}}
+
 ### Start using workflows directly in your app
 
 Want to skip the quickstarts? Not a problem. You can try out the workflow building block directly in your application. After [Dapr is installed]({{% ref install-dapr-cli.md %}}), you can begin using  workflows, starting with [how to author a workflow]({{% ref howto-author-workflow.md %}}).

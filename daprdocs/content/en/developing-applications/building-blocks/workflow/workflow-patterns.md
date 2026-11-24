@@ -1633,6 +1633,8 @@ To run this pattern, try the resiliency and compensation tutorial, which also sh
 
 {{< button text="Workflow architecture >>" page="workflow-architecture.md" >}}
 
+{{< dapr-university-track track="dapr-workflow" position="end" >}}
+
 ## Related links
 
 - [Try out Dapr Workflows using the quickstart]({{% ref workflow-quickstart.md %}})

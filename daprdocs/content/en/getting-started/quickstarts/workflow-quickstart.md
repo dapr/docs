@@ -2002,6 +2002,7 @@ Join our [Discord Server](https://diagrid.ws/dapr-discord) and share your though
 - Set up Dapr Workflow with any programming language using [HTTP instead of an SDK]({{% ref howto-manage-workflow.md %}})
 - Walk through a more in-depth [.NET SDK example workflow](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
 - Learn more about [Workflow as a Dapr building block]({{% ref workflow-overview %}})
-```
+
+{{< dapr-university-track track="dapr-workflow" position="end" >}}
 
 {{< button text="Explore the workflow tutorials  >>" link="https://github.com/dapr/quickstarts/tree/master/tutorials/workflow" >}}

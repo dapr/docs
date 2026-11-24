@@ -1,6 +1,7 @@
 # Dapr University tracks promoted in the docs with the `dapr-university-track`
 # shortcode. The key is the track slug on diagrid.io. `topic` is the building
-# block as the docs name it, lowercase, and is used in the card's lead line
+# block as the docs name it (lowercase, except product names such as "Dapr
+# Workflow"), and is used in the card's lead line
 # ("Learn pub/sub hands-on."). `description` is one sentence.
 dapr-pubsub:
   topic: "pub/sub"
@@ -17,3 +18,8 @@ dapr-bindings:
   title: "Dapr Bindings"
   description: "Trigger an app on a schedule with a cron input binding, run SQL through the PostgreSQL output binding, and see when a binding beats the State API."
   url: "https://www.diagrid.io/university/dapr-bindings"
+dapr-workflow:
+  topic: "Dapr Workflow"
+  title: "Dapr Workflow"
+  description: "Master durable execution with Dapr Workflow: task chaining, fan-out/fan-in, monitors, error handling, and the management API."
+  url: "https://www.diagrid.io/university/dapr-workflow"

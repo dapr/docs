@@ -24,4 +24,4 @@ Do not assume other language SDKs support data references.
 
 ## Next steps
 
-- [Try the Dapr University Workflow track](https://www.diagrid.io/dapr-university#dapr-workflow)
+{{< dapr-university-track track="dapr-workflow" position="end" >}}
