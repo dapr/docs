@@ -319,6 +319,21 @@ For example, instead of this:
 
 {{< tabpane text=true >}}
 
+{{% tab "Python" %}}
+
+```python
+# DON'T DO THIS inside a workflow function!
+from datetime import datetime, timezone
+import random
+import uuid
+
+current_time = datetime.now(timezone.utc)
+new_identifier = uuid.uuid4()
+random_number = random.random()
+```
+
+{{% /tab %}}
+
 {{% tab ".NET" %}}
 
 ```csharp
@@ -366,6 +381,19 @@ const currentTime = time.Now()
 Do this:
 
 {{< tabpane text=true >}}
+
+{{% tab "Python" %}}
+
+```python
+# Inside a workflow generator function:
+current_time = ctx.current_utc_datetime
+new_identifier = yield ctx.call_activity(generate_uuid)
+random_number = yield ctx.call_activity(get_random_number)
+```
+
+Generate UUIDs and random numbers in activity functions, such as `generate_uuid` and `get_random_number`, and register them with your workflow runtime. Activity results are recorded in the workflow history and reused during replay.
+
+{{% /tab %}}
 
 {{% tab ".NET" %}}
 
@@ -418,6 +446,20 @@ Instead, workflows should interact with external state _indirectly_ using workfl
 For example, instead of this:
 
 {{< tabpane text=true >}}
+
+{{% tab "Python" %}}
+
+```python
+# DON'T DO THIS inside a workflow function!
+import os
+from urllib.request import urlopen
+
+configuration = os.environ["MY_CONFIGURATION"]
+with urlopen("https://example.com/api/data") as response:
+    data = response.read().decode("utf-8")
+```
+
+{{% /tab %}}
 
 {{% tab ".NET" %}}
 
@@ -475,6 +517,18 @@ Do this:
 
 {{< tabpane text=true >}}
 
+{{% tab "Python" %}}
+
+```python
+# Inside a workflow generator function:
+configuration = workflow_input["configuration"]  # imaginary workflow input argument
+data = yield ctx.call_activity(make_http_call, input="https://example.com/api/data")
+```
+
+Pass configuration through the workflow input. Define and register `make_http_call` as an activity function that performs the HTTP request.
+
+{{% /tab %}}
+
 {{% tab ".NET" %}}
 
 ```csharp
@@ -529,6 +583,19 @@ For example, instead of this:
 
 {{< tabpane text=true >}}
 
+{{% tab "Python" %}}
+
+```python
+# DON'T DO THIS inside a workflow function!
+from threading import Thread
+
+Thread(target=lambda: ctx.call_activity(do_something)).start()
+```
+
+Do not declare the workflow function with `async def` or use `asyncio` tasks to schedule workflow operations.
+
+{{% /tab %}}
+
 {{% tab ".NET" %}}
 
 ```csharp
@@ -575,6 +642,21 @@ err := ctx.CreateTimer(time.Second).Await(nil)
 Do this:
 
 {{< tabpane text=true >}}
+
+{{% tab "Python" %}}
+
+```python
+from datetime import timedelta
+from dapr.ext.workflow import DaprWorkflowContext
+
+def my_workflow(ctx: DaprWorkflowContext, workflow_input):
+    yield ctx.call_activity(do_something)
+    yield ctx.create_timer(timedelta(seconds=5))
+```
+
+Declare Python workflows as synchronous generator functions. Yield the tasks returned by workflow APIs, and register `do_something` as an activity function.
+
+{{% /tab %}}
 
 {{% tab ".NET" %}}
 
