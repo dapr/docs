@@ -563,6 +563,150 @@ public class DistributedLockGrpcClient {
 - For a full how-to on distributed lock, visit [How-To: Use a Lock]({{% ref howto-use-distributed-lock.md %}})
 - Visit [Java SDK examples](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/lock) for complete code sample.
 
+### Vector store
+
+> Note this is a preview API and thus will only be accessible via the DaprPreviewClient interface and not the normal DaprClient interface
+
+Since version 1.19, Dapr lets you store records with dense vectors and run similarity queries over them through the [vector API]({{% ref vector-overview.md %}}). The example below uses the `myvectors` component from [How-To: Store and query vectors]({{% ref howto-vector.md %}}).
+
+```java
+import io.dapr.client.DaprClientBuilder;
+import io.dapr.client.DaprPreviewClient;
+import io.dapr.client.domain.CreateVectorCollectionRequestAlpha1;
+import io.dapr.client.domain.DeleteVectorsRequestAlpha1;
+import io.dapr.client.domain.DistanceMetric;
+import io.dapr.client.domain.GetVectorsRequestAlpha1;
+import io.dapr.client.domain.IndexingOptions;
+import io.dapr.client.domain.IndexingWaitTimeoutAction;
+import io.dapr.client.domain.QueryVectorsRequestAlpha1;
+import io.dapr.client.domain.QueryVectorsResponseAlpha1;
+import io.dapr.client.domain.UpsertVectorsRequestAlpha1;
+import io.dapr.client.domain.UpsertVectorsResponseAlpha1;
+import io.dapr.client.domain.VectorMatch;
+import io.dapr.client.domain.VectorQuery;
+import io.dapr.client.domain.VectorRecord;
+import java.time.Duration;
+import java.util.List;
+import java.util.Map;
+
+try (DaprPreviewClient client = new DaprClientBuilder().buildPreviewClient()) {
+  client.createVectorCollection(new CreateVectorCollectionRequestAlpha1("myvectors", "books", 3)
+      .setMetric(DistanceMetric.COSINE)).block();
+
+  // Store records, and wait until the store has indexed them.
+  List<VectorRecord> records = List.of(
+      new VectorRecord("dune", new float[] {0.9f, 0.1f, 0.0f}).setMetadata(Map.of("genre", "scifi")),
+      new VectorRecord("hobbit", new float[] {0.1f, 0.9f, 0.2f}).setMetadata(Map.of("genre", "fantasy")));
+  UpsertVectorsResponseAlpha1 upsert = client.upsertVectors(
+      new UpsertVectorsRequestAlpha1("myvectors", "books", records)
+          .setOptions(IndexingOptions.waitForCompletion(
+              Duration.ofSeconds(5), IndexingWaitTimeoutAction.FAIL_REQUEST))).block();
+  System.out.println("Failed records: " + upsert.getFailedItems().size());
+
+  // Find the closest record, filtered on metadata.
+  QueryVectorsResponseAlpha1 response = client.queryVectors(new QueryVectorsRequestAlpha1("myvectors", "books",
+      VectorQuery.byVector(new float[] {0.85f, 0.15f, 0.05f})
+          .setTopK(1)
+          .setFilter(Map.of("genre", Map.of("$eq", "scifi"))))).block();
+  for (VectorMatch match : response.getMatches()) {
+    System.out.println("Closest record: " + match.getRecord().getId());
+  }
+
+  // Read and delete records by ID, then delete the collection.
+  List<VectorRecord> found = client.getVectors(
+      new GetVectorsRequestAlpha1("myvectors", "books", List.of("dune", "missing"))).block();
+  System.out.println("Records found: " + found.size());
+  client.deleteVectors(new DeleteVectorsRequestAlpha1("myvectors", "books", List.of("dune"))).block();
+  client.deleteVectorCollection("myvectors", "books").block();
+}
+```
+
+- **Writes:** without indexing options, `upsertVectors` and `deleteVectors` return once the store accepts the write, so the records may not be searchable yet. Records the store rejects are listed in the response's `getFailedItems()`, and the call itself still succeeds.
+- **Reads:** `getVectors` returns the records in request order and leaves out IDs that don't exist.
+- **Batches:** `batchQueryVectors` runs several queries in one call. Each query returns its own matches or its own error.
+- **Filters and metadata:** values can be null, a Boolean, a Number, a String, a Collection or a Map with string keys. Other types, NaN, infinities and numbers that a double can't hold exactly are rejected with an `IllegalArgumentException`.
+- For a full how-to on the vector API, visit [How-To: Store and query vectors]({{% ref howto-vector.md %}}).
+- Visit [Java SDK examples](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/vector) for complete code samples and instructions to try out the vector API.
+
+### Search
+
+> Note this is a preview API and thus will only be accessible via the DaprPreviewClient interface and not the normal DaprClient interface
+
+Since version 1.19, Dapr lets you store documents and query them with full-text search through the [search API]({{% ref search-overview.md %}}). The example below uses the `mysearch` component from [How-To: Index and search documents]({{% ref howto-search.md %}}).
+
+```java
+import io.dapr.client.DaprClientBuilder;
+import io.dapr.client.DaprPreviewClient;
+import io.dapr.client.domain.DeleteSearchDocumentsRequestAlpha1;
+import io.dapr.client.domain.GetSearchDocumentsRequestAlpha1;
+import io.dapr.client.domain.IndexSearchDocumentsRequestAlpha1;
+import io.dapr.client.domain.IndexSearchDocumentsResponseAlpha1;
+import io.dapr.client.domain.IndexingOptions;
+import io.dapr.client.domain.IndexingWaitTimeoutAction;
+import io.dapr.client.domain.SearchDocument;
+import io.dapr.client.domain.SearchHit;
+import io.dapr.client.domain.SearchQuery;
+import io.dapr.client.domain.SearchRequestAlpha1;
+import io.dapr.client.domain.SearchResponseAlpha1;
+import io.dapr.client.domain.SortClause;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.util.List;
+import java.util.Map;
+
+try (DaprPreviewClient client = new DaprClientBuilder().buildPreviewClient()) {
+  client.createSearchIndex("mysearch", "books").block();
+
+  // Document content is a UTF-8 encoded JSON object. Store the documents, and wait until the store has indexed them.
+  List<SearchDocument> books = List.of(
+      new SearchDocument("dune", "{\"title\":\"Dune\",\"genre\":\"scifi\",\"year\":1965}"
+          .getBytes(StandardCharsets.UTF_8)),
+      new SearchDocument("foundation", "{\"title\":\"Foundation\",\"genre\":\"scifi\",\"year\":1951}"
+          .getBytes(StandardCharsets.UTF_8)));
+  IndexSearchDocumentsResponseAlpha1 indexed = client.indexSearchDocuments(
+      new IndexSearchDocumentsRequestAlpha1("mysearch", "books", books)
+          .setOptions(IndexingOptions.waitForCompletion(
+              Duration.ofSeconds(5), IndexingWaitTimeoutAction.FAIL_REQUEST))).block();
+  System.out.println("Failed documents: " + indexed.getFailedItems().size());
+
+  // Filter and sort, reading one page at a time. Each page sends the same query with the token of the last response.
+  String token = null;
+  do {
+    SearchResponseAlpha1 page = client.search(new SearchRequestAlpha1("mysearch", "books",
+        SearchQuery.matchAll()
+            .setFilter(Map.of("genre", Map.of("$eq", "scifi")))
+            .setSort(List.of(SortClause.asc("year")))
+            .setTopK(1)
+            .setContinuationToken(token))).block();
+    for (SearchHit hit : page.getHits()) {
+      System.out.println("Hit: " + hit.getDocument().getId());
+    }
+    token = page.getContinuationToken();
+  } while (token != null);
+
+  // A full-text query, returning the content of each hit.
+  SearchResponseAlpha1 response = client.search(new SearchRequestAlpha1("mysearch", "books",
+      SearchQuery.byText("dune").setIncludeContent(true))).block();
+  byte[] content = response.getHits().get(0).getDocument().getContent();
+  System.out.println("Content: " + new String(content, StandardCharsets.UTF_8));
+
+  // Read and delete documents by ID, then delete the index.
+  List<SearchDocument> found = client.getSearchDocuments(
+      new GetSearchDocumentsRequestAlpha1("mysearch", "books", List.of("dune", "missing"))).block();
+  System.out.println("Documents found: " + found.size());
+  client.deleteSearchDocuments(new DeleteSearchDocumentsRequestAlpha1("mysearch", "books", List.of("dune"))).block();
+  client.deleteSearchIndex("mysearch", "books").block();
+}
+```
+
+- **Writes:** without indexing options, `indexSearchDocuments` and `deleteSearchDocuments` return once the store accepts the write, so the documents may not be searchable yet. A document the store rejects, including content that isn't a JSON object, is listed in the response's `getFailedItems()`, and the call itself still succeeds.
+- **Queries:** build a query with `SearchQuery.byText`, `SearchQuery.byNative` (a query in the store's own format) or `SearchQuery.matchAll`. Hits leave out the document content unless you call `setIncludeContent(true)`. Native queries and highlights depend on the store.
+- **Pages:** `search` returns one page of hits. A continuation token is bound to its query, so send the same query with only the token changed.
+- **Reads:** `getSearchDocuments` returns the documents in request order and leaves out IDs that don't exist.
+- **Filters and native queries:** values can be null, a Boolean, a Number, a String, a Collection or a Map with string keys. Other types, NaN, infinities and numbers that a double can't hold exactly are rejected with an `IllegalArgumentException`.
+- For a full how-to on the search API, visit [How-To: Index and search documents]({{% ref howto-search.md %}}).
+- Visit [Java SDK examples](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/search) for complete code samples and instructions to try out the search API.
+
 ### Workflow
 
 ```java
