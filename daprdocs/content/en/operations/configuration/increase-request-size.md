@@ -3,14 +3,14 @@ type: docs
 title: "How-To: Handle larger body requests"
 linkTitle: "Request body size"
 weight: 6000
-description: "Configure http requests that are bigger than 4 MB"
+description: "Configure http requests that are bigger than 16 MB"
 ---
 
 {{% alert title="Note" color="primary" %}}
 The existing flag/annotation`dapr-http-max-request-size` has been deprecated and updated to `max-body-size`.
 {{% /alert %}}
 
-By default, Dapr has a limit for the request body size, set to 4MB. You can change this for both HTTP and gRPC requests by defining:
+By default, Dapr limits the request body size to 16 MB. Before Dapr v1.20, the default limit was 4 MB. You can change this for both HTTP and gRPC requests by defining:
 - The `dapr.io/max-body-size` annotation, or
 - The `--max-body-size` flag.
 
@@ -22,7 +22,7 @@ By default, Dapr has a limit for the request body size, set to 4MB. You can chan
 When running in self-hosted mode, use the `--max-body-size` flag to configure Dapr to use non-default request body size:
 
 ```bash
-dapr run --max-body-size 16Mi node app.js
+dapr run --max-body-size 32Mi node app.js
 ```
 {{% /tab %}}
 
@@ -52,7 +52,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "myapp"
         dapr.io/app-port: "8000"
-        dapr.io/max-body-size: "16Mi"
+        dapr.io/max-body-size: "32Mi"
 #...
 ```
 

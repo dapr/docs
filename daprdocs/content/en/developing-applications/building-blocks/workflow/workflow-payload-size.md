@@ -6,7 +6,9 @@ weight: 9500
 description: "How Dapr handles workflow and activity payloads that approach the sidecar's max body size, and the metrics that surface proximity to the limit"
 ---
 
-The dispatch between a Dapr sidecar and the workflow SDK is a single bidirectional gRPC stream (`GetWorkItems`). Each dispatch sends a `WorkflowRequest` or `ActivityRequest` over that stream, which carries the workflow's `PastEvents`, `NewEvents`, and (for multi-app workflows) the `PropagatedHistory`. The maximum size of a single message on this stream is bounded by the sidecar's `--max-body-size` flag (and equivalent `dapr.io/max-body-size` annotation), which defaults to **4 MiB**.
+The dispatch between a Dapr sidecar and the workflow SDK is a single bidirectional gRPC stream (`GetWorkItems`). Each dispatch sends a `WorkflowRequest` or `ActivityRequest` over that stream, which carries the workflow's `PastEvents`, `NewEvents`, and (for multi-app workflows) the `PropagatedHistory`. The maximum size of a single message on this stream is bounded by the sidecar's `--max-body-size` flag (and equivalent `dapr.io/max-body-size` annotation), which defaults to **16 MiB**. Before Dapr v1.20, the default was 4 MiB.
+
+The workflow worker in the SDK also limits the size of a message that it receives. The workers in Python SDK v1.19.0, Java SDK v1.19.0, Go SDK v1.16.0 (durabletask-go v0.15.1) and later releases accept a work item of any size. Earlier releases of these SDKs refuse a work item larger than 4 MB and request it again, and the workflow does not continue. If a worker uses an earlier release, upgrade the SDK or set `--max-body-size` to `4Mi`.
 
 {{% alert title="Note" color="primary" %}}
 With the [stateful workflow client]({{% ref "workflow-stateful-client.md" %}}), a warm worker is sent only the history events added since its previous turn, so what actually crosses the stream is usually far smaller than the workflow's full history. This does not raise the limit described on this page. The size check below is applied to the workflow's full history as held in state, before the work item is reduced to a delta, so a workflow stalls at the same point either way, even when the message that would actually have been sent was a small delta. The check has to be conservative: when it runs, the sidecar does not yet know which worker will receive the turn, and a worker that is cold for that instance is always sent the full history.
@@ -53,7 +55,7 @@ Both histograms share buckets concentrated around the 0.95 stall threshold:
 
 Values at or above `1.0` correspond to dispatches that exceeded `--max-body-size` itself. Values in the `(0.95, 1.0]` range correspond to dispatches that tripped the safety threshold and were stalled.
 
-Recording is skipped entirely when `--max-body-size` is set to a non-positive value (`0` or negative), which signals "no limit" and matches the convention used by the Dapr HTTP server. The ratio is undefined without a limit. With the default `4Mi` (or any explicit positive value) recording is always active.
+Recording is skipped entirely when `--max-body-size` is set to a non-positive value (`0` or negative), which signals "no limit" and matches the convention used by the Dapr HTTP server. The ratio is undefined without a limit. With the default `16Mi` (or any explicit positive value) recording is always active.
 
 ### Suggested alerts
 

@@ -283,7 +283,7 @@ Workflow code is long-running and must remain deterministic during updates. For 
 
 ### Payload size
 
-A single workflow or activity dispatch is bounded by the sidecar's `--max-body-size` setting (default 4 MiB). If a workflow's `PastEvents + NewEvents + PropagatedHistory` would exceed 95% of that limit, the workflow is stalled rather than tearing down the dispatch stream. Metrics expose how close each workflow and activity is to the limit so operators can act before a stall. See [Workflow payload size]({{% ref workflow-payload-size.md %}}) for details and remediation steps.
+A single workflow or activity dispatch is bounded by the sidecar's `--max-body-size` setting (default 16 MiB). If a workflow's `PastEvents + NewEvents + PropagatedHistory` would exceed 95% of that limit, the workflow is stalled rather than tearing down the dispatch stream. Metrics expose how close each workflow and activity is to the limit so operators can act before a stall. See [Workflow payload size]({{% ref workflow-payload-size.md %}}) for details and remediation steps.
 
 ### Fast path and concurrency limits
 
