@@ -88,6 +88,8 @@ spec:
       - name: <STATE-STORE-COMPONENT-NAME>
         actorTypes:
           - <ACTOR-TYPE>
+  workflow:
+    stateStore: <STATE-STORE-COMPONENT-NAME>
   accessControl:
     defaultAction: <ALLOW-OR-DENY>
     trustDomain: <REPLACE-WITH-TRUST-DOMAIN>
@@ -118,6 +120,7 @@ spec:
 | nameResolution     | N        | Name resolution configuration spec for the service invocation building block. | [Learn more about the `nameResolution` configuration per components.]({{% ref supported-name-resolution.md %}}) |
 | secrets            | N        | Limit the secrets to which your Dapr application has access.  | [Learn more about the `secrets` configuration.]({{% ref secret-scope.md %}}) |
 | tracing            | N        | Turns on tracing for an application. | [Learn more about the `tracing` configuration.]({{% ref "configuration-overview.md#tracing" %}}) |
+| workflow           | N        | Configure workflows, such as concurrency limits and the state store that keeps workflow state. | [Learn more about the `workflow` configuration.]({{% ref "configuration-overview.md#workflow" %}}) |
 
 
 ## Control plane format

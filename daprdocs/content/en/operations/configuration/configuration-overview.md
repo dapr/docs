@@ -286,6 +286,7 @@ The `workflow` section contains properties for configuring [Workflows]({{% ref "
 | `globalMaxConcurrentActivityInvocations` | int32 | Maximum concurrent activity executions across all replicas, enforced by the scheduler. Default is unlimited. |
 | `workflowConcurrencyLimits` | array | Per-workflow-name concurrency limits across all replicas. Each entry has `name` (string) and `maxConcurrent` (int32). |
 | `activityConcurrencyLimits` | array | Per-activity-name concurrency limits across all replicas. Each entry has `name` (string) and `maxConcurrent` (int32). |
+| `stateStore` | string | Name of the state store component that keeps the state of the app's workflows, instead of the default actor state store. Setting or changing it does not migrate state. See [Bind workflow state to a state store]({{% ref "actors-state-store-binding.md#bind-workflow-state-to-a-state-store" %}}). |
 
 #### Actors
 

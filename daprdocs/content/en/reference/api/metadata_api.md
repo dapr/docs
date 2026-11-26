@@ -40,6 +40,9 @@ The metadata API returns information related to Dapr's connection to the app. Th
 ### Scheduler connection details
 Information related to the connection to one or more scheduler hosts.
 
+### Actor runtime details
+Information related to the actor runtime: its status, the count of active actors per type, the placement connection, and the state stores that [actor types are bound to]({{% ref actors-state-store-binding.md %}}).
+
 ### Workflow API runtime details
 Information related to the Workflow API runtime details.
 
@@ -90,6 +93,7 @@ subscriptions          | [Metadata API Response Subscription](#metadataapirespon
 appConnectionProperties| [Metadata API Response AppConnectionProperties](#metadataapiresponseappconnectionproperties) | A json encoded object of app connection properties.
 scheduler              | [Metadata API Response Scheduler](#metadataapiresponsescheduler) | A json encoded object of scheduler connection properties.
 workflows              | [Metadata API Response Workflows](#metadataapiresponseworkflows) | A json encoded object of workflows runtime properties
+actorRuntime           | [Metadata API Response Actor Runtime](#metadataapiresponseactorruntime) | A json encoded object of actor runtime properties.
 
 <a id="metadataapiresponseactor"></a>**Metadata API Response Registered Actor**
 
@@ -161,6 +165,24 @@ connected_addresses | string[] | List of strings representing the addresses of t
 Name             | Type    | Description
 ----             | ----    | -----------
 connectedWorkers | integer | Number of connected workflow workers.
+
+<a id="metadataapiresponseactorruntime"></a>**Metadata API Response Actor Runtime**
+
+Name          | Type    | Description
+----          | ----    | -----------
+runtimeStatus | string  | Status of the actor runtime: `INITIALIZING`, `DISABLED` or `RUNNING`.
+activeActors  | [Metadata API Response Registered Actor](#metadataapiresponseactor)[] | Count of active actors per actor type.
+hostReady     | boolean | Whether the actor runtime is ready to host actors.
+placement     | string  | Status of the connection to the placement service.
+stateStores   | [Metadata API Response Actor Runtime State Store](#metadataapiresponseactorruntimestatestore)[] | State stores bound to actor types by `spec.actors.stateStores` and `spec.workflow.stateStore` in the Configuration, sorted by name. Actor types that are not listed use the default actor state store.
+
+<a id="metadataapiresponseactorruntimestatestore"></a>**Metadata API Response Actor Runtime State Store**
+
+Name       | Type     | Description
+----       | ----     | -----------
+name       | string   | Name of the state store component.
+actorTypes | string[] | Actor types whose state is kept in this state store.
+loaded     | boolean  | Whether the state store component is loaded. State operations of the actor types fail while it is not.
 
 ### Examples
 
@@ -244,6 +266,25 @@ curl http://localhost:3500/v1.0/metadata
   },
   "workflows": {
     "connectedWorkers": 1
+  },
+  "actorRuntime": {
+    "runtimeStatus": "RUNNING",
+    "activeActors": [
+      {
+        "type": "DemoActor"
+      }
+    ],
+    "hostReady": true,
+    "placement": "placement: connected",
+    "stateStores": [
+      {
+        "name": "demo-actors",
+        "actorTypes": [
+          "DemoActor"
+        ],
+        "loaded": true
+      }
+    ]
   }
 }
 ```

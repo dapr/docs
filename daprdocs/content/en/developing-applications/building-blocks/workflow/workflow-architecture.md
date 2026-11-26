@@ -173,6 +173,8 @@ Like any actors, these workflow actors store their state in the configured actor
 This is done by specifying a state store component in your Dapr configuration and then referencing that state store in the `actorStateStore` property of the configuration's `actors` section.
 Read the [state API reference]({{% ref state_api %}}) and the [actors API reference]({{% ref actors_api %}}) to learn more about state stores for actors.
 
+To keep workflow state in a state store other than the default actor state store, set `spec.workflow.stateStore` in the app's Configuration. See [Bind workflow state to a state store]({{% ref "actors-state-store-binding.md#bind-workflow-state-to-a-state-store" %}}).
+
 Any state store that supports actors implicitly supports Dapr Workflow.
 
 As discussed in the [workflow actors]({{% ref "workflow-architecture.md#workflow-actors" %}}) section, workflows save their state incrementally by appending to a history log.
