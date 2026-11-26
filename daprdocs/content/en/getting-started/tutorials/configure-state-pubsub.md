@@ -62,6 +62,18 @@ For Kubernetes:
 - The hostname is `redis-master.default.svc.cluster.local:6379`
 - The secret, `redis`, is created automatically.
 
+{{% alert title="Redis in a different namespace" color="primary" %}}
+The steps above install Redis into the `default` namespace, next to your Dapr applications. To install Redis into another namespace, for example `redis-system`, add `--namespace redis-system --create-namespace` to the `helm install` command. Then make two changes:
+
+- Use the namespace in the hostname: `redis-master.redis-system.svc.cluster.local:6379`.
+- Copy the `redis` secret into the namespace where your Dapr application runs. Dapr reads the secret referenced by `secretKeyRef` from the application's namespace, not from the Redis namespace.
+
+```bash
+kubectl get secret --namespace redis-system redis -o jsonpath="{.data.redis-password}" | base64 -d
+kubectl create secret generic redis --from-literal=redis-password=<output from the command above>
+```
+{{% /alert %}}
+
 {{% /tab %}}
 
 {{% tab "Azure" %}}
