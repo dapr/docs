@@ -165,6 +165,8 @@ curl http://localhost:3500/v1.0/metadata
 
 A binding that is missing from the list was not applied, for example because the Configuration CRD is outdated. A store with `"usable": false` cannot keep actor state, and the state operations of its actor types fail: `error` says whether the store is not loaded, or does not support transactions and ETags. With `spec.workflow.stateStore`, the list includes the store with the internal workflow actor types of the app.
 
+The gRPC `GetMetadata` method returns the same list in `actor_runtime.state_stores`, where `error` is not set for a usable store.
+
 ## Separate actor types within one database server
 
 A binding names a state store component, and a component already defines where its data is kept. To separate actor types inside one server, declare one component per table, collection, database or prefix:

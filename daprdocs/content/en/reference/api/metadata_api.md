@@ -185,6 +185,8 @@ actorTypes | string[] | Actor types whose state is kept in this state store.
 usable     | boolean  | Whether the state store can keep the state of the actor types: it is loaded, and supports transactions and ETags. State operations of the actor types fail while it is `false`.
 error      | string   | Why the state store is not usable. Omitted when `usable` is `true`.
 
+Over gRPC, the `GetMetadata` method returns the same information in `actor_runtime.state_stores` of `GetMetadataResponse`. There, `error` is an optional field: it is not set when `usable` is `true`.
+
 ### Examples
 
 ```shell
