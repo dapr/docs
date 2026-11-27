@@ -1651,4 +1651,6 @@ Join our [Discord Server](https://diagrid.ws/dapr-discord) and share your though
   - [Go](https://github.com/dapr/quickstarts/tree/master/pub_sub/go/http)
 - Learn more about [Pub/sub as a Dapr building block]({{% ref pubsub-overview %}})
 
+{{< dapr-university-track track="dapr-pubsub" position="end" >}}
+
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}

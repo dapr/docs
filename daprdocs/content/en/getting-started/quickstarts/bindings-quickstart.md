@@ -1094,4 +1094,6 @@ Join our [Discord Server](https://diagrid.ws/dapr-discord) and share your though
   - [Go](https://github.com/dapr/quickstarts/tree/master/bindings/go/http)
 - Learn more about [Binding building block]({{% ref bindings %}})
 
+{{< dapr-university-track track="dapr-bindings" position="end" >}}
+
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}

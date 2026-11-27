@@ -1,0 +1,24 @@
+{{- /*
+  Dapr University track card. Called by the dapr-university-track shortcode
+  with a dict: track (an entry of site.Data.dapr_university), page, position.
+  The button link gets the docs UTMs; utm_content is <page slug>-<position>.
+  Any query string or fragment already on the track URL is kept.
+*/ -}}
+{{- $slug := "" -}}
+{{- with .page.File }}{{ $slug = lower .ContentBaseName }}{{ end -}}
+{{- $utm := querify "utm_source" "dapr-docs" "utm_medium" "referral" "utm_campaign" "dapr-university" "utm_content" (printf "%s-%s" $slug .position) -}}
+{{- $u := urls.Parse .track.url -}}
+{{- $query := cond (eq $u.RawQuery "") $utm (printf "%s&%s" $u.RawQuery $utm) -}}
+{{- $href := printf "%s://%s%s?%s" $u.Scheme $u.Host $u.EscapedPath $query -}}
+{{- with $u.Fragment }}{{ $href = printf "%s#%s" $href . }}{{ end -}}
+<div class="d-promo-card">
+  <img class="d-promo-card-icon" src="{{ "images/homepage/dark-blue-dapr.svg" | relURL }}" alt="" width="40" height="40">
+  <div class="d-promo-card-body">
+    <div class="d-promo-card-eyebrow">Dapr University · Free self-paced track</div>
+    <p class="d-promo-card-lead"><strong>Learn {{ .track.topic }} hands-on.</strong> Work through the {{ .track.topic }} API in a free lab that runs in your browser, with nothing to install.</p>
+    <div class="d-promo-card-title">{{ .track.title }}</div>
+    <p class="d-promo-card-desc">{{ .track.description }}</p>
+    <a class="btn btn-primary d-promo-card-btn" href="{{ $href | safeURL }}">Explore the free track</a>
+  </div>
+</div>
+{{- /**/ -}}

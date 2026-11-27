@@ -116,6 +116,8 @@ dapr workflow rerun order-12345 --event-id 5
 dapr workflow rerun order-12345 --new-instance-id order-12345-retry
 ```
 
+A rerun creates a **new** workflow instance from the history of a finished one, and leaves the source instance unchanged. Not every workflow or history event can be rerun: see the [rerun limitations]({{% ref "workflow-features-concepts.md#rerun-limitations" %}}) before using it, and [Rerunning workflows]({{% ref "workflow-features-concepts.md#rerunning-workflows" %}}) for what is replayed and what is executed again.
+
 #### Purge Completed Workflows
 
 Note that purging a workflow from the CLI will also delete all associated Scheduler reminders.
