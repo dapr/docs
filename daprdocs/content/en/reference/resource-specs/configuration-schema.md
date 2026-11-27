@@ -83,6 +83,13 @@ spec:
   features:
     - name: <FEATURE-NAME>
       enabled: <TRUE-OR-FALSE>
+  actors:
+    stateStores:
+      - name: <STATE-STORE-COMPONENT-NAME>
+        actorTypes:
+          - <ACTOR-TYPE>
+  workflow:
+    stateStore: <STATE-STORE-COMPONENT-NAME>
   accessControl:
     defaultAction: <ALLOW-OR-DENY>
     trustDomain: <REPLACE-WITH-TRUST-DOMAIN>
@@ -102,6 +109,7 @@ spec:
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | accessControl      | N        | Applied to Dapr sidecar for the called application. Enables the configuration of policies that restrict what operations calling applications can perform (via service invocation) on the called appliaction.  | [Learn more about the `accessControl` configuration.]({{% ref invoke-allowlist.md %}}) |
+| actors             | N        | Configure actors, such as binding actor types to state stores other than the default actor state store. | [Learn more about the `actors` configuration.]({{% ref actors-state-store-binding.md %}}) |
 | api                | N        | Used to enable only the Dapr sidecar APIs used by the application.  | [Learn more about the `api` configuration.]({{% ref api-allowlist.md %}}) |
 | httpPipeline       | N        | Configure API middleware pipelines | [Middleware pipeline configuration overview]({{% ref "configuration-overview.md#middleware" %}})<br>[Learn more about the `httpPipeline` configuration.]({{% ref "middleware.md#configure-api-middleware-pipelines" %}}) |
 | appHttpPipeline    | N        | Configure application middleware pipelines | [Middleware pipeline configuration overview]({{% ref "configuration-overview.md#middleware" %}})<br>[Learn more about the `appHttpPipeline` configuration.]({{% ref "middleware.md#configure-app-middleware-pipelines" %}}) |
@@ -112,6 +120,7 @@ spec:
 | nameResolution     | N        | Name resolution configuration spec for the service invocation building block. | [Learn more about the `nameResolution` configuration per components.]({{% ref supported-name-resolution.md %}}) |
 | secrets            | N        | Limit the secrets to which your Dapr application has access.  | [Learn more about the `secrets` configuration.]({{% ref secret-scope.md %}}) |
 | tracing            | N        | Turns on tracing for an application. | [Learn more about the `tracing` configuration.]({{% ref "configuration-overview.md#tracing" %}}) |
+| workflow           | N        | Configure workflows, such as concurrency limits and the state store that keeps workflow state. | [Learn more about the `workflow` configuration.]({{% ref "configuration-overview.md#workflow" %}}) |
 
 
 ## Control plane format
