@@ -182,7 +182,8 @@ Name       | Type     | Description
 ----       | ----     | -----------
 name       | string   | Name of the state store component.
 actorTypes | string[] | Actor types whose state is kept in this state store.
-loaded     | boolean  | Whether the state store component is loaded. State operations of the actor types fail while it is not.
+usable     | boolean  | Whether the state store can keep the state of the actor types: it is loaded, and supports transactions and ETags. State operations of the actor types fail while it is `false`.
+error      | string   | Why the state store is not usable. Omitted when `usable` is `true`.
 
 ### Examples
 
@@ -282,7 +283,7 @@ curl http://localhost:3500/v1.0/metadata
         "actorTypes": [
           "DemoActor"
         ],
-        "loaded": true
+        "usable": true
       }
     ]
   }

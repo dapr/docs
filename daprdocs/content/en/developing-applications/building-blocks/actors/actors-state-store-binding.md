@@ -134,7 +134,7 @@ Each sidecar applies the bindings of its own Configuration, and the placement se
 
 ## Verify the bindings
 
-The [metadata API]({{% ref metadata_api.md %}}) reports the bindings that the sidecar applies under `actorRuntime.stateStores`, with the actor types of each store and whether the store is loaded:
+The [metadata API]({{% ref metadata_api.md %}}) reports the bindings that the sidecar applies under `actorRuntime.stateStores`, with the actor types of each store and whether the store is usable:
 
 ```shell
 curl http://localhost:3500/v1.0/metadata
@@ -150,19 +150,20 @@ curl http://localhost:3500/v1.0/metadata
       {
         "name": "wallet-balance",
         "actorTypes": ["BalanceActor"],
-        "loaded": false
+        "usable": false,
+        "error": "the state store is not loaded"
       },
       {
         "name": "wallet-transactions",
         "actorTypes": ["AuditActor", "TransactionActor"],
-        "loaded": true
+        "usable": true
       }
     ]
   }
 }
 ```
 
-A binding that is missing from the list was not applied, for example because the Configuration CRD is outdated. A store with `"loaded": false` is not loaded, and the state operations of its actor types fail. With `spec.workflow.stateStore`, the list includes the store with the internal workflow actor types of the app.
+A binding that is missing from the list was not applied, for example because the Configuration CRD is outdated. A store with `"usable": false` cannot keep actor state, and the state operations of its actor types fail: `error` says whether the store is not loaded, or does not support transactions and ETags. With `spec.workflow.stateStore`, the list includes the store with the internal workflow actor types of the app.
 
 ## Separate actor types within one database server
 
